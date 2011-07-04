@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="ac9a80a2-8fa0-4502-aac7-a4e22613c55c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://192.168.2.6:8000/Diversity" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="Diversity.xsd" MetadataType="Schema" ID="a139c807-a425-4c0e-b223-e1c0c3e62df9" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd1" />
+    <MetadataFile FileName="Diversity1.xsd" MetadataType="Schema" ID="9653d44e-bc9e-4b53-902d-433805e1910e" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd2" />
+    <MetadataFile FileName="Diversity.disco" MetadataType="Disco" ID="bbac86d7-6b39-4528-accc-029f01ae4141" SourceId="1" SourceUrl="http://localhost:8000/Diversity?disco" />
+    <MetadataFile FileName="Diversity2.xsd" MetadataType="Schema" ID="5c321273-4447-45b2-b6a5-245b4106bd67" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd0" />
+    <MetadataFile FileName="DiversityService.wsdl" MetadataType="Wsdl" ID="11d237f9-6c25-4dcd-8825-3d0642dab3e3" SourceId="1" SourceUrl="http://localhost:8000/Diversity?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

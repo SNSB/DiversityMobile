@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using SterlingDemo.Model;
+using System.Reactive.Linq;
 
 
 
@@ -35,6 +36,7 @@ namespace WindowsPhoneSterling
         }
 
         private string _InsertTitle = "Test";
+        
         public string InsertTitle 
         { 
             get
@@ -67,14 +69,18 @@ namespace WindowsPhoneSterling
         {
             this.Items = new ObservableCollection<StringISO>();
 
-            var titleObservable = this.ObservableForProperty(vm => vm.InsertTitle);
+            var titleValid = this.ObservableForProperty(vm => vm.InsertTitle)
+                .Select(title => !string.IsNullOrEmpty(title.Value));
+            var lineCountValid = this.ObservableForProperty(vm => vm.InsertCount)
+                .Select(count => count.Value > 0);
+
+            var canInsert = titleValid.CombineLatest(lineCountValid, (title, count) => title && count);
             
                 
 
-            var insert = ReactiveCommand.Create(_ => !string.IsNullOrEmpty(InsertTitle) && InsertCount > 0);
+            var insert = new ReactiveCommand(canInsert);
             insert.Subscribe(_ => insertLines(InsertTitle,InsertCount));
             Insert = insert;
-
         }
 
         private void insertLines(string title, int count)

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/ConsoleApplication1" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/ConsoleApplication1" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:8000/Diversity?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfCollectionEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCollectionEvent" nillable="true" type="tns:ArrayOfCollectionEvent" />
+  <xs:complexType name="CollectionEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CollectingMethod" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CollectionDateCategory" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionDateSupplement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionDay" nillable="true" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionMonth" nillable="true" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="CollectionTime" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionTimeSpan" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionYear" nillable="true" type="xs:short" />
+      <xs:element minOccurs="0" name="CollectorsEventNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CountryCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
+      <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Version" type="xs:int" />
+      <xs:element minOccurs="0" name="xx_ExpeditionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
+</xs:schema>
