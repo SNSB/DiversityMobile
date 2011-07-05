@@ -17,7 +17,7 @@ namespace SterlingToLINQ.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/ConsoleApplication1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/DiversityService")]
     public partial class CollectionEvent : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string CollectingMethodField;
@@ -451,22 +451,22 @@ namespace SterlingToLINQ.DiversityService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DiversityService.IDiversityService")]
-    public interface IDiversityService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DiversityService.IDivService")]
+    public interface IDivService {
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetEvents", ReplyAction="http://tempuri.org/IDiversityService/GetEventsResponse")]
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDivService/GetEvents", ReplyAction="http://tempuri.org/IDivService/GetEventsResponse")]
         System.IAsyncResult BeginGetEvents(int skip, int count, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionEvent> EndGetEvents(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/AddEvent", ReplyAction="http://tempuri.org/IDiversityService/AddEventResponse")]
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDivService/AddEvent", ReplyAction="http://tempuri.org/IDivService/AddEventResponse")]
         System.IAsyncResult BeginAddEvent(SterlingToLINQ.DiversityService.CollectionEvent ev, System.AsyncCallback callback, object asyncState);
         
         void EndAddEvent(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IDiversityServiceChannel : SterlingToLINQ.DiversityService.IDiversityService, System.ServiceModel.IClientChannel {
+    public interface IDivServiceChannel : SterlingToLINQ.DiversityService.IDivService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -490,7 +490,7 @@ namespace SterlingToLINQ.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DiversityServiceClient : System.ServiceModel.ClientBase<SterlingToLINQ.DiversityService.IDiversityService>, SterlingToLINQ.DiversityService.IDiversityService {
+    public partial class DivServiceClient : System.ServiceModel.ClientBase<SterlingToLINQ.DiversityService.IDivService>, SterlingToLINQ.DiversityService.IDivService {
         
         private BeginOperationDelegate onBeginGetEventsDelegate;
         
@@ -516,22 +516,22 @@ namespace SterlingToLINQ.DiversityService {
         
         private System.Threading.SendOrPostCallback onCloseCompletedDelegate;
         
-        public DiversityServiceClient() {
+        public DivServiceClient() {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName) : 
+        public DivServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public DivServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DivServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DiversityServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DivServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         
@@ -566,23 +566,23 @@ namespace SterlingToLINQ.DiversityService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult SterlingToLINQ.DiversityService.IDiversityService.BeginGetEvents(int skip, int count, System.AsyncCallback callback, object asyncState) {
+        System.IAsyncResult SterlingToLINQ.DiversityService.IDivService.BeginGetEvents(int skip, int count, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginGetEvents(skip, count, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionEvent> SterlingToLINQ.DiversityService.IDiversityService.EndGetEvents(System.IAsyncResult result) {
+        System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionEvent> SterlingToLINQ.DiversityService.IDivService.EndGetEvents(System.IAsyncResult result) {
             return base.Channel.EndGetEvents(result);
         }
         
         private System.IAsyncResult OnBeginGetEvents(object[] inValues, System.AsyncCallback callback, object asyncState) {
             int skip = ((int)(inValues[0]));
             int count = ((int)(inValues[1]));
-            return ((SterlingToLINQ.DiversityService.IDiversityService)(this)).BeginGetEvents(skip, count, callback, asyncState);
+            return ((SterlingToLINQ.DiversityService.IDivService)(this)).BeginGetEvents(skip, count, callback, asyncState);
         }
         
         private object[] OnEndGetEvents(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionEvent> retVal = ((SterlingToLINQ.DiversityService.IDiversityService)(this)).EndGetEvents(result);
+            System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionEvent> retVal = ((SterlingToLINQ.DiversityService.IDivService)(this)).EndGetEvents(result);
             return new object[] {
                     retVal};
         }
@@ -614,22 +614,22 @@ namespace SterlingToLINQ.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult SterlingToLINQ.DiversityService.IDiversityService.BeginAddEvent(SterlingToLINQ.DiversityService.CollectionEvent ev, System.AsyncCallback callback, object asyncState) {
+        System.IAsyncResult SterlingToLINQ.DiversityService.IDivService.BeginAddEvent(SterlingToLINQ.DiversityService.CollectionEvent ev, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginAddEvent(ev, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        void SterlingToLINQ.DiversityService.IDiversityService.EndAddEvent(System.IAsyncResult result) {
+        void SterlingToLINQ.DiversityService.IDivService.EndAddEvent(System.IAsyncResult result) {
             base.Channel.EndAddEvent(result);
         }
         
         private System.IAsyncResult OnBeginAddEvent(object[] inValues, System.AsyncCallback callback, object asyncState) {
             SterlingToLINQ.DiversityService.CollectionEvent ev = ((SterlingToLINQ.DiversityService.CollectionEvent)(inValues[0]));
-            return ((SterlingToLINQ.DiversityService.IDiversityService)(this)).BeginAddEvent(ev, callback, asyncState);
+            return ((SterlingToLINQ.DiversityService.IDivService)(this)).BeginAddEvent(ev, callback, asyncState);
         }
         
         private object[] OnEndAddEvent(System.IAsyncResult result) {
-            ((SterlingToLINQ.DiversityService.IDiversityService)(this)).EndAddEvent(result);
+            ((SterlingToLINQ.DiversityService.IDivService)(this)).EndAddEvent(result);
             return null;
         }
         
@@ -724,13 +724,13 @@ namespace SterlingToLINQ.DiversityService {
             base.InvokeAsync(this.onBeginCloseDelegate, null, this.onEndCloseDelegate, this.onCloseCompletedDelegate, userState);
         }
         
-        protected override SterlingToLINQ.DiversityService.IDiversityService CreateChannel() {
-            return new DiversityServiceClientChannel(this);
+        protected override SterlingToLINQ.DiversityService.IDivService CreateChannel() {
+            return new DivServiceClientChannel(this);
         }
         
-        private class DiversityServiceClientChannel : ChannelBase<SterlingToLINQ.DiversityService.IDiversityService>, SterlingToLINQ.DiversityService.IDiversityService {
+        private class DivServiceClientChannel : ChannelBase<SterlingToLINQ.DiversityService.IDivService>, SterlingToLINQ.DiversityService.IDivService {
             
-            public DiversityServiceClientChannel(System.ServiceModel.ClientBase<SterlingToLINQ.DiversityService.IDiversityService> client) : 
+            public DivServiceClientChannel(System.ServiceModel.ClientBase<SterlingToLINQ.DiversityService.IDivService> client) : 
                     base(client) {
             }
             

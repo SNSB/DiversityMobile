@@ -50,7 +50,7 @@ namespace SterlingToLINQ
             }
         }
 
-        public static DiversityServiceClient Repository
+        public static DivServiceClient Repository
         {
             get;
             private set;
@@ -104,7 +104,7 @@ namespace SterlingToLINQ
             _engine.Activate();
             _database = _engine.SterlingDatabase.RegisterDatabase<DiversityDatabase>();
 
-            Repository = new DiversityServiceClient();
+            Repository = new DivServiceClient();
             //_database.RegisterTrigger<ItemViewModel, int>(new WindowsPhoneSterling.Sterling.ISODatabase.ItemTrigger(maxIdx));
 
         }

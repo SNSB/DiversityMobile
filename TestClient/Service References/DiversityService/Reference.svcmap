@@ -18,14 +18,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://192.168.2.6:8000/Diversity" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8732/DivService/" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Diversity.xsd" MetadataType="Schema" ID="9078afae-2272-45a4-848c-b9ee73984be6" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd1" />
-    <MetadataFile FileName="Diversity1.xsd" MetadataType="Schema" ID="54e7f9fb-40f0-4b74-8c8b-e567c30ae78f" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd2" />
-    <MetadataFile FileName="Diversity.disco" MetadataType="Disco" ID="fdb2cc48-1c28-471c-9eb2-980ec80932e5" SourceId="1" SourceUrl="http://localhost:8000/Diversity?disco" />
-    <MetadataFile FileName="Diversity2.xsd" MetadataType="Schema" ID="cdc7cb56-5c1e-4f89-9bd4-3c9b39b8402f" SourceId="1" SourceUrl="http://localhost:8000/Diversity?xsd=xsd0" />
-    <MetadataFile FileName="DiversityService.wsdl" MetadataType="Wsdl" ID="1c22edf9-493e-4199-8429-bb4fc206ab30" SourceId="1" SourceUrl="http://localhost:8000/Diversity?wsdl" />
+    <MetadataFile FileName="item.xsd" MetadataType="Schema" ID="99a29e3b-31f8-423c-b477-ef2e6fb2ddfa" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/?xsd=xsd1" />
+    <MetadataFile FileName="item.disco" MetadataType="Disco" ID="e0b565b6-64e6-496a-948e-dbb281ffac09" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/?disco" />
+    <MetadataFile FileName="item1.xsd" MetadataType="Schema" ID="374f9922-ee2e-43ce-b273-6aa0d01a4b59" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/?xsd=xsd0" />
+    <MetadataFile FileName="DivService.wsdl" MetadataType="Wsdl" ID="2e83bd5d-2954-4b56-9772-993a5ead6a6d" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/?wsdl" />
+    <MetadataFile FileName="item2.xsd" MetadataType="Schema" ID="b3c46454-53b7-46c9-b034-4f06478c9431" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

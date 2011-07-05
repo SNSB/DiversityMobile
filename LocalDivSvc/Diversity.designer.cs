@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ConsoleApplication1
+namespace DiversityService
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -36,7 +36,7 @@ namespace ConsoleApplication1
     #endregion
 		
 		public DiversityDataContext() : 
-				base(global::ConsoleApplication1.Properties.Settings.Default.DiversityCollection_BaseTestConnectionString, mappingSource)
+				base(global::DiversityService.Properties.Settings.Default.DiversityCollection_BaseTestConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

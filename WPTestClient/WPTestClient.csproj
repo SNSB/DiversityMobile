@@ -86,20 +86,21 @@
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Service References\DiversityService\Diversity.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Diversity1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Diversity2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\DiversityService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\DiversityService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\DiversityService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\WPTestClient.DiversityService.CollectionEvent.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\DiversityService\DiversityService.disco" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
@@ -109,7 +110,6 @@
     <Content Include="Background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\DiversityService\Diversity.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">

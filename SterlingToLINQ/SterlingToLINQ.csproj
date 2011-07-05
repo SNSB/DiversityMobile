@@ -120,19 +120,21 @@
     </DesignData>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Service References\DiversityService\Diversity.xsd">
+    <None Include="Service References\DiversityService\DiversityService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Diversity1.xsd">
+    <None Include="Service References\DiversityService\service.wsdl" />
+    <None Include="Service References\DiversityService\service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Diversity2.xsd">
+    <None Include="Service References\DiversityService\service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
     <None Include="Service References\DiversityService\SterlingToLINQ.DiversityService.CollectionEvent.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -145,7 +147,6 @@
     <Content Include="Background.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Service References\DiversityService\Diversity.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">

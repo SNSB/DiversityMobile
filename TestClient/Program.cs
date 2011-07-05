@@ -9,7 +9,7 @@ namespace TestClient
     {
         static void Main(string[] args)
         {
-            DiversityService.DiversityServiceClient svc = new DiversityService.DiversityServiceClient();
+            DiversityService.DivServiceClient svc = new DiversityService.DivServiceClient();
             svc.GetEvents(0, 100);
             Console.ReadLine();
         }

@@ -15,7 +15,7 @@ namespace TestClient.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/ConsoleApplication1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/DiversityService")]
     [System.SerializableAttribute()]
     public partial class CollectionEvent : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
@@ -491,40 +491,40 @@ namespace TestClient.DiversityService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DiversityService.IDiversityService")]
-    public interface IDiversityService {
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DiversityService.IDivService")]
+    public interface IDivService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetEvents", ReplyAction="http://tempuri.org/IDiversityService/GetEventsResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDivService/GetEvents", ReplyAction="http://tempuri.org/IDivService/GetEventsResponse")]
         TestClient.DiversityService.CollectionEvent[] GetEvents(int skip, int count);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/AddEvent", ReplyAction="http://tempuri.org/IDiversityService/AddEventResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDivService/AddEvent", ReplyAction="http://tempuri.org/IDivService/AddEventResponse")]
         void AddEvent(TestClient.DiversityService.CollectionEvent ev);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IDiversityServiceChannel : TestClient.DiversityService.IDiversityService, System.ServiceModel.IClientChannel {
+    public interface IDivServiceChannel : TestClient.DiversityService.IDivService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DiversityServiceClient : System.ServiceModel.ClientBase<TestClient.DiversityService.IDiversityService>, TestClient.DiversityService.IDiversityService {
+    public partial class DivServiceClient : System.ServiceModel.ClientBase<TestClient.DiversityService.IDivService>, TestClient.DiversityService.IDivService {
         
-        public DiversityServiceClient() {
+        public DivServiceClient() {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName) : 
+        public DivServiceClient(string endpointConfigurationName) : 
                 base(endpointConfigurationName) {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName, string remoteAddress) : 
+        public DivServiceClient(string endpointConfigurationName, string remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DiversityServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DivServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(endpointConfigurationName, remoteAddress) {
         }
         
-        public DiversityServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+        public DivServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
         

@@ -17,7 +17,7 @@ namespace WPTestClient.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/ConsoleApplication1")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/DiversityService")]
     public partial class CollectionEvent : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string CollectingMethodField;

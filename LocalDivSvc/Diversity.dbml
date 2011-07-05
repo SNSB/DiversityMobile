@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityCollection_BaseTest" Class="DiversityDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persist Security Info=True;User ID=Rollinger" SettingsObjectName="LinqToSQL.Properties.Settings" SettingsPropertyName="DiversityCollection_BaseTestConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persist Security Info=True;User ID=Rollinger" SettingsObjectName="DiversityService.Properties.Settings" SettingsPropertyName="DiversityCollection_BaseTestConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.CollectionEvent" Member="CollectionEvent">
     <Type Name="CollectionEvent">
       <Column Name="CollectionEventID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />

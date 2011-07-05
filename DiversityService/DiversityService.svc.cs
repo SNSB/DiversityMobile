@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
+using System.ServiceModel.Web;
 using System.Text;
 
-namespace ConsoleApplication1
+namespace DiversityService
 {
-    // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Klassennamen "DiversityService" sowohl im Code als auch in der Konfigurationsdatei ändern.
+    // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Klassennamen "Service1" sowohl im Code als auch in der SVC- und der Konfigurationsdatei ändern.
     public class DiversityService : IDiversityService
     {
-
+        
 
         public void AddEvent(CollectionEvent ev)
         {
@@ -21,8 +22,9 @@ namespace ConsoleApplication1
 
         public IEnumerable<CollectionEvent> GetEvents(int skip, int count)
         {
-            DiversityDataContext db = new DiversityDataContext();
-            return (from ev in db.CollectionEvent select ev).Skip(skip).Take(count);
+            
+                return Enumerable.Empty<CollectionEvent>();           
+           
         }
     }
 }

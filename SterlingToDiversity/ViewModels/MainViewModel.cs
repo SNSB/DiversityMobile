@@ -14,7 +14,6 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using SterlingDemo.Model;
 using System.Reactive.Linq;
 
 
