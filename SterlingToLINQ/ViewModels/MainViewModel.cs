@@ -44,7 +44,7 @@ namespace SterlingToLINQ
             private set;
         }
 
-        private string _InsertTitle = "Test";
+        public string _InsertTitle = "";
         
         public string InsertTitle 
         { 
@@ -72,7 +72,7 @@ namespace SterlingToLINQ
             }
         }
 
-        public ICommand Insert { get; protected set; }
+        public ReactiveCommand ExecuteInsert { get; protected set; }
 
         public ICommand LoadServiceData { get; protected set; }
 
@@ -92,10 +92,18 @@ namespace SterlingToLINQ
                 .Select(query => query.Value)
                 .DistinctUntilChanged()
                 .Where(query => !string.IsNullOrEmpty(query))               
-                .Subscribe(QueryDB.Execute);   
+                .Subscribe(QueryDB.Execute);
 
-            
-            
+            var insertTitleValid = this.ObservableForProperty(vm=>vm.InsertTitle)
+                .Value()
+                .Select(title => !string.IsNullOrWhiteSpace(title))
+                .StartWith(false);
+                
+
+
+            ExecuteInsert = new ReactiveCommand(insertTitleValid);
+
+            ExecuteInsert.Subscribe(_ => insertLine(InsertTitle));
 
             _FillItems = new ReactiveAsyncCommand();     
 
@@ -126,9 +134,9 @@ namespace SterlingToLINQ
             }
         }
 
-        private void insertLines(string title)
+        private void insertLine(string title)
         {
-            var ev = new CollectionEvent(){LocalityDescription = title, CollectionDate = DateTime.Now.Date};
+            var ev = new CollectionEvent(){LocalityDescription = title, CollectionDate = DateTime.Now.Date, RowGUID=Guid.NewGuid()};
             App.Repository.AddEventAsync(ev);
         }        
 

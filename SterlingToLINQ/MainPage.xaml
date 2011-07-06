@@ -24,8 +24,8 @@
 		<!--Triple line list no text wrapping-->
         		<StackPanel>
         			<TextBlock TextWrapping="Wrap" Text="Location Description"/>
-        			<TextBox TextWrapping="Wrap" Text="{Binding InsertTitle}"/>
-                    <Button Content="Insert" VerticalAlignment="Bottom" />
+        			<TextBox TextWrapping="Wrap" Text="{Binding InsertTitle, Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged"/>
+                    <Button Content="Insert" VerticalAlignment="Bottom" Command="{Binding ExecuteInsert}"/>
         		</StackPanel>
         	</controls:PivotItem>
         <!--Pivot item one-->
@@ -33,7 +33,7 @@
                 <!--Double line list with text wrapping-->
         		<StackPanel Margin="0,0,-12,0" Orientation="Vertical" d:LayoutOverrides="Height">                
             		<!--Double line list with text wrapping-->
-        			<TextBox Text="{Binding QueryString,Mode=TwoWay, UpdateSourceTrigger=Default}"/>
+        			<TextBox Text="{Binding QueryString,Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged"/>
     <!--Double line list with text wrapping-->
         			<ListBox x:Name="FirstListBox" ItemsSource="{Binding Items}">
         				<ListBox.ItemTemplate>

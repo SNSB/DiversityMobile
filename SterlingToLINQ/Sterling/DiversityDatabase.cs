@@ -27,7 +27,7 @@ namespace SterlingToLINQ.Sterling
 
         protected override List<ITableDefinition> RegisterTables()
         {
-            var ceTable = CreateTableDefinition<CollectionEvent, Guid>(ce => ce.RowGUID).WithIndex<CollectionEvent,string,Guid>(LOCATION_DESCRIPTION_UPPER,ce=>ce.LocalityDescription.ToUpper());
+            var ceTable = CreateTableDefinition<CollectionEvent, Guid>(ce => ce.RowGUID).WithIndex<CollectionEvent, string, Guid>(LOCATION_DESCRIPTION_UPPER, ce => (ce.LocalityDescription != null) ? ce.LocalityDescription.ToUpper() : "No Description".ToUpper());
             
 
             return new List<ITableDefinition>

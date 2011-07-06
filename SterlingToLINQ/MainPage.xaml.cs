@@ -55,5 +55,16 @@ namespace SterlingToLINQ
             App._DeactivateEngine();
             App._ActivateEngine();
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (sender is TextBox)
+            {
+                var tb = (sender as TextBox);
+                var binding = tb.GetBindingExpression(TextBox.TextProperty);
+                if (binding != null)
+                    binding.UpdateSource();
+            }
+        }
     }
 }

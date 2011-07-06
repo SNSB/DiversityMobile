@@ -15,19 +15,17 @@ namespace DiversityService
         public void AddEvent(CollectionEvent ev)
         {
             DiversityDataContext db = new DiversityDataContext();
+
             db.CollectionEvent.InsertOnSubmit(ev);
+            
             db.SubmitChanges();
         }
 
         public IEnumerable<CollectionEvent> GetEvents(int skip, int count)
         {
-            return new List<CollectionEvent>
-            {
-                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
-                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
-                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
-                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
-            };
+            var repo = new DiversityDataContext();
+
+            return repo.CollectionEvent.Skip(skip).Take(count).ToList();
         }
     }
 
