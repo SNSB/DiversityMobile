@@ -31,10 +31,12 @@
         <!--Pivot item one-->
         	<controls:PivotItem Header="query">                
                 <!--Double line list with text wrapping-->
+                <ScrollViewer >
         		<StackPanel Margin="0,0,-12,0" Orientation="Vertical" d:LayoutOverrides="Height">                
             		<!--Double line list with text wrapping-->
         			<TextBox Text="{Binding QueryString,Mode=TwoWay, UpdateSourceTrigger=Explicit}" TextChanged="TextBox_TextChanged"/>
     <!--Double line list with text wrapping-->
+                    
         			<ListBox x:Name="FirstListBox" ItemsSource="{Binding Items}">
         				<ListBox.ItemTemplate>
         					<DataTemplate>
@@ -45,8 +47,11 @@
         					</DataTemplate>
         				</ListBox.ItemTemplate>
         			</ListBox>
-        		</StackPanel>
-        	</controls:PivotItem>
+                    
+                </StackPanel>
+                </ScrollViewer>
+
+            </controls:PivotItem>
  
             <!--Pivot item two-->
         </controls:Pivot>

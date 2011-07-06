@@ -15,6 +15,7 @@ using Microsoft.Phone.Shell;
 using Wintellect.Sterling;
 using SterlingToLINQ.Sterling;
 using SterlingToLINQ.DiversityService;
+using Wintellect.Sterling.IsolatedStorage;
 
 namespace SterlingToLINQ
 {
@@ -104,7 +105,7 @@ namespace SterlingToLINQ
             _engine = new SterlingEngine();
             _logger = new SterlingDefaultLogger(SterlingLogLevel.Verbose);            
             _engine.Activate();
-            _database = _engine.SterlingDatabase.RegisterDatabase<DiversityDatabase>();
+            _database = _engine.SterlingDatabase.RegisterDatabase<DiversityDatabase>(new IsolatedStorageDriver());
             var count = _database.Query<Row, Guid>().Count();
 
             
