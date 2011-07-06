@@ -16,6 +16,8 @@ using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Linq;
 using SterlingToLINQ.DiversityService;
+using System.Linq;
+using SterlingToLINQ.Sterling;
 
 
 
@@ -23,11 +25,16 @@ namespace SterlingToLINQ
 {
     public class MainViewModel : ReactiveObject
     {
-        /// <summary>
-        /// A collection for ItemViewModel objects.
-        /// </summary>
-        public ReactiveCollection<ItemViewModel> Items { get; private set; }
-        private ObservableCollection<CollectionEvent> _items;
+        //Must be Public for ReactiveUI in SL :(
+        public ObservableAsPropertyHelper<IEnumerable<ItemViewModel>> _Items;
+        public IEnumerable<ItemViewModel> Items
+        {
+            get
+            { 
+                return _Items.Value; 
+            }
+        }
+        
 
         private ReactiveAsyncCommand _FillItems;
 
@@ -49,44 +56,73 @@ namespace SterlingToLINQ
             {
                 this.RaiseAndSetIfChanged(vm => vm.InsertTitle,value);
             }
-        }      
+        }
+
+        //Must be Public for ReactiveUI in SL :(
+        public string _QueryString = "";     
+        public string QueryString
+        {       
+            get
+            {
+                return _QueryString;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(vm => vm.QueryString,value);
+            }
+        }
 
         public ICommand Insert { get; protected set; }
 
         public ICommand LoadServiceData { get; protected set; }
 
+        public ReactiveAsyncCommand QueryDB { get; protected set; }
+
 
         public MainViewModel()
         {
-            this._items = new ObservableCollection<CollectionEvent>();
-            //Items = _items.CreateDerivedCollection<CollectionEvent, ItemViewModel>(model => new ItemViewModel(model));
+            QueryDB = new ReactiveAsyncCommand();
 
-            _FillItems = new ReactiveAsyncCommand();
+            _Items = QueryDB.RegisterAsyncFunction(query => queryDatabase((string) query))
+                .Select(ceList => ceList.Select(ce => new ItemViewModel(ce)))
+                .ToProperty(this,vm => vm.Items);
+
+            this.ObservableForProperty(vm => vm.QueryString)
+                .Throttle(TimeSpan.FromMilliseconds(800))
+                .Select(query => query.Value)
+                .DistinctUntilChanged()
+                .Where(query => !string.IsNullOrEmpty(query))               
+                .Subscribe(QueryDB.Execute);   
+
+            
             
 
-            var titleValid = this.ObservableForProperty(vm => vm.InsertTitle)
-                .Select(title => !string.IsNullOrEmpty(title.Value));                
+            _FillItems = new ReactiveAsyncCommand();     
 
-            var insert = new ReactiveCommand(titleValid);
-            insert.Subscribe(_ => insertLines(InsertTitle));
-            Insert = insert;
+                         
+
+            
 
             LoadServiceData = ReactiveCommand.Create(null, _ => App.Repository.GetEventsAsync(0, 100));
 
 
             var serviceResults = Observable.FromEventPattern<GetEventsCompletedEventArgs>(App.Repository,"GetEventsCompleted");
-            serviceResults.Subscribe(eventPattern => storeEvents(eventPattern.EventArgs.Result));
+            serviceResults.Subscribe(eventPattern => storeEvents(eventPattern.EventArgs.Result));            
         }
 
         private void storeEvents(IEnumerable<CollectionEvent> events)
         {
             if (events != null)
-            {
-                App.Database.Truncate(typeof(CollectionEvent));
+            {      
+                
                 foreach (var ev in events)
                 {
                     App.Database.Save(ev);
-                }
+                    var check = App.Database.Load<CollectionEvent>(ev.RowGUID);
+
+                    App.Database.Save(new Row());
+                }   
+                
             }
         }
 
@@ -94,20 +130,15 @@ namespace SterlingToLINQ
         {
             var ev = new CollectionEvent(){LocalityDescription = title, CollectionDate = DateTime.Now.Date};
             App.Repository.AddEventAsync(ev);
-        }
+        }        
 
-        /// <summary>
-        /// Creates and adds a few ItemViewModel objects into the Items collection.
-        /// </summary>
-        public void LoadData()
-        {   
-            foreach (var item in App.Database.Query<CollectionEvent, Guid>())
-            {
-                _items.Add(item.LazyValue.Value);
-            }            
+        private IEnumerable<CollectionEvent> queryDatabase(string searchString)
+        {
+            var upperSearch = searchString.ToUpper();
+            return from ce in App.Database.Query<CollectionEvent, string, Guid>(DiversityDatabase.LOCATION_DESCRIPTION_UPPER)
+                   where ce.Index.Contains(upperSearch)
+                   select ce.LazyValue.Value;
         }
-
-        
 
 
 

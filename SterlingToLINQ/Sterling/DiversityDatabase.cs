@@ -16,6 +16,7 @@ namespace SterlingToLINQ.Sterling
 {
     public class DiversityDatabase : BaseDatabaseInstance
     {
+        public const string LOCATION_DESCRIPTION_UPPER = "LocationDescription";
         public override string Name
         {
             get
@@ -26,12 +27,14 @@ namespace SterlingToLINQ.Sterling
 
         protected override List<ITableDefinition> RegisterTables()
         {
-            var ceTable = CreateTableDefinition<CollectionEvent, Guid>(ce => ce.RowGUID);
+            var ceTable = CreateTableDefinition<CollectionEvent, Guid>(ce => ce.RowGUID).WithIndex<CollectionEvent,string,Guid>(LOCATION_DESCRIPTION_UPPER,ce=>ce.LocalityDescription.ToUpper());
             
 
             return new List<ITableDefinition>
             {
-                ceTable    
+                ceTable,
+                CreateTableDefinition<Row,Guid>(x=>x.GUID),
+
             };
         }
     }

@@ -23,10 +23,10 @@ namespace DiversityService
         {
             return new List<CollectionEvent>
             {
-                new CollectionEvent(){LocalityDescription = "Location"},
-                new CollectionEvent(){LocalityDescription = "Location"},
-                new CollectionEvent(){LocalityDescription = "Location"},
-                new CollectionEvent(){LocalityDescription = "Location"},
+                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
+                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
+                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
+                new CollectionEvent(){LocalityDescription = "Location", RowGUID = Guid.NewGuid()},
             };
         }
     }

@@ -95,22 +95,26 @@ namespace SterlingToLINQ
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-        }
-
-        private void _ActivateEngine()
-        {
-            _engine = new SterlingEngine();
-            _logger = new SterlingDefaultLogger(SterlingLogLevel.Information);
-            _engine.Activate();
-            _database = _engine.SterlingDatabase.RegisterDatabase<DiversityDatabase>();
 
             Repository = new DivServiceClient();
+        }
+
+        public static void _ActivateEngine()
+        {
+            _engine = new SterlingEngine();
+            _logger = new SterlingDefaultLogger(SterlingLogLevel.Verbose);            
+            _engine.Activate();
+            _database = _engine.SterlingDatabase.RegisterDatabase<DiversityDatabase>();
+            var count = _database.Query<Row, Guid>().Count();
+
+            
             //_database.RegisterTrigger<ItemViewModel, int>(new WindowsPhoneSterling.Sterling.ISODatabase.ItemTrigger(maxIdx));
 
         }
 
-        private void _DeactivateEngine()
+        public static void _DeactivateEngine()
         {
+            _database.Flush();
             _logger.Detach();
             _engine.Dispose();
             _database = null;
@@ -133,10 +137,7 @@ namespace SterlingToLINQ
         {
             _ActivateEngine();
             // Ensure that application state is restored appropriately
-            if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
-            }
+            
         }
 
         // Code to execute when the application is deactivated (sent to background)

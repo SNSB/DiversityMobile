@@ -23,13 +23,13 @@ namespace SterlingToLINQ
         {
             get
             {
-                return string.IsNullOrEmpty(Model.LocalityDescription) ? "No Description" : Model.LocalityDescription;
+                return (Model != null) ?( string.IsNullOrEmpty(Model.LocalityDescription) ? "No Description" : Model.LocalityDescription) : "No Model";
             }
         }
 
         public int EventID
         {
-            get { return Model.CollectionEventID; }
+            get { return (Model != null)? Model.CollectionEventID : 0; }
         }
 
         public ItemViewModel(CollectionEvent model)

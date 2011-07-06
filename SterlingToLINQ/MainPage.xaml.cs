@@ -42,15 +42,18 @@ namespace SterlingToLINQ
         // Load data for the ViewModel Items
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!App.ViewModel.IsDataLoaded)
-            {
-                App.ViewModel.LoadData();
+            
             }
-        }
 
         private void ApplicationBarMenuItem_Click(object sender, EventArgs e)
         {
             (DataContext as MainViewModel).LoadServiceData.Execute(null);
+        }
+
+        private void ApplicationBarMenuItem_Click_1(object sender, EventArgs e)
+        {
+            App._DeactivateEngine();
+            App._ActivateEngine();
         }
     }
 }
