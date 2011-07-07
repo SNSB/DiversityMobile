@@ -20,13 +20,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://192.168.2.6:8732/DivService/mex" Protocol="mex" SourceId="1" />
+    <MetadataSource Address="http://localhost:8732/DivService/mex" Protocol="mex" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="ede147c6-cd6d-4626-88e3-43ed5b0ce2cd" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/mex" />
-    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="a3725d54-5d09-42dd-ad60-f76471275c3a" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/mex" />
-    <MetadataFile FileName="service1.xsd" MetadataType="Schema" ID="0d4c86d0-0cb1-4ba2-b8cc-7403214fe513" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/mex" />
-    <MetadataFile FileName="DiversityService.xsd" MetadataType="Schema" ID="30a9cbd0-b0c1-4036-9614-420e90b117b1" SourceId="1" SourceUrl="http://192.168.2.6:8732/DivService/mex" />
+    <MetadataFile FileName="service1.wsdl" MetadataType="Wsdl" ID="c40ffb86-cf9b-483b-9499-027d0eb0bf3c" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
+    <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="8280e7d5-2641-42f6-a349-fea39b697619" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
+    <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="f3dfb795-6d2a-49b4-aaf0-c997ef7af758" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
+    <MetadataFile FileName="DiversityService1.xsd" MetadataType="Schema" ID="8e575ab3-f38f-45ee-a6cc-f18642923406" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

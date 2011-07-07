@@ -127,14 +127,14 @@
     </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Service References\DiversityService\DiversityService.xsd">
+    <None Include="Service References\DiversityService\DiversityService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\service.wsdl" />
-    <None Include="Service References\DiversityService\service.xsd">
+    <None Include="Service References\DiversityService\service1.wsdl" />
+    <None Include="Service References\DiversityService\service2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\service1.xsd">
+    <None Include="Service References\DiversityService\service21.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\SterlingToLINQ.DiversityService.CollectionEvent.datasource">
