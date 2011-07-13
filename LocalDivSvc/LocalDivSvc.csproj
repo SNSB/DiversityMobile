@@ -64,7 +64,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Diversity.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Diversity.designer.cs</LastGenOutput>

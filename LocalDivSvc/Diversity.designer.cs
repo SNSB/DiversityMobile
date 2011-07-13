@@ -124,8 +124,6 @@ namespace DiversityService
 		
 		private string _LogCreatedBy;
 		
-		private System.Nullable<System.DateTime> _LogUpdatedWhen;
-		
 		private string _LogUpdatedBy;
 		
 		private bool _xx_IsAvailable;
@@ -184,8 +182,6 @@ namespace DiversityService
     partial void OnLogCreatedWhenChanged();
     partial void OnLogCreatedByChanging(string value);
     partial void OnLogCreatedByChanged();
-    partial void OnLogUpdatedWhenChanging(System.Nullable<System.DateTime> value);
-    partial void OnLogUpdatedWhenChanged();
     partial void OnLogUpdatedByChanging(string value);
     partial void OnLogUpdatedByChanged();
     partial void Onxx_IsAvailableChanging(bool value);
@@ -639,26 +635,6 @@ namespace DiversityService
 					this._LogCreatedBy = value;
 					this.SendPropertyChanged("LogCreatedBy");
 					this.OnLogCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogUpdatedWhen", DbType="DateTime")]
-		public System.Nullable<System.DateTime> LogUpdatedWhen
-		{
-			get
-			{
-				return this._LogUpdatedWhen;
-			}
-			set
-			{
-				if ((this._LogUpdatedWhen != value))
-				{
-					this.OnLogUpdatedWhenChanging(value);
-					this.SendPropertyChanging();
-					this._LogUpdatedWhen = value;
-					this.SendPropertyChanged("LogUpdatedWhen");
-					this.OnLogUpdatedWhenChanged();
 				}
 			}
 		}
