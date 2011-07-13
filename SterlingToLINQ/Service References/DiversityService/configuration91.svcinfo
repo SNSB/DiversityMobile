@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="T54HksOetlQiR6Y1Qj8611i6fDk=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="M4eYG37xdL02NEOsDWZnxVGFUIU=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IDivService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IDivService" contract="DiversityService.IDivService" bindingType="basicHttpBinding" address="http://192.168.2.6:8732/DivService/" bindingConfiguration="BasicHttpBinding_IDivService">
+    <endpoint name="BasicHttpBinding_IDivService" contract="DiversityService.IDivService" bindingType="basicHttpBinding" address="http://localhost:8732/DivService/" bindingConfiguration="BasicHttpBinding_IDivService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://192.168.2.6:8732/DivService/</serializedValue>
+          <serializedValue>http://localhost:8732/DivService/</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

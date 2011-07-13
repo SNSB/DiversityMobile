@@ -27,10 +27,21 @@ namespace DiversityService.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persi" +
-            "st Security Info=True;User ID=Rollinger")]
+            "st Security Info=True;User ID=Rollinger;Password=Rolli#2-AI4@UBT")]
         public string DiversityCollection_BaseTestConnectionString {
             get {
                 return ((string)(this["DiversityCollection_BaseTestConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persi" +
+            "st Security Info=True;User ID=Rollinger")]
+        public string DiversityCollection_BaseTestConnectionString1 {
+            get {
+                return ((string)(this["DiversityCollection_BaseTestConnectionString1"]));
             }
         }
     }

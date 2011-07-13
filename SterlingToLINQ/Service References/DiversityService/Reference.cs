@@ -20,126 +20,63 @@ namespace SterlingToLINQ.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEvent", Namespace="http://schemas.datacontract.org/2004/07/DiversityService")]
     public partial class CollectionEvent : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private string CollectingMethodField;
+        private int CollectionEventIDField;
+        
+        private int VersionField;
+        
+        private System.Nullable<int> SeriesIDField;
+        
+        private string CollectorsEventNumberField;
         
         private System.Nullable<System.DateTime> CollectionDateField;
         
-        private string CollectionDateCategoryField;
+        private System.Nullable<byte> CollectionDayField;
+        
+        private System.Nullable<byte> CollectionMonthField;
+        
+        private System.Nullable<short> CollectionYearField;
         
         private string CollectionDateSupplementField;
         
-        private System.Nullable<byte> CollectionDayField;
-        
-        private int CollectionEventIDField;
-        
-        private System.Nullable<byte> CollectionMonthField;
+        private string CollectionDateCategoryField;
         
         private string CollectionTimeField;
         
         private string CollectionTimeSpanField;
         
-        private System.Nullable<short> CollectionYearField;
-        
-        private string CollectorsEventNumberField;
-        
-        private string CountryCacheField;
-        
-        private string DataWithholdingReasonField;
-        
-        private string HabitatDescriptionField;
-        
         private string LocalityDescriptionField;
         
-        private string LogCreatedByField;
-        
-        private System.Nullable<System.DateTime> LogCreatedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string NotesField;
-        
-        private string ReferenceDetailsField;
+        private string HabitatDescriptionField;
         
         private string ReferenceTitleField;
         
         private string ReferenceURIField;
         
-        private System.Guid RowGUIDField;
+        private string CollectingMethodField;
         
-        private System.Nullable<int> SeriesIDField;
+        private string NotesField;
         
-        private int VersionField;
+        private string CountryCacheField;
         
-        private System.Nullable<int> xx_ExpeditionIDField;
+        private string DataWithholdingReasonField;
+        
+        private System.Nullable<System.DateTime> LogCreatedWhenField;
+        
+        private string LogCreatedByField;
+        
+        private System.Nullable<System.DateTime> LogUpdatedWhenField;
+        
+        private string LogUpdatedByField;
         
         private bool xx_IsAvailableField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectingMethod {
-            get {
-                return this.CollectingMethodField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectingMethodField, value) != true)) {
-                    this.CollectingMethodField = value;
-                    this.RaisePropertyChanged("CollectingMethod");
-                }
-            }
-        }
+        private System.Nullable<int> xx_ExpeditionIDField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> CollectionDate {
-            get {
-                return this.CollectionDateField;
-            }
-            set {
-                if ((this.CollectionDateField.Equals(value) != true)) {
-                    this.CollectionDateField = value;
-                    this.RaisePropertyChanged("CollectionDate");
-                }
-            }
-        }
+        private System.Guid RowGUIDField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectionDateCategory {
-            get {
-                return this.CollectionDateCategoryField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionDateCategoryField, value) != true)) {
-                    this.CollectionDateCategoryField = value;
-                    this.RaisePropertyChanged("CollectionDateCategory");
-                }
-            }
-        }
+        private string ReferenceDetailsField;
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectionDateSupplement {
-            get {
-                return this.CollectionDateSupplementField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionDateSupplementField, value) != true)) {
-                    this.CollectionDateSupplementField = value;
-                    this.RaisePropertyChanged("CollectionDateSupplement");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<byte> CollectionDay {
-            get {
-                return this.CollectionDayField;
-            }
-            set {
-                if ((this.CollectionDayField.Equals(value) != true)) {
-                    this.CollectionDayField = value;
-                    this.RaisePropertyChanged("CollectionDay");
-                }
-            }
-        }
+        private System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionSpecimen> CollectionSpecimenField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public int CollectionEventID {
@@ -150,253 +87,6 @@ namespace SterlingToLINQ.DiversityService {
                 if ((this.CollectionEventIDField.Equals(value) != true)) {
                     this.CollectionEventIDField = value;
                     this.RaisePropertyChanged("CollectionEventID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<byte> CollectionMonth {
-            get {
-                return this.CollectionMonthField;
-            }
-            set {
-                if ((this.CollectionMonthField.Equals(value) != true)) {
-                    this.CollectionMonthField = value;
-                    this.RaisePropertyChanged("CollectionMonth");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectionTime {
-            get {
-                return this.CollectionTimeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionTimeField, value) != true)) {
-                    this.CollectionTimeField = value;
-                    this.RaisePropertyChanged("CollectionTime");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectionTimeSpan {
-            get {
-                return this.CollectionTimeSpanField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionTimeSpanField, value) != true)) {
-                    this.CollectionTimeSpanField = value;
-                    this.RaisePropertyChanged("CollectionTimeSpan");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> CollectionYear {
-            get {
-                return this.CollectionYearField;
-            }
-            set {
-                if ((this.CollectionYearField.Equals(value) != true)) {
-                    this.CollectionYearField = value;
-                    this.RaisePropertyChanged("CollectionYear");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CollectorsEventNumber {
-            get {
-                return this.CollectorsEventNumberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectorsEventNumberField, value) != true)) {
-                    this.CollectorsEventNumberField = value;
-                    this.RaisePropertyChanged("CollectorsEventNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string CountryCache {
-            get {
-                return this.CountryCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CountryCacheField, value) != true)) {
-                    this.CountryCacheField = value;
-                    this.RaisePropertyChanged("CountryCache");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DataWithholdingReason {
-            get {
-                return this.DataWithholdingReasonField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DataWithholdingReasonField, value) != true)) {
-                    this.DataWithholdingReasonField = value;
-                    this.RaisePropertyChanged("DataWithholdingReason");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string HabitatDescription {
-            get {
-                return this.HabitatDescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HabitatDescriptionField, value) != true)) {
-                    this.HabitatDescriptionField = value;
-                    this.RaisePropertyChanged("HabitatDescription");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LocalityDescription {
-            get {
-                return this.LocalityDescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LocalityDescriptionField, value) != true)) {
-                    this.LocalityDescriptionField = value;
-                    this.RaisePropertyChanged("LocalityDescription");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogCreatedBy {
-            get {
-                return this.LogCreatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
-                    this.LogCreatedByField = value;
-                    this.RaisePropertyChanged("LogCreatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogCreatedWhen {
-            get {
-                return this.LogCreatedWhenField;
-            }
-            set {
-                if ((this.LogCreatedWhenField.Equals(value) != true)) {
-                    this.LogCreatedWhenField = value;
-                    this.RaisePropertyChanged("LogCreatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ReferenceDetails {
-            get {
-                return this.ReferenceDetailsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ReferenceDetailsField, value) != true)) {
-                    this.ReferenceDetailsField = value;
-                    this.RaisePropertyChanged("ReferenceDetails");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ReferenceTitle {
-            get {
-                return this.ReferenceTitleField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ReferenceTitleField, value) != true)) {
-                    this.ReferenceTitleField = value;
-                    this.RaisePropertyChanged("ReferenceTitle");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ReferenceURI {
-            get {
-                return this.ReferenceURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ReferenceURIField, value) != true)) {
-                    this.ReferenceURIField = value;
-                    this.RaisePropertyChanged("ReferenceURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> SeriesID {
-            get {
-                return this.SeriesIDField;
-            }
-            set {
-                if ((this.SeriesIDField.Equals(value) != true)) {
-                    this.SeriesIDField = value;
-                    this.RaisePropertyChanged("SeriesID");
                 }
             }
         }
@@ -414,7 +104,306 @@ namespace SterlingToLINQ.DiversityService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public System.Nullable<int> SeriesID {
+            get {
+                return this.SeriesIDField;
+            }
+            set {
+                if ((this.SeriesIDField.Equals(value) != true)) {
+                    this.SeriesIDField = value;
+                    this.RaisePropertyChanged("SeriesID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public string CollectorsEventNumber {
+            get {
+                return this.CollectorsEventNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectorsEventNumberField, value) != true)) {
+                    this.CollectorsEventNumberField = value;
+                    this.RaisePropertyChanged("CollectorsEventNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public System.Nullable<System.DateTime> CollectionDate {
+            get {
+                return this.CollectionDateField;
+            }
+            set {
+                if ((this.CollectionDateField.Equals(value) != true)) {
+                    this.CollectionDateField = value;
+                    this.RaisePropertyChanged("CollectionDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public System.Nullable<byte> CollectionDay {
+            get {
+                return this.CollectionDayField;
+            }
+            set {
+                if ((this.CollectionDayField.Equals(value) != true)) {
+                    this.CollectionDayField = value;
+                    this.RaisePropertyChanged("CollectionDay");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+        public System.Nullable<byte> CollectionMonth {
+            get {
+                return this.CollectionMonthField;
+            }
+            set {
+                if ((this.CollectionMonthField.Equals(value) != true)) {
+                    this.CollectionMonthField = value;
+                    this.RaisePropertyChanged("CollectionMonth");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+        public System.Nullable<short> CollectionYear {
+            get {
+                return this.CollectionYearField;
+            }
+            set {
+                if ((this.CollectionYearField.Equals(value) != true)) {
+                    this.CollectionYearField = value;
+                    this.RaisePropertyChanged("CollectionYear");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+        public string CollectionDateSupplement {
+            get {
+                return this.CollectionDateSupplementField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionDateSupplementField, value) != true)) {
+                    this.CollectionDateSupplementField = value;
+                    this.RaisePropertyChanged("CollectionDateSupplement");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+        public string CollectionDateCategory {
+            get {
+                return this.CollectionDateCategoryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionDateCategoryField, value) != true)) {
+                    this.CollectionDateCategoryField = value;
+                    this.RaisePropertyChanged("CollectionDateCategory");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+        public string CollectionTime {
+            get {
+                return this.CollectionTimeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionTimeField, value) != true)) {
+                    this.CollectionTimeField = value;
+                    this.RaisePropertyChanged("CollectionTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+        public string CollectionTimeSpan {
+            get {
+                return this.CollectionTimeSpanField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionTimeSpanField, value) != true)) {
+                    this.CollectionTimeSpanField = value;
+                    this.RaisePropertyChanged("CollectionTimeSpan");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=12)]
+        public string LocalityDescription {
+            get {
+                return this.LocalityDescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LocalityDescriptionField, value) != true)) {
+                    this.LocalityDescriptionField = value;
+                    this.RaisePropertyChanged("LocalityDescription");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=13)]
+        public string HabitatDescription {
+            get {
+                return this.HabitatDescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HabitatDescriptionField, value) != true)) {
+                    this.HabitatDescriptionField = value;
+                    this.RaisePropertyChanged("HabitatDescription");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=14)]
+        public string ReferenceTitle {
+            get {
+                return this.ReferenceTitleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceTitleField, value) != true)) {
+                    this.ReferenceTitleField = value;
+                    this.RaisePropertyChanged("ReferenceTitle");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=15)]
+        public string ReferenceURI {
+            get {
+                return this.ReferenceURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceURIField, value) != true)) {
+                    this.ReferenceURIField = value;
+                    this.RaisePropertyChanged("ReferenceURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=16)]
+        public string CollectingMethod {
+            get {
+                return this.CollectingMethodField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectingMethodField, value) != true)) {
+                    this.CollectingMethodField = value;
+                    this.RaisePropertyChanged("CollectingMethod");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=17)]
+        public string Notes {
+            get {
+                return this.NotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=18)]
+        public string CountryCache {
+            get {
+                return this.CountryCacheField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CountryCacheField, value) != true)) {
+                    this.CountryCacheField = value;
+                    this.RaisePropertyChanged("CountryCache");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=19)]
+        public string DataWithholdingReason {
+            get {
+                return this.DataWithholdingReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataWithholdingReasonField, value) != true)) {
+                    this.DataWithholdingReasonField = value;
+                    this.RaisePropertyChanged("DataWithholdingReason");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=20)]
+        public System.Nullable<System.DateTime> LogCreatedWhen {
+            get {
+                return this.LogCreatedWhenField;
+            }
+            set {
+                if ((this.LogCreatedWhenField.Equals(value) != true)) {
+                    this.LogCreatedWhenField = value;
+                    this.RaisePropertyChanged("LogCreatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=21)]
+        public string LogCreatedBy {
+            get {
+                return this.LogCreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
+                    this.LogCreatedByField = value;
+                    this.RaisePropertyChanged("LogCreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=22)]
+        public System.Nullable<System.DateTime> LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=23)]
+        public string LogUpdatedBy {
+            get {
+                return this.LogUpdatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
+                    this.LogUpdatedByField = value;
+                    this.RaisePropertyChanged("LogUpdatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=24)]
+        public bool xx_IsAvailable {
+            get {
+                return this.xx_IsAvailableField;
+            }
+            set {
+                if ((this.xx_IsAvailableField.Equals(value) != true)) {
+                    this.xx_IsAvailableField = value;
+                    this.RaisePropertyChanged("xx_IsAvailable");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=25)]
         public System.Nullable<int> xx_ExpeditionID {
             get {
                 return this.xx_ExpeditionIDField;
@@ -427,7 +416,523 @@ namespace SterlingToLINQ.DiversityService {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute(Order=26)]
+        public System.Guid RowGUID {
+            get {
+                return this.RowGUIDField;
+            }
+            set {
+                if ((this.RowGUIDField.Equals(value) != true)) {
+                    this.RowGUIDField = value;
+                    this.RaisePropertyChanged("RowGUID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=27)]
+        public string ReferenceDetails {
+            get {
+                return this.ReferenceDetailsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceDetailsField, value) != true)) {
+                    this.ReferenceDetailsField = value;
+                    this.RaisePropertyChanged("ReferenceDetails");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=28)]
+        public System.Collections.ObjectModel.ObservableCollection<SterlingToLINQ.DiversityService.CollectionSpecimen> CollectionSpecimen {
+            get {
+                return this.CollectionSpecimenField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionSpecimenField, value) != true)) {
+                    this.CollectionSpecimenField = value;
+                    this.RaisePropertyChanged("CollectionSpecimen");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionSpecimen", Namespace="http://schemas.datacontract.org/2004/07/DiversityService")]
+    public partial class CollectionSpecimen : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int CollectionSpecimenIDField;
+        
+        private int VersionField;
+        
+        private System.Nullable<int> CollectionEventIDField;
+        
+        private System.Nullable<int> CollectionIDField;
+        
+        private string AccessionNumberField;
+        
+        private System.Nullable<System.DateTime> AccessionDateField;
+        
+        private System.Nullable<byte> AccessionDayField;
+        
+        private System.Nullable<byte> AccessionMonthField;
+        
+        private System.Nullable<short> AccessionYearField;
+        
+        private string AccessionDateSupplementField;
+        
+        private string AccessionDateCategoryField;
+        
+        private string DepositorsNameField;
+        
+        private string DepositorsAgentURIField;
+        
+        private string DepositorsAccessionNumberField;
+        
+        private string LabelTitleField;
+        
+        private string LabelTypeField;
+        
+        private string LabelTranscriptionStateField;
+        
+        private string LabelTranscriptionNotesField;
+        
+        private string ExsiccataURIField;
+        
+        private string ExsiccataAbbreviationField;
+        
+        private string OriginalNotesField;
+        
+        private string AdditionalNotesField;
+        
+        private string ReferenceTitleField;
+        
+        private string ReferenceURIField;
+        
+        private string ProblemsField;
+        
+        private string DataWithholdingReasonField;
+        
+        private System.Nullable<System.DateTime> LogCreatedWhenField;
+        
+        private string LogCreatedByField;
+        
+        private System.Nullable<System.DateTime> LogUpdatedWhenField;
+        
+        private string LogUpdatedByField;
+        
+        private bool xx_IsAvailableField;
+        
+        private string InternalNotesField;
+        
+        private System.Nullable<int> ExternalDatasourceIDField;
+        
+        private string ExternalIdentifierField;
+        
+        private System.Guid RowGUIDField;
+        
+        private string ReferenceDetailsField;
+        
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CollectionSpecimenID {
+            get {
+                return this.CollectionSpecimenIDField;
+            }
+            set {
+                if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
+                    this.CollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Version {
+            get {
+                return this.VersionField;
+            }
+            set {
+                if ((this.VersionField.Equals(value) != true)) {
+                    this.VersionField = value;
+                    this.RaisePropertyChanged("Version");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public System.Nullable<int> CollectionEventID {
+            get {
+                return this.CollectionEventIDField;
+            }
+            set {
+                if ((this.CollectionEventIDField.Equals(value) != true)) {
+                    this.CollectionEventIDField = value;
+                    this.RaisePropertyChanged("CollectionEventID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public System.Nullable<int> CollectionID {
+            get {
+                return this.CollectionIDField;
+            }
+            set {
+                if ((this.CollectionIDField.Equals(value) != true)) {
+                    this.CollectionIDField = value;
+                    this.RaisePropertyChanged("CollectionID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+        public string AccessionNumber {
+            get {
+                return this.AccessionNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AccessionNumberField, value) != true)) {
+                    this.AccessionNumberField = value;
+                    this.RaisePropertyChanged("AccessionNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+        public System.Nullable<System.DateTime> AccessionDate {
+            get {
+                return this.AccessionDateField;
+            }
+            set {
+                if ((this.AccessionDateField.Equals(value) != true)) {
+                    this.AccessionDateField = value;
+                    this.RaisePropertyChanged("AccessionDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+        public System.Nullable<byte> AccessionDay {
+            get {
+                return this.AccessionDayField;
+            }
+            set {
+                if ((this.AccessionDayField.Equals(value) != true)) {
+                    this.AccessionDayField = value;
+                    this.RaisePropertyChanged("AccessionDay");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+        public System.Nullable<byte> AccessionMonth {
+            get {
+                return this.AccessionMonthField;
+            }
+            set {
+                if ((this.AccessionMonthField.Equals(value) != true)) {
+                    this.AccessionMonthField = value;
+                    this.RaisePropertyChanged("AccessionMonth");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+        public System.Nullable<short> AccessionYear {
+            get {
+                return this.AccessionYearField;
+            }
+            set {
+                if ((this.AccessionYearField.Equals(value) != true)) {
+                    this.AccessionYearField = value;
+                    this.RaisePropertyChanged("AccessionYear");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+        public string AccessionDateSupplement {
+            get {
+                return this.AccessionDateSupplementField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AccessionDateSupplementField, value) != true)) {
+                    this.AccessionDateSupplementField = value;
+                    this.RaisePropertyChanged("AccessionDateSupplement");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+        public string AccessionDateCategory {
+            get {
+                return this.AccessionDateCategoryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AccessionDateCategoryField, value) != true)) {
+                    this.AccessionDateCategoryField = value;
+                    this.RaisePropertyChanged("AccessionDateCategory");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+        public string DepositorsName {
+            get {
+                return this.DepositorsNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DepositorsNameField, value) != true)) {
+                    this.DepositorsNameField = value;
+                    this.RaisePropertyChanged("DepositorsName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=12)]
+        public string DepositorsAgentURI {
+            get {
+                return this.DepositorsAgentURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DepositorsAgentURIField, value) != true)) {
+                    this.DepositorsAgentURIField = value;
+                    this.RaisePropertyChanged("DepositorsAgentURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=13)]
+        public string DepositorsAccessionNumber {
+            get {
+                return this.DepositorsAccessionNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DepositorsAccessionNumberField, value) != true)) {
+                    this.DepositorsAccessionNumberField = value;
+                    this.RaisePropertyChanged("DepositorsAccessionNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=14)]
+        public string LabelTitle {
+            get {
+                return this.LabelTitleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LabelTitleField, value) != true)) {
+                    this.LabelTitleField = value;
+                    this.RaisePropertyChanged("LabelTitle");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=15)]
+        public string LabelType {
+            get {
+                return this.LabelTypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LabelTypeField, value) != true)) {
+                    this.LabelTypeField = value;
+                    this.RaisePropertyChanged("LabelType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=16)]
+        public string LabelTranscriptionState {
+            get {
+                return this.LabelTranscriptionStateField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LabelTranscriptionStateField, value) != true)) {
+                    this.LabelTranscriptionStateField = value;
+                    this.RaisePropertyChanged("LabelTranscriptionState");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=17)]
+        public string LabelTranscriptionNotes {
+            get {
+                return this.LabelTranscriptionNotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LabelTranscriptionNotesField, value) != true)) {
+                    this.LabelTranscriptionNotesField = value;
+                    this.RaisePropertyChanged("LabelTranscriptionNotes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=18)]
+        public string ExsiccataURI {
+            get {
+                return this.ExsiccataURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExsiccataURIField, value) != true)) {
+                    this.ExsiccataURIField = value;
+                    this.RaisePropertyChanged("ExsiccataURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=19)]
+        public string ExsiccataAbbreviation {
+            get {
+                return this.ExsiccataAbbreviationField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExsiccataAbbreviationField, value) != true)) {
+                    this.ExsiccataAbbreviationField = value;
+                    this.RaisePropertyChanged("ExsiccataAbbreviation");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=20)]
+        public string OriginalNotes {
+            get {
+                return this.OriginalNotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OriginalNotesField, value) != true)) {
+                    this.OriginalNotesField = value;
+                    this.RaisePropertyChanged("OriginalNotes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=21)]
+        public string AdditionalNotes {
+            get {
+                return this.AdditionalNotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AdditionalNotesField, value) != true)) {
+                    this.AdditionalNotesField = value;
+                    this.RaisePropertyChanged("AdditionalNotes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=22)]
+        public string ReferenceTitle {
+            get {
+                return this.ReferenceTitleField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceTitleField, value) != true)) {
+                    this.ReferenceTitleField = value;
+                    this.RaisePropertyChanged("ReferenceTitle");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=23)]
+        public string ReferenceURI {
+            get {
+                return this.ReferenceURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceURIField, value) != true)) {
+                    this.ReferenceURIField = value;
+                    this.RaisePropertyChanged("ReferenceURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=24)]
+        public string Problems {
+            get {
+                return this.ProblemsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProblemsField, value) != true)) {
+                    this.ProblemsField = value;
+                    this.RaisePropertyChanged("Problems");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=25)]
+        public string DataWithholdingReason {
+            get {
+                return this.DataWithholdingReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataWithholdingReasonField, value) != true)) {
+                    this.DataWithholdingReasonField = value;
+                    this.RaisePropertyChanged("DataWithholdingReason");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=26)]
+        public System.Nullable<System.DateTime> LogCreatedWhen {
+            get {
+                return this.LogCreatedWhenField;
+            }
+            set {
+                if ((this.LogCreatedWhenField.Equals(value) != true)) {
+                    this.LogCreatedWhenField = value;
+                    this.RaisePropertyChanged("LogCreatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=27)]
+        public string LogCreatedBy {
+            get {
+                return this.LogCreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
+                    this.LogCreatedByField = value;
+                    this.RaisePropertyChanged("LogCreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=28)]
+        public System.Nullable<System.DateTime> LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=29)]
+        public string LogUpdatedBy {
+            get {
+                return this.LogUpdatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
+                    this.LogUpdatedByField = value;
+                    this.RaisePropertyChanged("LogUpdatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=30)]
         public bool xx_IsAvailable {
             get {
                 return this.xx_IsAvailableField;
@@ -436,6 +941,71 @@ namespace SterlingToLINQ.DiversityService {
                 if ((this.xx_IsAvailableField.Equals(value) != true)) {
                     this.xx_IsAvailableField = value;
                     this.RaisePropertyChanged("xx_IsAvailable");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=31)]
+        public string InternalNotes {
+            get {
+                return this.InternalNotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
+                    this.InternalNotesField = value;
+                    this.RaisePropertyChanged("InternalNotes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=32)]
+        public System.Nullable<int> ExternalDatasourceID {
+            get {
+                return this.ExternalDatasourceIDField;
+            }
+            set {
+                if ((this.ExternalDatasourceIDField.Equals(value) != true)) {
+                    this.ExternalDatasourceIDField = value;
+                    this.RaisePropertyChanged("ExternalDatasourceID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=33)]
+        public string ExternalIdentifier {
+            get {
+                return this.ExternalIdentifierField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExternalIdentifierField, value) != true)) {
+                    this.ExternalIdentifierField = value;
+                    this.RaisePropertyChanged("ExternalIdentifier");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=34)]
+        public System.Guid RowGUID {
+            get {
+                return this.RowGUIDField;
+            }
+            set {
+                if ((this.RowGUIDField.Equals(value) != true)) {
+                    this.RowGUIDField = value;
+                    this.RaisePropertyChanged("RowGUID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=35)]
+        public string ReferenceDetails {
+            get {
+                return this.ReferenceDetailsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ReferenceDetailsField, value) != true)) {
+                    this.ReferenceDetailsField = value;
+                    this.RaisePropertyChanged("ReferenceDetails");
                 }
             }
         }

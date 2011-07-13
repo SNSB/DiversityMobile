@@ -9,35 +9,89 @@
   <xs:element name="ArrayOfCollectionEvent" nillable="true" type="tns:ArrayOfCollectionEvent" />
   <xs:complexType name="CollectionEvent">
     <xs:sequence>
-      <xs:element minOccurs="0" name="CollectingMethod" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="CollectionDateCategory" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="CollectionDateSupplement" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="CollectionDay" nillable="true" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+      <xs:element minOccurs="0" name="Version" type="xs:int" />
+      <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectorsEventNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CollectionDay" nillable="true" type="xs:unsignedByte" />
       <xs:element minOccurs="0" name="CollectionMonth" nillable="true" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="CollectionYear" nillable="true" type="xs:short" />
+      <xs:element minOccurs="0" name="CollectionDateSupplement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionDateCategory" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CollectionTime" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CollectionTimeSpan" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="CollectionYear" nillable="true" type="xs:short" />
-      <xs:element minOccurs="0" name="CollectorsEventNumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="CountryCache" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-      <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="Version" type="xs:int" />
-      <xs:element minOccurs="0" name="xx_ExpeditionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectingMethod" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CountryCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="xx_ExpeditionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionSpecimen" nillable="true" type="tns:ArrayOfCollectionSpecimen">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
   <xs:element name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
+  <xs:complexType name="ArrayOfCollectionSpecimen">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionSpecimen" nillable="true" type="tns:CollectionSpecimen" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCollectionSpecimen" nillable="true" type="tns:ArrayOfCollectionSpecimen" />
+  <xs:complexType name="CollectionSpecimen">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
+      <xs:element minOccurs="0" name="Version" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionEventID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="AccessionNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccessionDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="AccessionDay" nillable="true" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="AccessionMonth" nillable="true" type="xs:unsignedByte" />
+      <xs:element minOccurs="0" name="AccessionYear" nillable="true" type="xs:short" />
+      <xs:element minOccurs="0" name="AccessionDateSupplement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccessionDateCategory" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DepositorsName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DepositorsAgentURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DepositorsAccessionNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LabelTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LabelType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LabelTranscriptionState" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LabelTranscriptionNotes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExsiccataURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExsiccataAbbreviation" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OriginalNotes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AdditionalNotes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Problems" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExternalDatasourceID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ExternalIdentifier" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CollectionSpecimen" nillable="true" type="tns:CollectionSpecimen" />
 </xs:schema>

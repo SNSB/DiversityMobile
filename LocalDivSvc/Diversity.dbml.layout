@@ -1,12 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 10.125" name="Diversity">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 11.125" name="Diversity">
   <DataContextMoniker Name="/DiversityDataContext" />
   <nestedChildShapes>
-    <classShape Id="34207365-b6b9-40fc-9550-64114783b4b4" absoluteBounds="4.875, 3.625, 2, 6.1938297526041657">
+    <classShape Id="8b2f398f-d99f-4aee-b2a2-efe2aafce9e7" absoluteBounds="2.375, 3.375, 2, 6.1938297526041657">
       <DataClassMoniker Name="/DiversityDataContext/CollectionEvent" />
       <nestedChildShapes>
-        <elementListCompartment Id="e9a9e545-3de6-45c1-b8bb-8f9d297d1f80" absoluteBounds="4.89, 4.085, 1.9700000000000002, 5.6338297526041661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="6a54b660-4f55-48d4-8e7c-a7b1d30d5acc" absoluteBounds="2.39, 3.835, 1.9700000000000002, 5.6338297526041661" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="1f6690a3-cfbf-4de2-88f4-f1dd530c8354" absoluteBounds="6.875, 3.125, 2, 7.7322412109375005">
+      <DataClassMoniker Name="/DiversityDataContext/CollectionSpecimen" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2d9e9b2a-2937-4e1b-93dc-fd01d3ef71b6" absoluteBounds="6.89, 3.585, 1.9700000000000002, 7.1722412109375" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(4.375 : 6.47191487630208); (6.875 : 6.47191487630208)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DiversityDataContext/CollectionEvent/CollectionEvent_CollectionSpecimen" />
+      <nodes>
+        <classShapeMoniker Id="8b2f398f-d99f-4aee-b2a2-efe2aafce9e7" />
+        <classShapeMoniker Id="1f6690a3-cfbf-4de2-88f4-f1dd530c8354" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityCollection_BaseTest" Class="DiversityDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityCollection_BaseTest" Class="DiversityDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persist Security Info=True;User ID=Rollinger" SettingsObjectName="DiversityService.Properties.Settings" SettingsPropertyName="DiversityCollection_BaseTestConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.CollectionEvent" Member="CollectionEvent">
     <Type Name="CollectionEvent">
@@ -30,6 +30,48 @@
       <Column Name="xx_ExpeditionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="ReferenceDetails" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="CollectionEvent_CollectionSpecimen" Member="CollectionSpecimen" ThisKey="CollectionEventID" OtherKey="CollectionEventID" Type="CollectionSpecimen" />
+    </Type>
+  </Table>
+  <Table Name="dbo.CollectionSpecimen" Member="CollectionSpecimen">
+    <Type Name="CollectionSpecimen">
+      <Column Name="CollectionSpecimenID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Version" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CollectionEventID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CollectionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AccessionNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="AccessionDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="AccessionDay" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="AccessionMonth" Type="System.Byte" DbType="TinyInt" CanBeNull="true" />
+      <Column Name="AccessionYear" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="AccessionDateSupplement" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="AccessionDateCategory" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DepositorsName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="DepositorsAgentURI" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="DepositorsAccessionNumber" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LabelTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="LabelType" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LabelTranscriptionState" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LabelTranscriptionNotes" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ExsiccataURI" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="ExsiccataAbbreviation" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="OriginalNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="AdditionalNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ReferenceTitle" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="ReferenceURI" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="Problems" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="DataWithholdingReason" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="LogCreatedWhen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LogCreatedBy" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="LogUpdatedWhen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="LogUpdatedBy" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="xx_IsAvailable" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="InternalNotes" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="ExternalDatasourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ExternalIdentifier" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
+      <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ReferenceDetails" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="CollectionEvent_CollectionSpecimen" Member="CollectionEvent" ThisKey="CollectionEventID" OtherKey="CollectionEventID" Type="CollectionEvent" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

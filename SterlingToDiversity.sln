@@ -1,21 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinqToSQL", "LinqToSQL\LinqToSQL.csproj", "{F372AF7B-9847-489C-921F-84E41379B008}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SterlingToLINQ", "SterlingToLINQ\SterlingToLINQ.csproj", "{78F27F6E-AFC9-4F41-BB3A-C501516E136B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D9B36479-7410-431A-B713-357826F054AE} = {D9B36479-7410-431A-B713-357826F054AE}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService", "DiversityService\DiversityService.csproj", "{D9B36479-7410-431A-B713-357826F054AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestClient", "TestClient\TestClient.csproj", "{606452E0-4674-4FE0-AA45-01AC1D8FBA89}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPTestClient", "WPTestClient\WPTestClient.csproj", "{5B746B59-B954-41EF-81B0-79BCF89F51F1}"
-	ProjectSection(ProjectDependencies) = postProject
-		{D9B36479-7410-431A-B713-357826F054AE} = {D9B36479-7410-431A-B713-357826F054AE}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,15 +17,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F372AF7B-9847-489C-921F-84E41379B008}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Debug|x86.ActiveCfg = Debug|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Debug|x86.Build.0 = Debug|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Release|Any CPU.ActiveCfg = Release|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Release|Mixed Platforms.Build.0 = Release|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Release|x86.ActiveCfg = Release|x86
-		{F372AF7B-9847-489C-921F-84E41379B008}.Release|x86.Build.0 = Release|x86
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -50,15 +31,6 @@ Global
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Release|Mixed Platforms.Deploy.0 = Release|Any CPU
 		{78F27F6E-AFC9-4F41-BB3A-C501516E136B}.Release|x86.ActiveCfg = Release|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D9B36479-7410-431A-B713-357826F054AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{606452E0-4674-4FE0-AA45-01AC1D8FBA89}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{606452E0-4674-4FE0-AA45-01AC1D8FBA89}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{606452E0-4674-4FE0-AA45-01AC1D8FBA89}.Debug|x86.ActiveCfg = Debug|x86

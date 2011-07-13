@@ -52,7 +52,7 @@
   </wsdl:binding>
   <wsdl:service name="DivService">
     <wsdl:port name="BasicHttpBinding_IDivService" binding="tns:BasicHttpBinding_IDivService">
-      <soap:address location="http://192.168.2.6:8732/DivService/" />
+      <soap:address location="http://localhost:8732/DivService/" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

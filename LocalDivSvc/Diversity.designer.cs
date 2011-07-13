@@ -18,6 +18,7 @@ namespace DiversityService
 	using System.Reflection;
 	using System.Linq;
 	using System.Linq.Expressions;
+	using System.Runtime.Serialization;
 	using System.ComponentModel;
 	using System;
 	
@@ -33,6 +34,9 @@ namespace DiversityService
     partial void InsertCollectionEvent(CollectionEvent instance);
     partial void UpdateCollectionEvent(CollectionEvent instance);
     partial void DeleteCollectionEvent(CollectionEvent instance);
+    partial void InsertCollectionSpecimen(CollectionSpecimen instance);
+    partial void UpdateCollectionSpecimen(CollectionSpecimen instance);
+    partial void DeleteCollectionSpecimen(CollectionSpecimen instance);
     #endregion
 		
 		public DiversityDataContext() : 
@@ -72,9 +76,18 @@ namespace DiversityService
 				return this.GetTable<CollectionEvent>();
 			}
 		}
+		
+		public System.Data.Linq.Table<CollectionSpecimen> CollectionSpecimen
+		{
+			get
+			{
+				return this.GetTable<CollectionSpecimen>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CollectionEvent")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class CollectionEvent : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
@@ -124,6 +137,8 @@ namespace DiversityService
 		
 		private string _LogCreatedBy;
 		
+		private System.Nullable<System.DateTime> _LogUpdatedWhen;
+		
 		private string _LogUpdatedBy;
 		
 		private bool _xx_IsAvailable;
@@ -133,6 +148,10 @@ namespace DiversityService
 		private System.Guid _RowGUID;
 		
 		private string _ReferenceDetails;
+		
+		private EntitySet<CollectionSpecimen> _CollectionSpecimen;
+		
+		private bool serializing;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
@@ -182,6 +201,8 @@ namespace DiversityService
     partial void OnLogCreatedWhenChanged();
     partial void OnLogCreatedByChanging(string value);
     partial void OnLogCreatedByChanged();
+    partial void OnLogUpdatedWhenChanging(System.Nullable<System.DateTime> value);
+    partial void OnLogUpdatedWhenChanged();
     partial void OnLogUpdatedByChanging(string value);
     partial void OnLogUpdatedByChanged();
     partial void Onxx_IsAvailableChanging(bool value);
@@ -196,10 +217,11 @@ namespace DiversityService
 		
 		public CollectionEvent()
 		{
-			OnCreated();
+			this.Initialize();
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionEventID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
 		public int CollectionEventID
 		{
 			get
@@ -220,6 +242,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Version", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
 		public int Version
 		{
 			get
@@ -240,6 +263,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SeriesID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
 		public System.Nullable<int> SeriesID
 		{
 			get
@@ -260,6 +284,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectorsEventNumber", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
 		public string CollectorsEventNumber
 		{
 			get
@@ -280,6 +305,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionDate", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public System.Nullable<System.DateTime> CollectionDate
 		{
 			get
@@ -300,6 +326,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionDay", DbType="TinyInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public System.Nullable<byte> CollectionDay
 		{
 			get
@@ -320,6 +347,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionMonth", DbType="TinyInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
 		public System.Nullable<byte> CollectionMonth
 		{
 			get
@@ -340,6 +368,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionYear", DbType="SmallInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
 		public System.Nullable<short> CollectionYear
 		{
 			get
@@ -360,6 +389,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionDateSupplement", DbType="NVarChar(100)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9)]
 		public string CollectionDateSupplement
 		{
 			get
@@ -380,6 +410,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionDateCategory", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10)]
 		public string CollectionDateCategory
 		{
 			get
@@ -400,6 +431,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionTime", DbType="VarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11)]
 		public string CollectionTime
 		{
 			get
@@ -420,6 +452,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionTimeSpan", DbType="VarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12)]
 		public string CollectionTimeSpan
 		{
 			get
@@ -440,6 +473,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LocalityDescription", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13)]
 		public string LocalityDescription
 		{
 			get
@@ -460,6 +494,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HabitatDescription", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14)]
 		public string HabitatDescription
 		{
 			get
@@ -480,6 +515,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceTitle", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15)]
 		public string ReferenceTitle
 		{
 			get
@@ -500,6 +536,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceURI", DbType="VarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16)]
 		public string ReferenceURI
 		{
 			get
@@ -520,6 +557,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectingMethod", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17)]
 		public string CollectingMethod
 		{
 			get
@@ -540,6 +578,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Notes", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18)]
 		public string Notes
 		{
 			get
@@ -560,6 +599,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CountryCache", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19)]
 		public string CountryCache
 		{
 			get
@@ -580,6 +620,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataWithholdingReason", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=20)]
 		public string DataWithholdingReason
 		{
 			get
@@ -600,6 +641,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogCreatedWhen", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=21)]
 		public System.Nullable<System.DateTime> LogCreatedWhen
 		{
 			get
@@ -620,6 +662,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogCreatedBy", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=22)]
 		public string LogCreatedBy
 		{
 			get
@@ -639,7 +682,29 @@ namespace DiversityService
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogUpdatedWhen", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=23)]
+		public System.Nullable<System.DateTime> LogUpdatedWhen
+		{
+			get
+			{
+				return this._LogUpdatedWhen;
+			}
+			set
+			{
+				if ((this._LogUpdatedWhen != value))
+				{
+					this.OnLogUpdatedWhenChanging(value);
+					this.SendPropertyChanging();
+					this._LogUpdatedWhen = value;
+					this.SendPropertyChanged("LogUpdatedWhen");
+					this.OnLogUpdatedWhenChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogUpdatedBy", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24)]
 		public string LogUpdatedBy
 		{
 			get
@@ -660,6 +725,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_xx_IsAvailable", DbType="Bit NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=25)]
 		public bool xx_IsAvailable
 		{
 			get
@@ -680,6 +746,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_xx_ExpeditionID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26)]
 		public System.Nullable<int> xx_ExpeditionID
 		{
 			get
@@ -700,6 +767,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RowGUID", DbType="UniqueIdentifier NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27)]
 		public System.Guid RowGUID
 		{
 			get
@@ -720,6 +788,7 @@ namespace DiversityService
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceDetails", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=28)]
 		public string ReferenceDetails
 		{
 			get
@@ -735,6 +804,1043 @@ namespace DiversityService
 					this._ReferenceDetails = value;
 					this.SendPropertyChanged("ReferenceDetails");
 					this.OnReferenceDetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CollectionEvent_CollectionSpecimen", Storage="_CollectionSpecimen", ThisKey="CollectionEventID", OtherKey="CollectionEventID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29, EmitDefaultValue=false)]
+		public EntitySet<CollectionSpecimen> CollectionSpecimen
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._CollectionSpecimen.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._CollectionSpecimen;
+			}
+			set
+			{
+				this._CollectionSpecimen.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_CollectionSpecimen(CollectionSpecimen entity)
+		{
+			this.SendPropertyChanging();
+			entity.CollectionEvent = this;
+		}
+		
+		private void detach_CollectionSpecimen(CollectionSpecimen entity)
+		{
+			this.SendPropertyChanging();
+			entity.CollectionEvent = null;
+		}
+		
+		private void Initialize()
+		{
+			this._CollectionSpecimen = new EntitySet<CollectionSpecimen>(new Action<CollectionSpecimen>(this.attach_CollectionSpecimen), new Action<CollectionSpecimen>(this.detach_CollectionSpecimen));
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.CollectionSpecimen")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class CollectionSpecimen : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CollectionSpecimenID;
+		
+		private int _Version;
+		
+		private System.Nullable<int> _CollectionEventID;
+		
+		private System.Nullable<int> _CollectionID;
+		
+		private string _AccessionNumber;
+		
+		private System.Nullable<System.DateTime> _AccessionDate;
+		
+		private System.Nullable<byte> _AccessionDay;
+		
+		private System.Nullable<byte> _AccessionMonth;
+		
+		private System.Nullable<short> _AccessionYear;
+		
+		private string _AccessionDateSupplement;
+		
+		private string _AccessionDateCategory;
+		
+		private string _DepositorsName;
+		
+		private string _DepositorsAgentURI;
+		
+		private string _DepositorsAccessionNumber;
+		
+		private string _LabelTitle;
+		
+		private string _LabelType;
+		
+		private string _LabelTranscriptionState;
+		
+		private string _LabelTranscriptionNotes;
+		
+		private string _ExsiccataURI;
+		
+		private string _ExsiccataAbbreviation;
+		
+		private string _OriginalNotes;
+		
+		private string _AdditionalNotes;
+		
+		private string _ReferenceTitle;
+		
+		private string _ReferenceURI;
+		
+		private string _Problems;
+		
+		private string _DataWithholdingReason;
+		
+		private System.Nullable<System.DateTime> _LogCreatedWhen;
+		
+		private string _LogCreatedBy;
+		
+		private System.Nullable<System.DateTime> _LogUpdatedWhen;
+		
+		private string _LogUpdatedBy;
+		
+		private bool _xx_IsAvailable;
+		
+		private string _InternalNotes;
+		
+		private System.Nullable<int> _ExternalDatasourceID;
+		
+		private string _ExternalIdentifier;
+		
+		private System.Guid _RowGUID;
+		
+		private string _ReferenceDetails;
+		
+		private EntityRef<CollectionEvent> _CollectionEvent;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCollectionSpecimenIDChanging(int value);
+    partial void OnCollectionSpecimenIDChanged();
+    partial void OnVersionChanging(int value);
+    partial void OnVersionChanged();
+    partial void OnCollectionEventIDChanging(System.Nullable<int> value);
+    partial void OnCollectionEventIDChanged();
+    partial void OnCollectionIDChanging(System.Nullable<int> value);
+    partial void OnCollectionIDChanged();
+    partial void OnAccessionNumberChanging(string value);
+    partial void OnAccessionNumberChanged();
+    partial void OnAccessionDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnAccessionDateChanged();
+    partial void OnAccessionDayChanging(System.Nullable<byte> value);
+    partial void OnAccessionDayChanged();
+    partial void OnAccessionMonthChanging(System.Nullable<byte> value);
+    partial void OnAccessionMonthChanged();
+    partial void OnAccessionYearChanging(System.Nullable<short> value);
+    partial void OnAccessionYearChanged();
+    partial void OnAccessionDateSupplementChanging(string value);
+    partial void OnAccessionDateSupplementChanged();
+    partial void OnAccessionDateCategoryChanging(string value);
+    partial void OnAccessionDateCategoryChanged();
+    partial void OnDepositorsNameChanging(string value);
+    partial void OnDepositorsNameChanged();
+    partial void OnDepositorsAgentURIChanging(string value);
+    partial void OnDepositorsAgentURIChanged();
+    partial void OnDepositorsAccessionNumberChanging(string value);
+    partial void OnDepositorsAccessionNumberChanged();
+    partial void OnLabelTitleChanging(string value);
+    partial void OnLabelTitleChanged();
+    partial void OnLabelTypeChanging(string value);
+    partial void OnLabelTypeChanged();
+    partial void OnLabelTranscriptionStateChanging(string value);
+    partial void OnLabelTranscriptionStateChanged();
+    partial void OnLabelTranscriptionNotesChanging(string value);
+    partial void OnLabelTranscriptionNotesChanged();
+    partial void OnExsiccataURIChanging(string value);
+    partial void OnExsiccataURIChanged();
+    partial void OnExsiccataAbbreviationChanging(string value);
+    partial void OnExsiccataAbbreviationChanged();
+    partial void OnOriginalNotesChanging(string value);
+    partial void OnOriginalNotesChanged();
+    partial void OnAdditionalNotesChanging(string value);
+    partial void OnAdditionalNotesChanged();
+    partial void OnReferenceTitleChanging(string value);
+    partial void OnReferenceTitleChanged();
+    partial void OnReferenceURIChanging(string value);
+    partial void OnReferenceURIChanged();
+    partial void OnProblemsChanging(string value);
+    partial void OnProblemsChanged();
+    partial void OnDataWithholdingReasonChanging(string value);
+    partial void OnDataWithholdingReasonChanged();
+    partial void OnLogCreatedWhenChanging(System.Nullable<System.DateTime> value);
+    partial void OnLogCreatedWhenChanged();
+    partial void OnLogCreatedByChanging(string value);
+    partial void OnLogCreatedByChanged();
+    partial void OnLogUpdatedWhenChanging(System.Nullable<System.DateTime> value);
+    partial void OnLogUpdatedWhenChanged();
+    partial void OnLogUpdatedByChanging(string value);
+    partial void OnLogUpdatedByChanged();
+    partial void Onxx_IsAvailableChanging(bool value);
+    partial void Onxx_IsAvailableChanged();
+    partial void OnInternalNotesChanging(string value);
+    partial void OnInternalNotesChanged();
+    partial void OnExternalDatasourceIDChanging(System.Nullable<int> value);
+    partial void OnExternalDatasourceIDChanged();
+    partial void OnExternalIdentifierChanging(string value);
+    partial void OnExternalIdentifierChanged();
+    partial void OnRowGUIDChanging(System.Guid value);
+    partial void OnRowGUIDChanged();
+    partial void OnReferenceDetailsChanging(string value);
+    partial void OnReferenceDetailsChanged();
+    #endregion
+		
+		public CollectionSpecimen()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionSpecimenID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int CollectionSpecimenID
+		{
+			get
+			{
+				return this._CollectionSpecimenID;
+			}
+			set
+			{
+				if ((this._CollectionSpecimenID != value))
+				{
+					this.OnCollectionSpecimenIDChanging(value);
+					this.SendPropertyChanging();
+					this._CollectionSpecimenID = value;
+					this.SendPropertyChanged("CollectionSpecimenID");
+					this.OnCollectionSpecimenIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Version", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int Version
+		{
+			get
+			{
+				return this._Version;
+			}
+			set
+			{
+				if ((this._Version != value))
+				{
+					this.OnVersionChanging(value);
+					this.SendPropertyChanging();
+					this._Version = value;
+					this.SendPropertyChanged("Version");
+					this.OnVersionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionEventID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public System.Nullable<int> CollectionEventID
+		{
+			get
+			{
+				return this._CollectionEventID;
+			}
+			set
+			{
+				if ((this._CollectionEventID != value))
+				{
+					if (this._CollectionEvent.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCollectionEventIDChanging(value);
+					this.SendPropertyChanging();
+					this._CollectionEventID = value;
+					this.SendPropertyChanged("CollectionEventID");
+					this.OnCollectionEventIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CollectionID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public System.Nullable<int> CollectionID
+		{
+			get
+			{
+				return this._CollectionID;
+			}
+			set
+			{
+				if ((this._CollectionID != value))
+				{
+					this.OnCollectionIDChanging(value);
+					this.SendPropertyChanging();
+					this._CollectionID = value;
+					this.SendPropertyChanged("CollectionID");
+					this.OnCollectionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionNumber", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public string AccessionNumber
+		{
+			get
+			{
+				return this._AccessionNumber;
+			}
+			set
+			{
+				if ((this._AccessionNumber != value))
+				{
+					this.OnAccessionNumberChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionNumber = value;
+					this.SendPropertyChanged("AccessionNumber");
+					this.OnAccessionNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionDate", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public System.Nullable<System.DateTime> AccessionDate
+		{
+			get
+			{
+				return this._AccessionDate;
+			}
+			set
+			{
+				if ((this._AccessionDate != value))
+				{
+					this.OnAccessionDateChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionDate = value;
+					this.SendPropertyChanged("AccessionDate");
+					this.OnAccessionDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionDay", DbType="TinyInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public System.Nullable<byte> AccessionDay
+		{
+			get
+			{
+				return this._AccessionDay;
+			}
+			set
+			{
+				if ((this._AccessionDay != value))
+				{
+					this.OnAccessionDayChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionDay = value;
+					this.SendPropertyChanged("AccessionDay");
+					this.OnAccessionDayChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionMonth", DbType="TinyInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8)]
+		public System.Nullable<byte> AccessionMonth
+		{
+			get
+			{
+				return this._AccessionMonth;
+			}
+			set
+			{
+				if ((this._AccessionMonth != value))
+				{
+					this.OnAccessionMonthChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionMonth = value;
+					this.SendPropertyChanged("AccessionMonth");
+					this.OnAccessionMonthChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionYear", DbType="SmallInt")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+		public System.Nullable<short> AccessionYear
+		{
+			get
+			{
+				return this._AccessionYear;
+			}
+			set
+			{
+				if ((this._AccessionYear != value))
+				{
+					this.OnAccessionYearChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionYear = value;
+					this.SendPropertyChanged("AccessionYear");
+					this.OnAccessionYearChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionDateSupplement", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+		public string AccessionDateSupplement
+		{
+			get
+			{
+				return this._AccessionDateSupplement;
+			}
+			set
+			{
+				if ((this._AccessionDateSupplement != value))
+				{
+					this.OnAccessionDateSupplementChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionDateSupplement = value;
+					this.SendPropertyChanged("AccessionDateSupplement");
+					this.OnAccessionDateSupplementChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AccessionDateCategory", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11)]
+		public string AccessionDateCategory
+		{
+			get
+			{
+				return this._AccessionDateCategory;
+			}
+			set
+			{
+				if ((this._AccessionDateCategory != value))
+				{
+					this.OnAccessionDateCategoryChanging(value);
+					this.SendPropertyChanging();
+					this._AccessionDateCategory = value;
+					this.SendPropertyChanged("AccessionDateCategory");
+					this.OnAccessionDateCategoryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepositorsName", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12)]
+		public string DepositorsName
+		{
+			get
+			{
+				return this._DepositorsName;
+			}
+			set
+			{
+				if ((this._DepositorsName != value))
+				{
+					this.OnDepositorsNameChanging(value);
+					this.SendPropertyChanging();
+					this._DepositorsName = value;
+					this.SendPropertyChanged("DepositorsName");
+					this.OnDepositorsNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepositorsAgentURI", DbType="VarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13)]
+		public string DepositorsAgentURI
+		{
+			get
+			{
+				return this._DepositorsAgentURI;
+			}
+			set
+			{
+				if ((this._DepositorsAgentURI != value))
+				{
+					this.OnDepositorsAgentURIChanging(value);
+					this.SendPropertyChanging();
+					this._DepositorsAgentURI = value;
+					this.SendPropertyChanged("DepositorsAgentURI");
+					this.OnDepositorsAgentURIChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepositorsAccessionNumber", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14)]
+		public string DepositorsAccessionNumber
+		{
+			get
+			{
+				return this._DepositorsAccessionNumber;
+			}
+			set
+			{
+				if ((this._DepositorsAccessionNumber != value))
+				{
+					this.OnDepositorsAccessionNumberChanging(value);
+					this.SendPropertyChanging();
+					this._DepositorsAccessionNumber = value;
+					this.SendPropertyChanged("DepositorsAccessionNumber");
+					this.OnDepositorsAccessionNumberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LabelTitle", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15)]
+		public string LabelTitle
+		{
+			get
+			{
+				return this._LabelTitle;
+			}
+			set
+			{
+				if ((this._LabelTitle != value))
+				{
+					this.OnLabelTitleChanging(value);
+					this.SendPropertyChanging();
+					this._LabelTitle = value;
+					this.SendPropertyChanged("LabelTitle");
+					this.OnLabelTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LabelType", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16)]
+		public string LabelType
+		{
+			get
+			{
+				return this._LabelType;
+			}
+			set
+			{
+				if ((this._LabelType != value))
+				{
+					this.OnLabelTypeChanging(value);
+					this.SendPropertyChanging();
+					this._LabelType = value;
+					this.SendPropertyChanged("LabelType");
+					this.OnLabelTypeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LabelTranscriptionState", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17)]
+		public string LabelTranscriptionState
+		{
+			get
+			{
+				return this._LabelTranscriptionState;
+			}
+			set
+			{
+				if ((this._LabelTranscriptionState != value))
+				{
+					this.OnLabelTranscriptionStateChanging(value);
+					this.SendPropertyChanging();
+					this._LabelTranscriptionState = value;
+					this.SendPropertyChanged("LabelTranscriptionState");
+					this.OnLabelTranscriptionStateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LabelTranscriptionNotes", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18)]
+		public string LabelTranscriptionNotes
+		{
+			get
+			{
+				return this._LabelTranscriptionNotes;
+			}
+			set
+			{
+				if ((this._LabelTranscriptionNotes != value))
+				{
+					this.OnLabelTranscriptionNotesChanging(value);
+					this.SendPropertyChanging();
+					this._LabelTranscriptionNotes = value;
+					this.SendPropertyChanged("LabelTranscriptionNotes");
+					this.OnLabelTranscriptionNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExsiccataURI", DbType="VarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19)]
+		public string ExsiccataURI
+		{
+			get
+			{
+				return this._ExsiccataURI;
+			}
+			set
+			{
+				if ((this._ExsiccataURI != value))
+				{
+					this.OnExsiccataURIChanging(value);
+					this.SendPropertyChanging();
+					this._ExsiccataURI = value;
+					this.SendPropertyChanged("ExsiccataURI");
+					this.OnExsiccataURIChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExsiccataAbbreviation", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=20)]
+		public string ExsiccataAbbreviation
+		{
+			get
+			{
+				return this._ExsiccataAbbreviation;
+			}
+			set
+			{
+				if ((this._ExsiccataAbbreviation != value))
+				{
+					this.OnExsiccataAbbreviationChanging(value);
+					this.SendPropertyChanging();
+					this._ExsiccataAbbreviation = value;
+					this.SendPropertyChanged("ExsiccataAbbreviation");
+					this.OnExsiccataAbbreviationChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OriginalNotes", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=21)]
+		public string OriginalNotes
+		{
+			get
+			{
+				return this._OriginalNotes;
+			}
+			set
+			{
+				if ((this._OriginalNotes != value))
+				{
+					this.OnOriginalNotesChanging(value);
+					this.SendPropertyChanging();
+					this._OriginalNotes = value;
+					this.SendPropertyChanged("OriginalNotes");
+					this.OnOriginalNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdditionalNotes", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=22)]
+		public string AdditionalNotes
+		{
+			get
+			{
+				return this._AdditionalNotes;
+			}
+			set
+			{
+				if ((this._AdditionalNotes != value))
+				{
+					this.OnAdditionalNotesChanging(value);
+					this.SendPropertyChanging();
+					this._AdditionalNotes = value;
+					this.SendPropertyChanged("AdditionalNotes");
+					this.OnAdditionalNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceTitle", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=23)]
+		public string ReferenceTitle
+		{
+			get
+			{
+				return this._ReferenceTitle;
+			}
+			set
+			{
+				if ((this._ReferenceTitle != value))
+				{
+					this.OnReferenceTitleChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceTitle = value;
+					this.SendPropertyChanged("ReferenceTitle");
+					this.OnReferenceTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceURI", DbType="VarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24)]
+		public string ReferenceURI
+		{
+			get
+			{
+				return this._ReferenceURI;
+			}
+			set
+			{
+				if ((this._ReferenceURI != value))
+				{
+					this.OnReferenceURIChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceURI = value;
+					this.SendPropertyChanged("ReferenceURI");
+					this.OnReferenceURIChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Problems", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=25)]
+		public string Problems
+		{
+			get
+			{
+				return this._Problems;
+			}
+			set
+			{
+				if ((this._Problems != value))
+				{
+					this.OnProblemsChanging(value);
+					this.SendPropertyChanging();
+					this._Problems = value;
+					this.SendPropertyChanged("Problems");
+					this.OnProblemsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataWithholdingReason", DbType="NVarChar(255)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26)]
+		public string DataWithholdingReason
+		{
+			get
+			{
+				return this._DataWithholdingReason;
+			}
+			set
+			{
+				if ((this._DataWithholdingReason != value))
+				{
+					this.OnDataWithholdingReasonChanging(value);
+					this.SendPropertyChanging();
+					this._DataWithholdingReason = value;
+					this.SendPropertyChanged("DataWithholdingReason");
+					this.OnDataWithholdingReasonChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogCreatedWhen", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27)]
+		public System.Nullable<System.DateTime> LogCreatedWhen
+		{
+			get
+			{
+				return this._LogCreatedWhen;
+			}
+			set
+			{
+				if ((this._LogCreatedWhen != value))
+				{
+					this.OnLogCreatedWhenChanging(value);
+					this.SendPropertyChanging();
+					this._LogCreatedWhen = value;
+					this.SendPropertyChanged("LogCreatedWhen");
+					this.OnLogCreatedWhenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogCreatedBy", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=28)]
+		public string LogCreatedBy
+		{
+			get
+			{
+				return this._LogCreatedBy;
+			}
+			set
+			{
+				if ((this._LogCreatedBy != value))
+				{
+					this.OnLogCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._LogCreatedBy = value;
+					this.SendPropertyChanged("LogCreatedBy");
+					this.OnLogCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogUpdatedWhen", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29)]
+		public System.Nullable<System.DateTime> LogUpdatedWhen
+		{
+			get
+			{
+				return this._LogUpdatedWhen;
+			}
+			set
+			{
+				if ((this._LogUpdatedWhen != value))
+				{
+					this.OnLogUpdatedWhenChanging(value);
+					this.SendPropertyChanging();
+					this._LogUpdatedWhen = value;
+					this.SendPropertyChanged("LogUpdatedWhen");
+					this.OnLogUpdatedWhenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LogUpdatedBy", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=30)]
+		public string LogUpdatedBy
+		{
+			get
+			{
+				return this._LogUpdatedBy;
+			}
+			set
+			{
+				if ((this._LogUpdatedBy != value))
+				{
+					this.OnLogUpdatedByChanging(value);
+					this.SendPropertyChanging();
+					this._LogUpdatedBy = value;
+					this.SendPropertyChanged("LogUpdatedBy");
+					this.OnLogUpdatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_xx_IsAvailable", DbType="Bit NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=31)]
+		public bool xx_IsAvailable
+		{
+			get
+			{
+				return this._xx_IsAvailable;
+			}
+			set
+			{
+				if ((this._xx_IsAvailable != value))
+				{
+					this.Onxx_IsAvailableChanging(value);
+					this.SendPropertyChanging();
+					this._xx_IsAvailable = value;
+					this.SendPropertyChanged("xx_IsAvailable");
+					this.Onxx_IsAvailableChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_InternalNotes", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=32)]
+		public string InternalNotes
+		{
+			get
+			{
+				return this._InternalNotes;
+			}
+			set
+			{
+				if ((this._InternalNotes != value))
+				{
+					this.OnInternalNotesChanging(value);
+					this.SendPropertyChanging();
+					this._InternalNotes = value;
+					this.SendPropertyChanged("InternalNotes");
+					this.OnInternalNotesChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExternalDatasourceID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=33)]
+		public System.Nullable<int> ExternalDatasourceID
+		{
+			get
+			{
+				return this._ExternalDatasourceID;
+			}
+			set
+			{
+				if ((this._ExternalDatasourceID != value))
+				{
+					this.OnExternalDatasourceIDChanging(value);
+					this.SendPropertyChanging();
+					this._ExternalDatasourceID = value;
+					this.SendPropertyChanged("ExternalDatasourceID");
+					this.OnExternalDatasourceIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ExternalIdentifier", DbType="NVarChar(100)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=34)]
+		public string ExternalIdentifier
+		{
+			get
+			{
+				return this._ExternalIdentifier;
+			}
+			set
+			{
+				if ((this._ExternalIdentifier != value))
+				{
+					this.OnExternalIdentifierChanging(value);
+					this.SendPropertyChanging();
+					this._ExternalIdentifier = value;
+					this.SendPropertyChanged("ExternalIdentifier");
+					this.OnExternalIdentifierChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RowGUID", DbType="UniqueIdentifier NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=35)]
+		public System.Guid RowGUID
+		{
+			get
+			{
+				return this._RowGUID;
+			}
+			set
+			{
+				if ((this._RowGUID != value))
+				{
+					this.OnRowGUIDChanging(value);
+					this.SendPropertyChanging();
+					this._RowGUID = value;
+					this.SendPropertyChanged("RowGUID");
+					this.OnRowGUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReferenceDetails", DbType="NVarChar(50)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=36)]
+		public string ReferenceDetails
+		{
+			get
+			{
+				return this._ReferenceDetails;
+			}
+			set
+			{
+				if ((this._ReferenceDetails != value))
+				{
+					this.OnReferenceDetailsChanging(value);
+					this.SendPropertyChanging();
+					this._ReferenceDetails = value;
+					this.SendPropertyChanged("ReferenceDetails");
+					this.OnReferenceDetailsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CollectionEvent_CollectionSpecimen", Storage="_CollectionEvent", ThisKey="CollectionEventID", OtherKey="CollectionEventID", IsForeignKey=true)]
+		public CollectionEvent CollectionEvent
+		{
+			get
+			{
+				return this._CollectionEvent.Entity;
+			}
+			set
+			{
+				CollectionEvent previousValue = this._CollectionEvent.Entity;
+				if (((previousValue != value) 
+							|| (this._CollectionEvent.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CollectionEvent.Entity = null;
+						previousValue.CollectionSpecimen.Remove(this);
+					}
+					this._CollectionEvent.Entity = value;
+					if ((value != null))
+					{
+						value.CollectionSpecimen.Add(this);
+						this._CollectionEventID = value.CollectionEventID;
+					}
+					else
+					{
+						this._CollectionEventID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("CollectionEvent");
 				}
 			}
 		}
@@ -757,6 +1863,19 @@ namespace DiversityService
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void Initialize()
+		{
+			this._CollectionEvent = default(EntityRef<CollectionEvent>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 }
