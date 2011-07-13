@@ -27,6 +27,16 @@ namespace DiversityService
 
             return repo.CollectionEvent.Skip(skip).Take(count).ToList();
         }
+
+
+        public IEnumerable<CollectionSpecimen> GetSpecimensForEvent(CollectionEvent ev)
+        {
+            var repo = new DiversityDataContext();
+
+            return from spec in repo.CollectionSpecimen
+                   where spec.CollectionEventID == ev.CollectionEventID
+                   select spec;
+        }
     }
 
 }

@@ -149,10 +149,6 @@ namespace DiversityService
 		
 		private string _ReferenceDetails;
 		
-		private EntitySet<CollectionSpecimen> _CollectionSpecimen;
-		
-		private bool serializing;
-		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -808,25 +804,6 @@ namespace DiversityService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CollectionEvent_CollectionSpecimen", Storage="_CollectionSpecimen", ThisKey="CollectionEventID", OtherKey="CollectionEventID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29, EmitDefaultValue=false)]
-		public EntitySet<CollectionSpecimen> CollectionSpecimen
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._CollectionSpecimen.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._CollectionSpecimen;
-			}
-			set
-			{
-				this._CollectionSpecimen.Assign(value);
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -847,21 +824,8 @@ namespace DiversityService
 			}
 		}
 		
-		private void attach_CollectionSpecimen(CollectionSpecimen entity)
-		{
-			this.SendPropertyChanging();
-			entity.CollectionEvent = this;
-		}
-		
-		private void detach_CollectionSpecimen(CollectionSpecimen entity)
-		{
-			this.SendPropertyChanging();
-			entity.CollectionEvent = null;
-		}
-		
 		private void Initialize()
 		{
-			this._CollectionSpecimen = new EntitySet<CollectionSpecimen>(new Action<CollectionSpecimen>(this.attach_CollectionSpecimen), new Action<CollectionSpecimen>(this.detach_CollectionSpecimen));
 			OnCreated();
 		}
 		
@@ -870,20 +834,6 @@ namespace DiversityService
 		public void OnDeserializing(StreamingContext context)
 		{
 			this.Initialize();
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerializing(StreamingContext context)
-		{
-			this.serializing = true;
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializedAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerialized(StreamingContext context)
-		{
-			this.serializing = false;
 		}
 	}
 	
@@ -965,8 +915,6 @@ namespace DiversityService
 		private System.Guid _RowGUID;
 		
 		private string _ReferenceDetails;
-		
-		private EntityRef<CollectionEvent> _CollectionEvent;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
@@ -1105,10 +1053,6 @@ namespace DiversityService
 			{
 				if ((this._CollectionEventID != value))
 				{
-					if (this._CollectionEvent.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
 					this.OnCollectionEventIDChanging(value);
 					this.SendPropertyChanging();
 					this._CollectionEventID = value;
@@ -1811,40 +1755,6 @@ namespace DiversityService
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CollectionEvent_CollectionSpecimen", Storage="_CollectionEvent", ThisKey="CollectionEventID", OtherKey="CollectionEventID", IsForeignKey=true)]
-		public CollectionEvent CollectionEvent
-		{
-			get
-			{
-				return this._CollectionEvent.Entity;
-			}
-			set
-			{
-				CollectionEvent previousValue = this._CollectionEvent.Entity;
-				if (((previousValue != value) 
-							|| (this._CollectionEvent.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._CollectionEvent.Entity = null;
-						previousValue.CollectionSpecimen.Remove(this);
-					}
-					this._CollectionEvent.Entity = value;
-					if ((value != null))
-					{
-						value.CollectionSpecimen.Add(this);
-						this._CollectionEventID = value.CollectionEventID;
-					}
-					else
-					{
-						this._CollectionEventID = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("CollectionEvent");
-				}
-			}
-		}
-		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -1867,7 +1777,6 @@ namespace DiversityService
 		
 		private void Initialize()
 		{
-			this._CollectionEvent = default(EntityRef<CollectionEvent>);
 			OnCreated();
 		}
 		

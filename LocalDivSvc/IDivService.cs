@@ -18,6 +18,7 @@ namespace DiversityService
         [OperationContract]
         void AddEvent(CollectionEvent ev);
 
-        // TODO: Hier Dienstvorgänge hinzufügen
+        [OperationContract]
+        IEnumerable<CollectionSpecimen> GetSpecimensForEvent(CollectionEvent ev);
     }   
 }

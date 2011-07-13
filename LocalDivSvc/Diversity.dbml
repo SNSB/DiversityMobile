@@ -30,7 +30,6 @@
       <Column Name="xx_ExpeditionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="ReferenceDetails" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="CollectionEvent_CollectionSpecimen" Member="CollectionSpecimen" ThisKey="CollectionEventID" OtherKey="CollectionEventID" Type="CollectionSpecimen" />
     </Type>
   </Table>
   <Table Name="dbo.CollectionSpecimen" Member="CollectionSpecimen">
@@ -71,7 +70,6 @@
       <Column Name="ExternalIdentifier" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
       <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="ReferenceDetails" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Association Name="CollectionEvent_CollectionSpecimen" Member="CollectionEvent" ThisKey="CollectionEventID" OtherKey="CollectionEventID" Type="CollectionEvent" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
