@@ -37,8 +37,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceModel.Discovery" />
     <Reference Include="System.Xml.Linq" />
@@ -48,10 +50,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Diversity.designer.cs">
-      <DependentUpon>Diversity.dbml</DependentUpon>
-      <DesignTime>True</DesignTime>
+    <Compile Include="DiversityCollection.Designer.cs">
       <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityCollection.edmx</DependentUpon>
     </Compile>
     <Compile Include="DivService.cs" />
     <Compile Include="IDivService.cs" />
@@ -67,19 +69,13 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Diversity.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>Diversity.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
+    <EntityDeploy Include="DiversityCollection.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
+    </EntityDeploy>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Diversity.dbml.layout">
-      <DependentUpon>Diversity.dbml</DependentUpon>
     </None>
   </ItemGroup>
   <ItemGroup>

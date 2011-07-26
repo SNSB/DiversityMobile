@@ -14,28 +14,44 @@ namespace DiversityService
 
         public void AddEvent(CollectionEvent ev)
         {
-            DiversityDataContext db = new DiversityDataContext();
+            var db = new DiversityEntities1();
 
-            db.CollectionEvent.InsertOnSubmit(ev);
-            
-            db.SubmitChanges();
+            db.CollectionEvents.AddObject(ev);
+
+            db.AcceptAllChanges();
         }
 
         public IEnumerable<CollectionEvent> GetEvents(int skip, int count)
         {
-            var repo = new DiversityDataContext();
+            var repo = new DiversityEntities1();
 
-            return repo.CollectionEvent.Skip(skip).Take(count).ToList();
+            return repo.CollectionEvents.Skip(skip).Take(count).ToList();
         }
 
 
         public IEnumerable<CollectionSpecimen> GetSpecimensForEvent(CollectionEvent ev)
         {
-            var repo = new DiversityDataContext();
+            var repo = new DiversityEntities1();
 
             return from spec in repo.CollectionSpecimen
                    where spec.CollectionEventID == ev.CollectionEventID
                    select spec;
+        }
+
+
+        public void InsertAnalysedIU(int EventID, IdentificationUnit owner, IList<IdentificationUnitAnalysis> analyses)
+        {
+            var db = new DiversityEntities1();
+
+            var parentEvent = (from ev in db.CollectionEvents where ev.CollectionEventID == EventID select ev).FirstOrDefault();
+            if (parentEvent != null)
+            {
+                var spec = new CollectionSpecimen() { RowGUID = Guid.NewGuid() };
+                spec.CollectionAgents.Add(new CollectionAgent() { CollectorsName = "WP7User", RowGUID = Guid.NewGuid() });
+                spec.CollectionProjects.Add(new CollectionProject() { ProjectID = 703, RowGUID = Guid.NewGuid() });
+                spec.CollectionEvent = parentEvent;
+
+            }
         }
     }
 
