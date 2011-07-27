@@ -39,18 +39,34 @@ namespace DiversityService
         }
 
 
-        public void InsertAnalysedIU(int EventID, IdentificationUnit owner, IList<IdentificationUnitAnalysis> analyses)
+        public void InsertIU(int EventID, IdentificationUnit child)
         {
             var db = new DiversityEntities1();
+            
 
             var parentEvent = (from ev in db.CollectionEvents where ev.CollectionEventID == EventID select ev).FirstOrDefault();
             if (parentEvent != null)
             {
-                var spec = new CollectionSpecimen() { RowGUID = Guid.NewGuid() };
-                spec.CollectionAgents.Add(new CollectionAgent() { CollectorsName = "WP7User", RowGUID = Guid.NewGuid() });
-                spec.CollectionProjects.Add(new CollectionProject() { ProjectID = 703, RowGUID = Guid.NewGuid() });
-                spec.CollectionEvent = parentEvent;
+                var spec = new CollectionSpecimen
+                { 
+                    RowGUID = Guid.NewGuid() ,
+                    CollectionEvent = parentEvent
+                };
+                var agent = new CollectionAgent 
+                { 
+                    CollectorsName = "WP7User", 
+                    RowGUID = Guid.NewGuid(),
+                    CollectionSpeciman = spec
+                };
+                var project = new CollectionProject() 
+                { 
+                    ProjectID = 703, 
+                    RowGUID = Guid.NewGuid(),
+                    CollectionSpeciman = spec
+                };
+                child.CollectionSpeciman = spec;                
 
+                db.SaveChanges();
             }
         }
     }

@@ -5,6 +5,8 @@
       <xsd:import namespace="http://tempuri.org/" />
       <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import namespace="http://schemas.datacontract.org/2004/07/DiversityService" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
+      <xsd:import namespace="http://schemas.datacontract.org/2004/07/System.Data" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDivService_GetEvents_InputMessage">
@@ -25,6 +27,12 @@
   <wsdl:message name="IDivService_GetSpecimensForEvent_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetSpecimensForEventResponse" />
   </wsdl:message>
+  <wsdl:message name="IDivService_InsertIU_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertIU" />
+  </wsdl:message>
+  <wsdl:message name="IDivService_InsertIU_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertIUResponse" />
+  </wsdl:message>
   <wsdl:portType name="IDivService">
     <wsdl:operation name="GetEvents">
       <wsdl:input wsaw:Action="http://tempuri.org/IDivService/GetEvents" message="tns:IDivService_GetEvents_InputMessage" />
@@ -37,6 +45,10 @@
     <wsdl:operation name="GetSpecimensForEvent">
       <wsdl:input wsaw:Action="http://tempuri.org/IDivService/GetSpecimensForEvent" message="tns:IDivService_GetSpecimensForEvent_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDivService/GetSpecimensForEventResponse" message="tns:IDivService_GetSpecimensForEvent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertIU">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDivService/InsertIU" message="tns:IDivService_InsertIU_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDivService/InsertIUResponse" message="tns:IDivService_InsertIU_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDivService" type="tns:IDivService">
@@ -61,6 +73,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetSpecimensForEvent">
       <soap:operation soapAction="http://tempuri.org/IDivService/GetSpecimensForEvent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertIU">
+      <soap:operation soapAction="http://tempuri.org/IDivService/InsertIU" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

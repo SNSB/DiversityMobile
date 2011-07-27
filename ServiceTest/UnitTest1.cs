@@ -10,15 +10,13 @@ namespace ServiceTest
     [TestClass]
     public class UnitTest1
     {
-        DivService _target;
-        public UnitTest1()
-        {
-            _target = new DivService();
-        }
+        DivService _target = new DivService();
+
 
         [TestMethod]
         public void TestIUInsert()
         {
+            
         }
     }
 }

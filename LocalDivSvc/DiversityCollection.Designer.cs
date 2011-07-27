@@ -45,7 +45,7 @@ namespace DiversityService
         /// </summary>
         public DiversityEntities1() : base("name=DiversityEntities1", "DiversityEntities1")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     
@@ -54,7 +54,7 @@ namespace DiversityService
         /// </summary>
         public DiversityEntities1(string connectionString) : base(connectionString, "DiversityEntities1")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     
@@ -63,7 +63,7 @@ namespace DiversityService
         /// </summary>
         public DiversityEntities1(EntityConnection connection) : base(connection, "DiversityEntities1")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using SterlingToLINQ.DiversityService;
 
 namespace SterlingToLINQ
 {
@@ -65,6 +66,25 @@ namespace SterlingToLINQ
                 if (binding != null)
                     binding.UpdateSource();
             }
+        }
+
+        private void ApplicationBarMenuItem_Click_2(object sender, EventArgs e)
+        {
+            var iu = new IdentificationUnit()
+            {
+                LastIdentificationCache = "TestIU From WP7",
+                TaxonomicGroup = "fungus",
+                RowGUID = Guid.NewGuid()
+            };
+            var iu2 = new IdentificationUnit()
+            {
+                LastIdentificationCache = "TestIU From WP7",
+                TaxonomicGroup = "fungus",
+                RowGUID = Guid.NewGuid(),
+                
+            };
+            
+            App.Repository.InsertIUAsync(234465, iu);
         }
     }
 }

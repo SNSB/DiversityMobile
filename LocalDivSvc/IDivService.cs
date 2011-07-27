@@ -22,6 +22,6 @@ namespace DiversityService
         IEnumerable<CollectionSpecimen> GetSpecimensForEvent(CollectionEvent ev);
 
         [OperationContract]
-        void InsertAnalysedIU(IdentificationUnit owner, IList<IdentificationUnitAnalysis> analyses);
+        void InsertIU(int CollectionEventID, IdentificationUnit child);
     }   
 }

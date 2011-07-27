@@ -27,6 +27,8 @@
     <MetadataFile FileName="service2.xsd" MetadataType="Schema" ID="8280e7d5-2641-42f6-a349-fea39b697619" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
     <MetadataFile FileName="service21.xsd" MetadataType="Schema" ID="f3dfb795-6d2a-49b4-aaf0-c997ef7af758" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
     <MetadataFile FileName="DiversityService1.xsd" MetadataType="Schema" ID="8e575ab3-f38f-45ee-a6cc-f18642923406" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
+    <MetadataFile FileName="System.Data.Objects.DataClasses.xsd" MetadataType="Schema" ID="9d68cf4a-9198-445a-a5ff-b6679d2442ae" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
+    <MetadataFile FileName="System.Data.xsd" MetadataType="Schema" ID="46dc89bd-5222-41bf-a485-ae5eb4ff5f5c" SourceId="1" SourceUrl="http://localhost:8732/DivService/mex" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

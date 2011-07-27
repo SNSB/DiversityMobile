@@ -144,6 +144,12 @@
     <None Include="Service References\DiversityService\SterlingToLINQ.DiversityService.CollectionEvent.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\System.Data.Objects.DataClasses.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\System.Data.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Resource Include="Icons\appbar.feature.search.rest.png" />
     <Content Include="ServiceReferences.ClientConfig" />
     <None Include="Service References\DiversityService\SterlingToLINQ.DiversityService.CollectionSpecimen.datasource">

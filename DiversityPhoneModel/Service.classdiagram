@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="8dd2d873-9bf1-4056-87e7-cb39ebb11398" name="Service" linkedPackageId="aee04fa4-7742-4c7f-ae63-95f1c260d375" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="d4fb5ab9-1634-4bfa-96fc-ba0dea76d210">
+      <profileInstance Id="44ec14ae-2b1f-4360-ac6a-a775a67d91c9" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="9f24efc3-62df-4909-952a-4055283809e9">
+      <profileInstance Id="921e4ec4-de91-4402-97ef-48b83a38b6a0" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="8c5808ae-e504-44b9-a8df-3d4def4d21c5" name="DiversityService" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="dc063d14-a86f-42be-b993-ed215b3e6450" />
+        <ownedOperationsInternal>
+          <operation Id="59a8a7b5-d82a-4030-a0bb-99ebb90d90b2" name="Operation1" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+            <elementDefinition Id="35c8dac5-8897-4457-b0de-c021c826e5dd" />
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="aee04fa4-7742-4c7f-ae63-95f1c260d375" name="DiversityPhoneModel">
+    <elementDefinition Id="719a0290-158e-4251-a5b1-587f2a02a6b4" />
+  </package>
+</logicalClassDesignerModel>

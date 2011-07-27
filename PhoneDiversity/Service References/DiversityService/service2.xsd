@@ -42,4 +42,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="InsertIU">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DiversityService" minOccurs="0" name="child" nillable="true" type="q5:IdentificationUnit" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertIUResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
