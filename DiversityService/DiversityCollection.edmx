@@ -1,0 +1,1031 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DiversityCollection.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="DiversityCollectionStoreContainer">
+          <EntitySet Name="AnalysisTaxonomicGroup" EntityType="DiversityCollection.Store.AnalysisTaxonomicGroup" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionAgent" EntityType="DiversityCollection.Store.CollectionAgent" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionEvent" EntityType="DiversityCollection.Store.CollectionEvent" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionEventLocalisation" EntityType="DiversityCollection.Store.CollectionEventLocalisation" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionEventSeries" EntityType="DiversityCollection.Store.CollectionEventSeries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionProject" EntityType="DiversityCollection.Store.CollectionProject" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollectionSpecimen" EntityType="DiversityCollection.Store.CollectionSpecimen" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IdentificationUnit" EntityType="DiversityCollection.Store.IdentificationUnit" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="IdentificationUnitAnalysis" EntityType="DiversityCollection.Store.IdentificationUnitAnalysis" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_CollectionAgent_CollectionSpecimen" Association="DiversityCollection.Store.FK_CollectionAgent_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="CollectionAgent" EntitySet="CollectionAgent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEvent_CollectionEventSeries" Association="DiversityCollection.Store.FK_CollectionEvent_CollectionEventSeries">
+            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEventSeries_CollectionEventSeries" Association="DiversityCollection.Store.FK_CollectionEventSeries_CollectionEventSeries">
+            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEventSeries1" EntitySet="CollectionEventSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLocalisation_CollectionEvent" Association="DiversityCollection.Store.FK_CollectionLocalisation_CollectionEvent">
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+            <End Role="CollectionEventLocalisation" EntitySet="CollectionEventLocalisation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionProject_CollectionSpecimen" Association="DiversityCollection.Store.FK_CollectionProject_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="CollectionProject" EntitySet="CollectionProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionSpecimen_CollectionEvent" Association="DiversityCollection.Store.FK_CollectionSpecimen_CollectionEvent">
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnit_CollectionSpecimen" Association="DiversityCollection.Store.FK_IdentificationUnit_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnitAnalysis_IdentificationUnit" Association="DiversityCollection.Store.FK_IdentificationUnitAnalysis_IdentificationUnit">
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+            <End Role="IdentificationUnitAnalysis" EntitySet="IdentificationUnitAnalysis" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AnalysisTaxonomicGroup">
+          <Key>
+            <PropertyRef Name="AnalysisID" />
+            <PropertyRef Name="TaxonomicGroup" />
+          </Key>
+          <Property Name="AnalysisID" Type="int" Nullable="false" />
+          <Property Name="TaxonomicGroup" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionAgent">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="CollectorsName" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="int" Nullable="false" />
+          <Property Name="CollectorsName" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="CollectorsAgentURI" Type="varchar" MaxLength="255" />
+          <Property Name="CollectorsSequence" Type="datetime" />
+          <Property Name="CollectorsNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="xx_IsAvailable" Type="bit" Nullable="false" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionEvent">
+          <Key>
+            <PropertyRef Name="CollectionEventID" />
+          </Key>
+          <Property Name="CollectionEventID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="SeriesID" Type="int" />
+          <Property Name="CollectorsEventNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="CollectionDate" Type="datetime" />
+          <Property Name="CollectionDay" Type="tinyint" />
+          <Property Name="CollectionMonth" Type="tinyint" />
+          <Property Name="CollectionYear" Type="smallint" />
+          <Property Name="CollectionDateSupplement" Type="nvarchar" MaxLength="100" />
+          <Property Name="CollectionDateCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="CollectionTime" Type="varchar" MaxLength="50" />
+          <Property Name="CollectionTimeSpan" Type="varchar" MaxLength="50" />
+          <Property Name="LocalityDescription" Type="nvarchar(max)" />
+          <Property Name="HabitatDescription" Type="nvarchar(max)" />
+          <Property Name="ReferenceTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="ReferenceURI" Type="varchar" MaxLength="255" />
+          <Property Name="CollectingMethod" Type="nvarchar(max)" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="CountryCache" Type="nvarchar" MaxLength="50" />
+          <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="xx_IsAvailable" Type="bit" Nullable="false" />
+          <Property Name="xx_ExpeditionID" Type="int" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <!--Während der Generierung sind Fehler aufgetreten:
+      Warnung 6005: Datentyp 'geography' wird nicht unterstützt; Spalte 'Geography' in Tabelle 'DiversityCollection_BaseTest.dbo.CollectionEventLocalisation' wurde ausgeschlossen.
+      -->
+        <EntityType Name="CollectionEventLocalisation">
+          <Key>
+            <PropertyRef Name="CollectionEventID" />
+            <PropertyRef Name="LocalisationSystemID" />
+          </Key>
+          <Property Name="CollectionEventID" Type="int" Nullable="false" />
+          <Property Name="LocalisationSystemID" Type="int" Nullable="false" />
+          <Property Name="Location1" Type="nvarchar" MaxLength="255" />
+          <Property Name="Location2" Type="nvarchar" MaxLength="255" />
+          <Property Name="LocationAccuracy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LocationNotes" Type="nvarchar(max)" />
+          <Property Name="DeterminationDate" Type="smalldatetime" />
+          <Property Name="DistanceToLocation" Type="varchar" MaxLength="50" />
+          <Property Name="DirectionToLocation" Type="varchar" MaxLength="50" />
+          <Property Name="ResponsibleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ResponsibleAgentURI" Type="varchar" MaxLength="255" />
+          <Property Name="AverageAltitudeCache" Type="float" />
+          <Property Name="AverageLatitudeCache" Type="float" />
+          <Property Name="AverageLongitudeCache" Type="float" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <!--Während der Generierung sind Fehler aufgetreten:
+      Warnung 6005: Datentyp 'geography' wird nicht unterstützt; Spalte 'Geography' in Tabelle 'DiversityCollection_BaseTest.dbo.CollectionEventSeries' wurde ausgeschlossen.
+      -->
+        <EntityType Name="CollectionEventSeries">
+          <Key>
+            <PropertyRef Name="SeriesID" />
+          </Key>
+          <Property Name="SeriesID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="SeriesParentID" Type="int" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SeriesCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="DateCache" Type="datetime" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CollectionProject">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" Nullable="false" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionSpecimen">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="int" Nullable="false" />
+          <Property Name="CollectionEventID" Type="int" />
+          <Property Name="CollectionID" Type="int" />
+          <Property Name="AccessionNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="AccessionDate" Type="datetime" />
+          <Property Name="AccessionDay" Type="tinyint" />
+          <Property Name="AccessionMonth" Type="tinyint" />
+          <Property Name="AccessionYear" Type="smallint" />
+          <Property Name="AccessionDateSupplement" Type="nvarchar" MaxLength="255" />
+          <Property Name="AccessionDateCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="DepositorsName" Type="nvarchar" MaxLength="255" />
+          <Property Name="DepositorsAgentURI" Type="varchar" MaxLength="255" />
+          <Property Name="DepositorsAccessionNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="LabelTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="LabelType" Type="nvarchar" MaxLength="50" />
+          <Property Name="LabelTranscriptionState" Type="nvarchar" MaxLength="50" />
+          <Property Name="LabelTranscriptionNotes" Type="nvarchar" MaxLength="255" />
+          <Property Name="ExsiccataURI" Type="varchar" MaxLength="255" />
+          <Property Name="ExsiccataAbbreviation" Type="nvarchar" MaxLength="255" />
+          <Property Name="OriginalNotes" Type="nvarchar(max)" />
+          <Property Name="AdditionalNotes" Type="nvarchar(max)" />
+          <Property Name="ReferenceTitle" Type="nvarchar" MaxLength="255" />
+          <Property Name="ReferenceURI" Type="varchar" MaxLength="255" />
+          <Property Name="Problems" Type="nvarchar" MaxLength="255" />
+          <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="xx_IsAvailable" Type="bit" Nullable="false" />
+          <Property Name="InternalNotes" Type="nvarchar(max)" />
+          <Property Name="ExternalDatasourceID" Type="int" />
+          <Property Name="ExternalIdentifier" Type="nvarchar" MaxLength="100" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="IdentificationUnit">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="IdentificationUnitID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="int" Nullable="false" />
+          <Property Name="IdentificationUnitID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LastIdentificationCache" Type="nvarchar" Nullable="false" MaxLength="255" />
+          <Property Name="FamilyCache" Type="nvarchar" MaxLength="255" />
+          <Property Name="OrderCache" Type="nvarchar" MaxLength="255" />
+          <Property Name="TaxonomicGroup" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="OnlyObserved" Type="bit" />
+          <Property Name="RelatedUnitID" Type="int" />
+          <Property Name="RelationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="ColonisedSubstratePart" Type="nvarchar" MaxLength="255" />
+          <Property Name="LifeStage" Type="nvarchar" MaxLength="255" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="50" />
+          <Property Name="NumberOfUnits" Type="smallint" />
+          <Property Name="ExsiccataNumber" Type="nvarchar" MaxLength="50" />
+          <Property Name="ExsiccataIdentification" Type="smallint" />
+          <Property Name="UnitIdentifier" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="Circumstances" Type="nvarchar" MaxLength="50" />
+          <Property Name="DisplayOrder" Type="smallint" Nullable="false" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="xx_SubstrateID" Type="int" />
+          <Property Name="xx_SubstrateRelationType" Type="nvarchar" MaxLength="50" />
+          <Property Name="xx_SpecimenPartID" Type="int" />
+          <Property Name="xx_NewUnitID" Type="int" />
+          <Property Name="xx_AlteUnitID" Type="int" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IdentificationUnitAnalysis">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="IdentificationUnitID" />
+            <PropertyRef Name="AnalysisID" />
+            <PropertyRef Name="AnalysisNumber" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="int" Nullable="false" />
+          <Property Name="IdentificationUnitID" Type="int" Nullable="false" />
+          <Property Name="AnalysisID" Type="int" Nullable="false" />
+          <Property Name="AnalysisNumber" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="AnalysisResult" Type="nvarchar(max)" />
+          <Property Name="ExternalAnalysisURI" Type="varchar" MaxLength="255" />
+          <Property Name="ResponsibleName" Type="nvarchar" MaxLength="255" />
+          <Property Name="ResponsibleAgentURI" Type="varchar" MaxLength="255" />
+          <Property Name="AnalysisDate" Type="nvarchar" MaxLength="50" />
+          <Property Name="SpecimenPartID" Type="int" />
+          <Property Name="Notes" Type="nvarchar(max)" />
+          <Property Name="LogCreatedWhen" Type="datetime" />
+          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="LogUpdatedWhen" Type="datetime" />
+          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CollectionAgent_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.Store.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CollectionAgent" Type="DiversityCollection.Store.CollectionAgent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="CollectionAgent">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEvent_CollectionEventSeries">
+          <End Role="CollectionEventSeries" Type="DiversityCollection.Store.CollectionEventSeries" Multiplicity="0..1" />
+          <End Role="CollectionEvent" Type="DiversityCollection.Store.CollectionEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSeries">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEvent">
+              <PropertyRef Name="SeriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEventSeries_CollectionEventSeries">
+          <End Role="CollectionEventSeries" Type="DiversityCollection.Store.CollectionEventSeries" Multiplicity="0..1" />
+          <End Role="CollectionEventSeries1" Type="DiversityCollection.Store.CollectionEventSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSeries">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEventSeries1">
+              <PropertyRef Name="SeriesParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLocalisation_CollectionEvent">
+          <End Role="CollectionEvent" Type="DiversityCollection.Store.CollectionEvent" Multiplicity="1" />
+          <End Role="CollectionEventLocalisation" Type="DiversityCollection.Store.CollectionEventLocalisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEvent">
+              <PropertyRef Name="CollectionEventID" />
+            </Principal>
+            <Dependent Role="CollectionEventLocalisation">
+              <PropertyRef Name="CollectionEventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionProject_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.Store.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CollectionProject" Type="DiversityCollection.Store.CollectionProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="CollectionProject">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionSpecimen_CollectionEvent">
+          <End Role="CollectionEvent" Type="DiversityCollection.Store.CollectionEvent" Multiplicity="0..1" />
+          <End Role="CollectionSpecimen" Type="DiversityCollection.Store.CollectionSpecimen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEvent">
+              <PropertyRef Name="CollectionEventID" />
+            </Principal>
+            <Dependent Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionEventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnit_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.Store.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentificationUnit" Type="DiversityCollection.Store.IdentificationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="IdentificationUnit">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnitAnalysis_IdentificationUnit">
+          <End Role="IdentificationUnit" Type="DiversityCollection.Store.IdentificationUnit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentificationUnitAnalysis" Type="DiversityCollection.Store.IdentificationUnitAnalysis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentificationUnit">
+              <PropertyRef Name="CollectionSpecimenID" />
+              <PropertyRef Name="IdentificationUnitID" />
+            </Principal>
+            <Dependent Role="IdentificationUnitAnalysis">
+              <PropertyRef Name="CollectionSpecimenID" />
+              <PropertyRef Name="IdentificationUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DiversityCollection" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DiversityCollection_BaseTestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AnalysisTaxonomicGroup" EntityType="DiversityCollection.AnalysisTaxonomicGroup" />
+          <EntitySet Name="CollectionAgent" EntityType="DiversityCollection.CollectionAgent" />
+          <EntitySet Name="CollectionEvent" EntityType="DiversityCollection.CollectionEvent" />
+          <EntitySet Name="CollectionEventLocalisation" EntityType="DiversityCollection.CollectionEventLocalisation" />
+          <EntitySet Name="CollectionEventSeries" EntityType="DiversityCollection.CollectionEventSeries" />
+          <EntitySet Name="CollectionProject" EntityType="DiversityCollection.CollectionProject" />
+          <EntitySet Name="CollectionSpecimen" EntityType="DiversityCollection.CollectionSpecimen" />
+          <EntitySet Name="IdentificationUnit" EntityType="DiversityCollection.IdentificationUnit" />
+          <EntitySet Name="IdentificationUnitAnalysis" EntityType="DiversityCollection.IdentificationUnitAnalysis" />
+          <AssociationSet Name="FK_CollectionAgent_CollectionSpecimen" Association="DiversityCollection.FK_CollectionAgent_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="CollectionAgent" EntitySet="CollectionAgent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEvent_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries">
+            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionLocalisation_CollectionEvent" Association="DiversityCollection.FK_CollectionLocalisation_CollectionEvent">
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+            <End Role="CollectionEventLocalisation" EntitySet="CollectionEventLocalisation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionSpecimen_CollectionEvent" Association="DiversityCollection.FK_CollectionSpecimen_CollectionEvent">
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEventSeries_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries">
+            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEventSeries1" EntitySet="CollectionEventSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionProject_CollectionSpecimen" Association="DiversityCollection.FK_CollectionProject_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="CollectionProject" EntitySet="CollectionProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnit_CollectionSpecimen" Association="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen">
+            <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnitAnalysis_IdentificationUnit" Association="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit">
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+            <End Role="IdentificationUnitAnalysis" EntitySet="IdentificationUnitAnalysis" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AnalysisTaxonomicGroup">
+          <Key>
+            <PropertyRef Name="AnalysisID" />
+            <PropertyRef Name="TaxonomicGroup" />
+          </Key>
+          <Property Name="AnalysisID" Type="Int32" Nullable="false" />
+          <Property Name="TaxonomicGroup" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CollectionAgent">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="CollectorsName" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="Int32" Nullable="false" />
+          <Property Name="CollectorsName" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="CollectorsAgentURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="CollectorsSequence" Type="DateTime" />
+          <Property Name="CollectorsNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DataWithholdingReason" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="xx_IsAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_CollectionAgent_CollectionSpecimen" FromRole="CollectionAgent" ToRole="CollectionSpecimen" />
+        </EntityType>
+        <EntityType Name="CollectionEvent">
+          <Key>
+            <PropertyRef Name="CollectionEventID" />
+          </Key>
+          <Property Name="CollectionEventID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="SeriesID" Type="Int32" />
+          <Property Name="CollectorsEventNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CollectionDate" Type="DateTime" />
+          <Property Name="CollectionDay" Type="Byte" />
+          <Property Name="CollectionMonth" Type="Byte" />
+          <Property Name="CollectionYear" Type="Int16" />
+          <Property Name="CollectionDateSupplement" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="CollectionDateCategory" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="CollectionTime" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="CollectionTimeSpan" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="LocalityDescription" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="HabitatDescription" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ReferenceTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ReferenceURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="CollectingMethod" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="CountryCache" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DataWithholdingReason" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="xx_IsAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="xx_ExpeditionID" Type="Int32" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <Property Name="ReferenceDetails" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="CollectionEventSeries" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEvent" ToRole="CollectionEventSeries" />
+          <NavigationProperty Name="CollectionEventLocalisation" Relationship="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionEventLocalisation" />
+          <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_CollectionSpecimen_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionSpecimen" />
+        </EntityType>
+        <EntityType Name="CollectionEventLocalisation">
+          <Key>
+            <PropertyRef Name="CollectionEventID" />
+            <PropertyRef Name="LocalisationSystemID" />
+          </Key>
+          <Property Name="CollectionEventID" Type="Int32" Nullable="false" />
+          <Property Name="LocalisationSystemID" Type="Int32" Nullable="false" />
+          <Property Name="Location1" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Location2" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LocationAccuracy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LocationNotes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DeterminationDate" Type="DateTime" />
+          <Property Name="DistanceToLocation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="DirectionToLocation" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
+          <Property Name="ResponsibleName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ResponsibleAgentURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="AverageAltitudeCache" Type="Double" />
+          <Property Name="AverageLatitudeCache" Type="Double" />
+          <Property Name="AverageLongitudeCache" Type="Double" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" FromRole="CollectionEventLocalisation" ToRole="CollectionEvent" />
+        </EntityType>
+        <EntityType Name="CollectionEventSeries">
+          <Key>
+            <PropertyRef Name="SeriesID" />
+          </Key>
+          <Property Name="SeriesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SeriesParentID" Type="Int32" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="SeriesCode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="DateCache" Type="DateTime" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <Property Name="DateStart" Type="DateTime" />
+          <Property Name="DateEnd" Type="DateTime" />
+          <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEventSeries" ToRole="CollectionEvent" />
+          <NavigationProperty Name="CollectionEventSeries1" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSeries" ToRole="CollectionEventSeries1" />
+          <NavigationProperty Name="CollectionEventSeries2" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSeries1" ToRole="CollectionEventSeries" />
+        </EntityType>
+        <EntityType Name="CollectionProject">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="ProjectID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" Nullable="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_CollectionProject_CollectionSpecimen" FromRole="CollectionProject" ToRole="CollectionSpecimen" />
+        </EntityType>
+        <EntityType Name="CollectionSpecimen">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Version" Type="Int32" Nullable="false" />
+          <Property Name="CollectionEventID" Type="Int32" />
+          <Property Name="CollectionID" Type="Int32" />
+          <Property Name="AccessionNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AccessionDate" Type="DateTime" />
+          <Property Name="AccessionDay" Type="Byte" />
+          <Property Name="AccessionMonth" Type="Byte" />
+          <Property Name="AccessionYear" Type="Int16" />
+          <Property Name="AccessionDateSupplement" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="AccessionDateCategory" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DepositorsName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="DepositorsAgentURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="DepositorsAccessionNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LabelTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LabelType" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LabelTranscriptionState" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LabelTranscriptionNotes" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ExsiccataURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ExsiccataAbbreviation" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="OriginalNotes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="AdditionalNotes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ReferenceTitle" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ReferenceURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="Problems" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="DataWithholdingReason" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="xx_IsAvailable" Type="Boolean" Nullable="false" />
+          <Property Name="InternalNotes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ExternalDatasourceID" Type="Int32" />
+          <Property Name="ExternalIdentifier" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <Property Name="ReferenceDetails" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="CollectionAgent" Relationship="DiversityCollection.FK_CollectionAgent_CollectionSpecimen" FromRole="CollectionSpecimen" ToRole="CollectionAgent" />
+          <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionSpecimen_CollectionEvent" FromRole="CollectionSpecimen" ToRole="CollectionEvent" />
+          <NavigationProperty Name="CollectionProject" Relationship="DiversityCollection.FK_CollectionProject_CollectionSpecimen" FromRole="CollectionSpecimen" ToRole="CollectionProject" />
+          <NavigationProperty Name="IdentificationUnit" Relationship="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen" FromRole="CollectionSpecimen" ToRole="IdentificationUnit" />
+        </EntityType>
+        <EntityType Name="IdentificationUnit">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="IdentificationUnitID" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="Int32" Nullable="false" />
+          <Property Name="IdentificationUnitID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LastIdentificationCache" Type="String" Nullable="false" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="FamilyCache" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="OrderCache" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="TaxonomicGroup" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="OnlyObserved" Type="Boolean" />
+          <Property Name="RelatedUnitID" Type="Int32" />
+          <Property Name="RelationType" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ColonisedSubstratePart" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LifeStage" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="NumberOfUnits" Type="Int16" />
+          <Property Name="ExsiccataNumber" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ExsiccataIdentification" Type="Int16" />
+          <Property Name="UnitIdentifier" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="UnitDescription" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Circumstances" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="DisplayOrder" Type="Int16" Nullable="false" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="xx_SubstrateID" Type="Int32" />
+          <Property Name="xx_SubstrateRelationType" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="xx_SpecimenPartID" Type="Int32" />
+          <Property Name="xx_NewUnitID" Type="Int32" />
+          <Property Name="xx_AlteUnitID" Type="Int32" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen" FromRole="IdentificationUnit" ToRole="CollectionSpecimen" />
+          <NavigationProperty Name="IdentificationUnitAnalysis" Relationship="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit" FromRole="IdentificationUnit" ToRole="IdentificationUnitAnalysis" />
+        </EntityType>
+        <EntityType Name="IdentificationUnitAnalysis">
+          <Key>
+            <PropertyRef Name="CollectionSpecimenID" />
+            <PropertyRef Name="IdentificationUnitID" />
+            <PropertyRef Name="AnalysisID" />
+            <PropertyRef Name="AnalysisNumber" />
+          </Key>
+          <Property Name="CollectionSpecimenID" Type="Int32" Nullable="false" />
+          <Property Name="IdentificationUnitID" Type="Int32" Nullable="false" />
+          <Property Name="AnalysisID" Type="Int32" Nullable="false" />
+          <Property Name="AnalysisNumber" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="AnalysisResult" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="ExternalAnalysisURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="ResponsibleName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ResponsibleAgentURI" Type="String" MaxLength="255" Unicode="false" FixedLength="false" />
+          <Property Name="AnalysisDate" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="SpecimenPartID" Type="Int32" />
+          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LogCreatedWhen" Type="DateTime" />
+          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="LogUpdatedWhen" Type="DateTime" />
+          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="RowGUID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="IdentificationUnit" Relationship="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit" FromRole="IdentificationUnitAnalysis" ToRole="IdentificationUnit" />
+        </EntityType>
+        <Association Name="FK_CollectionAgent_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CollectionAgent" Type="DiversityCollection.CollectionAgent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="CollectionAgent">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEvent_CollectionEventSeries">
+          <End Role="CollectionEventSeries" Type="DiversityCollection.CollectionEventSeries" Multiplicity="0..1" />
+          <End Role="CollectionEvent" Type="DiversityCollection.CollectionEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSeries">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEvent">
+              <PropertyRef Name="SeriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionLocalisation_CollectionEvent">
+          <End Role="CollectionEvent" Type="DiversityCollection.CollectionEvent" Multiplicity="1" />
+          <End Role="CollectionEventLocalisation" Type="DiversityCollection.CollectionEventLocalisation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEvent">
+              <PropertyRef Name="CollectionEventID" />
+            </Principal>
+            <Dependent Role="CollectionEventLocalisation">
+              <PropertyRef Name="CollectionEventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionSpecimen_CollectionEvent">
+          <End Role="CollectionEvent" Type="DiversityCollection.CollectionEvent" Multiplicity="0..1" />
+          <End Role="CollectionSpecimen" Type="DiversityCollection.CollectionSpecimen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEvent">
+              <PropertyRef Name="CollectionEventID" />
+            </Principal>
+            <Dependent Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionEventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEventSeries_CollectionEventSeries">
+          <End Role="CollectionEventSeries" Type="DiversityCollection.CollectionEventSeries" Multiplicity="0..1" />
+          <End Role="CollectionEventSeries1" Type="DiversityCollection.CollectionEventSeries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSeries">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEventSeries1">
+              <PropertyRef Name="SeriesParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionProject_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CollectionProject" Type="DiversityCollection.CollectionProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="CollectionProject">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnit_CollectionSpecimen">
+          <End Role="CollectionSpecimen" Type="DiversityCollection.CollectionSpecimen" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentificationUnit" Type="DiversityCollection.IdentificationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionSpecimen">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Principal>
+            <Dependent Role="IdentificationUnit">
+              <PropertyRef Name="CollectionSpecimenID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnitAnalysis_IdentificationUnit">
+          <End Role="IdentificationUnit" Type="DiversityCollection.IdentificationUnit" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="IdentificationUnitAnalysis" Type="DiversityCollection.IdentificationUnitAnalysis" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="IdentificationUnit">
+              <PropertyRef Name="CollectionSpecimenID" />
+              <PropertyRef Name="IdentificationUnitID" />
+            </Principal>
+            <Dependent Role="IdentificationUnitAnalysis">
+              <PropertyRef Name="CollectionSpecimenID" />
+              <PropertyRef Name="IdentificationUnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DiversityCollectionStoreContainer" CdmEntityContainer="DiversityCollection_BaseTestEntities">
+          <EntitySetMapping Name="AnalysisTaxonomicGroup"><EntityTypeMapping TypeName="DiversityCollection.AnalysisTaxonomicGroup"><MappingFragment StoreEntitySet="AnalysisTaxonomicGroup">
+            <ScalarProperty Name="AnalysisID" ColumnName="AnalysisID" />
+            <ScalarProperty Name="TaxonomicGroup" ColumnName="TaxonomicGroup" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionAgent"><EntityTypeMapping TypeName="DiversityCollection.CollectionAgent"><MappingFragment StoreEntitySet="CollectionAgent">
+            <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
+            <ScalarProperty Name="CollectorsName" ColumnName="CollectorsName" />
+            <ScalarProperty Name="CollectorsAgentURI" ColumnName="CollectorsAgentURI" />
+            <ScalarProperty Name="CollectorsSequence" ColumnName="CollectorsSequence" />
+            <ScalarProperty Name="CollectorsNumber" ColumnName="CollectorsNumber" />
+            <ScalarProperty Name="Notes" ColumnName="Notes" />
+            <ScalarProperty Name="DataWithholdingReason" ColumnName="DataWithholdingReason" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="xx_IsAvailable" ColumnName="xx_IsAvailable" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionEvent"><EntityTypeMapping TypeName="DiversityCollection.CollectionEvent"><MappingFragment StoreEntitySet="CollectionEvent">
+            <ScalarProperty Name="CollectionEventID" ColumnName="CollectionEventID" />
+            <ScalarProperty Name="Version" ColumnName="Version" />
+            <ScalarProperty Name="SeriesID" ColumnName="SeriesID" />
+            <ScalarProperty Name="CollectorsEventNumber" ColumnName="CollectorsEventNumber" />
+            <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+            <ScalarProperty Name="CollectionDay" ColumnName="CollectionDay" />
+            <ScalarProperty Name="CollectionMonth" ColumnName="CollectionMonth" />
+            <ScalarProperty Name="CollectionYear" ColumnName="CollectionYear" />
+            <ScalarProperty Name="CollectionDateSupplement" ColumnName="CollectionDateSupplement" />
+            <ScalarProperty Name="CollectionDateCategory" ColumnName="CollectionDateCategory" />
+            <ScalarProperty Name="CollectionTime" ColumnName="CollectionTime" />
+            <ScalarProperty Name="CollectionTimeSpan" ColumnName="CollectionTimeSpan" />
+            <ScalarProperty Name="LocalityDescription" ColumnName="LocalityDescription" />
+            <ScalarProperty Name="HabitatDescription" ColumnName="HabitatDescription" />
+            <ScalarProperty Name="ReferenceTitle" ColumnName="ReferenceTitle" />
+            <ScalarProperty Name="ReferenceURI" ColumnName="ReferenceURI" />
+            <ScalarProperty Name="CollectingMethod" ColumnName="CollectingMethod" />
+            <ScalarProperty Name="Notes" ColumnName="Notes" />
+            <ScalarProperty Name="CountryCache" ColumnName="CountryCache" />
+            <ScalarProperty Name="DataWithholdingReason" ColumnName="DataWithholdingReason" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="xx_IsAvailable" ColumnName="xx_IsAvailable" />
+            <ScalarProperty Name="xx_ExpeditionID" ColumnName="xx_ExpeditionID" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+            <ScalarProperty Name="ReferenceDetails" ColumnName="ReferenceDetails" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionEventLocalisation"><EntityTypeMapping TypeName="DiversityCollection.CollectionEventLocalisation"><MappingFragment StoreEntitySet="CollectionEventLocalisation">
+            <ScalarProperty Name="CollectionEventID" ColumnName="CollectionEventID" />
+            <ScalarProperty Name="LocalisationSystemID" ColumnName="LocalisationSystemID" />
+            <ScalarProperty Name="Location1" ColumnName="Location1" />
+            <ScalarProperty Name="Location2" ColumnName="Location2" />
+            <ScalarProperty Name="LocationAccuracy" ColumnName="LocationAccuracy" />
+            <ScalarProperty Name="LocationNotes" ColumnName="LocationNotes" />
+            <ScalarProperty Name="DeterminationDate" ColumnName="DeterminationDate" />
+            <ScalarProperty Name="DistanceToLocation" ColumnName="DistanceToLocation" />
+            <ScalarProperty Name="DirectionToLocation" ColumnName="DirectionToLocation" />
+            <ScalarProperty Name="ResponsibleName" ColumnName="ResponsibleName" />
+            <ScalarProperty Name="ResponsibleAgentURI" ColumnName="ResponsibleAgentURI" />
+            <ScalarProperty Name="AverageAltitudeCache" ColumnName="AverageAltitudeCache" />
+            <ScalarProperty Name="AverageLatitudeCache" ColumnName="AverageLatitudeCache" />
+            <ScalarProperty Name="AverageLongitudeCache" ColumnName="AverageLongitudeCache" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionEventSeries"><EntityTypeMapping TypeName="DiversityCollection.CollectionEventSeries"><MappingFragment StoreEntitySet="CollectionEventSeries">
+            <ScalarProperty Name="SeriesID" ColumnName="SeriesID" />
+            <ScalarProperty Name="SeriesParentID" ColumnName="SeriesParentID" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+            <ScalarProperty Name="SeriesCode" ColumnName="SeriesCode" />
+            <ScalarProperty Name="Notes" ColumnName="Notes" />
+            <ScalarProperty Name="DateCache" ColumnName="DateCache" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+            <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+            <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionProject"><EntityTypeMapping TypeName="DiversityCollection.CollectionProject"><MappingFragment StoreEntitySet="CollectionProject">
+            <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
+            <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="CollectionSpecimen"><EntityTypeMapping TypeName="DiversityCollection.CollectionSpecimen"><MappingFragment StoreEntitySet="CollectionSpecimen">
+            <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
+            <ScalarProperty Name="Version" ColumnName="Version" />
+            <ScalarProperty Name="CollectionEventID" ColumnName="CollectionEventID" />
+            <ScalarProperty Name="CollectionID" ColumnName="CollectionID" />
+            <ScalarProperty Name="AccessionNumber" ColumnName="AccessionNumber" />
+            <ScalarProperty Name="AccessionDate" ColumnName="AccessionDate" />
+            <ScalarProperty Name="AccessionDay" ColumnName="AccessionDay" />
+            <ScalarProperty Name="AccessionMonth" ColumnName="AccessionMonth" />
+            <ScalarProperty Name="AccessionYear" ColumnName="AccessionYear" />
+            <ScalarProperty Name="AccessionDateSupplement" ColumnName="AccessionDateSupplement" />
+            <ScalarProperty Name="AccessionDateCategory" ColumnName="AccessionDateCategory" />
+            <ScalarProperty Name="DepositorsName" ColumnName="DepositorsName" />
+            <ScalarProperty Name="DepositorsAgentURI" ColumnName="DepositorsAgentURI" />
+            <ScalarProperty Name="DepositorsAccessionNumber" ColumnName="DepositorsAccessionNumber" />
+            <ScalarProperty Name="LabelTitle" ColumnName="LabelTitle" />
+            <ScalarProperty Name="LabelType" ColumnName="LabelType" />
+            <ScalarProperty Name="LabelTranscriptionState" ColumnName="LabelTranscriptionState" />
+            <ScalarProperty Name="LabelTranscriptionNotes" ColumnName="LabelTranscriptionNotes" />
+            <ScalarProperty Name="ExsiccataURI" ColumnName="ExsiccataURI" />
+            <ScalarProperty Name="ExsiccataAbbreviation" ColumnName="ExsiccataAbbreviation" />
+            <ScalarProperty Name="OriginalNotes" ColumnName="OriginalNotes" />
+            <ScalarProperty Name="AdditionalNotes" ColumnName="AdditionalNotes" />
+            <ScalarProperty Name="ReferenceTitle" ColumnName="ReferenceTitle" />
+            <ScalarProperty Name="ReferenceURI" ColumnName="ReferenceURI" />
+            <ScalarProperty Name="Problems" ColumnName="Problems" />
+            <ScalarProperty Name="DataWithholdingReason" ColumnName="DataWithholdingReason" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="xx_IsAvailable" ColumnName="xx_IsAvailable" />
+            <ScalarProperty Name="InternalNotes" ColumnName="InternalNotes" />
+            <ScalarProperty Name="ExternalDatasourceID" ColumnName="ExternalDatasourceID" />
+            <ScalarProperty Name="ExternalIdentifier" ColumnName="ExternalIdentifier" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+            <ScalarProperty Name="ReferenceDetails" ColumnName="ReferenceDetails" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="IdentificationUnit"><EntityTypeMapping TypeName="DiversityCollection.IdentificationUnit"><MappingFragment StoreEntitySet="IdentificationUnit">
+            <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
+            <ScalarProperty Name="IdentificationUnitID" ColumnName="IdentificationUnitID" />
+            <ScalarProperty Name="LastIdentificationCache" ColumnName="LastIdentificationCache" />
+            <ScalarProperty Name="FamilyCache" ColumnName="FamilyCache" />
+            <ScalarProperty Name="OrderCache" ColumnName="OrderCache" />
+            <ScalarProperty Name="TaxonomicGroup" ColumnName="TaxonomicGroup" />
+            <ScalarProperty Name="OnlyObserved" ColumnName="OnlyObserved" />
+            <ScalarProperty Name="RelatedUnitID" ColumnName="RelatedUnitID" />
+            <ScalarProperty Name="RelationType" ColumnName="RelationType" />
+            <ScalarProperty Name="ColonisedSubstratePart" ColumnName="ColonisedSubstratePart" />
+            <ScalarProperty Name="LifeStage" ColumnName="LifeStage" />
+            <ScalarProperty Name="Gender" ColumnName="Gender" />
+            <ScalarProperty Name="NumberOfUnits" ColumnName="NumberOfUnits" />
+            <ScalarProperty Name="ExsiccataNumber" ColumnName="ExsiccataNumber" />
+            <ScalarProperty Name="ExsiccataIdentification" ColumnName="ExsiccataIdentification" />
+            <ScalarProperty Name="UnitIdentifier" ColumnName="UnitIdentifier" />
+            <ScalarProperty Name="UnitDescription" ColumnName="UnitDescription" />
+            <ScalarProperty Name="Circumstances" ColumnName="Circumstances" />
+            <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+            <ScalarProperty Name="Notes" ColumnName="Notes" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="xx_SubstrateID" ColumnName="xx_SubstrateID" />
+            <ScalarProperty Name="xx_SubstrateRelationType" ColumnName="xx_SubstrateRelationType" />
+            <ScalarProperty Name="xx_SpecimenPartID" ColumnName="xx_SpecimenPartID" />
+            <ScalarProperty Name="xx_NewUnitID" ColumnName="xx_NewUnitID" />
+            <ScalarProperty Name="xx_AlteUnitID" ColumnName="xx_AlteUnitID" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="IdentificationUnitAnalysis"><EntityTypeMapping TypeName="DiversityCollection.IdentificationUnitAnalysis"><MappingFragment StoreEntitySet="IdentificationUnitAnalysis">
+            <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
+            <ScalarProperty Name="IdentificationUnitID" ColumnName="IdentificationUnitID" />
+            <ScalarProperty Name="AnalysisID" ColumnName="AnalysisID" />
+            <ScalarProperty Name="AnalysisNumber" ColumnName="AnalysisNumber" />
+            <ScalarProperty Name="AnalysisResult" ColumnName="AnalysisResult" />
+            <ScalarProperty Name="ExternalAnalysisURI" ColumnName="ExternalAnalysisURI" />
+            <ScalarProperty Name="ResponsibleName" ColumnName="ResponsibleName" />
+            <ScalarProperty Name="ResponsibleAgentURI" ColumnName="ResponsibleAgentURI" />
+            <ScalarProperty Name="AnalysisDate" ColumnName="AnalysisDate" />
+            <ScalarProperty Name="SpecimenPartID" ColumnName="SpecimenPartID" />
+            <ScalarProperty Name="Notes" ColumnName="Notes" />
+            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="DiversityCollection">
+        <EntityTypeShape EntityType="DiversityCollection.AnalysisTaxonomicGroup" Width="1.5" PointX="5.75" PointY="0.75" Height="1.9802864583333333" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionAgent" Width="1.5" PointX="3" PointY="1.625" Height="3.7109993489583317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionEvent" Width="1.5" PointX="1.5" PointY="17.5" Height="6.9801236979166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionEventLocalisation" Width="1.5" PointX="3.75" PointY="18.625" Height="4.8648079427083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionEventSeries" Width="1.5" PointX="1.5" PointY="26" Height="4.0956022135416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionProject" Width="1.5" PointX="3" PointY="6" Height="2.5571907552083317" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.CollectionSpecimen" Width="1.5" PointX="0.75" PointY="4.625" Height="8.7108365885416674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.IdentificationUnit" Width="1.5" PointX="3" PointY="9.375" Height="7.1724251302083353" IsExpanded="true" />
+        <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitAnalysis" Width="1.5" PointX="5.25" PointY="10.75" Height="4.2879036458333353" IsExpanded="true" />
+        <AssociationConnector Association="DiversityCollection.FK_CollectionAgent_CollectionSpecimen" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.9804996744791659" />
+          <ConnectorPoint PointX="3" PointY="4.9804996744791659" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="26" />
+          <ConnectorPoint PointX="2.25" PointY="24.480123697916667" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" ManuallyRouted="false">
+          <ConnectorPoint PointX="3" PointY="21.057403971354166" />
+          <ConnectorPoint PointX="3.75" PointY="21.057403971354166" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionSpecimen_CollectionEvent" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.875" PointY="17.5" />
+          <ConnectorPoint PointX="1.875" PointY="13.335836588541667" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.0319230769230767" PointY="30.095602213541667" />
+          <ConnectorPoint PointX="2.0319230769230767" PointY="30.345602213541667" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="30.345602213541667" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="30.095602213541667" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionProject_CollectionSpecimen" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="7.2785953776041659" />
+          <ConnectorPoint PointX="3" PointY="7.2785953776041659" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="11.355418294270834" />
+          <ConnectorPoint PointX="3" PointY="11.355418294270834" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="12.893951822916668" />
+          <ConnectorPoint PointX="5.25" PointY="12.893951822916668" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

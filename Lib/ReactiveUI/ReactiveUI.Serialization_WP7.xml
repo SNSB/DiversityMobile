@@ -1,0 +1,562 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ReactiveUI.Serialization_WP7</name>
+    </assembly>
+    <members>
+        <member name="T:ReactiveUI.Serialization.DictionaryStorageEngine">
+            <summary>
+            DictionaryStorageEngine is an implementation of IStorageEngine designed
+            for testing and debugging purposes; it stores all elements in memory,
+            and optionally persists its store to a JSON file or in Isolated Storage.
+            
+            This engine is only suited to very small production use-cases, as you
+            will almost certainly run out of memory with large collections.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.IStorageEngine">
+            <summary>
+            IStorageEngine is the core interface for classes that can maintain and
+            persist list of sync points. Its core responsibilities are to quickly
+            Load and Save individual objects, and create and list Sync Points
+            (objects that represent an atomic commit to the Storage engine)
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.Load``1(System.Guid)">
+            <summary>
+            Loads an object given its Content Hash. Note that it is critical
+            that separate calls to Load with the same ContentHash return two
+            distinct in-memory copies of the object - i.e. maintaining an
+            "object cache" will result in object corruption. 
+            </summary>
+            <param name="contentHash">The hash of the object to load.</param>
+            <returns>The deserialized object, or null if the object is not
+            present.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.Load(System.Guid)">
+            <summary>
+            Loads an object given its Content Hash. Note that it is critical
+            that separate calls to Load with the same ContentHash return two
+            distinct in-memory copies of the object - i.e. maintaining an
+            "object cache" will result in object corruption. 
+            </summary>
+            <param name="contentHash">The hash of the object to load.</param>
+            <returns>The deserialized object, or null if the object is not
+            present.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.Save``1(``0)">
+            <summary>
+            Saves an object to the persistence engine. Note that this does *not*
+            imply that the object is immediately written to the backing store,
+            the engine is free to postpone serialization.
+            </summary>
+            <param name="obj">The object to save.</param>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.FlushChanges">
+            <summary>
+            When called, guarantees all objects are serialized to a persistent
+            store.
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.GetAllObjectHashes">
+            <summary>
+            Returns the content hash of all objects in the store.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.GetObjectCount">
+            <summary>
+            Returns the count of available objects.
+            </summary>
+            <returns>The count of available objects.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.CreateSyncPoint``1(``0,System.String,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Creates a Sync Point using the specified root object and qualifier
+            and persists it to the engine. This sync point will be attached to
+            the parent sync point for this type and qualifier.
+            </summary>
+            <param name="obj">The Root Object to attach to this sync point.</param>
+            <param name="qualifier">An optional string to create separate sync
+            point lists (i.e. "branches") - this is a string provided by the
+            application or null.</param>
+            <param name="createdOn">The date that the sync point was created, or
+            null to use the current time.</param>
+            <returns>A reference to the newly created sync point</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IStorageEngine.GetOrderedRevisionList(System.Type,System.String)">
+            <summary>
+            GetOrderedRevisionList returns the list of Sync Points commited for
+            the given root object Type and qualifier.
+            </summary>
+            <param name="type">The Type of the root object associated with the
+            Sync Point.</param>
+            <param name="qualifier">An optional string to create separate sync
+            point lists (i.e. "branches") - this is a string provided by the
+            application or null.</param>
+            <returns>A list of content hashes, in the order that they were
+            committed. Note that this does *not* necessarily correlate to the
+            CreatedOn date since it can be explicitly set.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.#ctor(System.String,System.Func{System.Object,ReactiveUI.Serialization.IObjectSerializationProvider})">
+            <summary>
+            
+            </summary>
+            <param name="path"></param>
+            <param name="serializerFactory"></param>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.Load``1(System.Guid)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="contentHash"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.Load(System.Guid)">
+            <summary>
+            
+            </summary>
+            <param name="contentHash"></param>
+            <returns></returns>
+            <exception cref="T:System.Exception">Engine is inconsistent</exception>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.Save``1(``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <exception cref="T:System.Exception">Cannot serialize object with zero ContentHash</exception>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.FlushChanges">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.GetAllObjectHashes">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.GetObjectCount">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.CreateSyncPoint``1(``0,System.String,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+            <param name="qualifier"></param>
+            <param name="createdOn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.DictionaryStorageEngine.GetOrderedRevisionList(System.Type,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="type"></param>
+            <param name="qualifier"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ReactiveUI.Serialization.ISerializableItem">
+            <summary>
+            ISerializableItem represents any object that can be serialized via a
+            Sync Point, either directly or via a property in the object graph. Its
+            core feature is that it can return a unique hash representing its
+            content.
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.ISerializableItem.CalculateHash">
+            <summary>
+            Explicitly recalculates the value of ContentHash - note that
+            similarly to CalculateHash, this cannot return Guid.Empty (a
+            suggested solution is to return the MD5 hash of GetType().FullName
+            if an object has no hashable data)
+            </summary>
+            <returns>The hash of the content.</returns>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISerializableItem.ContentHash">
+            <summary>
+            A hash representing the content of the object. Note that this should
+            be implemented using a cache-pattern, calling CalculateHash as
+            needed. This property *cannot* be Guid.Empty.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.ISerializableList">
+             <summary>
+             ISerializableList represents a list of serializable objects, which can
+             be serialized as their hashes instead of the actual list items. 
+            
+             This interface exists mainly for the framework, and ISerializableList of
+             T should be used instead.
+             </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.ISerializableList.GetBaseListType">
+            <summary>
+            GetBaseListType returns the Type of all the items in the list - if
+            the list is heterogenous, return typeof(object).
+            </summary>
+            <returns>The Type of all the items in the list.</returns>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISerializableList.CreatedOn">
+            <summary>
+            CreatedOn returns the date each item was added to the list.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISerializableList.UpdatedOn">
+            <summary>
+            XXX: YOU SHOULD PROBABLY REMOVE THIS
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.ISerializableList`1">
+            <summary>
+            ISerializableList of T represents a list of serializable objects, which can
+            be serialized as their hashes instead of the actual list items.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.ISyncPointInformation">
+            <summary>
+            ISyncPointInformation represents a Sync Point, a commit to the
+            serialization store where we will record the object state. Override this
+            only if you want to commit custom information with a sync point in an
+            Engine implementation, otherwise use SyncPointInformation.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISyncPointInformation.RootObjectHash">
+            <summary>
+            The content hash of the root object serialized in this sync point.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISyncPointInformation.ParentSyncPoint">
+            <summary>
+            The content hash of the parent ISyncPointInformation object, or
+            Guid.Empty if this is the initial commit.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISyncPointInformation.RootObjectTypeName">
+            <summary>
+            The full type name (i.e. Type.FullName) of the root object.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISyncPointInformation.Qualifier">
+            <summary>
+            An optional string to create separate sync point lists (i.e.
+            "branches") - this is a string provided by the application or null.
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.ISyncPointInformation.CreatedOn">
+            <summary>
+            The date that the sync point was created.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.IExtendedStorageEngine">
+            <summary>
+            IExtendedStorageEngine provides additional methods that would most
+            likely be needed by applications. If this interface is not explicitly
+            implemented in storage implementations, a naive low performance
+            implementation that uses the IStorageEngine methods will be used.
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IExtendedStorageEngine.GetLatestRootObject``1(System.String,System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Load the root object associated with the the latest Sync Point for
+            the given type and qualifier whose CreatedAt date is older than the
+            given date.
+            </summary>
+            <param name="qualifier">An optional string to create separate sync
+            point lists (i.e. "branches") - this is a string provided by the
+            application or null.</param>
+            <param name="olderThan">An optional paramter that requires the
+            return value to be older than the given date. If no date is given,
+            the newest root object is returned.</param>
+            <returns>The root object from the latest Sync Point that satisfies
+            the given constraints.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IExtendedStorageEngine.GetRootObjectsInDateRange``1(System.String,System.Nullable{System.DateTimeOffset},System.Nullable{System.DateTimeOffset})">
+            <summary>
+            Loads the root objects whose CreatedAt date fall within the given
+            date ranges.
+            </summary>
+            <param name="qualifier">An optional string to create separate sync
+            point lists (i.e. "branches") - this is a string provided by the
+            application or null.</param>
+            <param name="olderThan">An optional paramter that requires the
+            return values to be older than the given date. If no date is given,
+            this constraint is ignored.</param>
+            <param name="newerThan">An optional paramter that requires the
+            return values to be newer than the given date. If no date is given,
+            this constraint is ignored.</param>
+            <returns>All root objects whose Sync Points satisfy the given
+            constraints, or an empty array if none of them qualify.</returns>
+        </member>
+        <member name="T:ReactiveUI.Serialization.IObjectSerializationProvider">
+             <summary>
+             IObjectSerializationProvider decouples the task of serialization (i.e.
+             reducing an object to its on-disk form) from persistence (i.e.
+             reading/writing the on-disk form to persistent storage). 
+            
+             Most engine implementations will use JsonNetObjectSerializationProvider,
+             but should take a constructor parameter to allow this to be pluggable.
+            
+             Note that this interface is the interface that does the "Git-like"
+             magic; that is, deconstructing objects into their pieces and instead
+             serializing their content hashes.
+             </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IObjectSerializationProvider.Serialize(System.Object)">
+            <summary>
+            Write an object to memory, including serializing all of the child
+            objects in the object graph. This object often needs a reference to
+            the IStorageEngine, to be able to ensure sub-objects are already
+            serialized.
+            </summary>
+            <param name="obj">The root object to serialize to disk.</param>
+            <returns>A byte representation of the object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IObjectSerializationProvider.Deserialize(System.Byte[],System.Type)">
+            <summary>
+            Reads an object from the data returned by Serialize.
+            </summary>
+            <param name="data">The byte representation of the object.</param>
+            <param name="type">The type of the object to reconstruct.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.IObjectSerializationProvider.SerializedDataToString(System.Byte[])">
+            <summary>
+            SerializedDataToString is a method used for debugging purposes to
+            dump a serialized object out as a string. Production
+            implementations are free to return an empty string.
+            </summary>
+            <param name="data">A serialized object to examine.</param>
+            <returns>The string representation of the byte data (i.e. the JSON
+            string).</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SyncPointInformationMixin.GetRootObjectType(ReactiveUI.Serialization.ISyncPointInformation)">
+            <summary>
+            GetRootObjectType returns the Type of the root object associated with the given Sync
+            Point.
+            </summary>
+            <returns>The Type of the root object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.JsonNetObjectSerializationProvider.#ctor(ReactiveUI.Serialization.IStorageEngine)">
+            <summary>
+            Constructs a new JsonNetObjectSerializationProvider.
+            </summary>
+            <param name="engine">The engine to de/serialize dependent sub-objects.</param>
+        </member>
+        <member name="M:ReactiveUI.Serialization.JsonNetObjectSerializationProvider.Serialize(System.Object)">
+            <summary>
+            Write an object to memory, including serializing all of the child
+            objects in the object graph. In Debug mode, this writes out JSON
+            using Unicode encoding, and in Release mode this writes out BSON.
+            </summary>
+            <param name="obj">The root object to serialize to disk.</param>
+            <returns>A byte representation of the object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.JsonNetObjectSerializationProvider.Deserialize(System.Byte[],System.Type)">
+            <summary>
+            Reads an object from the data returned by Serialize.
+            </summary>
+            <param name="data">The byte representation of the object.</param>
+            <param name="type">The type of the object to reconstruct.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.JsonNetObjectSerializationProvider.SerializedDataToString(System.Byte[])">
+            <summary>
+            SerializedDataToString is a method used for debugging purposes to
+            dump a serialized object out as a string. Production
+            implementations are free to return an empty string.
+            </summary>
+            <param name="data">A serialized object to examine.</param>
+            <returns>The string representation of the byte data (i.e. the JSON
+            string).</returns>
+        </member>
+        <member name="T:ReactiveUI.Serialization.SerializedItemsToGuidResolver">
+            <summary>
+            This class decides what properties to serialize, and for each property,
+            whether we should hijack the serializer/deserializer.    
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.SerializableItemConverter">
+            <summary>
+            This class hijacks ISerializableItems and replaces them with their
+            content hash written out as bytes.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.SerializableListConverter">
+            <summary>
+            This class hijacks ISerializableLists and replaces them with a custom
+            class representing the actual data.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.ModelBase">
+             <summary>
+             ModelBase represents the base implementation of ISerializableItem and
+             handles a lot of the infrastructure plumbing around maintaining the
+             Content Hash.
+            
+             For objects who are frequently serialized/deserialized, derived classes
+             should override CalculateHash and implement it in a more specific
+             manner.
+             </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.NaiveExtendedEngine">
+            <summary>
+            This class is automatically used by RxStorage when the Engine is
+            initialized and the Engine class does not support
+            IExtendedStorageEngine; in this case, NaiveExtendedEngine wraps the
+            Engine and implements the extended methods in a very naive, brute-force
+            way.
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.NullStorageEngine">
+            <summary>
+            NullStorageEngine is a test implementation of IStorageEngine that
+            always returns zero results
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.RxStorage.InitializeWithEngine(ReactiveUI.Serialization.IStorageEngine)">
+            <summary>
+            InitializeWithEngine initializes ReactiveUI.Serialization with a
+            storage engine to load and save objects.
+            </summary>
+            <param name="engine">The engine to use.</param>
+        </member>
+        <member name="T:ReactiveUI.Serialization.SerializedCollection`1">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SerializedCollection`1.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SerializedCollection`1.#ctor(System.Reactive.Concurrency.IScheduler)">
+            <summary>
+            
+            </summary>
+            <param name="sched"></param>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SerializedCollection`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Reactive.Concurrency.IScheduler,System.Collections.Generic.IDictionary{System.Guid,System.DateTimeOffset},System.Collections.Generic.IDictionary{System.Guid,System.DateTimeOffset})">
+            <summary>
+            
+            </summary>
+            <param name="items"></param>
+            <param name="sched"></param>
+            <param name="createdOn"></param>
+            <param name="updatedOn"></param>
+        </member>
+        <member name="P:ReactiveUI.Serialization.SerializedCollection`1.ContentHash">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.SerializedCollection`1.CreatedOn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:ReactiveUI.Serialization.SerializedCollection`1.UpdatedOn">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:ReactiveUI.Serialization.SyncPointInformation">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SyncPointInformation.#ctor">
+            <summary>
+            DONT USE THIS. This only exists to make the serializer not throw a fit
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.SyncPointInformation.#ctor(System.Guid,System.Guid,System.Type,System.String,System.DateTimeOffset)">
+            <summary>
+            
+            </summary>
+            <param name="rootObjectHash"></param>
+            <param name="parentSyncPoint"></param>
+            <param name="rootObjectType"></param>
+            <param name="qualifier"></param>
+            <param name="createdOn"></param>
+        </member>
+        <member name="T:ReactiveUI.Serialization.Utility">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Serialization.Utility.ImplementsInterface(System.Type,System.Type)">
+            <summary>
+            
+            </summary>
+            <param name="target"></param>
+            <param name="interfaceToCheck"></param>
+            <returns></returns>
+            <exception cref="T:System.ArgumentNullException"><paramref name="target"/> is <c>null</c>.</exception>
+        </member>
+        <member name="M:ReactiveUI.Serialization.Utility.GetTypeByName(System.String,System.Collections.Generic.IEnumerable{System.Reflection.Assembly})">
+            <summary>
+            
+            </summary>
+            <param name="fullName"></param>
+            <param name="targetAssemblies"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.ModuleHelper.SafeGetTypes(System.Reflection.Module)">
+            <summary>
+            
+            </summary>
+            <param name="This"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.HelperExtensions.MD5Hash(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.HelperExtensions.ObjectContentsHash(System.Object)">
+            <summary>
+            
+            </summary>
+            <param name="This"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.HelperExtensions.ToConcreteDictionary``2(System.Collections.Generic.IDictionary{``0,``1})">
+            <summary>
+            
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TVal"></typeparam>
+            <param name="This"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.HelperExtensions.GetOrAdd``2(System.Collections.Generic.IDictionary{``0,``1},``0)">
+            <summary>
+            
+            </summary>
+            <typeparam name="TKey"></typeparam>
+            <typeparam name="TVal"></typeparam>
+            <param name="This"></param>
+            <param name="key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:ReactiveUI.Serialization.HelperExtensions.GetAllBytes(System.IO.Stream)">
+            <summary>
+             
+            </summary>
+            <param name="This"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
