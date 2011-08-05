@@ -12,11 +12,16 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using DiversityPhone.Services;
 
 namespace DiversityPhone
 {
     public partial class App : Application
     {
+        public static IDiversityDatabase OfflineDB { get; private set; }
+        public static INavigationService Navigation { get; private set; }
+
+
         private static MainViewModel viewModel = null;
 
         /// <summary>

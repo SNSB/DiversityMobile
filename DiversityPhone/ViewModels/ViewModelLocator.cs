@@ -17,7 +17,7 @@ namespace DiversityPhone
         Container _ioc = new Container();
         public ViewModelLocator()
         {
-            
+            _ioc.Register<IDiversityDatabase>(App.OfflineDB);
         }
     }
 }

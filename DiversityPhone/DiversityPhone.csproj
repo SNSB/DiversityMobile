@@ -62,6 +62,7 @@
     <Reference Include="ReactiveUI_WP7">
       <HintPath>..\Lib\ReactiveUI\ReactiveUI_WP7.dll</HintPath>
     </Reference>
+    <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.1.10605.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ReactiveUI\System.Reactive.dll</HintPath>
@@ -101,6 +102,7 @@
     <Compile Include="IUPage.xaml.cs">
       <DependentUpon>IUPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Messages\NavigateToPage.cs" />
     <Compile Include="Service References\DiversityService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,7 +110,9 @@
     </Compile>
     <Compile Include="Services\DiversityDatabase.cs" />
     <Compile Include="Services\IDiversityDatabase.cs" />
+    <Compile Include="Services\INavigationService.cs" />
     <Compile Include="ViewModels\ESViewModel.cs" />
+    <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="DetailsPage.xaml.cs">
       <DependentUpon>DetailsPage.xaml</DependentUpon>
@@ -179,12 +183,21 @@
     <None Include="Service References\DiversityService\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Images\appbar.cancel.rest.png" />
+    <Content Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.delete.rest.png" />
+    <Content Include="Images\appbar.download.rest.png" />
+    <Content Include="Images\appbar.edit.rest.png" />
+    <Content Include="Images\appbar.feature.camera.rest.png" />
+    <Content Include="Images\appbar.feature.settings.rest.png" />
+    <Content Include="Images\appbar.sync.rest.png" />
+    <Content Include="Images\appbar.upload.rest.png" />
+    <Content Include="Images\appbar.add.rest.png" />
+    <Content Include="Images\appbar.save.rest.png" />
+    <Content Include="Images\ApplicationIcon.png" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApplicationIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
@@ -193,9 +206,6 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="SplashScreenImage.jpg" />
-    <Content Include="Background.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -203,6 +213,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
