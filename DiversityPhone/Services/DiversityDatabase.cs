@@ -10,11 +10,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Wintellect.Sterling.Database;
 using System.Collections.Generic;
-using DiversityPhone.DiversityService;
+using DiversityService.SimpleModel;
 
 namespace DiversityPhone.Services
 {
-    public class DiversityDatabase : BaseDatabaseInstance, IDiversityDatabase
+    public class DiversityDatabase : BaseDatabaseInstance
     {
         public const string LOCATION_DESCRIPTION_UPPER = "LocationDescription";
         public const string SPECIMEN_EVENTID = "SpecEventID";
@@ -29,9 +29,9 @@ namespace DiversityPhone.Services
 
         protected override List<ITableDefinition> RegisterTables()
         {
-            var esTable = CreateTableDefinition<CollectionEventSeries, int>(x => x.SeriesID);
-            var evTable = CreateTableDefinition<CollectionEvent, int>(ce => ce.CollectionEventID).WithIndex<CollectionEvent, string, int>(LOCATION_DESCRIPTION_UPPER, ce => (ce.LocalityDescription != null) ? ce.LocalityDescription.ToUpper() : "No Description".ToUpper());
-            var iuTable = CreateTableDefinition<IdentificationUnit, int>(iu => iu.IdentificationUnitID).WithIndex<IdentificationUnit, int, int>(IDENTIFICATIONUNIT_RELATED, iu => iu.RelatedUnitID ?? int.MinValue);
+            var esTable = CreateTableDefinition<EventSeries, int>(x => x.SeriesID);
+            var evTable = CreateTableDefinition<Event, int>(ce => ce.EventID);
+            var iuTable = CreateTableDefinition<IdentificationUnit, int>(iu => iu.UnitID).WithIndex<IdentificationUnit, int, int>(IDENTIFICATIONUNIT_RELATED, iu => iu.RelatedUnitID ?? int.MinValue);
             
 
 

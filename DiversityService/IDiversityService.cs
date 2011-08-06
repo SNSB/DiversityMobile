@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.ServiceModel;
+using DiversityService.SimpleModel;
 
 namespace DiversityService
 {
@@ -12,16 +13,7 @@ namespace DiversityService
     {
 
         [OperationContract]
-        IEnumerable<CollectionEvent> GetEvents(int skip, int count);
-
-        [OperationContract]
-        void AddEvent(CollectionEvent ev);
-
-        [OperationContract]
-        IEnumerable<CollectionSpecimen> GetSpecimensForEvent(CollectionEvent ev);
-
-        [OperationContract]
-        void InsertIU(int CollectionEventID, IdentificationUnit child);
+        IList<EventSeries> GetSeriesByDescription(string description);
 
 
     }   

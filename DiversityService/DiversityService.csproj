@@ -50,6 +50,7 @@
       <DependentUpon>DiversityCollection.edmx</DependentUpon>
     </Compile>
     <Compile Include="DiversityService.cs" />
+    <Compile Include="HierarchySection.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,10 +58,17 @@
     <EntityDeploy Include="DiversityCollection.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
+      <Project>{3C7EDB6D-F4B7-4D50-B2FD-936A1E0A8603}</Project>
+      <Name>DiversityService.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

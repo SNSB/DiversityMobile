@@ -9,15 +9,49 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Funq;
+using Wintellect.Sterling;
+using DiversityPhone.Services;
+using DiversityPhone.ViewModels;
+using ReactiveUI;
 
 namespace DiversityPhone
 {
     public class ViewModelLocator
     {
-        Container _ioc = new Container();
+        private const string OFFLINE_STORAGE = "OfflineStorage";
+        private static Container _ioc = new Container();
+        private static IMessageBus _messenger = MessageBus.Current;
+
+        private static HomeViewModel _homeVM;
+        private static HierarchyViewModel _hierarchyVM;
+
         public ViewModelLocator()
         {
-            _ioc.Register<IDiversityDatabase>(App.OfflineDB);
+            #region Service/Factory Registration
+            
+            _ioc.Register<IOfflineStorage>(App.OfflineDB);
+            
+            _ioc.Register<INavigationService>(App.Navigation);
+
+            _ioc.Register<HomeViewModel>(container => new HomeViewModel(container.Resolve<INavigationService>()));
+            _ioc.Register<HierarchyViewModel>(container => new HierarchyViewModel(
+                container.Resolve<IOfflineStorage>(),
+                container.Resolve<INavigationService>())
+                );
+            #endregion
+
+            #region ViewModel Instantiation
+            _homeVM = _ioc.Resolve<HomeViewModel>();
+            _messenger.RegisterViewModel<HomeViewModel>(_homeVM);
+
+            _hierarchyVM = _ioc.Resolve<HierarchyViewModel>();
+            _messenger.RegisterViewModel<HierarchyViewModel>(_hierarchyVM);
+            #endregion
+
         }
+
+        public HomeViewModel Home { get { return _homeVM; } }
+        public HierarchyViewModel Hierarchy { get { return _hierarchyVM; } }
+           
     }
 }
