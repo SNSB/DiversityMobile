@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Wintellect.Sterling.Database;
 using System.Collections.Generic;
-using DiversityService.SimpleModel;
+using DiversityService.Model;
 
 namespace DiversityPhone.Services
 {

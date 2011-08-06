@@ -47,7 +47,13 @@ namespace DiversityService
         //    }
         //}
 
-        public IList<SimpleModel.EventSeries> GetSeriesByDescription(string description)
+        public IList<Model.EventSeries> GetSeriesByDescription(string description)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public IList<Model.EventSeries> AllEventSeries()
         {
             throw new NotImplementedException();
         }

@@ -21,7 +21,7 @@ namespace DiversityPhone.Services
         }
 
 
-        public System.Collections.Generic.IList<global::DiversityService.SimpleModel.EventSeries> EventSeries
+        public System.Collections.Generic.IList<global::DiversityService.Model.EventSeries> EventSeries
         {
             get { throw new NotImplementedException(); }
         }

@@ -50,7 +50,6 @@
       <DependentUpon>DiversityCollection.edmx</DependentUpon>
     </Compile>
     <Compile Include="DiversityService.cs" />
-    <Compile Include="HierarchySection.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

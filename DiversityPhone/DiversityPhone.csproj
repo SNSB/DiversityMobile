@@ -93,8 +93,14 @@
     <Compile Include="..\DiversityService.Model\EventSeries.cs">
       <Link>Model\EventSeries.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityService.Model\HierarchySection.cs">
+      <Link>Model\HierarchySection.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityService.Model\IdentificationUnit.cs">
       <Link>Model\IdentificationUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityService.Model\UserProfile.cs">
+      <Link>Model\UserProfile.cs</Link>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
