@@ -10,14 +10,34 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone
 {
     public partial class Home : PhoneApplicationPage
     {
+        private HomeViewModel VM { get { return DataContext as HomeViewModel; } }
         public Home()
         {
             InitializeComponent();
+        }
+
+        private void Edit_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Edit.Execute(null);
+        }
+
+        private void Settings_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Settings.Execute(null);
+        }
+
+        private void Download_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Download.Execute(null);
         }
     }
 }

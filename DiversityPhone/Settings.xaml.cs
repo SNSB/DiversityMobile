@@ -13,9 +13,9 @@ using Microsoft.Phone.Controls;
 
 namespace DiversityPhone
 {
-    public partial class EventSeriesPage : PhoneApplicationPage
+    public partial class Settings : PhoneApplicationPage
     {
-        public EventSeriesPage()
+        public Settings()
         {
             InitializeComponent();
         }

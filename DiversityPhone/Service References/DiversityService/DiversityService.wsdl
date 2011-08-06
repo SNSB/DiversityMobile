@@ -4,84 +4,25 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityService" />
-      <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
-      <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+      <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityService.SimpleModel" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IDiversityService_GetEvents_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetEvents" />
+  <wsdl:message name="IDiversityService_GetSeriesByDescription_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSeriesByDescription" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_GetEvents_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetEventsResponse" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_AddEvent_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddEvent" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_AddEvent_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddEventResponse" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_GetSpecimensForEvent_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetSpecimensForEvent" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_GetSpecimensForEvent_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetSpecimensForEventResponse" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_InsertIU_InputMessage">
-    <wsdl:part name="parameters" element="tns:InsertIU" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_InsertIU_OutputMessage">
-    <wsdl:part name="parameters" element="tns:InsertIUResponse" />
+  <wsdl:message name="IDiversityService_GetSeriesByDescription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSeriesByDescriptionResponse" />
   </wsdl:message>
   <wsdl:portType name="IDiversityService">
-    <wsdl:operation name="GetEvents">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetEvents" message="tns:IDiversityService_GetEvents_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetEventsResponse" message="tns:IDiversityService_GetEvents_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="AddEvent">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/AddEvent" message="tns:IDiversityService_AddEvent_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/AddEventResponse" message="tns:IDiversityService_AddEvent_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetSpecimensForEvent">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetSpecimensForEvent" message="tns:IDiversityService_GetSpecimensForEvent_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetSpecimensForEventResponse" message="tns:IDiversityService_GetSpecimensForEvent_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="InsertIU">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertIU" message="tns:IDiversityService_InsertIU_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertIUResponse" message="tns:IDiversityService_InsertIU_OutputMessage" />
+    <wsdl:operation name="GetSeriesByDescription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescription" message="tns:IDiversityService_GetSeriesByDescription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescriptionResponse" message="tns:IDiversityService_GetSeriesByDescription_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDiversityService" type="tns:IDiversityService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="GetEvents">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetEvents" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="AddEvent">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/AddEvent" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetSpecimensForEvent">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetSpecimensForEvent" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="InsertIU">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertIU" style="document" />
+    <wsdl:operation name="GetSeriesByDescription">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetSeriesByDescription" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
