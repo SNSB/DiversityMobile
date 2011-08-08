@@ -7,10 +7,10 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class HierarchyViewModel : ReactiveObject
+    public class EventSeriesViewModel : ReactiveObject
     {        
         
-        public HierarchyViewModel(IOfflineStorage storage, INavigationService nav)       
+        public EventSeriesViewModel(IOfflineStorage storage, INavigationService nav)       
         {
             
 

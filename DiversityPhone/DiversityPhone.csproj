@@ -62,6 +62,7 @@
     <Reference Include="ReactiveUI_WP7">
       <HintPath>..\Lib\ReactiveUI\ReactiveUI_WP7.dll</HintPath>
     </Reference>
+    <Reference Include="system.data.linq" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.1.10605.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -125,17 +126,20 @@
     </Compile>
     <Compile Include="Services\ApplicationDatabase.cs" />
     <Compile Include="Services\DiversityDatabase.cs" />
+    <Compile Include="Services\DiversityDataContext.cs" />
     <Compile Include="Services\IApplicationState.cs" />
+    <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\IOfflineVocabulary.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\EventSeriesViewModel.cs" />
     <Compile Include="ViewModels\EventSeriesVM.cs" />
-    <Compile Include="ViewModels\HierarchyViewModel.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

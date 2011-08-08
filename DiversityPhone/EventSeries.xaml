@@ -28,7 +28,13 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel>                
+                <ListBox>
+                    
+                </ListBox>                
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
  
    <phone:PhoneApplicationPage.ApplicationBar>

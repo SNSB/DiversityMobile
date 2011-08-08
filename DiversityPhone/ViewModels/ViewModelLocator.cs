@@ -23,7 +23,7 @@ namespace DiversityPhone
         private static IMessageBus _messenger = MessageBus.Current;
 
         private static HomeViewModel _homeVM;
-        private static HierarchyViewModel _hierarchyVM;
+        private static EventSeriesViewModel _hierarchyVM;
 
         public ViewModelLocator()
         {
@@ -34,7 +34,7 @@ namespace DiversityPhone
             _ioc.Register<INavigationService>(App.Navigation);
 
             _ioc.Register<HomeViewModel>(container => new HomeViewModel(container.Resolve<INavigationService>()));
-            _ioc.Register<HierarchyViewModel>(container => new HierarchyViewModel(
+            _ioc.Register<EventSeriesViewModel>(container => new EventSeriesViewModel(
                 container.Resolve<IOfflineStorage>(),
                 container.Resolve<INavigationService>())
                 );
@@ -44,14 +44,14 @@ namespace DiversityPhone
             _homeVM = _ioc.Resolve<HomeViewModel>();
             _messenger.RegisterViewModel<HomeViewModel>(_homeVM);
 
-            _hierarchyVM = _ioc.Resolve<HierarchyViewModel>();
-            _messenger.RegisterViewModel<HierarchyViewModel>(_hierarchyVM);
+            _hierarchyVM = _ioc.Resolve<EventSeriesViewModel>();
+            _messenger.RegisterViewModel<EventSeriesViewModel>(_hierarchyVM);
             #endregion
 
         }
 
         public HomeViewModel Home { get { return _homeVM; } }
-        public HierarchyViewModel Hierarchy { get { return _hierarchyVM; } }
+        public EventSeriesViewModel Hierarchy { get { return _hierarchyVM; } }
            
     }
 }
