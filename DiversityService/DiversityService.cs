@@ -57,5 +57,10 @@ namespace DiversityService
         {
             throw new NotImplementedException();
         }
+
+        public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

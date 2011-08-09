@@ -109,17 +109,23 @@
     <Compile Include="..\DiversityPhone\Services\INavigationService.cs">
       <Link>Services\INavigationService.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\Services\IOfflineFieldData.cs">
+      <Link>Services\IOfflineFieldData.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Services\IOfflineStorage.cs">
       <Link>Services\IOfflineStorage.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Services\IOfflineVocabulary.cs">
+      <Link>Services\IOfflineVocabulary.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\Services\Page.cs">
       <Link>Services\Page.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\EventSeriesViewModel.cs">
+      <Link>ViewModels\EventSeriesViewModel.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\EventSeriesVM.cs">
       <Link>ViewModels\EventSeriesVM.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityPhone\ViewModels\HierarchyViewModel.cs">
-      <Link>ViewModels\HierarchyViewModel.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\HomeViewModel.cs">
       <Link>ViewModels\HomeViewModel.cs</Link>
@@ -132,7 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{3C7EDB6D-F4B7-4D50-B2FD-936A1E0A8603}</Project>
+      <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
       <Name>DiversityService.Model</Name>
     </ProjectReference>
   </ItemGroup>

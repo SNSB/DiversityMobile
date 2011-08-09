@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DEBEAB2D-FA96-4898-B867-A029F134F12E}</ProjectGuid>
+    <ProjectGuid>{3C7EDB6D-F4B7-4D50-B2FD-936A1E0A8603}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DiversityService</RootNamespace>
-    <AssemblyName>DiversityService</AssemblyName>
+    <RootNamespace>DiversityService.Model</RootNamespace>
+    <AssemblyName>DiversityService.Model</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -33,10 +33,6 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,30 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiversityCollection.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollection.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityService.cs" />
-    <Compile Include="IDiversityService.cs" />
+    <Compile Include="Event.cs" />
+    <Compile Include="EventSeries.cs" />
+    <Compile Include="HierarchySection.cs" />
+    <Compile Include="IdentificationUnit.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EntityDeploy Include="DiversityCollection.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
-      <Name>DiversityService.Model</Name>
-    </ProjectReference>
+    <Compile Include="UserProfile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

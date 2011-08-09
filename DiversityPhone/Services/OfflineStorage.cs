@@ -25,5 +25,26 @@ namespace DiversityPhone.Services
         {
             get { throw new NotImplementedException(); }
         }
+
+
+        public System.Collections.Generic.IList<global::DiversityService.Model.EventSeries> getEventSeriesByDescription(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public System.Collections.Generic.IList<global::DiversityService.Model.EventSeries> getNewEventSeries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public global::DiversityService.Model.EventSeries getEventSeriesByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addEventSeries(global::DiversityService.Model.EventSeries newSeries)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

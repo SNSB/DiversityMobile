@@ -88,21 +88,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\DiversityService.Model\Event.cs">
-      <Link>Model\Event.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService.Model\EventSeries.cs">
-      <Link>Model\EventSeries.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService.Model\HierarchySection.cs">
-      <Link>Model\HierarchySection.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService.Model\IdentificationUnit.cs">
-      <Link>Model\IdentificationUnit.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService.Model\UserProfile.cs">
-      <Link>Model\UserProfile.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -220,7 +205,12 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
+      <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
+      <Name>DiversityService.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
