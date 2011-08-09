@@ -36,6 +36,9 @@
     <Reference Include="AutoMoq">
       <HintPath>..\packages\AutoMoq.1.5.0\lib\AutoMoq.dll</HintPath>
     </Reference>
+    <Reference Include="Funq">
+      <HintPath>..\Lib\Funq\Funq.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.2.0\lib\20\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -103,6 +106,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\DiversityPhone\Messages\MessageContracts.cs">
+      <Link>Messages\MessageContracts.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Services\IApplicationState.cs">
       <Link>Services\IApplicationState.cs</Link>
     </Compile>
@@ -121,17 +127,23 @@
     <Compile Include="..\DiversityPhone\Services\Page.cs">
       <Link>Services\Page.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\EditESVM.cs">
+      <Link>ViewModels\EditESVM.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\EventSeriesViewModel.cs">
       <Link>ViewModels\EventSeriesViewModel.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityPhone\ViewModels\EventSeriesVM.cs">
-      <Link>ViewModels\EventSeriesVM.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\HomeViewModel.cs">
       <Link>ViewModels\HomeViewModel.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\ViewModelLocator.cs">
+      <Link>ViewModels\ViewModelLocator.cs</Link>
+    </Compile>
+    <Compile Include="EventSeriesViewModelTest.cs" />
     <Compile Include="HomeVMTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModelLocatorTest.cs" />
+    <Compile Include="ViewModelTestBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

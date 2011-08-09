@@ -59,5 +59,7 @@ namespace DiversityPhone.TestLibrary
             _moqer.GetMock<INavigationService>()
                 .Verify(x => x.Navigate(Page.Settings));
         }
+
+
     }
 }

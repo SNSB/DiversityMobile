@@ -15,7 +15,7 @@ using DiversityPhone.Services;
 using Wintellect.Sterling;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
-using DiversityPhone.DiversityService;
+using DiversityPhone.Service;
 
 namespace DiversityPhone
 {
@@ -32,7 +32,7 @@ namespace DiversityPhone
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        public PhoneApplicationFrame RootFrame { get; private set; }
+        public static PhoneApplicationFrame RootFrame { get; private set; }
 
         /// <summary>
         /// Constructor for the Application object.
@@ -42,8 +42,11 @@ namespace DiversityPhone
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 
-            Navigation = new Services.NavigationService(RootFrame); //Push Nav-Service
+            Navigation = new Services.NavigationService(); //Push Nav-Service
+            
             Repository = new DiversityServiceClient(); //Push Nav-Service
+
+            OfflineDB = new OfflineStorage();
 
             // Standard Silverlight initialization
             InitializeComponent();

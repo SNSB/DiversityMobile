@@ -11,8 +11,9 @@ using System.Windows.Shapes;
 
 namespace DiversityPhone.Messages
 {
-    public class NavigateToPage
+    public static class MessageContracts
     {
-
+        public const string EDIT = "Edit";
+        public const string SAVE = "Save";
     }
 }

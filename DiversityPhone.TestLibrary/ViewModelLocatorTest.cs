@@ -7,28 +7,25 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using AutoMoq;
 using Funq;
 using DiversityPhone.Services;
+using ReactiveUI;
 
 namespace DiversityPhone.TestLibrary
 {
     [TestClass]
-    public class ViewModelLocatorTest
+    public class ViewModelLocatorTest : ViewModelTestBase
     {
-        ViewModelLocator _target;
-        AutoMoqer _moqer;
+        ViewModelLocator _target;        
         public ViewModelLocatorTest()
         {
-            _moqer = new AutoMoqer();
-            Container di = new Container();
-            di.Register<IOfflineStorage>(_moqer.GetMock<IOfflineStorage>().Object);
-            di.Register<INavigationService>(_moqer.GetMock<INavigationService>().Object);
-
-            _target = new ViewModelLocator(di);
+            _target = new ViewModelLocator(_ioc);
         }
 
         [TestMethod]
-        public void HomeResolving()
+        public void VMsResolving()
         {
             Assert.IsNotNull(_target.Home);
+            Assert.IsNotNull(_target.EventSeries);
+            Assert.IsNotNull(_target.EditES);
         }
     }
 }

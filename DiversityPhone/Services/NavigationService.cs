@@ -6,13 +6,11 @@ using Microsoft.Phone.Controls;
 namespace DiversityPhone.Services
 {
     public class NavigationService : INavigationService
-    {
-        private PhoneApplicationFrame phoneApplicationFrame;        
+    {             
 
-        public NavigationService(PhoneApplicationFrame phoneApplicationFrame)
+        public NavigationService()
         {
-            // TODO: Complete member initialization
-            this.phoneApplicationFrame = phoneApplicationFrame;
+           
         }
 
         public void Navigate(Page p)
@@ -29,13 +27,16 @@ namespace DiversityPhone.Services
                 case Page.Settings:
                     destination = new Uri("/Settings.xaml", UriKind.Relative);
                     break;
+                case Page.EditEventSeries:
+                    destination = new Uri("/EditES.xaml", UriKind.Relative);
+                    break;
 #if DEBUG
                 default:
                     throw new NotImplementedException();
 #endif
             }
             if (destination != null)
-                phoneApplicationFrame.Navigate(destination);
+                App.RootFrame.Navigate(destination);
         }
 
         public bool CanNavigateBack()

@@ -29,6 +29,9 @@ namespace DiversityPhone.ViewModels
 
             Settings = new ReactiveCommand();
             Settings.Subscribe(_ => Navigation.Navigate(Services.Page.Settings));
+
+            (Download = new ReactiveCommand())
+                .Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
         }
     }
 }

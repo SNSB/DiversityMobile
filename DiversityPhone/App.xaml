@@ -4,11 +4,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:local="clr-namespace:DiversityPhone">
+    xmlns:local="clr-namespace:DiversityPhone.ViewModels">
 
     <!--Application Resources-->
     <Application.Resources>
-        <local:ViewModelLocator x:Key="Locator"/>
+        <local:ViewModelLocator x:Key="Locator" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

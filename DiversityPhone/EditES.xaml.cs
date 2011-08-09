@@ -12,35 +12,31 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 
-
 namespace DiversityPhone
 {
-    public partial class Home : PhoneApplicationPage
+    public partial class EditES : PhoneApplicationPage
     {
-        private HomeViewModel VM { get { return DataContext as HomeViewModel; } }
-        public Home()
+        private EditESVM VM { get { return this.DataContext as EditESVM; } }
+
+        public EditES()
         {
             InitializeComponent();
-
-            
+            if (VM != null)
+            {
+                VM.Save.CanExecuteObservable.Subscribe(canSave => this.SaveButton.IsEnabled = canSave);
+            }
         }
 
-        private void Edit_Click(object sender, EventArgs e)
+        private void Save_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Edit.Execute(null);
+                VM.Save.Execute(null);
         }
 
-        private void Settings_Click(object sender, EventArgs e)
+        private void Cancel_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Settings.Execute(null);
-        }
-
-        private void Download_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Download.Execute(null);
+                VM.Cancel.Execute(null);
         }
     }
 }

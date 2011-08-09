@@ -10,14 +10,22 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone
 {
     public partial class EventSeriesPage : PhoneApplicationPage
     {
+        private EventSeriesViewModel VM { get { return this.DataContext as EventSeriesViewModel; } }
         public EventSeriesPage()
         {
             InitializeComponent();
+        }
+
+        private void Add_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.AddSeries.Execute(null);
         }
     }
 }
