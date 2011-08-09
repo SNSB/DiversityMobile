@@ -5,6 +5,7 @@ namespace DiversityPhone.Services
     {
         Home,
         EventSeries,
+        EditEventSeries,
         Settings,
     }
 }

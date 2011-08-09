@@ -9,15 +9,21 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Wintellect.Sterling;
+using System.Linq;
 
 namespace DiversityPhone.Services
 {
     public class OfflineStorage : IOfflineStorage
     {
         private ISterlingDatabaseInstance _db { get; set; }
-        public OfflineStorage(ISterlingDatabaseInstance db)
+        public OfflineStorage()
         {
-            _db = db;
+            var context = new DiversityDataContext();
+            if (!context.DatabaseExists())
+                context.CreateDatabase();
+            context.EventSeries.InsertOnSubmit(new global::DiversityService.Model.EventSeries() { SeriesID = 1234 });
+            context.SubmitChanges();
+            var count = context.EventSeries.Count();
         }
 
 

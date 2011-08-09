@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Database Name="Diversity" xmlns="http://schemas.microsoft.com/linqtosql/mapping/2007">
+  <Table Name="EventSeries" Member="DiversityService.Model.EventSeries">
+    <Type Name="DiversityService.Model.EventSeries">
+      <Column Name="SeriesID" Member="SeriesID" IsPrimaryKey="true" />      
+    </Type>
+  </Table>  
+</Database>

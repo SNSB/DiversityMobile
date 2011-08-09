@@ -5,6 +5,7 @@ using System.Text;
 
 namespace DiversityService.Model
 {
+    
     public class Event
     {
         public int EventID { get; set; }
