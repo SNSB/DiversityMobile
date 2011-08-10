@@ -32,6 +32,8 @@ namespace DiversityPhone.TestLibrary
                 .Subscribe(es => editMessageSent |= (es != null));
 
             _target.AddSeries.Execute(null);
+
+            _scheduler.AdvanceBy(1000);
             
             _moqer.GetMock<INavigationService>()
                 .Verify(nav => nav.Navigate(Page.EditEventSeries));

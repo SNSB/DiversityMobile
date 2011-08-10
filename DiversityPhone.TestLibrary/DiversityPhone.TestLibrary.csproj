@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMoq">
-      <HintPath>..\packages\AutoMoq.1.5.0\lib\AutoMoq.dll</HintPath>
+    <Reference Include="AutoMoq, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\Automoqer\AutoMoq.dll</HintPath>
     </Reference>
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>

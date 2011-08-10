@@ -7,6 +7,8 @@ using ReactiveUI;
 using System.Reactive.Concurrency;
 using Funq;
 using DiversityPhone.Services;
+using Microsoft.Reactive.Testing;
+
 
 namespace DiversityPhone.TestLibrary
 {
@@ -15,7 +17,7 @@ namespace DiversityPhone.TestLibrary
         protected AutoMoqer _moqer;
         protected Container _ioc;
         protected IMessageBus _messenger = new ReactiveUI.MessageBus();
-        protected EventLoopScheduler _scheduler = new EventLoopScheduler();
+        protected TestScheduler _scheduler = new TestScheduler();
         public ViewModelTestBase()
         {
             RxApp.DeferredScheduler = _scheduler;
