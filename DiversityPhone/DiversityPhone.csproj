@@ -94,17 +94,17 @@
     <Compile Include="EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Event.xaml.cs">
-      <DependentUpon>Event.xaml</DependentUpon>
+    <Compile Include="ListEV.xaml.cs">
+      <DependentUpon>ListEV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EventSeries.xaml.cs">
-      <DependentUpon>EventSeries.xaml</DependentUpon>
+    <Compile Include="ListES.xaml.cs">
+      <DependentUpon>ListES.xaml</DependentUpon>
     </Compile>
     <Compile Include="Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="IUPage.xaml.cs">
-      <DependentUpon>IUPage.xaml</DependentUpon>
+    <Compile Include="ListIU.xaml.cs">
+      <DependentUpon>ListIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\MessageContracts.cs" />
     <Compile Include="Service References\Service\Reference.cs">
@@ -126,7 +126,7 @@
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\EventSeriesViewModel.cs" />
+    <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -142,11 +142,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Event.xaml">
+    <Page Include="ListEV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EventSeries.xaml">
+    <Page Include="ListES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -154,7 +154,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="IUPage.xaml">
+    <Page Include="ListIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -16,7 +16,7 @@ namespace DiversityPhone
 {
     public partial class EventSeriesPage : PhoneApplicationPage
     {
-        private EventSeriesViewModel VM { get { return this.DataContext as EventSeriesViewModel; } }
+        private ListESVM VM { get { return this.DataContext as ListESVM; } }
         public EventSeriesPage()
         {
             InitializeComponent();

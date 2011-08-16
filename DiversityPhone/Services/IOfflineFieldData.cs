@@ -8,7 +8,8 @@ namespace DiversityPhone.Services
 {
     public interface IOfflineFieldData
     {
-        IList<EventSeries> EventSeries { get; }
+        IQueryable<EventSeries> EventSeries { get; }
+        IList<EventSeries> getAllEventSeries();
         IList<EventSeries> getEventSeriesByDescription(string query);
         IList<EventSeries> getNewEventSeries();
         EventSeries getEventSeriesByID(int id);

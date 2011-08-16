@@ -131,16 +131,17 @@
     <Compile Include="..\DiversityPhone\ViewModels\EditESVM.cs">
       <Link>ViewModels\EditESVM.cs</Link>
     </Compile>
-    <Compile Include="..\DiversityPhone\ViewModels\EventSeriesViewModel.cs">
-      <Link>ViewModels\EventSeriesViewModel.cs</Link>
-    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\HomeViewModel.cs">
       <Link>ViewModels\HomeViewModel.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\ListESVM.cs">
+      <Link>ViewModels\ListESVM.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\ViewModelLocator.cs">
       <Link>ViewModels\ViewModelLocator.cs</Link>
     </Compile>
-    <Compile Include="EventSeriesViewModelTest.cs" />
+    <Compile Include="EditESVMTest.cs" />
+    <Compile Include="ListESVMTest.cs" />
     <Compile Include="HomeVMTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModelLocatorTest.cs" />

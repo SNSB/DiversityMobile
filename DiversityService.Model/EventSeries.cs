@@ -9,5 +9,6 @@ namespace DiversityService.Model
     public class EventSeries
     {
         public int SeriesID { get; set; }
+        public string Description { get; set; }
     }
 }

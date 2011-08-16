@@ -2,7 +2,8 @@
 <Database Name="Diversity" xmlns="http://schemas.microsoft.com/linqtosql/mapping/2007">
   <Table Name="EventSeries" Member="DiversityService.Model.EventSeries">
     <Type Name="DiversityService.Model.EventSeries">
-      <Column Name="SeriesID" Member="SeriesID" IsPrimaryKey="true" />      
+      <Column Name="SeriesID" Member="SeriesID" IsPrimaryKey="true" />
+      <Column Name="Description" Member="Description" />
     </Type>
   </Table>  
 </Database>

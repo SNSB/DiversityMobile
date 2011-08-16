@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Cancel { get; private set; }
 
-        private string _Description;
+        public string _Description; //Need to be public in SL :/
 
         public string Description
         {
@@ -33,11 +33,23 @@ namespace DiversityPhone.ViewModels
             _navigation = nav;
             _messenger = messenger;
 
+            _messenger.Listen<EventSeries>(MessageContracts.EDIT)
+                .Subscribe(es => editES(es));
+
             var descriptionObservable = this.ObservableForProperty(x => x.Description);
             var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value));
 
             (Save = new ReactiveCommand(canSave))               
                 .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE));
-        }        
+
+            (Cancel = new ReactiveCommand())
+                .Subscribe(_ => _navigation.NavigateBack());
+        }
+
+        private void editES(EventSeries es)
+        {
+            Model = es;
+            Description = es.Description;
+        }
     }
 }

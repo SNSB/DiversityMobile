@@ -28,10 +28,12 @@ namespace DiversityPhone.TestLibrary
 
             _ioc.Register<IOfflineStorage>(_moqer.GetMock<IOfflineStorage>().Object);
             _ioc.Register<INavigationService>(_moqer.GetMock<INavigationService>().Object);
-            _ioc.Register<IMessageBus>(_messenger);
-            
+            _ioc.Register<IMessageBus>(_messenger);      
+        }
 
-           
+        protected void passTime()
+        {
+            _scheduler.AdvanceBy(1000);
         }
     }
 }

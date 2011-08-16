@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
+using Microsoft.Phone.Shell;
+using System.Reactive.Linq;
 
 namespace DiversityPhone
 {
@@ -23,8 +25,13 @@ namespace DiversityPhone
             InitializeComponent();
             if (VM != null)
             {
-                VM.Save.CanExecuteObservable.Subscribe(canSave => this.SaveButton.IsEnabled = canSave);
+                VM.Save.CanExecuteObservable
+                    .DistinctUntilChanged()
+                    .Subscribe(canSave => setSaveEnabled(canSave));
             }
+
+            var descBinding = DescTB.GetBindingExpression(TextBox.TextProperty);
+            DescTB.TextChanged += (_, _2) => descBinding.UpdateSource();
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -32,6 +39,12 @@ namespace DiversityPhone
             if (VM != null)
                 VM.Save.Execute(null);
         }
+        void setSaveEnabled(bool state)
+        {
+            //Named Buttons don't work :/
+            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = state;
+        }
+
 
         private void Cancel_Click(object sender, EventArgs e)
         {

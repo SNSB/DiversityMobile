@@ -22,7 +22,7 @@ namespace DiversityPhone.Services
                     destination = new Uri("/Home.xaml",UriKind.Relative);
                     break;
                 case Page.EventSeries:
-                    destination = new Uri("/EventSeries.xaml", UriKind.Relative);
+                    destination = new Uri("/ListES.xaml", UriKind.Relative);
                     break;
                 case Page.Settings:
                     destination = new Uri("/Settings.xaml", UriKind.Relative);
@@ -41,12 +41,12 @@ namespace DiversityPhone.Services
 
         public bool CanNavigateBack()
         {
-            throw new NotImplementedException();
+            return App.RootFrame.CanGoBack;
         }
 
         public void NavigateBack()
         {
-            throw new NotImplementedException();
+            App.RootFrame.GoBack();
         }
     }
 }

@@ -5,6 +5,7 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Services;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Windows;
 
 
 namespace DiversityPhone.ViewModels
@@ -20,18 +21,23 @@ namespace DiversityPhone.ViewModels
         private INavigationService Navigation { get; set; }
       
 
-        public HomeViewModel(INavigationService nav)
+        public HomeViewModel(INavigationService nav, IMessageBus messenger)
         {
             Navigation = nav;
 
-            Edit = new ReactiveCommand();
-            Edit.Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
+            (Edit = new ReactiveCommand())
+                .Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
 
-            Settings = new ReactiveCommand();
-            Settings.Subscribe(_ => Navigation.Navigate(Services.Page.Settings));
+            (Settings = new ReactiveCommand())
+                .Subscribe(_ => Navigation.Navigate(Services.Page.Settings));
 
             (Download = new ReactiveCommand())
                 .Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
+
+            RxApp.MessageBus.Listen<int>("test")
+                .Subscribe(i => MessageBox.Show(i.ToString()));
+
+            RxApp.MessageBus.SendMessage<int>(42, "test");
         }
     }
 }

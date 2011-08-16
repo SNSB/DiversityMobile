@@ -30,7 +30,12 @@
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>                
-                <ListBox>
+                <ListBox ItemsSource="{Binding SeriesList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Description}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                     
                 </ListBox>                
             </StackPanel>

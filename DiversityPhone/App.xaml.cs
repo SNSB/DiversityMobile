@@ -16,6 +16,8 @@ using Wintellect.Sterling;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
 using DiversityPhone.Service;
+using ReactiveUI;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone
 {
@@ -48,6 +50,8 @@ namespace DiversityPhone
 
             OfflineDB = new OfflineStorage();
 
+            
+
             // Standard Silverlight initialization
             InitializeComponent();
 
@@ -77,6 +81,7 @@ namespace DiversityPhone
 
             
         }
+       
 
         public static void _ActivateEngine()
         {
