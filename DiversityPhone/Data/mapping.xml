@@ -4,6 +4,7 @@
     <Type Name="DiversityService.Model.EventSeries">
       <Column Name="SeriesID" Member="SeriesID" IsPrimaryKey="true" />
       <Column Name="Description" Member="Description" />
+      <Column Name="IsModified" Member="IsModified" CanBeNull="true" />
     </Type>
   </Table>  
 </Database>
