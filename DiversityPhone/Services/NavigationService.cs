@@ -21,14 +21,20 @@ namespace DiversityPhone.Services
                 case Page.Home:
                     destination = new Uri("/Home.xaml",UriKind.Relative);
                     break;
-                case Page.EventSeries:
-                    destination = new Uri("/ListES.xaml", UriKind.Relative);
-                    break;
                 case Page.Settings:
                     destination = new Uri("/Settings.xaml", UriKind.Relative);
                     break;
+                case Page.ListEventSeries:
+                    destination = new Uri("/ListES.xaml", UriKind.Relative);
+                    break;                
                 case Page.EditEventSeries:
                     destination = new Uri("/EditES.xaml", UriKind.Relative);
+                    break;
+                case Page.ListEvents:
+                    destination = new Uri("/ListEV.xaml", UriKind.Relative);
+                    break;
+                case Page.EditEvent:
+                    destination = new Uri("/EditEV.xaml", UriKind.Relative);
                     break;
 #if DEBUG
                 default:

@@ -17,9 +17,10 @@ namespace DiversityPhone.ViewModels
         private IMessageBus _messenger;
 
         public ReactiveCommand AddSeries { get; private set; }
+        public ReactiveCommand FilterSeries { get; private set; }
 
-        public IList<EventSeries> _SeriesList; //Necessary for SL
-        public IList<EventSeries> SeriesList
+        public IList<EventSeriesVM> _SeriesList; //Necessary for SL
+        public IList<EventSeriesVM> SeriesList
         {
             get
             {
@@ -41,6 +42,9 @@ namespace DiversityPhone.ViewModels
             _messenger.Listen<EventSeries>(MessageContracts.SAVE)
                 .Subscribe(es => saveSeries(es));
 
+            _messenger.Listen<EventSeries>(MessageContracts.SELECT)
+                .Subscribe(es => selectSeries(es));
+
             updateSeriesList();
 
 
@@ -48,11 +52,20 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_ => addSeries());
 
 
+            FilterSeries = new ReactiveCommand();
+        }
+
+        private void selectSeries(EventSeries es)
+        {
+            _navigation.Navigate(Page.ListEvents);
         }
 
         private void updateSeriesList()
         {
-            SeriesList = _storage.getAllEventSeries();
+            SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
+                _storage.getAllEventSeries(),
+                (model) => new EventSeriesVM(model, _messenger)
+                );
         }
 
         private void saveSeries(EventSeries es)

@@ -131,6 +131,9 @@
     <Compile Include="..\DiversityPhone\ViewModels\EditESVM.cs">
       <Link>ViewModels\EditESVM.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\EventSeriesVM.cs">
+      <Link>ViewModels\EventSeriesVM.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\HomeViewModel.cs">
       <Link>ViewModels\HomeViewModel.cs</Link>
     </Compile>
@@ -140,7 +143,11 @@
     <Compile Include="..\DiversityPhone\ViewModels\ViewModelLocator.cs">
       <Link>ViewModels\ViewModelLocator.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\VirtualizingViewModelList.cs">
+      <Link>ViewModels\VirtualizingViewModelList.cs</Link>
+    </Compile>
     <Compile Include="EditESVMTest.cs" />
+    <Compile Include="EventSeriesVMTest.cs" />
     <Compile Include="ListESVMTest.cs" />
     <Compile Include="HomeVMTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

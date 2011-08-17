@@ -8,7 +8,10 @@ namespace DiversityService.Model
     
     public class EventSeries
     {
-
+        public EventSeries()
+        {
+            IsModified = null;
+        }
 
         public int SeriesID { get; set; }
         public string Description { get; set; }

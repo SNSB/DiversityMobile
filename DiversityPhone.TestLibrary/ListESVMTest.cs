@@ -26,15 +26,16 @@ namespace DiversityPhone.TestLibrary
         [TestMethod]
         public void AddSeriesShouldShowEditPage()
         {
-
+            //Setup
             bool editMessageSent = false;
             _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                 .Subscribe(es => editMessageSent |= (es != null));
 
+            //Execute
             _target.AddSeries.Execute(null);
-
-            _scheduler.AdvanceBy(1000);
+            passTime();
             
+            //Assert
             _moqer.GetMock<INavigationService>()
                 .Verify(nav => nav.Navigate(Page.EditEventSeries));
             Assert.IsTrue(editMessageSent);
@@ -42,25 +43,42 @@ namespace DiversityPhone.TestLibrary
         }
 
         [TestMethod]
-        public void Saving_Edited_ES_should_update_view()
+        public void Saving_Edited_ES_should_save_and_update_view()
         {
             //Setup
             EventSeries es = _moqer.GetMock<EventSeries>().Object;
             var storage = _moqer.GetMock<IOfflineStorage>();
-            var esList = _moqer.GetMock<IList<EventSeries>>().Object;
+            var esList = _moqer.GetMock<IList<EventSeries>>();
+            esList.Setup(list => list.Count).Returns(321);
 
-            storage.Setup(s => s.getAllEventSeries()).Returns(esList);
+            storage.Setup(s => s.getAllEventSeries()).Returns(esList.Object);
 
             //Execute
             _messenger.SendMessage<EventSeries>(es, MessageContracts.SAVE);
             passTime();
 
-
-            Assert.AreSame(esList, _target.SeriesList);
+            //Assert
+            Assert.AreEqual<int>(esList.Object.Count, _target.SeriesList.Count);
 
             storage.Verify(s => s.getAllEventSeries());
             storage.Verify(s => s.addEventSeries(es));
             
         }
+
+        [TestMethod]
+        public void Selecting_an_ES_should_navigate_to_next_Page()
+        {
+            //Setup
+            var es = _moqer.GetMock<EventSeries>().Object;
+
+            //Execute
+            _messenger.SendMessage<EventSeries>(es, MessageContracts.SELECT);
+            passTime();
+
+            //Assert
+            _moqer.GetMock<INavigationService>()
+                .Verify(nav => nav.Navigate(Page.ListEvents));
+            
+        }        
     }
 }

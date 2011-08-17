@@ -26,13 +26,13 @@ namespace DiversityPhone.ViewModels
             Navigation = nav;
 
             (Edit = new ReactiveCommand())
-                .Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
+                .Subscribe(_ => Navigation.Navigate(Services.Page.ListEventSeries));
 
             (Settings = new ReactiveCommand())
                 .Subscribe(_ => Navigation.Navigate(Services.Page.Settings));
 
             (Download = new ReactiveCommand())
-                .Subscribe(_ => Navigation.Navigate(Services.Page.EventSeries));
+                .Subscribe(_ => Navigation.Navigate(Services.Page.ListEventSeries));
 
             RxApp.MessageBus.Listen<int>("test")
                 .Subscribe(i => MessageBox.Show(i.ToString()));

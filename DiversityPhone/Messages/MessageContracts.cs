@@ -15,5 +15,6 @@ namespace DiversityPhone.Messages
     {
         public const string EDIT = "Edit";
         public const string SAVE = "Save";
+        public const string SELECT = "Select";
     }
 }

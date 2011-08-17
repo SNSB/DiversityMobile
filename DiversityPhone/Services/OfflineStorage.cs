@@ -28,34 +28,18 @@ namespace DiversityPhone.Services
             
         }
 
-
-        
-
-
-        public System.Collections.Generic.IList<global::DiversityService.Model.EventSeries> getEventSeriesByDescription(string query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public System.Collections.Generic.IList<global::DiversityService.Model.EventSeries> getNewEventSeries()
-        {
-            throw new NotImplementedException();
-        }
-
-        public global::DiversityService.Model.EventSeries getEventSeriesByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public void addEventSeries(global::DiversityService.Model.EventSeries newSeries)
-        {
-            throw new NotImplementedException();
+        {            
+            if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
+                throw new InvalidOperationException("Series is not new!");
+
+            var ctx = new DiversityDataContext();
+            newSeries.SeriesID = findFreeEventSeriesID(ctx);
+            ctx.EventSeries.InsertOnSubmit(newSeries);
+            ctx.SubmitChanges();
         }
 
-        public IObservable<System.Collections.Generic.IList<DiversityService.Model.EventSeries>> EventSeries
-        {
-            get { throw new NotImplementedException(); }
-        }
+       
 
         IQueryable<EventSeries> IOfflineFieldData.EventSeries
         {
@@ -66,6 +50,12 @@ namespace DiversityPhone.Services
         {
             var ctx = new DiversityDataContext();
             return new LightListImpl<EventSeries>(ctx.EventSeries);
+        }
+
+        private int findFreeEventSeriesID(DiversityDataContext ctx)
+        {
+            var min = (from es in ctx.EventSeries select es.SeriesID).Min() - 1;
+            return (min > -1)? -1 : min;
         }
 
         private class LightListImpl<T> : IList<T>
@@ -150,6 +140,22 @@ namespace DiversityPhone.Services
             {
                 return _source.GetEnumerator();
             }
+        }
+
+
+        public IList<EventSeries> getEventSeriesByDescription(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<EventSeries> getNewEventSeries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public EventSeries getEventSeriesByID(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

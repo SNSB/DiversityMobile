@@ -15,47 +15,26 @@ namespace DiversityPhone.TestLibrary
     /// Zusammenfassungsbeschreibung für HomeVMTest
     /// </summary>
     [TestClass]
-    public class HomeVMTest
+    public class HomeVMTest : ViewModelTestBase
     {
         HomeViewModel _target;
-        AutoMoqer _moqer;
+        
         public HomeVMTest()
         {
-            RxApp.DeferredScheduler = new EventLoopScheduler();
-            _moqer = new AutoMoqer();
-            
-
             _target = _moqer.Resolve<HomeViewModel>();
-        }
-        
+        }       
 
-        #region Zusätzliche Testattribute
-        //
-        // Sie können beim Schreiben der Tests folgende zusätzliche Attribute verwenden:
-        //
-        // Verwenden Sie ClassInitialize, um vor Ausführung des ersten Tests in der Klasse Code auszuführen.
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Verwenden Sie ClassCleanup, um nach Ausführung aller Tests in einer Klasse Code auszuführen.
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Mit TestInitialize können Sie vor jedem einzelnen Test Code ausführen. 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Mit TestCleanup können Sie nach jedem einzelnen Test Code ausführen.
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
+
 
         [TestMethod]
         public void ClickOnSettingsShouldNavigateToPage()
         {
+            //Execute
             _target.Settings.Execute(null);
+            passTime();
 
+
+            //Assert
             _moqer.GetMock<INavigationService>()
                 .Verify(x => x.Navigate(Page.Settings));
         }
