@@ -4,6 +4,7 @@ namespace DiversityPhone.Services
     public enum Page
     {
         Home,
+        Upload,
         ListEventSeries,
         EditEventSeries,
         ListEvents,
@@ -11,5 +12,6 @@ namespace DiversityPhone.Services
         ListIUnits,
         EditIUnit,
         Settings,
+        Setup,
     }
 }

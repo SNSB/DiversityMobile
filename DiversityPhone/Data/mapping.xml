@@ -6,5 +6,14 @@
       <Column Name="Description" Member="Description" />
       <Column Name="IsModified" Member="IsModified" CanBeNull="true" />
     </Type>
-  </Table>  
+  </Table>
+  <Table Name="Term" Member="DiversityService.Model.Term">
+    <Type Name="DiversityService.Model.Term">
+      <Column Name="Code" Member="Code" IsPrimaryKey="true" />
+      <Column Name="SourceID" Member="SourceID" IsPrimaryKey="true" />
+      <Column Name="Description" Member="Description" />
+      <Column Name="DisplayText" Member="DisplayText" />
+      <Column Name="ParentCode" Member="ParentCode" CanBeNull="true"/>
+    </Type>
+  </Table>
 </Database>

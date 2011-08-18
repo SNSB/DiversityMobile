@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
+using DiversityPhone.Service;
 
 namespace DiversityPhone.ViewModels
 {
@@ -20,15 +21,16 @@ namespace DiversityPhone.ViewModels
         private static Container _ioc;
         private static IMessageBus _messenger = MessageBus.Current;
 
-        private static HomeViewModel _homeVM;
+        private static HomeVM _homeVM;
         private static ListESVM _hierarchyVM;
         private static EditESVM _editESVM;
+        private static SetupVM _setupVM;
 
         public ViewModelLocator(Container services)
         {
             _ioc = services;
             #region ViewModel Factories
-            _ioc.Register<HomeViewModel>(container => new HomeViewModel(
+            _ioc.Register<HomeVM>(container => new HomeVM(
                 container.Resolve<INavigationService>(),
                 container.Resolve<IMessageBus>()
                 ));
@@ -39,10 +41,11 @@ namespace DiversityPhone.ViewModels
                 ));
             _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
 
+            _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
             #endregion
 
             #region ViewModel Instantiation
-            _homeVM = _ioc.Resolve<HomeViewModel>();            
+            _homeVM = _ioc.Resolve<HomeVM>();            
 
             _hierarchyVM = _ioc.Resolve<ListESVM>();            
 
@@ -51,9 +54,9 @@ namespace DiversityPhone.ViewModels
 
         }
 
-        public HomeViewModel Home { get { return _homeVM; } }
+        public HomeVM Home { get { return _homeVM; } }
         public ListESVM EventSeries { get { return _hierarchyVM; } }
         public EditESVM EditES { get { return _editESVM; } }
-           
+        public SetupVM Setup { get { return _setupVM; } }   
     }
 }

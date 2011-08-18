@@ -17,7 +17,7 @@ namespace DiversityPhone
 {
     public partial class Home : PhoneApplicationPage
     {
-        private HomeViewModel VM { get { return DataContext as HomeViewModel; } }
+        private HomeVM VM { get { return DataContext as HomeVM; } }
         public Home()
         {
             InitializeComponent();
@@ -41,6 +41,12 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Download.Execute(null);
+        }
+
+        private void Upload_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Upload.Execute(null);
         }
     }
 }

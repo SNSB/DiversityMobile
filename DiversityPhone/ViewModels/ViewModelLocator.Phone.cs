@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
+using DiversityPhone.Service;
 
 namespace DiversityPhone.ViewModels
 {
@@ -25,6 +26,8 @@ namespace DiversityPhone.ViewModels
             container.Register<IOfflineStorage>(App.OfflineDB);
 
             container.Register<INavigationService>(App.Navigation);
+
+            container.Register<IDiversityService>(App.Repository);
 
             container.Register<IMessageBus>(RxApp.MessageBus);
             #endregion

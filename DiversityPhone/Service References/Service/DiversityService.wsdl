@@ -13,6 +13,24 @@
   <wsdl:message name="IDiversityService_GetProjectsForUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetProjectsForUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IDiversityService_GetTaxonListsForUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTaxonListsForUser" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetTaxonListsForUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTaxonListsForUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetStandardVocabulary_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStandardVocabulary" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetStandardVocabulary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStandardVocabularyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadTermList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadTermList" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadTermList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadTermListResponse" />
+  </wsdl:message>
   <wsdl:message name="IDiversityService_GetSeriesByDescription_InputMessage">
     <wsdl:part name="parameters" element="tns:GetSeriesByDescription" />
   </wsdl:message>
@@ -30,6 +48,18 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUser" message="tns:IDiversityService_GetProjectsForUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUserResponse" message="tns:IDiversityService_GetProjectsForUser_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetTaxonListsForUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser" message="tns:IDiversityService_GetTaxonListsForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse" message="tns:IDiversityService_GetTaxonListsForUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStandardVocabulary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabulary" message="tns:IDiversityService_GetStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse" message="tns:IDiversityService_GetStandardVocabulary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadTermList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadTermList" message="tns:IDiversityService_DownloadTermList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadTermListResponse" message="tns:IDiversityService_DownloadTermList_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetSeriesByDescription">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescription" message="tns:IDiversityService_GetSeriesByDescription_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescriptionResponse" message="tns:IDiversityService_GetSeriesByDescription_OutputMessage" />
@@ -43,6 +73,33 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetProjectsForUser">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/GetProjectsForUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxonListsForUser">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetTaxonListsForUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStandardVocabulary">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetStandardVocabulary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadTermList">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadTermList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

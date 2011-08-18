@@ -110,8 +110,14 @@
     <Compile Include="..\DiversityPhone\Messages\MessageContracts.cs">
       <Link>Messages\MessageContracts.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\Services\ConnectionStatus.cs">
+      <Link>Services\ConnectionStatus.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Services\IApplicationState.cs">
       <Link>Services\IApplicationState.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Services\IConnectivityService.cs">
+      <Link>Services\IConnectivityService.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\Services\INavigationService.cs">
       <Link>Services\INavigationService.cs</Link>
@@ -134,11 +140,23 @@
     <Compile Include="..\DiversityPhone\ViewModels\EventSeriesVM.cs">
       <Link>ViewModels\EventSeriesVM.cs</Link>
     </Compile>
-    <Compile Include="..\DiversityPhone\ViewModels\HomeViewModel.cs">
-      <Link>ViewModels\HomeViewModel.cs</Link>
+    <Compile Include="..\DiversityPhone\ViewModels\HomeVM.cs">
+      <Link>ViewModels\HomeVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Icon.cs">
+      <Link>ViewModels\Icon.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\IItemViewModel.cs">
+      <Link>ViewModels\IItemViewModel.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\ListESVM.cs">
       <Link>ViewModels\ListESVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\SetupVM.cs">
+      <Link>ViewModels\SetupVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\UploadVM.cs">
+      <Link>ViewModels\UploadVM.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\ViewModelLocator.cs">
       <Link>ViewModels\ViewModelLocator.cs</Link>
@@ -161,6 +179,10 @@
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
       <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
       <Name>DiversityService.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityService.Service\DiversityService.Service.csproj">
+      <Project>{99C4E84A-8FE7-456A-BD7C-33561641F204}</Project>
+      <Name>DiversityService.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -17,11 +17,11 @@ namespace DiversityPhone.TestLibrary
     [TestClass]
     public class HomeVMTest : ViewModelTestBase
     {
-        HomeViewModel _target;
+        HomeVM _target;
         
         public HomeVMTest()
         {
-            _target = _moqer.Resolve<HomeViewModel>();
+            _target = _moqer.Resolve<HomeVM>();
         }       
 
 

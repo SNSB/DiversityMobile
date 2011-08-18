@@ -52,6 +52,7 @@
     <Compile Include="DiversityService.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TermLists.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="DiversityCollection.edmx">

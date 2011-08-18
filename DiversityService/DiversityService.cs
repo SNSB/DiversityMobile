@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DiversityService.Model;
 
 namespace DiversityService
 {
@@ -61,6 +62,35 @@ namespace DiversityService
         public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
+        }
+
+
+        public IList<Model.TermList> GetTaxonListsForUser(Model.UserProfile user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<Model.Term> DownloadTermList(Model.TermList list)
+        {
+            var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();
+            if (list.ListID == TermLists.TaxonomicGroups.ListID)
+                return (from taxGrp in ctx.CollTaxonomicGroup_Enum
+                        select new Term()
+                        {
+                            SourceID = list.ListID,
+                            Code = taxGrp.Code,
+                            Description = taxGrp.Description,
+                            DisplayText = taxGrp.DisplayText,
+                            ParentCode = taxGrp.ParentCode
+                        }).ToList();
+
+            else return new List<Term>();
+        }
+
+
+        public IList<Model.TermList> GetStandardVocabulary()
+        {
+            return new List<TermList>() { TermLists.TaxonomicGroups };
         }
     }
 }

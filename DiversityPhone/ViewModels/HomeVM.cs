@@ -10,18 +10,19 @@ using System.Windows;
 
 namespace DiversityPhone.ViewModels
 {
-    public class HomeViewModel : ReactiveObject
+    public class HomeVM : ReactiveObject
     {
         
 
         public ReactiveCommand Edit { get; private set; }
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Download { get; private set; }
+        public ReactiveCommand Upload { get; private set; }
 
         private INavigationService Navigation { get; set; }
       
 
-        public HomeViewModel(INavigationService nav, IMessageBus messenger)
+        public HomeVM(INavigationService nav, IMessageBus messenger)
         {
             Navigation = nav;
 
@@ -33,6 +34,9 @@ namespace DiversityPhone.ViewModels
 
             (Download = new ReactiveCommand())
                 .Subscribe(_ => Navigation.Navigate(Services.Page.ListEventSeries));
+
+            (Upload = new ReactiveCommand())
+                .Subscribe(_ => Navigation.Navigate(Services.Page.Upload));            
 
             RxApp.MessageBus.Listen<int>("test")
                 .Subscribe(i => MessageBox.Show(i.ToString()));

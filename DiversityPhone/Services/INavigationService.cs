@@ -10,6 +10,6 @@ namespace DiversityPhone.Services
         void Navigate(Page p);
         bool CanNavigateBack();
         void NavigateBack();
-        //void ClearHistory();
+        void ClearHistory();
     }
 }

@@ -24,6 +24,12 @@ namespace DiversityPhone.Services
                 case Page.Settings:
                     destination = new Uri("/Settings.xaml", UriKind.Relative);
                     break;
+                case Page.Setup:
+                    destination = new Uri("/FirstTimeSetup.xaml", UriKind.Relative);
+                    break;
+                case Page.Upload:
+                    destination = new Uri("/Upload.xaml", UriKind.Relative);
+                    break;
                 case Page.ListEventSeries:
                     destination = new Uri("/ListES.xaml", UriKind.Relative);
                     break;                
@@ -41,7 +47,7 @@ namespace DiversityPhone.Services
                     throw new NotImplementedException();
 #endif
             }
-            if (destination != null)
+            if (destination != null && App.RootFrame != null)
                 App.RootFrame.Navigate(destination);
         }
 
@@ -53,6 +59,13 @@ namespace DiversityPhone.Services
         public void NavigateBack()
         {
             App.RootFrame.GoBack();
+        }
+
+
+        public void ClearHistory()
+        {
+            while (App.RootFrame.CanGoBack)
+                App.RootFrame.RemoveBackEntry();
         }
     }
 }

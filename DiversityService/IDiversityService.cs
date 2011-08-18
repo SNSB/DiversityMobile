@@ -14,6 +14,14 @@ namespace DiversityService
         [OperationContract]
         IList<Project> GetProjectsForUser(UserProfile user);
 
+        [OperationContract]
+        IList<TermList> GetTaxonListsForUser(UserProfile user);
+
+        [OperationContract]
+        IList<TermList> GetStandardVocabulary();
+
+        [OperationContract]
+        IList<Term> DownloadTermList(TermList list);
 
         [OperationContract]
         IList<EventSeries> GetSeriesByDescription(string description);
