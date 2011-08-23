@@ -54,8 +54,10 @@ namespace DiversityPhone.Services
 
         private int findFreeEventSeriesID(DiversityDataContext ctx)
         {
-            var min = (from es in ctx.EventSeries select es.SeriesID).Min() - 1;
-            return (min > -1)? -1 : min;
+            int min = -1;
+            if(ctx.EventSeries.Any())
+               min = (from es in ctx.EventSeries select es.SeriesID).Min();
+            return (min > -1)? -1 : min - 1;
         }
 
         private class LightListImpl<T> : IList<T>
@@ -76,7 +78,7 @@ namespace DiversityPhone.Services
             {
                 get
                 {
-                    return _source.ElementAt(index);
+                    return _source.Skip(index).First() ;
                 }
                 set
                 {
