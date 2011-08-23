@@ -77,7 +77,7 @@ namespace DiversityPhone.ViewModels
         private void addSeries()
         {
             _messenger.SendMessage<EventSeries>(
-                new EventSeries() { Description = "Test" },
+                new EventSeries(),
                 MessageContracts.EDIT
                 );
             _navigation.Navigate(Page.EditEventSeries);

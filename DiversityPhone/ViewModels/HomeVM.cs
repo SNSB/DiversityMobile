@@ -36,12 +36,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_ => Navigation.Navigate(Services.Page.ListEventSeries));
 
             (Upload = new ReactiveCommand())
-                .Subscribe(_ => Navigation.Navigate(Services.Page.Upload));            
-
-            RxApp.MessageBus.Listen<int>("test")
-                .Subscribe(i => MessageBox.Show(i.ToString()));
-
-            RxApp.MessageBus.SendMessage<int>(42, "test");
+                .Subscribe(_ => Navigation.Navigate(Services.Page.Upload));       
         }
     }
 }
