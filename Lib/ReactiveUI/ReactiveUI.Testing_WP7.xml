@@ -64,7 +64,7 @@
             <returns>An object that when disposed, restores the original 
             message bus.</returns>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:ReactiveUI.Testing.TestUtils.WithMessageBus(Microsoft.Reactive.Testing.TestScheduler,System.Action{ReactiveUI.IMessageBus},ReactiveUI.IMessageBus)" -->
+        <!-- Ungültiger XML-Kommentar wurde für den Member "M:ReactiveUI.Testing.TestUtils.WithMessageBus(Microsoft.Reactive.Testing.TestScheduler,System.Action{ReactiveUI.IMessageBus},ReactiveUI.IMessageBus)" ignoriert -->
         <member name="M:ReactiveUI.Testing.TestUtils.RunToMilliseconds(Microsoft.Reactive.Testing.TestScheduler,System.Double)">
             <summary>
             RunToMilliseconds moves the TestScheduler to the specified time in

@@ -4,17 +4,6 @@
         <name>ReactiveUI.Xaml_WP7</name>
     </assembly>
     <members>
-        <member name="M:ReactiveUI.Xaml.DependencyPropertyMixin.ObservableFromDP``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
-            <summary>
-            Creates an IObservable from an existing dependency property. Note
-            that this method is somewhat expensive and should not be called
-            frequently.
-            </summary>
-            <param name="property">An Expression specifying the property to use
-            on the DependencyObject (e.g. x => x.SomeProperty)</param>
-            <returns>An Observable that fires whenever the DP changes, and never
-            completes.</returns>
-        </member>
         <member name="T:ReactiveUI.Xaml.IReactiveCommand">
             <summary>
             IReactiveCommand is an Rx-enabled version of ICommand that is also an
@@ -56,6 +45,17 @@
             <summary>
             Should be fired whenever an async operation fails.
             </summary>
+        </member>
+        <member name="M:ReactiveUI.Xaml.DependencyPropertyMixin.ObservableFromDP``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Creates an IObservable from an existing dependency property. Note
+            that this method is somewhat expensive and should not be called
+            frequently.
+            </summary>
+            <param name="property">An Expression specifying the property to use
+            on the DependencyObject (e.g. x => x.SomeProperty)</param>
+            <returns>An Observable that fires whenever the DP changes, and never
+            completes.</returns>
         </member>
         <member name="T:ReactiveUI.Xaml.ReactiveAsyncCommand">
             <summary>
