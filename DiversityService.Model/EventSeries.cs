@@ -10,11 +10,22 @@ namespace DiversityService.Model
     {
         public EventSeries()
         {
+            Description = "";
+            SeriesCode = "";
+            SeriesStart = DateTime.Now;
+            SeriesEnd = DateTime.Now;
+
             IsModified = null;
         }
 
         public int SeriesID { get; set; }
         public string Description { get; set; }
+        public string SeriesCode { get; set; }
+
+        public DateTime SeriesStart { get; set; }
+        public DateTime SeriesEnd { get; set; }
+
+
 
         /// <summary>
         /// Tracks modifications to this Object.
