@@ -28,6 +28,7 @@ namespace DiversityPhone
                 VM.Save.CanExecuteObservable
                     .DistinctUntilChanged()
                     .Subscribe(canSave => setSaveEnabled(canSave));
+                setSaveEnabled(VM.Save.CanExecute(null));
             }
 
             var descBinding = DescTB.GetBindingExpression(TextBox.TextProperty);

@@ -37,19 +37,33 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(es => editES(es));
 
             var descriptionObservable = this.ObservableForProperty(x => x.Description);
-            var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value));
+            var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
 
             (Save = new ReactiveCommand(canSave))               
-                .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE));
+                .Subscribe(_ => executeSave());
 
             (Cancel = new ReactiveCommand())
                 .Subscribe(_ => _navigation.NavigateBack());
+
+
+        }
+
+        private void executeSave()
+        {
+            updateModel();
+            _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
+            _navigation.NavigateBack();
+        }
+
+        private void updateModel()
+        {
+            Model.Description = Description;
         }
 
         private void editES(EventSeries es)
         {
             Model = es;
-            Description = es.Description;
+            Description = es.Description ?? "";
         }
     }
 }
