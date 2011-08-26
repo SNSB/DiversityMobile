@@ -42,6 +42,8 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
 
             _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
+
+            _ioc.Register<SelectDateVM>(c => new SelectDateVM(c.Resolve<IMessageBus>())).ReusedWithin(ReuseScope.None);
             #endregion
 
             #region ViewModel Instantiation
@@ -57,6 +59,7 @@ namespace DiversityPhone.ViewModels
         public HomeVM Home { get { return _homeVM; } }
         public ListESVM EventSeries { get { return _hierarchyVM; } }
         public EditESVM EditES { get { return _editESVM; } }
-        public SetupVM Setup { get { return _setupVM; } }   
+        public SetupVM Setup { get { return _setupVM; } }
+        public SelectDateVM SelectDate { get { return _ioc.Resolve<SelectDateVM>(); } }
     }
 }

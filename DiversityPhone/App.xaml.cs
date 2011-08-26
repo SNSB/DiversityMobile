@@ -23,8 +23,7 @@ namespace DiversityPhone
 {
     public partial class App : Application
     {
-        public static IOfflineStorage OfflineDB { get; private set; }
-        public static INavigationService Navigation { get; private set; }
+        public static IOfflineStorage OfflineDB { get; private set; }        
         public static IDiversityService Repository { get; private set; }
         
         private static SterlingEngine _engine;
@@ -44,7 +43,7 @@ namespace DiversityPhone
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 
-            Navigation = new Services.NavigationService(); //Push Nav-Service
+            
             
             Repository = new DiversityServiceClient(); //Push Nav-Service
 

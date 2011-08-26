@@ -22,14 +22,15 @@ namespace DiversityPhone.ViewModels
             var container = new Container();
 
             #region Service Registration
+            container.Register<IMessageBus>(RxApp.MessageBus);
 
-            container.Register<IOfflineStorage>(App.OfflineDB);
+            container.Register<INavigationService>(new NavigationService(container.Resolve<IMessageBus>()));
 
-            container.Register<INavigationService>(App.Navigation);
+            container.Register<IOfflineStorage>(App.OfflineDB);            
 
             container.Register<IDiversityService>(App.Repository);
 
-            container.Register<IMessageBus>(RxApp.MessageBus);
+            
             #endregion
 
 

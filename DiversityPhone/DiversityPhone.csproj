@@ -52,6 +52,7 @@
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="ReactiveUI.Blend_WP7">
       <HintPath>..\Lib\ReactiveUI\ReactiveUI.Blend_WP7.dll</HintPath>
@@ -110,6 +111,9 @@
       <DependentUpon>ListIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\MessageContracts.cs" />
+    <Compile Include="SelectDate.xaml.cs">
+      <DependentUpon>SelectDate.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Service References\Service\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -141,6 +145,7 @@
     <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
+    <Compile Include="ViewModels\SelectDateVM.cs" />
     <Compile Include="ViewModels\SetupVM.cs" />
     <Compile Include="ViewModels\UploadVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -174,6 +179,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ListIU.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SelectDate.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
