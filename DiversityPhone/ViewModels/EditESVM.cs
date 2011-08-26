@@ -13,11 +13,18 @@ namespace DiversityPhone.ViewModels
     {
         private IMessageBus _messenger;
         private INavigationService _navigation;
-
-        public EventSeries Model { get; private set; }
+        
 
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Cancel { get; private set; }
+
+        public EventSeries _Model; //Need to be public in SL :/
+
+        public EventSeries Model
+        {
+            get { return _Model; }
+            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+        }
 
         public string _Description; //Need to be public in SL :/
 
@@ -25,6 +32,22 @@ namespace DiversityPhone.ViewModels
         {
             get { return _Description; }
             set { this.RaiseAndSetIfChanged(x=>x.Description,value); }
+        }
+
+        public string _SeriesCode; //Need to be public in SL :/
+
+        public string SeriesCode
+        {
+            get { return _SeriesCode; }
+            set { this.RaiseAndSetIfChanged(x => x.SeriesCode, value); }
+        }
+
+        public string SeriesStart
+        {
+            get
+            {
+                return Model.SeriesStart.ToLongDateString();
+            }
         }
         
 
@@ -34,7 +57,7 @@ namespace DiversityPhone.ViewModels
             _messenger = messenger;
 
             _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                .Subscribe(es => editES(es));
+                .Subscribe(es => updateView(es));
 
             var descriptionObservable = this.ObservableForProperty(x => x.Description);
             var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
@@ -58,12 +81,14 @@ namespace DiversityPhone.ViewModels
         private void updateModel()
         {
             Model.Description = Description;
+            Model.SeriesCode = SeriesCode;
         }
 
-        private void editES(EventSeries es)
+        private void updateView(EventSeries es)
         {
             Model = es;
-            Description = es.Description ?? "";
+            Description = Model.Description ?? "";
+            SeriesCode = Model.SeriesCode;
         }
     }
 }
