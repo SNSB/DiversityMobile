@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -34,8 +35,10 @@
             <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}"/>
             <TextBlock Text="Description"/>
             <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}"/>
-            <TextBlock Text="SeriesStart"/>
-            <TextBlock Text="{Binding Model.SeriesStart, Mode=OneWay}"/>
+            <TextBlock Text="Series Start"/>
+            <TextBox IsReadOnly="True" Text="{Binding Model.SeriesStart, Mode=OneWay}"/>
+            <TextBlock Text="Series End" />
+            <toolkit:DatePicker Value="{Binding SeriesEnd,Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
  

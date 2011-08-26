@@ -17,14 +17,11 @@ namespace DiversityPhone.Messages
         public const string SAVE = "Save";
         public const string SELECT = "Select";
 
-        public const string NAVIGATE_TO = "Navigate To";
-
-        //Dialog Messages
-        public const string SELECT_DATE = "Select Date"; //For Use with Message
-        public const string SELECTED_DATE = "Selected Date"; //For Use with DateTime
-
-
     }
 
-    public class Message { };
+    public enum Message 
+    {       
+        NavigateBack,
+        ClearHistory
+    };
 }

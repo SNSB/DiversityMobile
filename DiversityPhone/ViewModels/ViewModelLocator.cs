@@ -43,7 +43,7 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
 
-            _ioc.Register<SelectDateVM>(c => new SelectDateVM(c.Resolve<IMessageBus>())).ReusedWithin(ReuseScope.None);
+            
             #endregion
 
             #region ViewModel Instantiation
@@ -60,6 +60,6 @@ namespace DiversityPhone.ViewModels
         public ListESVM EventSeries { get { return _hierarchyVM; } }
         public EditESVM EditES { get { return _editESVM; } }
         public SetupVM Setup { get { return _setupVM; } }
-        public SelectDateVM SelectDate { get { return _ioc.Resolve<SelectDateVM>(); } }
+       
     }
 }

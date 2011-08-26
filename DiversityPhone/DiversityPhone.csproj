@@ -111,9 +111,6 @@
       <DependentUpon>ListIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\MessageContracts.cs" />
-    <Compile Include="SelectDate.xaml.cs">
-      <DependentUpon>SelectDate.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Service References\Service\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -145,7 +142,6 @@
     <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
-    <Compile Include="ViewModels\SelectDateVM.cs" />
     <Compile Include="ViewModels\SetupVM.cs" />
     <Compile Include="ViewModels\UploadVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -182,10 +178,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SelectDate.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,6 +188,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\Applicationbar.Cancel.png" />
     <None Include="Data\LinqToSQLMapping.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -252,6 +246,7 @@
       <Name>DiversityService.Model</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,12 +12,24 @@ namespace DiversityPhone.Services
         private IMessageBus _messenger;
         public NavigationService(IMessageBus messenger)
         {
-            _messenger = messenger;
-
-            _messenger.Listen<bool>(MessageContracts.SELECT_DATE)
-                .Subscribe(_ => Navigate(Page.SelectDate));
-            _messenger.Listen<Page>(MessageContracts.NAVIGATE_TO)
+            _messenger = messenger;           
+            _messenger.Listen<Page>()
                 .Subscribe(p => Navigate(p));
+            _messenger.Listen<Message>()
+                .Subscribe(m =>
+                    {
+                        switch (m)
+                        {                            
+                            case Message.NavigateBack:
+                                NavigateBack();
+                                break;
+                            case Message.ClearHistory:
+                                ClearHistory();
+                                break;
+                            default:
+                                break;
+                        }
+                    });
 
 
         }
@@ -50,10 +62,7 @@ namespace DiversityPhone.Services
                     break;
                 case Page.EditEvent:
                     destination = new Uri("/EditEV.xaml", UriKind.Relative);
-                    break;
-                case Page.SelectDate:
-                    destination = new Uri("/SelectDate.xaml", UriKind.Relative);
-                    break;
+                    break;              
 
 #if DEBUG
                 default:

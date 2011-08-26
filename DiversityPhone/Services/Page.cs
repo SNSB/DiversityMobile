@@ -12,7 +12,6 @@ namespace DiversityPhone.Services
         ListIUnits,
         EditIUnit,
         Settings,
-        Setup,
-        SelectDate,
+        Setup,     
     }
 }

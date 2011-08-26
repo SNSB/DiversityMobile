@@ -17,6 +17,7 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Cancel { get; private set; }
+        public ReactiveCommand EditSeriesEnd { get; private set; }
 
         public EventSeries _Model; //Need to be public in SL :/
 
@@ -49,6 +50,14 @@ namespace DiversityPhone.ViewModels
                 return Model.SeriesStart.ToLongDateString();
             }
         }
+
+        public DateTime? _SeriesEnd;
+
+        public DateTime? SeriesEnd
+        {
+            get { return _SeriesEnd; }
+            set { this.RaiseAndSetIfChanged(x => x.SeriesEnd, value); }
+        }
         
 
         public EditESVM(INavigationService nav, IMessageBus messenger)
@@ -68,8 +77,9 @@ namespace DiversityPhone.ViewModels
             (Cancel = new ReactiveCommand())
                 .Subscribe(_ => _navigation.NavigateBack());
 
-
         }
+
+       
 
         private void executeSave()
         {
@@ -82,6 +92,7 @@ namespace DiversityPhone.ViewModels
         {
             Model.Description = Description;
             Model.SeriesCode = SeriesCode;
+            Model.SeriesEnd = SeriesEnd ?? Model.SeriesEnd;
         }
 
         private void updateView(EventSeries es)
@@ -89,6 +100,9 @@ namespace DiversityPhone.ViewModels
             Model = es;
             Description = Model.Description ?? "";
             SeriesCode = Model.SeriesCode;
+            SeriesEnd = Model.SeriesEnd;
         }
+
+       
     }
 }

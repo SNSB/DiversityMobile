@@ -52,5 +52,11 @@ namespace DiversityPhone
             if (VM != null)
                 VM.Cancel.Execute(null);
         }
+
+        private void SeriesEnd_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if (VM != null)
+                VM.EditSeriesEnd.Execute(null);
+        }
     }
 }
