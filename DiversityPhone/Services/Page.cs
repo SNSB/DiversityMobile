@@ -13,5 +13,6 @@ namespace DiversityPhone.Services
         EditIUnit,
         Settings,
         Setup,
+        SelectDate,
     }
 }

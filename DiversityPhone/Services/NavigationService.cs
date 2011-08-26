@@ -1,16 +1,25 @@
 ﻿using System;
 using System.Net;
 using Microsoft.Phone.Controls;
+using ReactiveUI;
+using DiversityPhone.Messages;
 
 
 namespace DiversityPhone.Services
 {
     public class NavigationService : INavigationService
-    {             
-
-        public NavigationService()
+    {
+        private IMessageBus _messenger;
+        public NavigationService(IMessageBus messenger)
         {
-           
+            _messenger = messenger;
+
+            _messenger.Listen<bool>(MessageContracts.SELECT_DATE)
+                .Subscribe(_ => Navigate(Page.SelectDate));
+            _messenger.Listen<Page>(MessageContracts.NAVIGATE_TO)
+                .Subscribe(p => Navigate(p));
+
+
         }
 
         public void Navigate(Page p)
@@ -42,6 +51,10 @@ namespace DiversityPhone.Services
                 case Page.EditEvent:
                     destination = new Uri("/EditEV.xaml", UriKind.Relative);
                     break;
+                case Page.SelectDate:
+                    destination = new Uri("/SelectDate.xaml", UriKind.Relative);
+                    break;
+
 #if DEBUG
                 default:
                     throw new NotImplementedException();
