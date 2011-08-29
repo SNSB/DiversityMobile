@@ -32,11 +32,11 @@
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <TextBlock Text="SeriesCode"/>
-            <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}"/>
+            <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}" TextChanged="SeriesCodeTB_TextChanged"/>
             <TextBlock Text="Description"/>
-            <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}"/>
+            <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged"/>
             <TextBlock Text="Series Start"/>
-            <TextBox IsReadOnly="True" Text="{Binding Model.SeriesStart, Mode=OneWay}"/>
+            <TextBox IsReadOnly="True" Text="{Binding SeriesStart, Mode=OneWay}"/>
             <TextBlock Text="Series End" />
             <toolkit:DatePicker Value="{Binding SeriesEnd,Mode=TwoWay}"/>
         </StackPanel>

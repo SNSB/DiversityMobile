@@ -16,8 +16,7 @@ namespace DiversityPhone.ViewModels
         
 
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }
-        public ReactiveCommand EditSeriesEnd { get; private set; }
+        public ReactiveCommand Cancel { get; private set; }        
 
         public EventSeries _Model; //Need to be public in SL :/
 
@@ -113,6 +112,7 @@ namespace DiversityPhone.ViewModels
             Description = Model.Description ?? "";
             SeriesCode = Model.SeriesCode;
             SeriesEnd = Model.SeriesEnd;
+            this.RaisePropertyChanged(x => x.SeriesStart);
         }
 
        

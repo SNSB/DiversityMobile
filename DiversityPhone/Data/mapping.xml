@@ -17,6 +17,7 @@
       <Column Name="CollectionDate" Member="CollectionDate"/>
       <Column Name="LocalityDescription" Member="LocalityDescription"/>
       <Column Name="HabitatDescription" Member="HabitatDescription"/>
+      <Column Name="IsModified" Member="IsModified" CanBeNull="true"/>
     </Type>    
   </Table>
   <Table Name="Term" Member="DiversityService.Model.Term">

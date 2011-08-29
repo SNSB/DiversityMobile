@@ -25,6 +25,8 @@
     <SilverlightAppEntry>DiversityPhone.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <Utf8Output>true</Utf8Output>
+    <ExpressionBlendVersion>4.0.30701.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -95,8 +97,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataItemControl.xaml.cs">
+      <DependentUpon>DataItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditEV.xaml.cs">
+      <DependentUpon>EditEV.xaml</DependentUpon>
     </Compile>
     <Compile Include="FirstTimeSetup.xaml.cs">
       <DependentUpon>FirstTimeSetup.xaml</DependentUpon>
@@ -113,7 +121,7 @@
     <Compile Include="ListIU.xaml.cs">
       <DependentUpon>ListIU.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\MessageContracts.cs" />
+    <Compile Include="Messages\Messages.cs" />
     <Compile Include="Service References\Service\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -140,12 +148,15 @@
     <Compile Include="Upload.xaml.cs">
       <DependentUpon>Upload.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\EditEVVM.cs" />
     <Compile Include="ViewModels\EventSeriesVM.cs" />
+    <Compile Include="ViewModels\EventVM.cs" />
     <Compile Include="ViewModels\Icon.cs" />
     <Compile Include="ViewModels\IItemViewModel.cs" />
     <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
+    <Compile Include="ViewModels\ListEVVM.cs" />
     <Compile Include="ViewModels\SetupVM.cs" />
     <Compile Include="ViewModels\UploadVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -158,7 +169,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="DataItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EditES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditEV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -229,8 +248,6 @@
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\ApplicationIcon.png" />
-    <None Include="Thumbs.db" />
-    <None Include="Toolkit.Content\Thumbs.db" />
     <Resource Include="Data\mapping.xml" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
@@ -256,7 +273,6 @@
       <Name>DiversityService.Model</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
