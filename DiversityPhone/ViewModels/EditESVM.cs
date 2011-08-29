@@ -46,7 +46,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return Model.SeriesStart.ToShortDateString();
+                return (Model != null)?Model.SeriesStart.ToShortDateString():"";
             }
         }
 

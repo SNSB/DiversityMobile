@@ -49,7 +49,7 @@ namespace DiversityPhone.Services
         public IList<EventSeries> getAllEventSeries()
         {
             var ctx = new DiversityDataContext();
-            return new LightListImpl<EventSeries>(ctx.EventSeries);
+            return new LightList<EventSeries>(ctx.EventSeries);
         }
 
         private int findFreeEventSeriesID(DiversityDataContext ctx)
@@ -60,89 +60,7 @@ namespace DiversityPhone.Services
             return (min > -1)? -1 : min - 1;
         }
 
-        private class LightListImpl<T> : IList<T>
-        {
-            IQueryable<T> _source;
-            public LightListImpl(IQueryable<T> source)
-            {
-                _source = source;
-            }
-
-            public int Count
-            {
-                get { return _source.Count(); }
-            }
-
-
-            public T this[int index]
-            {
-                get
-                {
-                    return _source.Skip(index).First() ;
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public int IndexOf(T item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Insert(int index, T item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void RemoveAt(int index)
-            {
-                throw new NotImplementedException();
-            }            
-
-            public void Add(T item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void Clear()
-            {
-                throw new NotImplementedException();
-            }
-
-            public bool Contains(T item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void CopyTo(T[] array, int arrayIndex)
-            {
-                throw new NotImplementedException();
-            }
-
-            
-
-            public bool IsReadOnly
-            {
-                get { return true; }
-            }
-
-            public bool Remove(T item)
-            {
-                throw new NotImplementedException();
-            }
-
-            public IEnumerator<T> GetEnumerator()
-            {
-                return _source.GetEnumerator();
-            }
-
-            System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-            {
-                return _source.GetEnumerator();
-            }
-        }
+        
 
 
         public IList<EventSeries> getEventSeriesByDescription(string query)
@@ -163,7 +81,8 @@ namespace DiversityPhone.Services
 
         public IList<Event> getAllEvents()
         {
-            throw new NotImplementedException();
+            var ctx = new DiversityDataContext();
+            return new LightList<Event>(ctx.Events);
         }
 
         public void addEvent(Event ev)

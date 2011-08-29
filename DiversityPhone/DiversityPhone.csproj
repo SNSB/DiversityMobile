@@ -139,6 +139,7 @@
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IOfflineVocabulary.cs" />
+    <Compile Include="Services\LightList.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />

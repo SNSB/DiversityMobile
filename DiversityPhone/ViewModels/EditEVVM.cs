@@ -40,11 +40,11 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x=>x.LocalityDescription,value); }
         }
 
-        public string _SeriesCode; //Need to be public in SL :/
+        public string _HabitatDescription; //Need to be public in SL :/
 
         public string HabitatDescription
         {
-            get { return _SeriesCode; }
+            get { return _HabitatDescription; }
             set { this.RaiseAndSetIfChanged(x => x.HabitatDescription, value); }
         }
 
@@ -52,7 +52,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return Model.CollectionDate.ToLongDateString();
+                return (Model != null) ? Model.CollectionDate.ToLongDateString() : "";
             }
         }
         
@@ -94,7 +94,7 @@ namespace DiversityPhone.ViewModels
         private void updateView(Event ev)
         {
             Model = ev;
-            LocalityDescription = Model.LocalityDescription ?? "";
+            LocalityDescription = Model.LocalityDescription;
             HabitatDescription = Model.HabitatDescription;
             this.RaisePropertyChanged(x => x.CollectionDate);
         }
