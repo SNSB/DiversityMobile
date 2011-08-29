@@ -34,7 +34,7 @@
                 <ListBox ItemsSource="{Binding SeriesList}" >
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Command="{Binding SelectSeries}">
+                            <Button Command="{Binding SelectSeries}" Style="{StaticResource ItemButtonStyle}">
                                 <TextBlock Text="{Binding Description}"/>
                             </Button>
                         </DataTemplate>
