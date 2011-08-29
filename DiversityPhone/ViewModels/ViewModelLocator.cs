@@ -41,6 +41,12 @@ namespace DiversityPhone.ViewModels
                 ));
             _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
 
+            _ioc.Register<ListEVVM>(container => new ListEVVM(
+                container.Resolve<IMessageBus>(),
+                container.Resolve<IOfflineStorage>()
+                ));
+
+
             _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
 
             
