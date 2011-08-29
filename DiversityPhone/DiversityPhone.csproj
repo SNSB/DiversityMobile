@@ -122,6 +122,7 @@
     <Compile Include="Services\ApplicationDatabase.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
+    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DiversityDatabase.cs" />
     <Compile Include="Services\DiversityDataContext.cs" />
     <Compile Include="Services\IApplicationState.cs" />

@@ -26,6 +26,8 @@ namespace DiversityPhone.ViewModels
 
             container.Register<INavigationService>(new NavigationService(container.Resolve<IMessageBus>()));
 
+            container.Register<DialogService>(new DialogService(container.Resolve<IMessageBus>()));
+
             container.Register<IOfflineStorage>(App.OfflineDB);            
 
             container.Register<IDiversityService>(App.Repository);

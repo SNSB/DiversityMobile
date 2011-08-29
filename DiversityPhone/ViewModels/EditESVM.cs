@@ -47,16 +47,28 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return Model.SeriesStart.ToLongDateString();
+                return Model.SeriesStart.ToShortDateString();
             }
         }
 
-        public DateTime? _SeriesEnd;
+        public DateTime _SeriesEnd;
 
         public DateTime? SeriesEnd
         {
             get { return _SeriesEnd; }
-            set { this.RaiseAndSetIfChanged(x => x.SeriesEnd, value); }
+            set 
+            {
+                if (value != null)
+                {
+                    if (value >= Model.SeriesStart)
+                        this.RaiseAndSetIfChanged(x => x.SeriesEnd, value);
+                    else
+                    {
+                        _messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
+                        this.RaisePropertyChanged(x => x.SeriesEnd);
+                    }
+                }
+            }
         }
         
 
