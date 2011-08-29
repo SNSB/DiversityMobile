@@ -159,5 +159,16 @@ namespace DiversityPhone.Services
         {
             throw new NotImplementedException();
         }
+
+
+        public IList<Event> getAllEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addEvent(Event ev)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

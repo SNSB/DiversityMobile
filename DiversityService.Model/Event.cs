@@ -13,5 +13,10 @@ namespace DiversityService.Model
         public DateTime CollectionDate { get; set; }
         public string LocalityDescription { get; set; }
         public string HabitatDescription { get; set; }
+
+        public Event()
+        {
+            CollectionDate = DateTime.Now;
+        }
     }
 }
