@@ -52,7 +52,10 @@
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SilverlightToolkitWP.4.2011.8.17\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="ReactiveUI.Blend_WP7">
       <HintPath>..\Lib\ReactiveUI\ReactiveUI.Blend_WP7.dll</HintPath>
@@ -188,11 +191,15 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Data\LinqToSQLMapping.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.Project.datasource" />
     <None Include="Properties\AppManifest.xml" />
@@ -221,6 +228,8 @@
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\ApplicationIcon.png" />
+    <None Include="Thumbs.db" />
+    <None Include="Toolkit.Content\Thumbs.db" />
     <Resource Include="Data\mapping.xml" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
