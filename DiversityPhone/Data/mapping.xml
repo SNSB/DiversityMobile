@@ -33,6 +33,7 @@
     <Type Name="DiversityService.Model.IdentificationUnit">
       <Column Name="UnitID" Member="UnitID" IsPrimaryKey="true"/>
       <Column Name="RelatedUnitID" Member="RelatedUnitID"/>
+      <Column Name="AccessionNumber" Member="AccessionNumber"/>
       <Column Name="TaxonomicGroup" Member="TaxonomicGroup"/>
       <Column Name="RelationType" Member="RelationType"/>
       <Column Name="ColonisedSubstratePart" Member="ColonisedSubstratePart"/>

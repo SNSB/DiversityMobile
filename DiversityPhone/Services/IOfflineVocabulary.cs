@@ -9,6 +9,6 @@ namespace DiversityPhone.Services
     public interface IOfflineVocabulary
     {
         void addTerms(IEnumerable<Term> terms);
-
+        IList<Term> getTerms(int source);
     }
 }

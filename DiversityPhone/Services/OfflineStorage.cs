@@ -96,5 +96,14 @@ namespace DiversityPhone.Services
             ctx.Terms.InsertAllOnSubmit(terms);
             ctx.SubmitChanges();
         }
+
+
+        public IList<Term> getTerms(int source)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Term>(from t in ctx.Terms
+                                       where t.SourceID == source
+                                       select t);
+        }
     }
 }
