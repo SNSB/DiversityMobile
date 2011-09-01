@@ -29,4 +29,28 @@
       <Column Name="ParentCode" Member="ParentCode" CanBeNull="true"/>
     </Type>
   </Table>
+  <Table Name="IdentificationUnit" Member="DiversityService.Model.IdentificationUnit">
+    <Type Name="DiversityService.Model.IdentificationUnit">
+      <Column Name="UnitID" Member="UnitID" IsPrimaryKey="true"/>
+      <Column Name="RelatedUnitID" Member="RelatedUnitID"/>
+      <Column Name="TaxonomicGroup" Member="TaxonomicGroup"/>
+      <Column Name="RelationType" Member="RelationType"/>
+      <Column Name="ColonisedSubstratePart" Member="ColonisedSubstratePart"/>
+      <Column Name="LifeStage" Member="LifeStage"/>
+      <Column Name="Gender" Member="Gender"/>
+      <Column Name="UnitIdentifier" Member="UnitIdentifier"/>
+      <Column Name="UnitDescription" Member="UnitDescription"/>
+      <Column Name="IsModified" Member="IsModified" CanBeNull="true"/>      
+    </Type>
+  </Table>
+  <Table Name="TaxonName" Member="DiversityService.Model.TaxonName">
+    <Type Name="DiversityService.Model.TaxonName">
+      <Column Name="URI" Member="URI" IsPrimaryKey="true"/>
+      <Column Name="TaxonNameCache" Member="TaxonNameCache"/>
+      <Column Name="TaxonNameSinAuth" Member="TaxonNameSinAuth"/>
+      <Column Name="GenusOrSupragenic" Member="GenusOrSupragenic"/>
+      <Column Name="SpeciesEpithet" Member="SpeciesEpithet"/>
+      <Column Name="InfraspecificEpithet" Member="InfraspecificEpithet"/>
+    </Type>
+  </Table>
 </Database>

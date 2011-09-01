@@ -46,7 +46,7 @@ namespace DiversityPhone.Services
         public Table<EventSeries> EventSeries;
         public Table<Event> Events;
         public Table<Term> Terms;
-        
-        //public Table<IdentificationUnit> IdentificationUnits;
+        public Table<TaxonName> TaxonNames;
+        public Table<IdentificationUnit> IdentificationUnits;
     }
 }
