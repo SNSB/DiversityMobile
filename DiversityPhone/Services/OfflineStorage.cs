@@ -89,5 +89,12 @@ namespace DiversityPhone.Services
         {
             throw new NotImplementedException();
         }
+
+        public void addTerms(IEnumerable<Term> terms)
+        {
+            var ctx = new DiversityDataContext();
+            ctx.Terms.InsertAllOnSubmit(terms);
+            ctx.SubmitChanges();
+        }
     }
 }

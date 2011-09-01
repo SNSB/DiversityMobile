@@ -62,8 +62,10 @@
     <Compile Include="IdentificationUnit.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxonName.cs" />
     <Compile Include="TermList.cs" />
     <Compile Include="Term.cs" />
+    <Compile Include="TermLists.cs" />
     <Compile Include="UserProfile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

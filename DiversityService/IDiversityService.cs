@@ -18,10 +18,10 @@ namespace DiversityService
         IList<TermList> GetTaxonListsForUser(UserProfile user);
 
         [OperationContract]
-        IList<TermList> GetStandardVocabulary();
+        IList<Term> GetStandardVocabulary();
 
         [OperationContract]
-        IList<Term> DownloadTermList(TermList list);
+        IList<TaxonName> DownloadTaxonList(string list);
 
         [OperationContract]
         IList<EventSeries> GetSeriesByDescription(string description);

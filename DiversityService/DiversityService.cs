@@ -68,29 +68,25 @@ namespace DiversityService
         public IList<Model.TermList> GetTaxonListsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
+        }             
+
+        public IList<Term> GetStandardVocabulary()
+        {
+            var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();            
+            return (from taxGrp in ctx.CollTaxonomicGroup_Enum
+                select new Term()
+                {
+                    SourceID = 0, //TODO
+                    Code = taxGrp.Code,
+                    Description = taxGrp.Description,
+                    DisplayText = taxGrp.DisplayText,
+                    ParentCode = taxGrp.ParentCode
+                }).ToList();          
         }
 
-        public IList<Model.Term> DownloadTermList(Model.TermList list)
+        public IList<TaxonName> DownloadTaxonList(string list)
         {
-            var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();
-            if (list.ListID == TermLists.TaxonomicGroups.ListID)
-                return (from taxGrp in ctx.CollTaxonomicGroup_Enum
-                        select new Term()
-                        {
-                            SourceID = list.ListID,
-                            Code = taxGrp.Code,
-                            Description = taxGrp.Description,
-                            DisplayText = taxGrp.DisplayText,
-                            ParentCode = taxGrp.ParentCode
-                        }).ToList();
-
-            else return new List<Term>();
-        }
-
-
-        public IList<Model.TermList> GetStandardVocabulary()
-        {
-            return new List<TermList>() { TermLists.TaxonomicGroups };
+            throw new NotImplementedException();
         }
     }
 }

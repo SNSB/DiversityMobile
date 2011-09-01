@@ -51,6 +51,23 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Term" nillable="true" type="tns:Term" />
+  <xs:complexType name="ArrayOfTaxonName">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonName" nillable="true" type="tns:TaxonName" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTaxonName" nillable="true" type="tns:ArrayOfTaxonName" />
+  <xs:complexType name="TaxonName">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GenusOrSupragenic" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InfraspecificEpithet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SpeciesEpithet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonNameCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonNameSinAuth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="URI" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaxonName" nillable="true" type="tns:TaxonName" />
   <xs:complexType name="ArrayOfEventSeries">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="EventSeries" nillable="true" type="tns:EventSeries" />
@@ -61,7 +78,10 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IsModified" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeriesEnd" type="xs:dateTime" />
       <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
+      <xs:element minOccurs="0" name="SeriesStart" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />

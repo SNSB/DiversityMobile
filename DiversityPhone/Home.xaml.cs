@@ -48,5 +48,11 @@ namespace DiversityPhone
             if (VM != null)
                 VM.Upload.Execute(null);
         }
+
+        private void GetVoc_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.GetVocabulary.Execute(null);
+        }
     }
 }

@@ -31,12 +31,12 @@ namespace DiversityPhone.Service {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse")]
         System.IAsyncResult BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> EndGetStandardVocabulary(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> EndGetStandardVocabulary(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadTermList", ReplyAction="http://tempuri.org/IDiversityService/DownloadTermListResponse")]
-        System.IAsyncResult BeginDownloadTermList(DiversityService.Model.TermList list, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadTaxonList", ReplyAction="http://tempuri.org/IDiversityService/DownloadTaxonListResponse")]
+        System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> EndDownloadTermList(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> EndDownloadTaxonList(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetSeriesByDescription", ReplyAction="http://tempuri.org/IDiversityService/GetSeriesByDescriptionResponse")]
         System.IAsyncResult BeginGetSeriesByDescription(string description, System.AsyncCallback callback, object asyncState);
@@ -102,29 +102,29 @@ namespace DiversityPhone.Service {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> Result {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList>)(this.results[0]));
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term>)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DownloadTermListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class DownloadTaxonListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public DownloadTermListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public DownloadTaxonListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> Result {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term>)(this.results[0]));
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName>)(this.results[0]));
             }
         }
     }
@@ -189,11 +189,11 @@ namespace DiversityPhone.Service {
         
         private System.Threading.SendOrPostCallback onGetStandardVocabularyCompletedDelegate;
         
-        private BeginOperationDelegate onBeginDownloadTermListDelegate;
+        private BeginOperationDelegate onBeginDownloadTaxonListDelegate;
         
-        private EndOperationDelegate onEndDownloadTermListDelegate;
+        private EndOperationDelegate onEndDownloadTaxonListDelegate;
         
-        private System.Threading.SendOrPostCallback onDownloadTermListCompletedDelegate;
+        private System.Threading.SendOrPostCallback onDownloadTaxonListCompletedDelegate;
         
         private BeginOperationDelegate onBeginGetSeriesByDescriptionDelegate;
         
@@ -266,7 +266,7 @@ namespace DiversityPhone.Service {
         
         public event System.EventHandler<GetStandardVocabularyCompletedEventArgs> GetStandardVocabularyCompleted;
         
-        public event System.EventHandler<DownloadTermListCompletedEventArgs> DownloadTermListCompleted;
+        public event System.EventHandler<DownloadTaxonListCompletedEventArgs> DownloadTaxonListCompleted;
         
         public event System.EventHandler<GetSeriesByDescriptionCompletedEventArgs> GetSeriesByDescriptionCompleted;
         
@@ -374,7 +374,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> DiversityPhone.Service.IDiversityService.EndGetStandardVocabulary(System.IAsyncResult result) {
+        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> DiversityPhone.Service.IDiversityService.EndGetStandardVocabulary(System.IAsyncResult result) {
             return base.Channel.EndGetStandardVocabulary(result);
         }
         
@@ -383,7 +383,7 @@ namespace DiversityPhone.Service {
         }
         
         private object[] OnEndGetStandardVocabulary(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetStandardVocabulary(result);
+            System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetStandardVocabulary(result);
             return new object[] {
                     retVal};
         }
@@ -413,49 +413,49 @@ namespace DiversityPhone.Service {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginDownloadTermList(DiversityService.Model.TermList list, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginDownloadTermList(list, callback, asyncState);
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginDownloadTaxonList(list, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> DiversityPhone.Service.IDiversityService.EndDownloadTermList(System.IAsyncResult result) {
-            return base.Channel.EndDownloadTermList(result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> DiversityPhone.Service.IDiversityService.EndDownloadTaxonList(System.IAsyncResult result) {
+            return base.Channel.EndDownloadTaxonList(result);
         }
         
-        private System.IAsyncResult OnBeginDownloadTermList(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            DiversityService.Model.TermList list = ((DiversityService.Model.TermList)(inValues[0]));
-            return ((DiversityPhone.Service.IDiversityService)(this)).BeginDownloadTermList(list, callback, asyncState);
+        private System.IAsyncResult OnBeginDownloadTaxonList(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string list = ((string)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginDownloadTaxonList(list, callback, asyncState);
         }
         
-        private object[] OnEndDownloadTermList(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndDownloadTermList(result);
+        private object[] OnEndDownloadTaxonList(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndDownloadTaxonList(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnDownloadTermListCompleted(object state) {
-            if ((this.DownloadTermListCompleted != null)) {
+        private void OnDownloadTaxonListCompleted(object state) {
+            if ((this.DownloadTaxonListCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.DownloadTermListCompleted(this, new DownloadTermListCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.DownloadTaxonListCompleted(this, new DownloadTaxonListCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void DownloadTermListAsync(DiversityService.Model.TermList list) {
-            this.DownloadTermListAsync(list, null);
+        public void DownloadTaxonListAsync(string list) {
+            this.DownloadTaxonListAsync(list, null);
         }
         
-        public void DownloadTermListAsync(DiversityService.Model.TermList list, object userState) {
-            if ((this.onBeginDownloadTermListDelegate == null)) {
-                this.onBeginDownloadTermListDelegate = new BeginOperationDelegate(this.OnBeginDownloadTermList);
+        public void DownloadTaxonListAsync(string list, object userState) {
+            if ((this.onBeginDownloadTaxonListDelegate == null)) {
+                this.onBeginDownloadTaxonListDelegate = new BeginOperationDelegate(this.OnBeginDownloadTaxonList);
             }
-            if ((this.onEndDownloadTermListDelegate == null)) {
-                this.onEndDownloadTermListDelegate = new EndOperationDelegate(this.OnEndDownloadTermList);
+            if ((this.onEndDownloadTaxonListDelegate == null)) {
+                this.onEndDownloadTaxonListDelegate = new EndOperationDelegate(this.OnEndDownloadTaxonList);
             }
-            if ((this.onDownloadTermListCompletedDelegate == null)) {
-                this.onDownloadTermListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadTermListCompleted);
+            if ((this.onDownloadTaxonListCompletedDelegate == null)) {
+                this.onDownloadTaxonListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadTaxonListCompleted);
             }
-            base.InvokeAsync(this.onBeginDownloadTermListDelegate, new object[] {
-                        list}, this.onEndDownloadTermListDelegate, this.onDownloadTermListCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginDownloadTaxonListDelegate, new object[] {
+                        list}, this.onEndDownloadTaxonListDelegate, this.onDownloadTaxonListCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -656,22 +656,22 @@ namespace DiversityPhone.Service {
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> EndGetStandardVocabulary(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> EndGetStandardVocabulary(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TermList>)(base.EndInvoke("GetStandardVocabulary", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term>)(base.EndInvoke("GetStandardVocabulary", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginDownloadTermList(DiversityService.Model.TermList list, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = list;
-                System.IAsyncResult _result = base.BeginInvoke("DownloadTermList", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("DownloadTaxonList", _args, callback, asyncState);
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> EndDownloadTermList(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> EndDownloadTaxonList(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.Term>)(base.EndInvoke("DownloadTermList", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityService.Model.TaxonName>)(base.EndInvoke("DownloadTaxonList", _args, result)));
                 return _result;
             }
             

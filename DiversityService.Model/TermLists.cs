@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using DiversityService.Model;
 
-namespace DiversityPhone.Services
+namespace DiversityService
 {
-    public interface IOfflineVocabulary
+    public enum TermLists
     {
-        void addTerms(IEnumerable<Term> terms);
-
+        TaxonomicGroups = 0,      
     }
 }

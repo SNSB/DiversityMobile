@@ -37,8 +37,13 @@
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.download.rest.png" Text="download" Click="Download_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.upload.rest.png" Text="upload" Click="Upload_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.edit.rest.png" Text="edit" Click="Edit_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="settings" Click="Settings_Click"/>           
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="settings" Click="Settings_Click"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="get vocabulary" Click="GetVoc_Click"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
+        
+        
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

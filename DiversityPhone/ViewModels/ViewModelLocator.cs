@@ -30,9 +30,10 @@ namespace DiversityPhone.ViewModels
         {
             _ioc = services;
             #region ViewModel Factories
-            _ioc.Register<HomeVM>(container => new HomeVM(
-                container.Resolve<INavigationService>(),
-                container.Resolve<IMessageBus>()
+            _ioc.Register<HomeVM>(container => new HomeVM(                
+                container.Resolve<IMessageBus>(),
+                container.Resolve<IOfflineStorage>(),
+                container.Resolve<IDiversityService>()
                 ));
 
             _ioc.Register<ListESVM>(container => new ListESVM(                

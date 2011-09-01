@@ -97,14 +97,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataItemControl.xaml.cs">
-      <DependentUpon>DataItemControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
     <Compile Include="EditEV.xaml.cs">
       <DependentUpon>EditEV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditIU.xaml.cs">
+      <DependentUpon>EditIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="FirstTimeSetup.xaml.cs">
       <DependentUpon>FirstTimeSetup.xaml</DependentUpon>
@@ -150,6 +150,7 @@
       <DependentUpon>Upload.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\EditEVVM.cs" />
+    <Compile Include="ViewModels\EditIUVM.cs" />
     <Compile Include="ViewModels\EventSeriesVM.cs" />
     <Compile Include="ViewModels\EventVM.cs" />
     <Compile Include="ViewModels\Icon.cs" />
@@ -158,6 +159,7 @@
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\ListEVVM.cs" />
+    <Compile Include="ViewModels\ListIUVM.cs" />
     <Compile Include="ViewModels\SetupVM.cs" />
     <Compile Include="ViewModels\UploadVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -170,15 +172,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="DataItemControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="EditES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditEV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,6 +226,7 @@
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.Project.datasource" />
     <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\DataSources\DiversityService.Model.TaxonName.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
