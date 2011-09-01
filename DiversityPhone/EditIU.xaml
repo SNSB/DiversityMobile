@@ -26,10 +26,15 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            
-            
-        </Grid>
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <TextBlock Text="Accession Number"/>
+            <TextBox x:Name="AccessionNoTB" Text="{Binding AccessionNumber, Mode=TwoWay}" TextChanged="LocalityTB_TextChanged"/>
+            <TextBlock Text="Taxonomic Group"/>
+            <ListBox ItemsSource="{Binding TaxonomicGroups}" SelectionChanged="TaxonGroup_Changed"/>
+            <TextBlock Text="Collection Date"/>
+            <TextBox IsReadOnly="True" Text="{Binding CollectionDate, Mode=OneWay}"/>
+
+        </StackPanel>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

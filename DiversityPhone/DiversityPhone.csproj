@@ -153,6 +153,7 @@
     <Compile Include="ViewModels\EditIUVM.cs" />
     <Compile Include="ViewModels\EventSeriesVM.cs" />
     <Compile Include="ViewModels\EventVM.cs" />
+    <Compile Include="ViewModels\Extensions.cs" />
     <Compile Include="ViewModels\Icon.cs" />
     <Compile Include="ViewModels\IItemViewModel.cs" />
     <Compile Include="ViewModels\ListESVM.cs" />
