@@ -17,7 +17,7 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserProfile", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserProfile", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class UserProfile : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string PasswordField;
@@ -77,7 +77,7 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Project", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Project", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Project : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string DescriptionField;
@@ -137,7 +137,7 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TermList", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TermList", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class TermList : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string DisplayTextField;
@@ -182,7 +182,7 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Term", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Term", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Term : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string CodeField;
@@ -272,7 +272,7 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaxonName", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TaxonName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class TaxonName : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string GenusOrSupragenicField;
@@ -377,12 +377,10 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EventSeries", Namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="EventSeries", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class EventSeries : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string DescriptionField;
-        
-        private System.Nullable<bool> IsModifiedField;
         
         private string SeriesCodeField;
         
@@ -401,19 +399,6 @@ namespace DiversityPhone.Service {
                 if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
                     this.DescriptionField = value;
                     this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> IsModified {
-            get {
-                return this.IsModifiedField;
-            }
-            set {
-                if ((this.IsModifiedField.Equals(value) != true)) {
-                    this.IsModifiedField = value;
-                    this.RaisePropertyChanged("IsModified");
                 }
             }
         }
