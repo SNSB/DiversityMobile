@@ -16,9 +16,10 @@ namespace DiversityPhone.Services
         void addEventSeries(EventSeries newSeries);
 
         IList<Event> getAllEvents();
+        IList<Event> getEventsForSeries(EventSeries es);
         void addEvent(Event ev);
 
-
+        IList<IdentificationUnit> getIUForEvent(Event ev);
 
         //IList<Event> Events { get; }
         //IList<IdentificationUnit> IdentificationUnits { get; }

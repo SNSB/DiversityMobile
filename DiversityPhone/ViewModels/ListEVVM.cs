@@ -9,6 +9,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ReactiveUI;
 using DiversityPhone.Services;
+using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using System.Collections.Generic;
 using DiversityPhone.Model;
@@ -19,25 +20,23 @@ namespace DiversityPhone.ViewModels
     public class ListEVVM : ReactiveObject
     {
         IMessageBus _messenger;
-        IOfflineStorage _storage;     
+        IOfflineStorage _storage;
+        IList<IDisposable> _subscriptions;
 
            
 
         public ReactiveCommand AddEvent { get; private set; }
         public ReactiveCommand FilterEvents { get; private set; }
 
-        public IList<EventVM> _EventList; //Necessary for SL
-        public IList<EventVM> EventList
-        {
-            get
-            {
-                return _EventList;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(x => x.EventList, value);
-            }
-        }
+        
+        public EventSeriesVM CurrentSeries { get { return _CurrentSeries.Value; } }
+        private ObservableAsPropertyHelper<EventSeriesVM> _CurrentSeries;
+
+
+
+        public IList<EventVM> EventList { get { return _EventList.Value; } }
+        private ObservableAsPropertyHelper<IList<EventVM>> _EventList;
+        
 
 
         public ListEVVM(IMessageBus messenger, Services.IOfflineStorage storage)
@@ -45,32 +44,45 @@ namespace DiversityPhone.ViewModels
             _messenger = messenger;
             _storage = storage;
 
-            (AddEvent = new ReactiveCommand())
-                .Subscribe(_ => addEvent());
+            var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);
+
+            _CurrentSeries = selectES
+                .Select(es => new EventSeriesVM(es,_messenger))
+                .ToProperty(this, x=>x.CurrentSeries);
+
+            _EventList = selectES
+                .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
+                    _storage.getEventsForSeries(es),
+                    (model) => new EventVM(model, _messenger)
+                ) as IList<EventVM>)
+                .ToProperty(this, x => x.EventList);
+
+            _subscriptions = new List<IDisposable>()
+            {
+               
+                (AddEvent = new ReactiveCommand())
+                    .Subscribe(_ => addEvent()),
+            };
 
             FilterEvents = new ReactiveCommand();
 
-            updateList();
-        }    
-
-        private void updateList()
-        {
-            EventList = new VirtualizingReadonlyViewModelList<Event, EventVM>(
-                _storage.getAllEvents(),
-                (model) => new EventVM(model, _messenger)
-                );
-        }
+            
+        } 
+        
 
         private void saveEvent(Event ev)
         {
             _storage.addEvent(ev);
-            updateList();
+            
         }
 
         private void addEvent()
         {
             _messenger.SendMessage<Event>(
-                new Event(),
+                new Event()
+                {
+                    SeriesID = CurrentSeries.Model.SeriesID
+                },
                 MessageContracts.EDIT
                 );
             _messenger.SendMessage<Page>(Page.EditEvent);            

@@ -87,7 +87,9 @@ namespace DiversityPhone.Services
 
         public void addEvent(Event ev)
         {
-            throw new NotImplementedException();
+            var ctx = new DiversityDataContext();
+            ctx.Events.InsertOnSubmit(ev);
+            ctx.SubmitChanges();
         }
 
         public void addTerms(IEnumerable<Term> terms)
@@ -104,6 +106,24 @@ namespace DiversityPhone.Services
             return new LightList<Term>(from t in ctx.Terms
                                        where t.SourceID == source
                                        select t);
+        }
+
+
+        public IList<Event> getEventsForSeries(EventSeries es)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Event>(from e in ctx.Events
+                                       where e.SeriesID == es.SeriesID
+                                       select e);
+        }
+
+
+        public IList<IdentificationUnit> getIUForEvent(Event ev)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
+                                        where iu.EventID == ev.EventID
+                                        select iu);
         }
     }
 }

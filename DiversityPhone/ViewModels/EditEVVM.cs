@@ -13,12 +13,14 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Model;
 using DiversityPhone.Messages;
 using System.Reactive.Linq;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditEVVM : ReactiveObject
     {
-        private IMessageBus _messenger;      
+        private IMessageBus _messenger;
+        private IOfflineStorage _storage;
 
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Cancel { get; private set; }
@@ -57,9 +59,10 @@ namespace DiversityPhone.ViewModels
         }
         
 
-        public EditEVVM(IMessageBus messenger)
+        public EditEVVM(IMessageBus messenger, IOfflineStorage storage)
         {            
             _messenger = messenger;
+            _storage = storage;
 
             _messenger.Listen<Event>(MessageContracts.EDIT)
                 .Subscribe(ev => updateView(ev));
@@ -80,7 +83,7 @@ namespace DiversityPhone.ViewModels
         private void executeSave()
         {
             updateModel();
-            _messenger.SendMessage<Event>(Model, MessageContracts.SAVE);
+            _storage.addEvent(Model);
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 

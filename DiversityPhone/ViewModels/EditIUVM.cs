@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.Linq;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
 using DiversityPhone.Model;
@@ -38,7 +39,7 @@ namespace DiversityPhone.ViewModels
         }        
 
 
-        public IList<Term> _TaxonomicGroups = null;
+        private IList<Term> _TaxonomicGroups = null;
         public IList<Term> TaxonomicGroups
         {
             get
@@ -48,9 +49,9 @@ namespace DiversityPhone.ViewModels
         }
 
         
-        public int _SelectedTaxGroup = -1; 
+        public Term _SelectedTaxGroup = null; 
 
-        public int SelectedTaxGroup
+        public Term SelectedTaxGroup
         {
             get
             {
@@ -78,7 +79,7 @@ namespace DiversityPhone.ViewModels
             model.Select(m => m.AccessionNumber)
                 .BindTo(this, x => x.AccessionNumber);
             model.Select(m => m.TaxonomicGroup)
-                .Select(tg => string.IsNullOrEmpty(tg) ? -1 : TaxonomicGroups.ListFindIndex(t => t.Code == tg))
+                .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg))
                 .BindTo(this, x => x.SelectedTaxGroup);                                        
             _Model = model.ToProperty(this, x => x.Model);
 
@@ -87,7 +88,7 @@ namespace DiversityPhone.ViewModels
             _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
 
             var canSave = this.ObservableForProperty(x => x.SelectedTaxGroup)
-                                .Select(change => change.Value > -1).StartWith(false);
+                                .Select(change => change.Value != null).StartWith(false);
                 
             
 

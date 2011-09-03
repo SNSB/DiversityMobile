@@ -79,9 +79,7 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<EventSeries>(
                 new EventSeries(),
                 MessageContracts.EDIT
-                );
-            _navigation.Navigate(Page.EditEventSeries);
-            
+                );            
         }
     }
 }

@@ -12,26 +12,33 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
+using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
     public class EventVM : ReactiveObject
     {
-        private DiversityPhone.Model.Event model;
-        private ReactiveUI.IMessageBus _messenger;
+        public Event Model {get; private set;}
+        private IMessageBus _messenger;
+        private IList<IDisposable> _subscriptions;
+
+        public string Description { get { return Model.LocalityDescription; } }
 
         public ReactiveCommand Select { get; private set; }
 
         public EventVM(Event model, IMessageBus _messenger)
         {
-            this.model = model;
+            Model = model;
             this._messenger = _messenger;
 
-            (Select = new ReactiveCommand())
-                .Subscribe(_ =>
-                    {
-                        _messenger.SendMessage<Event>(model, MessageContracts.SELECT);
-                    });
+            _subscriptions = new List<IDisposable>()
+            {
+                (Select = new ReactiveCommand())
+                    .Subscribe(_ =>
+                        {
+                            _messenger.SendMessage<Event>(model, MessageContracts.SELECT);
+                        })
+            };
                         
         }
 

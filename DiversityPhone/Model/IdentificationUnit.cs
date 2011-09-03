@@ -9,11 +9,19 @@ namespace DiversityPhone.Model
     [Table]
     public class IdentificationUnit
     {
+        public IdentificationUnit()
+        {
+            IsModified = null;
+        }
+
         [Column(IsPrimaryKey=true)]
         public int UnitID { get; set; }
 
         [Column]
         public int? RelatedUnitID { get; set; }
+
+        [Column]
+        public int EventID { get; set; }
 
         [Column]
         public string AccessionNumber { get; set; } //Only on Toplevel
@@ -42,5 +50,7 @@ namespace DiversityPhone.Model
         [Column]
         public bool? IsModified { get; set; }
 
+
+        
     }
 }
