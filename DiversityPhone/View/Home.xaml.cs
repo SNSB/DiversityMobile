@@ -54,5 +54,7 @@ namespace DiversityPhone
             if (VM != null)
                 VM.GetVocabulary.Execute(null);
         }
+
+        
     }
 }
