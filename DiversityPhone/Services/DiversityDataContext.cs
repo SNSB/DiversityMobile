@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using System.Data.Linq.Mapping;
 using System.IO;
 
@@ -17,36 +17,20 @@ using System.IO;
 namespace DiversityPhone.Services
 {
     public class DiversityDataContext : DataContext
-    {
-        static XmlMappingSource source = XmlMappingSource.FromXml(mappingXML());
-        static string connStr = "isostore:/diversityDB.sdf";
-        static string mappingXML()
-        {
-            var ResourceStream = Application.GetResourceStream(new Uri("/DiversityPhone;component/Data/mapping.xml", UriKind.Relative));
-
-            if (ResourceStream != null)
-            {
-                Stream myFileStream = ResourceStream.Stream;
-                if (myFileStream.CanRead)
-                {
-                    StreamReader myStreamReader = new StreamReader(myFileStream);
-                 
-                    return myStreamReader.ReadToEnd();
-                }
-            }
-            return string.Empty;
-        }
+    {       
+        static string connStr = "isostore:/diversityDB.sdf";        
 
         public DiversityDataContext()
-            :base(connStr,source)
-        {
-
+            :base(connStr)
+        {           
         }       
 
         public Table<EventSeries> EventSeries;
         public Table<Event> Events;
+        public Table<IdentificationUnit> IdentificationUnits;
+
         public Table<Term> Terms;
         public Table<TaxonName> TaxonNames;
-        public Table<IdentificationUnit> IdentificationUnits;
+        
     }
 }

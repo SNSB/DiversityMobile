@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using DiversityPhone.Messages;
 
 namespace DiversityPhone.ViewModels

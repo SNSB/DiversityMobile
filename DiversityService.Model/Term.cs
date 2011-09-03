@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace DiversityService.Model
-{
+{    
     public class Term
     {
         public string Code { get; set; }

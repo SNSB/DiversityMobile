@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 
@@ -23,7 +23,7 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;        
         
 
-        public string _AccessionNumber; //Has to be public in SL :(
+        private string _AccessionNumber;
 
         public string AccessionNumber
         {
@@ -33,7 +33,7 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.AccessionNumber, value);
+                this.RaiseAndSetIfChanged(x => x.AccessionNumber,ref _AccessionNumber, value);
             }
         }        
 
@@ -48,7 +48,7 @@ namespace DiversityPhone.ViewModels
         }
 
         
-        public int _SelectedTaxGroup = -1; //Has to be public in SL :(
+        public int _SelectedTaxGroup = -1; 
 
         public int SelectedTaxGroup
         {
@@ -58,7 +58,7 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup, value);
+                this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup,ref _SelectedTaxGroup, value);
             }
         }        
 
@@ -87,7 +87,7 @@ namespace DiversityPhone.ViewModels
             _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
 
             var canSave = this.ObservableForProperty(x => x.SelectedTaxGroup)
-                                .Select(change => change.Value > -1);
+                                .Select(change => change.Value > -1).StartWith(false);
                 
             
 

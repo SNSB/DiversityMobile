@@ -12,7 +12,7 @@ using Wintellect.Sterling;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using System.Data.Linq;
 
 namespace DiversityPhone.Services
@@ -28,7 +28,7 @@ namespace DiversityPhone.Services
             
         }
 
-        public void addEventSeries(global::DiversityService.Model.EventSeries newSeries)
+        public void addEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {            
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
                 throw new InvalidOperationException("Series is not new!");

@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ReactiveUI;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 

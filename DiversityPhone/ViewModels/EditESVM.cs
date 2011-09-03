@@ -2,7 +2,7 @@
 using System.Net;
 using System.Reactive.Linq;
 using ReactiveUI;
-using DiversityService.Model;
+using DiversityPhone.Model;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;

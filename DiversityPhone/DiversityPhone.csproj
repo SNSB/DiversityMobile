@@ -122,6 +122,11 @@
       <DependentUpon>ListIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\Messages.cs" />
+    <Compile Include="Model\Event.cs" />
+    <Compile Include="Model\EventSeries.cs" />
+    <Compile Include="Model\IdentificationUnit.cs" />
+    <Compile Include="Model\TaxonName.cs" />
+    <Compile Include="Model\Term.cs" />
     <Compile Include="Service References\Service\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -220,9 +225,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Resource Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="Data\LinqToSQLMapping.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.Project.datasource" />
@@ -231,6 +233,21 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Service References\Service\DiversityPhone.Service.EventSeries.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.Project.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.TaxonName.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.Term.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.TermList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityService.wsdl" />
     <None Include="Service References\Service\Service1.xsd">
       <SubType>Designer</SubType>
@@ -253,7 +270,6 @@
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\ApplicationIcon.png" />
-    <Resource Include="Data\mapping.xml" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
@@ -272,11 +288,9 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Service\" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
-      <Name>DiversityService.Model</Name>
-    </ProjectReference>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

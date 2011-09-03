@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DiversityService.Model;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.Services
 {

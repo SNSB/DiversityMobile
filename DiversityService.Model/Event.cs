@@ -12,14 +12,6 @@ namespace DiversityService.Model
         public int SeriesID { get; set; }
         public DateTime CollectionDate { get; set; }
         public string LocalityDescription { get; set; }
-        public string HabitatDescription { get; set; }
-
-        public bool? IsModified { get; set; }
-
-        public Event()
-        {
-            CollectionDate = DateTime.Now;
-            IsModified = null;
-        }
+        public string HabitatDescription { get; set; }   
     }
 }
