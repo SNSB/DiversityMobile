@@ -7,6 +7,15 @@
     <DataTemplate x:Key="TermListPickerItemTemplate">
         <TextBlock Text="{Binding DisplayText}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
     </DataTemplate>
+
+    <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image />
+            <Button Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Select}"/>
+        </StackPanel>
+    </DataTemplate>
     <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -31,14 +40,7 @@
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </DataTemplate>
-    <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image />
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>            
-        </StackPanel>
-    </DataTemplate>
+    
     <DataTemplate x:Key="IdentificationDetailItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image />

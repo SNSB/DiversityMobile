@@ -126,6 +126,7 @@ namespace DiversityPhone.ViewModels
                         {
                             updateModel();
                             _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);
+                            _storage.addIUnit(Model);
                             _messenger.SendMessage<Message>(Message.NavigateBack);
                         }),
 

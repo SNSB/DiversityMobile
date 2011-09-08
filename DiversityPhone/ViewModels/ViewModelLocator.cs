@@ -55,6 +55,7 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
 
+            _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>()));
             
             #endregion
 

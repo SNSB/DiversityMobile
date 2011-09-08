@@ -37,6 +37,12 @@ namespace DiversityPhone
                 VM.Cancel.Execute(null);
         }
 
+        private void Description_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (VM != null)
+                VM.Description = DescTB.Text;
+        }
+
        
 
     }

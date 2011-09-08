@@ -27,6 +27,11 @@ namespace DiversityPhone.ViewModels
 
         public EventVM CurrentEvent { get { return _CurrentEvent.Value; } }
         private ObservableAsPropertyHelper<EventVM> _CurrentEvent;
+
+        
+        private Event Model { get { return _Model.Value; } }
+        private ObservableAsPropertyHelper<Event> _Model;
+        
         
 
         public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
@@ -41,15 +46,16 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
             var eventSelected = _messenger.Listen<Event>(MessageContracts.SELECT);
+            var unitSaved = _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE);
+
             _CurrentEvent = eventSelected.Select(ev => new EventVM(ev, _messenger))
                                 .ToProperty(this, x => x.CurrentEvent);
+            _Model = eventSelected.ToProperty(this, x => x.Model);
 
-            _UnitList = eventSelected.Select(ev =>
-                 IdentificationUnitVM.getTwoLevelVMFromModelList(
-                 _storage.getIUForEvent(ev), 
-                 iu => _storage.getSubUnits(iu),
-                 _messenger) 
-                ).ToProperty(this, x => x.UnitList);
+            _UnitList = unitSaved.Select(_ => Model)
+                .Merge(eventSelected)
+                .Select(ev => getNewUnitList(ev))
+                .ToProperty(this, x => x.UnitList);
                 
 
 
@@ -59,12 +65,19 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(
                         new IdentificationUnit()
                         {
-                            EventID = CurrentEvent.Model.EventID
+                            EventID = Model.EventID
                         },
-                        MessageContracts.EDIT))
-                        
-
+                        MessageContracts.EDIT)),                        
+                
             };
+        }
+
+        private IList<IdentificationUnitVM> getNewUnitList(Event ev)
+        {
+            return IdentificationUnitVM.getTwoLevelVMFromModelList(
+                 _storage.getIUForEvent(ev),
+                 iu => _storage.getSubUnits(iu),
+                 _messenger);
         }
     }
 }

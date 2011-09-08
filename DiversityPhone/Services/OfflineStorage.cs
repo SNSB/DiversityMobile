@@ -47,12 +47,20 @@ namespace DiversityPhone.Services
             return new LightList<EventSeries>(ctx.EventSeries);
         }
 
-        private int findFreeEventSeriesID(DiversityDataContext ctx)
+        private static int findFreeEventSeriesID(DiversityDataContext ctx)
         {
             int min = -1;
             if(ctx.EventSeries.Any())
                min = (from es in ctx.EventSeries select es.SeriesID).Min();
             return (min > -1)? -1 : min - 1;
+        }
+
+        private static int findFreeUnitID(DiversityDataContext ctx)
+        {
+            int min = -1;
+            if (ctx.IdentificationUnits.Any())
+                min = (from iu in ctx.IdentificationUnits select iu.UnitID).Min();
+            return (min > -1) ? -1 : min - 1;
         }
 
         
@@ -128,6 +136,17 @@ namespace DiversityPhone.Services
             return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
                                                      where iu.RelatedUnitID == unit.UnitID
                                                      select iu);
+        }
+
+
+        public void addIUnit(IdentificationUnit iu)
+        {
+            var ctx = new DiversityDataContext();
+            if (iu.IsModified == null)
+                iu.UnitID = findFreeUnitID(ctx);
+            
+            ctx.IdentificationUnits.InsertOnSubmit(iu);
+            ctx.SubmitChanges();
         }
     }
 }

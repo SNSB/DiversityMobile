@@ -7,8 +7,7 @@ using DiversityPhone.Model;
 namespace DiversityPhone.Services
 {
     public interface IOfflineFieldData
-    {
-        //IQueryable<EventSeries> EventSeries { get; }
+    {       
         IList<EventSeries> getAllEventSeries();
         IList<EventSeries> getEventSeriesByDescription(string query);
         IList<EventSeries> getNewEventSeries();
@@ -18,8 +17,9 @@ namespace DiversityPhone.Services
         IList<Event> getAllEvents();
         IList<Event> getEventsForSeries(EventSeries es);
         void addEvent(Event ev);
-
+                
         IList<IdentificationUnit> getIUForEvent(Event ev);
-        IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);        
+        IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
+        void addIUnit(IdentificationUnit iu);
     }
 }

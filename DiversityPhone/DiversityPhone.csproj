@@ -97,6 +97,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SmallVocabularyValueControl.xaml.cs">
+      <DependentUpon>SmallVocabularyValueControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\StringValueControl.xaml.cs">
+      <DependentUpon>StringValueControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ViewIUVM.cs" />
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
@@ -183,6 +189,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\SmallVocabularyValueControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StringValueControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EditES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

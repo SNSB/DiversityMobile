@@ -20,12 +20,11 @@ namespace DiversityPhone.ViewModels
 
     public class IdentificationUnitVM : ReactiveObject
     {
-        IMessageBus _messenger;
-        IList<IdentificationUnitVM> _ubunits;
+        IMessageBus _messenger;        
         IList<IDisposable> _subscriptions;
 
         public IdentificationUnit Model { get; private set; }
-        public string Description { get { return Model.UnitID.ToString(); } }
+        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.UnitDescription ?? ""); } }
 
         public IList<IdentificationUnitVM> SubUnits { get; private set; }
         public bool HasSubUnits { get { return (SubUnits != null)?SubUnits.Count > 0:false; } }

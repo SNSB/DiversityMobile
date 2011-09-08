@@ -48,7 +48,7 @@
             </StackPanel>
 
             <TextBlock Text="Description"/>
-            <TextBox Text="{Binding Description, Mode=TwoWay}" />
+            <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="Description_TextChanged"/>
         </StackPanel>
     </Grid>
  
