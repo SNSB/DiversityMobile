@@ -32,8 +32,15 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCommand Select { get; private set; }
 
+        public ReactiveCommand Edit { get; private set; }
+
+
         public IdentificationUnitVM(IMessageBus messenger, IdentificationUnit model, IList<IdentificationUnitVM> subunits)
-        { 
+        {
+            if (messenger == null) throw new ArgumentNullException("messenger");
+            if (model == null) throw new ArgumentNullException("model");
+            
+
             _messenger = messenger;
             SubUnits = subunits;
             Model = model;
@@ -41,7 +48,10 @@ namespace DiversityPhone.ViewModels
             _subscriptions = new List<IDisposable>()
             {
                 (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SELECT))
+                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SELECT)),
+                (Edit = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.EDIT)),
+
             };
         }
 

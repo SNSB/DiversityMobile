@@ -75,7 +75,7 @@ namespace DiversityPhone.ViewModels
         private IList<IdentificationUnitVM> getNewUnitList(Event ev)
         {
             return IdentificationUnitVM.getTwoLevelVMFromModelList(
-                 _storage.getIUForEvent(ev),
+                 _storage.getTopLevelIUForEvent(ev),
                  iu => _storage.getSubUnits(iu),
                  _messenger);
         }

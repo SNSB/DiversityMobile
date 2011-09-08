@@ -18,7 +18,8 @@
     <ScrollViewer x:Name="LayoutRoot" Background="Transparent">
         <StackPanel>
             <Button Style="{StaticResource ItemButtonStyle}"
-                    DataContext="{Binding CurrentEvent}">
+                    DataContext="{Binding CurrentEvent}"
+                    Command="{Binding Edit}">
                 <TextBlock Text="{Binding Description}"/>
             </Button>
             

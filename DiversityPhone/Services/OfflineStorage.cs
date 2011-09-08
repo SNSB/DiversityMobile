@@ -121,12 +121,12 @@ namespace DiversityPhone.Services
         }
 
 
-        public IList<IdentificationUnit> getIUForEvent(Event ev)
+        public IList<IdentificationUnit> getTopLevelIUForEvent(Event ev)
         {
             var ctx = new DiversityDataContext();
             return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                        where iu.EventID == ev.EventID
-                                        select iu);
+                                                    where iu.EventID == ev.EventID && iu.RelatedUnitID == null
+                                                    select iu);
         }
 
 

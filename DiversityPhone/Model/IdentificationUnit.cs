@@ -12,6 +12,7 @@ namespace DiversityPhone.Model
         public IdentificationUnit()
         {
             IsModified = null;
+            RelatedUnitID = null;
         }
 
         [Column(IsPrimaryKey=true)]
