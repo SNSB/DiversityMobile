@@ -7,47 +7,7 @@ using DiversityService.Model;
 namespace DiversityService
 {
     public class DiversityService : IDiversityService
-    {
-        //public HierarchySection GetSectionForSeries(int seriesID);
-        //public HierarchySection GetSectionForEvent(int eventID);
-        //public HierarchySection GetSectionForIU(int iuID);
-
-        
-
-        
-
-
-        //public void InsertSection(HierarchySection section)
-        //{
-        //    var db = new DiversityCollection_BaseTestEntities();
-
-
-        //    var parentEvent = (from ev in db.CollectionEvent where ev.CollectionEventID == EventID select ev).FirstOrDefault();
-        //    if (parentEvent != null)
-        //    {
-        //        var spec = new CollectionSpecimen
-        //        {
-        //            RowGUID = Guid.NewGuid(),
-        //            CollectionEvent = parentEvent
-        //        };
-        //        var agent = new CollectionAgent
-        //        {
-        //            CollectorsName = "WP7User",
-        //            RowGUID = Guid.NewGuid(),
-        //            CollectionSpecimen = spec
-        //        };
-        //        var project = new CollectionProject()
-        //        {
-        //            ProjectID = 703,
-        //            RowGUID = Guid.NewGuid(),
-        //            CollectionSpecimen = spec
-        //        };
-        //        child.CollectionSpecimen = spec;
-
-        //        db.SaveChanges();
-        //    }
-        //}
-
+    {        
         public IList<Model.EventSeries> GetSeriesByDescription(string description)
         {
             throw new NotImplementedException();
@@ -70,10 +30,11 @@ namespace DiversityService
             throw new NotImplementedException();
         }             
 
-        public IList<Term> GetStandardVocabulary()
+        public IEnumerable<Term> GetStandardVocabulary()
         {
             var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();            
-            return (from taxGrp in ctx.CollTaxonomicGroup_Enum
+            var taxonGroups = 
+                from taxGrp in ctx.CollTaxonomicGroup_Enum
                 select new Term()
                 {
                     SourceID = 0, //TODO
@@ -81,7 +42,19 @@ namespace DiversityService
                     Description = taxGrp.Description,
                     DisplayText = taxGrp.DisplayText,
                     ParentCode = taxGrp.ParentCode
-                }).ToList();          
+                };
+            var relationTypes =
+                from relType in ctx.CollUnitRelationType_Enum
+                select new Term()
+                {
+                    SourceID = 1,
+                    Code = relType.Code,
+                    Description = relType.Description,
+                    DisplayText = relType.DisplayText,
+                    ParentCode = relType.ParentCode
+                };
+
+            return Enumerable.Concat(taxonGroups, relationTypes);
         }
 
         public IList<TaxonName> DownloadTaxonList(string list)

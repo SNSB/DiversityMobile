@@ -28,6 +28,8 @@ using System.Runtime.Serialization;
 [assembly: EdmRelationshipAttribute("DiversityCollection", "FK_IdentificationUnitAnalysis_IdentificationUnit", "IdentificationUnit", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DiversityCollection.IdentificationUnit), "IdentificationUnitAnalysis", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DiversityCollection.IdentificationUnitAnalysis), true)]
 [assembly: EdmRelationshipAttribute("DiversityCollection", "FK_CollTaxonomicGroup_Enum_CollTaxonomicGroup_Enum", "CollTaxonomicGroup_Enum", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DiversityCollection.CollTaxonomicGroup_Enum), "CollTaxonomicGroup_Enum1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DiversityCollection.CollTaxonomicGroup_Enum), true)]
 [assembly: EdmRelationshipAttribute("DiversityCollection", "FK_IdentificationUnit_CollTaxonomicGroup_Enum", "CollTaxonomicGroup_Enum", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DiversityCollection.CollTaxonomicGroup_Enum), "IdentificationUnit", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DiversityCollection.IdentificationUnit), true)]
+[assembly: EdmRelationshipAttribute("DiversityCollection", "FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DiversityCollection.CollUnitRelationType_Enum), "CollUnitRelationType_Enum1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DiversityCollection.CollUnitRelationType_Enum), true)]
+[assembly: EdmRelationshipAttribute("DiversityCollection", "FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DiversityCollection.CollUnitRelationType_Enum), "IdentificationUnit", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DiversityCollection.IdentificationUnit), true)]
 
 #endregion
 
@@ -238,6 +240,22 @@ namespace DiversityCollection
             }
         }
         private ObjectSet<CollTaxonomicGroup_Enum> _CollTaxonomicGroup_Enum;
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        public ObjectSet<CollUnitRelationType_Enum> CollUnitRelationType_Enum
+        {
+            get
+            {
+                if ((_CollUnitRelationType_Enum == null))
+                {
+                    _CollUnitRelationType_Enum = base.CreateObjectSet<CollUnitRelationType_Enum>("CollUnitRelationType_Enum");
+                }
+                return _CollUnitRelationType_Enum;
+            }
+        }
+        private ObjectSet<CollUnitRelationType_Enum> _CollUnitRelationType_Enum;
 
         #endregion
         #region AddTo-Methoden
@@ -320,6 +338,14 @@ namespace DiversityCollection
         public void AddToCollTaxonomicGroup_Enum(CollTaxonomicGroup_Enum collTaxonomicGroup_Enum)
         {
             base.AddObject("CollTaxonomicGroup_Enum", collTaxonomicGroup_Enum);
+        }
+    
+        /// <summary>
+        /// Veraltete Methode zum Hinzufügen eines neuen Objekts zum EntitySet 'CollUnitRelationType_Enum'. Verwenden Sie stattdessen die Methode '.Add' der zugeordneten Eigenschaft 'ObjectSet&lt;T&gt;'.
+        /// </summary>
+        public void AddToCollUnitRelationType_Enum(CollUnitRelationType_Enum collUnitRelationType_Enum)
+        {
+            base.AddObject("CollUnitRelationType_Enum", collUnitRelationType_Enum);
         }
 
         #endregion
@@ -4210,6 +4236,316 @@ namespace DiversityCollection
     /// <summary>
     /// Keine Dokumentation für Metadaten verfügbar.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="DiversityCollection", Name="CollUnitRelationType_Enum")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class CollUnitRelationType_Enum : EntityObject
+    {
+        #region Factory-Methode
+    
+        /// <summary>
+        /// Erstellt ein neues CollUnitRelationType_Enum-Objekt.
+        /// </summary>
+        /// <param name="code">Anfangswert der Eigenschaft Code.</param>
+        /// <param name="rowGUID">Anfangswert der Eigenschaft RowGUID.</param>
+        public static CollUnitRelationType_Enum CreateCollUnitRelationType_Enum(global::System.String code, global::System.Guid rowGUID)
+        {
+            CollUnitRelationType_Enum collUnitRelationType_Enum = new CollUnitRelationType_Enum();
+            collUnitRelationType_Enum.Code = code;
+            collUnitRelationType_Enum.RowGUID = rowGUID;
+            return collUnitRelationType_Enum;
+        }
+
+        #endregion
+        #region Primitive Eigenschaften
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Code
+        {
+            get
+            {
+                return _Code;
+            }
+            set
+            {
+                if (_Code != value)
+                {
+                    OnCodeChanging(value);
+                    ReportPropertyChanging("Code");
+                    _Code = StructuralObject.SetValidValue(value, false);
+                    ReportPropertyChanged("Code");
+                    OnCodeChanged();
+                }
+            }
+        }
+        private global::System.String _Code;
+        partial void OnCodeChanging(global::System.String value);
+        partial void OnCodeChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String DisplayText
+        {
+            get
+            {
+                return _DisplayText;
+            }
+            set
+            {
+                OnDisplayTextChanging(value);
+                ReportPropertyChanging("DisplayText");
+                _DisplayText = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("DisplayText");
+                OnDisplayTextChanged();
+            }
+        }
+        private global::System.String _DisplayText;
+        partial void OnDisplayTextChanging(global::System.String value);
+        partial void OnDisplayTextChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Int16> DisplayOrder
+        {
+            get
+            {
+                return _DisplayOrder;
+            }
+            set
+            {
+                OnDisplayOrderChanging(value);
+                ReportPropertyChanging("DisplayOrder");
+                _DisplayOrder = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DisplayOrder");
+                OnDisplayOrderChanged();
+            }
+        }
+        private Nullable<global::System.Int16> _DisplayOrder;
+        partial void OnDisplayOrderChanging(Nullable<global::System.Int16> value);
+        partial void OnDisplayOrderChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> DisplayEnable
+        {
+            get
+            {
+                return _DisplayEnable;
+            }
+            set
+            {
+                OnDisplayEnableChanging(value);
+                ReportPropertyChanging("DisplayEnable");
+                _DisplayEnable = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DisplayEnable");
+                OnDisplayEnableChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _DisplayEnable;
+        partial void OnDisplayEnableChanging(Nullable<global::System.Boolean> value);
+        partial void OnDisplayEnableChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String InternalNotes
+        {
+            get
+            {
+                return _InternalNotes;
+            }
+            set
+            {
+                OnInternalNotesChanging(value);
+                ReportPropertyChanging("InternalNotes");
+                _InternalNotes = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("InternalNotes");
+                OnInternalNotesChanged();
+            }
+        }
+        private global::System.String _InternalNotes;
+        partial void OnInternalNotesChanging(global::System.String value);
+        partial void OnInternalNotesChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ParentCode
+        {
+            get
+            {
+                return _ParentCode;
+            }
+            set
+            {
+                OnParentCodeChanging(value);
+                ReportPropertyChanging("ParentCode");
+                _ParentCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ParentCode");
+                OnParentCodeChanged();
+            }
+        }
+        private global::System.String _ParentCode;
+        partial void OnParentCodeChanging(global::System.String value);
+        partial void OnParentCodeChanged();
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid RowGUID
+        {
+            get
+            {
+                return _RowGUID;
+            }
+            set
+            {
+                OnRowGUIDChanging(value);
+                ReportPropertyChanging("RowGUID");
+                _RowGUID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RowGUID");
+                OnRowGUIDChanged();
+            }
+        }
+        private global::System.Guid _RowGUID;
+        partial void OnRowGUIDChanging(global::System.Guid value);
+        partial void OnRowGUIDChanged();
+
+        #endregion
+    
+        #region Navigationseigenschaften
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DiversityCollection", "FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum1")]
+        public EntityCollection<CollUnitRelationType_Enum> CollUnitRelationType_Enum1
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum1");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum1", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DiversityCollection", "FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum")]
+        public CollUnitRelationType_Enum CollUnitRelationType_Enum2
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum").Value = value;
+            }
+        }
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<CollUnitRelationType_Enum> CollUnitRelationType_Enum2Reference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum", "CollUnitRelationType_Enum", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DiversityCollection", "FK_IdentificationUnit_CollUnitRelationType_Enum", "IdentificationUnit")]
+        public EntityCollection<IdentificationUnit> IdentificationUnits
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<IdentificationUnit>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "IdentificationUnit");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<IdentificationUnit>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "IdentificationUnit", value);
+                }
+            }
+        }
+
+        #endregion
+    }
+    
+    /// <summary>
+    /// Keine Dokumentation für Metadaten verfügbar.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="DiversityCollection", Name="IdentificationUnit")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -5065,6 +5401,44 @@ namespace DiversityCollection
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CollTaxonomicGroup_Enum>("DiversityCollection.FK_IdentificationUnit_CollTaxonomicGroup_Enum", "CollTaxonomicGroup_Enum", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("DiversityCollection", "FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum")]
+        public CollUnitRelationType_Enum CollUnitRelationType_Enum
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum").Value = value;
+            }
+        }
+        /// <summary>
+        /// Keine Dokumentation für Metadaten verfügbar.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<CollUnitRelationType_Enum> CollUnitRelationType_EnumReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<CollUnitRelationType_Enum>("DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum", "CollUnitRelationType_Enum", value);
                 }
             }
         }

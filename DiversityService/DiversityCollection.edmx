@@ -14,6 +14,7 @@
           <EntitySet Name="CollectionProject" EntityType="DiversityCollection.Store.CollectionProject" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CollectionSpecimen" EntityType="DiversityCollection.Store.CollectionSpecimen" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CollTaxonomicGroup_Enum" EntityType="DiversityCollection.Store.CollTaxonomicGroup_Enum" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="CollUnitRelationType_Enum" EntityType="DiversityCollection.Store.CollUnitRelationType_Enum" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="IdentificationUnit" EntityType="DiversityCollection.Store.IdentificationUnit" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="IdentificationUnitAnalysis" EntityType="DiversityCollection.Store.IdentificationUnitAnalysis" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_CollectionAgent_CollectionSpecimen" Association="DiversityCollection.Store.FK_CollectionAgent_CollectionSpecimen">
@@ -44,12 +45,20 @@
             <End Role="CollTaxonomicGroup_Enum" EntitySet="CollTaxonomicGroup_Enum" />
             <End Role="CollTaxonomicGroup_Enum1" EntitySet="CollTaxonomicGroup_Enum" />
           </AssociationSet>
+          <AssociationSet Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" Association="DiversityCollection.Store.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
+            <End Role="CollUnitRelationType_Enum" EntitySet="CollUnitRelationType_Enum" />
+            <End Role="CollUnitRelationType_Enum1" EntitySet="CollUnitRelationType_Enum" />
+          </AssociationSet>
           <AssociationSet Name="FK_IdentificationUnit_CollectionSpecimen" Association="DiversityCollection.Store.FK_IdentificationUnit_CollectionSpecimen">
             <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
           </AssociationSet>
           <AssociationSet Name="FK_IdentificationUnit_CollTaxonomicGroup_Enum" Association="DiversityCollection.Store.FK_IdentificationUnit_CollTaxonomicGroup_Enum">
             <End Role="CollTaxonomicGroup_Enum" EntitySet="CollTaxonomicGroup_Enum" />
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnit_CollUnitRelationType_Enum" Association="DiversityCollection.Store.FK_IdentificationUnit_CollUnitRelationType_Enum">
+            <End Role="CollUnitRelationType_Enum" EntitySet="CollUnitRelationType_Enum" />
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
           </AssociationSet>
           <AssociationSet Name="FK_IdentificationUnitAnalysis_IdentificationUnit" Association="DiversityCollection.Store.FK_IdentificationUnitAnalysis_IdentificationUnit">
@@ -236,6 +245,19 @@
           <Property Name="ParentCode" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="CollUnitRelationType_Enum">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Name="Code" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="500" />
+          <Property Name="DisplayText" Type="nvarchar" MaxLength="50" />
+          <Property Name="DisplayOrder" Type="smallint" />
+          <Property Name="DisplayEnable" Type="bit" />
+          <Property Name="InternalNotes" Type="nvarchar" MaxLength="500" />
+          <Property Name="ParentCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
         <EntityType Name="IdentificationUnit">
           <Key>
             <PropertyRef Name="CollectionSpecimenID" />
@@ -384,6 +406,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
+          <End Role="CollUnitRelationType_Enum" Type="DiversityCollection.Store.CollUnitRelationType_Enum" Multiplicity="0..1" />
+          <End Role="CollUnitRelationType_Enum1" Type="DiversityCollection.Store.CollUnitRelationType_Enum" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollUnitRelationType_Enum">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CollUnitRelationType_Enum1">
+              <PropertyRef Name="ParentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_IdentificationUnit_CollectionSpecimen">
           <End Role="CollectionSpecimen" Type="DiversityCollection.Store.CollectionSpecimen" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -407,6 +441,18 @@
             </Principal>
             <Dependent Role="IdentificationUnit">
               <PropertyRef Name="TaxonomicGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnit_CollUnitRelationType_Enum">
+          <End Role="CollUnitRelationType_Enum" Type="DiversityCollection.Store.CollUnitRelationType_Enum" Multiplicity="0..1" />
+          <End Role="IdentificationUnit" Type="DiversityCollection.Store.IdentificationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollUnitRelationType_Enum">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="IdentificationUnit">
+              <PropertyRef Name="RelationType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -479,6 +525,15 @@
           </AssociationSet>
           <AssociationSet Name="FK_IdentificationUnit_CollTaxonomicGroup_Enum" Association="DiversityCollection.FK_IdentificationUnit_CollTaxonomicGroup_Enum">
             <End Role="CollTaxonomicGroup_Enum" EntitySet="CollTaxonomicGroup_Enum" />
+            <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
+          </AssociationSet>
+          <EntitySet Name="CollUnitRelationType_Enum" EntityType="DiversityCollection.CollUnitRelationType_Enum" />
+          <AssociationSet Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" Association="DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
+            <End Role="CollUnitRelationType_Enum" EntitySet="CollUnitRelationType_Enum" />
+            <End Role="CollUnitRelationType_Enum1" EntitySet="CollUnitRelationType_Enum" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IdentificationUnit_CollUnitRelationType_Enum" Association="DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum">
+            <End Role="CollUnitRelationType_Enum" EntitySet="CollUnitRelationType_Enum" />
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
           </AssociationSet>
         </EntityContainer>
@@ -693,6 +748,7 @@
           <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen" FromRole="IdentificationUnit" ToRole="CollectionSpecimen" />
           <NavigationProperty Name="IdentificationUnitAnalysis" Relationship="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit" FromRole="IdentificationUnit" ToRole="IdentificationUnitAnalysis" />
           <NavigationProperty Name="CollTaxonomicGroup_Enum" Relationship="DiversityCollection.FK_IdentificationUnit_CollTaxonomicGroup_Enum" FromRole="IdentificationUnit" ToRole="CollTaxonomicGroup_Enum" />
+          <NavigationProperty Name="CollUnitRelationType_Enum" Relationship="DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum" FromRole="IdentificationUnit" ToRole="CollUnitRelationType_Enum" />
         </EntityType>
         <EntityType Name="IdentificationUnitAnalysis">
           <Key>
@@ -862,6 +918,46 @@
             </Principal>
             <Dependent Role="IdentificationUnit">
               <PropertyRef Name="TaxonomicGroup" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CollUnitRelationType_Enum">
+          <Key>
+            <PropertyRef Name="Code" />
+          </Key>
+          <Property Type="String" Name="Code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="DisplayText" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Int16" Name="DisplayOrder" />
+          <Property Type="Boolean" Name="DisplayEnable" />
+          <Property Type="String" Name="InternalNotes" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="ParentCode" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="RowGUID" Nullable="false" />
+          <NavigationProperty Name="CollUnitRelationType_Enum1" Relationship="DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" FromRole="CollUnitRelationType_Enum" ToRole="CollUnitRelationType_Enum1" />
+          <NavigationProperty Name="CollUnitRelationType_Enum2" Relationship="DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" FromRole="CollUnitRelationType_Enum1" ToRole="CollUnitRelationType_Enum" />
+          <NavigationProperty Name="IdentificationUnits" Relationship="DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum" FromRole="CollUnitRelationType_Enum" ToRole="IdentificationUnit" />
+        </EntityType>
+        <Association Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
+          <End Type="DiversityCollection.CollUnitRelationType_Enum" Role="CollUnitRelationType_Enum" Multiplicity="0..1" />
+          <End Type="DiversityCollection.CollUnitRelationType_Enum" Role="CollUnitRelationType_Enum1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollUnitRelationType_Enum">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="CollUnitRelationType_Enum1">
+              <PropertyRef Name="ParentCode" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IdentificationUnit_CollUnitRelationType_Enum">
+          <End Type="DiversityCollection.CollUnitRelationType_Enum" Role="CollUnitRelationType_Enum" Multiplicity="0..1" />
+          <End Type="DiversityCollection.IdentificationUnit" Role="IdentificationUnit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollUnitRelationType_Enum">
+              <PropertyRef Name="Code" />
+            </Principal>
+            <Dependent Role="IdentificationUnit">
+              <PropertyRef Name="RelationType" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1070,6 +1166,20 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CollUnitRelationType_Enum">
+            <EntityTypeMapping TypeName="DiversityCollection.CollUnitRelationType_Enum">
+              <MappingFragment StoreEntitySet="CollUnitRelationType_Enum">
+                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
+                <ScalarProperty Name="InternalNotes" ColumnName="InternalNotes" />
+                <ScalarProperty Name="DisplayEnable" ColumnName="DisplayEnable" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -1143,8 +1253,22 @@
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_IdentificationUnit_CollTaxonomicGroup_Enum" >
           <ConnectorPoint PointX="7.28125" PointY="7.1340950520833353" />
-          <ConnectorPoint PointX="7.28125" PointY="15.920065104166669" />
-          <ConnectorPoint PointX="4.5" PointY="15.920065104166669" />
+          <ConnectorPoint PointX="7.28125" PointY="16.016215820312503" />
+          <ConnectorPoint PointX="4.5" PointY="16.016215820312503" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="DiversityCollection.CollUnitRelationType_Enum" Width="2.25" PointX="8.375" PointY="1" Height="3.1340950520833317" />
+        <AssociationConnector Association="DiversityCollection.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" >
+          <ConnectorPoint PointX="9.172884615384616" PointY="1" />
+          <ConnectorPoint PointX="9.172884615384616" PointY="0.75" />
+          <ConnectorPoint PointX="9.8426923076923067" PointY="0.75" />
+          <ConnectorPoint PointX="9.8426923076923067" PointY="1" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_IdentificationUnit_CollUnitRelationType_Enum" >
+          <ConnectorPoint PointX="9.5" PointY="4.1340950520833317" />
+          <ConnectorPoint PointX="9.5" PointY="10.03125" />
+          <ConnectorPoint PointX="7.364583333333333" PointY="10.03125" />
+          <ConnectorPoint PointX="7.197916666666667" PointY="10.03125" />
+          <ConnectorPoint PointX="4.5" PointY="10.03125" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

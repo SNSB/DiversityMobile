@@ -71,6 +71,8 @@ namespace DiversityPhone.ViewModels
                     SourceID = wcf.SourceID
                 })
                 ));
+
+
         }
     }
 }
