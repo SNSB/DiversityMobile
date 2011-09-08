@@ -17,7 +17,7 @@ using DiversityPhone.Messages;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ListEVVM : ReactiveObject
+    public class ViewESVM : ReactiveObject
     {
         IMessageBus _messenger;
         IOfflineStorage _storage;
@@ -39,7 +39,7 @@ namespace DiversityPhone.ViewModels
         
 
 
-        public ListEVVM(IMessageBus messenger, Services.IOfflineStorage storage)
+        public ViewESVM(IMessageBus messenger, Services.IOfflineStorage storage)
         {
             _messenger = messenger;
             _storage = storage;

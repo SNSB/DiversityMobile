@@ -14,17 +14,12 @@ using DiversityPhone.ViewModels;
 
 namespace DiversityPhone
 {
-    public partial class ListIU : PhoneApplicationPage
+    public partial class ViewES : PhoneApplicationPage
     {
-        private ListIUVM VM
-        {
-            get
-            {
-                return DataContext as ListIUVM;
-            }
-        }
 
-        public ListIU()
+        private ViewESVM VM { get { return DataContext as ViewESVM; } }
+
+        public ViewES()
         {
             InitializeComponent();
         }
@@ -32,7 +27,7 @@ namespace DiversityPhone
         private void Add_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Add.Execute(null);
+                VM.AddEvent.Execute(null);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace DiversityPhone.Services
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return _source.ToList().IndexOf(item);      
         }
 
         public void Insert(int index, T item)

@@ -40,14 +40,14 @@ namespace DiversityPhone.ViewModels
                 ));
             _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
 
-            _ioc.Register<ListEVVM>(container => new ListEVVM(
+            _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
                 container.Resolve<IOfflineStorage>()
                 ));
             _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
 
 
-            _ioc.Register<ListIUVM>(c => new ListIUVM(
+            _ioc.Register<ViewEVVM>(c => new ViewEVVM(
                 c.Resolve<IMessageBus>(),
                 c.Resolve<IOfflineStorage>()
                 ));
@@ -67,11 +67,12 @@ namespace DiversityPhone.ViewModels
         public HomeVM Home { get { return _homeVM; } }
         public ListESVM ListES { get { return _ioc.Resolve<ListESVM>(); } }
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
-        public ListEVVM ListEV { get { return _ioc.Resolve<ListEVVM>(); } }
+        public ViewESVM ListEV { get { return _ioc.Resolve<ViewESVM>(); } }
         public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }
-        public ListIUVM ListIU { get { return _ioc.Resolve<ListIUVM>(); } }
+        public ViewEVVM ListIU { get { return _ioc.Resolve<ViewEVVM>(); } }
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
 
+        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
         public SetupVM Setup { get { return _ioc.Resolve<SetupVM>(); ; } }
        
     }

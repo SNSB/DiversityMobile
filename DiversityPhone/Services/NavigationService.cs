@@ -42,17 +42,17 @@ namespace DiversityPhone.Services
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                     .Subscribe(_=>Navigate(Page.EditEventSeries)),
                 _messenger.Listen<EventSeries>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ListEvents)),
+                    .Subscribe(_=>Navigate(Page.ViewEventSeries)),
 
                 _messenger.Listen<Event>(MessageContracts.EDIT)
                     .Subscribe(_=>Navigate(Page.EditEvent)),
                 _messenger.Listen<Event>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ListIUnits)),
+                    .Subscribe(_=>Navigate(Page.ViewEent)),
 
                 _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT)
                     .Subscribe(_=>Navigate(Page.EditIUnit)),
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ListIUnitSubUnits)),
+                    .Subscribe(_=>Navigate(Page.ViewIUnit)),
             };
 
 
@@ -81,17 +81,20 @@ namespace DiversityPhone.Services
                 case Page.EditEventSeries:
                     destination = new Uri("/View/EditES.xaml", UriKind.Relative);
                     break;
-                case Page.ListEvents:
-                    destination = new Uri("/View/ListEV.xaml", UriKind.Relative);
+                case Page.ViewEventSeries:
+                    destination = new Uri("/View/ViewES.xaml", UriKind.Relative);
                     break;
                 case Page.EditEvent:
                     destination = new Uri("/View/EditEV.xaml", UriKind.Relative);
                     break;   
-                case Page.ListIUnits:
-                    destination = new Uri("/View/ListIU.xaml", UriKind.Relative);
+                case Page.ViewEent:
+                    destination = new Uri("/View/ViewEV.xaml", UriKind.Relative);
                     break;
                 case Page.EditIUnit:
                     destination = new Uri("/View/EditIU.xaml", UriKind.Relative);
+                    break;
+                case Page.ViewIUnit:
+                    destination = new Uri("/View/ViewIU.xaml", UriKind.Relative);
                     break;
 
 #if DEBUG

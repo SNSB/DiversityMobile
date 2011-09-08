@@ -18,7 +18,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ListIUVM : ReactiveObject
+    public class ViewEVVM : ReactiveObject
     {
         IMessageBus _messenger;
         IOfflineStorage _storage;
@@ -35,7 +35,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Add { get; private set; }
         
 
-        public ListIUVM(IMessageBus messenger, IOfflineStorage storage)
+        public ViewEVVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
             _storage = storage;
@@ -45,10 +45,10 @@ namespace DiversityPhone.ViewModels
                                 .ToProperty(this, x => x.CurrentEvent);
 
             _UnitList = eventSelected.Select(ev =>
-                 new VirtualizingReadonlyViewModelList<IdentificationUnit, IdentificationUnitVM>(
-                        _storage.getIUForEvent(ev),
-                        iu => new IdentificationUnitVM(_messenger, iu)
-                        ) as IList<IdentificationUnitVM>
+                 IdentificationUnitVM.getTwoLevelVMFromModelList(
+                 _storage.getIUForEvent(ev), 
+                 iu => _storage.getSubUnits(iu),
+                 _messenger) 
                 ).ToProperty(this, x => x.UnitList);
                 
 

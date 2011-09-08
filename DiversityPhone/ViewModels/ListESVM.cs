@@ -57,7 +57,7 @@ namespace DiversityPhone.ViewModels
 
         private void selectSeries(EventSeries es)
         {
-            _navigation.Navigate(Page.ListEvents);
+            _navigation.Navigate(Page.ViewEventSeries);
         }
 
         private void updateSeriesList()

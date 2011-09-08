@@ -13,6 +13,7 @@ namespace DiversityPhone.ViewModels
     public class EditIUVM : ReactiveObject
     {
         IMessageBus _messenger;
+        IList<IDisposable> _subscriptions;
         IOfflineStorage _storage;
 
         #region Properties
@@ -61,10 +62,27 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup,ref _SelectedTaxGroup, value);
             }
-        }        
+        }
+
+
+        private string _Description;
+
+        public string Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value);
+            }
+        }
+        
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsToplevel;
+        private ObservableAsPropertyHelper<bool> _IsToplevel;     
+        
 
         #endregion
 
@@ -76,12 +94,10 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
             var model = _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT);
-            model.Select(m => m.AccessionNumber)
-                .BindTo(this, x => x.AccessionNumber);
-            model.Select(m => m.TaxonomicGroup)
-                .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg))
-                .BindTo(this, x => x.SelectedTaxGroup);                                        
+            
+                                                   
             _Model = model.ToProperty(this, x => x.Model);
+            
 
             var isToplevel = model
                 .Select(m => m.RelatedUnitID == null);
@@ -89,24 +105,40 @@ namespace DiversityPhone.ViewModels
 
             var canSave = this.ObservableForProperty(x => x.SelectedTaxGroup)
                                 .Select(change => change.Value != null).StartWith(false);
-                
-            
 
+            _subscriptions = new List<IDisposable>()
+            {            
+                (Cancel = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
 
-            (Cancel = new ReactiveCommand())
-                .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack));
+                model.Select(m => m.TaxonomicGroup)
+                    .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
+                    .Subscribe(x => SelectedTaxGroup = x),
 
-            (Save = new ReactiveCommand(canSave))
-                .Subscribe(_ =>
-                    {
-                        updateModel();
-                        _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);
-                    });
+                model.Select(m => m.AccessionNumber)
+                    .Subscribe(accessNo => AccessionNumber = accessNo),
+
+                model.Select(m => m.UnitDescription)
+                    .Subscribe(desc => Description = desc),
+
+                (Save = new ReactiveCommand(canSave))
+                    .Subscribe(_ =>
+                        {
+                            updateModel();
+                            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);
+                            _messenger.SendMessage<Message>(Message.NavigateBack);
+                        }),
+
+                (Cancel = new ReactiveCommand())
+                    .Subscribe(_=>_messenger.SendMessage<Message>(Message.NavigateBack)),
+            };
         }        
 
         private void updateModel()
         {
-
+            Model.AccessionNumber = AccessionNumber;
+            Model.UnitDescription = Description;
+            Model.TaxonomicGroup = SelectedTaxGroup.Code;            
         }
 
 

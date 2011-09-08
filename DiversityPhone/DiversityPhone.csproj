@@ -97,6 +97,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ViewIUVM.cs" />
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
@@ -109,8 +110,11 @@
     <Compile Include="View\FirstTimeSetup.xaml.cs">
       <DependentUpon>FirstTimeSetup.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ListEV.xaml.cs">
-      <DependentUpon>ListEV.xaml</DependentUpon>
+    <Compile Include="View\ViewIU.xaml.cs">
+      <DependentUpon>ViewIU.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewES.xaml.cs">
+      <DependentUpon>ViewES.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ListES.xaml.cs">
       <DependentUpon>ListES.xaml</DependentUpon>
@@ -118,8 +122,8 @@
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ListIU.xaml.cs">
-      <DependentUpon>ListIU.xaml</DependentUpon>
+    <Compile Include="View\ViewEV.xaml.cs">
+      <DependentUpon>ViewEV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\Messages.cs" />
     <Compile Include="Model\Event.cs" />
@@ -164,8 +168,8 @@
     <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
-    <Compile Include="ViewModels\ListEVVM.cs" />
-    <Compile Include="ViewModels\ListIUVM.cs" />
+    <Compile Include="ViewModels\ViewESVM.cs" />
+    <Compile Include="ViewModels\ViewEVVM.cs" />
     <Compile Include="ViewModels\SetupVM.cs" />
     <Compile Include="ViewModels\UploadVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -195,7 +199,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ListEV.xaml">
+    <Page Include="View\ViewIU.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -207,7 +215,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ListIU.xaml">
+    <Page Include="View\ViewEV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

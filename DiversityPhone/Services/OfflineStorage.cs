@@ -37,14 +37,9 @@ namespace DiversityPhone.Services
             newSeries.SeriesID = findFreeEventSeriesID(ctx);
             ctx.EventSeries.InsertOnSubmit(newSeries);
             ctx.SubmitChanges();
-        }
+        }     
 
-       
-
-        IQueryable<EventSeries> IOfflineFieldData.EventSeries
-        {
-            get { throw new NotImplementedException(); }
-        }
+      
 
         public IList<EventSeries> getAllEventSeries()
         {
@@ -124,6 +119,15 @@ namespace DiversityPhone.Services
             return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
                                         where iu.EventID == ev.EventID
                                         select iu);
+        }
+
+
+        public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
+                                                     where iu.RelatedUnitID == unit.UnitID
+                                                     select iu);
         }
     }
 }

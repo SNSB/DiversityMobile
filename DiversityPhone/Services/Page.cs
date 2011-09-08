@@ -7,12 +7,12 @@ namespace DiversityPhone.Services
         Upload,
         ListEventSeries,
         EditEventSeries,
-        ListEvents,
+        ViewEventSeries,
         EditEvent,
-        ListIUnits,
+        ViewEent,
         EditIUnit,
         Settings,
         Setup,
-        ListIUnitSubUnits,
+        ViewIUnit,
     }
 }

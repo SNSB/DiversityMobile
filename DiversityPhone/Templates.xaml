@@ -7,4 +7,44 @@
     <DataTemplate x:Key="TermListPickerItemTemplate">
         <TextBlock Text="{Binding DisplayText}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
     </DataTemplate>
+    <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Image Grid.Column="0" Grid.Row="0"/>
+
+            <Button Grid.Column="1" Grid.Row="0"
+                    Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Select}"/>
+            
+            <ListBox Grid.Column="1" Grid.Row="1"
+                     ItemsSource="{Binding SubUnits}"
+                     ItemTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"
+                     Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image />
+            <Button Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Select}"/>            
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="IdentificationDetailItemTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image />
+            <Button Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Edit}"/>
+        </StackPanel>
+    </DataTemplate>
 </ResourceDictionary>

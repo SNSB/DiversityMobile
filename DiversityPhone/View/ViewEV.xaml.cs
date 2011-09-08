@@ -11,33 +11,28 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
-using DiversityPhone.Model;
 
 namespace DiversityPhone
 {
-    public partial class EditIU : PhoneApplicationPage
+    public partial class ViewEV : PhoneApplicationPage
     {
-        private EditIUVM VM { get { return DataContext as EditIUVM; } }
+        private ViewEVVM VM
+        {
+            get
+            {
+                return DataContext as ViewEVVM;
+            }
+        }
 
-        public EditIU()
+        public ViewEV()
         {
             InitializeComponent();
-            
         }
 
-        private void Save_Click(object sender, EventArgs e)
+        private void Add_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Save.Execute(null);
+                VM.Add.Execute(null);
         }
-
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Cancel.Execute(null);
-        }
-
-       
-
     }
 }
