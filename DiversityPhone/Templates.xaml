@@ -19,7 +19,7 @@
     <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -27,15 +27,15 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <Image Grid.Column="0" Grid.Row="0"/>
-
-            <Button Grid.Column="1" Grid.Row="0"
-                    Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
+            <StackPanel Grid.Column="0" Grid.Row="0"
+						Grid.ColumnSpan="2" Orientation="Horizontal">
+	            <Image />
+	            <Button Style="{StaticResource ItemButtonStyle}"
+	                    Content="{Binding Description}"
+	                    Command="{Binding Select}"/>
+       		</StackPanel>
             
-            <ListBox Margin="40,0,0,0"
-                     Grid.Column="1" Grid.Row="1"
+            <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
                      ItemTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>

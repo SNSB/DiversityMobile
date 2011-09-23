@@ -12,22 +12,20 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ListIU}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ListIU}"
+	d:DataContext="{d:DesignData /SampleData/ViewEVVMSampleData.xaml}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <ScrollViewer x:Name="LayoutRoot" Background="Transparent">
-        <StackPanel>
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    DataContext="{Binding CurrentEvent}"
-                    Command="{Binding Edit}">
-                <TextBlock Text="{Binding Description}"/>
-            </Button>
-            
-            <ListBox ItemsSource="{Binding UnitList}"
-                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
-            
-        </StackPanel>        
-    </ScrollViewer>
+    <Grid x:Name="LayoutRoot" Background="Transparent" >
+		<Button Style="{StaticResource ItemButtonStyle}"
+			DataContext="{Binding CurrentEvent}"
+			Command="{Binding Edit}" VerticalAlignment="Top">
+			<TextBlock Text="{Binding Description}"/>
+		</Button>
+		<ListBox ItemsSource="{Binding UnitList}"
+			ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}" Margin="0,63,0,-3147" d:LayoutOverrides="Height"/>           
+              
+	</Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
