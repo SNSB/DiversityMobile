@@ -70,9 +70,24 @@ namespace DiversityPhone.ViewModels
                     ParentCode = wcf.ParentCode,
                     SourceID = wcf.SourceID
                 })
-                ));
+                ));           
 
+            var taxonFunc = Observable.FromAsyncPattern<string,IEnumerable<DiversityPhone.Service.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+
+            taxonFunc.Invoke("").Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+                t => new Model.TaxonName()
+                {
+                    URI = t.URI,
+                    TaxonomicGroup = "plant",
+                    TaxonNameSinAuth = t.TaxonNameSinAuth,
+                    TaxonNameCache = t.TaxonNameCache,
+                    SpeciesEpithet = t.SpeciesEpithet,
+                    InfraspecificEpithet = t.InfraspecificEpithet,
+                    GenusOrSupragenic = t.GenusOrSupragenic
+                })));
 
         }
+
+       
     }
 }

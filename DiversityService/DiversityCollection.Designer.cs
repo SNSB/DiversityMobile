@@ -49,7 +49,7 @@ namespace DiversityCollection
         /// </summary>
         public DiversityCollection_BaseTestEntities() : base("name=DiversityCollection_BaseTestEntities", "DiversityCollection_BaseTestEntities")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     
@@ -58,7 +58,7 @@ namespace DiversityCollection
         /// </summary>
         public DiversityCollection_BaseTestEntities(string connectionString) : base(connectionString, "DiversityCollection_BaseTestEntities")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     
@@ -67,7 +67,7 @@ namespace DiversityCollection
         /// </summary>
         public DiversityCollection_BaseTestEntities(EntityConnection connection) : base(connection, "DiversityCollection_BaseTestEntities")
         {
-            this.ContextOptions.LazyLoadingEnabled = true;
+            this.ContextOptions.LazyLoadingEnabled = false;
             OnContextCreated();
         }
     

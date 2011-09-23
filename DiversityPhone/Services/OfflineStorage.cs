@@ -21,9 +21,11 @@ namespace DiversityPhone.Services
     {
         public OfflineStorage()
         {
-            var context = new DiversityDataContext();
-            if (!context.DatabaseExists())
-                context.CreateDatabase();
+            using (var context = new DiversityDataContext())
+            {
+                if (!context.DatabaseExists())
+                    context.CreateDatabase();
+            }
 
             
         }
@@ -33,10 +35,12 @@ namespace DiversityPhone.Services
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
                 throw new InvalidOperationException("Series is not new!");
 
-            var ctx = new DiversityDataContext();
-            newSeries.SeriesID = findFreeEventSeriesID(ctx);
-            ctx.EventSeries.InsertOnSubmit(newSeries);
-            ctx.SubmitChanges();
+            using (var ctx = new DiversityDataContext())
+            {
+                newSeries.SeriesID = findFreeEventSeriesID(ctx);
+                ctx.EventSeries.InsertOnSubmit(newSeries);
+                ctx.SubmitChanges();
+            }
         }     
 
       
@@ -86,20 +90,27 @@ namespace DiversityPhone.Services
         {
             var ctx = new DiversityDataContext();
             return new LightList<Event>(ctx.Events);
+
         }
 
         public void addEvent(Event ev)
         {
-            var ctx = new DiversityDataContext();
-            ctx.Events.InsertOnSubmit(ev);
-            ctx.SubmitChanges();
+            using(var ctx = new DiversityDataContext())
+            {
+                ctx.Events.InsertOnSubmit(ev);
+                ctx.SubmitChanges();
+            }
         }
 
         public void addTerms(IEnumerable<Term> terms)
         {
-            var ctx = new DiversityDataContext();
-            ctx.Terms.InsertAllOnSubmit(terms);
-            ctx.SubmitChanges();
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.Terms.InsertAllOnSubmit(terms);
+                ctx.SubmitChanges();
+            }
+
+            sampleData();
         }
 
 
@@ -141,12 +152,62 @@ namespace DiversityPhone.Services
 
         public void addIUnit(IdentificationUnit iu)
         {
+            using (var ctx = new DiversityDataContext())
+            {
+                if (iu.IsModified == null)
+                    iu.UnitID = findFreeUnitID(ctx);
+
+                ctx.IdentificationUnits.InsertOnSubmit(iu);
+                ctx.SubmitChanges();
+            }
+        }
+
+
+        private void sampleData()
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 0, Description = "ES" });
+                ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
+                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { EventID = 0, UnitDescription = "Top", UnitID = 0 });
+                int id = 1;
+                recSample(0, 0, ref id, ctx);
+                ctx.SubmitChanges();
+            }
+
+        }
+        private void recSample(int depth, int parent, ref int id, DiversityDataContext ctx)
+        {
+            if (depth == 3)
+                return;
+
+            depth++;
+            int p = id;
+
+
+            for (int i = 0; i < 20; i++)
+            {
+                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id, UnitDescription = "Sub" + id, RelatedUnitID = parent });
+                recSample(depth, id++, ref id, ctx);
+            }
+        }
+
+
+        public void addTaxonNames(IEnumerable<TaxonName> taxa)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.TaxonNames.InsertAllOnSubmit(taxa);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public IList<TaxonName> getTaxonNames(Term taxonGroup)
+        {
             var ctx = new DiversityDataContext();
-            if (iu.IsModified == null)
-                iu.UnitID = findFreeUnitID(ctx);
-            
-            ctx.IdentificationUnits.InsertOnSubmit(iu);
-            ctx.SubmitChanges();
+            return new LightList<TaxonName>(from taxa in ctx.TaxonNames
+                                                     where taxa.TaxonomicGroup == taxonGroup.Code
+                                                     select taxa);
         }
     }
 }

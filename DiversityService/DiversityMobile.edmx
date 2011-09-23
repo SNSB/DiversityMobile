@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DiversityMobileModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="DiversityMobileModelStoreContainer">
+          <EntitySet Name="TaxRef_BfN_VPlants" EntityType="DiversityMobileModel.Store.TaxRef_BfN_VPlants" store:Type="Views" store:Schema="dbo" store:Name="TaxRef_BfN_VPlants">
+            <DefiningQuery>SELECT 
+      [TaxRef_BfN_VPlants].[NameURI] AS [NameURI], 
+      [TaxRef_BfN_VPlants].[TaxonNameCache] AS [TaxonNameCache], 
+      [TaxRef_BfN_VPlants].[TaxonNameSinAuthors] AS [TaxonNameSinAuthors], 
+      [TaxRef_BfN_VPlants].[GenusOrSupragenericName] AS [GenusOrSupragenericName], 
+      [TaxRef_BfN_VPlants].[SpeciesEpithet] AS [SpeciesEpithet], 
+      [TaxRef_BfN_VPlants].[InfraspecificEpithet] AS [InfraspecificEpithet], 
+      [TaxRef_BfN_VPlants].[Synonymy] AS [Synonymy], 
+      [TaxRef_BfN_VPlants].[Family] AS [Family], 
+      [TaxRef_BfN_VPlants].[Order] AS [Order]
+      FROM [dbo].[TaxRef_BfN_VPlants] AS [TaxRef_BfN_VPlants]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+        <!--Während der Generierung sind Fehler aufgetreten:
+      Warnung 6002: Für Tabelle/Sicht 'DiversityMobile.dbo.TaxRef_BfN_VPlants' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.
+      -->
+        <EntityType Name="TaxRef_BfN_VPlants">
+          <Key>
+            <PropertyRef Name="NameURI" />
+          </Key>
+          <Property Name="NameURI" Type="varchar" MaxLength="285" Nullable="false" />
+          <Property Name="TaxonNameCache" Type="nvarchar" MaxLength="125" />
+          <Property Name="TaxonNameSinAuthors" Type="nvarchar" MaxLength="1058" />
+          <Property Name="GenusOrSupragenericName" Type="nvarchar" Nullable="false" MaxLength="200" />
+          <Property Name="SpeciesEpithet" Type="nvarchar" MaxLength="100" />
+          <Property Name="InfraspecificEpithet" Type="nvarchar" MaxLength="100" />
+          <Property Name="Synonymy" Type="varchar" Nullable="false" MaxLength="8" />
+          <Property Name="Family" Type="nvarchar" MaxLength="200" />
+          <Property Name="Order" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DiversityMobileModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="DiversityMobileEntities" annotation:LazyLoadingEnabled="false">
+          <EntitySet Name="TaxRef_BfN_VPlants" EntityType="DiversityMobileModel.TaxRef_BfN_VPlants" />
+        </EntityContainer>
+        <EntityType Name="TaxRef_BfN_VPlants">
+          <Key>
+            <PropertyRef Name="NameURI" />
+          </Key>
+          <Property Type="String" Name="NameURI" MaxLength="285" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Type="String" Name="TaxonNameCache" MaxLength="125" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="TaxonNameSinAuthors" MaxLength="1058" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="GenusOrSupragenericName" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SpeciesEpithet" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="InfraspecificEpithet" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Synonymy" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="Family" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Order" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DiversityMobileModelStoreContainer" CdmEntityContainer="DiversityMobileEntities">
+          <EntitySetMapping Name="TaxRef_BfN_VPlants">
+            <EntityTypeMapping TypeName="DiversityMobileModel.TaxRef_BfN_VPlants">
+              <MappingFragment StoreEntitySet="TaxRef_BfN_VPlants">
+                <ScalarProperty Name="Order" ColumnName="Order" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="Synonymy" ColumnName="Synonymy" />
+                <ScalarProperty Name="InfraspecificEpithet" ColumnName="InfraspecificEpithet" />
+                <ScalarProperty Name="SpeciesEpithet" ColumnName="SpeciesEpithet" />
+                <ScalarProperty Name="GenusOrSupragenericName" ColumnName="GenusOrSupragenericName" />
+                <ScalarProperty Name="TaxonNameSinAuthors" ColumnName="TaxonNameSinAuthors" />
+                <ScalarProperty Name="TaxonNameCache" ColumnName="TaxonNameCache" />
+                <ScalarProperty Name="NameURI" ColumnName="NameURI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="DiversityMobile">
+        <EntityTypeShape EntityType="DiversityMobileModel.TaxRef_BfN_VPlants" Width="1.5" PointX="0.75" PointY="0.75" Height="2.7494921874999996" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

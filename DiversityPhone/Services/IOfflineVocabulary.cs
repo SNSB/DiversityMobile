@@ -10,5 +10,8 @@ namespace DiversityPhone.Services
     {
         void addTerms(IEnumerable<Term> terms);
         IList<Term> getTerms(int source);
+
+        void addTaxonNames(IEnumerable<TaxonName> taxa);
+        IList<TaxonName> getTaxonNames(Term taxonGroup);
     }
 }

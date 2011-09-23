@@ -13,11 +13,11 @@ namespace DiversityService.Model
 {
     public class TaxonName
     {
-        public string URI { get; set; }
-        public string TaxonNameCache { get; set; }
-        public string TaxonNameSinAuth { get; set; }
-        public string GenusOrSupragenic { get; set; }
-        public string SpeciesEpithet { get; set; }
-        public string InfraspecificEpithet { get; set; }
+        public virtual string URI { get; set; }
+        public virtual string TaxonNameCache { get; set; }
+        public virtual string TaxonNameSinAuth { get; set; }
+        public virtual string GenusOrSupragenic { get; set; }
+        public virtual string SpeciesEpithet { get; set; }
+        public virtual string InfraspecificEpithet { get; set; }
     }
 }

@@ -49,6 +49,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DiversityCollection.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DiversityMobile.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityMobile.edmx</DependentUpon>
+    </Compile>
     <Compile Include="DiversityService.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
+    <EntityDeploy Include="DiversityMobile.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
+    </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">

@@ -21,7 +21,7 @@ namespace DiversityService
         IEnumerable<Term> GetStandardVocabulary();
 
         [OperationContract]
-        IList<TaxonName> DownloadTaxonList(string list);
+        IEnumerable<TaxonName> DownloadTaxonList(string list);
 
         [OperationContract]
         IList<EventSeries> GetSeriesByDescription(string description);

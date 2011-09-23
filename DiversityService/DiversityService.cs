@@ -32,34 +32,49 @@ namespace DiversityService
 
         public IEnumerable<Term> GetStandardVocabulary()
         {
-            var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();            
-            var taxonGroups = 
-                from taxGrp in ctx.CollTaxonomicGroup_Enum
-                select new Term()
-                {
-                    SourceID = 0, //TODO
-                    Code = taxGrp.Code,
-                    Description = taxGrp.Description,
-                    DisplayText = taxGrp.DisplayText,
-                    ParentCode = taxGrp.ParentCode
-                };
-            var relationTypes =
-                from relType in ctx.CollUnitRelationType_Enum
-                select new Term()
-                {
-                    SourceID = 1,
-                    Code = relType.Code,
-                    Description = relType.Description,
-                    DisplayText = relType.DisplayText,
-                    ParentCode = relType.ParentCode
-                };
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                var taxonGroups =
+                     from taxGrp in ctx.CollTaxonomicGroup_Enum
+                     select new Term()
+                     {
+                         SourceID = 0, //TODO
+                         Code = taxGrp.Code,
+                         Description = taxGrp.Description,
+                         DisplayText = taxGrp.DisplayText,
+                         ParentCode = taxGrp.ParentCode
+                     };
+                var relationTypes =
+                    from relType in ctx.CollUnitRelationType_Enum
+                    select new Term()
+                    {
+                        SourceID = 1,
+                        Code = relType.Code,
+                        Description = relType.Description,
+                        DisplayText = relType.DisplayText,
+                        ParentCode = relType.ParentCode
+                    };
 
-            return Enumerable.Concat(taxonGroups, relationTypes);
+                return Enumerable.Concat(taxonGroups, relationTypes).ToList(); //Iterate over Enumerables so the context can be disposed safely.
+            }
+           
         }
 
-        public IList<TaxonName> DownloadTaxonList(string list)
+        public IEnumerable<TaxonName> DownloadTaxonList(string list)
         {
-            throw new NotImplementedException();
+            using (var ctx = new DiversityMobileEntities())
+            {
+                return (from tn in ctx.TaxRef_BfN_VPlants
+                       select new TaxonName()
+                       {
+                           URI = tn.NameURI,
+                           TaxonNameCache = tn.TaxonNameCache,
+                           TaxonNameSinAuth = tn.TaxonNameSinAuthors,
+                           GenusOrSupragenic = tn.GenusOrSupragenericName,
+                           SpeciesEpithet = tn.SpeciesEpithet,
+                           InfraspecificEpithet = tn.InfraspecificEpithet
+                       }).ToList();
+            }
         }
     }
 }
