@@ -1,37 +1,47 @@
 ﻿using System;
-using System.Net;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
+using Svc = DiversityPhone.Service;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using DiversityPhone.Services;
-using System.Linq;
-using System.Reactive.Linq;
-using System.Windows;
-using DiversityPhone.Service;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using System.Collections.ObjectModel;
 
 
 namespace DiversityPhone.ViewModels
 {
     public class HomeVM : ReactiveObject
     {
-        IList<IDisposable> _subscriptions;
+        private IList<IDisposable> _subscriptions;
 
-        public ReactiveCommand Edit { get; private set; }
-        public ReactiveCommand Settings { get; private set; }
-        public ReactiveCommand Download { get; private set; }
-        public ReactiveCommand Upload { get; private set; }
-
-        public ReactiveCommand GetVocabulary { get; private set; }    
-
-
+        #region Services        
         private IMessageBus _messenger;
         private IOfflineStorage _storage;
+        private Svc.IDiversityService _repository;
+        #endregion
 
-        private IDiversityService _repository;
+        #region Commands
+        public ReactiveCommand Settings { get; private set; }
+        public ReactiveCommand AddSeries { get; private set; }
+        public ReactiveCommand GetVocabulary { get; private set; }
+        #endregion
 
-        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityService repo)
+        #region Properties
+        private IList<EventSeriesVM> _SeriesList;
+        public IList<EventSeriesVM> SeriesList
+        {
+            get
+            {
+                return _SeriesList;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(x => x.SeriesList,ref _SeriesList, value);
+            }
+        }
+        #endregion
+
+        public HomeVM(IMessageBus messenger, IOfflineStorage storage, Svc.IDiversityService repo)
         {
             _messenger = messenger;
             _storage = storage;
@@ -39,17 +49,11 @@ namespace DiversityPhone.ViewModels
 
             _subscriptions = new List<IDisposable>()
             {
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.ListEventSeries)),
-
                 (Settings = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.Settings)),
-
-                (Download = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.ListEventSeries)),
-
-                (Upload = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.Upload)),
+                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.Settings)),    
+                
+                (AddSeries = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<Model.EventSeries>(new Model.EventSeries())), 
 
                 (GetVocabulary = new ReactiveCommand())
                     .Subscribe(_ => getVoc()),
@@ -72,7 +76,7 @@ namespace DiversityPhone.ViewModels
                 })
                 ));           
 
-            var taxonFunc = Observable.FromAsyncPattern<string,IEnumerable<DiversityPhone.Service.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+            var taxonFunc = Observable.FromAsyncPattern<string,IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
 
             taxonFunc.Invoke("").Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
                 t => new Model.TaxonName()
@@ -88,6 +92,12 @@ namespace DiversityPhone.ViewModels
 
         }
 
-       
+        private void updateSeriesList()
+        {
+            SeriesList = new VirtualizingReadonlyViewModelList<Model.EventSeries, EventSeriesVM>(
+                _storage.getAllEventSeries(),
+                (model) => new EventSeriesVM(model, _messenger)
+                );
+        }
     }
 }

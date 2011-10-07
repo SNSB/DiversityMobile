@@ -20,16 +20,8 @@ namespace DiversityPhone
         private HomeVM VM { get { return DataContext as HomeVM; } }
         public Home()
         {
-            InitializeComponent();
-
-            
-        }
-
-        private void Edit_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Edit.Execute(null);
-        }
+            InitializeComponent();            
+        }       
 
         private void Settings_Click(object sender, EventArgs e)
         {
@@ -37,17 +29,12 @@ namespace DiversityPhone
                 VM.Settings.Execute(null);
         }
 
-        private void Download_Click(object sender, EventArgs e)
+        private void AddSeries_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Download.Execute(null);
+                VM.AddSeries.Execute(null);
         }
-
-        private void Upload_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Upload.Execute(null);
-        }
+       
 
         private void GetVoc_Click(object sender, EventArgs e)
         {

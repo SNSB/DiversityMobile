@@ -13,6 +13,9 @@ namespace DiversityPhone.ViewModels
 {
     public enum Icon
     {
-        EventSeries
+        EventSeries,
+        NoEventSeries,
+        Observation
+
     }
 }

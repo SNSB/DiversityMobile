@@ -128,9 +128,6 @@
     <Compile Include="View\ViewES.xaml.cs">
       <DependentUpon>ViewES.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ListES.xaml.cs">
-      <DependentUpon>ListES.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
@@ -177,7 +174,6 @@
     <Compile Include="ViewModels\Icon.cs" />
     <Compile Include="ViewModels\IdentificationUnitVM.cs" />
     <Compile Include="ViewModels\IItemViewModel.cs" />
-    <Compile Include="ViewModels\ListESVM.cs" />
     <Compile Include="ViewModels\EditESVM.cs" />
     <Compile Include="ViewModels\HomeVM.cs" />
     <Compile Include="ViewModels\ViewESVM.cs" />
@@ -231,10 +227,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ListES.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Home.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -257,7 +249,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
