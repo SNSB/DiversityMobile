@@ -55,7 +55,7 @@ namespace DiversityPhone.ViewModels
                 )).ToProperty(this, x => x.Current);
 
             var newSubUnits = (AddSubunit = new ReactiveCommand())
-                                .Select(_ => new IdentificationUnit() { EventID = Model.EventID, RelatedUnitID = Model.UnitID });
+                                .Select(_ => new IdentificationUnit() { SpecimenID = Model.SpecimenID, RelatedUnitID = Model.UnitID });
             _messenger.RegisterMessageSource(newSubUnits, MessageContracts.EDIT);
                 
                     

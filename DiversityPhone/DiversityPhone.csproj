@@ -103,6 +103,9 @@
     <Compile Include="Controls\StringValueControl.xaml.cs">
       <DependentUpon>StringValueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Specimen.cs" />
+    <Compile Include="ViewModels\SpecimenVM.cs" />
+    <Compile Include="ViewModels\ViewCSVM.cs" />
     <Compile Include="ViewModels\ViewIUVM.cs" />
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
@@ -115,6 +118,9 @@
     </Compile>
     <Compile Include="View\FirstTimeSetup.xaml.cs">
       <DependentUpon>FirstTimeSetup.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewCS.xaml.cs">
+      <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewIU.xaml.cs">
       <DependentUpon>ViewIU.xaml</DependentUpon>
@@ -210,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\FirstTimeSetup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewCS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

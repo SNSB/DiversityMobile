@@ -65,7 +65,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(
                         new IdentificationUnit()
                         {
-                            EventID = Model.EventID
+                            SpecimenID = Model.EventID
                         },
                         MessageContracts.EDIT)),                        
                 

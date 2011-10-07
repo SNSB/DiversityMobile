@@ -11,6 +11,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Service", "DiversityService.Service\DiversityService.Service.csproj", "{99C4E84A-8FE7-456A-BD7C-33561641F204}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DE5F0E2C-422F-4DC2-930B-06A777993EFD}"
+	ProjectSection(SolutionItems) = preProject
+		ModelDemonstrator\ModelDemonstrator.csproj.user = ModelDemonstrator\ModelDemonstrator.csproj.user
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Model", "DiversityService.Model\DiversityService.Model.csproj", "{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}"
 EndProject

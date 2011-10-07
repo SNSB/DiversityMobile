@@ -5,7 +5,7 @@
 	<DiversityPhone_ViewModels:ViewEVVM.CurrentEvent>
 		<DiversityPhone_ViewModels:EventVM Description="Aenean mauris cras">
 			<DiversityPhone_ViewModels:EventVM.Model>
-				<DiversityPhone_Model:Event CollectionDate="09/23/2011 13:09:48" EventID="87" HabitatDescription="Aliquam vestibulum adipiscing" LocalityDescription="Parturient class" SeriesID="19"/>
+				<DiversityPhone_Model:Event CollectionDate="09/23/2011 13:09:48" SpecimenID="87" HabitatDescription="Aliquam vestibulum adipiscing" LocalityDescription="Parturient class" SeriesID="19"/>
 			</DiversityPhone_ViewModels:EventVM.Model>
 			<DiversityPhone_ViewModels:EventVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -18,7 +18,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sed dis vestibulum curabitur auctor" ColonisedSubstratePart="Congue phasellus maecenas vestibulum cursus" EventID="58" Gender="Consequat praesent accumsan adipiscing est" LifeStage="Parturient duis convallis" RelationType="Nunc dictum lectus" TaxonomicGroup="Hac amet" UnitID="40" UnitDescription="Donec dignissim elementum" UnitIdentifier="Libero ante bibendum"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sed dis vestibulum curabitur auctor" ColonisedSubstratePart="Congue phasellus maecenas vestibulum cursus" SpecimenID="58" Gender="Consequat praesent accumsan adipiscing est" LifeStage="Parturient duis convallis" RelationType="Nunc dictum lectus" TaxonomicGroup="Hac amet" UnitID="40" UnitDescription="Donec dignissim elementum" UnitIdentifier="Libero ante bibendum"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Arcu dictumst" HasSubUnits="False">
@@ -26,7 +26,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Leo mus" ColonisedSubstratePart="Eleifend etiam integer vestibulum vestibulum" EventID="57" Gender="Facilisis nec quisque ligula fusce" LifeStage="Adipiscing vivamus aliquam" RelationType="Parturient vestibulum vestibulum" TaxonomicGroup="Non diam litora fermentum adipiscing" UnitID="20" UnitDescription="Per sed fringilla facilisi" UnitIdentifier="Sem faucibus sit aliquet parturient"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Leo mus" ColonisedSubstratePart="Eleifend etiam integer vestibulum vestibulum" SpecimenID="57" Gender="Facilisis nec quisque ligula fusce" LifeStage="Adipiscing vivamus aliquam" RelationType="Parturient vestibulum vestibulum" TaxonomicGroup="Non diam litora fermentum adipiscing" UnitID="20" UnitDescription="Per sed fringilla facilisi" UnitIdentifier="Sem faucibus sit aliquet parturient"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -37,7 +37,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Blandit vestibulum inceptos luctus vestibulum" ColonisedSubstratePart="Eget vel nam adipiscing" EventID="50" Gender="Parturient interdum lorem himenaeos" LifeStage="Elit imperdiet magnis enim lobortis" RelationType="Sed erat" TaxonomicGroup="Morbi dis nascetur eros malesuada" UnitID="83" UnitDescription="Nulla vestibulum" UnitIdentifier="Nibh est vestibulum mattis commodo"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Blandit vestibulum inceptos luctus vestibulum" ColonisedSubstratePart="Eget vel nam adipiscing" SpecimenID="50" Gender="Parturient interdum lorem himenaeos" LifeStage="Elit imperdiet magnis enim lobortis" RelationType="Sed erat" TaxonomicGroup="Morbi dis nascetur eros malesuada" UnitID="83" UnitDescription="Nulla vestibulum" UnitIdentifier="Nibh est vestibulum mattis commodo"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -48,7 +48,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing parturient proin" ColonisedSubstratePart="Conubia hac vestibulum" EventID="26" Gender="Mauris porttitor" LifeStage="Leo mus" RelationType="Augue cubilia vestibulum" TaxonomicGroup="Tincidunt tristique dapibus dolor fames" UnitID="68" UnitDescription="Pharetra egestas euismod feugiat nisl" UnitIdentifier="Gravida iaculis placerat"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing parturient proin" ColonisedSubstratePart="Conubia hac vestibulum" SpecimenID="26" Gender="Mauris porttitor" LifeStage="Leo mus" RelationType="Augue cubilia vestibulum" TaxonomicGroup="Tincidunt tristique dapibus dolor fames" UnitID="68" UnitDescription="Pharetra egestas euismod feugiat nisl" UnitIdentifier="Gravida iaculis placerat"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -59,7 +59,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Parturient vestibulum lacinia nec" ColonisedSubstratePart="Non per" EventID="68" Gender="Ipsum vestibulum nunc pulvinar" LifeStage="Laoreet odio" RelationType="Ultricies mollis" TaxonomicGroup="Sed sagittis venenatis justo" UnitID="69" UnitDescription="Montes orci lacus" UnitIdentifier="Nostra senectus pede adipiscing"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Parturient vestibulum lacinia nec" ColonisedSubstratePart="Non per" SpecimenID="68" Gender="Ipsum vestibulum nunc pulvinar" LifeStage="Laoreet odio" RelationType="Ultricies mollis" TaxonomicGroup="Sed sagittis venenatis justo" UnitID="69" UnitDescription="Montes orci lacus" UnitIdentifier="Nostra senectus pede adipiscing"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -70,7 +70,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Parturient platea posuere primis vulputate" ColonisedSubstratePart="Quam potenti quis rutrum vestibulum" EventID="47" Gender="Sapien vestibulum" LifeStage="Semper pretium torquent rhoncus" RelationType="Curabitur sem sociis" TaxonomicGroup="Sodales phasellus magna" UnitID="53" UnitDescription="Massa urna viverra aliquam cras" UnitIdentifier="Metus duis taciti consequat"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Parturient platea posuere primis vulputate" ColonisedSubstratePart="Quam potenti quis rutrum vestibulum" SpecimenID="47" Gender="Sapien vestibulum" LifeStage="Semper pretium torquent rhoncus" RelationType="Curabitur sem sociis" TaxonomicGroup="Sodales phasellus magna" UnitID="53" UnitDescription="Massa urna viverra aliquam cras" UnitIdentifier="Metus duis taciti consequat"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -86,7 +86,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Amet integer morbi vehicula convallis" ColonisedSubstratePart="Sit quisque dignissim vivamus volutpat" EventID="34" Gender="Tempor vel nam aliquam neque" LifeStage="Elementum ante" RelationType="Parturient sed" TaxonomicGroup="Vestibulum maecenas arcu" UnitID="24" UnitDescription="Tempus vestibulum netus adipiscing nulla" UnitIdentifier="Dis parturient diam aliquet praesent"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Amet integer morbi vehicula convallis" ColonisedSubstratePart="Sit quisque dignissim vivamus volutpat" SpecimenID="34" Gender="Tempor vel nam aliquam neque" LifeStage="Elementum ante" RelationType="Parturient sed" TaxonomicGroup="Vestibulum maecenas arcu" UnitID="24" UnitDescription="Tempus vestibulum netus adipiscing nulla" UnitIdentifier="Dis parturient diam aliquet praesent"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Est vestibulum" HasSubUnits="False">
@@ -94,7 +94,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Tortor hac" ColonisedSubstratePart="Turpis porta accumsan blandit eget" EventID="12" Gender="Varius facilisis aenean elit" LifeStage="Commodo leo" RelationType="Bibendum fermentum dictumst conubia" TaxonomicGroup="Vestibulum enim" UnitID="79" UnitDescription="Mauris mus nec non" UnitIdentifier="Nullam aptent fringilla habitasse cubilia"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Tortor hac" ColonisedSubstratePart="Turpis porta accumsan blandit eget" SpecimenID="12" Gender="Varius facilisis aenean elit" LifeStage="Commodo leo" RelationType="Bibendum fermentum dictumst conubia" TaxonomicGroup="Vestibulum enim" UnitID="79" UnitDescription="Mauris mus nec non" UnitIdentifier="Nullam aptent fringilla habitasse cubilia"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -105,7 +105,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing erat eros purus risus" ColonisedSubstratePart="Imperdiet velit dapibus eleifend nibh" EventID="75" Gender="Congue sed facilisi malesuada" LifeStage="Penatibus egestas nisi vitae euismod" RelationType="Faucibus feugiat gravida parturient" TaxonomicGroup="Cursus sem sit" UnitID="34" UnitDescription="Vestibulum porttitor habitant inceptos interdum" UnitIdentifier="Class dictum"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing erat eros purus risus" ColonisedSubstratePart="Imperdiet velit dapibus eleifend nibh" SpecimenID="75" Gender="Congue sed facilisi malesuada" LifeStage="Penatibus egestas nisi vitae euismod" RelationType="Faucibus feugiat gravida parturient" TaxonomicGroup="Cursus sem sit" UnitID="34" UnitDescription="Vestibulum porttitor habitant inceptos interdum" UnitIdentifier="Class dictum"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -116,7 +116,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum lacinia" ColonisedSubstratePart="Laoreet libero lobortis nascetur natoque" EventID="79" Gender="Pharetra tincidunt placerat adipiscing pulvinar" LifeStage="Sagittis vel curae donec" RelationType="Posuere tristique ligula" TaxonomicGroup="Nisl etiam fusce ultricies lorem" UnitID="26" UnitDescription="Nunc parturient" UnitIdentifier="Litora venenatis nam potenti sed"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum lacinia" ColonisedSubstratePart="Laoreet libero lobortis nascetur natoque" SpecimenID="79" Gender="Pharetra tincidunt placerat adipiscing pulvinar" LifeStage="Sagittis vel curae donec" RelationType="Posuere tristique ligula" TaxonomicGroup="Nisl etiam fusce ultricies lorem" UnitID="26" UnitDescription="Nunc parturient" UnitIdentifier="Litora venenatis nam potenti sed"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -127,7 +127,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum vestibulum" ColonisedSubstratePart="Senectus vulputate adipiscing parturient" EventID="73" Gender="Vestibulum curabitur" LifeStage="Dis sociosqu" RelationType="Est luctus nulla" TaxonomicGroup="Phasellus magnis" UnitID="40" UnitDescription="Proin hac rhoncus vestibulum" UnitIdentifier="Orci pede"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum vestibulum" ColonisedSubstratePart="Senectus vulputate adipiscing parturient" SpecimenID="73" Gender="Vestibulum curabitur" LifeStage="Dis sociosqu" RelationType="Est luctus nulla" TaxonomicGroup="Phasellus magnis" UnitID="40" UnitDescription="Proin hac rhoncus vestibulum" UnitIdentifier="Orci pede"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -138,7 +138,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quis dignissim torquent" ColonisedSubstratePart="Dolor ultrices mattis fames mauris" EventID="60" Gender="Leo felis" LifeStage="Vehicula elementum" RelationType="Facilisis sodales ipsum viverra justo" TaxonomicGroup="Mus lacus fermentum" UnitID="40" UnitDescription="Aliquam volutpat lorem maecenas" UnitIdentifier="Integer mollis"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quis dignissim torquent" ColonisedSubstratePart="Dolor ultrices mattis fames mauris" SpecimenID="60" Gender="Leo felis" LifeStage="Vehicula elementum" RelationType="Facilisis sodales ipsum viverra justo" TaxonomicGroup="Mus lacus fermentum" UnitID="40" UnitDescription="Aliquam volutpat lorem maecenas" UnitIdentifier="Integer mollis"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -154,7 +154,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Montes accumsan nunc bibendum amet" ColonisedSubstratePart="Ante dictumst nec eleifend non" EventID="23" Gender="Parturient facilisi arcu" LifeStage="Faucibus magna fringilla nostra" RelationType="Vestibulum habitant" TaxonomicGroup="Ornare habitasse vestibulum platea diam" UnitID="33" UnitDescription="Primis rutrum adipiscing" UnitIdentifier="Hendrerit eget inceptos elit sapien"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Montes accumsan nunc bibendum amet" ColonisedSubstratePart="Ante dictumst nec eleifend non" SpecimenID="23" Gender="Parturient facilisi arcu" LifeStage="Faucibus magna fringilla nostra" RelationType="Vestibulum habitant" TaxonomicGroup="Ornare habitasse vestibulum platea diam" UnitID="33" UnitDescription="Primis rutrum adipiscing" UnitIdentifier="Hendrerit eget inceptos elit sapien"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Parturient enim" HasSubUnits="False">
@@ -162,7 +162,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Massa erat" ColonisedSubstratePart="Interdum himenaeos per" EventID="91" Gender="Metus quisque vestibulum vivamus" LifeStage="Lobortis nascetur sed sem sit" RelationType="Eros pharetra nibh morbi neque" TaxonomicGroup="Placerat netus semper nisi vestibulum" UnitID="15" UnitDescription="Nisl pulvinar nunc adipiscing" UnitIdentifier="Imperdiet parturient vestibulum"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Massa erat" ColonisedSubstratePart="Interdum himenaeos per" SpecimenID="91" Gender="Metus quisque vestibulum vivamus" LifeStage="Lobortis nascetur sed sem sit" RelationType="Eros pharetra nibh morbi neque" TaxonomicGroup="Placerat netus semper nisi vestibulum" UnitID="15" UnitDescription="Nisl pulvinar nunc adipiscing" UnitIdentifier="Imperdiet parturient vestibulum"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -173,7 +173,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nulla odio nam senectus" ColonisedSubstratePart="Malesuada porta vestibulum penatibus" EventID="81" Gender="Purus sociosqu aliquam taciti" LifeStage="Risus adipiscing aliquet blandit" RelationType="Commodo parturient" TaxonomicGroup="Sed orci porttitor vestibulum" UnitID="24" UnitDescription="Vestibulum suscipit conubia tellus" UnitIdentifier="Pede torquent dis ultrices"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nulla odio nam senectus" ColonisedSubstratePart="Malesuada porta vestibulum penatibus" SpecimenID="81" Gender="Purus sociosqu aliquam taciti" LifeStage="Risus adipiscing aliquet blandit" RelationType="Commodo parturient" TaxonomicGroup="Sed orci porttitor vestibulum" UnitID="24" UnitDescription="Vestibulum suscipit conubia tellus" UnitIdentifier="Pede torquent dis ultrices"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -184,7 +184,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Est vehicula hac cubilia dapibus" ColonisedSubstratePart="Tempor adipiscing tristique tempus leo" EventID="99" Gender="Egestas tortor ultricies vitae quis" LifeStage="Class curae donec mus" RelationType="Etiam euismod" TaxonomicGroup="Fusce turpis" UnitID="10" UnitDescription="Urna varius" UnitIdentifier="Nec aenean cras"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Est vehicula hac cubilia dapibus" ColonisedSubstratePart="Tempor adipiscing tristique tempus leo" SpecimenID="99" Gender="Egestas tortor ultricies vitae quis" LifeStage="Class curae donec mus" RelationType="Etiam euismod" TaxonomicGroup="Fusce turpis" UnitID="10" UnitDescription="Urna varius" UnitIdentifier="Nec aenean cras"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -195,7 +195,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Non lorem" ColonisedSubstratePart="Morbi feugiat vestibulum per" EventID="87" Gender="Nullam nunc nulla proin" LifeStage="Vulputate augue" RelationType="Dolor curabitur sed vestibulum aptent" TaxonomicGroup="Phasellus auctor consequat" UnitID="32" UnitDescription="Convallis dignissim" UnitIdentifier="Elementum amet facilisis ante"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Non lorem" ColonisedSubstratePart="Morbi feugiat vestibulum per" SpecimenID="87" Gender="Nullam nunc nulla proin" LifeStage="Vulputate augue" RelationType="Dolor curabitur sed vestibulum aptent" TaxonomicGroup="Phasellus auctor consequat" UnitID="32" UnitDescription="Convallis dignissim" UnitIdentifier="Elementum amet facilisis ante"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -206,7 +206,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Cursus accumsan sit" ColonisedSubstratePart="Bibendum vel adipiscing" EventID="94" Gender="Fringilla fames" LifeStage="Felis gravida arcu" RelationType="Diam parturient iaculis" TaxonomicGroup="Vestibulum nam eget ipsum" UnitID="17" UnitDescription="Elit habitasse" UnitIdentifier="Vestibulum enim erat lacinia justo"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Cursus accumsan sit" ColonisedSubstratePart="Bibendum vel adipiscing" SpecimenID="94" Gender="Fringilla fames" LifeStage="Felis gravida arcu" RelationType="Diam parturient iaculis" TaxonomicGroup="Vestibulum nam eget ipsum" UnitID="17" UnitDescription="Elit habitasse" UnitIdentifier="Vestibulum enim erat lacinia justo"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -222,7 +222,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Laoreet lacus lectus" ColonisedSubstratePart="Eleifend natoque libero" EventID="30" Gender="Facilisi lorem dis adipiscing" LifeStage="Est posuere ligula hac" RelationType="Eros faucibus potenti himenaeos habitant" TaxonomicGroup="Parturient leo magna" UnitID="68" UnitDescription="Inceptos pretium imperdiet malesuada" UnitIdentifier="Nibh rhoncus litora"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Laoreet lacus lectus" ColonisedSubstratePart="Eleifend natoque libero" SpecimenID="30" Gender="Facilisi lorem dis adipiscing" LifeStage="Est posuere ligula hac" RelationType="Eros faucibus potenti himenaeos habitant" TaxonomicGroup="Parturient leo magna" UnitID="68" UnitDescription="Inceptos pretium imperdiet malesuada" UnitIdentifier="Nibh rhoncus litora"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Luctus sodales penatibus mus viverra" HasSubUnits="False">
@@ -230,7 +230,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Porttitor massa" ColonisedSubstratePart="Tincidunt magnis metus nec" EventID="94" Gender="Nisi tristique" LifeStage="Non morbi nisl" RelationType="Nunc aliquam per sed vestibulum" TaxonomicGroup="Interdum lobortis mattis" UnitID="91" UnitDescription="Nascetur pharetra neque placerat ultricies" UnitIdentifier="Vestibulum venenatis netus"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Porttitor massa" ColonisedSubstratePart="Tincidunt magnis metus nec" SpecimenID="94" Gender="Nisi tristique" LifeStage="Non morbi nisl" RelationType="Nunc aliquam per sed vestibulum" TaxonomicGroup="Interdum lobortis mattis" UnitID="91" UnitDescription="Nascetur pharetra neque placerat ultricies" UnitIdentifier="Vestibulum venenatis netus"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -241,7 +241,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Orci integer curabitur nulla" ColonisedSubstratePart="Adipiscing phasellus pede mollis" EventID="15" Gender="Quisque consequat quam quis porta" LifeStage="Montes vivamus" RelationType="Urna sem nostra" TaxonomicGroup="Aliquam convallis parturient ornare" UnitID="10" UnitDescription="Purus dignissim aliquet blandit vestibulum" UnitIdentifier="Commodo conubia elementum"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Orci integer curabitur nulla" ColonisedSubstratePart="Adipiscing phasellus pede mollis" SpecimenID="15" Gender="Quisque consequat quam quis porta" LifeStage="Montes vivamus" RelationType="Urna sem nostra" TaxonomicGroup="Aliquam convallis parturient ornare" UnitID="10" UnitDescription="Purus dignissim aliquet blandit vestibulum" UnitIdentifier="Commodo conubia elementum"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -252,7 +252,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing parturient" ColonisedSubstratePart="Sagittis senectus facilisis vel" EventID="58" Gender="Nam cubilia cras fermentum" LifeStage="Vestibulum primis" RelationType="Sed risus rutrum" TaxonomicGroup="Velit dapibus" UnitID="86" UnitDescription="Duis sociosqu vitae" UnitIdentifier="Fringilla egestas habitasse nunc dis"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing parturient" ColonisedSubstratePart="Sagittis senectus facilisis vel" SpecimenID="58" Gender="Nam cubilia cras fermentum" LifeStage="Vestibulum primis" RelationType="Sed risus rutrum" TaxonomicGroup="Velit dapibus" UnitID="86" UnitDescription="Duis sociosqu vitae" UnitIdentifier="Fringilla egestas habitasse nunc dis"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -263,7 +263,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Suscipit parturient" ColonisedSubstratePart="Amet torquent sapien" EventID="92" Gender="Feugiat vestibulum gravida curae" LifeStage="Semper sociis" RelationType="Donec himenaeos iaculis taciti" TaxonomicGroup="Tellus tempor etiam" UnitID="62" UnitDescription="Lacinia ante vestibulum laoreet" UnitIdentifier="Arcu ultrices vehicula tempus est"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Suscipit parturient" ColonisedSubstratePart="Amet torquent sapien" SpecimenID="92" Gender="Feugiat vestibulum gravida curae" LifeStage="Semper sociis" RelationType="Donec himenaeos iaculis taciti" TaxonomicGroup="Tellus tempor etiam" UnitID="62" UnitDescription="Lacinia ante vestibulum laoreet" UnitIdentifier="Arcu ultrices vehicula tempus est"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -274,7 +274,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing imperdiet diam parturient" ColonisedSubstratePart="Eget hac leo fusce turpis" EventID="86" Gender="Malesuada vestibulum varius mus" LifeStage="Vestibulum lorem penatibus natoque" RelationType="Maecenas morbi praesent" TaxonomicGroup="Posuere aenean" UnitID="83" UnitDescription="Adipiscing nulla" UnitIdentifier="Proin nec elit accumsan"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Adipiscing imperdiet diam parturient" ColonisedSubstratePart="Eget hac leo fusce turpis" SpecimenID="86" Gender="Malesuada vestibulum varius mus" LifeStage="Vestibulum lorem penatibus natoque" RelationType="Maecenas morbi praesent" TaxonomicGroup="Posuere aenean" UnitID="83" UnitDescription="Adipiscing nulla" UnitIdentifier="Proin nec elit accumsan"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -290,7 +290,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nullam aptent porttitor augue potenti" ColonisedSubstratePart="Dolor fames" EventID="73" Gender="Pretium auctor congue sed sem" LifeStage="Cursus bibendum" RelationType="Tincidunt tristique dictumst ultricies parturient" TaxonomicGroup="Sit eleifend venenatis vulputate" UnitID="66" UnitDescription="Vel rhoncus" UnitIdentifier="Curabitur phasellus facilisi"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nullam aptent porttitor augue potenti" ColonisedSubstratePart="Dolor fames" SpecimenID="73" Gender="Pretium auctor congue sed sem" LifeStage="Cursus bibendum" RelationType="Tincidunt tristique dictumst ultricies parturient" TaxonomicGroup="Sit eleifend venenatis vulputate" UnitID="66" UnitDescription="Vel rhoncus" UnitIdentifier="Curabitur phasellus facilisi"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Enim vestibulum felis consequat ipsum" HasSubUnits="False">
@@ -298,7 +298,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Convallis dictum vestibulum" ColonisedSubstratePart="Justo sodales dignissim viverra erat" EventID="82" Gender="Nam elementum lacus" LifeStage="Aliquam lorem" RelationType="Integer faucibus lectus eros libero" TaxonomicGroup="Facilisis quisque" UnitID="30" UnitDescription="Adipiscing ligula habitant inceptos" UnitIdentifier="Fermentum fringilla interdum litora"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Convallis dictum vestibulum" ColonisedSubstratePart="Justo sodales dignissim viverra erat" SpecimenID="82" Gender="Nam elementum lacus" LifeStage="Aliquam lorem" RelationType="Integer faucibus lectus eros libero" TaxonomicGroup="Facilisis quisque" UnitID="30" UnitDescription="Adipiscing ligula habitant inceptos" UnitIdentifier="Fermentum fringilla interdum litora"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -309,7 +309,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Magnis sed magna nascetur pharetra" ColonisedSubstratePart="Nibh parturient vivamus" EventID="20" Gender="Dis est" LifeStage="Mattis vestibulum aliquam" RelationType="Vestibulum mauris aliquet" TaxonomicGroup="Nisi massa hac nisl" UnitID="71" UnitDescription="Adipiscing blandit commodo metus" UnitIdentifier="Morbi mollis"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Magnis sed magna nascetur pharetra" ColonisedSubstratePart="Nibh parturient vivamus" SpecimenID="20" Gender="Dis est" LifeStage="Mattis vestibulum aliquam" RelationType="Vestibulum mauris aliquet" TaxonomicGroup="Nisi massa hac nisl" UnitID="71" UnitDescription="Adipiscing blandit commodo metus" UnitIdentifier="Morbi mollis"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -320,7 +320,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Hendrerit leo mus montes placerat" ColonisedSubstratePart="Nostra nunc odio" EventID="45" Gender="Cubilia himenaeos" LifeStage="Dapibus egestas pulvinar netus" RelationType="Sagittis orci" TaxonomicGroup="Nec imperdiet senectus pede" UnitID="27" UnitDescription="Quam euismod ornare platea feugiat" UnitIdentifier="Gravida parturient iaculis vestibulum"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Hendrerit leo mus montes placerat" ColonisedSubstratePart="Nostra nunc odio" SpecimenID="45" Gender="Cubilia himenaeos" LifeStage="Dapibus egestas pulvinar netus" RelationType="Sagittis orci" TaxonomicGroup="Nec imperdiet senectus pede" UnitID="27" UnitDescription="Quam euismod ornare platea feugiat" UnitIdentifier="Gravida parturient iaculis vestibulum"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -331,7 +331,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum porta non purus laoreet" ColonisedSubstratePart="Adipiscing natoque" EventID="79" Gender="Quis risus posuere" LifeStage="Sapien potenti" RelationType="Pretium urna" TaxonomicGroup="Cras malesuada" UnitID="26" UnitDescription="Duis velit rhoncus" UnitIdentifier="Per sed vitae"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum porta non purus laoreet" ColonisedSubstratePart="Adipiscing natoque" SpecimenID="79" Gender="Quis risus posuere" LifeStage="Sapien potenti" RelationType="Pretium urna" TaxonomicGroup="Cras malesuada" UnitID="26" UnitDescription="Duis velit rhoncus" UnitIdentifier="Per sed vitae"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -342,7 +342,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Semper torquent amet ante sodales" ColonisedSubstratePart="Sit parturient porttitor vestibulum" EventID="96" Gender="Ultrices tincidunt viverra vestibulum vel" LifeStage="Adipiscing parturient nam" RelationType="Vestibulum tristique" TaxonomicGroup="Vestibulum sociis ultricies vehicula venenatis" UnitID="26" UnitDescription="Sed volutpat class taciti maecenas" UnitIdentifier="Arcu curae"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Semper torquent amet ante sodales" ColonisedSubstratePart="Sit parturient porttitor vestibulum" SpecimenID="96" Gender="Ultrices tincidunt viverra vestibulum vel" LifeStage="Adipiscing parturient nam" RelationType="Vestibulum tristique" TaxonomicGroup="Vestibulum sociis ultricies vehicula venenatis" UnitID="26" UnitDescription="Sed volutpat class taciti maecenas" UnitIdentifier="Arcu curae"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -358,7 +358,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vulputate diam tellus" ColonisedSubstratePart="Dis tempor curabitur" EventID="92" Gender="Aliquam integer donec eget est" LifeStage="Etiam phasellus quisque" RelationType="Adipiscing elit tempus enim" TaxonomicGroup="Bibendum consequat parturient vivamus" UnitID="21" UnitDescription="Dictumst hac" UnitIdentifier="Tortor leo vestibulum"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vulputate diam tellus" ColonisedSubstratePart="Dis tempor curabitur" SpecimenID="92" Gender="Aliquam integer donec eget est" LifeStage="Etiam phasellus quisque" RelationType="Adipiscing elit tempus enim" TaxonomicGroup="Bibendum consequat parturient vivamus" UnitID="21" UnitDescription="Dictumst hac" UnitIdentifier="Tortor leo vestibulum"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Eleifend aliquam" HasSubUnits="False">
@@ -366,7 +366,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Erat convallis turpis eros" ColonisedSubstratePart="Dignissim mus vestibulum varius elementum" EventID="87" Gender="Aliquet nec fusce lorem non" LifeStage="Blandit commodo conubia morbi" RelationType="Per aenean" TaxonomicGroup="Nulla nibh sed" UnitID="54" UnitDescription="Facilisi facilisis fermentum proin" UnitIdentifier="Mauris nullam faucibus augue"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Erat convallis turpis eros" ColonisedSubstratePart="Dignissim mus vestibulum varius elementum" SpecimenID="87" Gender="Aliquet nec fusce lorem non" LifeStage="Blandit commodo conubia morbi" RelationType="Per aenean" TaxonomicGroup="Nulla nibh sed" UnitID="54" UnitDescription="Facilisi facilisis fermentum proin" UnitIdentifier="Mauris nullam faucibus augue"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -377,7 +377,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Aptent habitant nisl parturient" ColonisedSubstratePart="Cubilia sit inceptos interdum dapibus" EventID="69" Gender="Egestas euismod feugiat" LifeStage="Gravida nunc" RelationType="Auctor habitasse" TaxonomicGroup="Hendrerit himenaeos dolor odio vestibulum" UnitID="47" UnitDescription="Lobortis imperdiet fames vel malesuada" UnitIdentifier="Congue nam orci felis"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Aptent habitant nisl parturient" ColonisedSubstratePart="Cubilia sit inceptos interdum dapibus" SpecimenID="69" Gender="Egestas euismod feugiat" LifeStage="Gravida nunc" RelationType="Auctor habitasse" TaxonomicGroup="Hendrerit himenaeos dolor odio vestibulum" UnitID="47" UnitDescription="Lobortis imperdiet fames vel malesuada" UnitIdentifier="Congue nam orci felis"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -388,7 +388,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sed vestibulum justo lacus" ColonisedSubstratePart="Iaculis lorem nascetur" EventID="65" Gender="Lacinia laoreet dis" LifeStage="Magna quam porttitor" RelationType="Massa est tincidunt natoque" TaxonomicGroup="Hac posuere adipiscing metus tristique" UnitID="11" UnitDescription="Parturient vestibulum vestibulum pharetra" UnitIdentifier="Potenti placerat dictum quis"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sed vestibulum justo lacus" ColonisedSubstratePart="Iaculis lorem nascetur" SpecimenID="65" Gender="Lacinia laoreet dis" LifeStage="Magna quam porttitor" RelationType="Massa est tincidunt natoque" TaxonomicGroup="Hac posuere adipiscing metus tristique" UnitID="11" UnitDescription="Parturient vestibulum vestibulum pharetra" UnitIdentifier="Potenti placerat dictum quis"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -399,7 +399,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Pulvinar mus pretium libero" ColonisedSubstratePart="Ligula neque adipiscing litora" EventID="29" Gender="Luctus urna sagittis parturient" LifeStage="Ultricies nec cras vestibulum" RelationType="Netus venenatis non vestibulum nulla" TaxonomicGroup="Rhoncus porta adipiscing magnis" UnitID="95" UnitDescription="Mattis vulputate curabitur per sed" UnitIdentifier="Purus sodales risus parturient"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Pulvinar mus pretium libero" ColonisedSubstratePart="Ligula neque adipiscing litora" SpecimenID="29" Gender="Luctus urna sagittis parturient" LifeStage="Ultricies nec cras vestibulum" RelationType="Netus venenatis non vestibulum nulla" TaxonomicGroup="Rhoncus porta adipiscing magnis" UnitID="95" UnitDescription="Mattis vulputate curabitur per sed" UnitIdentifier="Purus sodales risus parturient"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -410,7 +410,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sit phasellus" ColonisedSubstratePart="Aliquam mollis vestibulum" EventID="59" Gender="Integer duis vel" LifeStage="Nam senectus montes sociosqu" RelationType="Nunc nostra ornare sed vestibulum" TaxonomicGroup="Dis suscipit quisque" UnitID="17" UnitDescription="Est adipiscing" UnitIdentifier="Vivamus amet platea"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Sit phasellus" ColonisedSubstratePart="Aliquam mollis vestibulum" SpecimenID="59" Gender="Integer duis vel" LifeStage="Nam senectus montes sociosqu" RelationType="Nunc nostra ornare sed vestibulum" TaxonomicGroup="Dis suscipit quisque" UnitID="17" UnitDescription="Est adipiscing" UnitIdentifier="Vivamus amet platea"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -426,7 +426,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Torquent convallis parturient vestibulum primis" ColonisedSubstratePart="Dignissim ultrices arcu" EventID="40" Gender="Rutrum vestibulum" LifeStage="Vehicula volutpat maecenas sapien semper" RelationType="Hac sociis class" TaxonomicGroup="Elementum facilisis diam eget leo" UnitID="88" UnitDescription="Adipiscing aliquam" UnitIdentifier="Parturient taciti mus curae"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Torquent convallis parturient vestibulum primis" ColonisedSubstratePart="Dignissim ultrices arcu" SpecimenID="40" Gender="Rutrum vestibulum" LifeStage="Vehicula volutpat maecenas sapien semper" RelationType="Hac sociis class" TaxonomicGroup="Elementum facilisis diam eget leo" UnitID="88" UnitDescription="Adipiscing aliquam" UnitIdentifier="Parturient taciti mus curae"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Tellus vestibulum" HasSubUnits="False">
@@ -434,7 +434,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Aliquet fermentum nec tempor" ColonisedSubstratePart="Elit fringilla tempus" EventID="20" Gender="Enim donec" LifeStage="Habitasse erat praesent non tortor" RelationType="Per hendrerit blandit commodo turpis" TaxonomicGroup="Accumsan eros varius sed" UnitID="72" UnitDescription="Sem aenean himenaeos vestibulum etiam" UnitIdentifier="Conubia mauris cubilia adipiscing parturient"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Aliquet fermentum nec tempor" ColonisedSubstratePart="Elit fringilla tempus" SpecimenID="20" Gender="Enim donec" LifeStage="Habitasse erat praesent non tortor" RelationType="Per hendrerit blandit commodo turpis" TaxonomicGroup="Accumsan eros varius sed" UnitID="72" UnitDescription="Sem aenean himenaeos vestibulum etiam" UnitIdentifier="Conubia mauris cubilia adipiscing parturient"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -445,7 +445,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nibh fusce adipiscing nam nullam" ColonisedSubstratePart="Sed parturient aptent vestibulum dapibus" EventID="82" Gender="Auctor dis" LifeStage="Imperdiet egestas malesuada dictumst" RelationType="Penatibus est" TaxonomicGroup="Eleifend hac vestibulum" UnitID="74" UnitDescription="Lorem porttitor nisi" UnitIdentifier="Facilisi adipiscing nisl morbi faucibus"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nibh fusce adipiscing nam nullam" ColonisedSubstratePart="Sed parturient aptent vestibulum dapibus" SpecimenID="82" Gender="Auctor dis" LifeStage="Imperdiet egestas malesuada dictumst" RelationType="Penatibus est" TaxonomicGroup="Eleifend hac vestibulum" UnitID="74" UnitDescription="Lorem porttitor nisi" UnitIdentifier="Facilisi adipiscing nisl morbi faucibus"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -456,7 +456,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nunc euismod proin" ColonisedSubstratePart="Odio tincidunt" EventID="48" Gender="Nec non per sed" LifeStage="Sem tristique congue ultricies cursus" RelationType="Habitant sit" TaxonomicGroup="Vel augue" UnitID="60" UnitDescription="Nam sed orci feugiat" UnitIdentifier="Pede parturient gravida venenatis dictum"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nunc euismod proin" ColonisedSubstratePart="Odio tincidunt" SpecimenID="48" Gender="Nec non per sed" LifeStage="Sem tristique congue ultricies cursus" RelationType="Habitant sit" TaxonomicGroup="Vel augue" UnitID="60" UnitDescription="Nam sed orci feugiat" UnitIdentifier="Pede parturient gravida venenatis dictum"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -467,7 +467,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Interdum vestibulum" ColonisedSubstratePart="Quam dolor vestibulum fames quis" EventID="47" Gender="Lobortis adipiscing" LifeStage="Curabitur dis nascetur est parturient" RelationType="Lacinia felis ipsum justo" TaxonomicGroup="Lacus urna cras" UnitID="17" UnitDescription="Lectus hac lorem vestibulum" UnitIdentifier="Laoreet libero ligula"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Interdum vestibulum" ColonisedSubstratePart="Quam dolor vestibulum fames quis" SpecimenID="47" Gender="Lobortis adipiscing" LifeStage="Curabitur dis nascetur est parturient" RelationType="Lacinia felis ipsum justo" TaxonomicGroup="Lacus urna cras" UnitID="17" UnitDescription="Lectus hac lorem vestibulum" UnitIdentifier="Laoreet libero ligula"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -478,7 +478,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Litora duis magna" ColonisedSubstratePart="Massa adipiscing" EventID="42" Gender="Metus potenti pretium" LifeStage="Morbi phasellus luctus neque" RelationType="Nunc parturient rhoncus sodales amet" TaxonomicGroup="Netus ante viverra arcu nulla" UnitID="24" UnitDescription="Pharetra aliquam diam consequat" UnitIdentifier="Vestibulum magnis porta"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Litora duis magna" ColonisedSubstratePart="Massa adipiscing" SpecimenID="42" Gender="Metus potenti pretium" LifeStage="Morbi phasellus luctus neque" RelationType="Nunc parturient rhoncus sodales amet" TaxonomicGroup="Netus ante viverra arcu nulla" UnitID="24" UnitDescription="Pharetra aliquam diam consequat" UnitIdentifier="Vestibulum magnis porta"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -494,7 +494,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Elit placerat mattis" ColonisedSubstratePart="Pulvinar integer" EventID="41" Gender="Quisque mus sagittis" LifeStage="Senectus adipiscing purus dignissim enim" RelationType="Elementum risus velit parturient" TaxonomicGroup="Erat nec vitae mauris" UnitID="79" UnitDescription="Mollis non montes" UnitIdentifier="Facilisis per eros nostra"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Elit placerat mattis" ColonisedSubstratePart="Pulvinar integer" SpecimenID="41" Gender="Quisque mus sagittis" LifeStage="Senectus adipiscing purus dignissim enim" RelationType="Elementum risus velit parturient" TaxonomicGroup="Erat nec vitae mauris" UnitID="79" UnitDescription="Mollis non montes" UnitIdentifier="Facilisis per eros nostra"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Sed nibh ornare sem" HasSubUnits="False">
@@ -502,7 +502,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Class curae sit" ColonisedSubstratePart="Donec nisi vestibulum sociosqu" EventID="89" Gender="Fermentum nisl" LifeStage="Fringilla platea primis etiam habitasse" RelationType="Vel nam" TaxonomicGroup="Vivamus nunc" UnitID="26" UnitDescription="Fusce hendrerit suscipit" UnitIdentifier="Himenaeos aliquam imperdiet aliquet"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Class curae sit" ColonisedSubstratePart="Donec nisi vestibulum sociosqu" SpecimenID="89" Gender="Fermentum nisl" LifeStage="Fringilla platea primis etiam habitasse" RelationType="Vel nam" TaxonomicGroup="Vivamus nunc" UnitID="26" UnitDescription="Fusce hendrerit suscipit" UnitIdentifier="Himenaeos aliquam imperdiet aliquet"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -513,7 +513,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Blandit rutrum torquent ultrices" ColonisedSubstratePart="Commodo conubia" EventID="87" Gender="Lorem cubilia" LifeStage="Parturient malesuada vestibulum odio" RelationType="Sed dapibus" TaxonomicGroup="Morbi orci vehicula dis" UnitID="76" UnitDescription="Volutpat pede" UnitIdentifier="Vestibulum est quam penatibus porttitor"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Blandit rutrum torquent ultrices" ColonisedSubstratePart="Commodo conubia" SpecimenID="87" Gender="Lorem cubilia" LifeStage="Parturient malesuada vestibulum odio" RelationType="Sed dapibus" TaxonomicGroup="Morbi orci vehicula dis" UnitID="76" UnitDescription="Volutpat pede" UnitIdentifier="Vestibulum est quam penatibus porttitor"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -524,7 +524,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Praesent quis" ColonisedSubstratePart="Accumsan urna adipiscing cras" EventID="37" Gender="Proin egestas hac" LifeStage="Tristique ultricies leo augue duis" RelationType="Nunc euismod mus" TaxonomicGroup="Dolor fames semper feugiat parturient" UnitID="13" UnitDescription="Bibendum vestibulum venenatis vestibulum" UnitIdentifier="Sociis felis vulputate"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Praesent quis" ColonisedSubstratePart="Accumsan urna adipiscing cras" SpecimenID="37" Gender="Proin egestas hac" LifeStage="Tristique ultricies leo augue duis" RelationType="Nunc euismod mus" TaxonomicGroup="Dolor fames semper feugiat parturient" UnitID="13" UnitDescription="Bibendum vestibulum venenatis vestibulum" UnitIdentifier="Sociis felis vulputate"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -535,7 +535,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Amet gravida ante parturient per" ColonisedSubstratePart="Taciti vestibulum eleifend" EventID="71" Gender="Iaculis arcu" LifeStage="Phasellus sed facilisi" RelationType="Vestibulum adipiscing diam" TaxonomicGroup="Consequat lacinia tellus convallis parturient" UnitID="78" UnitDescription="Faucibus laoreet dignissim ipsum sem" UnitIdentifier="Habitant sit"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Amet gravida ante parturient per" ColonisedSubstratePart="Taciti vestibulum eleifend" SpecimenID="71" Gender="Iaculis arcu" LifeStage="Phasellus sed facilisi" RelationType="Vestibulum adipiscing diam" TaxonomicGroup="Consequat lacinia tellus convallis parturient" UnitID="78" UnitDescription="Faucibus laoreet dignissim ipsum sem" UnitIdentifier="Habitant sit"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -546,7 +546,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum elit" ColonisedSubstratePart="Adipiscing natoque justo" EventID="99" Gender="Nam enim elementum posuere parturient" LifeStage="Tempor potenti" RelationType="Sed interdum erat" TaxonomicGroup="Pretium lacus" UnitID="94" UnitDescription="Rhoncus dis eros sodales" UnitIdentifier="Nibh est viverra hac tempus"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Vestibulum elit" ColonisedSubstratePart="Adipiscing natoque justo" SpecimenID="99" Gender="Nam enim elementum posuere parturient" LifeStage="Tempor potenti" RelationType="Sed interdum erat" TaxonomicGroup="Pretium lacus" UnitID="94" UnitDescription="Rhoncus dis eros sodales" UnitIdentifier="Nibh est viverra hac tempus"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -562,7 +562,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Lobortis facilisis mus" ColonisedSubstratePart="Lorem nisi vestibulum nisl" EventID="22" Gender="Tortor nec magna vestibulum nascetur" LifeStage="Massa integer metus non" RelationType="Morbi per fermentum pharetra" TaxonomicGroup="Fringilla sed placerat sem" UnitID="14" UnitDescription="Nunc adipiscing" UnitIdentifier="Turpis pulvinar"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Lobortis facilisis mus" ColonisedSubstratePart="Lorem nisi vestibulum nisl" SpecimenID="22" Gender="Tortor nec magna vestibulum nascetur" LifeStage="Massa integer metus non" RelationType="Morbi per fermentum pharetra" TaxonomicGroup="Fringilla sed placerat sem" UnitID="14" UnitDescription="Nunc adipiscing" UnitIdentifier="Turpis pulvinar"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Sit varius" HasSubUnits="False">
@@ -570,7 +570,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quisque parturient" ColonisedSubstratePart="Aenean vel nam sagittis" EventID="26" Gender="Vestibulum sed" LifeStage="Neque odio vivamus" RelationType="Senectus aliquam dis" TaxonomicGroup="Sociosqu mauris habitasse est" UnitID="54" UnitDescription="Vestibulum hac orci" UnitIdentifier="Leo suscipit adipiscing"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quisque parturient" ColonisedSubstratePart="Aenean vel nam sagittis" SpecimenID="26" Gender="Vestibulum sed" LifeStage="Neque odio vivamus" RelationType="Senectus aliquam dis" TaxonomicGroup="Sociosqu mauris habitasse est" UnitID="54" UnitDescription="Vestibulum hac orci" UnitIdentifier="Leo suscipit adipiscing"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -581,7 +581,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quam parturient quis netus nullam" ColonisedSubstratePart="Aptent nulla" EventID="97" Gender="Aliquet hendrerit vestibulum urna" LifeStage="Porta auctor" RelationType="Blandit cras purus ultrices commodo" TaxonomicGroup="Duis mus congue vehicula cursus" UnitID="85" UnitDescription="Volutpat nec dictum himenaeos non" UnitIdentifier="Nunc lectus risus conubia imperdiet"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quam parturient quis netus nullam" ColonisedSubstratePart="Aptent nulla" SpecimenID="97" Gender="Aliquet hendrerit vestibulum urna" LifeStage="Porta auctor" RelationType="Blandit cras purus ultrices commodo" TaxonomicGroup="Duis mus congue vehicula cursus" UnitID="85" UnitDescription="Volutpat nec dictum himenaeos non" UnitIdentifier="Nunc lectus risus conubia imperdiet"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -592,7 +592,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Malesuada per maecenas amet" ColonisedSubstratePart="Velit adipiscing" EventID="64" Gender="Ante praesent arcu" LifeStage="Dapibus accumsan" RelationType="Vitae parturient" TaxonomicGroup="Vestibulum ligula sed penatibus" UnitID="78" UnitDescription="Diam eget litora luctus magnis" UnitIdentifier="Elit sem egestas"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Malesuada per maecenas amet" ColonisedSubstratePart="Velit adipiscing" SpecimenID="64" Gender="Ante praesent arcu" LifeStage="Dapibus accumsan" RelationType="Vitae parturient" TaxonomicGroup="Vestibulum ligula sed penatibus" UnitID="78" UnitDescription="Diam eget litora luctus magnis" UnitIdentifier="Elit sem egestas"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -603,7 +603,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Mollis vestibulum sit enim montes" ColonisedSubstratePart="Euismod adipiscing parturient" EventID="17" Gender="Porttitor feugiat gravida eleifend" LifeStage="Iaculis nostra tincidunt lacinia" RelationType="Vel curae nam" TaxonomicGroup="Erat tristique facilisi" UnitID="75" UnitDescription="Eros sed ornare donec vestibulum" UnitIdentifier="Laoreet natoque dis posuere"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Mollis vestibulum sit enim montes" ColonisedSubstratePart="Euismod adipiscing parturient" SpecimenID="17" Gender="Porttitor feugiat gravida eleifend" LifeStage="Iaculis nostra tincidunt lacinia" RelationType="Vel curae nam" TaxonomicGroup="Erat tristique facilisi" UnitID="75" UnitDescription="Eros sed ornare donec vestibulum" UnitIdentifier="Laoreet natoque dis posuere"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -614,7 +614,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Faucibus nibh venenatis platea" ColonisedSubstratePart="Adipiscing nisi vulputate etiam habitant" EventID="89" Gender="Parturient curabitur" LifeStage="Vestibulum inceptos" RelationType="Fusce hac lorem leo morbi" TaxonomicGroup="Pretium vestibulum interdum lobortis mus" UnitID="31" UnitDescription="Nascetur nisl pharetra nulla primis" UnitIdentifier="Phasellus adipiscing placerat consequat"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Faucibus nibh venenatis platea" ColonisedSubstratePart="Adipiscing nisi vulputate etiam habitant" SpecimenID="89" Gender="Parturient curabitur" LifeStage="Vestibulum inceptos" RelationType="Fusce hac lorem leo morbi" TaxonomicGroup="Pretium vestibulum interdum lobortis mus" UnitID="31" UnitDescription="Nascetur nisl pharetra nulla primis" UnitIdentifier="Phasellus adipiscing placerat consequat"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -630,7 +630,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Dolor parturient per" ColonisedSubstratePart="Sed vestibulum" EventID="61" Gender="Fames rhoncus sem pulvinar" LifeStage="Rutrum nunc" RelationType="Odio sapien convallis sodales" TaxonomicGroup="Semper felis viverra sociis vestibulum" UnitID="72" UnitDescription="Orci pede" UnitIdentifier="Ipsum quam dignissim"/>
+				<DiversityPhone_Model:IdentificationUnit AccessionNumber="Dolor parturient per" ColonisedSubstratePart="Sed vestibulum" SpecimenID="61" Gender="Fames rhoncus sem pulvinar" LifeStage="Rutrum nunc" RelationType="Odio sapien convallis sodales" TaxonomicGroup="Semper felis viverra sociis vestibulum" UnitID="72" UnitDescription="Orci pede" UnitIdentifier="Ipsum quam dignissim"/>
 			</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 			<DiversityPhone_ViewModels:IdentificationUnitVM.SubUnits>
 				<DiversityPhone_ViewModels:IdentificationUnitVM Description="Justo aliquam" HasSubUnits="False">
@@ -638,7 +638,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Elementum lacus adipiscing facilisis" ColonisedSubstratePart="Lorem magna" EventID="45" Gender="Fermentum parturient quis massa" LifeStage="Integer vestibulum metus urna" RelationType="Vestibulum adipiscing sagittis" TaxonomicGroup="Taciti cras parturient sit tellus" UnitID="14" UnitDescription="Morbi tempor tempus vestibulum vel" UnitIdentifier="Duis nunc senectus"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Elementum lacus adipiscing facilisis" ColonisedSubstratePart="Lorem magna" SpecimenID="45" Gender="Fermentum parturient quis massa" LifeStage="Integer vestibulum metus urna" RelationType="Vestibulum adipiscing sagittis" TaxonomicGroup="Taciti cras parturient sit tellus" UnitID="14" UnitDescription="Morbi tempor tempus vestibulum vel" UnitIdentifier="Duis nunc senectus"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -649,7 +649,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quisque fringilla habitasse hendrerit" ColonisedSubstratePart="Himenaeos vivamus imperdiet" EventID="78" Gender="Adipiscing sociosqu malesuada neque ante" LifeStage="Penatibus suscipit nam" RelationType="Porttitor arcu" TaxonomicGroup="Diam aliquam torquent" UnitID="45" UnitDescription="Ultrices netus aliquet" UnitIdentifier="Nulla sed tortor"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Quisque fringilla habitasse hendrerit" ColonisedSubstratePart="Himenaeos vivamus imperdiet" SpecimenID="78" Gender="Adipiscing sociosqu malesuada neque ante" LifeStage="Penatibus suscipit nam" RelationType="Porttitor arcu" TaxonomicGroup="Diam aliquam torquent" UnitID="45" UnitDescription="Ultrices netus aliquet" UnitIdentifier="Nulla sed tortor"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -660,7 +660,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Eget vehicula tincidunt" ColonisedSubstratePart="Blandit purus risus velit" EventID="79" Gender="Commodo varius elit" LifeStage="Enim dis volutpat" RelationType="Erat vitae" TaxonomicGroup="Eros est hac" UnitID="84" UnitDescription="Maecenas tristique" UnitIdentifier="Ultricies class parturient"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Eget vehicula tincidunt" ColonisedSubstratePart="Blandit purus risus velit" SpecimenID="79" Gender="Commodo varius elit" LifeStage="Enim dis volutpat" RelationType="Erat vitae" TaxonomicGroup="Eros est hac" UnitID="84" UnitDescription="Maecenas tristique" UnitIdentifier="Ultricies class parturient"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -671,7 +671,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nibh conubia" ColonisedSubstratePart="Nisi nisl aenean venenatis curae" EventID="79" Gender="Donec mauris vulputate mus" LifeStage="Vestibulum curabitur phasellus nullam etiam" RelationType="Cubilia aptent adipiscing" TaxonomicGroup="Nec auctor" UnitID="73" UnitDescription="Non congue per" UnitIdentifier="Fusce lorem parturient"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Nibh conubia" ColonisedSubstratePart="Nisi nisl aenean venenatis curae" SpecimenID="79" Gender="Donec mauris vulputate mus" LifeStage="Vestibulum curabitur phasellus nullam etiam" RelationType="Cubilia aptent adipiscing" TaxonomicGroup="Nec auctor" UnitID="73" UnitDescription="Non congue per" UnitIdentifier="Fusce lorem parturient"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>
@@ -682,7 +682,7 @@
 						<ReactiveUI_Xaml:ReactiveCommand/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Model>
-						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Praesent vestibulum cursus nunc dignissim" ColonisedSubstratePart="Sed dictum" EventID="22" Gender="Sem lectus elementum" LifeStage="Facilisis morbi" RelationType="Libero nulla proin" TaxonomicGroup="Odio augue orci" UnitID="89" UnitDescription="Ligula dolor vestibulum adipiscing fermentum" UnitIdentifier="Accumsan sit vel"/>
+						<DiversityPhone_Model:IdentificationUnit AccessionNumber="Praesent vestibulum cursus nunc dignissim" ColonisedSubstratePart="Sed dictum" SpecimenID="22" Gender="Sem lectus elementum" LifeStage="Facilisis morbi" RelationType="Libero nulla proin" TaxonomicGroup="Odio augue orci" UnitID="89" UnitDescription="Ligula dolor vestibulum adipiscing fermentum" UnitIdentifier="Accumsan sit vel"/>
 					</DiversityPhone_ViewModels:IdentificationUnitVM.Model>
 					<DiversityPhone_ViewModels:IdentificationUnitVM.Select>
 						<ReactiveUI_Xaml:ReactiveCommand/>

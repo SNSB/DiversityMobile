@@ -17,8 +17,12 @@ namespace DiversityPhone.Services
         IList<Event> getAllEvents();
         IList<Event> getEventsForSeries(EventSeries es);
         void addEvent(Event ev);
-                
-        IList<IdentificationUnit> getTopLevelIUForEvent(Event ev);
+
+        IList<Specimen> getAllSpecimen();
+        IList<Specimen> getSpecimenForEvent(Event ev);
+        void addSpecimen(Specimen spec);
+
+        IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);
         IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
         void addIUnit(IdentificationUnit iu);
     }

@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ModelDemonstrator</RootNamespace>
+    <AssemblyName>ModelDemonstrator</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>ModelDemonstrator.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>ModelDemonstrator.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Advertising.Mobile, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.Advertising.Mobile.UI, Version=5.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e" />
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="System.Device" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="mscorlib.extensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditES.xaml.cs">
+      <DependentUpon>EditES.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventPiv.xaml.cs">
+      <DependentUpon>EventPiv.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EventSeries.xaml.cs">
+      <DependentUpon>EventSeries.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IU.xaml.cs">
+      <DependentUpon>IU.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="IUPiv.xaml.cs">
+      <DependentUpon>IUPiv.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="LocationService.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpecimenPiv.xaml.cs">
+      <DependentUpon>SpecimenPiv.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="EditES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventPiv.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EventSeries.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IU.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="IUPiv.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpecimenPiv.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Administration.bmp" />
+    <Content Include="Images\Administration.png" />
+    <Content Include="Images\Agent.png" />
+    <Content Include="Images\AgentGrey.png" />
+    <Content Include="Images\Alga.png" />
+    <Content Include="Images\Analysis.png" />
+    <Content Include="Images\AnalysisGrey.png" />
+    <Content Include="Images\appbar.add.rest.png" />
+    <Content Include="Images\appbar.back.rest.png" />
+    <Content Include="Images\appbar.basecircle.rest.png" />
+    <Content Include="Images\appbar.cancel.rest.png" />
+    <Content Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.close.rest.png" />
+    <Content Include="Images\appbar.delete.rest.png" />
+    <Content Include="Images\appbar.download.rest.png" />
+    <Content Include="Images\appbar.edit.rest.png" />
+    <Content Include="Images\appbar.favs.addto.rest.png" />
+    <Content Include="Images\appbar.favs.rest.png" />
+    <Content Include="Images\appbar.feature.camera.rest.png" />
+    <Content Include="Images\appbar.feature.email.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
+    <Content Include="Images\appbar.feature.settings.rest.png" />
+    <Content Include="Images\appbar.feature.video.rest.png" />
+    <Content Include="Images\appbar.folder.rest.png" />
+    <Content Include="Images\appbar.minus.rest.png" />
+    <Content Include="Images\appbar.new.rest.png" />
+    <Content Include="Images\appbar.next.rest.png" />
+    <Content Include="Images\appbar.overflowdots.png" />
+    <Content Include="Images\appbar.questionmark.rest.png" />
+    <Content Include="Images\appbar.refresh.rest.png" />
+    <Content Include="Images\appbar.save.rest.png" />
+    <Content Include="Images\appbar.share.rest.png" />
+    <Content Include="Images\appbar.stop.rest.png" />
+    <Content Include="Images\appbar.sync.rest.png" />
+    <Content Include="Images\appbar.transport.ff.rest.png" />
+    <Content Include="Images\appbar.transport.pause.rest.png" />
+    <Content Include="Images\appbar.transport.play.rest.png" />
+    <Content Include="Images\appbar.transport.rew.rest.png" />
+    <Content Include="Images\appbar.upload.rest.png" />
+    <Content Include="Images\ApplicationIcon.png" />
+    <Content Include="Images\ArrowFirst.bmp" />
+    <Content Include="Images\ArrowFirst.png" />
+    <Content Include="Images\ArrowLast.bmp" />
+    <Content Include="Images\ArrowLast.png" />
+    <Content Include="Images\ArrowNext.bmp" />
+    <Content Include="Images\ArrowNext.png" />
+    <Content Include="Images\ArrowPrevious.bmp" />
+    <Content Include="Images\ArrowPrevious.png" />
+    <Content Include="Images\Assel.png" />
+    <Content Include="Images\AsselGrey.png" />
+    <Content Include="Images\Audio.png" />
+    <Content Include="Images\Bacterium.png" />
+    <Content Include="Images\BacteriumGrey.png" />
+    <Content Include="Images\Barcode.bmp" />
+    <Content Include="Images\Barcode.png" />
+    <Content Include="Images\BarcodeBlack.png" />
+    <Content Include="Images\BarcodeGrey.png" />
+    <Content Include="Images\Bird.png" />
+    <Content Include="Images\BirdGrey.png" />
+    <Content Include="Images\Branch.png" />
+    <Content Include="Images\BranchGrey.png" />
+    <Content Include="Images\Bryophyt.png" />
+    <Content Include="Images\BryophytGrey.png" />
+    <Content Include="Images\Camera.png" />
+    <Content Include="Images\CameraGrey.png" />
+    <Content Include="Images\CollectionEvent.bmp" />
+    <Content Include="Images\CollectionEventSeries.bmp" />
+    <Content Include="Images\CollectionEventSeriesGrey.bmp" />
+    <Content Include="Images\CoordinateCross.bmp" />
+    <Content Include="Images\Delete.bmp" />
+    <Content Include="Images\Delete.png" />
+    <Content Include="Images\DeleteGrey.bmp" />
+    <Content Include="Images\DeleteGrey.png" />
+    <Content Include="Images\Echinoderm.png" />
+    <Content Include="Images\EchinodermGrey.png" />
+    <Content Include="Images\Edit.bmp" />
+    <Content Include="Images\Edit.png" />
+    <Content Include="Images\Event.png" />
+    <Content Include="Images\EventGrey.png" />
+    <Content Include="Images\EventSeries.png" />
+    <Content Include="Images\EventSeriesGrey.png" />
+    <Content Include="Images\Evertebrate.png" />
+    <Content Include="Images\EvertebrateGrey.png" />
+    <Content Include="Images\Fish.png" />
+    <Content Include="Images\FishGrey.png" />
+    <Content Include="Images\Fungus.png" />
+    <Content Include="Images\FungusGrey.png" />
+    <Content Include="Images\Gall.png" />
+    <Content Include="Images\GallGrey.png" />
+    <Content Include="Images\GeoAnalysis.png" />
+    <Content Include="Images\GeoAnalysisGrey.png" />
+    <Content Include="Images\GPS.png" />
+    <Content Include="Images\GPSGrey.png" />
+    <Content Include="Images\Habitat.png" />
+    <Content Include="Images\HabitatGrey.png" />
+    <Content Include="Images\Insect.png" />
+    <Content Include="Images\InsectGrey.png" />
+    <Content Include="Images\Lichen.png" />
+    <Content Include="Images\LichenGrey.png" />
+    <Content Include="Images\Localisation.png" />
+    <Content Include="Images\LocalisationGrey.png" />
+    <Content Include="Images\Lupe.bmp" />
+    <Content Include="Images\Mammal.png" />
+    <Content Include="Images\MammalGrey.png" />
+    <Content Include="Images\Map40.bmp" />
+    <Content Include="Images\Mollusc.png" />
+    <Content Include="Images\MolluscGrey.png" />
+    <Content Include="Images\Myxomycete.png" />
+    <Content Include="Images\MyxomyceteGrey.png" />
+    <Resource Include="Images\Observation.png" />
+    <Content Include="Images\Other.png" />
+    <Content Include="Images\OtherGrey.png" />
+    <Content Include="Images\plant.bmp" />
+    <Content Include="Images\Plant.png" />
+    <Content Include="Images\PlantGrey.png" />
+    <Content Include="Images\Qualle.png" />
+    <Content Include="Images\QualleGrey.png" />
+    <Content Include="Images\Search.png" />
+    <Content Include="Images\Tree.png" />
+    <Content Include="Images\TreeGrey.png" />
+    <Content Include="Images\Vertebrate.png" />
+    <Content Include="Images\VertebrateGrey.png" />
+    <Content Include="Images\Virus.png" />
+    <Content Include="Images\VirusGrey.png" />
+    <Content Include="LightIcons.dll" />
+    <Content Include="SplashScreenImage.jpg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+</Project>

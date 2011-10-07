@@ -22,7 +22,7 @@ namespace DiversityPhone.Model
         public int? RelatedUnitID { get; set; }
 
         [Column]
-        public int EventID { get; set; }
+        public int SpecimenID { get; set; }
 
         [Column]
         public string AccessionNumber { get; set; } //Only on Toplevel

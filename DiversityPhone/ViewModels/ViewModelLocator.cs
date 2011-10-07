@@ -70,7 +70,8 @@ namespace DiversityPhone.ViewModels
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
         public ViewESVM ListEV { get { return _ioc.Resolve<ViewESVM>(); } }
         public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }
-        public ViewEVVM ListIU { get { return _ioc.Resolve<ViewEVVM>(); } }
+        public ViewEVVM ListCS { get { return _ioc.Resolve<ViewEVVM>(); } }
+        public ViewCSVM ListIU { get { return _ioc.Resolve<ViewCSVM>(); } }
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
 
         public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }

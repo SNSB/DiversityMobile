@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Data.Linq.Mapping;
-using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
@@ -11,7 +10,7 @@ namespace DiversityPhone.Model
     [Table]
     [Index(Columns="CollectionDate",IsUnique=false, Name="event_collectiondate")]
 
-    public class Event : ReactiveObject
+    public class Event 
     {
         [Column(IsPrimaryKey=true)]
         public int EventID { get; set; }
