@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Linq.Mapping;
-
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
+    using System.Data.Linq.Mapping;
+
     [Table]
     public class IdentificationUnit
     {
         public IdentificationUnit()
         {
-            IsModified = null;
-            RelatedUnitID = null;
+            this.IsModified = null;
+            this.RelatedUnitID = null;
         }
 
-        [Column(IsPrimaryKey=true)]
+        [Column(IsPrimaryKey = true)]
         public int UnitID { get; set; }
 
         [Column]
@@ -25,13 +21,13 @@ namespace DiversityPhone.Model
         public int SpecimenID { get; set; }
 
         [Column]
-        public string AccessionNumber { get; set; } //Only on Toplevel
+        public string AccessionNumber { get; set; } // Only on Toplevel
         
         [Column]
         public string TaxonomicGroup { get; set; }
 
         [Column]
-        public string RelationType { get; set; } //Only on Non-Toplevel
+        public string RelationType { get; set; } // Only on Non-Toplevel
 
         [Column]
         public string ColonisedSubstratePart { get; set; }
@@ -49,9 +45,6 @@ namespace DiversityPhone.Model
         public string UnitDescription { get; set; }
 
         [Column]
-        public bool? IsModified { get; set; }
-
-
-        
+        public bool? IsModified { get; set; }       
     }
 }

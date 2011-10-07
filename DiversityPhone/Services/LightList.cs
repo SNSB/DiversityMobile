@@ -1,20 +1,11 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DiversityPhone.Services
 {
     internal class LightList<T> : IList<T>
-    {   
+    {
         IQueryable<T> _source;
         public LightList(IQueryable<T> source)
         {
@@ -41,7 +32,7 @@ namespace DiversityPhone.Services
 
         public int IndexOf(T item)
         {
-            return _source.ToList().IndexOf(item);      
+            return _source.ToList().IndexOf(item);
         }
 
         public void Insert(int index, T item)
@@ -95,6 +86,6 @@ namespace DiversityPhone.Services
         {
             return _source.GetEnumerator();
         }
-        
+
     }
 }

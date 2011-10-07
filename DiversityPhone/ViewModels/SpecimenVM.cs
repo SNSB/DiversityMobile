@@ -1,40 +1,30 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using ReactiveUI;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
-using DiversityPhone.Services;
-
-namespace DiversityPhone.ViewModels
+﻿namespace DiversityPhone.ViewModels
 {
-    public class SpecimenVM:ReactiveObject
+    using System;
+    using ReactiveUI;
+    using System.Collections.Generic;
+    using DiversityPhone.Model;
+    using ReactiveUI.Xaml;
+    using DiversityPhone.Messages;
+
+    public class SpecimenVM : ReactiveObject
     {
-         IMessageBus _messenger;        
         IList<IDisposable> _subscriptions;
+
+        IMessageBus _messenger;
+
+        public ReactiveCommand Select { get; private set; }
+        public ReactiveCommand Edit { get; private set; }
 
         public Specimen Model { get; private set; }
         public string Description { get { return string.Format("[{0}] {1}", Model.CollectionSpecimenID, Model.AccesionNumber ?? ""); } }
-
-        public ReactiveCommand Select { get; private set; }
-
-        public ReactiveCommand Edit { get; private set; }
 
 
         public SpecimenVM(IMessageBus messenger, Specimen model)
         {
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (model == null) throw new ArgumentNullException("model");
-            
+
 
             _messenger = messenger;
             Model = model;
@@ -56,7 +46,7 @@ namespace DiversityPhone.ViewModels
                 spec => new SpecimenVM(messenger, spec));
         }
 
-        private static IList<SpecimenVM> getVMListFromModelAndFactory(IList<Specimen> source, Func<Specimen,SpecimenVM> vmFactory)
+        private static IList<SpecimenVM> getVMListFromModelAndFactory(IList<Specimen> source, Func<Specimen, SpecimenVM> vmFactory)
         {
             return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
                         source,

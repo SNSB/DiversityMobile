@@ -1,30 +1,24 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using DiversityPhone.Model;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
-using System.Collections.Generic;
-
-namespace DiversityPhone.ViewModels
+﻿namespace DiversityPhone.ViewModels
 {
+    using System;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using DiversityPhone.Messages;
+    using System.Collections.Generic;
+
     public class EventVM : ReactiveObject
     {
-        public Event Model {get; private set;}
-        private IMessageBus _messenger;
         private IList<IDisposable> _subscriptions;
 
-        public string Description { get { return Model.LocalityDescription; } }
+        private IMessageBus _messenger;
 
         public ReactiveCommand Select { get; private set; }
+
+        public Event Model { get; private set; }
+        public string Description { get { return Model.LocalityDescription; } }
+
+
 
         public EventVM(Event model, IMessageBus _messenger)
         {
@@ -39,7 +33,7 @@ namespace DiversityPhone.ViewModels
                             _messenger.SendMessage<Event>(model, MessageContracts.SELECT);
                         })
             };
-                        
+
         }
 
     }

@@ -13,12 +13,12 @@ using ReactiveUI;
 
 namespace DiversityPhone.ViewModels
 {
-    public class VirtualizingReadonlyViewModelList<T,VM> : IList<VM> //where T : ReactiveObject
+    public class VirtualizingReadonlyViewModelList<T, VM> : IList<VM> //where T : ReactiveObject
     {
         private IList<T> _source;
         private Func<T, VM> _vmFactory;
 
-        public VirtualizingReadonlyViewModelList(IList<T> source, Func<T,VM> viewModelFactory)
+        public VirtualizingReadonlyViewModelList(IList<T> source, Func<T, VM> viewModelFactory)
         {
             _source = source;
             _vmFactory = viewModelFactory;
@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                
+
             }
         }
 
@@ -64,12 +64,12 @@ namespace DiversityPhone.ViewModels
         public void RemoveAt(int index)
         {
             throw new NotImplementedException();
-        }        
+        }
 
         public void Add(VM item)
         {
             throw new NotImplementedException();
-        }        
+        }
 
         public bool Contains(VM item)
         {
@@ -79,7 +79,7 @@ namespace DiversityPhone.ViewModels
         public void CopyTo(VM[] array, int arrayIndex)
         {
             throw new NotImplementedException();
-        }      
+        }
 
         public bool Remove(VM item)
         {

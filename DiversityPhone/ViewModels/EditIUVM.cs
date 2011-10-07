@@ -12,21 +12,24 @@ namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : ReactiveObject
     {
-        IMessageBus _messenger;
         IList<IDisposable> _subscriptions;
+
+        #region Services
+        IMessageBus _messenger;
         IOfflineStorage _storage;
+        #endregion
 
-        #region Properties
-
+        #region Commands
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Cancel { get; private set; }
-        
+        #endregion
+
+        #region Properties
         public IdentificationUnit Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<IdentificationUnit> _Model;        
-        
+        private ObservableAsPropertyHelper<IdentificationUnit> _Model;
+
 
         private string _AccessionNumber;
-
         public string AccessionNumber
         {
             get
@@ -35,9 +38,9 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.AccessionNumber,ref _AccessionNumber, value);
+                this.RaiseAndSetIfChanged(x => x.AccessionNumber, ref _AccessionNumber, value);
             }
-        }        
+        }
 
 
         private IList<Term> _TaxonomicGroups = null;
@@ -46,12 +49,11 @@ namespace DiversityPhone.ViewModels
             get
             {
                 return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(0));
-            }            
+            }
         }
 
-        
-        public Term _SelectedTaxGroup = null; 
 
+        private Term _SelectedTaxGroup = null;
         public Term SelectedTaxGroup
         {
             get
@@ -60,13 +62,12 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup,ref _SelectedTaxGroup, value);
+                this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup, ref _SelectedTaxGroup, value);
             }
         }
 
 
         private string _Description;
-
         public string Description
         {
             get
@@ -78,12 +79,10 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value);
             }
         }
-        
+
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsToplevel;     
-        
-
+        private ObservableAsPropertyHelper<bool> _IsToplevel;
         #endregion
 
 
@@ -94,10 +93,10 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
             var model = _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT);
-            
-                                                   
+
+
             _Model = model.ToProperty(this, x => x.Model);
-            
+
 
             var isToplevel = model
                 .Select(m => m.RelatedUnitID == null);
@@ -133,13 +132,13 @@ namespace DiversityPhone.ViewModels
                 (Cancel = new ReactiveCommand())
                     .Subscribe(_=>_messenger.SendMessage<Message>(Message.NavigateBack)),
             };
-        }        
+        }
 
         private void updateModel()
         {
             Model.AccessionNumber = AccessionNumber;
             Model.UnitDescription = Description;
-            Model.TaxonomicGroup = SelectedTaxGroup.Code;            
+            Model.TaxonomicGroup = SelectedTaxGroup.Code;
         }
 
 

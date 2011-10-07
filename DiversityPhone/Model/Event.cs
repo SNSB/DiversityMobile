@@ -1,18 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.Linq.Mapping;
-using Microsoft.Phone.Data.Linq.Mapping;
-
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
-    [Table]
-    [Index(Columns="CollectionDate",IsUnique=false, Name="event_collectiondate")]
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Linq.Mapping;
+    using System.Linq;
+    using System.Text;
+    using Microsoft.Phone.Data.Linq.Mapping;
 
+    [Table]
+    [Index(Columns = "CollectionDate", IsUnique = false, Name = "event_collectiondate")]
     public class Event 
     {
-        [Column(IsPrimaryKey=true)]
+        public Event()
+        {
+            this.CollectionDate = DateTime.Now;
+            this.IsModified = null;
+        }
+
+        [Column(IsPrimaryKey = true)]
         public int EventID { get; set; }
 
         [Column]        
@@ -28,12 +33,6 @@ namespace DiversityPhone.Model
         public string HabitatDescription { get; set; }
 
         [Column]
-        public bool? IsModified { get; set; }
-
-        public Event()
-        {
-            CollectionDate = DateTime.Now;
-            IsModified = null;
-        }
+        public bool? IsModified { get; set; }        
     }
 }

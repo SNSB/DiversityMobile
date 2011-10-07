@@ -1,52 +1,54 @@
-﻿using System;
-using System.Net;
-using System.Reactive.Linq;
-using ReactiveUI;
-using DiversityPhone.Model;
-using DiversityPhone.Services;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
-
-namespace DiversityPhone.ViewModels
+﻿namespace DiversityPhone.ViewModels
 {
+    using System;
+    using System.Reactive.Linq;
+    using ReactiveUI;
+    using DiversityPhone.Model;
+    using ReactiveUI.Xaml;
+    using DiversityPhone.Messages;
+    using System.Collections.Generic;
+    using DiversityPhone.Services;
+
     public class EditESVM : ReactiveObject
     {
+        private IList<IDisposable> _subscriptions;
+
+        #region Services
         private IMessageBus _messenger;
-        private INavigationService _navigation;
-        
+        #endregion
 
+        #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }        
+        public ReactiveCommand Cancel { get; private set; }
+        #endregion
 
-        public EventSeries _Model; //Need to be public in SL :/
-
+        #region Properties
+        private EventSeries _Model;
         public EventSeries Model
         {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, value); }
+            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
         }
 
-        public string _Description; //Need to be public in SL :/
-
+        private string _Description;
         public string Description
         {
             get { return _Description; }
-            set { this.RaiseAndSetIfChanged(x=>x.Description,value); }
+            set { this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value); }
         }
 
-        public string _SeriesCode; //Need to be public in SL :/
-
+        private string _SeriesCode;
         public string SeriesCode
         {
             get { return _SeriesCode; }
-            set { this.RaiseAndSetIfChanged(x => x.SeriesCode, value); }
+            set { this.RaiseAndSetIfChanged(x => x.SeriesCode, ref _SeriesCode, value); }
         }
 
         public string SeriesStart
         {
             get
             {
-                return (Model != null)?Model.SeriesStart.ToShortDateString():"";
+                return (Model != null) ? Model.SeriesStart.ToShortDateString() : "";
             }
         }
 
@@ -55,7 +57,7 @@ namespace DiversityPhone.ViewModels
         public DateTime? SeriesEnd
         {
             get { return _SeriesEnd; }
-            set 
+            set
             {
                 if (value != null)
                 {
@@ -69,11 +71,12 @@ namespace DiversityPhone.ViewModels
                 }
             }
         }
-        
+        #endregion
 
-        public EditESVM(INavigationService nav, IMessageBus messenger)
+
+        public EditESVM(IMessageBus messenger)
         {
-            _navigation = nav;
+
             _messenger = messenger;
 
             _messenger.Listen<EventSeries>(MessageContracts.EDIT)
@@ -82,21 +85,23 @@ namespace DiversityPhone.ViewModels
             var descriptionObservable = this.ObservableForProperty(x => x.Description);
             var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
 
-            (Save = new ReactiveCommand(canSave))               
-                .Subscribe(_ => executeSave());
+            _subscriptions = new List<IDisposable>()
+            {
+                (Save = new ReactiveCommand(canSave))               
+                    .Subscribe(_ => executeSave()),
 
-            (Cancel = new ReactiveCommand())
-                .Subscribe(_ => _navigation.NavigateBack());
-
+                (Cancel = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack))
+            };
         }
 
-       
+
 
         private void executeSave()
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-            _navigation.NavigateBack();
+
         }
 
         private void updateModel()
@@ -115,6 +120,6 @@ namespace DiversityPhone.ViewModels
             this.RaisePropertyChanged(x => x.SeriesStart);
         }
 
-       
+
     }
 }

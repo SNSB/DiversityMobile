@@ -12,13 +12,13 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ListIU}"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}"
 	d:DataContext="{d:DesignData /SampleData/ViewEVVMSampleData.xaml}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent" >
 		<Button Style="{StaticResource ItemButtonStyle}"
-			DataContext="{Binding CurrentEvent}"
+			DataContext="{Binding Current}"
 			Command="{Binding Edit}" VerticalAlignment="Top">
 			<TextBlock Text="{Binding Description}"/>
 		</Button>

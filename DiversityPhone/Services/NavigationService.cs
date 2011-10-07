@@ -40,19 +40,19 @@ namespace DiversityPhone.Services
                         }),
 
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditEventSeries)),
+                    .Subscribe(_=>Navigate(Page.EditES)),
                 _messenger.Listen<EventSeries>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewEventSeries)),
+                    .Subscribe(_=>Navigate(Page.ViewES)),
 
                 _messenger.Listen<Event>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditEvent)),
+                    .Subscribe(_=>Navigate(Page.EditEV)),
                 _messenger.Listen<Event>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewEent)),
+                    .Subscribe(_=>Navigate(Page.ViewEV)),
 
                 _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditIUnit)),
+                    .Subscribe(_=>Navigate(Page.EditIU)),
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewIUnit)),
+                    .Subscribe(_=>Navigate(Page.ViewIU)),
             };
 
 
@@ -68,34 +68,33 @@ namespace DiversityPhone.Services
                     break;
                 case Page.Settings:
                     destination = new Uri("/View/Settings.xaml", UriKind.Relative);
-                    break;
-                case Page.Setup:
-                    destination = new Uri("/View/FirstTimeSetup.xaml", UriKind.Relative);
-                    break;
-                case Page.Upload:
-                    destination = new Uri("/View/Upload.xaml", UriKind.Relative);
-                    break;
-                case Page.ListEventSeries:
-                    destination = new Uri("/View/ListES.xaml", UriKind.Relative);
                     break;                
-                case Page.EditEventSeries:
+                case Page.EditES:
                     destination = new Uri("/View/EditES.xaml", UriKind.Relative);
                     break;
-                case Page.ViewEventSeries:
+                case Page.ViewES:
                     destination = new Uri("/View/ViewES.xaml", UriKind.Relative);
                     break;
-                case Page.EditEvent:
+                case Page.EditEV:
                     destination = new Uri("/View/EditEV.xaml", UriKind.Relative);
                     break;   
-                case Page.ViewEent:
+                case Page.ViewEV:
                     destination = new Uri("/View/ViewEV.xaml", UriKind.Relative);
                     break;
-                case Page.EditIUnit:
+                case Page.EditIU:
                     destination = new Uri("/View/EditIU.xaml", UriKind.Relative);
                     break;
-                case Page.ViewIUnit:
+                case Page.ViewIU:
                     destination = new Uri("/View/ViewIU.xaml", UriKind.Relative);
                     break;
+                case Page.EditCS:
+                    destination = new Uri("/View/EditCS.xaml", UriKind.Relative);
+                    break;
+                case Page.ViewCS:
+                    destination = new Uri("/View/ViewCS.xaml", UriKind.Relative);
+                    break;
+                
+
 
 #if DEBUG
                 default:

@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Linq;
-using Svc = DiversityPhone.Service;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using DiversityPhone.Services;
-
-
-namespace DiversityPhone.ViewModels
+﻿namespace DiversityPhone.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive.Linq;
+    using Svc = DiversityPhone.Service;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using DiversityPhone.Services;
+
     public class HomeVM : ReactiveObject
     {
         private IList<IDisposable> _subscriptions;
 
-        #region Services        
+        #region Services
         private IMessageBus _messenger;
         private IOfflineStorage _storage;
         private Svc.IDiversityService _repository;
@@ -36,7 +35,7 @@ namespace DiversityPhone.ViewModels
             }
             private set
             {
-                this.RaiseAndSetIfChanged(x => x.SeriesList,ref _SeriesList, value);
+                this.RaiseAndSetIfChanged(x => x.SeriesList, ref _SeriesList, value);
             }
         }
         #endregion
@@ -59,7 +58,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => getVoc()),
             };
 
-        }       
+        }
 
         private void getVoc()
         {
@@ -74,9 +73,9 @@ namespace DiversityPhone.ViewModels
                     ParentCode = wcf.ParentCode,
                     SourceID = wcf.SourceID
                 })
-                ));           
+                ));
 
-            var taxonFunc = Observable.FromAsyncPattern<string,IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+            var taxonFunc = Observable.FromAsyncPattern<string, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
 
             taxonFunc.Invoke("").Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
                 t => new Model.TaxonName()

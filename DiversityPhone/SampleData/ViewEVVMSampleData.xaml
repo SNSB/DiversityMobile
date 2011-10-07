@@ -2,7 +2,7 @@
 	<DiversityPhone_ViewModels:ViewEVVM.Add>
 		<ReactiveUI_Xaml:ReactiveCommand/>
 	</DiversityPhone_ViewModels:ViewEVVM.Add>
-	<DiversityPhone_ViewModels:ViewEVVM.CurrentEvent>
+	<DiversityPhone_ViewModels:ViewEVVM.Current>
 		<DiversityPhone_ViewModels:EventVM Description="Aenean mauris cras">
 			<DiversityPhone_ViewModels:EventVM.Model>
 				<DiversityPhone_Model:Event CollectionDate="09/23/2011 13:09:48" SpecimenID="87" HabitatDescription="Aliquam vestibulum adipiscing" LocalityDescription="Parturient class" SeriesID="19"/>
@@ -11,7 +11,7 @@
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:EventVM.Select>
 		</DiversityPhone_ViewModels:EventVM>
-	</DiversityPhone_ViewModels:ViewEVVM.CurrentEvent>
+	</DiversityPhone_ViewModels:ViewEVVM.Current>
 	<DiversityPhone_ViewModels:ViewEVVM.UnitList>
 		<DiversityPhone_ViewModels:IdentificationUnitVM Description="Curae nam nullam aptent" HasSubUnits="True">
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Edit>

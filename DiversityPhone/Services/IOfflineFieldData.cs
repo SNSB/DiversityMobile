@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DiversityPhone.Model;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
+    using System.Collections.Generic;
+    using DiversityPhone.Model;
+
     public interface IOfflineFieldData
-    {       
+    {
         IList<EventSeries> getAllEventSeries();
         IList<EventSeries> getEventSeriesByDescription(string query);
         IList<EventSeries> getNewEventSeries();

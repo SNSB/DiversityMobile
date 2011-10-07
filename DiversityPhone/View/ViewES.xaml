@@ -13,7 +13,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     d:DataContext="{x:Null}"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ListEV}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <ScrollViewer x:Name="LayoutRoot" Background="Transparent">      
@@ -21,7 +21,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <Button Style="{StaticResource ItemButtonStyle}"
-                    DataContext="{Binding CurrentSeries}"
+                    DataContext="{Binding Current}"
                     Command="{Binding Edit}">
                 <StackPanel>
                     <TextBlock Text="{Binding Description}"/>

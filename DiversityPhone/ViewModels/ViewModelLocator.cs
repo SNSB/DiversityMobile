@@ -32,13 +32,8 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IOfflineStorage>(),
                 container.Resolve<IDiversityService>()
                 ));
-
-            _ioc.Register<ListESVM>(container => new ListESVM(                
-                container.Resolve<INavigationService>(),
-                container.Resolve<IOfflineStorage>(),
-                container.Resolve<IMessageBus>()
-                ));
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
+            
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
@@ -53,7 +48,7 @@ namespace DiversityPhone.ViewModels
                 ));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
 
-            _ioc.Register<SetupVM>(c => new SetupVM(c.Resolve<INavigationService>(),c.Resolve<IOfflineStorage>(),c.Resolve<IDiversityService>()));
+            
 
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>() ));
             
@@ -66,16 +61,18 @@ namespace DiversityPhone.ViewModels
         }
 
         public HomeVM Home { get { return _homeVM; } }
-        public ListESVM ListES { get { return _ioc.Resolve<ListESVM>(); } }
+        
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
-        public ViewESVM ListEV { get { return _ioc.Resolve<ViewESVM>(); } }
-        public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }
-        public ViewEVVM ListCS { get { return _ioc.Resolve<ViewEVVM>(); } }
-        public ViewCSVM ListIU { get { return _ioc.Resolve<ViewCSVM>(); } }
-        public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
+        public ViewESVM ViewES { get { return _ioc.Resolve<ViewESVM>(); } }
 
-        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
-        public SetupVM Setup { get { return _ioc.Resolve<SetupVM>(); ; } }
+        public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }
+        public ViewEVVM ViewEV { get { return _ioc.Resolve<ViewEVVM>(); } }
+
+        //public EditCSVM EditCS { get { return _ioc.Resolve<EditCSVM>(); } }
+        public ViewCSVM ViewCS { get { return _ioc.Resolve<ViewCSVM>(); } }
+
+        public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
+        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }       
        
     }
 }

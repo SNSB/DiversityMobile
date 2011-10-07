@@ -1,23 +1,13 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Data.Linq.Mapping;
-using Microsoft.Phone.Data.Linq.Mapping;
-
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
+    using System.Data.Linq.Mapping;
+    using Microsoft.Phone.Data.Linq.Mapping;
+
     [Table]
-    [Index(Columns="TaxonomicGroup", IsUnique=false, Name="taxonname_group")]
+    [Index(Columns = "TaxonomicGroup", IsUnique = false, Name = "taxonname_group")]
     public class TaxonName
     {
-        [Column(IsPrimaryKey=true)]
+        [Column(IsPrimaryKey = true)]
         public string URI { get; set; }
 
         [Column]

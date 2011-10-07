@@ -1,22 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Wintellect.Sterling;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using System.Data.Linq;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using DiversityPhone.Model;
+
     public class OfflineStorage : IOfflineStorage
     {
         public OfflineStorage()
@@ -27,11 +15,11 @@ namespace DiversityPhone.Services
                     context.CreateDatabase();
             }
 
-            
+
         }
 
         public void addEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
-        {            
+        {
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
                 throw new InvalidOperationException("Series is not new!");
 
@@ -49,12 +37,12 @@ namespace DiversityPhone.Services
             return new LightList<Specimen>(ctx.Specimen);
         }
 
-        public IList<Specimen> getSpecimenForEvent (Event ev)
+        public IList<Specimen> getSpecimenForEvent(Event ev)
         {
             var ctx = new DiversityDataContext();
             return new LightList<Specimen>(from spec in ctx.Specimen
-                                        where spec.CollectionEventID == ev.EventID
-                                        select spec);
+                                           where spec.CollectionEventID == ev.EventID
+                                           select spec);
         }
 
         public IList<EventSeries> getAllEventSeries()
@@ -66,9 +54,9 @@ namespace DiversityPhone.Services
         private static int findFreeEventSeriesID(DiversityDataContext ctx)
         {
             int min = -1;
-            if(ctx.EventSeries.Any())
-               min = (from es in ctx.EventSeries select es.SeriesID).Min();
-            return (min > -1)? -1 : min - 1;
+            if (ctx.EventSeries.Any())
+                min = (from es in ctx.EventSeries select es.SeriesID).Min();
+            return (min > -1) ? -1 : min - 1;
         }
 
         private static int findFreeEventID(DiversityDataContext ctx)
@@ -94,7 +82,7 @@ namespace DiversityPhone.Services
             return (min > -1) ? -1 : min - 1;
         }
 
-        
+
 
 
         public IList<EventSeries> getEventSeriesByDescription(string query)
@@ -122,7 +110,7 @@ namespace DiversityPhone.Services
 
         public void addEvent(Event ev)
         {
-            using(var ctx = new DiversityDataContext())
+            using (var ctx = new DiversityDataContext())
             {
                 if (ev.IsModified == null)
                     ev.EventID = findFreeEventID(ctx);
@@ -156,8 +144,8 @@ namespace DiversityPhone.Services
         {
             var ctx = new DiversityDataContext();
             return new LightList<Event>(from e in ctx.Events
-                                       where e.SeriesID == es.SeriesID
-                                       select e);
+                                        where e.SeriesID == es.SeriesID
+                                        select e);
         }
 
 
@@ -165,8 +153,8 @@ namespace DiversityPhone.Services
         {
             var ctx = new DiversityDataContext();
             return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                    where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
-                                                    select iu);
+                                                     where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
+                                                     select iu);
         }
 
 
@@ -197,7 +185,7 @@ namespace DiversityPhone.Services
             using (var ctx = new DiversityDataContext())
             {
                 if (spec.IsModified == null)
-                   spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
+                    spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
 
                 ctx.Specimen.InsertOnSubmit(spec);
                 ctx.SubmitChanges();
@@ -247,8 +235,8 @@ namespace DiversityPhone.Services
         {
             var ctx = new DiversityDataContext();
             return new LightList<TaxonName>(from taxa in ctx.TaxonNames
-                                                     where taxa.TaxonomicGroup == taxonGroup.Code
-                                                     select taxa);
+                                            where taxa.TaxonomicGroup == taxonGroup.Code
+                                            select taxa);
         }
     }
 }
