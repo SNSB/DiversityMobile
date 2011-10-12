@@ -30,8 +30,8 @@
 
         <!--ContentPanel - place additional content here-->
         <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding SpecList}"
-                 ItemTemplate="{StaticResource newTemplate}"/>
+                 ItemsSource="{Binding UnitList}"
+                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

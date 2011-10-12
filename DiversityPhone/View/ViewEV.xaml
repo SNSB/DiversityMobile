@@ -22,8 +22,8 @@
 			Command="{Binding Edit}" VerticalAlignment="Top">
 			<TextBlock Text="{Binding Description}"/>
 		</Button>
-		<ListBox ItemsSource="{Binding UnitList}"
-			ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}" Margin="0,63,0,-3147" d:LayoutOverrides="Height"/>           
+		<ListBox ItemsSource="{Binding SpecList}"
+			ItemTemplate="{StaticResource FieldDataItemTemplate}" Margin="0,63,0,-3147" d:LayoutOverrides="Height"/>           
               
 	</Grid>
  

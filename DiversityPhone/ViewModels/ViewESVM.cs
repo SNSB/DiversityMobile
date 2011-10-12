@@ -14,6 +14,7 @@
         IList<IDisposable> _subscriptions;
 
         #region Services
+        private INavigationService _navigation;
         IMessageBus _messenger;
         IOfflineStorage _storage;
         #endregion
@@ -27,31 +28,27 @@
         public EventSeriesVM Current { get { return _Current.Value; } }
         private ObservableAsPropertyHelper<EventSeriesVM> _Current;
 
-        public IList<EventVM> EventList { get { return _EventList.Value; } }
+        public IList<EventVM> EventList { get { return _EventList.Value; }  }
         private ObservableAsPropertyHelper<IList<EventVM>> _EventList;
         #endregion
 
 
 
-        public ViewESVM(IMessageBus messenger, Services.IOfflineStorage storage)
+        public ViewESVM(IMessageBus messenger,INavigationService nav, Services.IOfflineStorage storage)
         {
             _messenger = messenger;
+            _navigation = nav;
             _storage = storage;
 
-            var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);
-
-            _Current = selectES
-                .Select(es => new EventSeriesVM(es, _messenger))
-                .ToProperty(this, x => x.Current);
-
-            _EventList = selectES
-                .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
-                    _storage.getEventsForSeries(es),
-                    (model) => new EventVM(model, _messenger)
-                ) as IList<EventVM>)
-                .ToProperty(this, x => x.EventList);
-
+            updateEventList();
             FilterEvents = new ReactiveCommand();
+
+            _messenger.Listen<Event>(MessageContracts.SAVE)
+               .Subscribe(ev => saveEvent(ev));
+
+            _messenger.Listen<Event>(MessageContracts.SELECT)
+                .Subscribe(ev => selectEvent(ev));
+
 
             _subscriptions = new List<IDisposable>()
             {
@@ -65,8 +62,33 @@
         private void saveEvent(Event ev)
         {
             _storage.addEvent(ev);
+            updateEventList();
 
         }
+
+        private void selectEvent(Event ev)
+        {
+            _navigation.Navigate(Page.ViewEV);
+        }
+
+
+        private void updateEventList()
+        {
+            var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);
+
+            _Current = selectES
+                .Select(es => new EventSeriesVM(es, _messenger))
+                .ToProperty(this, x => x.Current);
+
+            _EventList = selectES
+                .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
+                    _storage.getEventsForSeries(es),
+                    (model) => new EventVM(model, _messenger)
+                ) as IList<EventVM>)
+                .ToProperty(this, x => x.EventList);
+
+        }
+
 
         private void addEvent()
         {

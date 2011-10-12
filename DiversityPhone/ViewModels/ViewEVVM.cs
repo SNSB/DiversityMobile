@@ -29,8 +29,8 @@
         private Event Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<Event> _Model;
 
-        public IList<SpecimenVM> UnitList { get { return _UnitList.Value; } }
-        private ObservableAsPropertyHelper<IList<SpecimenVM>> _UnitList;
+        public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
+        private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
         #endregion
 
 
@@ -48,10 +48,10 @@
                                 .ToProperty(this, x => x.Current);
             _Model = eventSelected.ToProperty(this, x => x.Model);
 
-            _UnitList = unitSaved.Select(_ => Model)
+            _SpecList = unitSaved.Select(_ => Model)
                 .Merge(eventSelected)
                 .Select(ev => getSpecimenList(ev))
-                .ToProperty(this, x => x.UnitList);
+                .ToProperty(this, x => x.SpecList);
 
 
 
