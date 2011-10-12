@@ -18,15 +18,22 @@
         IOfflineStorage _storage;
         #endregion
 
+        public SpecimenVM CurrentSpecimen { get { return _CurrentSpecimen.Value; } }
+        private ObservableAsPropertyHelper<SpecimenVM> _CurrentSpecimen;
+
+
+        private Specimen Model { get { return _Model.Value; } }
+        private ObservableAsPropertyHelper<Specimen> _Model;
+
         #region Commands
         public ReactiveCommand AddSubunit { get; private set; }
         #endregion
 
         #region Properties
-        public SpecimenVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<SpecimenVM> _Current;
 
         //List<IdentificationUnitVM> Units;
+        public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
+        private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
         #endregion
 
 
@@ -36,15 +43,30 @@
             _messenger = messenger;
             _storage = storage;
 
-            _Current = _messenger.Listen<Specimen>(MessageContracts.SELECT)
-                .Select(spec => new SpecimenVM(_messenger,spec))
-                .ToProperty(this, x => x.Current);
+            var specSelected = _messenger.Listen<Specimen>(MessageContracts.SELECT);
+            var unitSaved = _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE);
 
+            _CurrentSpecimen = specSelected.Select(cs => new SpecimenVM( _messenger,cs))
+                                .ToProperty(this, x => x.CurrentSpecimen);
+            _Model = specSelected.ToProperty(this, x => x.Model);
+
+            _UnitList = unitSaved.Select(_ => Model)
+                .Merge(specSelected)
+                .Select(cs => getNewUnitList(cs))
+                .ToProperty(this, x => x.UnitList);
 
             _subscriptions = new List<IDisposable>()
             {
 
             };
+        }
+
+        private IList<IdentificationUnitVM> getNewUnitList(Specimen spec)
+        {
+            return IdentificationUnitVM.getTwoLevelVMFromModelList(
+                 _storage.getTopLevelIUForSpecimen(spec),
+                 iu => _storage.getSubUnits(iu),
+                 _messenger);
         }
 
     }

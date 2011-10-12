@@ -29,14 +29,16 @@ namespace DiversityPhone.ViewModels
             #region ViewModel Factories
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
+                container.Resolve<INavigationService>(),
                 container.Resolve<IOfflineStorage>(),
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
+                container.Resolve<INavigationService>(),
                 container.Resolve<IOfflineStorage>()
                 ));
             _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
@@ -46,6 +48,12 @@ namespace DiversityPhone.ViewModels
                 c.Resolve<IMessageBus>(),
                 c.Resolve<IOfflineStorage>()
                 ));
+
+            _ioc.Register<ViewCSVM>(c => new ViewCSVM(
+                c.Resolve<IMessageBus>(),
+                c.Resolve<IOfflineStorage>()
+                ));
+
             _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
 
             

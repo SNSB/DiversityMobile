@@ -32,7 +32,7 @@ namespace DiversityPhone
         private void AddSeries_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.AddSeries.Execute(null);
+                VM.Add.Execute(null);
         }
        
 

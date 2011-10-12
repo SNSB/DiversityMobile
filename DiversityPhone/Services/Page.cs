@@ -3,7 +3,7 @@ namespace DiversityPhone.Services
 {
     public enum Page
     {
-        Home,       
+        Home,
         EditES,
         ViewES,
         EditEV,

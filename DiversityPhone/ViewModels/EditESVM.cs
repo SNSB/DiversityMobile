@@ -15,6 +15,7 @@
 
         #region Services
         private IMessageBus _messenger;
+        private INavigationService _navigation;
         #endregion
 
         #region Commands
@@ -74,11 +75,11 @@
         #endregion
 
 
-        public EditESVM(IMessageBus messenger)
+        public EditESVM(INavigationService nav, IMessageBus messenger)
         {
 
             _messenger = messenger;
-
+            _navigation = nav;
             _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                 .Subscribe(es => updateView(es));
 
@@ -101,7 +102,7 @@
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-
+            _navigation.NavigateBack();
         }
 
         private void updateModel()
