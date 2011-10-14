@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Services\DialogMessage.cs" />
+    <Compile Include="ViewModels\EditCSVM.cs" />
     <Compile Include="ViewModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ViewCSVM.cs" />
     <Compile Include="ViewModels\ViewIUVM.cs" />
