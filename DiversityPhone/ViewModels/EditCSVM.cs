@@ -110,9 +110,9 @@ namespace DiversityPhone.ViewModels
             Model.CollectionSpecimenID = SpecimenID;
         }
 
-        private void updateView(EventSeries es)
+        private void updateView(Specimen cs)
         {
-            Model = es;
+            Model = cs;
             AccessionNumber = Model.Description ?? "";
             SeriesCode = Model.SeriesCode;
             SeriesEnd = Model.SeriesEnd;

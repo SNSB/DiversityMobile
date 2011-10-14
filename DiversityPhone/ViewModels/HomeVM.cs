@@ -17,7 +17,6 @@
 
         #region Services
         private IMessageBus _messenger;
-        private INavigationService _navigation;
         private IOfflineStorage _storage;
         private Svc.IDiversityService _repository;
         #endregion
@@ -43,10 +42,9 @@
         }
         #endregion
 
-        public HomeVM(IMessageBus messenger, INavigationService nav, IOfflineStorage storage, Svc.IDiversityService repo)
+        public HomeVM(IMessageBus messenger, IOfflineStorage storage, Svc.IDiversityService repo)
         {
             _messenger = messenger;
-            _navigation = nav;
             _storage = storage;
             _repository = repo;
 

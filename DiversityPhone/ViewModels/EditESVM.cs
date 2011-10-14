@@ -80,9 +80,7 @@
 
             _messenger = messenger;
             _navigation = nav;
-            _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                .Subscribe(es => updateView(es));
-
+           
             var descriptionObservable = this.ObservableForProperty(x => x.Description);
             var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
 
@@ -92,7 +90,9 @@
                     .Subscribe(_ => executeSave()),
 
                 (Cancel = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack))
+                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+                _messenger.Listen<EventSeries>(MessageContracts.EDIT)
+                    .Subscribe(es => updateView(es))
             };
         }
 
@@ -120,7 +120,5 @@
             SeriesEnd = Model.SeriesEnd;
             this.RaisePropertyChanged(x => x.SeriesStart);
         }
-
-
     }
 }

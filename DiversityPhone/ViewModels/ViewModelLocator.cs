@@ -29,7 +29,6 @@ namespace DiversityPhone.ViewModels
             #region ViewModel Factories
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
-                container.Resolve<INavigationService>(),
                 container.Resolve<IOfflineStorage>(),
                 container.Resolve<IDiversityService>()
                 ));
