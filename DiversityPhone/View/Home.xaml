@@ -29,16 +29,7 @@
 
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <ListBox ItemsSource="{Binding SeriesList}" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Command="{Binding Select}" Style="{StaticResource ItemButtonStyle}">
-                                <TextBlock Text="{Binding Description}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-
-                </ListBox>
+                <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

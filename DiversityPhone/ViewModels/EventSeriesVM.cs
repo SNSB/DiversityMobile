@@ -18,6 +18,7 @@
 
         public EventSeries Model { get; private set; }
         public string Description { get { return Model.Description; } }
+        public Icon Icon { get; private set; }
 
         public EventSeriesVM(EventSeries model, IMessageBus messenger)
         {

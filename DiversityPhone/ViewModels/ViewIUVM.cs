@@ -26,6 +26,8 @@
         public IdentificationUnitVM Current { get { return _Current.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Current;
 
+        //Liste Subunits
+
         private IdentificationUnit Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
         #endregion

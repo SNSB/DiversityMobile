@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Services\DialogMessage.cs" />
+    <Compile Include="ViewModels\EditCSVM.cs" />
     <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ViewCSVM.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="View\EditIU.xaml.cs">
       <DependentUpon>EditIU.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\IconPathConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
@@ -306,6 +308,9 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Images\SNSBIcons\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
