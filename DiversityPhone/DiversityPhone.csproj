@@ -38,6 +38,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -101,6 +103,7 @@
     </Compile>
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Services\DialogMessage.cs" />
+    <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ViewCSVM.cs" />
     <Compile Include="ViewModels\ViewIUVM.cs" />

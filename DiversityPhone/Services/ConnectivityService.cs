@@ -10,7 +10,7 @@
 
         public ConnectionStatus CurrentStatus
         {
-            get { throw new NotImplementedException(); }
+            get { return ConnectionStatus.None; }
         }
     }
 }
