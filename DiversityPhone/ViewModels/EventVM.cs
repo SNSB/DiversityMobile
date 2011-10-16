@@ -17,7 +17,7 @@
 
         public Event Model { get; private set; }
         public string Description { get { return Model.LocalityDescription; } }
-
+        public Icon Icon { get; private set; }
 
 
         public EventVM(Event model, IMessageBus _messenger)

@@ -33,14 +33,14 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
                 container.Resolve<INavigationService>(),
                 container.Resolve<IOfflineStorage>()
                 ));
-            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
+            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>()));
 
 
             _ioc.Register<ViewEVVM>(c => new ViewEVVM(
