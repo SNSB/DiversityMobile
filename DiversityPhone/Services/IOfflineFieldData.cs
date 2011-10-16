@@ -9,18 +9,18 @@
         IList<EventSeries> getEventSeriesByDescription(string query);
         IList<EventSeries> getNewEventSeries();
         EventSeries getEventSeriesByID(int id);
-        void addEventSeries(EventSeries newSeries);
+        void addOrUpdateEventSeries(EventSeries newSeries);
 
         IList<Event> getAllEvents();
         IList<Event> getEventsForSeries(EventSeries es);
-        void addEvent(Event ev);
+        void addOrUpdateEvent(Event ev);
 
         IList<Specimen> getAllSpecimen();
         IList<Specimen> getSpecimenForEvent(Event ev);
-        void addSpecimen(Specimen spec);
+        void addOrUpdateSpecimen(Specimen spec);
 
         IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);
         IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
-        void addIUnit(IdentificationUnit iu);
+        void addOrUpdateIUnit(IdentificationUnit iu);
     }
 }

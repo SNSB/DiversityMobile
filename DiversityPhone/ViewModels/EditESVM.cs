@@ -14,8 +14,7 @@
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;
-        private INavigationService _navigation;
+        private IMessageBus _messenger;        
         #endregion
 
         #region Commands
@@ -43,15 +42,7 @@
         {
             get { return _SeriesCode; }
             set { this.RaiseAndSetIfChanged(x => x.SeriesCode, ref _SeriesCode, value); }
-        }
-
-        public string SeriesStart
-        {
-            get
-            {
-                return (Model != null) ? Model.SeriesStart.ToShortDateString() : "";
-            }
-        }
+        }        
 
         public DateTime _SeriesEnd;
 
@@ -75,14 +66,16 @@
         #endregion
 
 
-        public EditESVM(INavigationService nav, IMessageBus messenger)
+        public EditESVM(IMessageBus messenger)
         {
 
             _messenger = messenger;
-            _navigation = nav;
-           
-            var descriptionObservable = this.ObservableForProperty(x => x.Description);
-            var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
+
+
+
+            var canSave = this.ObservableForProperty(x => x.Description)
+                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                .StartWith(false);
 
             _subscriptions = new List<IDisposable>()
             {
@@ -91,6 +84,7 @@
 
                 (Cancel = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                     .Subscribe(es => updateView(es))
             };
@@ -102,7 +96,7 @@
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-            _navigation.NavigateBack();
+            _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void updateModel()
@@ -117,8 +111,7 @@
             Model = es;
             Description = Model.Description ?? "";
             SeriesCode = Model.SeriesCode;
-            SeriesEnd = Model.SeriesEnd;
-            this.RaisePropertyChanged(x => x.SeriesStart);
+            SeriesEnd = Model.SeriesEnd;            
         }
     }
 }

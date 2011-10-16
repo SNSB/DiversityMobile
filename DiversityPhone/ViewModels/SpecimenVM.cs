@@ -18,7 +18,7 @@
 
         public Specimen Model { get; private set; }
         public string Description { get { return string.Format("[{0}] {1}", Model.CollectionSpecimenID, Model.AccesionNumber ?? ""); } }
-
+        public Icon Icon { get; private set; }
 
         public SpecimenVM(IMessageBus messenger, Specimen model)
         {

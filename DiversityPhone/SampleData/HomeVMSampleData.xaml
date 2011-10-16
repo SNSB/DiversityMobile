@@ -1,0 +1,123 @@
+<DiversityPhone_ViewModels:HomeVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model">
+	<DiversityPhone_ViewModels:HomeVM.Add>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:HomeVM.Add>
+	<DiversityPhone_ViewModels:HomeVM.GetVocabulary>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:HomeVM.GetVocabulary>
+	<DiversityPhone_ViewModels:HomeVM.SeriesList>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Vestibulum aliquam class curae adipiscing" Icon="Observation">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Integer parturient donec curabitur" SeriesID="43" SeriesStart="10/16/2011 19:24:16" SeriesCode="Maecenas praesent phasellus" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Etiam quisque vestibulum" Icon="Observation">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Fusce nam vestibulum cras adipiscing" SeriesID="68" SeriesStart="10/16/2011 19:24:16" SeriesCode="Lorem vivamus aenean accumsan" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Bibendum sed consequat mauris dictumst" Icon="Observation">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Convallis dignissim duis" SeriesID="24" SeriesStart="10/16/2011 19:24:16" SeriesCode="Morbi aliquam nunc nullam amet" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Ante parturient elementum nulla" Icon="EventSeries">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Eleifend arcu facilisis aliquet" SeriesID="67" SeriesStart="10/16/2011 19:24:16" SeriesCode="Dis aptent proin vestibulum augue" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Auctor est vestibulum" Icon="NoEventSeries">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Dolor fames congue hac" SeriesID="63" SeriesStart="10/16/2011 19:24:16" SeriesCode="Blandit commodo fermentum facilisi cursus" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Faucibus leo fringilla" Icon="Observation">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Conubia dictum" SeriesID="89" SeriesStart="10/16/2011 19:24:16" SeriesCode="Habitasse felis cubilia mus adipiscing" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Nec ipsum" Icon="EventSeries">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Dapibus egestas justo habitant diam" SeriesID="63" SeriesStart="10/16/2011 19:24:16" SeriesCode="Euismod inceptos feugiat" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Lectus lacus lorem interdum" Icon="EventSeries">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Eget non elit" SeriesID="80" SeriesStart="10/16/2011 19:24:16" SeriesCode="Hendrerit libero lobortis gravida" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Enim erat parturient vestibulum" Icon="EventSeries">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Per vestibulum" SeriesID="51" SeriesStart="10/16/2011 19:24:16" SeriesCode="Sed nascetur iaculis adipiscing ligula" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+		<DiversityPhone_ViewModels:EventSeriesVM Description="Eros lacinia sem" Icon="Observation">
+			<DiversityPhone_ViewModels:EventSeriesVM.Edit>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Edit>
+			<DiversityPhone_ViewModels:EventSeriesVM.Model>
+				<DiversityPhone_Model:EventSeries Description="Pharetra himenaeos placerat sit" SeriesID="58" SeriesStart="10/16/2011 19:24:16" SeriesCode="Litora luctus parturient nibh nisi" SeriesEnd="10/16/2011 19:24:16"/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Model>
+			<DiversityPhone_ViewModels:EventSeriesVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:EventSeriesVM.Select>
+		</DiversityPhone_ViewModels:EventSeriesVM>
+	</DiversityPhone_ViewModels:HomeVM.SeriesList>
+	<DiversityPhone_ViewModels:HomeVM.Settings>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:HomeVM.Settings>
+</DiversityPhone_ViewModels:HomeVM>

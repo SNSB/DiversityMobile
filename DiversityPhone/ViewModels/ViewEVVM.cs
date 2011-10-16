@@ -24,10 +24,7 @@
 
         #region Properties
         public EventVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<EventVM> _Current;
-
-        private Event Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<Event> _Model;
+        private ObservableAsPropertyHelper<EventVM> _Current;        
 
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
@@ -45,10 +42,9 @@
             var unitSaved = _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE);
 
             _Current = eventSelected.Select(ev => new EventVM(ev, _messenger))
-                                .ToProperty(this, x => x.Current);
-            _Model = eventSelected.ToProperty(this, x => x.Model);
+                                .ToProperty(this, x => x.Current);            
 
-            _SpecList = unitSaved.Select(_ => Model)
+            _SpecList = unitSaved.Select(_ => Current.Model)
                 .Merge(eventSelected)
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
@@ -61,7 +57,7 @@
                     .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(
                         new IdentificationUnit()
                         {
-                            SpecimenID = Model.EventID
+                            SpecimenID = Current.Model.EventID
                         },
                         MessageContracts.EDIT)),                        
                 

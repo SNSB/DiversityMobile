@@ -27,31 +27,26 @@
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Current;
 
         //Liste Subunits
-
-        private IdentificationUnit Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<IdentificationUnit> _Model;
+        
         #endregion
 
         public ViewIUVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
-            _storage = storage;
+            _storage = storage;            
 
-            _Model = _messenger.Listen<IdentificationUnit>(MessageContracts.SELECT)
-                .ToProperty(this, x => x.Model);
-
-            _Current = _Model.Where(m => m != null)
-                .Select(m => new IdentificationUnitVM(
-                _messenger,
-                m,
-                IdentificationUnitVM.getTwoLevelVMFromModelList(
-                _storage.getSubUnits(m),
-                iu => _storage.getSubUnits(iu),
-                _messenger)
-                )).ToProperty(this, x => x.Current);
+            _Current = _messenger
+                .Listen<IdentificationUnit>(MessageContracts.SELECT)
+                .Where(iu => iu != null)
+                .Select(iu => fillIUVM(iu))
+            .ToProperty(this, x => x.Current);
 
             var newSubUnits = (AddSubunit = new ReactiveCommand())
-                                .Select(_ => new IdentificationUnit() { SpecimenID = Model.SpecimenID, RelatedUnitID = Model.UnitID });
+                                .Select(_ => new IdentificationUnit() 
+                                { 
+                                    SpecimenID = Current.Model.SpecimenID, 
+                                    RelatedUnitID = Current.Model.UnitID 
+                                });
             _messenger.RegisterMessageSource(newSubUnits, MessageContracts.EDIT);
 
 
@@ -60,6 +55,18 @@
             {
 
             };
-        }       
+        } 
+      
+        private IdentificationUnitVM fillIUVM(IdentificationUnit iu)
+        {
+            return new IdentificationUnitVM(
+                _messenger,
+                iu,
+                IdentificationUnitVM.getTwoLevelVMFromModelList(
+                    _storage.getSubUnits(iu),
+                    unit => _storage.getSubUnits(unit),
+                    _messenger));
+                    
+        }
     }
 }

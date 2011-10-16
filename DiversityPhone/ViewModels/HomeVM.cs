@@ -49,22 +49,21 @@
             _repository = repo;
 
             updateSeriesList();
-            _messenger.Listen<EventSeries>(MessageContracts.SAVE)
-                .Subscribe(es => saveSeries(es));
-
-            _messenger.Listen<EventSeries>(MessageContracts.SELECT)
-                .Subscribe(es => selectSeries(es));
+                       
 
             _subscriptions = new List<IDisposable>()
             {
                 (Settings = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<Page>(Page.Settings)),    
                 
-                  (Add = new ReactiveCommand())
+                (Add = new ReactiveCommand())
                     .Subscribe(_ => addSeries()),
 
                 (GetVocabulary = new ReactiveCommand())
                     .Subscribe(_ => getVoc()),
+
+                _messenger.Listen<EventSeries>(MessageContracts.SAVE)
+                    .Subscribe(es => saveSeries(es))
             };
 
         }
@@ -98,12 +97,7 @@
                     GenusOrSupragenic = t.GenusOrSupragenic
                 })));
 
-        }
-
-        private void selectSeries(EventSeries es)
-        {
-            _navigation.Navigate(Page.ViewES);
-        }
+        }        
 
         private void updateSeriesList()
         {
@@ -115,7 +109,7 @@
 
         private void saveSeries(EventSeries es)
         {
-            _storage.addEventSeries(es);
+            _storage.addOrUpdateEventSeries(es);
             updateSeriesList();
         }
 
