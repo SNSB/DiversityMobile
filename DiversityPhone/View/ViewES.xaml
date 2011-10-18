@@ -16,30 +16,18 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <ScrollViewer x:Name="LayoutRoot" Background="Transparent">      
+    <ScrollViewer x:Name="LayoutRoot" Background="Transparent" d:DataContext="{d:DesignData /SampleData/ViewESVMSampleData.xaml}">      
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" DataContext="{Binding}">
             <Button Style="{StaticResource ItemButtonStyle}"
                     DataContext="{Binding Current}"
                     Command="{Binding Edit}">
                 <StackPanel>
                     <TextBlock Text="{Binding Description}"/>
                 </StackPanel>
-            </Button>
-            
-            <ListBox ItemsSource="{Binding EventList}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Button Style="{StaticResource ItemButtonStyle}"
-                                Content="{Binding Description}" 
-                                Command="{Binding Select}">
-                            
-                        </Button>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            
+            </Button>            
+            <ListBox ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>     
         </StackPanel>
 
        

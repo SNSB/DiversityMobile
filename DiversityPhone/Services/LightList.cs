@@ -6,10 +6,13 @@ namespace DiversityPhone.Services
 {
     internal class LightList<T> : IList<T>
     {
+        private Queue<T> s;       
+
         IQueryable<T> _source;
         public LightList(IQueryable<T> source)
         {
             _source = source;
+            
         }
 
         public int Count

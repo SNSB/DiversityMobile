@@ -18,14 +18,14 @@ namespace DiversityPhone.ViewModels
     public partial class ViewModelLocator
     {
         private const string OFFLINE_STORAGE = "OfflineStorage";
-        private static Container _ioc;
-        private static IMessageBus _messenger = MessageBus.Current;
+        private static Container _ioc;    
 
         private static HomeVM _homeVM;        
 
-        public ViewModelLocator(Container services)
+        public ViewModelLocator()
         {
-            _ioc = services;
+            if (_ioc == null) return;
+
             #region ViewModel Factories
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
@@ -33,14 +33,14 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<INavigationService>(), c.Resolve<IMessageBus>()));
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
                 container.Resolve<INavigationService>(),
                 container.Resolve<IOfflineStorage>()
                 ));
-            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
+            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>()));
 
 
             _ioc.Register<ViewEVVM>(c => new ViewEVVM(

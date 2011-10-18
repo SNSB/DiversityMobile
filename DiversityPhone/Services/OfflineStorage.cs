@@ -4,21 +4,41 @@
     using System.Linq;
     using System.Collections.Generic;
     using DiversityPhone.Model;
+using ReactiveUI;
+    using DiversityPhone.Messages;
 
     public class OfflineStorage : IOfflineStorage
     {
-        public OfflineStorage()
+        private IList<IDisposable> _subscriptions;
+        private IMessageBus _messenger;
+
+        public OfflineStorage(IMessageBus messenger)
         {
+            this._messenger = messenger;
+
+            _subscriptions = new List<IDisposable>()
+            {
+                _messenger.Listen<Event>(MessageContracts.SAVE)
+                    .Subscribe(ev => addOrUpdateEvent(ev)),
+
+                _messenger.Listen<EventSeries>(MessageContracts.SAVE)
+                    .Subscribe(es => addOrUpdateEventSeries(es)),
+
+                _messenger.Listen<Specimen>(MessageContracts.SAVE)
+                    .Subscribe(spec => addOrUpdateSpecimen(spec)),
+
+                _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
+                    .Subscribe(iu => addOrUpdateIUnit(iu)),
+            };
+
             using (var context = new DiversityDataContext())
             {
                 if (!context.DatabaseExists())
                     context.CreateDatabase();
             }
-
-
         }
 
-        public void addEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
+        public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
                 throw new InvalidOperationException("Series is not new!");
@@ -108,7 +128,7 @@
 
         }
 
-        public void addEvent(Event ev)
+        public void addOrUpdateEvent(Event ev)
         {
             using (var ctx = new DiversityDataContext())
             {
@@ -167,7 +187,7 @@
         }
 
 
-        public void addIUnit(IdentificationUnit iu)
+        public void addOrUpdateIUnit(IdentificationUnit iu)
         {
             using (var ctx = new DiversityDataContext())
             {
@@ -180,7 +200,7 @@
         }
 
 
-        public void addSpecimen(Specimen spec)
+        public void addOrUpdateSpecimen(Specimen spec)
         {
             using (var ctx = new DiversityDataContext())
             {

@@ -16,6 +16,5 @@ namespace DiversityPhone.ViewModels
         EventSeries,
         NoEventSeries,
         Observation
-
     }
 }

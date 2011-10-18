@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using DiversityPhone.Model;
@@ -23,8 +14,7 @@ namespace DiversityPhone.ViewModels
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;
-        private IOfflineStorage _storage;
+        private IMessageBus _messenger;        
         #endregion
 
         #region Commands
@@ -63,16 +53,13 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public EditEVVM(IMessageBus messenger, IOfflineStorage storage)
+        public EditEVVM(IMessageBus messenger)
         {            
-            _messenger = messenger;
-            _storage = storage;
-
-            _messenger.Listen<Event>(MessageContracts.EDIT)
-                .Subscribe(ev => updateView(ev));
-
-            var descriptionObservable = this.ObservableForProperty(x => x.LocalityDescription);
-            var canSave = descriptionObservable.Select(desc => !string.IsNullOrWhiteSpace(desc.Value)).StartWith(false);
+            _messenger = messenger;            
+        
+            var canSave = this.ObservableForProperty(x => x.LocalityDescription)
+                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                .StartWith(false);
 
             _subscriptions = new List<IDisposable>()
             {
@@ -80,25 +67,24 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => executeSave()),
 
                 (Cancel = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack))
+                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+
+                _messenger.Listen<Event>(MessageContracts.EDIT)
+                    .Subscribe(ev => updateView(ev))
             };
-
-        }
-
-       
+        }    
 
         private void executeSave()
         {
             updateModel();
-            _storage.addEvent(Model);
+            _messenger.SendMessage<Event>(Model, MessageContracts.SAVE);
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void updateModel()
         {
             Model.LocalityDescription = LocalityDescription;
-            Model.HabitatDescription = HabitatDescription;
-            
+            Model.HabitatDescription = HabitatDescription;            
         }
 
         private void updateView(Event ev)

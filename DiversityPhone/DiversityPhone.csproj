@@ -38,6 +38,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -102,6 +104,7 @@
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="ViewModels\EditCSVM.cs" />
+    <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ViewCSVM.cs" />
     <Compile Include="ViewModels\ViewIUVM.cs" />
@@ -299,7 +302,16 @@
     <WCFMetadataStorage Include="Service References\Service\" />
   </ItemGroup>
   <ItemGroup>
+    <DesignData Include="SampleData\HomeVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\ViewESVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
     <DesignData Include="SampleData\ViewEVVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\ViewIUVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
   </ItemGroup>

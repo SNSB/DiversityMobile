@@ -4,6 +4,7 @@
     {
         Roaming,
         Wifi,
-        Data
+        Data,
+        None
     }
 }

@@ -44,33 +44,14 @@
             FilterEvents = new ReactiveCommand();
 
             _messenger.Listen<Event>(MessageContracts.SAVE)
-               .Subscribe(ev => saveEvent(ev));
-
-            _messenger.Listen<Event>(MessageContracts.SELECT)
-                .Subscribe(ev => selectEvent(ev));
-
-
+               .Subscribe(ev => updateEventList());
+            
             _subscriptions = new List<IDisposable>()
-            {
-               
+            {               
                 (AddEvent = new ReactiveCommand())
                     .Subscribe(_ => addEvent()),
             };
-        }
-
-
-        private void saveEvent(Event ev)
-        {
-            _storage.addEvent(ev);
-            updateEventList();
-
-        }
-
-        private void selectEvent(Event ev)
-        {
-            _navigation.Navigate(Page.ViewEV);
-        }
-
+        }   
 
         private void updateEventList()
         {

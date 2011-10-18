@@ -9,13 +9,12 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="{StaticResource PhoneForegroundBrush}" 
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=EditES}"
     d:DataContext="{x:Null}"
-    >
+    DataContext="{Binding Source={StaticResource Locator}, Path=EditES}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -36,9 +35,9 @@
             <TextBlock Text="Description"/>
             <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged"/>
             <TextBlock Text="Series Start"/>
-            <TextBox IsReadOnly="True" Text="{Binding SeriesStart, Mode=OneWay}"/>
+            <TextBox IsReadOnly="True" Text="{Binding Model.SeriesStart, StringFormat=\{1:d\}, Mode=OneWay}"/>
             <TextBlock Text="Series End" />
-            <toolkit:DatePicker Value="{Binding SeriesEnd,Mode=TwoWay}"/>
+            <toolkit:DatePicker Value="{Binding SeriesEnd, Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
  

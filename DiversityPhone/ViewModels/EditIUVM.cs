@@ -124,8 +124,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ =>
                         {
                             updateModel();
-                            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);
-                            _storage.addIUnit(Model);
+                            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);                            
                             _messenger.SendMessage<Message>(Message.NavigateBack);
                         }),
 
@@ -140,7 +139,5 @@ namespace DiversityPhone.ViewModels
             Model.UnitDescription = Description;
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
         }
-
-
     }
 }

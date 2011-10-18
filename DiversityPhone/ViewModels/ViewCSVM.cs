@@ -18,22 +18,13 @@
         IOfflineStorage _storage;
         #endregion
 
-       
-
-      
-
         #region Commands
         public ReactiveCommand AddSubunit { get; private set; }
         #endregion
 
-        #region Properties
-
-        //List<IdentificationUnitVM> Units;
+        #region Properties       
         public SpecimenVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<SpecimenVM> _Current;
-
-        private Specimen Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<Specimen> _Model;
+        private ObservableAsPropertyHelper<SpecimenVM> _Current;       
 
         public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
@@ -51,9 +42,9 @@
 
             _Current = specSelected.Select(cs => new SpecimenVM( _messenger,cs))
                                 .ToProperty(this, x => x.Current);
-            _Model = specSelected.ToProperty(this, x => x.Model);
+            
 
-            _UnitList = unitSaved.Select(_ => Model)
+            _UnitList = unitSaved.Select(_ => Current.Model)
                 .Merge(specSelected)
                 .Select(cs => getNewUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
