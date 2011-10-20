@@ -4,7 +4,7 @@
     using System.Linq;
     using System.Collections.Generic;
     using DiversityPhone.Model;
-using ReactiveUI;
+    using ReactiveUI;
     using DiversityPhone.Messages;
 
     public class OfflineStorage : IOfflineStorage
