@@ -38,7 +38,7 @@
             _Current = _messenger
                 .Listen<IdentificationUnit>(MessageContracts.SELECT)
                 .Where(iu => iu != null)
-                .Select(iu => fillIUVM(iu))
+                .Select(iu => getSubUnits(iu))
             .ToProperty(this, x => x.Current);
 
             var newSubUnits = (AddSubunit = new ReactiveCommand())
@@ -57,7 +57,7 @@
             };
         } 
       
-        private IdentificationUnitVM fillIUVM(IdentificationUnit iu)
+        private IdentificationUnitVM getSubUnits(IdentificationUnit iu)
         {
             return new IdentificationUnitVM(
                 _messenger,

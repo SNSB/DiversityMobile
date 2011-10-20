@@ -14,7 +14,7 @@
         IList<IDisposable> _subscriptions;
 
         #region Services
-        private INavigationService _navigation;
+
         IMessageBus _messenger;
         IOfflineStorage _storage;
         #endregion
@@ -34,17 +34,16 @@
 
 
 
-        public ViewESVM(IMessageBus messenger,INavigationService nav, Services.IOfflineStorage storage)
+        public ViewESVM(IMessageBus messenger, Services.IOfflineStorage storage)
         {
             _messenger = messenger;
-            _navigation = nav;
             _storage = storage;
 
-            updateEventList();
+            getEventList();
             FilterEvents = new ReactiveCommand();
 
             _messenger.Listen<Event>(MessageContracts.SAVE)
-               .Subscribe(ev => updateEventList());
+               .Subscribe(ev => getEventList());
             
             _subscriptions = new List<IDisposable>()
             {               
@@ -53,7 +52,7 @@
             };
         }   
 
-        private void updateEventList()
+        private void getEventList()
         {
             var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);
 

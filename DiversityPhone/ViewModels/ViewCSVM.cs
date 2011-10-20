@@ -19,7 +19,7 @@
         #endregion
 
         #region Commands
-        public ReactiveCommand AddSubunit { get; private set; }
+        public ReactiveCommand AddIdentificationUnit { get; private set; }
         #endregion
 
         #region Properties       
@@ -46,7 +46,7 @@
 
             _UnitList = unitSaved.Select(_ => Current.Model)
                 .Merge(specSelected)
-                .Select(cs => getNewUnitList(cs))
+                .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
 
             _subscriptions = new List<IDisposable>()
@@ -55,7 +55,7 @@
             };
         }
 
-        private IList<IdentificationUnitVM> getNewUnitList(Specimen spec)
+        private IList<IdentificationUnitVM> getIdentificationUnitList(Specimen spec)
         {
             return IdentificationUnitVM.getTwoLevelVMFromModelList(
                  _storage.getTopLevelIUForSpecimen(spec),

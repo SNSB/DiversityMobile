@@ -38,6 +38,40 @@ using ReactiveUI;
             }
         }
 
+        #region EventSeries
+
+        public IList<EventSeries> getAllEventSeries()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<EventSeries>(ctx.EventSeries);
+        }
+
+        public IList<EventSeries> getNewEventSeries()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IList<EventSeries> getEventSeriesByDescription(string query)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public EventSeries getEventSeriesByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+        private static int findFreeEventSeriesID(DiversityDataContext ctx)
+        {
+            int min = -1;
+            if (ctx.EventSeries.Any())
+                min = (from es in ctx.EventSeries select es.SeriesID).Min();
+            return (min > -1) ? -1 : min - 1;
+        }
+
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
@@ -50,6 +84,47 @@ using ReactiveUI;
                 ctx.SubmitChanges();
             }
         }
+        #endregion
+
+        #region Event
+        public IList<Event> getAllEvents()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Event>(ctx.Events);
+
+        }
+
+
+        public IList<Event> getEventsForSeries(EventSeries es)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Event>(from e in ctx.Events
+                                        where e.SeriesID == es.SeriesID
+                                        select e);
+        }
+
+        private static int findFreeEventID(DiversityDataContext ctx)
+        {
+            int min = -1;
+            if (ctx.Events.Any())
+                min = (from ev in ctx.Events select ev.EventID).Min();
+            return (min > -1) ? -1 : min - 1;
+        }
+
+        public void addOrUpdateEvent(Event ev)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                if (ev.IsModified == null)
+                    ev.EventID = findFreeEventID(ctx);
+                ctx.Events.InsertOnSubmit(ev);
+                ctx.SubmitChanges();
+            }
+        }
+        #endregion
+
+        #region Specimen
+
 
         public IList<Specimen> getAllSpecimen()
         {
@@ -65,27 +140,6 @@ using ReactiveUI;
                                            select spec);
         }
 
-        public IList<EventSeries> getAllEventSeries()
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<EventSeries>(ctx.EventSeries);
-        }
-
-        private static int findFreeEventSeriesID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.EventSeries.Any())
-                min = (from es in ctx.EventSeries select es.SeriesID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
-
-        private static int findFreeEventID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.Events.Any())
-                min = (from ev in ctx.Events select ev.EventID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
         private static int findFreeSpecimenID(DiversityDataContext ctx)
         {
             int min = -1;
@@ -94,78 +148,37 @@ using ReactiveUI;
             return (min > -1) ? -1 : min - 1;
         }
 
-        private static int findFreeUnitID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.IdentificationUnits.Any())
-                min = (from iu in ctx.IdentificationUnits select iu.UnitID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
-
-
-
-
-        public IList<EventSeries> getEventSeriesByDescription(string query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IList<EventSeries> getNewEventSeries()
-        {
-            throw new NotImplementedException();
-        }
-
-        public EventSeries getEventSeriesByID(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public IList<Event> getAllEvents()
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(ctx.Events);
-
-        }
-
-        public void addOrUpdateEvent(Event ev)
+        public void addOrUpdateSpecimen(Specimen spec)
         {
             using (var ctx = new DiversityDataContext())
             {
-                if (ev.IsModified == null)
-                    ev.EventID = findFreeEventID(ctx);
-                ctx.Events.InsertOnSubmit(ev);
+                if (spec.IsModified == null)
+                    spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
+
+                ctx.Specimen.InsertOnSubmit(spec);
                 ctx.SubmitChanges();
             }
         }
 
-        public void addTerms(IEnumerable<Term> terms)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.Terms.InsertAllOnSubmit(terms);
-                ctx.SubmitChanges();
-            }
+        #endregion
 
-            sampleData();
+        #region IdentificationUnit
+
+        public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
+                                                     where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
+                                                     select iu);
         }
 
 
-        public IList<Term> getTerms(int source)
+        public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
         {
             var ctx = new DiversityDataContext();
-            return new LightList<Term>(from t in ctx.Terms
-                                       where t.SourceID == source
-                                       select t);
-        }
-
-
-        public IList<Event> getEventsForSeries(EventSeries es)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(from e in ctx.Events
-                                        where e.SeriesID == es.SeriesID
-                                        select e);
+            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
+                                                     where iu.RelatedUnitID == unit.UnitID
+                                                     select iu);
         }
 
 
@@ -187,6 +200,14 @@ using ReactiveUI;
         }
 
 
+        private static int findFreeUnitID(DiversityDataContext ctx)
+        {
+            int min = -1;
+            if (ctx.IdentificationUnits.Any())
+                min = (from iu in ctx.IdentificationUnits select iu.UnitID).Min();
+            return (min > -1) ? -1 : min - 1;
+        }
+
         public void addOrUpdateIUnit(IdentificationUnit iu)
         {
             using (var ctx = new DiversityDataContext())
@@ -199,19 +220,55 @@ using ReactiveUI;
             }
         }
 
+        #endregion
 
-        public void addOrUpdateSpecimen(Specimen spec)
+        #region Terms
+
+        public IList<Term> getTerms(int source)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Term>(from t in ctx.Terms
+                                       where t.SourceID == source
+                                       select t);
+        }
+
+     
+
+        public void addTerms(IEnumerable<Term> terms)
         {
             using (var ctx = new DiversityDataContext())
             {
-                if (spec.IsModified == null)
-                    spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
+                ctx.Terms.InsertAllOnSubmit(terms);
+                ctx.SubmitChanges();
+            }
 
-                ctx.Specimen.InsertOnSubmit(spec);
+            sampleData();
+        }
+
+        #endregion
+
+        #region TaxonNames
+
+        public void addTaxonNames(IEnumerable<TaxonName> taxa)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.TaxonNames.InsertAllOnSubmit(taxa);
                 ctx.SubmitChanges();
             }
         }
 
+        public IList<TaxonName> getTaxonNames(Term taxonGroup)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<TaxonName>(from taxa in ctx.TaxonNames
+                                            where taxa.TaxonomicGroup == taxonGroup.Code
+                                            select taxa);
+        }
+
+        #endregion
+
+        #region SampleData
         private void sampleData()
         {
             using (var ctx = new DiversityDataContext())
@@ -242,22 +299,8 @@ using ReactiveUI;
             }
         }
 
+        #endregion
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.TaxonNames.InsertAllOnSubmit(taxa);
-                ctx.SubmitChanges();
-            }
-        }
-
-        public IList<TaxonName> getTaxonNames(Term taxonGroup)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<TaxonName>(from taxa in ctx.TaxonNames
-                                            where taxa.TaxonomicGroup == taxonGroup.Code
-                                            select taxa);
-        }
+       
     }
 }
