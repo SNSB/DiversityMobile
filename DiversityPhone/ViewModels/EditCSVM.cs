@@ -70,6 +70,15 @@ namespace DiversityPhone.ViewModels
             };
         }
 
+        IObservable<bool> canSave()
+        {
+            IObservable<bool> accessionNumber=this.ObservableForProperty(x => x.AccessionNumber)
+                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                .StartWith(false);
+            IObservable<bool> canSave = accessionNumber;
+            return canSave;
+        }
+
         private void executeSave()
         {
             updateModel();
