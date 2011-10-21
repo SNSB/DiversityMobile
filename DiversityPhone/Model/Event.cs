@@ -8,12 +8,14 @@
     using Microsoft.Phone.Data.Linq.Mapping;
 
     [Table]
-    [Index(Columns = "CollectionDate", IsUnique = false, Name = "event_collectiondate")]
     public class Event 
     {
         public Event()
         {
-            this.CollectionDate = DateTime.Now;
+            this.CollectionDay = DateTime.Now.Day;
+            this.CollectionMonth = DateTime.Now.Month;
+            this.CollectionYear = DateTime.Now.Year;
+            this.DeterminationDate = DateTime.Now;
             this.IsModified = null;
         }
 
@@ -24,7 +26,13 @@
         public int SeriesID { get; set; }
 
         [Column]
-        public DateTime CollectionDate { get; set; }
+        public int CollectionDay { get; set; }
+
+        [Column]
+        public int CollectionMonth { get; set; }
+
+        [Column]
+        public int CollectionYear{ get; set; }
 
         [Column]
         public string LocalityDescription { get; set; }
@@ -32,7 +40,26 @@
         [Column]
         public string HabitatDescription { get; set; }
 
+
+        [Column]   
+        public double Altitude { get; set; }
+
+        [Column]   
+        public double Latitude { get; set; }
+
+        [Column]   
+        public double Longitude { get; set; }
+
         [Column]
+        public DateTime DeterminationDate { get; set; }
+
+        public DateTime LogUpdatedWhen { get; set; }
+
+        /// <summary>
+        /// Tracks modifications to this Object.
+        /// is null for newly created Objects
+        /// </summary>
+        [Column(CanBeNull = true)]
         public bool? IsModified { get; set; }        
     }
 }

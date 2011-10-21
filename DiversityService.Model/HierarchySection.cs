@@ -15,7 +15,8 @@ namespace DiversityService.Model
         
         IList<Event> Events { get; set; }
 
-        
+        IList<Specimen> Specimen { get; set; }
+
         IList<IdentificationUnit> IdentificationUnits { get; set; }
     }
 }

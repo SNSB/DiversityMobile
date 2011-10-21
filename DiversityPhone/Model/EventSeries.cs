@@ -31,11 +31,15 @@
         [Column]
         public DateTime SeriesEnd { get; set; }
 
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
         public bool? IsModified { get; set; }
+
+   
     }
 }

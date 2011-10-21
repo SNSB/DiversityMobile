@@ -1,5 +1,8 @@
-﻿namespace DiversityPhone.Model
+﻿
+
+namespace DiversityPhone.Model
 {
+    using System;
     using System.Data.Linq.Mapping;
 
     [Table]
@@ -12,16 +15,17 @@
         }
 
         [Column(IsPrimaryKey = true)]
+        public int SpecimenID { get; set; }
+
+        [Column(IsPrimaryKey = true)]
         public int UnitID { get; set; }
 
         [Column]
         public int? RelatedUnitID { get; set; }
 
-        [Column]
-        public int SpecimenID { get; set; }
 
         [Column]
-        public string AccessionNumber { get; set; } // Only on Toplevel
+        public bool OnlyObserved { get; set; }
         
         [Column]
         public string TaxonomicGroup { get; set; }
@@ -38,13 +42,40 @@
         [Column]
         public string Gender { get; set; }
 
+     
+
+        //Identification
         [Column]
-        public string UnitIdentifier { get; set; }
+        public string LastIdentificationCache { get; set; }
+        [Column]
+        public string FamilyCache { get; set; }
+        [Column]
+        public string OrderCache { get; set; }
+        [Column]
+        public string IdentificationUri { get; set; }
+
+
+        //Georeferenzierung
+        [Column]
+        public double Altitude { get; set; }
 
         [Column]
-        public string UnitDescription { get; set; }
+        public double Latitude { get; set; }
 
         [Column]
-        public bool? IsModified { get; set; }       
+        public double Longitude { get; set; }
+
+        [Column]
+        public DateTime AnalysisDate { get; set; }
+
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
+        /// <summary>
+        /// Tracks modifications to this Object.
+        /// is null for newly created Objects
+        /// </summary>
+        [Column(CanBeNull = true)]
+        public bool? IsModified { get; set; }
+
     }
 }

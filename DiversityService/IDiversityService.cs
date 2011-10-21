@@ -14,6 +14,9 @@ namespace DiversityService
         [OperationContract]
         IList<Project> GetProjectsForUser(UserProfile user);
 
+        //Todo:
+        //Contract Userinfo
+
         [OperationContract]
         IList<TermList> GetTaxonListsForUser(UserProfile user);
 
@@ -22,6 +25,9 @@ namespace DiversityService
 
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(string list);
+
+        [OperationContract]
+        IEnumerable<PropertyName> DownloadPropertyList(string list);
 
         [OperationContract]
         IList<EventSeries> GetSeriesByDescription(string description);

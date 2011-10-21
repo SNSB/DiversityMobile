@@ -89,7 +89,6 @@
                 t => new Model.TaxonName()
                 {
                     URI = t.URI,
-                    TaxonomicGroup = "plant",
                     TaxonNameSinAuth = t.TaxonNameSinAuth,
                     TaxonNameCache = t.TaxonNameCache,
                     SpeciesEpithet = t.SpeciesEpithet,

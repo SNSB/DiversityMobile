@@ -182,22 +182,6 @@
         }
 
 
-        public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
-                                                     select iu);
-        }
-
-
-        public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.RelatedUnitID == unit.UnitID
-                                                     select iu);
-        }
 
 
         private static int findFreeUnitID(DiversityDataContext ctx)
@@ -262,7 +246,6 @@
         {
             var ctx = new DiversityDataContext();
             return new LightList<TaxonName>(from taxa in ctx.TaxonNames
-                                            where taxa.TaxonomicGroup == taxonGroup.Code
                                             select taxa);
         }
 
@@ -276,7 +259,7 @@
                 ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 0, Description = "ES" });
                 ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
                 ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccesionNumber = "CS" });
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitDescription = "Top", UnitID = 0 });
+                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
                 int id = 1;
                 recSample(0, 0, ref id, ctx);
                 ctx.SubmitChanges();
@@ -294,7 +277,7 @@
 
             for (int i = 0; i < 20; i++)
             {
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id, UnitDescription = "Sub" + id, RelatedUnitID = parent });
+                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id,  RelatedUnitID = parent });
                 recSample(depth, id++, ref id, ctx);
             }
         }

@@ -101,7 +101,13 @@
     <Compile Include="Controls\StringValueControl.xaml.cs">
       <DependentUpon>StringValueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\Analysis.cs" />
+    <Compile Include="Model\CollectionEventProperty.cs" />
+    <Compile Include="Model\IdentificationUnitAnalysis.cs" />
+    <Compile Include="Model\MultimediaObject.cs" />
+    <Compile Include="Model\PropertyName.cs" />
     <Compile Include="Model\Specimen.cs" />
+    <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="ViewModels\EditCSVM.cs" />
     <Compile Include="Services\RotatingCache.cs" />

@@ -6,6 +6,16 @@
     <edmx:StorageModels>
     <Schema Namespace="DiversityMobileModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="DiversityMobileModelStoreContainer">
+          <EntitySet Name="Pflanzengesellschaften" EntityType="DiversityMobileModel.Store.Pflanzengesellschaften" store:Type="Views" store:Schema="dbo" store:Name="Pflanzengesellschaften">
+            <DefiningQuery>SELECT 
+      [Pflanzengesellschaften].[PropertyID] AS [PropertyID], 
+      [Pflanzengesellschaften].[PropertyURI] AS [PropertyURI], 
+      [Pflanzengesellschaften].[DisplayText] AS [DisplayText], 
+      [Pflanzengesellschaften].[HierarchyCache] AS [HierarchyCache], 
+      [Pflanzengesellschaften].[TermID] AS [TermID], 
+      [Pflanzengesellschaften].[BroaderTermID] AS [BroaderTermID]
+      FROM [dbo].[Pflanzengesellschaften] AS [Pflanzengesellschaften]</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="TaxRef_BfN_VPlants" EntityType="DiversityMobileModel.Store.TaxRef_BfN_VPlants" store:Type="Views" store:Schema="dbo" store:Name="TaxRef_BfN_VPlants">
             <DefiningQuery>SELECT 
       [TaxRef_BfN_VPlants].[NameURI] AS [NameURI], 
@@ -20,11 +30,29 @@
       FROM [dbo].[TaxRef_BfN_VPlants] AS [TaxRef_BfN_VPlants]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
-        <!--Während der Generierung sind Fehler aufgetreten:
-      Warnung 6002: Für Tabelle/Sicht 'DiversityMobile.dbo.TaxRef_BfN_VPlants' ist kein Primärschlüssel definiert. Der Schlüssel wurde abgeleitet, und die Definition wurde als schreibgeschützte Tabelle/Sicht erstellt.
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'DiversityMobile.dbo.Pflanzengesellschaften' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
+        <EntityType Name="Pflanzengesellschaften">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+            <PropertyRef Name="DisplayText" />
+            <PropertyRef Name="TermID" />
+          </Key>
+          <Property Name="PropertyID" Type="int" Nullable="false" />
+          <Property Name="PropertyURI" Type="varchar" MaxLength="285" />
+          <Property Name="DisplayText" Type="nvarchar" Nullable="false" MaxLength="400" />
+          <Property Name="HierarchyCache" Type="nvarchar" MaxLength="1609" />
+          <Property Name="TermID" Type="int" Nullable="false" />
+          <Property Name="BroaderTermID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'DiversityMobile.dbo.TaxRef_BfN_VPlants' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
       -->
         <EntityType Name="TaxRef_BfN_VPlants">
           <Key>
+            
+            
             <PropertyRef Name="NameURI" />
           </Key>
           <Property Name="NameURI" Type="varchar" MaxLength="285" Nullable="false" />
@@ -43,6 +71,7 @@
       <Schema Namespace="DiversityMobileModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="DiversityMobileEntities" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="TaxRef_BfN_VPlants" EntityType="DiversityMobileModel.TaxRef_BfN_VPlants" />
+          <EntitySet Name="Pflanzengesellschaften" EntityType="DiversityMobileModel.Pflanzengesellschaften" />
         </EntityContainer>
         <EntityType Name="TaxRef_BfN_VPlants">
           <Key>
@@ -57,6 +86,19 @@
           <Property Type="String" Name="Synonymy" Nullable="false" MaxLength="8" FixedLength="false" Unicode="false" />
           <Property Type="String" Name="Family" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Order" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Pflanzengesellschaften">
+          <Key>
+            <PropertyRef Name="PropertyID" />
+            <PropertyRef Name="DisplayText" />
+            <PropertyRef Name="TermID" />
+          </Key>
+          <Property Type="Int32" Name="PropertyID" Nullable="false" />
+          <Property Type="String" Name="PropertyURI" MaxLength="285" FixedLength="false" Unicode="false" />
+          <Property Type="String" Name="DisplayText" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="HierarchyCache" MaxLength="1609" FixedLength="false" Unicode="true" />
+          <Property Type="Int32" Name="TermID" Nullable="false" />
+          <Property Type="Int32" Name="BroaderTermID" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -76,6 +118,18 @@
                 <ScalarProperty Name="TaxonNameSinAuthors" ColumnName="TaxonNameSinAuthors" />
                 <ScalarProperty Name="TaxonNameCache" ColumnName="TaxonNameCache" />
                 <ScalarProperty Name="NameURI" ColumnName="NameURI" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Pflanzengesellschaften">
+            <EntityTypeMapping TypeName="DiversityMobileModel.Pflanzengesellschaften">
+              <MappingFragment StoreEntitySet="Pflanzengesellschaften">
+                <ScalarProperty Name="BroaderTermID" ColumnName="BroaderTermID" />
+                <ScalarProperty Name="TermID" ColumnName="TermID" />
+                <ScalarProperty Name="HierarchyCache" ColumnName="HierarchyCache" />
+                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
+                <ScalarProperty Name="PropertyURI" ColumnName="PropertyURI" />
+                <ScalarProperty Name="PropertyID" ColumnName="PropertyID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -101,6 +155,7 @@
     <Diagrams>
       <Diagram Name="DiversityMobile">
         <EntityTypeShape EntityType="DiversityMobileModel.TaxRef_BfN_VPlants" Width="1.5" PointX="0.75" PointY="0.75" Height="2.7494921874999996" />
+        <EntityTypeShape EntityType="DiversityMobileModel.Pflanzengesellschaften" Width="1.75" PointX="3.375" PointY="0.75" Height="2.1725878906250102" />
       </Diagram>
     </Diagrams>
   </Designer>

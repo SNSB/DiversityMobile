@@ -57,12 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Analysis.cs" />
+    <Compile Include="CollectionEventProperty.cs" />
     <Compile Include="Event.cs" />
     <Compile Include="EventSeries.cs" />
     <Compile Include="HierarchySection.cs" />
     <Compile Include="IdentificationUnit.cs" />
+    <Compile Include="IdentificationUnitAnalysis.cs" />
+    <Compile Include="MultimediaObject.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertyName.cs" />
     <Compile Include="Specimen.cs" />
     <Compile Include="TaxonName.cs" />
     <Compile Include="TermList.cs" />

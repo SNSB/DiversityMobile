@@ -11,12 +11,14 @@ using System.Windows.Shapes;
 
 namespace DiversityService.Model
 {
-    public class MultimediaObject
+    public class PropertyName
     {
-        public int SourceId { get; set; }
-        public String Uri {get;set;}
-        public String MediaType { get; set; }
+        public int PropertyID { get; set; }
+        public int TermID { get; set; }
+        public int BroaderTermID { get; set; }
+        public string PropertyUri { get; set; }
+        public string DisplayText { get; set; }
+        public string HierarchyCache { get; set; }
 
-        public DateTime LogUpdatedWhen { get; set; }
     }
 }

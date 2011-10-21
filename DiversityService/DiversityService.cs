@@ -13,6 +13,7 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
+       
 
         public IList<Model.EventSeries> AllEventSeries()
         {
@@ -76,5 +77,11 @@ namespace DiversityService
                        }).ToList();
             }
         }
+
+        public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

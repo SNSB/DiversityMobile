@@ -11,7 +11,20 @@ namespace DiversityService.Model
         public int EventID { get; set; }
         public int SeriesID { get; set; }
         public int  CollectionDay { get; set; }
+        public int CollectionMonth { get; set; }
+        public int CollectionYear { get; set; }
         public string LocalityDescription { get; set; }
-        public string HabitatDescription { get; set; }   
+        public string HabitatDescription { get; set; } 
+
+        //Georeferenzierung anstelle der KLasse CollectionEventLocalisation
+        //Altitude hat LocalisationSystem 4
+        //WGS84 hat LocalisationSystem 8
+        public double Altitude { get; set; }
+        public double Latitude { get; set; }
+        public double Longitude { get; set; }
+        public DateTime DeterminationDate { get; set; }
+
+        public DateTime LogUpdatedWhen { get; set; }
+
     }
 }
