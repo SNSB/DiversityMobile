@@ -83,5 +83,23 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
+
+
+        public HierarchySection InsertHierarchy(HierarchySection hierarchy)
+        {
+            var result = new HierarchySection();
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                var es = hierarchy.EventSeries.ToEntity();
+
+                ctx.CollectionEventSeries.AddObject(es );
+
+
+
+                ctx.SaveChanges();
+                result.EventSeries = es.ToModel();
+            }
+            return result;
+        }
     }
 }

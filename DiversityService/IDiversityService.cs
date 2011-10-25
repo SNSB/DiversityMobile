@@ -36,6 +36,7 @@ namespace DiversityService
         IList<EventSeries> AllEventSeries();
 
 
-
+        [OperationContract]
+        HierarchySection InsertHierarchy(HierarchySection hierarchy);
     }   
 }
