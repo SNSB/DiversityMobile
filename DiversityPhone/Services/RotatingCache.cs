@@ -14,7 +14,7 @@ namespace DiversityPhone.Services
 {
     
 
-    public class RotatingCache<T> : IList<T>
+    public class RotatingCache<T> : IList<T> where T : IEquatable<T>
     {
         /// <summary>
         /// Defines a function that can serve as a source for the cache
@@ -27,8 +27,7 @@ namespace DiversityPhone.Services
         private CacheSource _source;
         private T[] _store;
         private int _lowerBoundIdx;
-        private int _lowerBoundKey;
-        private int _upperBoundIdx;
+        private int _lowerBoundKey;        
         private int _upperBoundKey;
 
         public RotatingCache(int size, CacheSource source)
@@ -36,11 +35,44 @@ namespace DiversityPhone.Services
             this._source = source;
             this._store = new T[size];
             this._lowerBoundIdx = 0;
-            this._lowerBoundKey = 0;
-            this._upperBoundIdx = 0;
+            this._lowerBoundKey = 0;            
             this._upperBoundKey = 0;
         }
 
+        private T getItem(int idx)
+        {
+            if (!isCacheHit(idx))
+                fetchRangeAround(idx);
+            return _store[cacheOffset(_lowerBoundKey,idx)];
+            
+        }
+
+        private void fetchRangeAround(int idx)
+        {
+            int lowerKey = idx - (_store.Length / 2);
+            lowerKey = (lowerKey < 0) ? 0 : lowerKey;
+
+            
+
+    
+        }
+
+        private bool isCacheHit(int idx)
+        {
+            int itemCount = _upperBoundKey - _lowerBoundKey;
+            int Offset = cacheOffset(_lowerBoundKey, idx);
+            return (Offset > 0 && Offset < itemCount);
+        }
+
+        private int cacheIndex(int idx)
+        {
+            return 0;
+        }
+
+        private int cacheOffset(int baseIdx, int idx)
+        {
+            return idx - baseIdx;
+        }
 
         public int IndexOf(T item)
         {
