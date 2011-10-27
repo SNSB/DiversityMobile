@@ -1,11 +1,13 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using ReactiveUI;
-    using DiversityPhone.Messages;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using ReactiveUI;
+using DiversityPhone.Messages;
+    
+
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -48,6 +50,14 @@
             {
                 EventSeries = es.ToModel()
             };                
+        }
+
+        public void updateHierarchy(Service.HierarchySection f, Service.HierarchySection to)
+        {
+            withDataContext(ctx =>
+                {
+                     
+                });
         }
 
         #region EventSeries
@@ -295,5 +305,12 @@
         }
 
         #endregion     
+    
+
+        private void withDataContext(Action<DiversityDataContext> operation)
+        {
+            using (var ctx = new DiversityDataContext())
+                operation(ctx);
+        }
     }
 }

@@ -90,14 +90,14 @@ namespace DiversityService
             var result = new HierarchySection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
-                var es = hierarchy.EventSeries.ToEntity();
-
-                ctx.CollectionEventSeries.AddObject(es );
+                var entityESList = hierarchy.EventSeries.Select(m => m.ToEntity());
+                foreach (var es in entityESList)
+                    ctx.CollectionEventSeries.AddObject(es);
 
 
 
                 ctx.SaveChanges();
-                result.EventSeries = es.ToModel();
+                result.EventSeries = entityESList.Select(entity => entity.ToModel()).ToList(); ;
             }
             return result;
         }
