@@ -102,8 +102,7 @@ namespace DiversityPhone.ViewModels
                 .Select(m => m.RelatedUnitID == null);
             _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
 
-            var canSave = this.ObservableForProperty(x => x.SelectedTaxGroup)
-                                .Select(change => change.Value != null).StartWith(false);
+            var canSave = validationObservable();
 
             _subscriptions = new List<IDisposable>()
             {            
@@ -112,13 +111,7 @@ namespace DiversityPhone.ViewModels
 
                 model.Select(m => m.TaxonomicGroup)
                     .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
-                    .Subscribe(x => SelectedTaxGroup = x),
-
-                model.Select(m => m.AccessionNumber)
-                    .Subscribe(accessNo => AccessionNumber = accessNo),
-
-                model.Select(m => m.UnitDescription)
-                    .Subscribe(desc => Description = desc),
+                    .Subscribe(x => SelectedTaxGroup = x),                
 
                 (Save = new ReactiveCommand(canSave))
                     .Subscribe(_ =>
@@ -133,10 +126,17 @@ namespace DiversityPhone.ViewModels
             };
         }
 
-        private void updateModel()
+        private IObservable<bool> validationObservable()
         {
-            Model.AccessionNumber = AccessionNumber;
-            Model.UnitDescription = Description;
+            var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
+                .Select(term => term != null)
+                .StartWith(false);           
+
+            return taxonomicGroupIsSet;
+        }
+
+        private void updateModel()
+        {           
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
         }
     }

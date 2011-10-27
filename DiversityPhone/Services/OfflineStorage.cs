@@ -38,6 +38,18 @@
             }
         }
 
+        public Service.HierarchySection getNewHierarchyBelow(EventSeries es)
+        {
+            //ES not New?
+            if (es.IsModified != null)
+                return new Service.HierarchySection();
+
+            return new Service.HierarchySection()
+            {
+                EventSeries = es.ToModel()
+            };                
+        }
+
         #region EventSeries
 
         public IList<EventSeries> getAllEventSeries()
@@ -282,8 +294,6 @@
             }
         }
 
-        #endregion
-
-       
+        #endregion     
     }
 }

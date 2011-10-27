@@ -19,12 +19,15 @@
         private IMessageBus _messenger;
         private IOfflineStorage _storage;
         private Svc.IDiversityService _repository;
+
+        private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand GetVocabulary { get; private set; }
+        public ReactiveAsyncCommand Upload { get; private set; }        
         #endregion
 
         #region Properties
@@ -50,6 +53,8 @@
 
             updateSeriesList();
                        
+            var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection,Svc.HierarchySection>(_repository.BeginInsertHierarchy,_repository.EndInsertHierarchy);
+            
 
             _subscriptions = new List<IDisposable>()
             {
@@ -62,10 +67,22 @@
                 (GetVocabulary = new ReactiveCommand())
                     .Subscribe(_ => getVoc()),
 
+                (Upload = new ReactiveAsyncCommand())
+                    .Select(_ => getSections())
+
                 _messenger.Listen<EventSeries>(MessageContracts.SAVE)
                     .Subscribe(es => saveSeries(es))
             };
 
+        }
+
+        private IEnumerable<Svc.HierarchySection> getSections()
+        {
+            var eventseries = _storage.getNewEventSeries();
+            foreach (var series in eventseries)
+            {
+                yield return _storage.getNewHierarchyBelow(series);
+            }
         }
 
         private void getVoc()

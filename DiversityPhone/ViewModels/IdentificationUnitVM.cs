@@ -18,7 +18,7 @@
 
 
         public IdentificationUnit Model { get; private set; }
-        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.UnitDescription ?? ""); } }
+        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID); } }
         public Icon Icon { get; private set; }
 
         public IList<IdentificationUnitVM> SubUnits { get; private set; }

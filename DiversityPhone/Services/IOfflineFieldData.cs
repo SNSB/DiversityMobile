@@ -1,10 +1,13 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using Svc = DiversityPhone.Service;
 
     public interface IOfflineFieldData
     {
+        Svc.HierarchySection getNewHierarchyBelow(EventSeries es);
+
         IList<EventSeries> getAllEventSeries();
         IList<EventSeries> getEventSeriesByDescription(string query);
         IList<EventSeries> getNewEventSeries();

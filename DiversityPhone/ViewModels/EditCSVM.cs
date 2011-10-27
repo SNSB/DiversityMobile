@@ -30,7 +30,7 @@ namespace DiversityPhone.ViewModels
 
         private string _AccessionNumber;
         public string AccessionNumber
-        {
+        {            
             get { return _AccessionNumber; }
             set { this.RaiseAndSetIfChanged(x => x.AccessionNumber, ref _AccessionNumber, value); }
         }

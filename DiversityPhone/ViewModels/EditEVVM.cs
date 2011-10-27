@@ -48,7 +48,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return (Model != null) ? Model.CollectionDate.ToLongDateString() : "";
+                return  "";
             }
         }
         #endregion
