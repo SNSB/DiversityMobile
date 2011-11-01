@@ -11,9 +11,7 @@ namespace DiversityService
         public IList<Model.EventSeries> GetSeriesByDescription(string description)
         {
             throw new NotImplementedException();
-        }
-
-       
+        }       
 
         public IList<Model.EventSeries> AllEventSeries()
         {
@@ -89,15 +87,12 @@ namespace DiversityService
         {
             var result = new HierarchySection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
-            {
-                var entityESList = hierarchy.EventSeries.Select(m => m.ToEntity());
-                foreach (var es in entityESList)
-                    ctx.CollectionEventSeries.AddObject(es);
-
-
+            {               
+                var newEventEntity = hierarchy.Event.ToEntity();
+                ctx.CollectionEvent.AddObject(newEventEntity);
 
                 ctx.SaveChanges();
-                result.EventSeries = entityESList.Select(entity => entity.ToModel()).ToList(); ;
+                result.Event = newEventEntity.ToModel();
             }
             return result;
         }
