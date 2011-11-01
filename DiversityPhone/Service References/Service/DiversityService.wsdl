@@ -31,6 +31,12 @@
   <wsdl:message name="IDiversityService_DownloadTaxonList_OutputMessage">
     <wsdl:part name="parameters" element="tns:DownloadTaxonListResponse" />
   </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadPropertyList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyList" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadPropertyList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyListResponse" />
+  </wsdl:message>
   <wsdl:message name="IDiversityService_GetSeriesByDescription_InputMessage">
     <wsdl:part name="parameters" element="tns:GetSeriesByDescription" />
   </wsdl:message>
@@ -42,6 +48,12 @@
   </wsdl:message>
   <wsdl:message name="IDiversityService_AllEventSeries_OutputMessage">
     <wsdl:part name="parameters" element="tns:AllEventSeriesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertHierarchy_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertHierarchy" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertHierarchy_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertHierarchyResponse" />
   </wsdl:message>
   <wsdl:portType name="IDiversityService">
     <wsdl:operation name="GetProjectsForUser">
@@ -60,6 +72,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="DownloadPropertyList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyList" message="tns:IDiversityService_DownloadPropertyList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyListResponse" message="tns:IDiversityService_DownloadPropertyList_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetSeriesByDescription">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescription" message="tns:IDiversityService_GetSeriesByDescription_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetSeriesByDescriptionResponse" message="tns:IDiversityService_GetSeriesByDescription_OutputMessage" />
@@ -67,6 +83,10 @@
     <wsdl:operation name="AllEventSeries">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/AllEventSeries" message="tns:IDiversityService_AllEventSeries_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/AllEventSeriesResponse" message="tns:IDiversityService_AllEventSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertHierarchy">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchyResponse" message="tns:IDiversityService_InsertHierarchy_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDiversityService" type="tns:IDiversityService">
@@ -107,6 +127,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="DownloadPropertyList">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadPropertyList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetSeriesByDescription">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/GetSeriesByDescription" style="document" />
       <wsdl:input>
@@ -118,6 +147,15 @@
     </wsdl:operation>
     <wsdl:operation name="AllEventSeries">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/AllEventSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertHierarchy">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertHierarchy" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

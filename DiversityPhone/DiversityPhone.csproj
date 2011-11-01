@@ -119,6 +119,8 @@
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
+    <Compile Include="Services\ModelProjection.cs" />
+    <Compile Include="ViewModels\EditCSVM.cs" />
     <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
@@ -281,7 +283,13 @@
     <None Include="Service References\Service\DiversityPhone.Service.EventSeries.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\Service\DiversityPhone.Service.HierarchySection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.Project.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.PropertyName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Service\DiversityPhone.Service.TaxonName.datasource">
@@ -324,6 +332,7 @@
     <None Include="Service References\Service\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>

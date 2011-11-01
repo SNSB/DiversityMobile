@@ -19,12 +19,15 @@
         private IMessageBus _messenger;
         private IOfflineStorage _storage;
         private Svc.IDiversityService _repository;
+
+        private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand GetVocabulary { get; private set; }
+        public ReactiveAsyncCommand Upload { get; private set; }        
         #endregion
 
         #region Properties
@@ -49,7 +52,8 @@
             _repository = repo;
 
             updateSeriesList();
-                       
+
+            registerUpload();
 
             _subscriptions = new List<IDisposable>()
             {
@@ -60,12 +64,31 @@
                     .Subscribe(_ => addSeries()),
 
                 (GetVocabulary = new ReactiveCommand())
-                    .Subscribe(_ => getVoc()),
+                    .Subscribe(_ => getVoc()),              
 
                 _messenger.Listen<EventSeries>(MessageContracts.SAVE)
                     .Subscribe(es => saveSeries(es))
             };
 
+        }
+
+        private void registerUpload()
+        {
+            var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
+            (Upload = new ReactiveAsyncCommand())
+                    .Select(_ => getSections().ToObservable()).First()
+                    .Select(section => Tuple.Create(section, uploadHierarchy(section).First()))
+                    .ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));
+        }
+
+        private IEnumerable<Svc.HierarchySection> getSections()
+        {
+            var eventseries = _storage.getNewEventSeries();
+            
+            foreach (var series in eventseries)
+            {
+                yield return _storage.getNewHierarchyBelow(series);
+            }
         }
 
         private void getVoc()
