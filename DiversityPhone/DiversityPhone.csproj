@@ -120,7 +120,6 @@
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="Services\ModelProjection.cs" />
-    <Compile Include="ViewModels\EditCSVM.cs" />
     <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
@@ -280,6 +279,9 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Service References\Service\DiversityPhone.Service.AnalysisResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.EventSeries.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -303,6 +305,9 @@
     </None>
     <None Include="Service References\Service\DiversityService.wsdl" />
     <None Include="Service References\Service\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Service\Service11.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Service\Service12.xsd">

@@ -227,6 +227,126 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="TaxonName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class TaxonName : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string GenusOrSupragenicField;
+        
+        private string InfraspecificEpithetField;
+        
+        private string SpeciesEpithetField;
+        
+        private string SynonymyField;
+        
+        private string TaxonNameCacheField;
+        
+        private string TaxonNameSinAuthField;
+        
+        private string URIField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string GenusOrSupragenic {
+            get {
+                return this.GenusOrSupragenicField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.GenusOrSupragenicField, value) != true)) {
+                    this.GenusOrSupragenicField = value;
+                    this.RaisePropertyChanged("GenusOrSupragenic");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string InfraspecificEpithet {
+            get {
+                return this.InfraspecificEpithetField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InfraspecificEpithetField, value) != true)) {
+                    this.InfraspecificEpithetField = value;
+                    this.RaisePropertyChanged("InfraspecificEpithet");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string SpeciesEpithet {
+            get {
+                return this.SpeciesEpithetField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SpeciesEpithetField, value) != true)) {
+                    this.SpeciesEpithetField = value;
+                    this.RaisePropertyChanged("SpeciesEpithet");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Synonymy {
+            get {
+                return this.SynonymyField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.SynonymyField, value) != true)) {
+                    this.SynonymyField = value;
+                    this.RaisePropertyChanged("Synonymy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string TaxonNameCache {
+            get {
+                return this.TaxonNameCacheField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TaxonNameCacheField, value) != true)) {
+                    this.TaxonNameCacheField = value;
+                    this.RaisePropertyChanged("TaxonNameCache");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string TaxonNameSinAuth {
+            get {
+                return this.TaxonNameSinAuthField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.TaxonNameSinAuthField, value) != true)) {
+                    this.TaxonNameSinAuthField = value;
+                    this.RaisePropertyChanged("TaxonNameSinAuth");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string URI {
+            get {
+                return this.URIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.URIField, value) != true)) {
+                    this.URIField = value;
+                    this.RaisePropertyChanged("URI");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Term", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Term : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -332,110 +452,95 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="TaxonName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
-    public partial class TaxonName : object, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisResult", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class AnalysisResult : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private string GenusOrSupragenicField;
+        private int AnalysisIDField;
         
-        private string InfraspecificEpithetField;
+        private string DescriptionField;
         
-        private string SpeciesEpithetField;
+        private string DisplayTextField;
         
-        private string SynonymyField;
+        private System.DateTime LogUpdatedWhenField;
         
-        private string TaxonNameCacheField;
+        private string NotesField;
         
-        private string TaxonNameSinAuthField;
-        
-        private string URIField;
+        private string ResultField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string GenusOrSupragenic {
+        public int AnalysisID {
             get {
-                return this.GenusOrSupragenicField;
+                return this.AnalysisIDField;
             }
             set {
-                if ((object.ReferenceEquals(this.GenusOrSupragenicField, value) != true)) {
-                    this.GenusOrSupragenicField = value;
-                    this.RaisePropertyChanged("GenusOrSupragenic");
+                if ((this.AnalysisIDField.Equals(value) != true)) {
+                    this.AnalysisIDField = value;
+                    this.RaisePropertyChanged("AnalysisID");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InfraspecificEpithet {
+        public string Description {
             get {
-                return this.InfraspecificEpithetField;
+                return this.DescriptionField;
             }
             set {
-                if ((object.ReferenceEquals(this.InfraspecificEpithetField, value) != true)) {
-                    this.InfraspecificEpithetField = value;
-                    this.RaisePropertyChanged("InfraspecificEpithet");
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SpeciesEpithet {
+        public string DisplayText {
             get {
-                return this.SpeciesEpithetField;
+                return this.DisplayTextField;
             }
             set {
-                if ((object.ReferenceEquals(this.SpeciesEpithetField, value) != true)) {
-                    this.SpeciesEpithetField = value;
-                    this.RaisePropertyChanged("SpeciesEpithet");
+                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
+                    this.DisplayTextField = value;
+                    this.RaisePropertyChanged("DisplayText");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Synonymy {
+        public System.DateTime LogUpdatedWhen {
             get {
-                return this.SynonymyField;
+                return this.LogUpdatedWhenField;
             }
             set {
-                if ((object.ReferenceEquals(this.SynonymyField, value) != true)) {
-                    this.SynonymyField = value;
-                    this.RaisePropertyChanged("Synonymy");
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TaxonNameCache {
+        public string Notes {
             get {
-                return this.TaxonNameCacheField;
+                return this.NotesField;
             }
             set {
-                if ((object.ReferenceEquals(this.TaxonNameCacheField, value) != true)) {
-                    this.TaxonNameCacheField = value;
-                    this.RaisePropertyChanged("TaxonNameCache");
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TaxonNameSinAuth {
+        public string Result {
             get {
-                return this.TaxonNameSinAuthField;
+                return this.ResultField;
             }
             set {
-                if ((object.ReferenceEquals(this.TaxonNameSinAuthField, value) != true)) {
-                    this.TaxonNameSinAuthField = value;
-                    this.RaisePropertyChanged("TaxonNameSinAuth");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string URI {
-            get {
-                return this.URIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.URIField, value) != true)) {
-                    this.URIField = value;
-                    this.RaisePropertyChanged("URI");
+                if ((object.ReferenceEquals(this.ResultField, value) != true)) {
+                    this.ResultField = value;
+                    this.RaisePropertyChanged("Result");
                 }
             }
         }
@@ -680,36 +785,21 @@ namespace DiversityPhone.Service {
     [System.Runtime.Serialization.DataContractAttribute(Name="HierarchySection", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class HierarchySection : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private DiversityPhone.Service.EventSeries EventSeriesField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Event> EventsField;
+        private DiversityPhone.Service.Event EventField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.IdentificationUnit> IdentificationUnitsField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Specimen> SpecimenField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.Service.EventSeries EventSeries {
+        public DiversityPhone.Service.Event Event {
             get {
-                return this.EventSeriesField;
+                return this.EventField;
             }
             set {
-                if ((object.ReferenceEquals(this.EventSeriesField, value) != true)) {
-                    this.EventSeriesField = value;
-                    this.RaisePropertyChanged("EventSeries");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Event> Events {
-            get {
-                return this.EventsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.EventsField, value) != true)) {
-                    this.EventsField = value;
-                    this.RaisePropertyChanged("Events");
+                if ((object.ReferenceEquals(this.EventField, value) != true)) {
+                    this.EventField = value;
+                    this.RaisePropertyChanged("Event");
                 }
             }
         }
@@ -757,11 +847,7 @@ namespace DiversityPhone.Service {
         
         private double AltitudeField;
         
-        private int CollectionDayField;
-        
-        private int CollectionMonthField;
-        
-        private int CollectionYearField;
+        private System.DateTime CollectionDateField;
         
         private System.DateTime DeterminationDateField;
         
@@ -777,7 +863,7 @@ namespace DiversityPhone.Service {
         
         private double LongitudeField;
         
-        private int SeriesIDField;
+        private System.Nullable<int> SeriesIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public double Altitude {
@@ -793,40 +879,14 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CollectionDay {
+        public System.DateTime CollectionDate {
             get {
-                return this.CollectionDayField;
+                return this.CollectionDateField;
             }
             set {
-                if ((this.CollectionDayField.Equals(value) != true)) {
-                    this.CollectionDayField = value;
-                    this.RaisePropertyChanged("CollectionDay");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CollectionMonth {
-            get {
-                return this.CollectionMonthField;
-            }
-            set {
-                if ((this.CollectionMonthField.Equals(value) != true)) {
-                    this.CollectionMonthField = value;
-                    this.RaisePropertyChanged("CollectionMonth");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CollectionYear {
-            get {
-                return this.CollectionYearField;
-            }
-            set {
-                if ((this.CollectionYearField.Equals(value) != true)) {
-                    this.CollectionYearField = value;
-                    this.RaisePropertyChanged("CollectionYear");
+                if ((this.CollectionDateField.Equals(value) != true)) {
+                    this.CollectionDateField = value;
+                    this.RaisePropertyChanged("CollectionDate");
                 }
             }
         }
@@ -923,7 +983,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SeriesID {
+        public System.Nullable<int> SeriesID {
             get {
                 return this.SeriesIDField;
             }
@@ -1319,15 +1379,30 @@ namespace DiversityPhone.Service {
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TermList> EndGetTaxonListsForUser(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadTaxonList", ReplyAction="http://tempuri.org/IDiversityService/DownloadTaxonListResponse")]
+        System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> EndDownloadTaxonList(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse")]
         System.IAsyncResult BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Term> EndGetStandardVocabulary(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadTaxonList", ReplyAction="http://tempuri.org/IDiversityService/DownloadTaxonListResponse")]
-        System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAnalysisResults", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisResultsResponse")]
+        System.IAsyncResult BeginGetAnalysisResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> EndDownloadTaxonList(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisResults(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsResults", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsResultsResponse")]
+        System.IAsyncResult BeginGetAnalysisTaxonomicGroupsResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisTaxonomicGroupsResults(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAvailablePropertyLists", ReplyAction="http://tempuri.org/IDiversityService/GetAvailablePropertyListsResponse")]
+        System.IAsyncResult BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<string> EndGetAvailablePropertyLists(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadPropertyList", ReplyAction="http://tempuri.org/IDiversityService/DownloadPropertyListResponse")]
         System.IAsyncResult BeginDownloadPropertyList(string list, System.AsyncCallback callback, object asyncState);
@@ -1394,6 +1469,25 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class DownloadTaxonListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public DownloadTaxonListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class GetStandardVocabularyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -1413,19 +1507,57 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DownloadTaxonListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetAnalysisResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public DownloadTaxonListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetAnalysisResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> Result {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName>)(this.results[0]));
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetAnalysisTaxonomicGroupsResultsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetAnalysisTaxonomicGroupsResultsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetAvailablePropertyListsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetAvailablePropertyListsCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<string> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<string>)(this.results[0]));
             }
         }
     }
@@ -1522,17 +1654,35 @@ namespace DiversityPhone.Service {
         
         private System.Threading.SendOrPostCallback onGetTaxonListsForUserCompletedDelegate;
         
+        private BeginOperationDelegate onBeginDownloadTaxonListDelegate;
+        
+        private EndOperationDelegate onEndDownloadTaxonListDelegate;
+        
+        private System.Threading.SendOrPostCallback onDownloadTaxonListCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetStandardVocabularyDelegate;
         
         private EndOperationDelegate onEndGetStandardVocabularyDelegate;
         
         private System.Threading.SendOrPostCallback onGetStandardVocabularyCompletedDelegate;
         
-        private BeginOperationDelegate onBeginDownloadTaxonListDelegate;
+        private BeginOperationDelegate onBeginGetAnalysisResultsDelegate;
         
-        private EndOperationDelegate onEndDownloadTaxonListDelegate;
+        private EndOperationDelegate onEndGetAnalysisResultsDelegate;
         
-        private System.Threading.SendOrPostCallback onDownloadTaxonListCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetAnalysisResultsCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetAnalysisTaxonomicGroupsResultsDelegate;
+        
+        private EndOperationDelegate onEndGetAnalysisTaxonomicGroupsResultsDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetAnalysisTaxonomicGroupsResultsCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetAvailablePropertyListsDelegate;
+        
+        private EndOperationDelegate onEndGetAvailablePropertyListsDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetAvailablePropertyListsCompletedDelegate;
         
         private BeginOperationDelegate onBeginDownloadPropertyListDelegate;
         
@@ -1615,9 +1765,15 @@ namespace DiversityPhone.Service {
         
         public event System.EventHandler<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUserCompleted;
         
+        public event System.EventHandler<DownloadTaxonListCompletedEventArgs> DownloadTaxonListCompleted;
+        
         public event System.EventHandler<GetStandardVocabularyCompletedEventArgs> GetStandardVocabularyCompleted;
         
-        public event System.EventHandler<DownloadTaxonListCompletedEventArgs> DownloadTaxonListCompleted;
+        public event System.EventHandler<GetAnalysisResultsCompletedEventArgs> GetAnalysisResultsCompleted;
+        
+        public event System.EventHandler<GetAnalysisTaxonomicGroupsResultsCompletedEventArgs> GetAnalysisTaxonomicGroupsResultsCompleted;
+        
+        public event System.EventHandler<GetAvailablePropertyListsCompletedEventArgs> GetAvailablePropertyListsCompleted;
         
         public event System.EventHandler<DownloadPropertyListCompletedEventArgs> DownloadPropertyListCompleted;
         
@@ -1724,6 +1880,52 @@ namespace DiversityPhone.Service {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginDownloadTaxonList(list, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> DiversityPhone.Service.IDiversityService.EndDownloadTaxonList(System.IAsyncResult result) {
+            return base.Channel.EndDownloadTaxonList(result);
+        }
+        
+        private System.IAsyncResult OnBeginDownloadTaxonList(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            string list = ((string)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginDownloadTaxonList(list, callback, asyncState);
+        }
+        
+        private object[] OnEndDownloadTaxonList(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndDownloadTaxonList(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnDownloadTaxonListCompleted(object state) {
+            if ((this.DownloadTaxonListCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.DownloadTaxonListCompleted(this, new DownloadTaxonListCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void DownloadTaxonListAsync(string list) {
+            this.DownloadTaxonListAsync(list, null);
+        }
+        
+        public void DownloadTaxonListAsync(string list, object userState) {
+            if ((this.onBeginDownloadTaxonListDelegate == null)) {
+                this.onBeginDownloadTaxonListDelegate = new BeginOperationDelegate(this.OnBeginDownloadTaxonList);
+            }
+            if ((this.onEndDownloadTaxonListDelegate == null)) {
+                this.onEndDownloadTaxonListDelegate = new EndOperationDelegate(this.OnEndDownloadTaxonList);
+            }
+            if ((this.onDownloadTaxonListCompletedDelegate == null)) {
+                this.onDownloadTaxonListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadTaxonListCompleted);
+            }
+            base.InvokeAsync(this.onBeginDownloadTaxonListDelegate, new object[] {
+                        list}, this.onEndDownloadTaxonListDelegate, this.onDownloadTaxonListCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginGetStandardVocabulary(callback, asyncState);
         }
@@ -1768,49 +1970,139 @@ namespace DiversityPhone.Service {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginDownloadTaxonList(list, callback, asyncState);
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAnalysisResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetAnalysisResults(analysisKeys, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> DiversityPhone.Service.IDiversityService.EndDownloadTaxonList(System.IAsyncResult result) {
-            return base.Channel.EndDownloadTaxonList(result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> DiversityPhone.Service.IDiversityService.EndGetAnalysisResults(System.IAsyncResult result) {
+            return base.Channel.EndGetAnalysisResults(result);
         }
         
-        private System.IAsyncResult OnBeginDownloadTaxonList(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string list = ((string)(inValues[0]));
-            return ((DiversityPhone.Service.IDiversityService)(this)).BeginDownloadTaxonList(list, callback, asyncState);
+        private System.IAsyncResult OnBeginGetAnalysisResults(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            System.Collections.ObjectModel.ObservableCollection<int> analysisKeys = ((System.Collections.ObjectModel.ObservableCollection<int>)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetAnalysisResults(analysisKeys, callback, asyncState);
         }
         
-        private object[] OnEndDownloadTaxonList(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndDownloadTaxonList(result);
+        private object[] OnEndGetAnalysisResults(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetAnalysisResults(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnDownloadTaxonListCompleted(object state) {
-            if ((this.DownloadTaxonListCompleted != null)) {
+        private void OnGetAnalysisResultsCompleted(object state) {
+            if ((this.GetAnalysisResultsCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.DownloadTaxonListCompleted(this, new DownloadTaxonListCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetAnalysisResultsCompleted(this, new GetAnalysisResultsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void DownloadTaxonListAsync(string list) {
-            this.DownloadTaxonListAsync(list, null);
+        public void GetAnalysisResultsAsync(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys) {
+            this.GetAnalysisResultsAsync(analysisKeys, null);
         }
         
-        public void DownloadTaxonListAsync(string list, object userState) {
-            if ((this.onBeginDownloadTaxonListDelegate == null)) {
-                this.onBeginDownloadTaxonListDelegate = new BeginOperationDelegate(this.OnBeginDownloadTaxonList);
+        public void GetAnalysisResultsAsync(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, object userState) {
+            if ((this.onBeginGetAnalysisResultsDelegate == null)) {
+                this.onBeginGetAnalysisResultsDelegate = new BeginOperationDelegate(this.OnBeginGetAnalysisResults);
             }
-            if ((this.onEndDownloadTaxonListDelegate == null)) {
-                this.onEndDownloadTaxonListDelegate = new EndOperationDelegate(this.OnEndDownloadTaxonList);
+            if ((this.onEndGetAnalysisResultsDelegate == null)) {
+                this.onEndGetAnalysisResultsDelegate = new EndOperationDelegate(this.OnEndGetAnalysisResults);
             }
-            if ((this.onDownloadTaxonListCompletedDelegate == null)) {
-                this.onDownloadTaxonListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadTaxonListCompleted);
+            if ((this.onGetAnalysisResultsCompletedDelegate == null)) {
+                this.onGetAnalysisResultsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAnalysisResultsCompleted);
             }
-            base.InvokeAsync(this.onBeginDownloadTaxonListDelegate, new object[] {
-                        list}, this.onEndDownloadTaxonListDelegate, this.onDownloadTaxonListCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetAnalysisResultsDelegate, new object[] {
+                        analysisKeys}, this.onEndGetAnalysisResultsDelegate, this.onGetAnalysisResultsCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAnalysisTaxonomicGroupsResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetAnalysisTaxonomicGroupsResults(analysisKeys, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> DiversityPhone.Service.IDiversityService.EndGetAnalysisTaxonomicGroupsResults(System.IAsyncResult result) {
+            return base.Channel.EndGetAnalysisTaxonomicGroupsResults(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetAnalysisTaxonomicGroupsResults(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            System.Collections.ObjectModel.ObservableCollection<int> analysisKeys = ((System.Collections.ObjectModel.ObservableCollection<int>)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetAnalysisTaxonomicGroupsResults(analysisKeys, callback, asyncState);
+        }
+        
+        private object[] OnEndGetAnalysisTaxonomicGroupsResults(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetAnalysisTaxonomicGroupsResults(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetAnalysisTaxonomicGroupsResultsCompleted(object state) {
+            if ((this.GetAnalysisTaxonomicGroupsResultsCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetAnalysisTaxonomicGroupsResultsCompleted(this, new GetAnalysisTaxonomicGroupsResultsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetAnalysisTaxonomicGroupsResultsAsync(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys) {
+            this.GetAnalysisTaxonomicGroupsResultsAsync(analysisKeys, null);
+        }
+        
+        public void GetAnalysisTaxonomicGroupsResultsAsync(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, object userState) {
+            if ((this.onBeginGetAnalysisTaxonomicGroupsResultsDelegate == null)) {
+                this.onBeginGetAnalysisTaxonomicGroupsResultsDelegate = new BeginOperationDelegate(this.OnBeginGetAnalysisTaxonomicGroupsResults);
+            }
+            if ((this.onEndGetAnalysisTaxonomicGroupsResultsDelegate == null)) {
+                this.onEndGetAnalysisTaxonomicGroupsResultsDelegate = new EndOperationDelegate(this.OnEndGetAnalysisTaxonomicGroupsResults);
+            }
+            if ((this.onGetAnalysisTaxonomicGroupsResultsCompletedDelegate == null)) {
+                this.onGetAnalysisTaxonomicGroupsResultsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAnalysisTaxonomicGroupsResultsCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetAnalysisTaxonomicGroupsResultsDelegate, new object[] {
+                        analysisKeys}, this.onEndGetAnalysisTaxonomicGroupsResultsDelegate, this.onGetAnalysisTaxonomicGroupsResultsCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetAvailablePropertyLists(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<string> DiversityPhone.Service.IDiversityService.EndGetAvailablePropertyLists(System.IAsyncResult result) {
+            return base.Channel.EndGetAvailablePropertyLists(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetAvailablePropertyLists(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetAvailablePropertyLists(callback, asyncState);
+        }
+        
+        private object[] OnEndGetAvailablePropertyLists(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<string> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetAvailablePropertyLists(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetAvailablePropertyListsCompleted(object state) {
+            if ((this.GetAvailablePropertyListsCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetAvailablePropertyListsCompleted(this, new GetAvailablePropertyListsCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetAvailablePropertyListsAsync() {
+            this.GetAvailablePropertyListsAsync(null);
+        }
+        
+        public void GetAvailablePropertyListsAsync(object userState) {
+            if ((this.onBeginGetAvailablePropertyListsDelegate == null)) {
+                this.onBeginGetAvailablePropertyListsDelegate = new BeginOperationDelegate(this.OnBeginGetAvailablePropertyLists);
+            }
+            if ((this.onEndGetAvailablePropertyListsDelegate == null)) {
+                this.onEndGetAvailablePropertyListsDelegate = new EndOperationDelegate(this.OnEndGetAvailablePropertyLists);
+            }
+            if ((this.onGetAvailablePropertyListsCompletedDelegate == null)) {
+                this.onGetAvailablePropertyListsCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAvailablePropertyListsCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetAvailablePropertyListsDelegate, null, this.onEndGetAvailablePropertyListsDelegate, this.onGetAvailablePropertyListsCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2097,6 +2389,19 @@ namespace DiversityPhone.Service {
                 return _result;
             }
             
+            public System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = list;
+                System.IAsyncResult _result = base.BeginInvoke("DownloadTaxonList", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> EndDownloadTaxonList(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName>)(base.EndInvoke("DownloadTaxonList", _args, result)));
+                return _result;
+            }
+            
             public System.IAsyncResult BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[0];
                 System.IAsyncResult _result = base.BeginInvoke("GetStandardVocabulary", _args, callback, asyncState);
@@ -2109,16 +2414,41 @@ namespace DiversityPhone.Service {
                 return _result;
             }
             
-            public System.IAsyncResult BeginDownloadTaxonList(string list, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginGetAnalysisResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
-                _args[0] = list;
-                System.IAsyncResult _result = base.BeginInvoke("DownloadTaxonList", _args, callback, asyncState);
+                _args[0] = analysisKeys;
+                System.IAsyncResult _result = base.BeginInvoke("GetAnalysisResults", _args, callback, asyncState);
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> EndDownloadTaxonList(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisResults(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.TaxonName>)(base.EndInvoke("DownloadTaxonList", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(base.EndInvoke("GetAnalysisResults", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetAnalysisTaxonomicGroupsResults(System.Collections.ObjectModel.ObservableCollection<int> analysisKeys, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = analysisKeys;
+                System.IAsyncResult _result = base.BeginInvoke("GetAnalysisTaxonomicGroupsResults", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisTaxonomicGroupsResults(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(base.EndInvoke("GetAnalysisTaxonomicGroupsResults", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[0];
+                System.IAsyncResult _result = base.BeginInvoke("GetAvailablePropertyLists", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<string> EndGetAvailablePropertyLists(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<string> _result = ((System.Collections.ObjectModel.ObservableCollection<string>)(base.EndInvoke("GetAvailablePropertyLists", _args, result)));
                 return _result;
             }
             

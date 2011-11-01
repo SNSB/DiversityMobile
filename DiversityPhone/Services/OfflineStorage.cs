@@ -39,17 +39,18 @@ using DiversityPhone.Utility;
             }
         }
 
-        public Service.HierarchySection getNewHierarchyBelow(EventSeries es)
+        public Service.HierarchySection getNewHierarchyBelow(Event ev)
         {
             //ES not New?
-            if (es.IsModified != null)
+            if (ev.IsModified != null)
                 return new Service.HierarchySection();
 
             return new Service.HierarchySection()
             {
-                EventSeries = es.ToModel()
-            };                
+                Event = ev.ToModel()
+            };   
         }
+
 
         public void updateHierarchy(Service.HierarchySection f, Service.HierarchySection to)
         {
@@ -67,6 +68,13 @@ using DiversityPhone.Utility;
             return new LightList<EventSeries>(ctx.EventSeries);
         }
 
+        public IList<EventSeries> getNewEventSeries()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<EventSeries>(from es in ctx.EventSeries
+                                                where es.IsModified == null
+                                                select es);
+        }
 
         public EventSeries getEventSeriesByID(int id)
         {
@@ -639,5 +647,9 @@ using DiversityPhone.Utility;
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
+
+       
+
+        
     }
 }

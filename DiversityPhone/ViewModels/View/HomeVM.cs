@@ -75,17 +75,18 @@
         private void registerUpload()
         {
             var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
-            (Upload = new ReactiveAsyncCommand())
-                    .Select(_ => getSections().ToObservable()).First()
+            Upload = new ReactiveAsyncCommand();
+                    /*.Select(_ => getUploadSectionsForSeries().ToObservable()).First()
                     .Select(section => Tuple.Create(section, uploadHierarchy(section).First()))
-                    .ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));
+                    .ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));*/
         }
 
-        private IEnumerable<Svc.HierarchySection> getSections()
+        private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries( EventSeries es)
         {
-            var eventseries = _storage.getNewEventSeries();
+            var events = _storage.getEventsForSeries(es)
+                        .Where(ev => ev.IsModified == null); // Only New Events
             
-            foreach (var series in eventseries)
+            foreach (var series in events)
             {
                 yield return _storage.getNewHierarchyBelow(series);
             }
