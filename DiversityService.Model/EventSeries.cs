@@ -12,10 +12,11 @@ namespace DiversityService.Model
         public string Description { get; set; }
         public string SeriesCode { get; set; }
         public String Geography { get; set; }
-        public DateTime SeriesStart { get; set; }
-        public DateTime SeriesEnd { get; set; }
+        public DateTime? SeriesStart { get; set; }
+        public DateTime? SeriesEnd { get; set; }
 
-        public DateTime LogUpdatedWhen { get; set; }
+        public DateTime? LogUpdatedWhen { get; set; }
 
+        
     }
 }

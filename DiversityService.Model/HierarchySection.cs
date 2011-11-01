@@ -8,15 +8,13 @@ namespace DiversityService.Model
 {
     
     public class HierarchySection
-    {
-        
-        IList<EventSeries> EventSeries { get; set; }
+    {        
+        public EventSeries EventSeries { get; set; }
 
-        
-        IList<Event> Events { get; set; }
+        public IList<Event> Events { get; set; }
 
-        IList<Specimen> Specimen { get; set; }
+        public IList<Specimen> Specimen { get; set; }
 
-        IList<IdentificationUnit> IdentificationUnits { get; set; }
+        public IList<IdentificationUnit> IdentificationUnits { get; set; }
     }
 }
