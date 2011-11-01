@@ -94,7 +94,7 @@
                     SpeciesEpithet = t.SpeciesEpithet,
                     InfraspecificEpithet = t.InfraspecificEpithet,
                     GenusOrSupragenic = t.GenusOrSupragenic
-                })));
+                }),0));
 
         }        
 

@@ -12,9 +12,7 @@
     {
         public Event()
         {
-            this.CollectionDay = DateTime.Now.Day;
-            this.CollectionMonth = DateTime.Now.Month;
-            this.CollectionYear = DateTime.Now.Year;
+            this.CollectionDate = DateTime.Now;
             this.DeterminationDate = DateTime.Now;
             this.IsModified = null;
         }
@@ -26,13 +24,7 @@
         public int SeriesID { get; set; }
 
         [Column]
-        public int CollectionDay { get; set; }
-
-        [Column]
-        public int CollectionMonth { get; set; }
-
-        [Column]
-        public int CollectionYear{ get; set; }
+        public DateTime CollectionDate { get; set; }
 
         [Column]
         public string LocalityDescription { get; set; }
@@ -53,13 +45,15 @@
         [Column]
         public DateTime DeterminationDate { get; set; }
 
-        public DateTime LogUpdatedWhen { get; set; }
-
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }        
+        public bool? IsModified { get; set; }
+
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
+
     }
 }

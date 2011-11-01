@@ -13,8 +13,17 @@ namespace DiversityPhone.ViewModels
 {
     public enum Icon
     {
+        Home,
         EventSeries,
         NoEventSeries,
-        Observation
+        Event,
+        CollectionEventProperty,
+        GPS,
+        Specimen,
+        Observation,
+        IdentificationUnit,
+        Analysis,
+        Map,
+        Multimedia
     }
 }

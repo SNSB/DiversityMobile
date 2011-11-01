@@ -10,34 +10,36 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 
+
 namespace DiversityPhone.Model
 {
     [Table]
-    public class IdentificationUnitAnalysis
+    public class AnalysisResult
     {
-        [Column(IsPrimaryKey = true)]
-        public int IdentificationUnitID { get; set; }
-        
+
+        public AnalysisResult()
+        {
+            LogUpdatedWhen = DateTime.Now;
+        }
+
+        //Read-Only
         [Column(IsPrimaryKey = true)]
         public int AnalysisID { get; set; }
-        
+
         [Column(IsPrimaryKey = true)]
-        public int IdentificationUnitAnalysisID { get; set; }
-        
-        [Column]
-        public string AnalysisResult { get; set; }
+        public string Result { get; set; }
 
         [Column]
-        public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
+        public string Description { get; set; }
 
-        /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
-        /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        [Column]
+        public string Notes { get; set; }
+
+        [Column]
+        public string DisplayText { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
     }
 }

@@ -10,32 +10,26 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 
+
 namespace DiversityPhone.Model
 {
     [Table]
-    public class MultimediaObject
+    public class AnalysisTaxonomicGroup
     {
+        public AnalysisTaxonomicGroup()
+        {
+            LogUpdatedWhen = DateTime.Now;
+        }
+
+        //Read-Only
         [Column(IsPrimaryKey = true)]
-        public int SourceId { get; set; }
+        public int AnalysisID { get; set; }
 
         [Column(IsPrimaryKey = true)]
-        public int RelatedId { get; set; }
+        public string TaxonomicGroup { get; set; }
 
-        [Column(IsPrimaryKey = true)]
-        public String Uri { get; set; }
-
-        [Column]
-        public String MediaType { get; set; }
-
-       
-        /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
-        /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
-        
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
     }
 }

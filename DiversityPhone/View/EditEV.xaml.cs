@@ -61,7 +61,7 @@ namespace DiversityPhone
         private void Cancel_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Cancel.Execute(null);
+                VM.Edit.Execute(null);
         }
     }
 }

@@ -18,7 +18,8 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }
+        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
@@ -58,9 +59,11 @@ namespace DiversityPhone.ViewModels
                 (Save = new ReactiveCommand(canSave))               
                     .Subscribe(_ => executeSave()),
 
-                (Cancel = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),        
+                (Edit = new ReactiveCommand())
+                    .Subscribe(_ => enableEdit()),        
                
+                (Delete = new ReactiveCommand())
+                    .Subscribe(_ => delete()),
                 //Read-Only Eigenschaften direkt ans Model Binden
                 //Nur Veränderbare Properties oder abgeleitete so binden
                 modelPropertyObservable                    
@@ -84,6 +87,17 @@ namespace DiversityPhone.ViewModels
             updateModel();
             _messenger.SendMessage<Specimen>(Model, MessageContracts.SAVE);
             _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+        private void delete()
+        {
+            _messenger.SendMessage<Specimen>(Model, MessageContracts.DELETE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+
+        private void enableEdit()
+        {
         }
 
         private void updateModel()

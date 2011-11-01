@@ -19,7 +19,8 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }
+        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
@@ -66,7 +67,7 @@ namespace DiversityPhone.ViewModels
                 (Save = new ReactiveCommand(canSave))               
                     .Subscribe(_ => executeSave()),
 
-                (Cancel = new ReactiveCommand())
+                (Edit = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
 
                 _messenger.Listen<Event>(MessageContracts.EDIT)
@@ -81,6 +82,15 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
+        private void delete()
+        {
+            _messenger.SendMessage<Event>(Model, MessageContracts.DELETE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+        private void enableEdit()
+        {
+        }
         private void updateModel()
         {
             Model.LocalityDescription = LocalityDescription;

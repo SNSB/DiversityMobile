@@ -8,27 +8,33 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+
+using System;
 using System.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {
     [Table]
-    public class IdentificationUnitAnalysis
+    public class Map
     {
+
         [Column(IsPrimaryKey = true)]
-        public int IdentificationUnitID { get; set; }
-        
-        [Column(IsPrimaryKey = true)]
-        public int AnalysisID { get; set; }
-        
-        [Column(IsPrimaryKey = true)]
-        public int IdentificationUnitAnalysisID { get; set; }
-        
-        [Column]
-        public string AnalysisResult { get; set; }
+        public String Uri { get; set; }
 
         [Column]
-        public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
+        public String Name { get; set; }
+
+        [Column]
+        public double LatitudeNorth { get; set; }
+
+        [Column]
+        public double LatitudeSouth { get; set; }
+
+        [Column]
+        public double LongitudeWest { get; set; }
+
+        [Column]
+        public double LongitudeEast { get; set; }
 
         /// <summary>
         /// Tracks modifications to this Object.
@@ -39,5 +45,11 @@ namespace DiversityPhone.Model
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
+        public Map()
+        {
+            this.IsModified = null;
+            this.LogUpdatedWhen = DateTime.Now;
+        }
     }
 }

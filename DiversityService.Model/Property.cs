@@ -10,16 +10,16 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace DiversityService.Model
-{    
-    public class Term
+{
+    public class Property
     {
         //Read-Only
 
-        public string Code { get; set; }
-        public int SourceID { get; set; }
-        public string Description { get; set; }
+        public int PropertyID { get; set; }
+        public string PropertyName { get; set; }
         public string DisplayText { get; set; }
-        public string ParentCode { get; set; }
+        public string Description { get; set; }
+
         public DateTime LogUpdatedWhen { get; set; }
     }
 }

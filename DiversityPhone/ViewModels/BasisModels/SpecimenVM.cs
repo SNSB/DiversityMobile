@@ -24,7 +24,7 @@
         {
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (model == null) throw new ArgumentNullException("model");
-
+            Icon = Icon.Specimen;
 
             _messenger = messenger;
             Model = model;

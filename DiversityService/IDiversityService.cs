@@ -19,13 +19,19 @@ namespace DiversityService
 
         [OperationContract]
         IList<TermList> GetTaxonListsForUser(UserProfile user);
-
-        [OperationContract]
-        IEnumerable<Term> GetStandardVocabulary();
-
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(string list);
 
+        [OperationContract]
+        IEnumerable<Term> GetStandardVocabulary();
+        [OperationContract]
+        IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
+        [OperationContract]
+        IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys);
+
+
+        [OperationContract]
+        IEnumerable<string> GetAvailablePropertyLists();
         [OperationContract]
         IEnumerable<PropertyName> DownloadPropertyList(string list);
 

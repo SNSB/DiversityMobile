@@ -10,7 +10,6 @@
     public class EventSeriesVM : ReactiveObject
     {
         IList<IDisposable> _subscriptions;
-
         IMessageBus _messenger;
 
         public ReactiveCommand Select { get; private set; }
@@ -24,6 +23,7 @@
         {
             _messenger = messenger;
             Model = model;
+            Icon = ViewModels.Icon.EventSeries;
 
             _subscriptions = new List<IDisposable>()
             {

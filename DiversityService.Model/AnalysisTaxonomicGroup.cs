@@ -10,16 +10,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
 namespace DiversityService.Model
-{    
-    public class Term
+{
+    public class AnalysisTaxonomicGroup
     {
         //Read-Only
-
-        public string Code { get; set; }
-        public int SourceID { get; set; }
-        public string Description { get; set; }
-        public string DisplayText { get; set; }
-        public string ParentCode { get; set; }
+        public int AnalysisID { get; set; }
+        public string TaxonomicGroup { get; set; }
         public DateTime LogUpdatedWhen { get; set; }
+
     }
 }

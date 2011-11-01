@@ -25,7 +25,15 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
+        public IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
+        {
+            throw new NotImplementedException();
+        }
 
+        public IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
+        {
+            throw new NotImplementedException();
+        }
         public IList<Model.TermList> GetTaxonListsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
@@ -78,10 +86,15 @@ namespace DiversityService
             }
         }
 
-        public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
+        public IEnumerable<string> GetAvailablePropertyLists()
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
+        {
+            throw new NotImplementedException();
+        }  
 
     }
 }

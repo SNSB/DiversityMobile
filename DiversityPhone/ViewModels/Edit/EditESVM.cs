@@ -19,7 +19,8 @@
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }
+        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
@@ -71,8 +72,6 @@
 
             _messenger = messenger;
 
-
-
             var canSave = this.ObservableForProperty(x => x.Description)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
                 .StartWith(false);
@@ -82,9 +81,10 @@
                 (Save = new ReactiveCommand(canSave))               
                     .Subscribe(_ => executeSave()),
 
-                (Cancel = new ReactiveCommand())
+                (Edit = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
-
+                (Delete = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                     .Subscribe(es => updateView(es))
             };
@@ -97,6 +97,17 @@
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
             _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+        private void delete()
+        {
+            _messenger.SendMessage<EventSeries>(Model, MessageContracts.DELETE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+
+        private void enableEdit()
+        {
         }
 
         private void updateModel()
