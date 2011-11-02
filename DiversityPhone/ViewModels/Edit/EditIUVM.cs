@@ -90,8 +90,7 @@ namespace DiversityPhone.ViewModels
                 .Select(m => m.RelatedUnitID == null);
             _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
 
-            var canSave = this.ObservableForProperty(x => x.SelectedTaxGroup)
-                                .Select(change => change.Value != null).StartWith(false);
+            var canSave = validationObservable();
 
             _subscriptions = new List<IDisposable>()
             {            
@@ -124,6 +123,15 @@ namespace DiversityPhone.ViewModels
 
         private void enableEdit()
         {
+        }
+
+         private IObservable<bool> validationObservable()
+        {
+            var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
+                .Select(term => term != null)
+                .StartWith(false);           
+
+            return taxonomicGroupIsSet;
         }
 
         private void updateModel()

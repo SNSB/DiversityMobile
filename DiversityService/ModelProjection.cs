@@ -7,7 +7,7 @@ using Model = DiversityService.Model;
 
 namespace DiversityService
 {
-    static class ModelProjection
+    public static class ModelProjection
     {
         public static DB.CollectionEventSeries ToEntity(this Model.EventSeries model)
         {        
@@ -17,8 +17,10 @@ namespace DiversityService
                 DateStart = model.SeriesStart,
                 DateEnd = model.SeriesEnd,
                 Description = model.Description,
-                SeriesCode = model.SeriesCode
-                //TODO Geography                
+                SeriesCode = model.SeriesCode,
+                //TODO Geography    
+            
+                RowGUID = Guid.NewGuid(),
             };
         }
 
@@ -33,6 +35,43 @@ namespace DiversityService
                 SeriesCode = entity.SeriesCode,
                 LogUpdatedWhen = entity.LogUpdatedWhen
                 //TODO Geography                
+            };
+        }
+
+        public static DB.CollectionEvent ToEntity(this Model.Event model)
+        {
+            return new DB.CollectionEvent()
+            {
+                CollectionEventID = model.EventID,
+                SeriesID = model.SeriesID,
+
+                CollectionYear = (short)model.CollectionDate.Year,
+                CollectionMonth = (byte)model.CollectionDate.Month,
+                CollectionDay = (byte)model.CollectionDate.Day,
+                LocalityDescription = model.LocalityDescription,
+                HabitatDescription = model.HabitatDescription,
+                
+                //TODO CollectingMethod
+                
+
+                RowGUID = Guid.NewGuid(),
+            };
+        }
+
+        public static Model.Event ToModel(this DB.CollectionEvent entity)
+        {
+            return new Model.Event()
+            {
+                EventID = entity.CollectionEventID,
+                SeriesID = entity.SeriesID,
+
+                CollectionDate = 
+                (entity.CollectionYear != null && entity.CollectionMonth != null && entity.CollectionDay != null) ? 
+                    new DateTime((int)entity.CollectionYear, (int)entity.CollectionMonth, (int)entity.CollectionDay) 
+                    : DateTime.Now, 
+                LocalityDescription = entity.LocalityDescription,
+                HabitatDescription = entity.HabitatDescription,
+                
             };
         }
     }

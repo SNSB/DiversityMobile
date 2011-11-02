@@ -1,12 +1,12 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using ReactiveUI;
-    using DiversityPhone.Messages;
-    using DiversityPhone.Utility;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using ReactiveUI;
+using DiversityPhone.Messages;
+using DiversityPhone.Utility;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -69,6 +69,13 @@
             return new LightList<EventSeries>(ctx.EventSeries);
         }
 
+        public IList<EventSeries> getNewEventSeries()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<EventSeries>(from es in ctx.EventSeries
+                                                where es.IsModified == null
+                                                select es);
+        }
 
         public EventSeries getEventSeriesByID(int id)
         {
@@ -638,8 +645,17 @@
             }
         }
 
-        #endregion
+        #endregion     
+    
+
+        private void withDataContext(Action<DiversityDataContext> operation)
+        {
+            using (var ctx = new DiversityDataContext())
+                operation(ctx);
+        }
 
        
+
+        
     }
 }

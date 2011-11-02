@@ -31,11 +31,7 @@ namespace DiversityPhone
                 VM.Save.Execute(null);
         }
 
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Cancel.Execute(null);
-        }
+       
 
         private void Description_TextChanged(object sender, TextChangedEventArgs e)
         {

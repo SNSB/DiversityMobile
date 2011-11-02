@@ -120,6 +120,7 @@
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
+    <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
@@ -280,10 +281,19 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Service References\Service\DiversityPhone.Service.AnalysisResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.EventSeries.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\Service\DiversityPhone.Service.HierarchySection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.Project.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Service\DiversityPhone.Service.PropertyName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Service\DiversityPhone.Service.TaxonName.datasource">
@@ -297,6 +307,9 @@
     </None>
     <None Include="Service References\Service\DiversityService.wsdl" />
     <None Include="Service References\Service\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Service\Service11.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\Service\Service12.xsd">
@@ -326,6 +339,7 @@
     <None Include="Service References\Service\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>

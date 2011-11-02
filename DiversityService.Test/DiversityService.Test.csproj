@@ -5,13 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DEBEAB2D-FA96-4898-B867-A029F134F12E}</ProjectGuid>
+    <ProjectGuid>{3AF3BEB2-CD9B-4277-8291-420D6ED7338B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DiversityService</RootNamespace>
-    <AssemblyName>DiversityService</AssemblyName>
+    <RootNamespace>DiversityService.Test</RootNamespace>
+    <AssemblyName>DiversityService.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,51 +33,32 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.8.0.1549\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.8.0.1549\lib\xunit.extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiversityCollection.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollection.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityMobile.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityMobile.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityService.cs" />
-    <Compile Include="IDiversityService.cs" />
-    <Compile Include="ModelProjection.cs" />
+    <Compile Include="DiversityServiceTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="DiversityCollection.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
-    <EntityDeploy Include="DiversityMobile.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
-    </EntityDeploy>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
       <Project>{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}</Project>
       <Name>DiversityService.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityService\DiversityService.csproj">
+      <Project>{DEBEAB2D-FA96-4898-B867-A029F134F12E}</Project>
+      <Name>DiversityService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
