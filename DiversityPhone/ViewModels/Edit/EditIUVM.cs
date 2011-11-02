@@ -7,6 +7,7 @@ using DiversityPhone.Services;
 using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using DiversityPhone.Utility;
 
 namespace DiversityPhone.ViewModels
 {
@@ -21,7 +22,8 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Cancel { get; private set; }
+        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
@@ -29,26 +31,12 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
 
 
-        private string _AccessionNumber;
-        public string AccessionNumber
-        {
-            get
-            {
-                return _AccessionNumber;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.AccessionNumber, ref _AccessionNumber, value);
-            }
-        }
-
-
         private IList<Term> _TaxonomicGroups = null;
         public IList<Term> TaxonomicGroups
         {
             get
             {
-                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(0));
+                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms((int) SourceID.TaxonomicGroup));
             }
         }
 
@@ -106,12 +94,12 @@ namespace DiversityPhone.ViewModels
 
             _subscriptions = new List<IDisposable>()
             {            
-                (Cancel = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+                (Edit = new ReactiveCommand())
+                    .Subscribe(_ => enableEdit()),
 
                 model.Select(m => m.TaxonomicGroup)
                     .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
-                    .Subscribe(x => SelectedTaxGroup = x),                
+                    .Subscribe(x => SelectedTaxGroup = x),
 
                 (Save = new ReactiveCommand(canSave))
                     .Subscribe(_ =>
@@ -121,12 +109,23 @@ namespace DiversityPhone.ViewModels
                             _messenger.SendMessage<Message>(Message.NavigateBack);
                         }),
 
-                (Cancel = new ReactiveCommand())
-                    .Subscribe(_=>_messenger.SendMessage<Message>(Message.NavigateBack)),
+                (Delete = new ReactiveCommand())
+                    .Subscribe(_=> delete()),
             };
         }
 
-        private IObservable<bool> validationObservable()
+        private void delete()
+        {
+            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.DELETE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+
+        private void enableEdit()
+        {
+        }
+
+         private IObservable<bool> validationObservable()
         {
             var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
                 .Select(term => term != null)
@@ -136,7 +135,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private void updateModel()
-        {           
+        {
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
         }
     }

@@ -25,14 +25,11 @@ namespace DiversityPhone.Model
         public int IdentificationUnitAnalysisID { get; set; }
         
         [Column]
-        public string AnalyssisResult { get; set; }
+        public string AnalysisResult { get; set; }
 
         [Column]
         public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
 
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
@@ -40,5 +37,7 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public bool? IsModified { get; set; }
 
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿
+using System;
+using System.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {
-    using System;
-    using System.Data.Linq.Mapping;
 
     [Table]
     public class IdentificationUnit
@@ -11,6 +11,7 @@ namespace DiversityPhone.Model
         public IdentificationUnit()
         {
             this.IsModified = null;
+            this.LogUpdatedWhen = DateTime.Now;
             this.RelatedUnitID = null;
         }
 
@@ -68,8 +69,6 @@ namespace DiversityPhone.Model
         [Column]
         public DateTime AnalysisDate { get; set; }
 
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
@@ -77,5 +76,7 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public bool? IsModified { get; set; }
 
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
     }
 }

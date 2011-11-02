@@ -11,9 +11,7 @@ namespace DiversityService
         public IList<Model.EventSeries> GetSeriesByDescription(string description)
         {
             throw new NotImplementedException();
-        }
-
-       
+        }       
 
         public IList<Model.EventSeries> AllEventSeries()
         {
@@ -25,7 +23,15 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
+        public IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
+        {
+            throw new NotImplementedException();
+        }
 
+        public IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
+        {
+            throw new NotImplementedException();
+        }
         public IList<Model.TermList> GetTaxonListsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
@@ -78,6 +84,11 @@ namespace DiversityService
             }
         }
 
+        public IEnumerable<string> GetAvailablePropertyLists()
+        {
+            throw new NotImplementedException();
+        }
+
         public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
         {
             throw new NotImplementedException();
@@ -89,15 +100,12 @@ namespace DiversityService
         {
             var result = new HierarchySection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
-            {
-                var es = hierarchy.EventSeries.ToEntity();
-
-                ctx.CollectionEventSeries.AddObject(es );
-
-
+            {               
+                var newEventEntity = hierarchy.Event.ToEntity();
+                ctx.CollectionEvent.AddObject(newEventEntity);
 
                 ctx.SaveChanges();
-                result.EventSeries = es.ToModel();
+                result.Event = newEventEntity.ToModel();
             }
             return result;
         }

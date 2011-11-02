@@ -1,11 +1,12 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using ReactiveUI;
-    using DiversityPhone.Messages;
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using ReactiveUI;
+using DiversityPhone.Messages;
+using DiversityPhone.Utility;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -38,16 +39,25 @@
             }
         }
 
-        public Service.HierarchySection getNewHierarchyBelow(EventSeries es)
+        public Service.HierarchySection getNewHierarchyBelow(Event ev)
         {
             //ES not New?
-            if (es.IsModified != null)
+            if (ev.IsModified != null)
                 return new Service.HierarchySection();
 
             return new Service.HierarchySection()
             {
-                EventSeries = es.ToModel()
-            };                
+                Event = ev.ToModel()
+            };   
+        }
+
+
+        public void updateHierarchy(Service.HierarchySection f, Service.HierarchySection to)
+        {
+            withDataContext(ctx =>
+                {
+                     
+                });
         }
 
         #region EventSeries
@@ -60,18 +70,23 @@
 
         public IList<EventSeries> getNewEventSeries()
         {
-            throw new NotImplementedException();
+            var ctx = new DiversityDataContext();
+            return new LightList<EventSeries>(from es in ctx.EventSeries
+                                                where es.IsModified == null
+                                                select es);
         }
-
-        public IList<EventSeries> getEventSeriesByDescription(string query)
-        {
-            throw new NotImplementedException();
-        }
-
 
         public EventSeries getEventSeriesByID(int id)
         {
-            throw new NotImplementedException();
+            var ctx = new DiversityDataContext();
+            LightList<EventSeries> esList= new LightList<EventSeries>(from es in ctx.EventSeries
+                                        where es.SeriesID == id
+                                        select es);
+            if (esList.Count == 0)
+                throw new KeyNotFoundException("No series with ID: " + id);
+            else if (esList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
+            else return esList[0];
         }
 
 
@@ -92,6 +107,7 @@
             using (var ctx = new DiversityDataContext())
             {
                 newSeries.SeriesID = findFreeEventSeriesID(ctx);
+                newSeries.LogUpdatedWhen = DateTime.Now;
                 ctx.EventSeries.InsertOnSubmit(newSeries);
                 ctx.SubmitChanges();
             }
@@ -115,6 +131,14 @@
                                         select e);
         }
 
+        public IList<Event> getEventsWithoutSeries()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Event>(from e in ctx.Events
+                                        where e.SeriesID == null
+                                        select e);
+        }
+
         private static int findFreeEventID(DiversityDataContext ctx)
         {
             int min = -1;
@@ -129,11 +153,36 @@
             {
                 if (ev.IsModified == null)
                     ev.EventID = findFreeEventID(ctx);
+                ev.LogUpdatedWhen = DateTime.Now;
                 ctx.Events.InsertOnSubmit(ev);
                 ctx.SubmitChanges();
             }
         }
         #endregion
+
+        #region CollectionEventProperties
+
+        public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<CollectionEventProperty>(from cep in ctx.CollectionEventProperties
+                                        where cep.EventID == ev.EventID
+                                        select cep);
+        }
+
+        public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                cep.LogUpdatedWhen = DateTime.Now;
+                ctx.CollectionEventProperties.InsertOnSubmit(cep);
+                ctx.SubmitChanges();
+            }
+        }
+
+
+        #endregion
+
 
         #region Specimen
 
@@ -152,6 +201,14 @@
                                            select spec);
         }
 
+        public IList<Specimen> getSpecimenWithoutEvent()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Specimen>(from spec in ctx.Specimen
+                                        where spec.CollectionEventID == null
+                                        select spec);
+        }
+
         private static int findFreeSpecimenID(DiversityDataContext ctx)
         {
             int min = -1;
@@ -166,7 +223,6 @@
             {
                 if (spec.IsModified == null)
                     spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
-
                 ctx.Specimen.InsertOnSubmit(spec);
                 ctx.SubmitChanges();
             }
@@ -193,8 +249,18 @@
                                                      select iu);
         }
 
-
-
+        public IdentificationUnit getIUbyID(int id)
+        {
+            var ctx = new DiversityDataContext();
+            LightList<IdentificationUnit> iuList = new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
+                                                                       where iu.UnitID == id
+                                                                       select iu);
+            if (iuList.Count == 0)
+                throw new KeyNotFoundException("No IU with ID: " + id);
+            else if (iuList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
+            else return iuList[0];
+        }
 
         private static int findFreeUnitID(DiversityDataContext ctx)
         {
@@ -210,12 +276,182 @@
             {
                 if (iu.IsModified == null)
                     iu.UnitID = findFreeUnitID(ctx);
-
                 ctx.IdentificationUnits.InsertOnSubmit(iu);
                 ctx.SubmitChanges();
             }
         }
 
+        #endregion
+
+        #region Analyses
+
+        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<IdentificationUnitAnalysis>(from iua in ctx.IdentificationUnitAnalyses
+                                                     where iua.IdentificationUnitID == iu.UnitID
+                                                     select iua);
+        }
+
+        private static int findFreeAnalysisID(DiversityDataContext ctx)
+        {
+            int min = -1;
+            if (ctx.IdentificationUnitAnalyses.Any())
+                min = (from iua in ctx.IdentificationUnitAnalyses select iua.IdentificationUnitAnalysisID).Min();
+            return (min > -1) ? -1 : min - 1;
+        }
+
+        public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                if (iua.IsModified == null)
+                    iua.IdentificationUnitAnalysisID = findFreeAnalysisID(ctx);
+                ctx.IdentificationUnitAnalyses.InsertOnSubmit(iua);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public IList<Analysis> getAllAnalyses()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Analysis>(ctx.Analyses);
+        }
+
+        public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
+        {
+            IList<AnalysisTaxonomicGroup> allowed = this.getAnalysisTaxonomicGroups(taxonomicGroup);
+            IList<Analysis> all = this.getAllAnalyses();
+            IList<Analysis> possible = new List<Analysis>();
+            foreach (Analysis ana in all)
+            {
+                foreach (AnalysisTaxonomicGroup atg in allowed)
+                {
+                    if (ana.AnalysisID == atg.AnalysisID)
+                    {
+                        possible.Add(ana);
+                        break;
+                    }
+                }
+            }
+            return possible;
+        }
+
+        public Analysis getAnalysis(int analysisID)
+        {
+            var ctx = new DiversityDataContext();
+            LightList<Analysis> anaList = new LightList<Analysis>(from ana in ctx.Analyses
+                                                                       where ana.AnalysisID == analysisID
+                                                                       select ana);
+            if (anaList.Count == 0)
+                throw new KeyNotFoundException("No analysis with ID: " + analysisID);
+            else if (anaList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + analysisID);
+            else return anaList[0];
+        }
+
+        public void addAnalyses(IEnumerable<Analysis> analyses)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.Analyses.InsertAllOnSubmit(analyses);
+                ctx.SubmitChanges();
+            }
+        }
+
+
+        public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<AnalysisResult>(from ar in ctx.AnalysisResults
+                                                             where ar.AnalysisID == analysisID
+                                                             select ar);
+        }
+        public void addAnalysisResults(IEnumerable<AnalysisResult> results)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.AnalysisResults.InsertAllOnSubmit(results);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxGroup)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<AnalysisTaxonomicGroup>(from atg in ctx.AnalysisTaxonomicGroups
+                                                 where atg.TaxonomicGroup.Equals(taxGroup)
+                                                 select atg);
+        }
+
+        public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.AnalysisTaxonomicGroups.InsertAllOnSubmit(groups);
+                ctx.SubmitChanges();
+            }
+        }
+        
+      
+
+        #endregion
+
+        #region Multimedia
+
+        public IList<MultimediaObject> getAllMultimediaObjects()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<MultimediaObject>(ctx.MultimediaObjects);
+        }
+
+        public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
+                                                             where mmo.SourceId == (int) SourceID.EventSeries
+                                                             && mmo.RelatedId==es.SeriesID
+                                                             select mmo);
+        }
+
+      
+        public IList<MultimediaObject> getMultimediaForEvent(Event ev)
+        {
+
+            var ctx = new DiversityDataContext();
+            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
+                                                   where mmo.SourceId == (int)SourceID.Event
+                                                   && mmo.RelatedId == ev.EventID
+                                                   select mmo);
+        }
+
+
+        public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
+                                                   where mmo.SourceId == (int)SourceID.Specimen
+                                                   && mmo.RelatedId == spec.CollectionSpecimenID
+                                                   select mmo);
+        }
+
+        public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
+                                                   where mmo.SourceId == (int)SourceID.IdentificationUnit
+                                                   && mmo.RelatedId == iu.UnitID
+                                                   select mmo);
+        }
+
+        public void addMultimediaObject(MultimediaObject mmo)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.MultimediaObjects.InsertOnSubmit(mmo);
+                ctx.SubmitChanges();
+            }
+        }
         #endregion
 
         #region Terms
@@ -245,23 +481,132 @@
 
         #region TaxonNames
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa)
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID)
         {
             using (var ctx = new DiversityDataContext())
             {
-                ctx.TaxonNames.InsertAllOnSubmit(taxa);
+                switch (tableID)
+                {
+                    case 0: ctx.TaxonNames0.InsertAllOnSubmit(taxa);
+                        break;
+                    case 1: ctx.TaxonNames1.InsertAllOnSubmit(taxa);
+                        break;
+                    case 2: ctx.TaxonNames2.InsertAllOnSubmit(taxa);
+                        break;
+                    case 3: ctx.TaxonNames3.InsertAllOnSubmit(taxa);
+                        break;
+                    case 4: ctx.TaxonNames4.InsertAllOnSubmit(taxa);
+                        break;
+                    case 5: ctx.TaxonNames5.InsertAllOnSubmit(taxa);
+                        break;
+                    case 6: ctx.TaxonNames6.InsertAllOnSubmit(taxa);
+                        break;
+                    case 7: ctx.TaxonNames7.InsertAllOnSubmit(taxa);
+                        break;
+                    case 8: ctx.TaxonNames8.InsertAllOnSubmit(taxa);
+                        break;
+                    case 9: ctx.TaxonNames9.InsertAllOnSubmit(taxa);
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+                }
                 ctx.SubmitChanges();
+            }
+        }
+
+        public IList<TaxonName> getTaxonNames(int tableID)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                switch (tableID)
+                {
+                    case 0: return new LightList<TaxonName>(from taxa in ctx.TaxonNames0
+                                                            select taxa);
+                    case 1: return new LightList<TaxonName>(from taxa in ctx.TaxonNames1
+                                                            select taxa);
+                    case 2: return new LightList<TaxonName>(from taxa in ctx.TaxonNames2
+                                                            select taxa);
+                    case 3: return new LightList<TaxonName>(from taxa in ctx.TaxonNames3
+                                                            select taxa);
+                    case 4: return new LightList<TaxonName>(from taxa in ctx.TaxonNames4
+                                                            select taxa);
+                    case 5: return new LightList<TaxonName>(from taxa in ctx.TaxonNames5
+                                                            select taxa);
+                    case 6: return new LightList<TaxonName>(from taxa in ctx.TaxonNames6
+                                                            select taxa);
+                    case 7: return new LightList<TaxonName>(from taxa in ctx.TaxonNames7
+                                                            select taxa);
+                    case 8: return new LightList<TaxonName>(from taxa in ctx.TaxonNames8
+                                                            select taxa);
+                    case 9: return new LightList<TaxonName>(from taxa in ctx.TaxonNames9
+                                                            select taxa);
+                    default:
+                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+                }
             }
         }
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup)
         {
             var ctx = new DiversityDataContext();
-            return new LightList<TaxonName>(from taxa in ctx.TaxonNames
-                                            select taxa);
+            IList <TaxonSelection> selection= new LightList<TaxonSelection>(from ts in ctx.taxonSelection
+                                                                    where ts.taxonomicGroup.Equals(taxonGroup.Code)
+                                                                    && ts.isSelected == true
+                                                                    select ts);
+            if (selection.Count == 0)
+                throw new KeyNotFoundException();
+            else if (selection.Count > 1)
+                throw new PrimaryKeyViolationException();
+            TaxonSelection selected = selection[0];
+            return this.getTaxonNames(selected.tableID);
         }
 
         #endregion
+
+        #region PropertyNames
+
+        public void addPropertyNames(IEnumerable<PropertyName> properties)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.PropertyNames.InsertAllOnSubmit(properties);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public IList<PropertyName> getPropertyNames(Property prop)
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<PropertyName>(from props in ctx.PropertyNames
+                                               where props.PropertyID==prop.PropertyID
+                                            select props);
+        }
+
+        #endregion
+
+        #region Maps
+
+        public IList<Map> getAllMaps()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<Map>(from maps in ctx.Maps
+                                            select maps);
+        }
+        public IList<Map> getMapsForRectangle(double latitudeNorth, double latitudeSouth, double longitudeWest, double longitudeEast)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void addMap(Map map)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.Maps.InsertOnSubmit(map);
+                ctx.SubmitChanges();
+            }
+        }
+        #endregion
+
 
         #region SampleData
         private void sampleData()
@@ -295,5 +640,16 @@
         }
 
         #endregion     
+    
+
+        private void withDataContext(Action<DiversityDataContext> operation)
+        {
+            using (var ctx = new DiversityDataContext())
+                operation(ctx);
+        }
+
+       
+
+        
     }
 }

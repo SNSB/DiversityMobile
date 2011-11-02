@@ -16,9 +16,8 @@
         public ReactiveCommand Select { get; private set; }
         public ReactiveCommand Edit { get; private set; }
 
-
         public IdentificationUnit Model { get; private set; }
-        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID); } }
+        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.LastIdentificationCache ?? ""); } }
         public Icon Icon { get; private set; }
 
         public IList<IdentificationUnitVM> SubUnits { get; private set; }
@@ -34,6 +33,7 @@
             _messenger = messenger;
             SubUnits = subunits;
             Model = model;
+            Icon = Icon.IdentificationUnit;
 
             _subscriptions = new List<IDisposable>()
             {

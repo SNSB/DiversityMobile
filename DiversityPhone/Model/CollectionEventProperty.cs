@@ -33,8 +33,7 @@ namespace DiversityPhone.Model
         [Column]   
         public String PropertyUri { get; set; }
 
-        [Column]   
-        public DateTime LogUpdatedWhen { get; set; }
+      
 
 
         /// <summary>
@@ -42,7 +41,9 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }  
+        public bool? IsModified { get; set; }
+        [Column]
+        public DateTime LogUpdatedWhen { get; set; }
    
 
     }

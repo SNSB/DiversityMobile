@@ -8,19 +8,19 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DiversityService.Model")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("DiversityService.Model")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Durch Festlegen von "ComVisible" auf "false" werden die Typen in dieser Assembly unsichtbar 
-// für COM-Komponenten. Wenn Sie auf einen Typen in dieser Assembly von 
+// Durch Festlegen von ComVisible auf "false" werden die Typen in dieser Assembly unsichtbar 
+// für COM-Komponenten. Wenn Sie auf einen Typ in dieser Assembly von 
 // COM zugreifen müssen, legen Sie das ComVisible-Attribut für diesen Typ auf "true" fest.
 [assembly: ComVisible(false)]
 
-// Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird.
-[assembly: Guid("b828e82a-d353-4a54-afd2-0944bfae601d")]
+// Die folgende GUID bestimmt die ID der Typbibliothek, wenn dieses Projekt für COM verfügbar gemacht wird
+[assembly: Guid("5840d49b-fa67-42ea-925d-4177f8fda16f")]
 
 // Versionsinformationen für eine Assembly bestehen aus den folgenden vier Werten:
 //
@@ -29,7 +29,8 @@ using System.Runtime.InteropServices;
 //      Buildnummer
 //      Revision
 //
-// Sie können alle Werte festlegen, oder Sie können die Standardwerte für die Revisions- und Buildnummern 
+// Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
+// [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

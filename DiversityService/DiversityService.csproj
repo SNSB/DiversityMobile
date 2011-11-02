@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{75B19FF7-6F31-40CC-A74C-6C8CD2FCD750}</Project>
+      <Project>{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}</Project>
       <Name>DiversityService.Model</Name>
     </ProjectReference>
   </ItemGroup>

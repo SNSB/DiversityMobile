@@ -18,5 +18,23 @@ namespace DiversityPhone.Services
                 //TODO Geography
             };            
         }
+
+        public static Service.Event ToModel(this Client.Event ev)
+        {
+            return new Service.Event()
+            {
+                EventID = ev.EventID,
+                SeriesID = ev.SeriesID,
+                CollectionDate = ev.CollectionDate,
+                DeterminationDate = ev.DeterminationDate,
+                HabitatDescription = ev.HabitatDescription,
+                LocalityDescription = ev.LocalityDescription,
+                LogUpdatedWhen = ev.LogUpdatedWhen,                
+
+                Altitude = ev.Altitude,
+                Latitude = ev.Latitude,
+                Longitude = ev.Longitude,                
+            };
+        }
     }
 }
