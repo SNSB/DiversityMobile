@@ -25,5 +25,8 @@
 
         void addPropertyNames(IEnumerable<PropertyName> properties);
         IList<PropertyName> getPropertyNames(Property prop);
+        PropertyName getPropertyNameByURI(string uri);
+        IList<Property> getAllProperties();
+        Property getPropertyByID(int id);
     }
 }

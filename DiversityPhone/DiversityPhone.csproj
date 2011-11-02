@@ -117,6 +117,7 @@
     <Compile Include="Utility\PrimaryKeyViolationException.cs" />
     <Compile Include="Utility\SourceID.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
+    <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="Services\RotatingCache.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="ViewModels\BasisModels\MultimediaObjectVM.cs" />
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
+    <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\EditES.xaml.cs">

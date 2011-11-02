@@ -23,7 +23,11 @@
         {
             _messenger = messenger;
             Model = model;
-            Icon = ViewModels.Icon.EventSeries;
+            EventSeries noEs = EventSeries.NoEventSeries();
+            if (Model.SeriesID != noEs.SeriesID && !Model.Description.Equals(noEs.Description) ) //Überprüfen auf NoEventSeries
+                Icon = ViewModels.Icon.EventSeries;
+            else
+                Icon = ViewModels.Icon.Event;
 
             _subscriptions = new List<IDisposable>()
             {

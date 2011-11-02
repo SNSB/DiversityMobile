@@ -16,6 +16,17 @@
             this.IsModified = null;
         }
 
+
+        public static EventSeries NoEventSeries()
+        {
+            EventSeries noEs = new EventSeries();
+            noEs.SeriesID = 0;
+            noEs.Description = "Go to Events";
+            noEs.SeriesCode = "Go to Events";
+            noEs.IsModified = false;
+            return noEs;
+        }
+
         [Column(IsPrimaryKey = true)]
         public int SeriesID { get; set; }
 

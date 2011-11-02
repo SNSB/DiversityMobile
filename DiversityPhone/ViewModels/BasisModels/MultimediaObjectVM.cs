@@ -14,6 +14,7 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
 
+
 namespace DiversityPhone.ViewModels
 {
     public class MultimediaObjectVM:ReactiveObject

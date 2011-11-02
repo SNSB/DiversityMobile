@@ -39,6 +39,28 @@
             }
         }
 
+        #region UserProfile
+
+        public IList<UserProfile> getAllUserProfiles()
+        {
+            var ctx = new DiversityDataContext();
+            return new LightList<UserProfile>(ctx.Profiles);
+        }
+        public UserProfile getUserProfile(string loginName)
+        {
+            var ctx = new DiversityDataContext();
+            LightList<UserProfile> profileList = new LightList<UserProfile>(from prof in ctx.Profiles
+                                                                       where prof.LoginName.Equals(loginName)
+                                                                       select prof);
+            if (profileList.Count == 0)
+                throw new KeyNotFoundException("No profile with loginname: " + loginName);
+            else if (profileList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + loginName);
+            else return profileList[0];
+        }
+
+        #endregion
+
         #region EventSeries
 
         public IList<EventSeries> getAllEventSeries()
@@ -152,7 +174,12 @@
             }
         }
 
+        public IList<Property> getAllProperties()
+        {
 
+            var ctx = new DiversityDataContext();
+            return new LightList<Property>(ctx.Properties);
+        }
         #endregion
 
 

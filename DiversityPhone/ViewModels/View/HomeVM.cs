@@ -96,7 +96,15 @@
                     GenusOrSupragenic = t.GenusOrSupragenic
                 }),0));
 
-        }        
+
+            insertOrUpdateNoEventSeries();
+        }
+
+        private void insertOrUpdateNoEventSeries()
+        {
+            EventSeries noEs = EventSeries.NoEventSeries();
+            _storage.addOrUpdateEventSeries(noEs);
+        }
 
         private void updateSeriesList()
         {
