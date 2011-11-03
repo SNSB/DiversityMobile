@@ -29,5 +29,69 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Edit { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         #endregion
+
+        #region Properties
+        //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.
+        private MultimediaObject _Model;
+        public MultimediaObject Model
+        {
+            get { return _Model; }
+            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
+        }
+
+
+        #endregion
+
+        public EditMultimediaObjectVM(IMessageBus messenger)
+        {
+
+            _messenger = messenger;
+
+            _subscriptions = new List<IDisposable>()
+            {
+                (Save = new ReactiveCommand())               
+                    .Subscribe(_ => executeSave()),
+
+                (Edit = new ReactiveCommand())
+                    .Subscribe(_ => enableEdit()),
+
+                (Delete = new ReactiveCommand())
+                    .Subscribe(_ => delete()),
+
+                _messenger.Listen<MultimediaObject>(MessageContracts.EDIT)
+                    .Subscribe(cep => updateView(cep))
+            };
+        }
+
+
+
+        private void executeSave()
+        {
+            updateModel();
+            _messenger.SendMessage<MultimediaObject>(Model, MessageContracts.SAVE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+
+        private void enableEdit()
+        {
+        }
+
+        private void delete()
+        {
+            _messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
+        }
+
+        private void updateModel()
+        {
+
+        }
+
+        private void updateView(MultimediaObject mmo)
+        {
+            this.Model = mmo;
+        }
     }
+    
 }

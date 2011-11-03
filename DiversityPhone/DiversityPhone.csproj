@@ -122,7 +122,7 @@
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\RotatingCache.cs" />
-    <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
+    <Compile Include="ViewModels\Edit\EditMapVM.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\MapVM.cs" />
@@ -132,6 +132,9 @@
     <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\EditAnalysis.xaml.cs">
+      <DependentUpon>EditAnalysis.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
@@ -140,6 +143,18 @@
     </Compile>
     <Compile Include="View\EditIU.xaml.cs">
       <DependentUpon>EditIU.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditMap.xaml.cs">
+      <DependentUpon>EditMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditMultiMediaObject.xaml.cs">
+      <DependentUpon>EditMultiMediaObject.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditProperty.xaml.cs">
+      <DependentUpon>EditProperty.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditUserProfile.xaml.cs">
+      <DependentUpon>EditUserProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\IconPathConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
@@ -216,6 +231,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EditAnalysis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\EditES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -225,6 +244,22 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditIU.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditMultiMediaObject.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditProperty.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditUserProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

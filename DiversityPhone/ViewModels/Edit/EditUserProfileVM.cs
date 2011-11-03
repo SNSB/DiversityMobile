@@ -7,7 +7,7 @@ using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 
-namespace DiversityPhone.ViewModels.Edit
+namespace DiversityPhone.ViewModels
 {
     public class EditUserProfileVM:ReactiveObject
     {
@@ -15,7 +15,6 @@ namespace DiversityPhone.ViewModels.Edit
 
         #region Services
         private IMessageBus _messenger;
-        IOfflineStorage _storage;
         #endregion
 
         #region Commands
@@ -56,11 +55,10 @@ namespace DiversityPhone.ViewModels.Edit
 
         #endregion
 
-         public EditUserProfileVM(IMessageBus messenger, IOfflineStorage storage)
+         public EditUserProfileVM(IMessageBus messenger)
         {
 
             _messenger = messenger;
-            _storage = storage;
 
 
             _subscriptions = new List<IDisposable>()

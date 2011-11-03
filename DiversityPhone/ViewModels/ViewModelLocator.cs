@@ -53,11 +53,13 @@ namespace DiversityPhone.ViewModels
                 ));
 
             _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
-
-            
-
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>() ));
-            
+
+            _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
+            _ioc.Register<EditUserProfileVM>(c => new EditUserProfileVM(c.Resolve<IMessageBus>()));
+
             #endregion
 
             #region ViewModel Instantiation
@@ -65,6 +67,7 @@ namespace DiversityPhone.ViewModels
             #endregion
 
         }
+        public EditUserProfileVM EditProfile { get { return _ioc.Resolve<EditUserProfileVM>(); } }
 
         public HomeVM Home { get { return _homeVM; } }
         
@@ -74,11 +77,17 @@ namespace DiversityPhone.ViewModels
         public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }
         public ViewEVVM ViewEV { get { return _ioc.Resolve<ViewEVVM>(); } }
 
-        //public EditCSVM EditCS { get { return _ioc.Resolve<EditCSVM>(); } }
+        public EditCSVM EditCS { get { return _ioc.Resolve<EditCSVM>(); } }
         public ViewCSVM ViewCS { get { return _ioc.Resolve<ViewCSVM>(); } }
 
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
-        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }       
+        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }  
+     
+        public EditAnalysisVM EditAnalysis{get{ return _ioc.Resolve<EditAnalysisVM>();}}
+
+        public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }
+        public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
+        public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
        
     }
 }

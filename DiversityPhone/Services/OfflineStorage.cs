@@ -187,6 +187,20 @@ using DiversityPhone.Utility;
             var ctx = new DiversityDataContext();
             return new LightList<Property>(ctx.Properties);
         }
+
+        public Property getPropertyByID(int id)
+        {
+
+            var ctx = new DiversityDataContext();
+            IList<Property> propertyList= new LightList<Property>(from prop in ctx.Properties
+                                           where prop.PropertyID == id
+                                           select prop);
+            if (propertyList.Count == 0)
+                throw new KeyNotFoundException("No property with id: " + id);
+            else if (propertyList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
+            else return propertyList[0];
+        }
         #endregion
 
 
@@ -228,8 +242,11 @@ using DiversityPhone.Utility;
             using (var ctx = new DiversityDataContext())
             {
                 if (spec.IsModified == null)
+                {
                     spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
-                ctx.Specimen.InsertOnSubmit(spec);
+                    ctx.Specimen.InsertOnSubmit(spec);
+                }
+                
                 ctx.SubmitChanges();
             }
         }
@@ -520,6 +537,10 @@ using DiversityPhone.Utility;
             }
         }
 
+        public Table<TaxonName> getTaxonTable(string id)
+        {
+        }
+
         public IList<TaxonName> getTaxonNames(int tableID)
         {
             using (var ctx = new DiversityDataContext())
@@ -588,6 +609,19 @@ using DiversityPhone.Utility;
                                             select props);
         }
 
+        public PropertyName getPropertyNameByURI(string uri)
+        {
+            var ctx = new DiversityDataContext();
+            LightList<PropertyName> propNameList = new LightList<PropertyName>(from propName in ctx.PropertyNames
+                                                                            where propName.PropertyUri.Equals(uri)
+                                                                            select propName);
+            if (propNameList.Count == 0)
+                throw new KeyNotFoundException("No propertyName with uri: " + uri);
+            else if (propNameList.Count > 1)
+                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + uri);
+            else return propNameList[0];
+        }
+
         #endregion
 
         #region Maps
@@ -619,7 +653,7 @@ using DiversityPhone.Utility;
         {
             using (var ctx = new DiversityDataContext())
             {
-                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 0, Description = "ES" });
+                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
                 ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
                 ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccesionNumber = "CS" });
                 ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });

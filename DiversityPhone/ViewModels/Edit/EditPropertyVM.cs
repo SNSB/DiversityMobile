@@ -87,16 +87,7 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
 
-            var canSave1 = this.ObservableForProperty(x => x.SelectedProperty)//1.Bedingung
-                .Select(change => change.Value!=null)
-                .StartWith(false);
-
-            
-            var canSave2 = this.ObservableForProperty(x => x.SelectedPropertyName)//2.Bedingung
-                .Select(change => change.Value!=null)
-                .StartWith(false);
-
-            var canSave=this.ObservableToProperty(canSave1.And(canSave2));//wie sieht ein mögliches Pattern aus?
+            var canSave = this.cansave();
 
             _subscriptions = new List<IDisposable>()
             {
@@ -114,7 +105,19 @@ namespace DiversityPhone.ViewModels
             };
         }
 
+        IObservable<bool> cansave()
+        {
+            var canSave1 = this.ObservableForProperty(x => x.SelectedProperty)//1.Bedingung
+            .Select(change => change.Value != null)
+            .StartWith(false);
 
+
+            var canSave2 = this.ObservableForProperty(x => x.SelectedPropertyName)//2.Bedingung
+                .Select(change => change.Value != null)
+                .StartWith(false);
+
+            return Extensions.BooleanAnd(canSave1, canSave2);
+        }
 
         private void executeSave()
         {

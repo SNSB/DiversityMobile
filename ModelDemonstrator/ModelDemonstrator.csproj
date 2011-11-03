@@ -91,6 +91,9 @@
     <Compile Include="SpecimenPiv.xaml.cs">
       <DependentUpon>SpecimenPiv.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewES.xaml.cs">
+      <DependentUpon>ViewES.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -129,25 +132,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ViewES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ApplicationIcon.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="ApplicationIcon.png" />
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\Administration.bmp" />
-    <Content Include="Images\Administration.png" />
-    <Content Include="Images\Agent.png" />
-    <Content Include="Images\AgentGrey.png" />
-    <Content Include="Images\Alga.png" />
+    <Content Include="Images\alga40.png" />
+    <Content Include="Images\alga_40.png" />
+    <Content Include="Images\alga_80.png" />
+    <Content Include="Images\alga_80.png.bmp" />
     <Content Include="Images\Analysis.png" />
-    <Content Include="Images\AnalysisGrey.png" />
+    <Content Include="Images\Analysis_40.png" />
+    <Content Include="Images\Analysis_80.png" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.back.rest.png" />
     <Content Include="Images\appbar.basecircle.rest.png" />
@@ -165,6 +170,9 @@
     <Content Include="Images\appbar.feature.settings.rest.png" />
     <Content Include="Images\appbar.feature.video.rest.png" />
     <Content Include="Images\appbar.folder.rest.png" />
+    <Content Include="Images\appbar.globe.rest.png" />
+    <Content Include="Images\appbar.globus.rest.png" />
+    <Content Include="Images\appbar.map.rest.png" />
     <Content Include="Images\appbar.minus.rest.png" />
     <Content Include="Images\appbar.new.rest.png" />
     <Content Include="Images\appbar.next.rest.png" />
@@ -181,90 +189,59 @@
     <Content Include="Images\appbar.transport.rew.rest.png" />
     <Content Include="Images\appbar.upload.rest.png" />
     <Content Include="Images\ApplicationIcon.png" />
-    <Content Include="Images\ArrowFirst.bmp" />
-    <Content Include="Images\ArrowFirst.png" />
-    <Content Include="Images\ArrowLast.bmp" />
-    <Content Include="Images\ArrowLast.png" />
-    <Content Include="Images\ArrowNext.bmp" />
-    <Content Include="Images\ArrowNext.png" />
-    <Content Include="Images\ArrowPrevious.bmp" />
-    <Content Include="Images\ArrowPrevious.png" />
-    <Content Include="Images\Assel.png" />
-    <Content Include="Images\AsselGrey.png" />
-    <Content Include="Images\Audio.png" />
-    <Content Include="Images\Bacterium.png" />
-    <Content Include="Images\BacteriumGrey.png" />
-    <Content Include="Images\Barcode.bmp" />
-    <Content Include="Images\Barcode.png" />
-    <Content Include="Images\BarcodeBlack.png" />
-    <Content Include="Images\BarcodeGrey.png" />
-    <Content Include="Images\Bird.png" />
-    <Content Include="Images\BirdGrey.png" />
-    <Content Include="Images\Branch.png" />
-    <Content Include="Images\BranchGrey.png" />
-    <Content Include="Images\Bryophyt.png" />
-    <Content Include="Images\BryophytGrey.png" />
-    <Content Include="Images\Camera.png" />
-    <Content Include="Images\CameraGrey.png" />
-    <Content Include="Images\CollectionEvent.bmp" />
-    <Content Include="Images\CollectionEventSeries.bmp" />
-    <Content Include="Images\CollectionEventSeriesGrey.bmp" />
-    <Content Include="Images\CoordinateCross.bmp" />
-    <Content Include="Images\Delete.bmp" />
-    <Content Include="Images\Delete.png" />
-    <Content Include="Images\DeleteGrey.bmp" />
-    <Content Include="Images\DeleteGrey.png" />
-    <Content Include="Images\Echinoderm.png" />
-    <Content Include="Images\EchinodermGrey.png" />
-    <Content Include="Images\Edit.bmp" />
-    <Content Include="Images\Edit.png" />
-    <Content Include="Images\Event.png" />
-    <Content Include="Images\EventGrey.png" />
-    <Content Include="Images\EventSeries.png" />
-    <Content Include="Images\EventSeriesGrey.png" />
-    <Content Include="Images\Evertebrate.png" />
-    <Content Include="Images\EvertebrateGrey.png" />
-    <Content Include="Images\Fish.png" />
-    <Content Include="Images\FishGrey.png" />
-    <Content Include="Images\Fungus.png" />
-    <Content Include="Images\FungusGrey.png" />
-    <Content Include="Images\Gall.png" />
-    <Content Include="Images\GallGrey.png" />
-    <Content Include="Images\GeoAnalysis.png" />
-    <Content Include="Images\GeoAnalysisGrey.png" />
-    <Content Include="Images\GPS.png" />
-    <Content Include="Images\GPSGrey.png" />
-    <Content Include="Images\Habitat.png" />
-    <Content Include="Images\HabitatGrey.png" />
-    <Content Include="Images\Insect.png" />
-    <Content Include="Images\InsectGrey.png" />
-    <Content Include="Images\Lichen.png" />
-    <Content Include="Images\LichenGrey.png" />
-    <Content Include="Images\Localisation.png" />
-    <Content Include="Images\LocalisationGrey.png" />
-    <Content Include="Images\Lupe.bmp" />
-    <Content Include="Images\Mammal.png" />
-    <Content Include="Images\MammalGrey.png" />
-    <Content Include="Images\Map40.bmp" />
-    <Content Include="Images\Mollusc.png" />
-    <Content Include="Images\MolluscGrey.png" />
-    <Content Include="Images\Myxomycete.png" />
-    <Content Include="Images\MyxomyceteGrey.png" />
-    <Resource Include="Images\Observation.png" />
-    <Content Include="Images\Other.png" />
-    <Content Include="Images\OtherGrey.png" />
-    <Content Include="Images\plant.bmp" />
-    <Content Include="Images\Plant.png" />
-    <Content Include="Images\PlantGrey.png" />
-    <Content Include="Images\Qualle.png" />
-    <Content Include="Images\QualleGrey.png" />
-    <Content Include="Images\Search.png" />
-    <Content Include="Images\Tree.png" />
-    <Content Include="Images\TreeGrey.png" />
-    <Content Include="Images\Vertebrate.png" />
-    <Content Include="Images\VertebrateGrey.png" />
-    <Content Include="Images\Virus.png" />
-    <Content Include="Images\VirusGrey.png" />
+    <Content Include="Images\arthropod_40.png" />
+    <Content Include="Images\arthropod_80.png" />
+    <Content Include="Images\bacterium_40.png" />
+    <Content Include="Images\bacterium_80.png" />
+    <Content Include="Images\Beleg_40.png" />
+    <Content Include="Images\Beleg_80.png" />
+    <Content Include="Images\bird.png" />
+    <Content Include="Images\bird_40.png" />
+    <Content Include="Images\bird_80.png" />
+    <Content Include="Images\bryophyte_40.png" />
+    <Content Include="Images\bryophyte_80.png" />
+    <Content Include="Images\cnidaria_40.png" />
+    <Content Include="Images\cnidaria_80.png" />
+    <Content Include="Images\echinoderm_40.png" />
+    <Content Include="Images\echinoderm_80.png" />
+    <Content Include="Images\Event_40.png" />
+    <Content Include="Images\Event_80.png" />
+    <Content Include="Images\evertebrate_40.png" />
+    <Content Include="Images\evertebrate_80.png" />
+    <Content Include="Images\fish_40.png" />
+    <Content Include="Images\fish_80.png" />
+    <Content Include="Images\fungus_40.png" />
+    <Content Include="Images\fungus_80.png" />
+    <Content Include="Images\Habitat_40.png" />
+    <Content Include="Images\Habitat_80.png" />
+    <Content Include="Images\insect_40.png" />
+    <Content Include="Images\insect_80.png" />
+    <Content Include="Images\lichen_40.png" />
+    <Content Include="Images\lichen_80.png" />
+    <Content Include="Images\mammal_40.png" />
+    <Content Include="Images\mammal_80.png" />
+    <Content Include="Images\mollusc_40.png" />
+    <Content Include="Images\mollusc_80.png" />
+    <Content Include="Images\myxomycete_40.png" />
+    <Content Include="Images\myxomycete_80.png" />
+    <Content Include="Images\Nord_40.png" />
+    <Content Include="Images\Nord_80.png" />
+    <Content Include="Images\Observation_40.png" />
+    <Content Include="Images\Observation_80.png" />
+    <Content Include="Images\Other_40.png" />
+    <Content Include="Images\Other_80.png" />
+    <Content Include="Images\plant_40.png" />
+    <Content Include="Images\plant_80.png" />
+    <Content Include="Images\reptile_40.png" />
+    <Content Include="Images\reptile_80.png" />
+    <Content Include="Images\Series.png" />
+    <Content Include="Images\Series_40.png" />
+    <Content Include="Images\Series_80.png" />
+    <Content Include="Images\vertebrate_40.png" />
+    <Content Include="Images\vertebrate_80.png" />
+    <Content Include="Images\virus_40.png" />
+    <Content Include="Images\virus_80.png" />
+    <Content Include="Images\WGS84.png" />
     <Content Include="LightIcons.dll" />
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
