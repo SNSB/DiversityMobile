@@ -1,16 +1,7 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 
-namespace DiversityPhone.Services
+namespace DiversityPhone.Test
 {
     
 
@@ -39,39 +30,55 @@ namespace DiversityPhone.Services
             this._upperBoundKey = 0;
         }
 
-        private T getItem(int idx)
+        private T getItem(int key)
         {
-            if (!isCacheHit(idx))
-                fetchRangeAround(idx);
-            return _store[cacheOffset(_lowerBoundKey,idx)];
+            if (!isCacheHit(key))
+                fetchRangeAround(key);
+            return _store[cacheIndex(key)];
             
         }
 
         private void fetchRangeAround(int idx)
         {
-            int lowerKey = idx - (_store.Length / 2);
-            lowerKey = (lowerKey < 0) ? 0 : lowerKey;
-
+            int newlowerBoundKey = idx - (_store.Length / 2);
+            newlowerBoundKey = (newlowerBoundKey < 0) ? 0 : newlowerBoundKey;
+            int lowerKey = newlowerBoundKey;
             
+            int itemCount = _store.Length;
 
-    
+            if (_lowerBoundKey > lowerKey && _lowerBoundKey - lowerKey < _store.Length)
+                itemCount = _lowerBoundKey - lowerKey;
+            else if (_upperBoundKey > lowerKey && _lowerBoundKey < lowerKey)
+            {
+                int overlap = _upperBoundKey - lowerKey;
+                lowerKey = _upperBoundKey;
+                itemCount -= overlap;
+            }
+
+            _upperBoundKey = lowerKey;
+            int currentIdx = cacheIndex(lowerKey);
+            
+            foreach (var item in _source(itemCount, lowerKey))
+            {
+                _store[currentIdx] = item;
+                currentIdx = ++currentIdx % _store.Length;
+                _upperBoundKey++;
+            }
+
+            _lowerBoundIdx = cacheIndex(newlowerBoundKey);
+            _lowerBoundKey = newlowerBoundKey;           
         }
 
-        private bool isCacheHit(int idx)
+        private bool isCacheHit(int key)
         {
             int itemCount = _upperBoundKey - _lowerBoundKey;
-            int Offset = cacheOffset(_lowerBoundKey, idx);
+            int Offset = key - _lowerBoundKey;
             return (Offset > 0 && Offset < itemCount);
         }
 
-        private int cacheIndex(int idx)
+        private int cacheIndex(int key)
         {
-            return 0;
-        }
-
-        private int cacheOffset(int baseIdx, int idx)
-        {
-            return idx - baseIdx;
+            return ((key - _lowerBoundKey)+_lowerBoundIdx) % _store.Length;
         }
 
         public int IndexOf(T item)
@@ -83,11 +90,11 @@ namespace DiversityPhone.Services
         {
             get
             {
-                throw new NotImplementedException();
+                return getItem(index);
             }
             set
             {
-                throw new NotImplementedException();
+                
             }
         }
 

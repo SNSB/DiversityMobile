@@ -120,7 +120,6 @@
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="Services\ModelProjection.cs" />
-    <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
