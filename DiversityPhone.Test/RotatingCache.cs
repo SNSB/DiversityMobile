@@ -7,21 +7,15 @@ namespace DiversityPhone.Test
 
     public class RotatingCache<T> : IList<T> where T : IEquatable<T>
     {
-        /// <summary>
-        /// Defines a function that can serve as a source for the cache
-        /// </summary>
-        /// <param name="count">Number Of Items to Retrieve</param>
-        /// <param name="offset">Number Of Items To Skip</param>
-        /// <returns>As many items as possible</returns>
-        public delegate IEnumerable<T> CacheSource(int count, int offset);       
+          
 
-        private CacheSource _source;
+        private ICacheSource<T> _source;
         private T[] _store;
         private int _lowerBoundIdx;
         private int _lowerBoundKey;        
         private int _upperBoundKey;
 
-        public RotatingCache(int size, CacheSource source)
+        public RotatingCache(int size, ICacheSource<T> source)
         {
             this._source = source;
             this._store = new T[size];
@@ -32,10 +26,17 @@ namespace DiversityPhone.Test
 
         private T getItem(int key)
         {
+            if (!inRange(key))
+                throw new IndexOutOfRangeException(String.Format("{0}/{1}",key,Count));
             if (!isCacheHit(key))
                 fetchRangeAround(key);
-            return _store[cacheIndex(key)];
+            return _store[KeyToIndex(key)];
             
+        }
+
+        private bool inRange(int key)
+        {
+            return key >= 0 && key < Count;
         }
 
         private void fetchRangeAround(int idx)
@@ -56,16 +57,16 @@ namespace DiversityPhone.Test
             }
 
             _upperBoundKey = lowerKey;
-            int currentIdx = cacheIndex(lowerKey);
+            int currentIdx = KeyToIndex(lowerKey);
             
-            foreach (var item in _source(itemCount, lowerKey))
+            foreach (var item in _source.retrieveItems(itemCount, lowerKey))
             {
                 _store[currentIdx] = item;
                 currentIdx = ++currentIdx % _store.Length;
                 _upperBoundKey++;
             }
 
-            _lowerBoundIdx = cacheIndex(newlowerBoundKey);
+            _lowerBoundIdx = KeyToIndex(newlowerBoundKey);
             _lowerBoundKey = newlowerBoundKey;           
         }
 
@@ -76,7 +77,12 @@ namespace DiversityPhone.Test
             return (Offset > 0 && Offset < itemCount);
         }
 
-        private int cacheIndex(int key)
+        private int IndexToKey(int idx)
+        {
+
+        }
+
+        private int KeyToIndex(int key)
         {
             return ((key - _lowerBoundKey)+_lowerBoundIdx) % _store.Length;
         }
@@ -110,7 +116,7 @@ namespace DiversityPhone.Test
 
         public int Count
         {
-            get { throw new NotImplementedException(); }
+            get { return _source.Count; }
         }
 
         public bool IsReadOnly
@@ -120,7 +126,10 @@ namespace DiversityPhone.Test
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < Count; i++)
+            {
+                yield return this[i];
+            }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

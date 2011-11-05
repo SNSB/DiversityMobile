@@ -8,20 +8,33 @@ namespace DiversityPhone.Test
     public class RotatingCacheTest
     {
         RotatingCache<int> _target;
-        int _offset, _count;
+        
 
-
-        private IEnumerable<int> cachesource(int count, int offset)
+        private class IntCacheSource : ICacheSource<int>
         {
-           
-            for (int i = offset; i < offset+count; i++)
+            public int LastOffset { get; set; }
+            public int LastCount { get; set; }
+
+
+            public IEnumerable<int> retrieveItems(int count, int offset)
             {
-                yield return i;
+                
+                for (int i = offset; i < offset + count; i++)
+                {
+                    if(i < 100)
+                        yield return i;
+                }
+            }
+
+            public int Count
+            {
+                get { return 100; }
             }
         }
+      
         public RotatingCacheTest()
         {
-            _target = new RotatingCache<int>(10, cachesource);
+            _target = new RotatingCache<int>(10, new IntCacheSource());
         }
 
         [Fact]
@@ -31,6 +44,13 @@ namespace DiversityPhone.Test
             {
                 Assert.Equal(i, _target[i]);
             }
+        }
+
+        [Fact]
+        public void Cache_should_not_return_data_out_of_range()
+        {
+            Assert.Throws<IndexOutOfRangeException>(() => _target[-1]);
+            Assert.Throws<IndexOutOfRangeException>(() => _target[_target.Count + 1] );
         }
     }
 }
