@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace DiversityPhone.Test
+namespace DiversityPhone.Common
 {
     public interface ICacheSource<T>
     {

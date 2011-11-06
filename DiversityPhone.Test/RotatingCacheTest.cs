@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xunit;
+using DiversityPhone.Common;
 
 namespace DiversityPhone.Test
 {
@@ -51,6 +52,14 @@ namespace DiversityPhone.Test
         {
             Assert.Throws<IndexOutOfRangeException>(() => _target[-1]);
             Assert.Throws<IndexOutOfRangeException>(() => _target[_target.Count + 1] );
+        }
+
+        [Fact]
+        public void Cache_should_correctly_do_searches()
+        {            
+            Assert.Equal(21, _target.IndexOf(21));
+            Assert.Equal(-1, _target.IndexOf(1001));
+
         }
     }
 }

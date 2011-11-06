@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DiversityPhone.Test
+namespace DiversityPhone.Common
 {
     
 
     public class RotatingCache<T> : IList<T> where T : IEquatable<T>
     {
-          
-
         private ICacheSource<T> _source;
         private T[] _store;
         private int _lowerBoundIdx;
@@ -79,7 +77,7 @@ namespace DiversityPhone.Test
 
         private int IndexToKey(int idx)
         {
-
+            return (((idx + _store.Length) - _lowerBoundIdx) % _store.Length) + _lowerBoundKey;
         }
 
         private int KeyToIndex(int key)
@@ -89,7 +87,47 @@ namespace DiversityPhone.Test
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            int idx = indexOfLocal(item);
+            if (idx > -1)
+                return idx;
+            else
+                return indexOfGlobal(item);
+        }
+
+        /// <summary>
+        /// Searches the local Cache for the Item.
+        /// </summary>
+        /// <param name="item">The item to search for</param>
+        /// <returns>The global index of the item, or -1 if not found.</returns>
+        private int indexOfLocal(T item)
+        {
+            int localCount = _upperBoundKey - _lowerBoundKey;
+            int currIdx = _lowerBoundIdx;
+            for (int i = 0; i < localCount; i++)
+            {
+                currIdx = ++currIdx % _store.Length;
+                if(item.Equals(_store[currIdx]))
+                    return IndexToKey(currIdx);
+            }
+            return -1;
+        }
+
+        /// <summary>
+        /// Searches the whole Source for the Item.
+        /// </summary>
+        /// <param name="item">The item to search for</param>
+        /// <returns>The global index of the item, or -1 if not found.</returns>
+        private int indexOfGlobal(T item)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if(item.Equals(this[i]))
+                    return i;
+            }
+            return -1;
         }
 
         public T this[int index]
@@ -106,7 +144,7 @@ namespace DiversityPhone.Test
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return IndexOf(item) > -1;
         }
 
         public void CopyTo(T[] array, int arrayIndex)

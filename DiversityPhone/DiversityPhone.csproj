@@ -113,13 +113,26 @@
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Model\UserProfile.cs" />
+    <Compile Include="Services\ConnectionStatus.cs" />
+    <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\DiversityDataContext.cs" />
+    <Compile Include="Services\IApplicationState.cs" />
+    <Compile Include="Services\IConnectivityService.cs" />
+    <Compile Include="Services\INavigationService.cs" />
+    <Compile Include="Services\IOfflineFieldData.cs" />
+    <Compile Include="Services\IOfflineStorage.cs" />
+    <Compile Include="Services\IOfflineVocabulary.cs" />
+    <Compile Include="Services\ModelProjection.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\OfflineStorage.cs" />
+    <Compile Include="Services\Page.cs" />
     <Compile Include="Utility\PrimaryKeyViolationException.cs" />
     <Compile Include="Utility\SourceID.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
-    <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="ViewModels\Edit\EditMapVMcs.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
@@ -165,20 +178,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Services\ConnectionStatus.cs" />
-    <Compile Include="Services\ConnectivityService.cs" />
-    <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\DiversityDataContext.cs" />
-    <Compile Include="Services\IApplicationState.cs" />
-    <Compile Include="Services\IConnectivityService.cs" />
-    <Compile Include="Services\IOfflineFieldData.cs" />
-    <Compile Include="Services\IOfflineStorage.cs" />
-    <Compile Include="Services\INavigationService.cs" />
-    <Compile Include="Services\IOfflineVocabulary.cs" />
-    <Compile Include="Services\LightList.cs" />
-    <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Services\OfflineStorage.cs" />
-    <Compile Include="Services\Page.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -362,6 +361,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiversityPhone.Services\DiversityPhone.Common.csproj">
+      <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
+      <Name>DiversityPhone.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

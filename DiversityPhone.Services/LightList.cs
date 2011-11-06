@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DiversityPhone.Services
+namespace DiversityPhone.Common
 {
     internal class LightList<T> : IList<T>
     {
