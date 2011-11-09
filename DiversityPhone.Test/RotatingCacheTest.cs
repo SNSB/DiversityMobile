@@ -8,22 +8,22 @@ namespace DiversityPhone.Test
 {
     public class RotatingCacheTest
     {
-        RotatingCache<int> _target;
+        RotatingCache<string> _target;
         
 
-        private class IntCacheSource : ICacheSource<int>
+        private class StringCacheSource : ICacheSource<string>
         {
             public int LastOffset { get; set; }
             public int LastCount { get; set; }
 
 
-            public IEnumerable<int> retrieveItems(int count, int offset)
+            public IEnumerable<string> retrieveItems(int count, int offset)
             {
                 
                 for (int i = offset; i < offset + count; i++)
                 {
                     if(i < 100)
-                        yield return i;
+                        yield return i.ToString();
                 }
             }
 
@@ -31,11 +31,21 @@ namespace DiversityPhone.Test
             {
                 get { return 100; }
             }
+
+
+            public int IndexOf(string item)
+            {
+                var res = Int16.Parse(item);
+                if (res > -1 && res < Count)
+                    return res;
+                else
+                    return -1;
+            }
         }
       
         public RotatingCacheTest()
         {
-            _target = new RotatingCache<int>(10, new IntCacheSource());
+            _target = new RotatingCache<string>(10, new StringCacheSource());
         }
 
         [Fact]
@@ -43,7 +53,7 @@ namespace DiversityPhone.Test
         {
             for (int i = 0; i < 100; i++)
             {
-                Assert.Equal(i, _target[i]);
+                Assert.Equal(i.ToString(), _target[i]);
             }
         }
 
@@ -57,8 +67,8 @@ namespace DiversityPhone.Test
         [Fact]
         public void Cache_should_correctly_do_searches()
         {            
-            Assert.Equal(21, _target.IndexOf(21));
-            Assert.Equal(-1, _target.IndexOf(1001));
+            Assert.Equal(21, _target.IndexOf("21"));
+            Assert.Equal(-1, _target.IndexOf("1001"));
 
         }
     }

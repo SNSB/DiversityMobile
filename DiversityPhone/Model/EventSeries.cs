@@ -4,7 +4,7 @@
     using System.Data.Linq.Mapping;
 
     [Table]
-    public class EventSeries
+    public class EventSeries 
     {
         public EventSeries()
         {
@@ -40,8 +40,6 @@
         public bool? IsModified { get; set; }
 
         [Column]
-        public DateTime LogUpdatedWhen { get; set; }
-
-   
+        public DateTime LogUpdatedWhen { get; set; }       
     }
 }

@@ -5,18 +5,20 @@ namespace DiversityPhone.Common
 {
     
 
-    public class RotatingCache<T> : IList<T> where T : IEquatable<T>
+    public class RotatingCache<T> : IList<T> where T : class
     {
+        public const int DEFAULT_CACHE_SIZE = 40;  
+
         private ICacheSource<T> _source;
         private T[] _store;
         private int _lowerBoundIdx;
         private int _lowerBoundKey;        
         private int _upperBoundKey;
 
-        public RotatingCache(int size, ICacheSource<T> source)
-        {
+        public RotatingCache(ICacheSource<T> source)
+        {     
             this._source = source;
-            this._store = new T[size];
+            this._store = new T[DEFAULT_CACHE_SIZE];
             this._lowerBoundIdx = 0;
             this._lowerBoundKey = 0;            
             this._upperBoundKey = 0;
@@ -94,11 +96,12 @@ namespace DiversityPhone.Common
             if (idx > -1)
                 return idx;
             else
-                return indexOfGlobal(item);
+                return _source.IndexOf(item);
         }
 
         /// <summary>
         /// Searches the local Cache for the Item.
+        /// (Reference Equality only)
         /// </summary>
         /// <param name="item">The item to search for</param>
         /// <returns>The global index of the item, or -1 if not found.</returns>
@@ -109,23 +112,9 @@ namespace DiversityPhone.Common
             for (int i = 0; i < localCount; i++)
             {
                 currIdx = ++currIdx % _store.Length;
+               
                 if(item.Equals(_store[currIdx]))
                     return IndexToKey(currIdx);
-            }
-            return -1;
-        }
-
-        /// <summary>
-        /// Searches the whole Source for the Item.
-        /// </summary>
-        /// <param name="item">The item to search for</param>
-        /// <returns>The global index of the item, or -1 if not found.</returns>
-        private int indexOfGlobal(T item)
-        {
-            for (int i = 0; i < Count; i++)
-            {
-                if(item.Equals(this[i]))
-                    return i;
             }
             return -1;
         }

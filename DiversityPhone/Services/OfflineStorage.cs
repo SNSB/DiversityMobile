@@ -7,6 +7,9 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using DiversityPhone.Utility;
+    using DiversityPhone.Common;
+using System.Data.Linq;
+using System.Linq.Expressions;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -62,31 +65,40 @@ using DiversityPhone.Utility;
 
         #region EventSeries
 
+        private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
+        {
+            return cachedQuery(ctx => 
+                {
+                    if(restriction == null)
+                        return (from es in ctx.EventSeries
+                                select es);
+                    else
+                        return (from es in ctx.EventSeries
+                                select es).Where(restriction);
+                },
+                es => es.SeriesID);
+        }
+
         public IList<EventSeries> getAllEventSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<EventSeries>(ctx.EventSeries);
+            return esQuery();
         }
 
         public IList<EventSeries> getNewEventSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<EventSeries>(from es in ctx.EventSeries
-                                                where es.IsModified == null
-                                                select es);
+           return esQuery(es => es.IsModified == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<EventSeries> esList= new LightList<EventSeries>(from es in ctx.EventSeries
-                                        where es.SeriesID == id
-                                        select es);
-            if (esList.Count == 0)
-                throw new KeyNotFoundException("No series with ID: " + id);
-            else if (esList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
-            else return esList[0];
+            EventSeries result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from es in ctx.EventSeries
+                              where es.SeriesID == id
+                              select es).FirstOrDefault();
+                });
+            return result;
         }
 
 
@@ -101,16 +113,7 @@ using DiversityPhone.Utility;
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
-            if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
-                throw new InvalidOperationException("Series is not new!");
-
-            using (var ctx = new DiversityDataContext())
-            {
-                newSeries.SeriesID = findFreeEventSeriesID(ctx);
-                newSeries.LogUpdatedWhen = DateTime.Now;
-                ctx.EventSeries.InsertOnSubmit(newSeries);
-                ctx.SubmitChanges();
-            }
+           addOrUpdateRow(ctx => ctx.EventSeries, t
         }
         #endregion
 
@@ -642,14 +645,119 @@ using DiversityPhone.Utility;
         #endregion     
     
 
+        private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, T row) where T : class
+        {
+            if(tableSelector == null)
+                throw new ArgumentNullException("tableSelector");
+            if(row == null)
+                throw new ArgumentNullException("row");
+
+            var equalsKeyExpression = EqualsKeyExpression(keySelector, row);
+
+            withDataContext((ctx) =>
+                {
+                    var table = tableSelector(ctx);
+                    var existingRow = (from element in table                                      
+                                       select element)
+                                       .Where(equalsKeyExpression)
+                                       .FirstOrDefault();
+
+                    if (existingRow != null)
+                        table.Attach(row, existingRow);
+                    else
+                    {        
+                        
+                        table.InsertOnSubmit(row);
+                    }
+
+                    ctx.SubmitChanges();
+                });
+        }
+
         private void withDataContext(Action<DiversityDataContext> operation)
         {
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
 
-       
+        private IList<T> cachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
+        {
+            return new RotatingCache<T>(new QueryableCacheSource<T>(query ,KeyExpression));
+        }
 
+
+        private class QueryableCacheSource<T> : ICacheSource<T>
+        {
+            
+
+            Func<DiversityDataContext, IQueryable<T>> queryFunc;
+            Expression<Func<T, int>> keyExpression;
+            Func<T, int> keyFunc;
+
+            public QueryableCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc, Expression<Func<T,int>> KeyExpression)
+            {
+                queryFunc = QueryFunc;
+                keyExpression = KeyExpression;
+                keyFunc = keyExpression.Compile();                
+            }
+
+            public IEnumerable<T> retrieveItems(int count, int offset)
+            {
+                using (var ctx = new DiversityDataContext())
+                {
+                    return queryFunc(ctx)
+                        .OrderBy(keyExpression)
+                        .Skip(offset)
+                        .Take(count)
+                        .ToList(); //Force execution of query
+                }
+            }
+
+            public int Count
+            {
+                get 
+                {
+                    using (var ctx = new DiversityDataContext())
+                    {
+                        return queryFunc(ctx)
+                            .Count();
+                    }
+                }
+            }
         
+
+            public int  IndexOf(T item)
+            {                
+                var lessThanKeyExpression = LessThanKeyExpression(keyExpression, item);
+
+
+                using (var ctx = new DiversityDataContext())
+                {
+                    return queryFunc(ctx)
+                        .OrderBy(keyExpression)
+                        .Where(lessThanKeyExpression)
+                        .Count();
+                }
+            }        
+
+        }
+
+        private static Expression<Func<T, bool>> LessThanKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
+        {
+            //Get the Key to look for
+            var key = keyExpression.Compile()(item);
+            //Build Comparison Expression "row => row.key < key"
+            return Expression.Lambda<Func<T, bool>>(Expression.LessThan(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
+        }
+
+
+        private static Expression<Func<T, bool>> EqualsKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
+        {
+            //Get the Key to look for
+            var key = keyExpression.Compile()(item);
+            //Build Comparison Expression "row => row.key < key"
+            return Expression.Lambda<Func<T, bool>>(Expression.Equal(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
+        }
+
     }
 }
