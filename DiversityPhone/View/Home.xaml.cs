@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 
 
+
 namespace DiversityPhone
 {
     public partial class Home : PhoneApplicationPage
@@ -20,7 +21,8 @@ namespace DiversityPhone
         private HomeVM VM { get { return DataContext as HomeVM; } }
         public Home()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            
         }       
 
         private void Settings_Click(object sender, EventArgs e)

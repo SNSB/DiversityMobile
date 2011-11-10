@@ -19,6 +19,7 @@ using DiversityPhone.Service;
 using ReactiveUI;
 using System.Reactive.Concurrency;
 
+
 namespace DiversityPhone
 {
     public partial class App : Application
@@ -52,6 +53,7 @@ namespace DiversityPhone
 
             // Standard Silverlight initialization
             InitializeComponent();
+            
 
             // Phone-specific initialization
             InitializePhoneApplication();

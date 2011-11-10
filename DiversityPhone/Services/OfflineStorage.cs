@@ -7,6 +7,8 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using DiversityPhone.Utility;
+using System.Data.Linq;
+using Svc = DiversityPhone.Service;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -103,16 +105,48 @@ using DiversityPhone.Utility;
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
             if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
-                throw new InvalidOperationException("Series is not new!");
-
-            using (var ctx = new DiversityDataContext())
             {
-                newSeries.SeriesID = findFreeEventSeriesID(ctx);
-                newSeries.LogUpdatedWhen = DateTime.Now;
-                ctx.EventSeries.InsertOnSubmit(newSeries);
-                ctx.SubmitChanges();
+                if (newSeries.IsModified == false && newSeries.SeriesID == 0)
+                {
+                    //NoEventSeries
+                    EventSeries es=null;
+                    try
+                    {
+                        es = this.getEventSeriesByID(0);
+                    }
+                    catch(KeyNotFoundException)
+                    {
+                        es = null;
+                    }
+                    if (es == null)
+                    {
+                        using (var ctx = new DiversityDataContext())
+                        {
+                            ctx.EventSeries.InsertOnSubmit(newSeries);
+                            ctx.SubmitChanges();
+                        }
+                    }
+                }
+                else
+                {
+                    //Update
+                    throw new NotImplementedException();
+                }
+            }
+            else
+            {
+                using (var ctx = new DiversityDataContext())
+                {
+                    newSeries.SeriesID = findFreeEventSeriesID(ctx);
+                    newSeries.LogUpdatedWhen = DateTime.Now;
+                    ctx.EventSeries.InsertOnSubmit(newSeries);
+                    ctx.SubmitChanges();
+                }
             }
         }
+
+
+
         #endregion
 
         #region Event
@@ -537,8 +571,37 @@ using DiversityPhone.Utility;
             }
         }
 
-        public Table<TaxonName> getTaxonTable(string id)
+        public Table<TaxonName> getTaxonTable(int tableID)
         {
+            using (var ctx = new DiversityDataContext())
+            {
+            switch (tableID)
+                {
+                    case 0: return ctx.TaxonNames0;
+                        break;
+                    case 1: return ctx.TaxonNames1;
+                        break;
+                    case 2: return ctx.TaxonNames2;
+                        break;
+                    case 3: return ctx.TaxonNames3;
+                        break;
+                    case 4: return ctx.TaxonNames4;
+                        break;
+                    case 5: return ctx.TaxonNames5;
+                        break;
+                    case 6: return ctx.TaxonNames6;
+                        break;
+                    case 7: return ctx.TaxonNames7;
+                        break;
+                    case 8: return ctx.TaxonNames8;
+                        break;
+                    case 9: return ctx.TaxonNames9;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+                }
+              
+            }
         }
 
         public IList<TaxonName> getTaxonNames(int tableID)
@@ -688,7 +751,14 @@ using DiversityPhone.Utility;
                 operation(ctx);
         }
 
-       
+        public Svc.HierarchySection getNewHierarchyBelow(Event ev)
+        {
+            throw new NotImplementedException();
+        }
+        public void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to)
+        {
+            throw new NotImplementedException();
+        }
 
         
     }

@@ -24,13 +24,17 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYPHONE" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="Home" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            
+            <Grid>
+                <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYPHONE" Style="{StaticResource PhoneTextNormalStyle}" Width="263" HorizontalAlignment="Left" />
+            <Image Height="120" Margin="0,0,6,0" Name="imageApplication" Width="160" Source="/Images/ApplicationIcon.png" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            <TextBlock x:Name="PageTitle" Text="Home" Margin="55,29,193,0" Style="{StaticResource PhoneTextTitle1Style}" Width="220" Height="91" />
+            </Grid>
         </StackPanel>
 
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>
+                <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
@@ -39,7 +43,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add series" Click="AddSeries_Click"/>            
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="settings" Click="Settings_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="userprofile" Click="Settings_Click"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="get vocabulary" Click="GetVoc_Click"/>  
                 <shell:ApplicationBarMenuItem Text="upload changes" Click="Upload_Click"/>

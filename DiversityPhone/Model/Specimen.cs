@@ -25,5 +25,14 @@
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
+
+         public Specimen()
+        {
+            this.AccesionNumber = null;
+            this.LogUpdatedWhen = DateTime.Now;
+            this.IsModified = null;
+        }
+
     }
 }

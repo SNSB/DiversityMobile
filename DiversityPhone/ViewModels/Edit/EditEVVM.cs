@@ -24,6 +24,11 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+
+
         private Event _Model;
         public Event Model
         {
@@ -56,8 +61,9 @@ namespace DiversityPhone.ViewModels
 
         public EditEVVM(IMessageBus messenger)
         {            
-            _messenger = messenger;            
-        
+            _messenger = messenger;
+            this._editable = false;
+
             var canSave = this.ObservableForProperty(x => x.LocalityDescription)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
                 .StartWith(false);
@@ -88,9 +94,15 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
+
+
         private void updateModel()
         {
             Model.LocalityDescription = LocalityDescription;

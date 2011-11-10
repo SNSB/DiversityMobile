@@ -27,7 +27,9 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <ScrollViewer></ScrollViewer>
+        <Image Height="123" HorizontalAlignment="Left" Margin="288,17,0,0" Name="image4" Stretch="Fill" VerticalAlignment="Top" Width="169" Source="/Images/ApplicationIcon.png" />
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="4,22,20,-29">
             <ListBox Height="529" HorizontalAlignment="Left" Margin="6,6,0,0" Name="listBox1" VerticalAlignment="Top" Width="450" ItemsSource="{Binding}">
                 <Canvas Height="60" HorizontalAlignment="Left" Margin="26,0,0,0" Name="canvas1" VerticalAlignment="Top" Width="410" Tap="canvas1_Tap">
                     <Image Height="37" Name="image1" Stretch="Fill" Width="41" Canvas.Left="21" Canvas.Top="5" Source="/Images/Event_80.png" />
@@ -41,11 +43,10 @@
                     <Image Height="37" Name="image3" Stretch="Fill" Width="41" Canvas.Left="21" Canvas.Top="9" Source="/Images/Series.png" />
                     <TextBlock Height="42" Name="textBlock3" Text="Series 2 24.07.2011" Width="285" Canvas.Left="100" Canvas.Top="9" FontSize="26" />
                 </Canvas>
-            </ListBox> 
+            </ListBox>
         </Grid>
-        <Image Height="123" HorizontalAlignment="Left" Margin="288,17,0,0" Name="image4" Stretch="Fill" VerticalAlignment="Top" Width="169" Source="/Images/ApplicationIcon.png" />
     </Grid>
- 
+    
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">

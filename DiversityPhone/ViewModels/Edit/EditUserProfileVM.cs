@@ -24,6 +24,11 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+
+
         private UserProfile _Model;
         public UserProfile Model
         {
@@ -59,7 +64,7 @@ namespace DiversityPhone.ViewModels
         {
 
             _messenger = messenger;
-
+            this._editable = false;
 
             _subscriptions = new List<IDisposable>()
             {
@@ -67,7 +72,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => executeSave()),
 
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => enableEdit()),
+                    .Subscribe(_ => setEdit()),
 
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
@@ -85,9 +90,14 @@ namespace DiversityPhone.ViewModels
          }
 
 
-         private void enableEdit()
+         private void setEdit()
          {
+             if (Editable == false)
+                 Editable = true;
+             else
+                 Editable = false;
          }
+
 
          private void delete()
          {

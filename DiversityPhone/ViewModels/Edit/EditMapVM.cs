@@ -30,6 +30,11 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
         //Anpassen das editierbare Objekt sind die Geofelder eines Events
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+
+
         private Map _Model;
         public Map Model
         {
@@ -42,7 +47,7 @@ namespace DiversityPhone.ViewModels
 
         public EditMapVM(IMessageBus messenger)
         {
-
+            this._editable = false;
             _messenger = messenger;
 
             _subscriptions = new List<IDisposable>()
@@ -51,7 +56,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => executeSave()),
 
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => enableEdit()),
+                    .Subscribe(_ => setEdit()),
 
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
@@ -70,10 +75,14 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
+
 
         private void delete()
         {

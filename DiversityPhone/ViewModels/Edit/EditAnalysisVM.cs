@@ -35,6 +35,10 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+
         #region Properties
         private IdentificationUnitAnalysis _Model;
         public IdentificationUnitAnalysis Model
@@ -100,6 +104,7 @@ namespace DiversityPhone.ViewModels
 
             _messenger = messenger;
             _storage = storage;
+            this._editable = false;
 
             var canSave = this.ObservableForProperty(x => x.SelectedAnalysisResult)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
@@ -111,7 +116,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => executeSave()),
 
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => enableEdit()),
+                    .Subscribe(_ => setEdit()),
 
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
@@ -131,8 +136,12 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
 
         private void delete()

@@ -8,6 +8,10 @@
     using DiversityPhone.Messages;
     using System.Collections.Generic;
     using DiversityPhone.Services;
+    using System.Data.Linq.Mapping;
+    using System.Reflection;
+    using System.Globalization;
+    using System.Threading;
 
     public class EditESVM : ReactiveObject
     {
@@ -24,6 +28,11 @@
         #endregion
 
         #region Properties
+        public Icon ImageSource { get { return Icon.EventSeries; } }
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable, ref _editable, value); } }
+
         private EventSeries _Model;
         public EventSeries Model
         {
@@ -43,9 +52,22 @@
         {
             get { return _SeriesCode; }
             set { this.RaiseAndSetIfChanged(x => x.SeriesCode, ref _SeriesCode, value); }
-        }        
+        }
 
-        public DateTime _SeriesEnd;
+        public string _SeriesStart;
+        public string SeriesStart
+        {
+            get
+            {
+                if (Model != null)
+                    return this.RaiseAndSetIfChanged(x => x.SeriesStart, String.Concat(Model.SeriesStart.ToShortDateString()," ",Model.SeriesStart.ToShortTimeString()));
+                else
+                    return String.Empty;
+            }
+
+        }
+
+        public DateTime? _SeriesEnd;
 
         public DateTime? SeriesEnd
         {
@@ -67,30 +89,59 @@
         #endregion
 
 
-        public EditESVM(IMessageBus messenger)
+        public EditESVM(IMessageBus messenger, bool editable)
         {
 
             _messenger = messenger;
+            this._editable = editable;
 
             var canSave = this.ObservableForProperty(x => x.Description)
-                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
-                .StartWith(false);
+              .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+              .StartWith(false);
 
             _subscriptions = new List<IDisposable>()
             {
                 (Save = new ReactiveCommand(canSave))               
                     .Subscribe(_ => executeSave()),
-
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+                    .Subscribe(_ => setEdit()),
                 (Delete = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
+                    .Subscribe(_ => executeDelete()),
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                     .Subscribe(es => updateView(es))
             };
         }
 
+        IObservable<bool> canSave(IList<MemberInfo> notNullable)
+        {
+            IObservable<bool> canSave = this.ObservableForProperty(x => x.Editable)
+                    .Select(edit => this.Editable)
+                    .StartWith(false);
+            foreach (MemberInfo mi in notNullable)
+            {
+                if (mi.MemberType == MemberTypes.Property)
+                {
+                    IObservable<bool> attribute = this.ObservableForProperty(x => mi) //Geht nicht mit dem Ausdruck
+                        .Select(att => !(att.Value==null))
+                        .StartWith(false);
+                    canSave = Extensions.BooleanAnd(canSave, attribute);
+                }
+            }
+            return canSave;
+        }
 
+        //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden
+        IObservable<bool> canSave()
+        {
+            IObservable<bool> editable = this.ObservableForProperty(x => x.Editable)
+                    .Select(edit => this.Editable)
+                    .StartWith(false);
+            IObservable<bool> description = this.ObservableForProperty(x => x.Description)
+                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                .StartWith(false);
+            IObservable<bool> canSave = Extensions.BooleanAnd(editable, description);
+            return canSave;
+        }
 
         private void executeSave()
         {
@@ -99,15 +150,19 @@
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-        private void delete()
+        private void executeDelete()
         {
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.DELETE);
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
 
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
 
         private void updateModel()
@@ -122,6 +177,7 @@
             Model = es;
             Description = Model.Description ?? "";
             SeriesCode = Model.SeriesCode;
+            string s = SeriesStart;
             SeriesEnd = Model.SeriesEnd;            
         }
     }

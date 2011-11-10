@@ -12,6 +12,7 @@ using System.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {
+    [Table]
     public class UserProfile
     {
 
