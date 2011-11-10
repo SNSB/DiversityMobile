@@ -134,8 +134,7 @@
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
-    <Compile Include="ViewModels\Edit\EditCSVM.cs" />
-    <Compile Include="Services\ModelProjection.cs" />
+    <Compile Include="ViewModels\Edit\EditCSVM.cs" />    
     <Compile Include="Services\RotatingCache.cs" />
     <Compile Include="ViewModels\Edit\EditMapVM.cs" />
     <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
