@@ -124,6 +124,7 @@
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\IOfflineVocabulary.cs" />
+    <Compile Include="Services\LightList.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
@@ -363,12 +364,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiversityPhone.Services\DiversityPhone.Common.csproj">
+    <ProjectReference Include="..\DiversityPhone.Common\DiversityPhone.Common.csproj">
       <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
       <Name>DiversityPhone.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
