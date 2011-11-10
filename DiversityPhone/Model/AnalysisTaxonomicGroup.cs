@@ -22,7 +22,7 @@ namespace DiversityPhone.Model
         }
 
         //Read-Only
-        [Column(IsPrimaryKey = true)]
+        [Column(IsPrimaryKey = true)]        
         public int AnalysisID { get; set; }
 
         [Column(IsPrimaryKey = true)]

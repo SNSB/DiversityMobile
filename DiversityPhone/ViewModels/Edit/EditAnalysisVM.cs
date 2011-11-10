@@ -41,7 +41,7 @@ namespace DiversityPhone.ViewModels
         {
             get { return _Model; }
             set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
-            this._Parent = _storage.getIUbyID(_Model.IdentificationUnitID);
+            this._Parent = _storage.getIdentificationUnitbyID(_Model.IdentificationUnitID);
             }
         }
 
@@ -151,7 +151,7 @@ namespace DiversityPhone.ViewModels
         private void updateView(IdentificationUnitAnalysis iua)
         {
             this.Model = iua;
-            this.SelectedAnalysis = _storage.getAnalysis(Model.AnalysisID);
+            this.SelectedAnalysis = _storage.getAnalysisByID(Model.AnalysisID);
             this.SelectedAnalysisResult = Model.AnalysisResult;
             this.AnalysisDate = Model.AnalysisDate;           
         }

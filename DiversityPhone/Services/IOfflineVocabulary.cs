@@ -11,7 +11,7 @@
         void addAnalyses(IEnumerable<Analysis> analyses);
         IList<Analysis> getAllAnalyses();
         IList<Analysis> getPossibleAnalyses(string taxonomicGroup);
-        Analysis getAnalysis(int analysisID);
+        Analysis getAnalysisByID(int analysisID);
 
         void addAnalysisResults(IEnumerable<AnalysisResult> results);
         IList<AnalysisResult> getPossibleAnalysisResults(int AnalysisID);

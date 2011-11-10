@@ -67,7 +67,7 @@ using System.Linq.Expressions;
 
         private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
         {
-            return cachedQuery(ctx => 
+            return cachedSingleKeyedQuery(ctx => 
                 {
                     if(restriction == null)
                         return (from es in ctx.EventSeries
@@ -113,33 +113,41 @@ using System.Linq.Expressions;
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
-           addOrUpdateRow(ctx => ctx.EventSeries, t
+          
         }
         #endregion
 
         #region Event
+
+        private IList<Event> evQuery(Expression<Func<Event, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from ev in ctx.Events
+                            select ev);
+                else
+                    return (from ev in ctx.Events
+                            select ev).Where(restriction);
+            },
+                ev => ev.EventID);
+        }
+
         public IList<Event> getAllEvents()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(ctx.Events);
+            return evQuery();
 
         }
 
 
         public IList<Event> getEventsForSeries(EventSeries es)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(from e in ctx.Events
-                                        where e.SeriesID == es.SeriesID
-                                        select e);
+            return evQuery(ev => ev.SeriesID == es.SeriesID);
         }
 
         public IList<Event> getEventsWithoutSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(from e in ctx.Events
-                                        where e.SeriesID == null
-                                        select e);
+            return evQuery(ev => ev.SeriesID == null);
         }
 
         private static int findFreeEventID(DiversityDataContext ctx)
@@ -165,12 +173,23 @@ using System.Linq.Expressions;
 
         #region CollectionEventProperties
 
+        private IList<CollectionEventProperty> cepQuery(Expression<Func<CollectionEventProperty, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from cep in ctx.CollectionEventProperties
+                            select cep);
+                else
+                    return (from cep in ctx.CollectionEventProperties
+                            select cep).Where(restriction);
+            },
+                cep => cep.PropertyID);
+        }
+
         public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<CollectionEventProperty>(from cep in ctx.CollectionEventProperties
-                                        where cep.EventID == ev.EventID
-                                        select cep);
+            return cepQuery(cep => cep.EventID == ev.EventID);
         }
 
         public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
@@ -188,28 +207,32 @@ using System.Linq.Expressions;
 
 
         #region Specimen
-
-
+        private IList<Specimen> specQuery(Expression<Func<Specimen, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                var q = (from spec in ctx.Specimen
+                         select spec);
+                if (restriction == null)
+                    return q;
+                else
+                    return q.Where(restriction);
+            },
+                spec => spec.CollectionSpecimenID);
+        }
         public IList<Specimen> getAllSpecimen()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(ctx.Specimen);
+            return specQuery();
         }
 
         public IList<Specimen> getSpecimenForEvent(Event ev)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(from spec in ctx.Specimen
-                                           where spec.CollectionEventID == ev.EventID
-                                           select spec);
+            return specQuery(spec => spec.CollectionEventID == ev.EventID);
         }
 
         public IList<Specimen> getSpecimenWithoutEvent()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(from spec in ctx.Specimen
-                                        where spec.CollectionEventID == null
-                                        select spec);
+            return specQuery(spec => spec.CollectionEventID == null);
         }
 
         private static int findFreeSpecimenID(DiversityDataContext ctx)
@@ -235,34 +258,41 @@ using System.Linq.Expressions;
 
         #region IdentificationUnit
 
+        private IList<IdentificationUnit> iuQuery(Expression<Func<IdentificationUnit, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from iu in ctx.IdentificationUnits
+                            select iu);
+                else
+                    return (from iu in ctx.IdentificationUnits
+                            select iu).Where(restriction);
+            },
+                iu => iu.UnitID);
+        }
+
         public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
-                                                     select iu);
+            return iuQuery(iu => iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null);            
         }
 
 
         public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.RelatedUnitID == unit.UnitID
-                                                     select iu);
+            return iuQuery(iu => iu.RelatedUnitID == unit.UnitID);
         }
 
-        public IdentificationUnit getIUbyID(int id)
+        public IdentificationUnit getIdentificationUnitByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<IdentificationUnit> iuList = new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                                       where iu.UnitID == id
-                                                                       select iu);
-            if (iuList.Count == 0)
-                throw new KeyNotFoundException("No IU with ID: " + id);
-            else if (iuList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
-            else return iuList[0];
+            IdentificationUnit result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from iu in ctx.IdentificationUnits
+                              where iu.UnitID == id
+                              select iu).FirstOrDefault();
+                });
+            return result;
         }
 
         private static int findFreeUnitID(DiversityDataContext ctx)
@@ -288,15 +318,27 @@ using System.Linq.Expressions;
 
         #region Analyses
 
-        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        private IList<IdentificationUnitAnalysis> iuanQuery(Expression<Func<IdentificationUnitAnalysis, bool>> restriction = null)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnitAnalysis>(from iua in ctx.IdentificationUnitAnalyses
-                                                     where iua.IdentificationUnitID == iu.UnitID
-                                                     select iua);
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from iuan in ctx.IdentificationUnitAnalyses
+                            select iuan);
+                else
+                    return (from iuan in ctx.IdentificationUnitAnalyses
+                            select iuan).Where(restriction);
+            },
+                iuan => iuan.IdentificationUnitAnalysisID);
         }
 
-        private static int findFreeAnalysisID(DiversityDataContext ctx)
+
+        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        {
+            return iuanQuery(iuan => iuan.IdentificationUnitID == iu.UnitID);
+        }
+
+        private static int findFreeIUAnalysisID(DiversityDataContext ctx)
         {
             int min = -1;
             if (ctx.IdentificationUnitAnalyses.Any())
@@ -309,48 +351,51 @@ using System.Linq.Expressions;
             using (var ctx = new DiversityDataContext())
             {
                 if (iua.IsModified == null)
-                    iua.IdentificationUnitAnalysisID = findFreeAnalysisID(ctx);
+                    iua.IdentificationUnitAnalysisID = findFreeIUAnalysisID(ctx);
                 ctx.IdentificationUnitAnalyses.InsertOnSubmit(iua);
                 ctx.SubmitChanges();
             }
         }
 
+        private IList<Analysis> anQuery(Expression<Func<Analysis, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from an in ctx.Analyses
+                            select an);
+                else
+                    return (from an in ctx.Analyses
+                            select an).Where(restriction);
+            },
+                an => an.AnalysisID);
+        }
+
         public IList<Analysis> getAllAnalyses()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Analysis>(ctx.Analyses);
+            return anQuery();
         }
 
         public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
-            IList<AnalysisTaxonomicGroup> allowed = this.getAnalysisTaxonomicGroups(taxonomicGroup);
-            IList<Analysis> all = this.getAllAnalyses();
-            IList<Analysis> possible = new List<Analysis>();
-            foreach (Analysis ana in all)
-            {
-                foreach (AnalysisTaxonomicGroup atg in allowed)
-                {
-                    if (ana.AnalysisID == atg.AnalysisID)
-                    {
-                        possible.Add(ana);
-                        break;
-                    }
-                }
-            }
-            return possible;
+            return cachedSingleKeyedQuery(ctx =>
+                from an in ctx.Analyses
+                join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
+                where atg.TaxonomicGroup == taxonomicGroup
+                select an,
+                an => an.AnalysisID);
         }
 
-        public Analysis getAnalysis(int analysisID)
+        public Analysis getAnalysisByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<Analysis> anaList = new LightList<Analysis>(from ana in ctx.Analyses
-                                                                       where ana.AnalysisID == analysisID
-                                                                       select ana);
-            if (anaList.Count == 0)
-                throw new KeyNotFoundException("No analysis with ID: " + analysisID);
-            else if (anaList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + analysisID);
-            else return anaList[0];
+            Analysis result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from an in ctx.Analyses
+                              where an.AnalysisID == id
+                              select an).FirstOrDefault();
+                });
+            return result;
         }
 
         public void addAnalyses(IEnumerable<Analysis> analyses)
@@ -360,15 +405,15 @@ using System.Linq.Expressions;
                 ctx.Analyses.InsertAllOnSubmit(analyses);
                 ctx.SubmitChanges();
             }
-        }
-
+        }       
 
         public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<AnalysisResult>(from ar in ctx.AnalysisResults
-                                                             where ar.AnalysisID == analysisID
-                                                             select ar);
+            return cachedSingleKeyedQuery(ctx =>            
+                from ar in ctx.AnalysisResults
+                where ar.AnalysisID == analysisID
+                select ar,
+                ar => ar.Result.GetHashCode());
         }
         public void addAnalysisResults(IEnumerable<AnalysisResult> results)
         {
@@ -378,14 +423,7 @@ using System.Linq.Expressions;
                 ctx.SubmitChanges();
             }
         }
-
-        public IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxGroup)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<AnalysisTaxonomicGroup>(from atg in ctx.AnalysisTaxonomicGroups
-                                                 where atg.TaxonomicGroup.Equals(taxGroup)
-                                                 select atg);
-        }
+        
 
         public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups)
         {
@@ -400,7 +438,7 @@ using System.Linq.Expressions;
 
         #endregion
 
-        #region Multimedia
+        #region Multimedia        
 
         public IList<MultimediaObject> getAllMultimediaObjects()
         {
@@ -644,7 +682,7 @@ using System.Linq.Expressions;
 
         #endregion     
     
-
+        #region Generische Implementierungen
         private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, T row) where T : class
         {
             if(tableSelector == null)
@@ -674,27 +712,82 @@ using System.Linq.Expressions;
                 });
         }
 
+        /// <summary>
+        /// Returns an unused primary Key for the given Table.
+        /// Returns only negative Keys
+        /// </summary>
+        /// <typeparam name="T">Entity Type of the Table</typeparam>
+        /// <param name="table"></param>
+        /// <param name="keyExpression">Expression to be used as primary Key</param>
+        /// <returns>Next Lowest unused primary Key value, always negative.</returns>
+        private int findFreeKey<T>(IQueryable<T> table, Expression<Func<T, int>> keyExpression)
+        {
+            var lowerthanMin = table.Select(keyExpression).Min() - 1;
+            return (lowerthanMin < -1) ? lowerthanMin : -1;
+        }
+
         private void withDataContext(Action<DiversityDataContext> operation)
         {
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
 
-        private IList<T> cachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
+        private IList<T> cachedEnumeratingQuery<T>(Func<DiversityDataContext, IQueryable<T>> oderedQuery)
         {
-            return new RotatingCache<T>(new QueryableCacheSource<T>(query ,KeyExpression));
+        }
+
+        private IList<T> cachedSingleKeyedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
+        {
+            return new RotatingCache<T>(new SingleKeyedCacheSource<T>(query,KeyExpression));
+        }
+
+        private class EnumeratingCacheSource<T> : ICacheSource<T>
+        {
+            Func<DiversityDataContext, IQueryable<T>> queryFunc;
+
+            /// <summary>
+            /// Constructs a new Cachesource, that emulates List Behaviour, by enumeration.
+            /// </summary>
+            /// <param name="QueryFunc">Lambda, that returns the query that will serve as the cache source.</param>
+            /// <remarks>The Query is assumed to be ordered. If it is not, the List behaviour (Indexing etc.) of the cache will fail.</remarks>
+            public EnumeratingCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc)
+            {
+                this.queryFunc = QueryFunc;
+            }
+
+            public IEnumerable<T> retrieveItems(int count, int offset)
+            {
+                using (var ctx = new DiversityDataContext())
+                {
+                    return queryFunc(ctx)                        
+                        .Skip(offset)
+                        .Take(count)
+                        .ToList(); //Force execution of query
+                }
+            }
+
+            public int IndexOf(T item)
+            {
+                return queryFunc(ctx)
+                        .Skip(offset)
+                        .Take(count)
+                        .ToList();
+            }
+
+            public int Count
+            {
+                get { throw new NotImplementedException(); }
+            }
         }
 
 
-        private class QueryableCacheSource<T> : ICacheSource<T>
+        private class SingleKeyedCacheSource<T> : ICacheSource<T>
         {
-            
-
             Func<DiversityDataContext, IQueryable<T>> queryFunc;
             Expression<Func<T, int>> keyExpression;
             Func<T, int> keyFunc;
 
-            public QueryableCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc, Expression<Func<T,int>> KeyExpression)
+            public SingleKeyedCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc, Expression<Func<T,int>> KeyExpression)
             {
                 queryFunc = QueryFunc;
                 keyExpression = KeyExpression;
@@ -755,9 +848,9 @@ using System.Linq.Expressions;
         {
             //Get the Key to look for
             var key = keyExpression.Compile()(item);
-            //Build Comparison Expression "row => row.key < key"
+            //Build Comparison Expression "row => row.key == key"
             return Expression.Lambda<Func<T, bool>>(Expression.Equal(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
         }
-
+        #endregion
     }
 }
