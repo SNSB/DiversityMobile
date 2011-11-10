@@ -13,6 +13,7 @@ using Svc = DiversityPhone.Service;
         EventSeries getEventSeriesByID(int id);
         IList<EventSeries> getNewEventSeries();
         void addOrUpdateEventSeries(EventSeries newSeries);
+        void deleteEventSeries(EventSeries es);
 
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);

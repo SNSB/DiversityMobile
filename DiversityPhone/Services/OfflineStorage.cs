@@ -10,6 +10,7 @@ using DiversityPhone.Utility;
 using DiversityPhone.Common;
 using System.Data.Linq;
 using System.Linq.Expressions;
+using DiversityPhone.Utility;
 using Svc = DiversityPhone.Service;
 
     public class OfflineStorage : IOfflineStorage
@@ -23,11 +24,14 @@ using Svc = DiversityPhone.Service;
 
             _subscriptions = new List<IDisposable>()
             {
-                _messenger.Listen<Event>(MessageContracts.SAVE)
-                    .Subscribe(ev => addOrUpdateEvent(ev)),
+                
 
                 _messenger.Listen<EventSeries>(MessageContracts.SAVE)
                     .Subscribe(es => addOrUpdateEventSeries(es)),
+                _messenger.Listen<EventSeries>(MessageContracts.DELETE)
+                    .Subscribe(es => deleteEventSeries(es)),
+                _messenger.Listen<Event>(MessageContracts.SAVE)
+                    .Subscribe(ev => addOrUpdateEvent(ev)),
 
                 _messenger.Listen<Specimen>(MessageContracts.SAVE)
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
@@ -103,7 +107,14 @@ using Svc = DiversityPhone.Service;
             return result;
         }
 
-
+        public EventSeries getEventSeriesByID(int id, DiversityDataContext ctx)
+        {
+            EventSeries result = null;
+                result = (from es in ctx.EventSeries
+                          where es.SeriesID == id
+                          select es).FirstOrDefault();
+            return result;
+        }
 
         private static int findFreeEventSeriesID(DiversityDataContext ctx)
         {
@@ -115,8 +126,42 @@ using Svc = DiversityPhone.Service;
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
-          
+            if (EventSeries.isNoEventSeries(newSeries))
+                return;
+            using (var ctx = new DiversityDataContext())
+            {
+                newSeries.LogUpdatedWhen = DateTime.Now;
+                if (newSeries.SeriesID == 0) //Entspricht Insert
+                {
+                    newSeries.SeriesID = findFreeEventSeriesID(ctx);
+                    ctx.EventSeries.InsertOnSubmit(newSeries);
+                }
+                else
+                {
+                    EventSeries storedSeries = this.getEventSeriesByID(newSeries.SeriesID,ctx);
+                    if (storedSeries != null) //Update
+                    {
+                        ReflectionOperations.copyAllFields(newSeries,storedSeries);
+                        var changeSet = ctx.GetChangeSet();
+                        IList<Object> updates= changeSet.Updates;
+                    }
+                    else //Insert. Der Fall darf aber eigentlich nicht auftreten.
+                        ctx.EventSeries.InsertOnSubmit(newSeries);
+                }
+                ctx.SubmitChanges();
+            }
         }
+
+        public void deleteEventSeries(EventSeries toDeleteEs)
+        {
+            var ctx = new DiversityDataContext();
+            var delete = (from es in ctx.EventSeries
+                      where es.SeriesID == toDeleteEs.SeriesID
+                      select es).FirstOrDefault();
+            ctx.EventSeries.DeleteOnSubmit(delete);
+            ctx.SubmitChanges();
+        }
+
         #endregion
 
         #region Event
@@ -572,10 +617,8 @@ using Svc = DiversityPhone.Service;
             }
         }
 
-        public Table<TaxonName> getTaxonTable(int tableID)
+        private Table<TaxonName> getTaxonTable(int tableID,DiversityDataContext ctx)
         {
-            using (var ctx = new DiversityDataContext())
-            {
             switch (tableID)
                 {
                     case 0: return ctx.TaxonNames0;
@@ -600,9 +643,7 @@ using Svc = DiversityPhone.Service;
                         break;
                     default:
                         throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
-                }
-              
-            }
+                }   
         }
 
         public IList<TaxonName> getTaxonNames(int tableID)
@@ -883,6 +924,20 @@ using Svc = DiversityPhone.Service;
             //Build Comparison Expression "row => row.key == key"
             return Expression.Lambda<Func<T, bool>>(Expression.Equal(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
         }
+        #endregion
+
+        #region IOfflineFieldData Members
+
+        public Svc.HierarchySection getNewHierarchyBelow(Event ev)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
     }
 }

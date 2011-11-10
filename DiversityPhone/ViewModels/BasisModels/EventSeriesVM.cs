@@ -14,7 +14,7 @@
 
         public ReactiveCommand Select { get; private set; }
         public ReactiveCommand Edit { get; private set; }
-        public ReactiveCommand Show {get;private set;}
+
 
         public EventSeries Model { get; private set; }
         public string Description { get { return Model.Description; } }
@@ -24,11 +24,11 @@
         {
             _messenger = messenger;
             Model = model;
-            EventSeries noEs = EventSeries.NoEventSeries();
-            if (Model.SeriesID != noEs.SeriesID && !Model.Description.Equals(noEs.Description)) //Überprüfen auf NoEventSeries
-                Icon = ViewModels.Icon.EventSeries;
-            else
+
+            if (EventSeries.isNoEventSeries(model)) //Überprüfen auf NoEventSeries
                 Icon = ViewModels.Icon.NoEventSeries;
+            else
+                Icon = ViewModels.Icon.EventSeries;
 
             _subscriptions = new List<IDisposable>()
             {
@@ -36,8 +36,6 @@
                     .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.SELECT)),
                 (Edit = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.EDIT)),
-                (Show = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.SHOW))
             };
         }
     }

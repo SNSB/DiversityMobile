@@ -37,7 +37,8 @@
         public EventSeries Model
         {
             get { return _Model; }
-            set {
+            set {            
+                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
                 if (Model != null)
                 {
                     if (Model.SeriesID == 0 && !Model.Description.Equals(EventSeries.NoEventSeries().Description))
@@ -45,7 +46,7 @@
                     else
                         Editable = false;
                 }
-                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
+            }
         }
 
         private string _Description;
@@ -97,11 +98,10 @@
         #endregion
 
 
-        public EditESVM(IMessageBus messenger, bool editable)
+        public EditESVM(IMessageBus messenger)
         {
 
             _messenger = messenger;
-            this._editable = editable;
             
             var canSave = this.ObservableForProperty(x => x.Description)
               .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
@@ -116,8 +116,6 @@
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => executeDelete()),
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                    .Subscribe(es => updateView(es)),
-                _messenger.Listen<EventSeries>(MessageContracts.SHOW)
                     .Subscribe(es => updateView(es))
             };
         }
@@ -157,13 +155,13 @@
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            _messenger.SendMessage<Page>(Page.ViewES);
         }
 
         private void executeDelete()
         {
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            _messenger.SendMessage<Page>(Page.Home);
         }
 
 

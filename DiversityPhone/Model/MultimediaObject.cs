@@ -15,10 +15,10 @@ namespace DiversityPhone.Model
     [Table]
     public class MultimediaObject
     {
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public int SourceId { get; set; }
 
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public int RelatedId { get; set; }
 
         [Column(IsPrimaryKey = true)]

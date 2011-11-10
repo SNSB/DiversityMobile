@@ -34,7 +34,7 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>(),true));
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
@@ -73,12 +73,6 @@ namespace DiversityPhone.ViewModels
         public HomeVM Home { get { return _homeVM; } }
 
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
-        public EditESVM ShowES { get { 
-            EditESVM esvm= _ioc.Resolve<EditESVM>();
-            esvm.Editable = false;
-            return esvm;
-        } }//Editable auf false setzen
-
         public ViewESVM ViewES { get { return _ioc.Resolve<ViewESVM>(); } }
 
         public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }

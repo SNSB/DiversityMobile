@@ -17,6 +17,7 @@ using DiversityPhone.View;
 using System.Threading;
 using System.Globalization;
 using DiversityPhone.Model;
+using ReactiveUI;
 
 namespace DiversityPhone
 {
@@ -33,14 +34,17 @@ namespace DiversityPhone
             InitializeComponent();
             if (VM != null)
             {
-               
                 this._toStore = new List<Control> { this.DescTB };
                 this.adjustStoreBackgroundColors();
-                this.adjustApplicationBar();
+                
                 VM.Save.CanExecuteObservable
                     .DistinctUntilChanged()
                     .Subscribe(canSave => setSaveEnabled(canSave));
                 setSaveEnabled(VM.Save.CanExecute(null));
+                VM.ObservableForProperty(vm => vm.Editable)
+                    .Select(change => change.Value)
+                    .StartWith(VM.Editable)
+                    .Subscribe(value => adjustApplicationBar(value));
             }          
         }
 
@@ -53,7 +57,7 @@ namespace DiversityPhone
         void setSaveEnabled(bool state)
         {
             //Named Buttons don't work :/
-            if (ApplicationBar.Buttons[0] != null)
+            if (ApplicationBar.Buttons.Count>0)
             {
                 if (VM.Editable == false)
                     ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
@@ -63,14 +67,11 @@ namespace DiversityPhone
             }
         }
 
-        private void adjustApplicationBar()
+        private void adjustApplicationBar(bool editable)
         {
-            if (this.VM == null)
-                return;
-            else
             {
                 this.ApplicationBar.Buttons.Clear();
-                if (VM.Editable == true)
+                if (editable == true)
                 {
                     ApplicationBarIconButton save = new ApplicationBarIconButton();
                     save.Text = "save";
@@ -143,7 +144,6 @@ namespace DiversityPhone
             if (VM != null)
             {
                 VM.Edit.Execute(null);
-                this.adjustApplicationBar();
             }
         }
 

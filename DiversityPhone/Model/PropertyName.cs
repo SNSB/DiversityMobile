@@ -32,9 +32,6 @@ namespace DiversityPhone.Model
         public string DisplayText { get; set; }
 
         [Column]
-        public string HierarchyCache { get; set; }
-
-        [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
     }

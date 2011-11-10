@@ -12,6 +12,7 @@
             this.SeriesCode = string.Empty;
             this.SeriesStart = DateTime.Now;
             this.SeriesEnd = null;
+            this.SeriesID = 0;
             this.LogUpdatedWhen = DateTime.Now;
             this.IsModified = null;
         }
@@ -20,11 +21,19 @@
         public static EventSeries NoEventSeries()
         {
             EventSeries noEs = new EventSeries();
-            noEs.SeriesID = 0;
             noEs.Description = "Go to Events";
             noEs.SeriesCode = "Go to Events";
             noEs.IsModified = false;
             return noEs;
+        }
+
+        public static bool isNoEventSeries(EventSeries es)
+        {
+            EventSeries noes = EventSeries.NoEventSeries();
+            if (es.Description.Equals(noes.Description))
+                return true;
+            else
+                return false;
         }
 
         [Column(IsPrimaryKey = true)]

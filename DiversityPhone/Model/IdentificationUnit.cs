@@ -15,7 +15,7 @@ namespace DiversityPhone.Model
             this.RelatedUnitID = null;
         }
 
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public int SpecimenID { get; set; }
 
         [Column(IsPrimaryKey = true)]

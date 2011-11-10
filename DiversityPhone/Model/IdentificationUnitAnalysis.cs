@@ -15,10 +15,10 @@ namespace DiversityPhone.Model
     [Table]
     public class IdentificationUnitAnalysis
     {
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public int IdentificationUnitID { get; set; }
         
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public int AnalysisID { get; set; }
         
         [Column(IsPrimaryKey = true)]
