@@ -24,6 +24,7 @@ namespace DiversityPhone.ViewModels
 
         public ViewModelLocator()
         {
+
             if (_ioc == null) return;
 
             #region ViewModel Factories
@@ -33,7 +34,7 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>(),true));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM(
                 container.Resolve<IMessageBus>(),
@@ -70,8 +71,10 @@ namespace DiversityPhone.ViewModels
         public EditUserProfileVM EditProfile { get { return _ioc.Resolve<EditUserProfileVM>(); } }
 
         public HomeVM Home { get { return _homeVM; } }
-        
+
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
+        public EditESVM ShowES { get { return _ioc.Resolve<EditESVM>(); } }//Editable auf false setzen
+
         public ViewESVM ViewES { get { return _ioc.Resolve<ViewESVM>(); } }
 
         public EditEVVM EditEV { get { return _ioc.Resolve<EditEVVM>(); } }

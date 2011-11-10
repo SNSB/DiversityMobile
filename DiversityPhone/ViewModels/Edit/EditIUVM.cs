@@ -27,6 +27,10 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+
         public IdentificationUnit Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
 
@@ -79,7 +83,7 @@ namespace DiversityPhone.ViewModels
         {
             _messenger = messenger;
             _storage = storage;
-
+            this._editable = false;
             var model = _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT);
 
 
@@ -95,7 +99,7 @@ namespace DiversityPhone.ViewModels
             _subscriptions = new List<IDisposable>()
             {            
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => enableEdit()),
+                    .Subscribe(_ => setEdit()),
 
                 model.Select(m => m.TaxonomicGroup)
                     .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
@@ -121,9 +125,14 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
+
 
          private IObservable<bool> validationObservable()
         {

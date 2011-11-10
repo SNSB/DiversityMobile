@@ -14,6 +14,7 @@
         {
             this.CollectionDate = DateTime.Now;
             this.DeterminationDate = DateTime.Now;
+            this.LogUpdatedWhen = DateTime.Now;
             this.IsModified = null;
         }
 

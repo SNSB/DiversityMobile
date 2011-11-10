@@ -15,15 +15,30 @@ namespace ModelDemonstrator
 {
     public partial class ViewES : PhoneApplicationPage
     {
-        public ViewES()
+
+        bool editable;
+
+        public ViewES(bool editable)
         {
             InitializeComponent();
+            this.editable = editable;
+            if (editable == false)
+            {
+            }
+            else
+            {
+            }
         }
 
 
         private void Edit_Click(object sender, EventArgs e)
         {
             NavigationService.Navigate(new Uri("/EditES.xaml", UriKind.Relative));
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

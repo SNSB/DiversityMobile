@@ -56,10 +56,7 @@
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SilverlightToolkitWP.4.2011.8.17\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="ReactiveUI.Blend_WP7">
       <HintPath>..\Lib\ReactiveUI\ReactiveUI.Blend_WP7.dll</HintPath>
@@ -146,6 +143,7 @@
     <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\DPColors.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
     </Compile>
@@ -293,17 +291,84 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Images\SNSBIcons\Analysis.png" />
-    <Resource Include="Images\SNSBIcons\Beleg_80.png" />
-    <Resource Include="Images\SNSBIcons\Event_80.png" />
-    <Resource Include="Images\SNSBIcons\Habitat_80.png" />
-    <Resource Include="Images\SNSBIcons\Nord_80.png" />
-    <Resource Include="Images\SNSBIcons\Observation_80.png" />
-    <Resource Include="Images\SNSBIcons\plant_80.png" />
-    <Resource Include="Images\SNSBIcons\Series_80.png" />
-    <Resource Include="Images\appbar.globe.rest.png" />
-    <Resource Include="Images\appbar.globus.rest.png" />
-    <Resource Include="Images\appbar.map.rest.png" />
+    <Content Include="Images\SNSBIcons\Analysis.png" />
+    <Content Include="Images\SNSBIcons\Beleg_80.png" />
+    <Content Include="Images\SNSBIcons\Event_80.png" />
+    <Content Include="Images\SNSBIcons\Habitat_80.png" />
+    <Content Include="Images\SNSBIcons\Nord_80.png" />
+    <Content Include="Images\SNSBIcons\Observation_80.png" />
+    <Content Include="Images\SNSBIcons\plant_80.png" />
+    <Content Include="Images\SNSBIcons\Series_80.png" />
+    <Content Include="Images\appbar.globe.rest.png" />
+    <Content Include="Images\appbar.globus.rest.png" />
+    <Content Include="Images\appbar.map.rest.png" />
+    <Content Include="Images\SNSBIcons\alga40.png" />
+    <Content Include="Images\SNSBIcons\alga_80.png" />
+    <Content Include="Images\appbar.back.rest.png" />
+    <Content Include="Images\appbar.basecircle.rest.png" />
+    <Content Include="Images\appbar.close.rest.png" />
+    <Content Include="Images\appbar.favs.addto.rest.png" />
+    <Content Include="Images\appbar.favs.rest.png" />
+    <Content Include="Images\appbar.feature.email.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
+    <Content Include="Images\appbar.feature.video.rest.png" />
+    <Content Include="Images\appbar.folder.rest.png" />
+    <Content Include="Images\appbar.minus.rest.png" />
+    <Content Include="Images\appbar.new.rest.png" />
+    <Content Include="Images\appbar.next.rest.png" />
+    <Content Include="Images\appbar.overflowdots.png" />
+    <Content Include="Images\appbar.questionmark.rest.png" />
+    <Content Include="Images\appbar.refresh.rest.png" />
+    <Content Include="Images\SNSBIcons\alga_80.png.bmp" />
+    <Content Include="Images\SNSBIcons\Analysis_40.png" />
+    <Content Include="Images\SNSBIcons\Analysis_80.png" />
+    <Content Include="Images\SNSBIcons\ApplicationIcon.png" />
+    <Content Include="Images\SNSBIcons\arthropod_40.png" />
+    <Content Include="Images\SNSBIcons\arthropod_80.png" />
+    <Content Include="Images\SNSBIcons\bacterium_40.png" />
+    <Content Include="Images\SNSBIcons\bacterium_80.png" />
+    <Content Include="Images\SNSBIcons\Beleg_40.png" />
+    <Content Include="Images\SNSBIcons\bird.png" />
+    <Content Include="Images\SNSBIcons\bird_40.png" />
+    <Content Include="Images\SNSBIcons\bird_80.png" />
+    <Content Include="Images\SNSBIcons\bryophyte_40.png" />
+    <Content Include="Images\SNSBIcons\bryophyte_80.png" />
+    <Content Include="Images\SNSBIcons\cnidaria_40.png" />
+    <Content Include="Images\SNSBIcons\cnidaria_80.png" />
+    <Content Include="Images\SNSBIcons\echinoderm_40.png" />
+    <Content Include="Images\SNSBIcons\echinoderm_80.png" />
+    <Content Include="Images\SNSBIcons\Event_40.png" />
+    <Content Include="Images\SNSBIcons\evertebrate_40.png" />
+    <Content Include="Images\SNSBIcons\evertebrate_80.png" />
+    <Content Include="Images\SNSBIcons\fish_40.png" />
+    <Content Include="Images\SNSBIcons\fish_80.png" />
+    <Content Include="Images\SNSBIcons\fungus_40.png" />
+    <Content Include="Images\SNSBIcons\fungus_80.png" />
+    <Content Include="Images\SNSBIcons\Habitat_40.png" />
+    <Content Include="Images\SNSBIcons\insect_40.png" />
+    <Content Include="Images\SNSBIcons\insect_80.png" />
+    <Content Include="Images\SNSBIcons\lichen_40.png" />
+    <Content Include="Images\SNSBIcons\lichen_80.png" />
+    <Content Include="Images\SNSBIcons\mammal_40.png" />
+    <Content Include="Images\SNSBIcons\mammal_80.png" />
+    <Content Include="Images\SNSBIcons\mollusc_40.png" />
+    <Content Include="Images\SNSBIcons\mollusc_80.png" />
+    <Content Include="Images\SNSBIcons\myxomycete_40.png" />
+    <Content Include="Images\SNSBIcons\myxomycete_80.png" />
+    <Content Include="Images\SNSBIcons\Nord_40.png" />
+    <Content Include="Images\SNSBIcons\Observation_40.png" />
+    <Content Include="Images\SNSBIcons\Other_40.png" />
+    <Content Include="Images\SNSBIcons\Other_80.png" />
+    <Content Include="Images\SNSBIcons\plant_40.png" />
+    <Content Include="Images\SNSBIcons\reptile_40.png" />
+    <Content Include="Images\SNSBIcons\reptile_80.png" />
+    <Content Include="Images\SNSBIcons\Series.png" />
+    <Content Include="Images\SNSBIcons\Series_40.png" />
+    <Content Include="Images\SNSBIcons\vertebrate_40.png" />
+    <Content Include="Images\SNSBIcons\vertebrate_80.png" />
+    <Content Include="Images\SNSBIcons\virus_40.png" />
+    <Content Include="Images\SNSBIcons\virus_80.png" />
+    <Content Include="Images\SNSBIcons\WGS84.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />

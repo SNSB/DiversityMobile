@@ -20,10 +20,13 @@ namespace DiversityPhone.View
             switch ((Icon)Enum.Parse(typeof(Icon),value.ToString(), false))
             {
                 case Icon.EventSeries:
-                    
-                    
+                    return "/Images/SNSBIcons/Series_80.png";
                 case Icon.NoEventSeries:
-                    
+                    return "/Images/SNSBIcons/Event_80.png";
+                case Icon.Event:
+                    return "/Images/SNSBIcons/Event_80.png";
+                   
+                
                 case Icon.Observation:
                     break;
                                   

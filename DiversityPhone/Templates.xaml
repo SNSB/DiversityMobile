@@ -9,7 +9,7 @@
     </DataTemplate>
     <DataTemplate x:Key="FieldDataItemTemplate">
         <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Icon,Converter={StaticResource IconPathConverter}}"/>
+            <Image Source="{Binding Icon,Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
             <Button Style="{StaticResource ItemButtonStyle}"
                     Content="{Binding Description}"
                     Command="{Binding Select}"/>

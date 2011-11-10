@@ -37,6 +37,7 @@
             <toolkit:ListPicker ItemsSource="{Binding TaxonomicGroups}" 
                                 SelectedItem="{Binding SelectedTaxGroup, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource TermListItemTemplate}"
+                                Name="_taxonListPicker"
                                 FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
                                 Header="Taxonomic Group"
                                 FullModeHeader="Taxonomic Group"/>           

@@ -1,6 +1,10 @@
 ﻿namespace DiversityPhone.Services
 {
     using System.Data.Linq;
+    using System.Collections.Generic;
+    using System.Data.Linq.Mapping;
+    using System;
+    using System.Reflection;
     using DiversityPhone.Model;
 
     public class DiversityDataContext : DataContext
@@ -10,6 +14,7 @@
         public DiversityDataContext()
             : base(connStr)
         {
+            
         }
 
         public Table<EventSeries> EventSeries;
@@ -31,7 +36,7 @@
         public Table<MultimediaObject> MultimediaObjects;
         public Table<Map> Maps;
         public Table<UserProfile> Profiles;
-
+        
 
         public Table<Term> Terms;
 
@@ -53,6 +58,19 @@
 
         //Alle PropertyNames werden in derslben Tabelle gespeichert, da die Gesamtzahl in Vergleich zu TaxonNames gering ist.
         public Table<PropertyName> PropertyNames;
+
+        public IList<MemberInfo> getNotNullableColumns(Type t)
+        {
+            MetaTable mt = this.Mapping.GetTable(t);
+            var columns = mt.RowType.PersistentDataMembers;
+            IList<MemberInfo> notNullableMembers=new List<MemberInfo>();
+            foreach (MetaDataMember mdm in columns)
+            {
+                if (mdm.CanBeNull == false)
+                    notNullableMembers.Add(mdm.Member);
+            }
+            return notNullableMembers;
+        }
 
     }
 }

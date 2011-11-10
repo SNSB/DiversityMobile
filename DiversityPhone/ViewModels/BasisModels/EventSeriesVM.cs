@@ -24,10 +24,10 @@
             _messenger = messenger;
             Model = model;
             EventSeries noEs = EventSeries.NoEventSeries();
-            if (Model.SeriesID != noEs.SeriesID && !Model.Description.Equals(noEs.Description) ) //Überprüfen auf NoEventSeries
+            if (Model.SeriesID != noEs.SeriesID && !Model.Description.Equals(noEs.Description)) //Überprüfen auf NoEventSeries
                 Icon = ViewModels.Icon.EventSeries;
             else
-                Icon = ViewModels.Icon.Event;
+                Icon = ViewModels.Icon.NoEventSeries;
 
             _subscriptions = new List<IDisposable>()
             {

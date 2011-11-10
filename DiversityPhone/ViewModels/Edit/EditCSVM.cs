@@ -23,6 +23,10 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
+
+        public bool _editable;
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable, ref _editable,value); } }
+
         private ObservableAsPropertyHelper<Specimen> _Model;
         public Specimen Model
         {
@@ -45,14 +49,12 @@ namespace DiversityPhone.ViewModels
 
             _Model = _messenger.Listen<Specimen>(MessageContracts.EDIT)
                 .ToProperty(this, x => x.Model);
-
+            this._editable = false;
             var modelPropertyObservable = this.ObservableForProperty(x => x.Model)
                 .Select(change => change.Value)
                 .Where(x => x != null);
 
-            var canSave = this.ObservableForProperty(x => x.AccessionNumber)
-                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
-                .StartWith(false);
+            var canSave = this.canSave();
 
             _subscriptions = new List<IDisposable>()
             {
@@ -60,7 +62,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => executeSave()),
 
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => enableEdit()),        
+                    .Subscribe(_ => setEdit()),        
                
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
@@ -96,9 +98,14 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private void enableEdit()
+        private void setEdit()
         {
+            if (Editable == false)
+                Editable = true;
+            else
+                Editable = false;
         }
+
 
         private void updateModel()
         {

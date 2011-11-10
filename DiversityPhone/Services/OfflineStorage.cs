@@ -7,9 +7,10 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using DiversityPhone.Utility;
-    using DiversityPhone.Common;
+using DiversityPhone.Common;
 using System.Data.Linq;
 using System.Linq.Expressions;
+using Svc = DiversityPhone.Service;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -571,8 +572,37 @@ using System.Linq.Expressions;
             }
         }
 
-        public Table<TaxonName> getTaxonTable(string id)
+        public Table<TaxonName> getTaxonTable(int tableID)
         {
+            using (var ctx = new DiversityDataContext())
+            {
+            switch (tableID)
+                {
+                    case 0: return ctx.TaxonNames0;
+                        break;
+                    case 1: return ctx.TaxonNames1;
+                        break;
+                    case 2: return ctx.TaxonNames2;
+                        break;
+                    case 3: return ctx.TaxonNames3;
+                        break;
+                    case 4: return ctx.TaxonNames4;
+                        break;
+                    case 5: return ctx.TaxonNames5;
+                        break;
+                    case 6: return ctx.TaxonNames6;
+                        break;
+                    case 7: return ctx.TaxonNames7;
+                        break;
+                    case 8: return ctx.TaxonNames8;
+                        break;
+                    case 9: return ctx.TaxonNames9;
+                        break;
+                    default:
+                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+                }
+              
+            }
         }
 
         public IList<TaxonName> getTaxonNames(int tableID)

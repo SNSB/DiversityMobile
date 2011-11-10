@@ -11,8 +11,8 @@
             this.Description = string.Empty;
             this.SeriesCode = string.Empty;
             this.SeriesStart = DateTime.Now;
-            this.SeriesEnd = DateTime.Now;
-
+            this.SeriesEnd = null;
+            this.LogUpdatedWhen = DateTime.Now;
             this.IsModified = null;
         }
 
@@ -39,8 +39,8 @@
         [Column]
         public DateTime SeriesStart { get; set; }
 
-        [Column]
-        public DateTime SeriesEnd { get; set; }
+        [Column(CanBeNull = true)]
+        public DateTime? SeriesEnd { get; set; }
 
         
         /// <summary>

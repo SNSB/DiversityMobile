@@ -16,6 +16,7 @@
     {
         public const string EDIT = "Edit";
         public const string SAVE = "Save";
+        public const string SHOW = "Show";
         public const string DELETE = "Delete";
         public const string SELECT = "Select";
     }    
