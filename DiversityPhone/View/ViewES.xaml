@@ -30,7 +30,6 @@
             <ListBox ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>     
         </StackPanel>
 
-       
     </ScrollViewer>
     
     <phone:PhoneApplicationPage.ApplicationBar>

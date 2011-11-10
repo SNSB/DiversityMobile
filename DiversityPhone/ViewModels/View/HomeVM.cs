@@ -67,7 +67,7 @@
                     .Subscribe(_ => getVoc()),              
 
                 _messenger.Listen<EventSeries>(MessageContracts.SAVE)
-                    .Subscribe(es => saveSeries(es))
+                    .Subscribe(_ => updateSeriesList())
             };
 
         }

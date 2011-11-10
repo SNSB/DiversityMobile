@@ -14,6 +14,7 @@
 
         public ReactiveCommand Select { get; private set; }
         public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Show {get;private set;}
 
         public EventSeries Model { get; private set; }
         public string Description { get { return Model.Description; } }
@@ -35,6 +36,8 @@
                     .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.SELECT)),
                 (Edit = new ReactiveCommand())
                     .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.EDIT)),
+                (Show = new ReactiveCommand())
+                    .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.SHOW))
             };
         }
     }

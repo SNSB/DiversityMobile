@@ -37,7 +37,15 @@
         public EventSeries Model
         {
             get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
+            set {
+                if (Model != null)
+                {
+                    if (Model.SeriesID == 0 && !Model.Description.Equals(EventSeries.NoEventSeries().Description))
+                        Editable = true;
+                    else
+                        Editable = false;
+                }
+                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
         }
 
         private string _Description;
@@ -94,7 +102,7 @@
 
             _messenger = messenger;
             this._editable = editable;
-
+            
             var canSave = this.ObservableForProperty(x => x.Description)
               .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
               .StartWith(false);
@@ -108,6 +116,8 @@
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => executeDelete()),
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
+                    .Subscribe(es => updateView(es)),
+                _messenger.Listen<EventSeries>(MessageContracts.SHOW)
                     .Subscribe(es => updateView(es))
             };
         }

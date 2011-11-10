@@ -73,7 +73,11 @@ namespace DiversityPhone.ViewModels
         public HomeVM Home { get { return _homeVM; } }
 
         public EditESVM EditES { get { return _ioc.Resolve<EditESVM>(); } }
-        public EditESVM ShowES { get { return _ioc.Resolve<EditESVM>(); } }//Editable auf false setzen
+        public EditESVM ShowES { get { 
+            EditESVM esvm= _ioc.Resolve<EditESVM>();
+            esvm.Editable = false;
+            return esvm;
+        } }//Editable auf false setzen
 
         public ViewESVM ViewES { get { return _ioc.Resolve<ViewESVM>(); } }
 

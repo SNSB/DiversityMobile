@@ -16,6 +16,7 @@ using System.Reactive.Linq;
 using DiversityPhone.View;
 using System.Threading;
 using System.Globalization;
+using DiversityPhone.Model;
 
 namespace DiversityPhone
 {
@@ -32,6 +33,7 @@ namespace DiversityPhone
             InitializeComponent();
             if (VM != null)
             {
+               
                 this._toStore = new List<Control> { this.DescTB };
                 this.adjustStoreBackgroundColors();
                 this.adjustApplicationBar();

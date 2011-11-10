@@ -41,6 +41,8 @@ namespace DiversityPhone.Services
 
                 _messenger.Listen<EventSeries>(MessageContracts.EDIT)
                     .Subscribe(_=>Navigate(Page.EditES)),
+                _messenger.Listen<EventSeries>(MessageContracts.SHOW)
+                    .Subscribe(_=>Navigate(Page.EditES)),
                 _messenger.Listen<EventSeries>(MessageContracts.SELECT)
                     .Subscribe(_=>Navigate(Page.ViewES)),
 
