@@ -17,7 +17,7 @@
         IList<AnalysisResult> getPossibleAnalysisResults(int AnalysisID);
 
         void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);
-        IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
+        //IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
 
         void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID);
         IList<TaxonName> getTaxonNames(int tableID);

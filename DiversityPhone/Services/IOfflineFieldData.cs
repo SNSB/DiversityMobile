@@ -29,7 +29,7 @@ using Svc = DiversityPhone.Service;
 
         IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);
         IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
-        IdentificationUnit getIdentificationUnitbyID(int id);
+        IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
 
         IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu);

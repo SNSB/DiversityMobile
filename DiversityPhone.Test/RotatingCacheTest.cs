@@ -45,7 +45,7 @@ namespace DiversityPhone.Test
       
         public RotatingCacheTest()
         {
-            _target = new RotatingCache<string>(10, new StringCacheSource());
+            _target = new RotatingCache<string>(new StringCacheSource());
         }
 
         [Fact]

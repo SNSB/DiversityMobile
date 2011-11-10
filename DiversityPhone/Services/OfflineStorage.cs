@@ -442,47 +442,41 @@ using System.Linq.Expressions;
 
         public IList<MultimediaObject> getAllMultimediaObjects()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(ctx.MultimediaObjects);
+            return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
         public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                             where mmo.SourceId == (int) SourceID.EventSeries
-                                                             && mmo.RelatedId==es.SeriesID
-                                                             select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.EventSeries
+                                                && mm.RelatedId == es.SeriesID
+                                        select mm);
         }
 
       
         public IList<MultimediaObject> getMultimediaForEvent(Event ev)
         {
-
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.Event
-                                                   && mmo.RelatedId == ev.EventID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.Event
+                                                && mm.RelatedId == ev.EventID
+                                        select mm);            
         }
 
 
         public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.Specimen
-                                                   && mmo.RelatedId == spec.CollectionSpecimenID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.Specimen
+                                                && mm.RelatedId == spec.CollectionSpecimenID
+                                        select mm);
         }
 
         public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.IdentificationUnit
-                                                   && mmo.RelatedId == iu.UnitID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.IdentificationUnit
+                                                && mm.RelatedId == iu.UnitID
+                                        select mm);
         }
 
         public void addMultimediaObject(MultimediaObject mmo)
@@ -499,10 +493,9 @@ using System.Linq.Expressions;
 
         public IList<Term> getTerms(int source)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Term>(from t in ctx.Terms
-                                       where t.SourceID == source
-                                       select t);
+            return uncachedQuery(ctx => from t in ctx.Terms
+                                        where t.SourceID == source
+                                        select t);
         }
 
      
@@ -732,8 +725,9 @@ using System.Linq.Expressions;
                 operation(ctx);
         }
 
-        private IList<T> cachedEnumeratingQuery<T>(Func<DiversityDataContext, IQueryable<T>> oderedQuery)
+        private IList<T> cachedMultiKeyQuery<T>(Func<DiversityDataContext, IQueryable<T>> oderedQuery, Expression<Func<T,T, bool>> match)
         {
+            return null; //TODO
         }
 
         private IList<T> cachedSingleKeyedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
@@ -741,43 +735,11 @@ using System.Linq.Expressions;
             return new RotatingCache<T>(new SingleKeyedCacheSource<T>(query,KeyExpression));
         }
 
-        private class EnumeratingCacheSource<T> : ICacheSource<T>
+        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
         {
-            Func<DiversityDataContext, IQueryable<T>> queryFunc;
-
-            /// <summary>
-            /// Constructs a new Cachesource, that emulates List Behaviour, by enumeration.
-            /// </summary>
-            /// <param name="QueryFunc">Lambda, that returns the query that will serve as the cache source.</param>
-            /// <remarks>The Query is assumed to be ordered. If it is not, the List behaviour (Indexing etc.) of the cache will fail.</remarks>
-            public EnumeratingCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc)
-            {
-                this.queryFunc = QueryFunc;
-            }
-
-            public IEnumerable<T> retrieveItems(int count, int offset)
-            {
-                using (var ctx = new DiversityDataContext())
-                {
-                    return queryFunc(ctx)                        
-                        .Skip(offset)
-                        .Take(count)
-                        .ToList(); //Force execution of query
-                }
-            }
-
-            public int IndexOf(T item)
-            {
-                return queryFunc(ctx)
-                        .Skip(offset)
-                        .Take(count)
-                        .ToList();
-            }
-
-            public int Count
-            {
-                get { throw new NotImplementedException(); }
-            }
+            IList<T> result = null;
+            withDataContext(ctx => result = query(ctx).ToList());
+            return result;
         }
 
 
