@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DiversityPhone.Services
+namespace DiversityPhone.Common
 {
     internal class LightList<T> : IList<T>
     {
-        private Queue<T> s;       
+             
 
         IQueryable<T> _source;
         public LightList(IQueryable<T> source)

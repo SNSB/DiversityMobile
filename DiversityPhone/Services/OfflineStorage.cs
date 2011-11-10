@@ -7,6 +7,9 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using DiversityPhone.Utility;
+    using DiversityPhone.Common;
+using System.Data.Linq;
+using System.Linq.Expressions;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -63,31 +66,40 @@ using DiversityPhone.Utility;
 
         #region EventSeries
 
+        private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx => 
+                {
+                    if(restriction == null)
+                        return (from es in ctx.EventSeries
+                                select es);
+                    else
+                        return (from es in ctx.EventSeries
+                                select es).Where(restriction);
+                },
+                es => es.SeriesID);
+        }
+
         public IList<EventSeries> getAllEventSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<EventSeries>(ctx.EventSeries);
+            return esQuery();
         }
 
         public IList<EventSeries> getNewEventSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<EventSeries>(from es in ctx.EventSeries
-                                                where es.IsModified == null
-                                                select es);
+           return esQuery(es => es.IsModified == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<EventSeries> esList= new LightList<EventSeries>(from es in ctx.EventSeries
-                                        where es.SeriesID == id
-                                        select es);
-            if (esList.Count == 0)
-                throw new KeyNotFoundException("No series with ID: " + id);
-            else if (esList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
-            else return esList[0];
+            EventSeries result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from es in ctx.EventSeries
+                              where es.SeriesID == id
+                              select es).FirstOrDefault();
+                });
+            return result;
         }
 
 
@@ -102,42 +114,41 @@ using DiversityPhone.Utility;
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
-            if (newSeries.IsModified != null || newSeries.SeriesID != default(int))
-                throw new InvalidOperationException("Series is not new!");
-
-            using (var ctx = new DiversityDataContext())
-            {
-                newSeries.SeriesID = findFreeEventSeriesID(ctx);
-                newSeries.LogUpdatedWhen = DateTime.Now;
-                ctx.EventSeries.InsertOnSubmit(newSeries);
-                ctx.SubmitChanges();
-            }
+          
         }
         #endregion
 
         #region Event
+
+        private IList<Event> evQuery(Expression<Func<Event, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from ev in ctx.Events
+                            select ev);
+                else
+                    return (from ev in ctx.Events
+                            select ev).Where(restriction);
+            },
+                ev => ev.EventID);
+        }
+
         public IList<Event> getAllEvents()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(ctx.Events);
+            return evQuery();
 
         }
 
 
         public IList<Event> getEventsForSeries(EventSeries es)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(from e in ctx.Events
-                                        where e.SeriesID == es.SeriesID
-                                        select e);
+            return evQuery(ev => ev.SeriesID == es.SeriesID);
         }
 
         public IList<Event> getEventsWithoutSeries()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Event>(from e in ctx.Events
-                                        where e.SeriesID == null
-                                        select e);
+            return evQuery(ev => ev.SeriesID == null);
         }
 
         private static int findFreeEventID(DiversityDataContext ctx)
@@ -163,12 +174,23 @@ using DiversityPhone.Utility;
 
         #region CollectionEventProperties
 
+        private IList<CollectionEventProperty> cepQuery(Expression<Func<CollectionEventProperty, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from cep in ctx.CollectionEventProperties
+                            select cep);
+                else
+                    return (from cep in ctx.CollectionEventProperties
+                            select cep).Where(restriction);
+            },
+                cep => cep.PropertyID);
+        }
+
         public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<CollectionEventProperty>(from cep in ctx.CollectionEventProperties
-                                        where cep.EventID == ev.EventID
-                                        select cep);
+            return cepQuery(cep => cep.EventID == ev.EventID);
         }
 
         public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
@@ -205,28 +227,32 @@ using DiversityPhone.Utility;
 
 
         #region Specimen
-
-
+        private IList<Specimen> specQuery(Expression<Func<Specimen, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                var q = (from spec in ctx.Specimen
+                         select spec);
+                if (restriction == null)
+                    return q;
+                else
+                    return q.Where(restriction);
+            },
+                spec => spec.CollectionSpecimenID);
+        }
         public IList<Specimen> getAllSpecimen()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(ctx.Specimen);
+            return specQuery();
         }
 
         public IList<Specimen> getSpecimenForEvent(Event ev)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(from spec in ctx.Specimen
-                                           where spec.CollectionEventID == ev.EventID
-                                           select spec);
+            return specQuery(spec => spec.CollectionEventID == ev.EventID);
         }
 
         public IList<Specimen> getSpecimenWithoutEvent()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Specimen>(from spec in ctx.Specimen
-                                        where spec.CollectionEventID == null
-                                        select spec);
+            return specQuery(spec => spec.CollectionEventID == null);
         }
 
         private static int findFreeSpecimenID(DiversityDataContext ctx)
@@ -255,34 +281,41 @@ using DiversityPhone.Utility;
 
         #region IdentificationUnit
 
+        private IList<IdentificationUnit> iuQuery(Expression<Func<IdentificationUnit, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from iu in ctx.IdentificationUnits
+                            select iu);
+                else
+                    return (from iu in ctx.IdentificationUnits
+                            select iu).Where(restriction);
+            },
+                iu => iu.UnitID);
+        }
+
         public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null
-                                                     select iu);
+            return iuQuery(iu => iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null);            
         }
 
 
         public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                     where iu.RelatedUnitID == unit.UnitID
-                                                     select iu);
+            return iuQuery(iu => iu.RelatedUnitID == unit.UnitID);
         }
 
-        public IdentificationUnit getIUbyID(int id)
+        public IdentificationUnit getIdentificationUnitByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<IdentificationUnit> iuList = new LightList<IdentificationUnit>(from iu in ctx.IdentificationUnits
-                                                                       where iu.UnitID == id
-                                                                       select iu);
-            if (iuList.Count == 0)
-                throw new KeyNotFoundException("No IU with ID: " + id);
-            else if (iuList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
-            else return iuList[0];
+            IdentificationUnit result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from iu in ctx.IdentificationUnits
+                              where iu.UnitID == id
+                              select iu).FirstOrDefault();
+                });
+            return result;
         }
 
         private static int findFreeUnitID(DiversityDataContext ctx)
@@ -308,15 +341,27 @@ using DiversityPhone.Utility;
 
         #region Analyses
 
-        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        private IList<IdentificationUnitAnalysis> iuanQuery(Expression<Func<IdentificationUnitAnalysis, bool>> restriction = null)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<IdentificationUnitAnalysis>(from iua in ctx.IdentificationUnitAnalyses
-                                                     where iua.IdentificationUnitID == iu.UnitID
-                                                     select iua);
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from iuan in ctx.IdentificationUnitAnalyses
+                            select iuan);
+                else
+                    return (from iuan in ctx.IdentificationUnitAnalyses
+                            select iuan).Where(restriction);
+            },
+                iuan => iuan.IdentificationUnitAnalysisID);
         }
 
-        private static int findFreeAnalysisID(DiversityDataContext ctx)
+
+        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        {
+            return iuanQuery(iuan => iuan.IdentificationUnitID == iu.UnitID);
+        }
+
+        private static int findFreeIUAnalysisID(DiversityDataContext ctx)
         {
             int min = -1;
             if (ctx.IdentificationUnitAnalyses.Any())
@@ -329,48 +374,51 @@ using DiversityPhone.Utility;
             using (var ctx = new DiversityDataContext())
             {
                 if (iua.IsModified == null)
-                    iua.IdentificationUnitAnalysisID = findFreeAnalysisID(ctx);
+                    iua.IdentificationUnitAnalysisID = findFreeIUAnalysisID(ctx);
                 ctx.IdentificationUnitAnalyses.InsertOnSubmit(iua);
                 ctx.SubmitChanges();
             }
         }
 
+        private IList<Analysis> anQuery(Expression<Func<Analysis, bool>> restriction = null)
+        {
+            return cachedSingleKeyedQuery(ctx =>
+            {
+                if (restriction == null)
+                    return (from an in ctx.Analyses
+                            select an);
+                else
+                    return (from an in ctx.Analyses
+                            select an).Where(restriction);
+            },
+                an => an.AnalysisID);
+        }
+
         public IList<Analysis> getAllAnalyses()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Analysis>(ctx.Analyses);
+            return anQuery();
         }
 
         public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
-            IList<AnalysisTaxonomicGroup> allowed = this.getAnalysisTaxonomicGroups(taxonomicGroup);
-            IList<Analysis> all = this.getAllAnalyses();
-            IList<Analysis> possible = new List<Analysis>();
-            foreach (Analysis ana in all)
-            {
-                foreach (AnalysisTaxonomicGroup atg in allowed)
-                {
-                    if (ana.AnalysisID == atg.AnalysisID)
-                    {
-                        possible.Add(ana);
-                        break;
-                    }
-                }
-            }
-            return possible;
+            return cachedSingleKeyedQuery(ctx =>
+                from an in ctx.Analyses
+                join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
+                where atg.TaxonomicGroup == taxonomicGroup
+                select an,
+                an => an.AnalysisID);
         }
 
-        public Analysis getAnalysis(int analysisID)
+        public Analysis getAnalysisByID(int id)
         {
-            var ctx = new DiversityDataContext();
-            LightList<Analysis> anaList = new LightList<Analysis>(from ana in ctx.Analyses
-                                                                       where ana.AnalysisID == analysisID
-                                                                       select ana);
-            if (anaList.Count == 0)
-                throw new KeyNotFoundException("No analysis with ID: " + analysisID);
-            else if (anaList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + analysisID);
-            else return anaList[0];
+            Analysis result = null;
+            withDataContext((ctx) =>
+                {
+                    result = (from an in ctx.Analyses
+                              where an.AnalysisID == id
+                              select an).FirstOrDefault();
+                });
+            return result;
         }
 
         public void addAnalyses(IEnumerable<Analysis> analyses)
@@ -380,15 +428,15 @@ using DiversityPhone.Utility;
                 ctx.Analyses.InsertAllOnSubmit(analyses);
                 ctx.SubmitChanges();
             }
-        }
-
+        }       
 
         public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<AnalysisResult>(from ar in ctx.AnalysisResults
-                                                             where ar.AnalysisID == analysisID
-                                                             select ar);
+            return cachedSingleKeyedQuery(ctx =>            
+                from ar in ctx.AnalysisResults
+                where ar.AnalysisID == analysisID
+                select ar,
+                ar => ar.Result.GetHashCode());
         }
         public void addAnalysisResults(IEnumerable<AnalysisResult> results)
         {
@@ -398,14 +446,7 @@ using DiversityPhone.Utility;
                 ctx.SubmitChanges();
             }
         }
-
-        public IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxGroup)
-        {
-            var ctx = new DiversityDataContext();
-            return new LightList<AnalysisTaxonomicGroup>(from atg in ctx.AnalysisTaxonomicGroups
-                                                 where atg.TaxonomicGroup.Equals(taxGroup)
-                                                 select atg);
-        }
+        
 
         public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups)
         {
@@ -420,51 +461,45 @@ using DiversityPhone.Utility;
 
         #endregion
 
-        #region Multimedia
+        #region Multimedia        
 
         public IList<MultimediaObject> getAllMultimediaObjects()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(ctx.MultimediaObjects);
+            return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
         public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                             where mmo.SourceId == (int) SourceID.EventSeries
-                                                             && mmo.RelatedId==es.SeriesID
-                                                             select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.EventSeries
+                                                && mm.RelatedId == es.SeriesID
+                                        select mm);
         }
 
       
         public IList<MultimediaObject> getMultimediaForEvent(Event ev)
         {
-
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.Event
-                                                   && mmo.RelatedId == ev.EventID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.Event
+                                                && mm.RelatedId == ev.EventID
+                                        select mm);            
         }
 
 
         public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.Specimen
-                                                   && mmo.RelatedId == spec.CollectionSpecimenID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.Specimen
+                                                && mm.RelatedId == spec.CollectionSpecimenID
+                                        select mm);
         }
 
         public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<MultimediaObject>(from mmo in ctx.MultimediaObjects
-                                                   where mmo.SourceId == (int)SourceID.IdentificationUnit
-                                                   && mmo.RelatedId == iu.UnitID
-                                                   select mmo);
+            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.SourceId == (int)SourceID.IdentificationUnit
+                                                && mm.RelatedId == iu.UnitID
+                                        select mm);
         }
 
         public void addMultimediaObject(MultimediaObject mmo)
@@ -481,10 +516,9 @@ using DiversityPhone.Utility;
 
         public IList<Term> getTerms(int source)
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Term>(from t in ctx.Terms
-                                       where t.SourceID == source
-                                       select t);
+            return uncachedQuery(ctx => from t in ctx.Terms
+                                        where t.SourceID == source
+                                        select t);
         }
 
      
@@ -681,6 +715,49 @@ using DiversityPhone.Utility;
 
         #endregion     
     
+        #region Generische Implementierungen
+        private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, T row) where T : class
+        {
+            if(tableSelector == null)
+                throw new ArgumentNullException("tableSelector");
+            if(row == null)
+                throw new ArgumentNullException("row");
+
+            var equalsKeyExpression = EqualsKeyExpression(keySelector, row);
+
+            withDataContext((ctx) =>
+                {
+                    var table = tableSelector(ctx);
+                    var existingRow = (from element in table                                      
+                                       select element)
+                                       .Where(equalsKeyExpression)
+                                       .FirstOrDefault();
+
+                    if (existingRow != null)
+                        table.Attach(row, existingRow);
+                    else
+                    {        
+                        
+                        table.InsertOnSubmit(row);
+                    }
+
+                    ctx.SubmitChanges();
+                });
+        }
+
+        /// <summary>
+        /// Returns an unused primary Key for the given Table.
+        /// Returns only negative Keys
+        /// </summary>
+        /// <typeparam name="T">Entity Type of the Table</typeparam>
+        /// <param name="table"></param>
+        /// <param name="keyExpression">Expression to be used as primary Key</param>
+        /// <returns>Next Lowest unused primary Key value, always negative.</returns>
+        private int findFreeKey<T>(IQueryable<T> table, Expression<Func<T, int>> keyExpression)
+        {
+            var lowerthanMin = table.Select(keyExpression).Min() - 1;
+            return (lowerthanMin < -1) ? lowerthanMin : -1;
+        }
 
         private void withDataContext(Action<DiversityDataContext> operation)
         {
@@ -688,8 +765,94 @@ using DiversityPhone.Utility;
                 operation(ctx);
         }
 
-       
+        private IList<T> cachedMultiKeyQuery<T>(Func<DiversityDataContext, IQueryable<T>> oderedQuery, Expression<Func<T,T, bool>> match)
+        {
+            return null; //TODO
+        }
 
+        private IList<T> cachedSingleKeyedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
+        {
+            return new RotatingCache<T>(new SingleKeyedCacheSource<T>(query,KeyExpression));
+        }
+
+        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
+        {
+            IList<T> result = null;
+            withDataContext(ctx => result = query(ctx).ToList());
+            return result;
+        }
+
+
+        private class SingleKeyedCacheSource<T> : ICacheSource<T>
+        {
+            Func<DiversityDataContext, IQueryable<T>> queryFunc;
+            Expression<Func<T, int>> keyExpression;
+            Func<T, int> keyFunc;
+
+            public SingleKeyedCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc, Expression<Func<T,int>> KeyExpression)
+            {
+                queryFunc = QueryFunc;
+                keyExpression = KeyExpression;
+                keyFunc = keyExpression.Compile();                
+            }
+
+            public IEnumerable<T> retrieveItems(int count, int offset)
+            {
+                using (var ctx = new DiversityDataContext())
+                {
+                    return queryFunc(ctx)
+                        .OrderBy(keyExpression)
+                        .Skip(offset)
+                        .Take(count)
+                        .ToList(); //Force execution of query
+                }
+            }
+
+            public int Count
+            {
+                get 
+                {
+                    using (var ctx = new DiversityDataContext())
+                    {
+                        return queryFunc(ctx)
+                            .Count();
+                    }
+                }
+            }
         
+
+            public int  IndexOf(T item)
+            {                
+                var lessThanKeyExpression = LessThanKeyExpression(keyExpression, item);
+
+
+                using (var ctx = new DiversityDataContext())
+                {
+                    return queryFunc(ctx)
+                        .OrderBy(keyExpression)
+                        .Where(lessThanKeyExpression)
+                        .Count();
+                }
+            }        
+
+        }
+
+        private static Expression<Func<T, bool>> LessThanKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
+        {
+            //Get the Key to look for
+            var key = keyExpression.Compile()(item);
+            //Build Comparison Expression "row => row.key < key"
+            return Expression.Lambda<Func<T, bool>>(Expression.LessThan(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
+        }
+
+
+        private static Expression<Func<T, bool>> EqualsKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
+        {
+            //Get the Key to look for
+            var key = keyExpression.Compile()(item);
+            //Build Comparison Expression "row => row.key == key"
+            return Expression.Lambda<Func<T, bool>>(Expression.Equal(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
+        }
+        #endregion
     }
 }
