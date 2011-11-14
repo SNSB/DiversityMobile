@@ -45,11 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiversityCollection.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollection.edmx</DependentUpon>
-    </Compile>
     <Compile Include="DiversityCollectionFunctions.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -87,10 +82,6 @@
     <EntityDeploy Include="DiversityMobile.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="DiversityCollection.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="DiversityCollectionFunctions.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>

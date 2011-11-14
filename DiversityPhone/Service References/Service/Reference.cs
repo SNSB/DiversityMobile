@@ -557,6 +557,96 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Analysis", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class Analysis : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private int AnalysisIDField;
+        
+        private string DescriptionField;
+        
+        private string DisplayTextField;
+        
+        private System.DateTime LogUpdatedWhenField;
+        
+        private string MeasurementUnitField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AnalysisID {
+            get {
+                return this.AnalysisIDField;
+            }
+            set {
+                if ((this.AnalysisIDField.Equals(value) != true)) {
+                    this.AnalysisIDField = value;
+                    this.RaisePropertyChanged("AnalysisID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description {
+            get {
+                return this.DescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DisplayText {
+            get {
+                return this.DisplayTextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
+                    this.DisplayTextField = value;
+                    this.RaisePropertyChanged("DisplayText");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string MeasurementUnit {
+            get {
+                return this.MeasurementUnitField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MeasurementUnitField, value) != true)) {
+                    this.MeasurementUnitField = value;
+                    this.RaisePropertyChanged("MeasurementUnit");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="PropertyName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class PropertyName : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -646,126 +736,6 @@ namespace DiversityPhone.Service {
                 if ((this.TermIDField.Equals(value) != true)) {
                     this.TermIDField = value;
                     this.RaisePropertyChanged("TermID");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EventSeries", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
-    public partial class EventSeries : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string DescriptionField;
-        
-        private string GeographyField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string SeriesCodeField;
-        
-        private System.Nullable<System.DateTime> SeriesEndField;
-        
-        private int SeriesIDField;
-        
-        private System.Nullable<System.DateTime> SeriesStartField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Geography {
-            get {
-                return this.GeographyField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.GeographyField, value) != true)) {
-                    this.GeographyField = value;
-                    this.RaisePropertyChanged("Geography");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string SeriesCode {
-            get {
-                return this.SeriesCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.SeriesCodeField, value) != true)) {
-                    this.SeriesCodeField = value;
-                    this.RaisePropertyChanged("SeriesCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> SeriesEnd {
-            get {
-                return this.SeriesEndField;
-            }
-            set {
-                if ((this.SeriesEndField.Equals(value) != true)) {
-                    this.SeriesEndField = value;
-                    this.RaisePropertyChanged("SeriesEnd");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SeriesID {
-            get {
-                return this.SeriesIDField;
-            }
-            set {
-                if ((this.SeriesIDField.Equals(value) != true)) {
-                    this.SeriesIDField = value;
-                    this.RaisePropertyChanged("SeriesID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> SeriesStart {
-            get {
-                return this.SeriesStartField;
-            }
-            set {
-                if ((this.SeriesStartField.Equals(value) != true)) {
-                    this.SeriesStartField = value;
-                    this.RaisePropertyChanged("SeriesStart");
                 }
             }
         }
@@ -1399,6 +1369,16 @@ namespace DiversityPhone.Service {
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisTaxonomicGroupsResults(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAnalysesForProject", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysesForProjectResponse")]
+        System.IAsyncResult BeginGetAnalysesForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> EndGetAnalysesForProject(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisResultsForProjectResponse")]
+        System.IAsyncResult BeginGetAnalysisResultsForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisResultsForProject(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetAvailablePropertyLists", ReplyAction="http://tempuri.org/IDiversityService/GetAvailablePropertyListsResponse")]
         System.IAsyncResult BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState);
         
@@ -1408,16 +1388,6 @@ namespace DiversityPhone.Service {
         System.IAsyncResult BeginDownloadPropertyList(string list, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.PropertyName> EndDownloadPropertyList(System.IAsyncResult result);
-        
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetSeriesByDescription", ReplyAction="http://tempuri.org/IDiversityService/GetSeriesByDescriptionResponse")]
-        System.IAsyncResult BeginGetSeriesByDescription(string description, System.AsyncCallback callback, object asyncState);
-        
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> EndGetSeriesByDescription(System.IAsyncResult result);
-        
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/AllEventSeries", ReplyAction="http://tempuri.org/IDiversityService/AllEventSeriesResponse")]
-        System.IAsyncResult BeginAllEventSeries(System.AsyncCallback callback, object asyncState);
-        
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> EndAllEventSeries(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
         System.IAsyncResult BeginInsertHierarchy(DiversityPhone.Service.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState);
@@ -1545,6 +1515,44 @@ namespace DiversityPhone.Service {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetAnalysesForProjectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetAnalysesForProjectCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetAnalysisResultsForProjectCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetAnalysisResultsForProjectCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class GetAvailablePropertyListsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -1577,44 +1585,6 @@ namespace DiversityPhone.Service {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.PropertyName>)(this.results[0]));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class GetSeriesByDescriptionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        public GetSeriesByDescriptionCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> Result {
-            get {
-                base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries>)(this.results[0]));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class AllEventSeriesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
-        
-        private object[] results;
-        
-        public AllEventSeriesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
-                base(exception, cancelled, userState) {
-            this.results = results;
-        }
-        
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> Result {
-            get {
-                base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries>)(this.results[0]));
             }
         }
     }
@@ -1678,6 +1648,18 @@ namespace DiversityPhone.Service {
         
         private System.Threading.SendOrPostCallback onGetAnalysisTaxonomicGroupsResultsCompletedDelegate;
         
+        private BeginOperationDelegate onBeginGetAnalysesForProjectDelegate;
+        
+        private EndOperationDelegate onEndGetAnalysesForProjectDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetAnalysesForProjectCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginGetAnalysisResultsForProjectDelegate;
+        
+        private EndOperationDelegate onEndGetAnalysisResultsForProjectDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetAnalysisResultsForProjectCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetAvailablePropertyListsDelegate;
         
         private EndOperationDelegate onEndGetAvailablePropertyListsDelegate;
@@ -1689,18 +1671,6 @@ namespace DiversityPhone.Service {
         private EndOperationDelegate onEndDownloadPropertyListDelegate;
         
         private System.Threading.SendOrPostCallback onDownloadPropertyListCompletedDelegate;
-        
-        private BeginOperationDelegate onBeginGetSeriesByDescriptionDelegate;
-        
-        private EndOperationDelegate onEndGetSeriesByDescriptionDelegate;
-        
-        private System.Threading.SendOrPostCallback onGetSeriesByDescriptionCompletedDelegate;
-        
-        private BeginOperationDelegate onBeginAllEventSeriesDelegate;
-        
-        private EndOperationDelegate onEndAllEventSeriesDelegate;
-        
-        private System.Threading.SendOrPostCallback onAllEventSeriesCompletedDelegate;
         
         private BeginOperationDelegate onBeginInsertHierarchyDelegate;
         
@@ -1773,13 +1743,13 @@ namespace DiversityPhone.Service {
         
         public event System.EventHandler<GetAnalysisTaxonomicGroupsResultsCompletedEventArgs> GetAnalysisTaxonomicGroupsResultsCompleted;
         
+        public event System.EventHandler<GetAnalysesForProjectCompletedEventArgs> GetAnalysesForProjectCompleted;
+        
+        public event System.EventHandler<GetAnalysisResultsForProjectCompletedEventArgs> GetAnalysisResultsForProjectCompleted;
+        
         public event System.EventHandler<GetAvailablePropertyListsCompletedEventArgs> GetAvailablePropertyListsCompleted;
         
         public event System.EventHandler<DownloadPropertyListCompletedEventArgs> DownloadPropertyListCompleted;
-        
-        public event System.EventHandler<GetSeriesByDescriptionCompletedEventArgs> GetSeriesByDescriptionCompleted;
-        
-        public event System.EventHandler<AllEventSeriesCompletedEventArgs> AllEventSeriesCompleted;
         
         public event System.EventHandler<InsertHierarchyCompletedEventArgs> InsertHierarchyCompleted;
         
@@ -2062,6 +2032,98 @@ namespace DiversityPhone.Service {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAnalysesForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetAnalysesForProject(p, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> DiversityPhone.Service.IDiversityService.EndGetAnalysesForProject(System.IAsyncResult result) {
+            return base.Channel.EndGetAnalysesForProject(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetAnalysesForProject(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            DiversityPhone.Service.Project p = ((DiversityPhone.Service.Project)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetAnalysesForProject(p, callback, asyncState);
+        }
+        
+        private object[] OnEndGetAnalysesForProject(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetAnalysesForProject(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetAnalysesForProjectCompleted(object state) {
+            if ((this.GetAnalysesForProjectCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetAnalysesForProjectCompleted(this, new GetAnalysesForProjectCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetAnalysesForProjectAsync(DiversityPhone.Service.Project p) {
+            this.GetAnalysesForProjectAsync(p, null);
+        }
+        
+        public void GetAnalysesForProjectAsync(DiversityPhone.Service.Project p, object userState) {
+            if ((this.onBeginGetAnalysesForProjectDelegate == null)) {
+                this.onBeginGetAnalysesForProjectDelegate = new BeginOperationDelegate(this.OnBeginGetAnalysesForProject);
+            }
+            if ((this.onEndGetAnalysesForProjectDelegate == null)) {
+                this.onEndGetAnalysesForProjectDelegate = new EndOperationDelegate(this.OnEndGetAnalysesForProject);
+            }
+            if ((this.onGetAnalysesForProjectCompletedDelegate == null)) {
+                this.onGetAnalysesForProjectCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAnalysesForProjectCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetAnalysesForProjectDelegate, new object[] {
+                        p}, this.onEndGetAnalysesForProjectDelegate, this.onGetAnalysesForProjectCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAnalysisResultsForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetAnalysisResultsForProject(p, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> DiversityPhone.Service.IDiversityService.EndGetAnalysisResultsForProject(System.IAsyncResult result) {
+            return base.Channel.EndGetAnalysisResultsForProject(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetAnalysisResultsForProject(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            DiversityPhone.Service.Project p = ((DiversityPhone.Service.Project)(inValues[0]));
+            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetAnalysisResultsForProject(p, callback, asyncState);
+        }
+        
+        private object[] OnEndGetAnalysisResultsForProject(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetAnalysisResultsForProject(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetAnalysisResultsForProjectCompleted(object state) {
+            if ((this.GetAnalysisResultsForProjectCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetAnalysisResultsForProjectCompleted(this, new GetAnalysisResultsForProjectCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetAnalysisResultsForProjectAsync(DiversityPhone.Service.Project p) {
+            this.GetAnalysisResultsForProjectAsync(p, null);
+        }
+        
+        public void GetAnalysisResultsForProjectAsync(DiversityPhone.Service.Project p, object userState) {
+            if ((this.onBeginGetAnalysisResultsForProjectDelegate == null)) {
+                this.onBeginGetAnalysisResultsForProjectDelegate = new BeginOperationDelegate(this.OnBeginGetAnalysisResultsForProject);
+            }
+            if ((this.onEndGetAnalysisResultsForProjectDelegate == null)) {
+                this.onEndGetAnalysisResultsForProjectDelegate = new EndOperationDelegate(this.OnEndGetAnalysisResultsForProject);
+            }
+            if ((this.onGetAnalysisResultsForProjectCompletedDelegate == null)) {
+                this.onGetAnalysisResultsForProjectCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetAnalysisResultsForProjectCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetAnalysisResultsForProjectDelegate, new object[] {
+                        p}, this.onEndGetAnalysisResultsForProjectDelegate, this.onGetAnalysisResultsForProjectCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginGetAvailablePropertyLists(callback, asyncState);
         }
@@ -2149,96 +2211,6 @@ namespace DiversityPhone.Service {
             }
             base.InvokeAsync(this.onBeginDownloadPropertyListDelegate, new object[] {
                         list}, this.onEndDownloadPropertyListDelegate, this.onDownloadPropertyListCompletedDelegate, userState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginGetSeriesByDescription(string description, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetSeriesByDescription(description, callback, asyncState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> DiversityPhone.Service.IDiversityService.EndGetSeriesByDescription(System.IAsyncResult result) {
-            return base.Channel.EndGetSeriesByDescription(result);
-        }
-        
-        private System.IAsyncResult OnBeginGetSeriesByDescription(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            string description = ((string)(inValues[0]));
-            return ((DiversityPhone.Service.IDiversityService)(this)).BeginGetSeriesByDescription(description, callback, asyncState);
-        }
-        
-        private object[] OnEndGetSeriesByDescription(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndGetSeriesByDescription(result);
-            return new object[] {
-                    retVal};
-        }
-        
-        private void OnGetSeriesByDescriptionCompleted(object state) {
-            if ((this.GetSeriesByDescriptionCompleted != null)) {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.GetSeriesByDescriptionCompleted(this, new GetSeriesByDescriptionCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-        
-        public void GetSeriesByDescriptionAsync(string description) {
-            this.GetSeriesByDescriptionAsync(description, null);
-        }
-        
-        public void GetSeriesByDescriptionAsync(string description, object userState) {
-            if ((this.onBeginGetSeriesByDescriptionDelegate == null)) {
-                this.onBeginGetSeriesByDescriptionDelegate = new BeginOperationDelegate(this.OnBeginGetSeriesByDescription);
-            }
-            if ((this.onEndGetSeriesByDescriptionDelegate == null)) {
-                this.onEndGetSeriesByDescriptionDelegate = new EndOperationDelegate(this.OnEndGetSeriesByDescription);
-            }
-            if ((this.onGetSeriesByDescriptionCompletedDelegate == null)) {
-                this.onGetSeriesByDescriptionCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetSeriesByDescriptionCompleted);
-            }
-            base.InvokeAsync(this.onBeginGetSeriesByDescriptionDelegate, new object[] {
-                        description}, this.onEndGetSeriesByDescriptionDelegate, this.onGetSeriesByDescriptionCompletedDelegate, userState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.Service.IDiversityService.BeginAllEventSeries(System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginAllEventSeries(callback, asyncState);
-        }
-        
-        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> DiversityPhone.Service.IDiversityService.EndAllEventSeries(System.IAsyncResult result) {
-            return base.Channel.EndAllEventSeries(result);
-        }
-        
-        private System.IAsyncResult OnBeginAllEventSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            return ((DiversityPhone.Service.IDiversityService)(this)).BeginAllEventSeries(callback, asyncState);
-        }
-        
-        private object[] OnEndAllEventSeries(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> retVal = ((DiversityPhone.Service.IDiversityService)(this)).EndAllEventSeries(result);
-            return new object[] {
-                    retVal};
-        }
-        
-        private void OnAllEventSeriesCompleted(object state) {
-            if ((this.AllEventSeriesCompleted != null)) {
-                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.AllEventSeriesCompleted(this, new AllEventSeriesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
-            }
-        }
-        
-        public void AllEventSeriesAsync() {
-            this.AllEventSeriesAsync(null);
-        }
-        
-        public void AllEventSeriesAsync(object userState) {
-            if ((this.onBeginAllEventSeriesDelegate == null)) {
-                this.onBeginAllEventSeriesDelegate = new BeginOperationDelegate(this.OnBeginAllEventSeries);
-            }
-            if ((this.onEndAllEventSeriesDelegate == null)) {
-                this.onEndAllEventSeriesDelegate = new EndOperationDelegate(this.OnEndAllEventSeries);
-            }
-            if ((this.onAllEventSeriesCompletedDelegate == null)) {
-                this.onAllEventSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnAllEventSeriesCompleted);
-            }
-            base.InvokeAsync(this.onBeginAllEventSeriesDelegate, null, this.onEndAllEventSeriesDelegate, this.onAllEventSeriesCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2440,6 +2412,32 @@ namespace DiversityPhone.Service {
                 return _result;
             }
             
+            public System.IAsyncResult BeginGetAnalysesForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = p;
+                System.IAsyncResult _result = base.BeginInvoke("GetAnalysesForProject", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> EndGetAnalysesForProject(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.Analysis>)(base.EndInvoke("GetAnalysesForProject", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetAnalysisResultsForProject(DiversityPhone.Service.Project p, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = p;
+                System.IAsyncResult _result = base.BeginInvoke("GetAnalysisResultsForProject", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> EndGetAnalysisResultsForProject(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.AnalysisResult>)(base.EndInvoke("GetAnalysisResultsForProject", _args, result)));
+                return _result;
+            }
+            
             public System.IAsyncResult BeginGetAvailablePropertyLists(System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[0];
                 System.IAsyncResult _result = base.BeginInvoke("GetAvailablePropertyLists", _args, callback, asyncState);
@@ -2462,31 +2460,6 @@ namespace DiversityPhone.Service {
             public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.PropertyName> EndDownloadPropertyList(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.PropertyName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.PropertyName>)(base.EndInvoke("DownloadPropertyList", _args, result)));
-                return _result;
-            }
-            
-            public System.IAsyncResult BeginGetSeriesByDescription(string description, System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[1];
-                _args[0] = description;
-                System.IAsyncResult _result = base.BeginInvoke("GetSeriesByDescription", _args, callback, asyncState);
-                return _result;
-            }
-            
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> EndGetSeriesByDescription(System.IAsyncResult result) {
-                object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries>)(base.EndInvoke("GetSeriesByDescription", _args, result)));
-                return _result;
-            }
-            
-            public System.IAsyncResult BeginAllEventSeries(System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[0];
-                System.IAsyncResult _result = base.BeginInvoke("AllEventSeries", _args, callback, asyncState);
-                return _result;
-            }
-            
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> EndAllEventSeries(System.IAsyncResult result) {
-                object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.Service.EventSeries>)(base.EndInvoke("AllEventSeries", _args, result)));
                 return _result;
             }
             
