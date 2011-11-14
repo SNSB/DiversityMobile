@@ -34,6 +34,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -49,6 +50,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DiversityCollection.edmx</DependentUpon>
     </Compile>
+    <Compile Include="DiversityCollectionFunctions.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="DiversityCollection_Base.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityCollection_Base.edmx</DependentUpon>
+    </Compile>
     <Compile Include="DiversityMobile.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -58,11 +69,16 @@
     <Compile Include="IDiversityService.cs" />
     <Compile Include="ModelProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="DiversityCollection.edmx">
+    <EntityDeploy Include="DiversityCollection_Base.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
+      <LastGenOutput>DiversityCollection_Base.Designer.cs</LastGenOutput>
       <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
     </EntityDeploy>
   </ItemGroup>
@@ -72,12 +88,35 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <EntityDeploy Include="DiversityCollection.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DiversityCollection.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="DiversityCollectionFunctions.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>DiversityCollectionFunctions.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_BaseTestEntities.datasource" />
+    <None Include="Properties\DataSources\DiversityMobileEntities.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
       <Project>{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}</Project>
       <Name>DiversityService.Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DiversityCollectionFunctions.dbml.layout">
+      <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

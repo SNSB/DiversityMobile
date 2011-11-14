@@ -29,17 +29,18 @@ namespace DiversityService
         [OperationContract]
         IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys);
 
+        [OperationContract]
+        IEnumerable<Model.Analysis> GetAnalysesForProject(Project p);
+        [OperationContract]
+        IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p);
+
 
         [OperationContract]
         IEnumerable<string> GetAvailablePropertyLists();
         [OperationContract]
         IEnumerable<PropertyName> DownloadPropertyList(string list);
 
-        [OperationContract]
-        IList<EventSeries> GetSeriesByDescription(string description);
-
-        [OperationContract]
-        IList<EventSeries> AllEventSeries();
+      
 
 
         [OperationContract]
