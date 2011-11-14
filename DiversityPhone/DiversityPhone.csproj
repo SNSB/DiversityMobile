@@ -381,10 +381,10 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Service References\Service\DiversityPhone.Service.AnalysisResult.datasource">
+    <None Include="Service References\Service\DiversityPhone.Service.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\Service\DiversityPhone.Service.EventSeries.datasource">
+    <None Include="Service References\Service\DiversityPhone.Service.AnalysisResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Service\DiversityPhone.Service.HierarchySection.datasource">
