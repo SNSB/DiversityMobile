@@ -6,6 +6,7 @@ using DiversityPhone.Messages;
 using DiversityPhone.Model;
 using System.Collections;
 using System.Collections.Generic;
+using System.Windows.Navigation;
 
 
 namespace DiversityPhone.Services
@@ -102,7 +103,9 @@ namespace DiversityPhone.Services
 #endif
             }
             if (destination != null && App.RootFrame != null)
+            {
                 App.RootFrame.Navigate(destination);
+            }
         }
 
         public bool CanNavigateBack()
@@ -115,6 +118,32 @@ namespace DiversityPhone.Services
             App.RootFrame.GoBack();
         }
 
+        public static void ClearHistoryUntilCurrentPage()
+        {
+            Uri actual=App.RootFrame.Source;
+            IEnumerable<JournalEntry> stack = App.RootFrame.BackStack;
+            IEnumerator<JournalEntry> loop = App.RootFrame.BackStack.GetEnumerator();
+            loop.Reset();
+            int pos = -1;
+            int count = -1;
+            while (loop.MoveNext())
+            {
+                count++;
+                if (loop.Current.Source.Equals(actual))
+                    pos = count;
+            }
+            if (pos >= 0)
+            {
+                int backsteps = count - pos;
+                for (int i = 0; i <= backsteps; i++)
+                    App.RootFrame.RemoveBackEntry();
+            }
+            else
+            {
+                //throw new Exception("Page not found");
+            }
+                
+        }
 
         public void ClearHistory()
         {

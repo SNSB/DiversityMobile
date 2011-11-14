@@ -12,6 +12,7 @@
     using System.Reflection;
     using System.Globalization;
     using System.Threading;
+    using System.Windows.Navigation;
 
     public class EditESVM : ReactiveObject
     {
@@ -155,6 +156,10 @@
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
+            _messenger.SendMessage<EventSeries>(Model, MessageContracts.SELECT);
+            //EventSeriesVM vm = new EventSeriesVM(Model, _messenger);//Create Model
+            
+            //_messenger.SendMessage<Message>(Message.NavigateBack);
             _messenger.SendMessage<Page>(Page.ViewES);
         }
 

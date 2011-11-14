@@ -16,7 +16,17 @@
         public ReactiveCommand Edit { get; private set; }
 
 
-        public EventSeries Model { get; private set; }
+        private EventSeries _Model;
+        public EventSeries Model
+        {
+            get { return _Model; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
+            }
+        }
+        //public EventSeries Model { get; private set; }
+
         public string Description { get { return Model.Description; } }
         public Icon Icon { get; private set; }
 

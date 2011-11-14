@@ -13,7 +13,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     d:DataContext="{x:Null}"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <ScrollViewer x:Name="LayoutRoot" Background="Transparent" d:DataContext="{d:DesignData /SampleData/ViewESVMSampleData.xaml}">      

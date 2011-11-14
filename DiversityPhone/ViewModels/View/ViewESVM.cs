@@ -42,16 +42,17 @@
             getEventList();
             FilterEvents = new ReactiveCommand();
 
-            _messenger.Listen<Event>(MessageContracts.SAVE)
-               .Subscribe(ev => getEventList());
-            
+           
             _subscriptions = new List<IDisposable>()
             {               
                 (AddEvent = new ReactiveCommand())
                     .Subscribe(_ => addEvent()),
+                _messenger.Listen<Event>(MessageContracts.SAVE)
+                    .Subscribe(ev => getEventList())
             };
-        }   
+        }
 
+ 
         private void getEventList()
         {
             var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);

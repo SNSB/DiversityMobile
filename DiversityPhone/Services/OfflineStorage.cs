@@ -141,12 +141,13 @@ using Svc = DiversityPhone.Service;
                     EventSeries storedSeries = this.getEventSeriesByID(newSeries.SeriesID,ctx);
                     if (storedSeries != null) //Update
                     {
-                        ReflectionOperations.copyAllFields(newSeries,storedSeries);
+                        ReflectionOperations.copyAllFields(newSeries, storedSeries);
                         var changeSet = ctx.GetChangeSet();
-                        IList<Object> updates= changeSet.Updates;
+                        IList<Object> updates = changeSet.Updates;
                     }
                     else //Insert. Der Fall darf aber eigentlich nicht auftreten.
-                        ctx.EventSeries.InsertOnSubmit(newSeries);
+                        //ctx.EventSeries.InsertOnSubmit(newSeries);
+                        throw new ArgumentOutOfRangeException();
                 }
                 ctx.SubmitChanges();
             }

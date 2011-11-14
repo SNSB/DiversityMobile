@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
+using System.Windows.Navigation;
 
 namespace DiversityPhone
 {
@@ -28,6 +29,34 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.AddEvent.Execute(null);
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<JournalEntry> je= App.RootFrame.BackStack;
+            DiversityPhone.Services.NavigationService.ClearHistoryUntilCurrentPage();
+            je = App.RootFrame.BackStack;
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            IEnumerable<JournalEntry> je = App.RootFrame.BackStack;
+            //Hier Backstack anpassen
+        }
+
+        private void PhoneApplicationPage_GotFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PhoneApplicationPage_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
         }
     }
 }
