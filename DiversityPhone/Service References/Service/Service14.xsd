@@ -90,6 +90,22 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+  <xs:complexType name="ArrayOfAnalysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Analysis" nillable="true" type="tns:Analysis" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysis" nillable="true" type="tns:ArrayOfAnalysis" />
+  <xs:complexType name="Analysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="MeasurementUnit" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Analysis" nillable="true" type="tns:Analysis" />
   <xs:complexType name="ArrayOfPropertyName">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyName" nillable="true" type="tns:PropertyName" />
@@ -107,24 +123,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PropertyName" nillable="true" type="tns:PropertyName" />
-  <xs:complexType name="ArrayOfEventSeries">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="EventSeries" nillable="true" type="tns:EventSeries" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfEventSeries" nillable="true" type="tns:ArrayOfEventSeries" />
-  <xs:complexType name="EventSeries">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Geography" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="SeriesEnd" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
-      <xs:element minOccurs="0" name="SeriesStart" nillable="true" type="xs:dateTime" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
   <xs:complexType name="HierarchySection">
     <xs:sequence>
       <xs:element minOccurs="0" name="Event" nillable="true" type="tns:Event" />

@@ -7,16 +7,7 @@ using DiversityService.Model;
 namespace DiversityService
 {
     public class DiversityService : IDiversityService
-    {        
-        public IList<Model.EventSeries> GetSeriesByDescription(string description)
-        {
-            throw new NotImplementedException();
-        }       
-
-        public IList<Model.EventSeries> AllEventSeries()
-        {
-            throw new NotImplementedException();
-        }
+    {       
 
         public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
@@ -39,6 +30,7 @@ namespace DiversityService
 
         public IEnumerable<Term> GetStandardVocabulary()
         {
+            IEnumerable<Term> efTerms;
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
                 var taxonGroups =
@@ -62,8 +54,38 @@ namespace DiversityService
                         ParentCode = relType.ParentCode
                     };
 
-                return Enumerable.Concat(taxonGroups, relationTypes).ToList(); //Iterate over Enumerables so the context can be disposed safely.
+                efTerms = Enumerable.Concat(taxonGroups, relationTypes).ToList(); //Iterate over Enumerables so the context can be disposed safely.
             }
+
+            IEnumerable<Term> linqTerms;
+            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            {
+                var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
+                                      select new Term()
+                                      {
+                                          SourceID = 0, //TODO
+                                          Code = g.Code,
+                                          DisplayText = g.DisplayText
+                                      };
+
+                var unitRelationTypes = from t in ctx.DiversityMobile_UnitRelationTypes()
+                                        select new Term()
+                                        {
+                                            SourceID = 1, //TODO
+                                            Code = t.Code,
+                                            DisplayText = t.DisplayText
+                                        };
+
+                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
+                                    select new Term()
+                                    {
+                                        SourceID = 2,//TODO
+                                        Code = eit.Code,
+                                        DisplayText = eit.DisplayText
+                                    };
+                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
+            }
+            return linqTerms;
            
         }
 
@@ -92,6 +114,38 @@ namespace DiversityService
         public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p)
+        {
+            using(var ctx = new DiversityCollectionFunctionsDataContext())
+            {
+                var analysisProjectList = from apl in ctx.DiversityMobile_AnalysisProjectList(p.ProjectID)
+                                             select new Analysis()
+                                             {
+                                                 AnalysisID = apl.AnalysisID,
+                                                 Description = apl.Description,
+                                                 DisplayText = apl.DisplayText,
+                                                 MeasurementUnit = apl.MeasurementUnit
+                                             };
+                return analysisProjectList.ToList();
+            }
+        }
+        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
+        {
+            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            {
+                var analysisResults = from ar in ctx.DiversityMobile_AnalysisResultForProject(p.ProjectID) 
+                                          select new AnalysisResult()
+                                          {
+                                              AnalysisID = ar.AnalysisID,
+                                              Description = ar.Description,
+                                              DisplayText = ar.DisplayText,
+                                              Notes = ar.Notes,
+                                              Result = ar.AnalysisResult
+                                          };
+                return analysisResults.ToList();
+            }
         }
 
 

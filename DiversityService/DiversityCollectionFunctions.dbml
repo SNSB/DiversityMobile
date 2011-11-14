@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityCollection_Test" Class="DiversityCollectionFunctionsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_Test;Persist Security Info=True;User ID=Rollinger" SettingsObjectName="DiversityService.Properties.Settings" SettingsPropertyName="DiversityCollection_TestConnectionString" Provider="System.Data.SqlClient" />
+  <Function Name="dbo.DiversityMobile_UnitRelationTypes" Method="DiversityMobile_UnitRelationTypes" IsComposable="true">
+    <ElementType Name="DiversityMobile_UnitRelationTypesResult">
+      <Column Name="Code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DiversityMobile_TaxonomicGroups" Method="DiversityMobile_TaxonomicGroups" IsComposable="true">
+    <ElementType Name="DiversityMobile_TaxonomicGroupsResult">
+      <Column Name="Code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DiversityMobile_EventImageTypes" Method="DiversityMobile_EventImageTypes" IsComposable="true">
+    <ElementType Name="DiversityMobile_EventImageTypesResult">
+      <Column Name="Code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DisplayText" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DiversityMobile_AnalysisProjectList" Method="DiversityMobile_AnalysisProjectList" IsComposable="true">
+    <Parameter Name="ProjectID" Parameter="projectID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DiversityMobile_AnalysisProjectListResult">
+      <Column Name="AnalysisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnalysisParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DisplayText" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="MeasurementUnit" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="AnalysisURI" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+      <Column Name="OnlyHierarchy" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DiversityMobile_AnalysisResultForProject" Method="DiversityMobile_AnalysisResultForProject" IsComposable="true">
+    <Parameter Name="ProjectID" Parameter="projectID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DiversityMobile_AnalysisResultForProjectResult">
+      <Column Name="AnalysisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnalysisResult" Type="System.String" DbType="NVarChar(255) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="DisplayText" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
+      <Column Name="Notes" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="RowGUID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsDbGenerated="true" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.DiversityMobile_AnalysisTaxonomicGroupsForProject" Method="DiversityMobile_AnalysisTaxonomicGroupsForProject" IsComposable="true">
+    <Parameter Name="ProjectID" Parameter="projectID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="DiversityMobile_AnalysisTaxonomicGroupsForProjectResult">
+      <Column Name="AnalysisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TaxonomicGroup" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </ElementType>
+  </Function>
+</Database>

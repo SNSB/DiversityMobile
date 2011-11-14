@@ -6,7 +6,7 @@ namespace DiversityPhone.Services
 {
     public static class ModelProjection
     {
-        public static Service.EventSeries ToModel(this Client.EventSeries es)
+        /*/public static Service.EventSeries ToModel(this Client.EventSeries es)
         {
             return new Service.EventSeries()
             {
@@ -17,7 +17,7 @@ namespace DiversityPhone.Services
                 SeriesID = es.SeriesID,
                 //TODO Geography
             };            
-        }
+        }*/
 
         public static Service.Event ToModel(this Client.Event ev)
         {
