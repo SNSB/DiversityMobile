@@ -51,20 +51,18 @@ using Svc = DiversityPhone.Service;
 
         public IList<UserProfile> getAllUserProfiles()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<UserProfile>(ctx.Profiles);
+            return uncachedQuery(ctx => ctx.Profiles);
         }
         public UserProfile getUserProfile(string loginName)
         {
-            var ctx = new DiversityDataContext();
-            LightList<UserProfile> profileList = new LightList<UserProfile>(from prof in ctx.Profiles
-                                                                       where prof.LoginName.Equals(loginName)
-                                                                       select prof);
-            if (profileList.Count == 0)
-                throw new KeyNotFoundException("No profile with loginname: " + loginName);
-            else if (profileList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + loginName);
-            else return profileList[0];
+            UserProfile result = null;
+            withDataContext(ctx =>
+                {
+                    result = (from prof in ctx.Profiles
+                              where prof.LoginName == loginName
+                              select prof).FirstOrDefault();
+                });
+            return result;
         }
 
         #endregion
@@ -105,62 +103,23 @@ using Svc = DiversityPhone.Service;
                               select es).FirstOrDefault();
                 });
             return result;
-        }
-
-        public EventSeries getEventSeriesByID(int id, DiversityDataContext ctx)
-        {
-            EventSeries result = null;
-                result = (from es in ctx.EventSeries
-                          where es.SeriesID == id
-                          select es).FirstOrDefault();
-            return result;
-        }
-
-        private static int findFreeEventSeriesID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.EventSeries.Any())
-                min = (from es in ctx.EventSeries select es.SeriesID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
+        }       
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
-            using (var ctx = new DiversityDataContext())
-            {
-                newSeries.LogUpdatedWhen = DateTime.Now;
-                if (newSeries.SeriesID == 0) //Entspricht Insert
-                {
-                    newSeries.SeriesID = findFreeEventSeriesID(ctx);
-                    ctx.EventSeries.InsertOnSubmit(newSeries);
-                }
-                else
-                {
-                    EventSeries storedSeries = this.getEventSeriesByID(newSeries.SeriesID,ctx);
-                    if (storedSeries != null) //Update
-                    {
-                        ReflectionOperations.copyAllFields(newSeries, storedSeries);
-                        var changeSet = ctx.GetChangeSet();
-                        IList<Object> updates = changeSet.Updates;
-                    }
-                    else //Insert. Der Fall darf aber eigentlich nicht auftreten.
-                        //ctx.EventSeries.InsertOnSubmit(newSeries);
-                        throw new ArgumentOutOfRangeException();
-                }
-                ctx.SubmitChanges();
-            }
+
+            addOrUpdateRow(
+                ctx => ctx.EventSeries, 
+                es => es.SeriesID, 
+                (es,id) => es.SeriesID = id, 
+                newSeries);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
         {
-            var ctx = new DiversityDataContext();
-            var delete = (from es in ctx.EventSeries
-                      where es.SeriesID == toDeleteEs.SeriesID
-                      select es).FirstOrDefault();
-            ctx.EventSeries.DeleteOnSubmit(delete);
-            ctx.SubmitChanges();
+            deleteRow(ctx => ctx.EventSeries, es => es.SeriesID, toDeleteEs);
         }
 
         #endregion
@@ -252,23 +211,20 @@ using Svc = DiversityPhone.Service;
 
         public IList<Property> getAllProperties()
         {
-
-            var ctx = new DiversityDataContext();
-            return new LightList<Property>(ctx.Properties);
+            return uncachedQuery(ctx => from p in ctx.Properties
+                                 select p);
         }
 
         public Property getPropertyByID(int id)
         {
-
-            var ctx = new DiversityDataContext();
-            IList<Property> propertyList= new LightList<Property>(from prop in ctx.Properties
-                                           where prop.PropertyID == id
-                                           select prop);
-            if (propertyList.Count == 0)
-                throw new KeyNotFoundException("No property with id: " + id);
-            else if (propertyList.Count > 1)
-                throw new Utility.PrimaryKeyViolationException("Multiple values for id: " + id);
-            else return propertyList[0];
+            Property result = null;
+            withDataContext(ctx =>
+                {
+                    result = (from prop in ctx.Properties
+                            where prop.PropertyID == id
+                            select prop).FirstOrDefault();
+                });
+            return result;
         }
         #endregion
 
@@ -618,30 +574,20 @@ using Svc = DiversityPhone.Service;
             }
         }
 
-        private Table<TaxonName> getTaxonTable(int tableID,DiversityDataContext ctx)
+        private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
         {
             switch (tableID)
                 {
-                    case 0: return ctx.TaxonNames0;
-                        break;
-                    case 1: return ctx.TaxonNames1;
-                        break;
-                    case 2: return ctx.TaxonNames2;
-                        break;
-                    case 3: return ctx.TaxonNames3;
-                        break;
-                    case 4: return ctx.TaxonNames4;
-                        break;
-                    case 5: return ctx.TaxonNames5;
-                        break;
-                    case 6: return ctx.TaxonNames6;
-                        break;
-                    case 7: return ctx.TaxonNames7;
-                        break;
-                    case 8: return ctx.TaxonNames8;
-                        break;
-                    case 9: return ctx.TaxonNames9;
-                        break;
+                    case 0: return ctx.TaxonNames0;                        
+                    case 1: return ctx.TaxonNames1;                        
+                    case 2: return ctx.TaxonNames2;                        
+                    case 3: return ctx.TaxonNames3;                        
+                    case 4: return ctx.TaxonNames4;                        
+                    case 5: return ctx.TaxonNames5;                        
+                    case 6: return ctx.TaxonNames6;                        
+                    case 7: return ctx.TaxonNames7;                        
+                    case 8: return ctx.TaxonNames8;                        
+                    case 9: return ctx.TaxonNames9;                        
                     default:
                         throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
                 }   
@@ -649,34 +595,7 @@ using Svc = DiversityPhone.Service;
 
         public IList<TaxonName> getTaxonNames(int tableID)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                switch (tableID)
-                {
-                    case 0: return new LightList<TaxonName>(from taxa in ctx.TaxonNames0
-                                                            select taxa);
-                    case 1: return new LightList<TaxonName>(from taxa in ctx.TaxonNames1
-                                                            select taxa);
-                    case 2: return new LightList<TaxonName>(from taxa in ctx.TaxonNames2
-                                                            select taxa);
-                    case 3: return new LightList<TaxonName>(from taxa in ctx.TaxonNames3
-                                                            select taxa);
-                    case 4: return new LightList<TaxonName>(from taxa in ctx.TaxonNames4
-                                                            select taxa);
-                    case 5: return new LightList<TaxonName>(from taxa in ctx.TaxonNames5
-                                                            select taxa);
-                    case 6: return new LightList<TaxonName>(from taxa in ctx.TaxonNames6
-                                                            select taxa);
-                    case 7: return new LightList<TaxonName>(from taxa in ctx.TaxonNames7
-                                                            select taxa);
-                    case 8: return new LightList<TaxonName>(from taxa in ctx.TaxonNames8
-                                                            select taxa);
-                    case 9: return new LightList<TaxonName>(from taxa in ctx.TaxonNames9
-                                                            select taxa);
-                    default:
-                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
-                }
-            }
+            cachedSingleKeyedQuery(ctx => getTaxonTable(ctx,tableID),t => t.URI)
         }
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup)
@@ -734,9 +653,8 @@ using Svc = DiversityPhone.Service;
 
         public IList<Map> getAllMaps()
         {
-            var ctx = new DiversityDataContext();
-            return new LightList<Map>(from maps in ctx.Maps
-                                            select maps);
+            return uncachedQuery(ctx => from m in ctx.Maps
+                                 select m);
         }
         public IList<Map> getMapsForRectangle(double latitudeNorth, double latitudeSouth, double longitudeWest, double longitudeEast)
         {
@@ -788,7 +706,7 @@ using Svc = DiversityPhone.Service;
         #endregion     
     
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, T row) where T : class
+        private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, Action<T, int> setKey, T row ) where T : class
         {
             if(tableSelector == null)
                 throw new ArgumentNullException("tableSelector");
@@ -808,12 +726,30 @@ using Svc = DiversityPhone.Service;
                     if (existingRow != null)
                         table.Attach(row, existingRow);
                     else
-                    {        
-                        
+                    {  
+                        setKey(row,findFreeKey(table,keySelector));
                         table.InsertOnSubmit(row);
                     }
 
                     ctx.SubmitChanges();
+                });
+        }
+
+        private void deleteRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T, int>> KeyExpression, T detachedRow) where T : class
+        {
+            withDataContext(ctx =>
+                {
+                    var table = tableSelector(ctx);
+                    var keyEqualsExpr = EqualsKeyExpression(KeyExpression,detachedRow);
+                    var attachedRow = table
+                        .Where(keyEqualsExpr)
+                        .FirstOrDefault();
+
+                    if (attachedRow != null)
+                    {
+                        table.DeleteOnSubmit(attachedRow);
+                        ctx.SubmitChanges();
+                    }
                 });
         }
 
@@ -827,7 +763,10 @@ using Svc = DiversityPhone.Service;
         /// <returns>Next Lowest unused primary Key value, always negative.</returns>
         private int findFreeKey<T>(IQueryable<T> table, Expression<Func<T, int>> keyExpression)
         {
-            var lowerthanMin = table.Select(keyExpression).Min() - 1;
+            var lowerthanMin = -1;
+            if(table.Any())
+                 lowerthanMin = table.Select(keyExpression).Min() - 1;
+
             return (lowerthanMin < -1) ? lowerthanMin : -1;
         }
 
