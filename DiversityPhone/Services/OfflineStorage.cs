@@ -54,14 +54,7 @@ using Svc = DiversityPhone.Service;
         }
         public UserProfile getUserProfile(string loginName)
         {
-            UserProfile result = null;
-            withDataContext(ctx =>
-                {
-                    result = (from prof in ctx.Profiles
-                              where prof.LoginName == loginName
-                              select prof).FirstOrDefault();
-                });
-            return result;
+            return singletonQuery(ctx => ctx.Profiles, p => p.LoginName == loginName);
         }
 
         #endregion
@@ -575,7 +568,7 @@ using Svc = DiversityPhone.Service;
             withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.taxonSelection
-                                     where a.tableName == taxonGroup.Code && a.isSelected
+                                     where a.tableName == taxonGroup.Code && a.isSelected                                     
                                      select a.tableID;
                     if (assignment.Any())
                         id = assignment.First();
@@ -612,7 +605,7 @@ using Svc = DiversityPhone.Service;
         public IList<PropertyName> getPropertyNames(Property prop)
         {
             return uncachedQuery(ctx =>  from pn in ctx.PropertyNames
-                                         where pn.PropertyID == prop.PropertyID
+                                         where pn.PropertyID == prop.PropertyID                                         
                                          select pn);
         }
 
@@ -688,28 +681,21 @@ using Svc = DiversityPhone.Service;
         #endregion     
     
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T,int>> keySelector, Action<T, int> setKey, T row ) where T : class
+        private void addOrUpdateRow<T>(QueryParameters<T> param, T row ) where T : class
         {
-            if(tableSelector == null)
-                throw new ArgumentNullException("tableSelector");
-            if(row == null)
-                throw new ArgumentNullException("row");
-
-            var equalsKeyExpression = EqualsKeyExpression(keySelector, row);
-
+            var ops = param.Operations;
             withDataContext((ctx) =>
                 {
-                    var table = tableSelector(ctx);
-                    var existingRow = (from element in table                                      
-                                       select element)
-                                       .Where(equalsKeyExpression)
-                                       .FirstOrDefault();
+                    var table = param.TableProvider(ctx);
+                    var allRowsQuery = table as IQueryable<T>;
+                    var existingRow = ops.WhereKeyEquals(allRowsQuery, row)
+                        .FirstOrDefault();
 
                     if (existingRow != null)
                         table.Attach(row, existingRow);
                     else
-                    {  
-                        setKey(row,findFreeKey(table,keySelector));
+                    {
+                        ops.SetFreeKeyOnItem(allRowsQuery, row);
                         table.InsertOnSubmit(row);
                     }
 
@@ -717,14 +703,13 @@ using Svc = DiversityPhone.Service;
                 });
         }
 
-        private void deleteRow<T>(Func<DiversityDataContext, Table<T>> tableSelector, Expression<Func<T, int>> KeyExpression, T detachedRow) where T : class
+        private void deleteRow<T>( QueryParams<T> param, T detachedRow) where T : class
         {
+            var ops = param.Operations;
             withDataContext(ctx =>
                 {
-                    var table = tableSelector(ctx);
-                    var keyEqualsExpr = EqualsKeyExpression(KeyExpression,detachedRow);
-                    var attachedRow = table
-                        .Where(keyEqualsExpr)
+                    var table = param.TableProvider(ctx);
+                    var attachedRow = ops.WhereKeyEquals(table, detachedRow)
                         .FirstOrDefault();
 
                     if (attachedRow != null)
@@ -735,34 +720,25 @@ using Svc = DiversityPhone.Service;
                 });
         }
 
-        /// <summary>
-        /// Returns an unused primary Key for the given Table.
-        /// Returns only negative Keys
-        /// </summary>
-        /// <typeparam name="T">Entity Type of the Table</typeparam>
-        /// <param name="table"></param>
-        /// <param name="keyExpression">Expression to be used as primary Key</param>
-        /// <returns>Next Lowest unused primary Key value, always negative.</returns>
-        private int findFreeKey<T>(IQueryable<T> table, Expression<Func<T, int>> keyExpression)
+        private T singletonQuery<T>(Func<DiversityDataContext,Table<T>> tableProvider, Expression<Func<T, bool>> predicate)
         {
-            var lowerthanMin = -1;
-            if(table.Any())
-                 lowerthanMin = table.Select(keyExpression).Min() - 1;
-
-            return (lowerthanMin < -1) ? lowerthanMin : -1;
+            T result = default(T);
+            withDataContext(ctx =>
+                {
+                    var table = tableProvider(ctx);
+                    result = table.Where(predicate)
+                        .FirstOrDefault();
+                });
+            return result;
         }
+        
 
         private void withDataContext(Action<DiversityDataContext> operation)
         {
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
-
-        private IList<T> cachedMultiKeyQuery<T>(Func<DiversityDataContext, IQueryable<T>> oderedQuery, Expression<Func<T,T, bool>> match)
-        {
-            return null; //TODO
-        }
-
+      
         private IList<T> cachedOrderedQuery<T>(Func<DiversityDataContext, IQueryable<T>> orderedQuery, Func<T, Expression<Func<T, bool>>> equalsTest) where T : class
         {
             return new RotatingCache<T>(new OrderedQueryCacheSource<T>(orderedQuery, equalsTest));
@@ -840,7 +816,7 @@ using Svc = DiversityPhone.Service;
             private Func<DiversityDataContext, IQueryable<T>> orderedQuery;
             private Func<T, Expression<Func<T, bool>>> equalsTest;
 
-            public OrderedQueryCacheSource(Func<DiversityDataContext, IQueryable<T>> orderedQuery, Func<T, Expression<Func<T, bool>>> equalsTest)
+            public OrderedQueryCacheSource(QueryParameters<T> param)
             {
                 // TODO: Complete member initialization
                 this.orderedQuery = orderedQuery;
@@ -880,28 +856,19 @@ using Svc = DiversityPhone.Service;
                 }
             }
         }
+        private delegate Table<T> TableProvider<T>(DiversityDataContext ctx);
 
-        private static Expression<Func<T, bool>> LessThanKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
+        private class QueryParams<T> : Tuple<TableProvider<T>,IQueryOperations<T>>
         {
-            //Get the Key to look for
-            var key = keyExpression.Compile()(item);
-            //Build Comparison Expression "row => row.key < key"
-            return Expression.Lambda<Func<T, bool>>(Expression.LessThan(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
-        }
+            public TableProvider<T> TableProvider
+            {get{return this.Item1;}}
+            public IQueryOperations<T> Operations
+            {
+                get{return this.Item2;}
+            }
 
-
-        private static Expression<Func<T, bool>> EqualsKeyExpression<T>(Expression<Func<T, int>> keyExpression, T item)
-        {
-            //Get the Key to look for
-            var key = keyExpression.Compile()(item);
-            //Build Comparison Expression "row => row.key == key"
-            return Expression.Lambda<Func<T, bool>>(Expression.Equal(keyExpression, Expression.Constant(key, typeof(int))), keyExpression.Parameters);
         }
-
-        private static Expression<Func<T, bool>> NotExpression<T>(Expression<Func<T, bool>> predicateExp)
-        {
-            return Expression.Lambda<Func<T, bool>>(Expression.Not(predicateExp));
-        }
+        
         #endregion
 
         #region IOfflineFieldData Members

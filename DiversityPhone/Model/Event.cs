@@ -56,5 +56,29 @@
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
+
+        public static QueryParameters<Event> Parameters
+        {
+            get;
+            private set;
+        }
+
+        static Event()
+        {
+            Parameters = new QueryParameters<Event>(
+                      ctx => ctx.Events,
+                      new QueryOperations<Event>(
+                //Smallerthan
+                          (q, ev) => q.Where(row => row.EventID < ev.EventID),
+                //Equals
+                          (q, ev) => q.Where(row => row.EventID == ev.EventID),
+                //Orderby
+                          (q) => q.OrderBy(ev => ev.EventID),
+                //FreeKey
+                          (q, ev) =>
+                          {
+                              ev.EventID = QueryOperations<Event>.FindFreeIntKey(q, row => row.EventID);
+                          }));
+        }
     }
 }

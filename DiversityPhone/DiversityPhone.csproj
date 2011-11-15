@@ -107,6 +107,8 @@
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyName.cs" />
+    <Compile Include="Model\QueryOperations.cs" />
+    <Compile Include="Model\QueryParameters.cs" />
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Model\UserProfile.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\IOfflineVocabulary.cs" />
+    <Compile Include="Model\IQueryOperations.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
