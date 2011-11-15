@@ -57,7 +57,7 @@ namespace DiversityPhone.ViewModels
             get
             {
                 if (_Parent == null)
-                    throw new NullReferenceException();
+                    return null; //No Exceptions in Properties!
                 return _Analyses?? (_Analyses = _storage.getPossibleAnalyses(_Parent.TaxonomicGroup));
             }
         }
@@ -75,7 +75,7 @@ namespace DiversityPhone.ViewModels
             get
             {
                 if (Model == null)
-                    throw new NullReferenceException();
+                    return null; //No Exceptions in Properties!
                 else return _AnalysisResults ?? (_AnalysisResults = _storage.getPossibleAnalysisResults(Model.AnalysisID));
             }
         }

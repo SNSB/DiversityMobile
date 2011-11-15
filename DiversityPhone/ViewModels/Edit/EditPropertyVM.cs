@@ -70,7 +70,7 @@ namespace DiversityPhone.ViewModels
             get
             {
                 if(this.SelectedProperty==null)
-                    throw new NullReferenceException();
+                    return null; //No Exceptions in Properties!
                 return _PropertyNames?? (_PropertyNames = _storage.getPropertyNames(this.SelectedProperty));
             }
         }
