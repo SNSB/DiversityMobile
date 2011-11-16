@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using System.Data.Linq;
+using System.Linq;
+using DiversityPhone.Services;
 
 
 namespace DiversityPhone.Model
@@ -38,5 +40,28 @@ namespace DiversityPhone.Model
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
+
+        public static IQueryOperations<Analysis> Operations
+        {
+            get;
+            private set;
+        }
+
+        static Analysis()
+        {
+            Operations = new QueryOperations<Analysis>(
+                //Smallerthan
+                          (q, an) => q.Where(row => row.AnalysisID < an.AnalysisID),
+                //Equals
+                          (q, an) => q.Where(row => row.AnalysisID == an.AnalysisID),
+                //Orderby
+                          (q) => q.OrderBy(an => an.AnalysisID),
+                //FreeKey
+                          (q, an) =>
+                          {
+                              an.AnalysisID = QueryOperations<Analysis>.FindFreeIntKey(q, row => row.AnalysisID);
+                          });
+        }
     }
 }

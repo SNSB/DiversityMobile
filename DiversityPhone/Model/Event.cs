@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Text;
     using Microsoft.Phone.Data.Linq.Mapping;
+    using DiversityPhone.Services;
 
     [Table]
     public class Event 
@@ -56,5 +57,27 @@
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
+
+       public static IQueryOperations<Event> Operations
+        {
+            get;
+            private set;
+        }
+
+        static Event()
+        {
+            Operations = new QueryOperations<Event>(
+                //Smallerthan
+                          (q, ev) => q.Where(row => row.EventID < ev.EventID),
+                //Equals
+                          (q, ev) => q.Where(row => row.EventID == ev.EventID),
+                //Orderby
+                          (q) => q.OrderBy(ev => ev.EventID),
+                //FreeKey
+                          (q, ev) =>
+                          {
+                              ev.EventID = QueryOperations<Event>.FindFreeIntKey(q, row => row.EventID);
+                          });
+        }
     }
 }

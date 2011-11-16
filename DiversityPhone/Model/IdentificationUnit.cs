@@ -1,6 +1,8 @@
 ﻿
 using System;
+using System.Linq;
 using System.Data.Linq.Mapping;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.Model
 {
@@ -78,5 +80,27 @@ namespace DiversityPhone.Model
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
+      public static IQueryOperations<IdentificationUnit> Operations
+        {
+            get;
+            private set;
+        }
+
+        static IdentificationUnit()
+        {
+            Operations = new QueryOperations<IdentificationUnit>(
+                //Smallerthan
+                          (q, iu) => q.Where(row => row.UnitID < iu.UnitID),
+                //Equals
+                          (q, iu) => q.Where(row => row.UnitID == iu.UnitID),
+                //Orderby
+                          (q) => q.OrderBy(iu => iu.UnitID),
+                //FreeKey
+                          (q, iu) =>
+                          {
+                              iu.UnitID = QueryOperations<IdentificationUnit>.FindFreeIntKey(q, row => row.UnitID);
+                          });
+        }
     }
 }

@@ -121,7 +121,7 @@
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\IOfflineVocabulary.cs" />
-    <Compile Include="Services\IQueryOperations.cs" />
+    <Compile Include="Model\IQueryOperations.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
