@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.Model
 {
@@ -39,5 +41,28 @@ namespace DiversityPhone.Model
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
+
+
+         public static IQueryOperations<IdentificationUnitAnalysis> Operations
+        {
+            get;
+            private set;
+        }
+
+        static IdentificationUnitAnalysis()
+        {
+            Operations = new QueryOperations<IdentificationUnitAnalysis>(
+                //Smallerthan
+                          (q, iuan) => q.Where(row => row.IdentificationUnitAnalysisID < iuan.IdentificationUnitAnalysisID),
+                //Equals
+                          (q, iuan) => q.Where(row => row.IdentificationUnitAnalysisID == iuan.IdentificationUnitAnalysisID),
+                //Orderby
+                          (q) => q.OrderBy(iuan => iuan.IdentificationUnitAnalysisID),
+                //FreeKey
+                          (q, iuan) =>
+                          {
+                              iuan.IdentificationUnitAnalysisID = QueryOperations<IdentificationUnitAnalysis>.FindFreeIntKey(q, row => row.IdentificationUnitAnalysisID);
+                          });
+        }
     }
 }

@@ -86,7 +86,7 @@
                           (q, es) =>
                           {
                               es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKey(q, row => row.SeriesID);
-                          }));
+                          });
         }
         
 

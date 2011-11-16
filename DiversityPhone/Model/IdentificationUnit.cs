@@ -100,7 +100,7 @@ namespace DiversityPhone.Model
                           (q, iu) =>
                           {
                               iu.UnitID = QueryOperations<IdentificationUnit>.FindFreeIntKey(q, row => row.UnitID);
-                          }));
+                          });
         }
     }
 }

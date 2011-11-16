@@ -1,16 +1,16 @@
 ﻿namespace DiversityPhone.Services
 {
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using ReactiveUI;
-using DiversityPhone.Messages;
-using DiversityPhone.Utility;
-using DiversityPhone.Common;
-using System.Data.Linq;
-using System.Linq.Expressions;
-using Svc = DiversityPhone.Service;
+    using System;
+    using System.Linq;
+    using System.Collections.Generic;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using DiversityPhone.Messages;
+    using DiversityPhone.Utility;
+    using DiversityPhone.Common;
+    using System.Data.Linq;
+    using System.Linq.Expressions;
+    using Svc = DiversityPhone.Service;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -54,7 +54,8 @@ using Svc = DiversityPhone.Service;
         }
         public UserProfile getUserProfile(string loginName)
         {
-            return singletonQuery(ctx => ctx.Profiles, p => p.LoginName == loginName);
+            return singletonQuery(ctx => ctx.Profiles
+                .Where(p => p.LoginName == loginName));
         }
 
         #endregion
@@ -63,16 +64,16 @@ using Svc = DiversityPhone.Service;
 
         private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
         {
-            return cachedIntKeyedQuery(ctx => 
-                {
-                    if(restriction == null)
-                        return (from es in ctx.EventSeries
-                                select es);
-                    else
-                        return (from es in ctx.EventSeries
-                                select es).Where(restriction);
-                },
-                es => es.SeriesID);
+            return cachedQuery(EventSeries.Operations,
+            ctx =>
+            {
+                var q = (from es in ctx.EventSeries
+                         select es);
+                if (restriction == null)
+                    return q;
+                else
+                    return q.Where(restriction);
+            });
         }
 
         public IList<EventSeries> getAllEventSeries()
@@ -82,223 +83,176 @@ using Svc = DiversityPhone.Service;
 
         public IList<EventSeries> getNewEventSeries()
         {
-           return esQuery(es => es.IsModified == null);
+            return esQuery(es => es.IsModified == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
         {
-            EventSeries result = null;
-            withDataContext((ctx) =>
-                {
-                    result = (from es in ctx.EventSeries
-                              where es.SeriesID == id
-                              select es).FirstOrDefault();
-                });
-            return result;
-        }       
+            return singletonQuery(ctx => from es in ctx.EventSeries
+                                         where es.SeriesID == id
+                                         select es);
+
+        }
 
         public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
         {
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
 
-            addOrUpdateRow(
-                ctx => ctx.EventSeries, 
-                es => es.SeriesID, 
-                (es,id) => es.SeriesID = id, 
-                newSeries);
+            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
         {
-            deleteRow(ctx => ctx.EventSeries, es => es.SeriesID, toDeleteEs);
+            deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
         }
 
         #endregion
 
         #region Event
 
-        private IList<Event> evQuery(Expression<Func<Event, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                if (restriction == null)
-                    return (from ev in ctx.Events
-                            select ev);
-                else
-                    return (from ev in ctx.Events
-                            select ev).Where(restriction);
-            },
-                ev => ev.EventID);
-        }
-
         public IList<Event> getAllEvents()
         {
-            return evQuery();
+            return cachedQuery(Event.Operations,
+            ctx =>
+                from ev in ctx.Events                
+                select ev
+                );
 
         }
 
 
         public IList<Event> getEventsForSeries(EventSeries es)
         {
-            return evQuery(ev => ev.SeriesID == es.SeriesID);
+            return cachedQuery(Event.Operations,
+            ctx =>
+                from ev in ctx.Events
+                where ev.SeriesID == es.SeriesID 
+                select ev
+                );
         }
 
         public IList<Event> getEventsWithoutSeries()
         {
-            return evQuery(ev => ev.SeriesID == null);
-        }
-
-        private static int findFreeEventID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.Events.Any())
-                min = (from ev in ctx.Events select ev.EventID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
+            return cachedQuery(Event.Operations,
+            ctx =>
+                from ev in ctx.Events
+                where ev.SeriesID == null 
+                select ev
+                );
+        }       
 
         public void addOrUpdateEvent(Event ev)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                if (ev.IsModified == null)
-                    ev.EventID = findFreeEventID(ctx);
-                ev.LogUpdatedWhen = DateTime.Now;
-                ctx.Events.InsertOnSubmit(ev);
-                ctx.SubmitChanges();
-            }
+            addOrUpdateRow(Event.Operations,
+                  ctx => ctx.Events,
+                  ev
+              );
         }
         #endregion
 
         #region CollectionEventProperties
 
-        private IList<CollectionEventProperty> cepQuery(Expression<Func<CollectionEventProperty, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                if (restriction == null)
-                    return (from cep in ctx.CollectionEventProperties
-                            select cep);
-                else
-                    return (from cep in ctx.CollectionEventProperties
-                            select cep).Where(restriction);
-            },
-                cep => cep.PropertyID);
-        }
-
         public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
         {
-            return cepQuery(cep => cep.EventID == ev.EventID);
+            return cachedQuery(CollectionEventProperty.Operations,
+            ctx =>
+                from cep in ctx.CollectionEventProperties
+                where cep.EventID == ev.EventID 
+                select cep
+                );
         }
 
         public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                cep.LogUpdatedWhen = DateTime.Now;
-                ctx.CollectionEventProperties.InsertOnSubmit(cep);
-                ctx.SubmitChanges();
-            }
+            addOrUpdateRow(CollectionEventProperty.Operations,
+                  ctx => ctx.CollectionEventProperties,
+                  cep
+              );
         }
 
         public IList<Property> getAllProperties()
         {
             return uncachedQuery(ctx => from p in ctx.Properties
-                                 select p);
+                                        select p);
         }
 
         public Property getPropertyByID(int id)
         {
-            Property result = null;
-            withDataContext(ctx =>
-                {
-                    result = (from prop in ctx.Properties
-                            where prop.PropertyID == id
-                            select prop).FirstOrDefault();
-                });
-            return result;
+            return singletonQuery(ctx =>
+                from p in ctx.Properties
+                where p.PropertyID == id
+                select p);
         }
         #endregion
 
 
-        #region Specimen
-        private IList<Specimen> specQuery(Expression<Func<Specimen, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                var q = (from spec in ctx.Specimen
-                         select spec);
-                if (restriction == null)
-                    return q;
-                else
-                    return q.Where(restriction);
-            },
-                spec => spec.CollectionSpecimenID);
-        }
+        #region Specimen        
+        
         public IList<Specimen> getAllSpecimen()
         {
-            return specQuery();
+            
+            return cachedQuery(Specimen.Operations,
+            ctx =>            
+				from spec in ctx.Specimen
+                select spec
+            );
         }
+        
 
         public IList<Specimen> getSpecimenForEvent(Event ev)
         {
-            return specQuery(spec => spec.CollectionEventID == ev.EventID);
+            
+            return cachedQuery(Specimen.Operations,
+            ctx =>
+                from spec in ctx.Specimen                 
+                where spec.CollectionEventID == ev.EventID
+                select spec
+                );
+        
         }
 
         public IList<Specimen> getSpecimenWithoutEvent()
         {
-            return specQuery(spec => spec.CollectionEventID == null);
-        }
-
-        private static int findFreeSpecimenID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.Specimen.Any())
-                min = (from spec in ctx.Specimen select spec.CollectionSpecimenID).Min();
-            return (min > -1) ? -1 : min - 1;
+          return cachedQuery(Specimen.Operations,
+            ctx =>
+                from spec in ctx.Specimen
+                where spec.CollectionEventID == null 
+                select spec
+                );
         }
 
         public void addOrUpdateSpecimen(Specimen spec)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                if (spec.IsModified == null)
-                {
-                    spec.CollectionSpecimenID = findFreeSpecimenID(ctx);
-                    ctx.Specimen.InsertOnSubmit(spec);
-                }
-                
-                ctx.SubmitChanges();
-            }
+            addOrUpdateRow(Specimen.Operations,
+                ctx => ctx.Specimen,
+                spec
+            );
         }
 
         #endregion
 
         #region IdentificationUnit
 
-        private IList<IdentificationUnit> iuQuery(Expression<Func<IdentificationUnit, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                if (restriction == null)
-                    return (from iu in ctx.IdentificationUnits
-                            select iu);
-                else
-                    return (from iu in ctx.IdentificationUnits
-                            select iu).Where(restriction);
-            },
-                iu => iu.UnitID);
-        }
-
         public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
         {
-            return iuQuery(iu => iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null);            
+            return cachedQuery(IdentificationUnit.Operations,
+            ctx =>
+                from iu in ctx.IdentificationUnits
+                where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null 
+                select iu
+                );
         }
 
 
         public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
         {
-            return iuQuery(iu => iu.RelatedUnitID == unit.UnitID);
+            return cachedQuery(IdentificationUnit.Operations,
+            ctx =>
+                from iu in ctx.IdentificationUnits
+                where iu.RelatedUnitID == unit.UnitID 
+                select iu
+                );
         }
 
         public IdentificationUnit getIdentificationUnitByID(int id)
@@ -334,86 +288,51 @@ using Svc = DiversityPhone.Service;
 
         #endregion
 
-        #region Analyses
-
-        private IList<IdentificationUnitAnalysis> iuanQuery(Expression<Func<IdentificationUnitAnalysis, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                if (restriction == null)
-                    return (from iuan in ctx.IdentificationUnitAnalyses
-                            select iuan);
-                else
-                    return (from iuan in ctx.IdentificationUnitAnalyses
-                            select iuan).Where(restriction);
-            },
-                iuan => iuan.IdentificationUnitAnalysisID);
-        }
+        #region Analyses 
 
 
         public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
         {
-            return iuanQuery(iuan => iuan.IdentificationUnitID == iu.UnitID);
-        }
-
-        private static int findFreeIUAnalysisID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.IdentificationUnitAnalyses.Any())
-                min = (from iua in ctx.IdentificationUnitAnalyses select iua.IdentificationUnitAnalysisID).Min();
-            return (min > -1) ? -1 : min - 1;
+            return cachedQuery(IdentificationUnitAnalysis.Operations,
+            ctx =>
+                from iuan in ctx.IdentificationUnitAnalyses
+                where iuan.IdentificationUnitID == iu.UnitID 
+                select iuan
+                );
         }
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                if (iua.IsModified == null)
-                    iua.IdentificationUnitAnalysisID = findFreeIUAnalysisID(ctx);
-                ctx.IdentificationUnitAnalyses.InsertOnSubmit(iua);
-                ctx.SubmitChanges();
-            }
-        }
-
-        private IList<Analysis> anQuery(Expression<Func<Analysis, bool>> restriction = null)
-        {
-            return cachedIntKeyedQuery(ctx =>
-            {
-                if (restriction == null)
-                    return (from an in ctx.Analyses
-                            select an);
-                else
-                    return (from an in ctx.Analyses
-                            select an).Where(restriction);
-            },
-                an => an.AnalysisID);
-        }
+            addOrUpdateRow(IdentificationUnitAnalysis.Operations,
+                ctx => ctx.IdentificationUnitAnalyses,
+                iua
+            );
+        }      
 
         public IList<Analysis> getAllAnalyses()
         {
-            return anQuery();
+            return cachedQuery(Analysis.Operations,
+            ctx =>
+                from an in ctx.Analyses                
+                select an
+                );
         }
 
         public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
-            return cachedIntKeyedQuery(ctx =>
+            return cachedQuery(Analysis.Operations,
+                ctx =>
                 from an in ctx.Analyses
                 join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
                 where atg.TaxonomicGroup == taxonomicGroup
-                select an,
-                an => an.AnalysisID);
+                select an);
         }
 
         public Analysis getAnalysisByID(int id)
         {
-            Analysis result = null;
-            withDataContext((ctx) =>
-                {
-                    result = (from an in ctx.Analyses
-                              where an.AnalysisID == id
-                              select an).FirstOrDefault();
-                });
-            return result;
+            return singletonQuery(ctx => from an in ctx.Analyses
+                                         where an.AnalysisID == id
+                                         select an);
         }
 
         public void addAnalyses(IEnumerable<Analysis> analyses)
@@ -423,15 +342,16 @@ using Svc = DiversityPhone.Service;
                 ctx.Analyses.InsertAllOnSubmit(analyses);
                 ctx.SubmitChanges();
             }
-        }       
+        }
 
         public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
-            return cachedIntKeyedQuery(ctx =>            
+            return cachedQuery(AnalysisResult.Operations,
+            ctx =>
                 from ar in ctx.AnalysisResults
-                where ar.AnalysisID == analysisID
-                select ar,
-                ar => ar.Result.GetHashCode());
+                where ar.AnalysisID == analysisID 
+                select ar
+            );
         }
         public void addAnalysisResults(IEnumerable<AnalysisResult> results)
         {
@@ -441,7 +361,7 @@ using Svc = DiversityPhone.Service;
                 ctx.SubmitChanges();
             }
         }
-        
+
 
         public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups)
         {
@@ -451,12 +371,12 @@ using Svc = DiversityPhone.Service;
                 ctx.SubmitChanges();
             }
         }
-        
-      
+
+
 
         #endregion
 
-        #region Multimedia        
+        #region Multimedia
 
         public IList<MultimediaObject> getAllMultimediaObjects()
         {
@@ -471,13 +391,13 @@ using Svc = DiversityPhone.Service;
                                         select mm);
         }
 
-      
+
         public IList<MultimediaObject> getMultimediaForEvent(Event ev)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                         where mm.SourceId == (int)SourceID.Event
                                                 && mm.RelatedId == ev.EventID
-                                        select mm);            
+                                        select mm);
         }
 
 
@@ -516,7 +436,7 @@ using Svc = DiversityPhone.Service;
                                         select t);
         }
 
-     
+
 
         public void addTerms(IEnumerable<Term> terms)
         {
@@ -531,8 +451,8 @@ using Svc = DiversityPhone.Service;
 
         #endregion
 
-        #region TaxonNames   
-     
+        #region TaxonNames
+
         public void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID)
         {
             throw new NotImplementedException();
@@ -541,25 +461,26 @@ using Svc = DiversityPhone.Service;
         private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
         {
             switch (tableID)
-                {
-                    case 0: return ctx.TaxonNames0;                        
-                    case 1: return ctx.TaxonNames1;                        
-                    case 2: return ctx.TaxonNames2;                        
-                    case 3: return ctx.TaxonNames3;                        
-                    case 4: return ctx.TaxonNames4;                        
-                    case 5: return ctx.TaxonNames5;                        
-                    case 6: return ctx.TaxonNames6;                        
-                    case 7: return ctx.TaxonNames7;                        
-                    case 8: return ctx.TaxonNames8;                        
-                    case 9: return ctx.TaxonNames9;                        
-                    default:
-                        throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
-                }   
+            {
+                case 0: return ctx.TaxonNames0;
+                case 1: return ctx.TaxonNames1;
+                case 2: return ctx.TaxonNames2;
+                case 3: return ctx.TaxonNames3;
+                case 4: return ctx.TaxonNames4;
+                case 5: return ctx.TaxonNames5;
+                case 6: return ctx.TaxonNames6;
+                case 7: return ctx.TaxonNames7;
+                case 8: return ctx.TaxonNames8;
+                case 9: return ctx.TaxonNames9;
+                default:
+                    throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+            }
         }
 
         public IList<TaxonName> getTaxonNames(int tableID)
         {
-            return cachedOrderedQuery(ctx => getTaxonTable(ctx, tableID), (tax) => ((t) => t.URI == tax.URI));
+            return cachedQuery(TaxonName.Operations,
+                ctx => getTaxonTable(ctx, tableID));
         }
 
         private int getTaxonTableIDForGroup(Term taxonGroup)
@@ -568,7 +489,7 @@ using Svc = DiversityPhone.Service;
             withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.taxonSelection
-                                     where a.tableName == taxonGroup.Code && a.isSelected                                     
+                                     where a.tableName == taxonGroup.Code && a.isSelected
                                      select a.tableID;
                     if (assignment.Any())
                         id = assignment.First();
@@ -604,9 +525,9 @@ using Svc = DiversityPhone.Service;
 
         public IList<PropertyName> getPropertyNames(Property prop)
         {
-            return uncachedQuery(ctx =>  from pn in ctx.PropertyNames
-                                         where pn.PropertyID == prop.PropertyID                                         
-                                         select pn);
+            return uncachedQuery(ctx => from pn in ctx.PropertyNames
+                                        where pn.PropertyID == prop.PropertyID
+                                        select pn);
         }
 
         public PropertyName getPropertyNameByURI(string uri)
@@ -629,7 +550,7 @@ using Svc = DiversityPhone.Service;
         public IList<Map> getAllMaps()
         {
             return uncachedQuery(ctx => from m in ctx.Maps
-                                 select m);
+                                        select m);
         }
         public IList<Map> getMapsForRectangle(double latitudeNorth, double latitudeSouth, double longitudeWest, double longitudeEast)
         {
@@ -673,29 +594,29 @@ using Svc = DiversityPhone.Service;
 
             for (int i = 0; i < 20; i++)
             {
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id,  RelatedUnitID = parent });
+                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id, RelatedUnitID = parent });
                 recSample(depth, id++, ref id, ctx);
             }
         }
 
-        #endregion     
-    
+        #endregion
+
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(QueryParameters<T> param, T row ) where T : class
+        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class
         {
-            var ops = param.Operations;
+
             withDataContext((ctx) =>
                 {
-                    var table = param.TableProvider(ctx);
+                    var table = tableProvider(ctx);
                     var allRowsQuery = table as IQueryable<T>;
-                    var existingRow = ops.WhereKeyEquals(allRowsQuery, row)
+                    var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
                         .FirstOrDefault();
 
                     if (existingRow != null)
                         table.Attach(row, existingRow);
                     else
                     {
-                        ops.SetFreeKeyOnItem(allRowsQuery, row);
+                        operations.SetFreeKeyOnItem(allRowsQuery, row);
                         table.InsertOnSubmit(row);
                     }
 
@@ -703,13 +624,13 @@ using Svc = DiversityPhone.Service;
                 });
         }
 
-        private void deleteRow<T>( QueryParams<T> param, T detachedRow) where T : class
+        private void deleteRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T detachedRow) where T : class
         {
-            var ops = param.Operations;
+
             withDataContext(ctx =>
                 {
-                    var table = param.TableProvider(ctx);
-                    var attachedRow = ops.WhereKeyEquals(table, detachedRow)
+                    var table = tableProvider(ctx);
+                    var attachedRow = operations.WhereKeyEquals(table, detachedRow)
                         .FirstOrDefault();
 
                     if (attachedRow != null)
@@ -720,36 +641,31 @@ using Svc = DiversityPhone.Service;
                 });
         }
 
-        private T singletonQuery<T>(Func<DiversityDataContext,Table<T>> tableProvider, Expression<Func<T, bool>> predicate)
+        private T singletonQuery<T>(QueryProvider<T> queryProvider)
         {
             T result = default(T);
             withDataContext(ctx =>
                 {
-                    var table = tableProvider(ctx);
-                    result = table.Where(predicate)
+                    var query = queryProvider(ctx);
+                    result = query
                         .FirstOrDefault();
                 });
             return result;
         }
-        
+
 
         private void withDataContext(Action<DiversityDataContext> operation)
         {
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
-      
-        private IList<T> cachedOrderedQuery<T>(Func<DiversityDataContext, IQueryable<T>> orderedQuery, Func<T, Expression<Func<T, bool>>> equalsTest) where T : class
+
+        private IList<T> cachedQuery<T>(IQueryOperations<T> operations, QueryProvider<T> queryProvider) where T : class
         {
-            return new RotatingCache<T>(new OrderedQueryCacheSource<T>(orderedQuery, equalsTest));
+            return new RotatingCache<T>(new QueryCacheSource<T>(operations, queryProvider));
         }
 
-        private IList<T> cachedIntKeyedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query, Expression<Func<T, int>> KeyExpression) where T : class
-        {
-            return new RotatingCache<T>(new IntKeyedCacheSource<T>(query,KeyExpression));
-        }
-
-        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
+        private IList<T> uncachedQuery<T>(QueryProvider<T> query)
         {
             IList<T> result = null;
             withDataContext(ctx => result = query(ctx).ToList());
@@ -757,118 +673,56 @@ using Svc = DiversityPhone.Service;
         }
 
 
-        private class IntKeyedCacheSource<T> : ICacheSource<T>
+        private class QueryCacheSource<T> : ICacheSource<T>
         {
-            Func<DiversityDataContext, IQueryable<T>> queryFunc;
-            Expression<Func<T, int>> keyExpression;
-            Func<T, int> keyFunc;
+            IQueryOperations<T> operations;
+            QueryProvider<T> queryProvider;
 
-            public IntKeyedCacheSource(Func<DiversityDataContext, IQueryable<T>> QueryFunc, Expression<Func<T,int>> KeyExpression)
+            public QueryCacheSource(IQueryOperations<T> operations, QueryProvider<T> queryProvider)
             {
-                queryFunc = QueryFunc;
-                keyExpression = KeyExpression;
-                keyFunc = keyExpression.Compile();                
+                this.operations = operations;
+                this.queryProvider = queryProvider;
             }
 
             public IEnumerable<T> retrieveItems(int count, int offset)
             {
                 using (var ctx = new DiversityDataContext())
                 {
-                    return queryFunc(ctx)
-                        .OrderBy(keyExpression)
-                        .Skip(offset)
-                        .Take(count)
-                        .ToList(); //Force execution of query
-                }
-            }
-
-            public int Count
-            {
-                get 
-                {
-                    using (var ctx = new DiversityDataContext())
-                    {
-                        return queryFunc(ctx)
-                            .Count();
-                    }
-                }
-            }
-        
-
-            public int  IndexOf(T item)
-            {                
-                var lessThanKeyExpression = LessThanKeyExpression(keyExpression, item);
-
-
-                using (var ctx = new DiversityDataContext())
-                {
-                    return queryFunc(ctx)
-                        .OrderBy(keyExpression)
-                        .Where(lessThanKeyExpression)
-                        .Count();
-                }
-            }        
-
-        }
-
-        private class OrderedQueryCacheSource<T> : ICacheSource<T>
-        {
-            private Func<DiversityDataContext, IQueryable<T>> orderedQuery;
-            private Func<T, Expression<Func<T, bool>>> equalsTest;
-
-            public OrderedQueryCacheSource(QueryParameters<T> param)
-            {
-                // TODO: Complete member initialization
-                this.orderedQuery = orderedQuery;
-                this.equalsTest = equalsTest;
-            }
-
-
-            public IEnumerable<T> retrieveItems(int count, int offset)
-            {
-                using (var ctx = new DiversityDataContext())
-                {
-                    return orderedQuery(ctx)
+                    return queryProvider(ctx)
                         .Skip(offset)
                         .Take(count)
                         .ToList();
                 }
             }
 
+            public int Count
+            {
+                get
+                {
+                    using (var ctx = new DiversityDataContext())
+                    {
+                        return queryProvider(ctx)
+                            .Count();
+                    }
+                }
+            }
+
+
             public int IndexOf(T item)
             {
                 using (var ctx = new DiversityDataContext())
                 {
-                    return orderedQuery(ctx)
-                        .TakeWhile(NotExpression(equalsTest(item)))
+                    return operations.WhereKeySmallerThan(queryProvider(ctx), item)
                         .Count();
                 }
             }
 
-            public int Count
-            {
-                get 
-                {
-                    using (var ctx = new DiversityDataContext())
-                    {
-                        return orderedQuery(ctx).Count();
-                    }
-                }
-            }
         }
-        private delegate Table<T> TableProvider<T>(DiversityDataContext ctx);
 
-        private class QueryParams<T> : Tuple<TableProvider<T>,IQueryOperations<T>>
-        {
-            public TableProvider<T> TableProvider
-            {get{return this.Item1;}}
-            public IQueryOperations<T> Operations
-            {
-                get{return this.Item2;}
-            }
+        private delegate Table<T> TableProvider<T>(DiversityDataContext ctx) where T : class;
 
-        }
-        
+        private delegate IQueryable<T> QueryProvider<T>(DiversityDataContext ctx);       
+
         #endregion
 
         #region IOfflineFieldData Members
@@ -886,6 +740,6 @@ using Svc = DiversityPhone.Service;
         #endregion
 
 
-     
+
     }
 }

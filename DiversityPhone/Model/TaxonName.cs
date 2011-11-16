@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 
 
 namespace DiversityPhone.Model
 {
     using System.Data.Linq.Mapping;
     using Microsoft.Phone.Data.Linq.Mapping;
+using DiversityPhone.Services;
 
     [Table]
     public class TaxonName
@@ -32,6 +34,28 @@ namespace DiversityPhone.Model
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
-      
+
+
+        public static IQueryOperations<TaxonName> Operations
+        {
+            get;
+            private set;
+        }
+
+        static TaxonName()
+        {
+            Operations = new QueryOperations<TaxonName>(
+                //Smallerthan
+                          (q, es) => q.Where(row => row.URI.CompareTo(es.URI) <0),
+                //Equals
+                          (q, es) => q.Where(row => row.URI == es.URI),
+                //Orderby
+                          (q) => q.OrderBy(es => es.URI),
+                //FreeKey
+                          (q, es) =>
+                          {
+                              //Not Applicable
+                          });
+        }      
     }
 }

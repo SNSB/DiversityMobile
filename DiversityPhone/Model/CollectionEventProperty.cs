@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.Model
 {
@@ -27,13 +29,13 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public int PropertyID { get; set; }
 
-        [Column]   
+        [Column]
         public String DisplayText { get; set; }
-        
-        [Column]   
+
+        [Column]
         public String PropertyUri { get; set; }
 
-      
+
 
 
         /// <summary>
@@ -44,7 +46,31 @@ namespace DiversityPhone.Model
         public bool? IsModified { get; set; }
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
-   
 
+
+
+        public static IQueryOperations<CollectionEventProperty> Operations
+        {
+            get;
+            private set;
+        }
+
+        static CollectionEventProperty()
+        {
+            Operations = new QueryOperations<CollectionEventProperty>(
+                //Smallerthan
+                          (q, cep) => q.Where(row => row.EventID < cep.EventID || row.PropertyID < cep.PropertyID),
+                //Equals
+                          (q, cep) => q.Where(row => row.EventID == cep.EventID && row.PropertyID == cep.PropertyID),
+                //Orderby
+                          (q) => from cep in q
+                                 orderby cep.EventID, cep.PropertyID
+                                 select cep,
+                //FreeKey
+                          (q, cep) =>
+                          {
+                              //Not Applicable
+                          });
+        }
     }
 }
