@@ -37,6 +37,8 @@ namespace DiversityPhone
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
+        public static IDictionary<string, PageState> StateTracker { get; private set; }
+        
         /// <summary>
         /// Constructor for the Application object.
         /// </summary>
@@ -49,7 +51,7 @@ namespace DiversityPhone
 
             OfflineDB = new OfflineStorage(MessageBus.Current);
 
-            
+            StateTracker = new Dictionary<string, PageState>();
 
             // Standard Silverlight initialization
             InitializeComponent();

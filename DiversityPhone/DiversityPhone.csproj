@@ -126,6 +126,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />
+    <Compile Include="Services\PageState.cs" />
     <Compile Include="Utility\PrimaryKeyViolationException.cs" />
     <Compile Include="Utility\ReflectionOperations.cs" />
     <Compile Include="Utility\SourceID.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
+    <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\DPColors.cs" />

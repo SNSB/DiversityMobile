@@ -7,6 +7,7 @@ using DiversityPhone.Model;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Navigation;
+using DiversityPhone.ViewModels;
 
 
 namespace DiversityPhone.Services
@@ -54,47 +55,83 @@ namespace DiversityPhone.Services
                     .Subscribe(_=>Navigate(Page.EditIU)),
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SELECT)
                     .Subscribe(_=>Navigate(Page.ViewIU)),
+
+                _messenger.Listen<NavigationMessage>()
+                    .Subscribe(msg => Navigate(msg)),
             };
 
+            App.RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
+            App.RootFrame.Navigated += new NavigatedEventHandler(RootFrame_Navigated);
+        }
+
+        void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            var page = App.RootFrame.Content as PhoneApplicationPage;
+            var token = e.Uri.Fragment;
+            PageState storedState = null;
+            if (token != null)
+            {
+                App.StateTracker.TryGetValue(token, out storedState);
+            }
+            if (storedState != null && page != null && page.DataContext is PageViewModel)
+            {
+                var vm = page.DataContext as PageViewModel;
+                vm.SetState(storedState);
+            }
+        }
+
+        void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            var page = App.RootFrame.Content as PhoneApplicationPage;
+            if (page != null && page.DataContext is PageViewModel)
+            {
+                var vm = page.DataContext as PageViewModel;
+                vm.SaveState();
+            }
+
+
+        }
+        public void Navigate(NavigationMessage msg)
+        {
 
         }
 
         public void Navigate(Page p)
         {
-            Uri destination = null;
+            string destination = null;
             switch (p)
             {
                 case Page.Home:
-                    destination = new Uri("/View/Home.xaml",UriKind.Relative);
+                    destination = "/View/Home.xaml";
                     break;
                 case Page.Settings:
-                    destination = new Uri("/View/Settings.xaml", UriKind.Relative);
-                    break;                
+                    destination = "/View/Settings.xaml";
+                    break;
                 case Page.EditES:
-                    destination = new Uri("/View/EditES.xaml", UriKind.Relative);
+                    destination = "/View/EditES.xaml";
                     break;
                 case Page.ViewES:
-                    destination = new Uri("/View/ViewES.xaml", UriKind.Relative);
+                    destination = "/View/ViewES.xaml";
                     break;
                 case Page.EditEV:
-                    destination = new Uri("/View/EditEV.xaml", UriKind.Relative);
-                    break;   
+                    destination = "/View/EditEV.xaml";
+                    break;
                 case Page.ViewEV:
-                    destination = new Uri("/View/ViewEV.xaml", UriKind.Relative);
+                    destination = "/View/ViewEV.xaml";
                     break;
                 case Page.EditIU:
-                    destination = new Uri("/View/EditIU.xaml", UriKind.Relative);
+                    destination = "/View/EditIU.xaml";
                     break;
                 case Page.ViewIU:
-                    destination = new Uri("/View/ViewIU.xaml", UriKind.Relative);
+                    destination = "/View/ViewIU.xaml";
                     break;
                 case Page.EditCS:
-                    destination = new Uri("/View/EditCS.xaml", UriKind.Relative);
+                    destination = "/View/EditCS.xaml";
                     break;
                 case Page.ViewCS:
-                    destination = new Uri("/View/ViewCS.xaml", UriKind.Relative);
+                    destination = "/View/ViewCS.xaml";
                     break;
-                
+
 
 
 #if DEBUG
@@ -104,7 +141,11 @@ namespace DiversityPhone.Services
             }
             if (destination != null && App.RootFrame != null)
             {
-                App.RootFrame.Navigate(destination);
+                Guid token = Guid.NewGuid();
+                Uri uri = new Uri(String.Format("{0}#{1}", destination, token));
+
+
+                App.RootFrame.Navigate(uri);
             }
         }
 
