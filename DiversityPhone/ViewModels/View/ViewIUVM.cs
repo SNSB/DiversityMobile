@@ -8,8 +8,9 @@
     using DiversityPhone.Messages;
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
+using System.Reactive.Subjects;
 
-    public class ViewIUVM : ReactiveObject
+    public class ViewIUVM : PageViewModel
     {
         IList<IDisposable> _subscriptions;
 
@@ -30,24 +31,22 @@
         
         #endregion
 
+        
+
         public ViewIUVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
             _storage = storage;            
 
-            _Current = _messenger
-                .Listen<IdentificationUnit>(MessageContracts.SELECT)
+            _Current = StateObservable
+                .Select(s=>getUnitFromContext(s.Context))
                 .Where(iu => iu != null)
                 .Select(iu => getSubUnits(iu))
-            .ToProperty(this, x => x.Current);
+                .ToProperty(this, x => x.Current);
 
             var newSubUnits = (AddSubunit = new ReactiveCommand())
-                                .Select(_ => new IdentificationUnit() 
-                                { 
-                                    SpecimenID = Current.Model.SpecimenID, 
-                                    RelatedUnitID = Current.Model.UnitID 
-                                });
-            _messenger.RegisterMessageSource(newSubUnits, MessageContracts.EDIT);
+                                .Select(_ => new NavigationMessage(Page.EditIU,null));
+            _messenger.RegisterMessageSource(newSubUnits);
 
 
 
@@ -55,6 +54,19 @@
             {
 
             };
+        }
+
+        private IdentificationUnit getUnitFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getIdentificationUnitByID(id);
+                }               
+            }
+            return null;
         } 
       
         private IdentificationUnitVM getSubUnits(IdentificationUnit iu)

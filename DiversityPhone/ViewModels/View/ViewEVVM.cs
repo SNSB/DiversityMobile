@@ -9,7 +9,7 @@
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
 
-    public class ViewEVVM : ReactiveObject
+    public class ViewEVVM : PageViewModel
     {
         IList<IDisposable> _subscriptions;
 

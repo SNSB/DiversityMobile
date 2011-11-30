@@ -170,7 +170,7 @@ namespace DiversityPhone.Services
 
         public static void ClearHistoryUntilCurrentPage()
         {
-            Uri actual=App.RootFrame.Source;
+            Uri thisPage=App.RootFrame.Source;
             IEnumerable<JournalEntry> stack = App.RootFrame.BackStack;
             IEnumerator<JournalEntry> loop = App.RootFrame.BackStack.GetEnumerator();
             loop.Reset();
@@ -179,7 +179,7 @@ namespace DiversityPhone.Services
             while (loop.MoveNext())
             {
                 count++;
-                if (loop.Current.Source.Equals(actual))
+                if (loop.Current.Source.Equals(thisPage))
                     pos = count;
             }
             if (pos >= 0)

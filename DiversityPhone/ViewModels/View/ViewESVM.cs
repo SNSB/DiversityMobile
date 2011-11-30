@@ -9,7 +9,7 @@
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
 
-    public class ViewESVM : ReactiveObject
+    public class ViewESVM : PageViewModel
     {
         IList<IDisposable> _subscriptions;
 
