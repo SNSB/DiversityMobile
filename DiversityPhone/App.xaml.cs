@@ -37,6 +37,20 @@ namespace DiversityPhone
         /// <returns>The root frame of the Phone Application.</returns>
         public static PhoneApplicationFrame RootFrame { get; private set; }
 
+        private static DiversityPhone.Services.NavigationService _NavSvc = null;
+        public static DiversityPhone.Services.NavigationService NavSvc
+        {
+            get
+            {
+                if (_NavSvc != null)
+                    return _NavSvc;
+                else
+                    return _NavSvc = new Services.NavigationService(MessageBus.Current);
+            }
+        }
+
+
+
         public static IDictionary<string, PageState> StateTracker { get; private set; }
         
         /// <summary>
@@ -59,6 +73,8 @@ namespace DiversityPhone
 
             // Phone-specific initialization
             InitializePhoneApplication();
+
+            NavSvc.AttachToNavigation(RootFrame);
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)

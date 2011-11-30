@@ -18,9 +18,11 @@ namespace DiversityPhone.Services
         public string Context { get; private set; }
         public IDictionary<string, string> State { get; set; }
 
-        public PageState()
+        public PageState(string token, string context)
         {
-
+            this.Token = token;
+            this.Context = context;
+            this.State = new Dictionary<string, string>();
         }
     }
 }

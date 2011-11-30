@@ -107,6 +107,7 @@
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyName.cs" />
+    <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Model\UserProfile.cs" />

@@ -58,28 +58,33 @@ namespace DiversityPhone.Services
 
                 _messenger.Listen<NavigationMessage>()
                     .Subscribe(msg => Navigate(msg)),
-            };
-
-            App.RootFrame.Navigating += new NavigatingCancelEventHandler(RootFrame_Navigating);
-            App.RootFrame.Navigated += new NavigatedEventHandler(RootFrame_Navigated);
+            };            
+        }
+        public void AttachToNavigation(PhoneApplicationFrame frame)
+        {
+            if (frame != null)
+            {
+                frame.Navigating += RootFrame_Navigating;
+                frame.FragmentNavigation += new FragmentNavigationEventHandler(frame_FragmentNavigation);                
+            }
         }
 
-        void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        void frame_FragmentNavigation(object sender, FragmentNavigationEventArgs e)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
-            var token = e.Uri.Fragment;
+            var token = e.Fragment;
             PageState storedState = null;
             if (token != null)
             {
-                App.StateTracker.TryGetValue(token, out storedState);
+                App.StateTracker.TryGetValue(token, out storedState);                
             }
+            
             if (storedState != null && page != null && page.DataContext is PageViewModel)
             {
                 var vm = page.DataContext as PageViewModel;
                 vm.SetState(storedState);
             }
         }
-
         void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
@@ -93,13 +98,8 @@ namespace DiversityPhone.Services
         }
         public void Navigate(NavigationMessage msg)
         {
-
-        }
-
-        public void Navigate(Page p)
-        {
             string destination = null;
-            switch (p)
+            switch (msg.Destination)
             {
                 case Page.Home:
                     destination = "/View/Home.xaml";
@@ -141,12 +141,21 @@ namespace DiversityPhone.Services
             }
             if (destination != null && App.RootFrame != null)
             {
-                Guid token = Guid.NewGuid();
-                Uri uri = new Uri(String.Format("{0}#{1}", destination, token));
-
+                string token = Guid.NewGuid().ToString();
+                Uri uri = new Uri(String.Format("{0}#{1}", destination, token), UriKind.Relative);
+                App.StateTracker.Add(token, new PageState(token, msg.Context));
 
                 App.RootFrame.Navigate(uri);
             }
+        }
+
+        public void Navigate(Page p)
+        {
+            //Don't use this overload any more
+            System.Diagnostics.Debugger.Break();
+
+
+            Navigate(new NavigationMessage(p, null));
         }
 
         public bool CanNavigateBack()

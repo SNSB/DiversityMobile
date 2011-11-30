@@ -15,7 +15,7 @@ namespace DiversityPhone.ViewModels
             #region Service Registration
             _ioc.Register<IMessageBus>(RxApp.MessageBus);
 
-            _ioc.Register<INavigationService>(new NavigationService(_ioc.Resolve<IMessageBus>()));
+            _ioc.Register<INavigationService>(App.NavSvc);
 
             _ioc.Register<DialogService>(new DialogService(_ioc.Resolve<IMessageBus>()));
 
