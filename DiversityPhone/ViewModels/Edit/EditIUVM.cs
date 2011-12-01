@@ -29,7 +29,7 @@ namespace DiversityPhone.ViewModels
         #region Properties
         
         private ObservableAsPropertyHelper<bool> _isEditable;
-        public bool IsEditable
+        public bool Editable
         {
             get
             {
@@ -100,9 +100,9 @@ namespace DiversityPhone.ViewModels
             _isEditable = StateObservable
                 .Select(s => s.Context == null) //Newly created Units are immediately editable
                 .Merge(
-                    ToggleEditable.Select(_ => !IsEditable) //Toggle Editable
+                    ToggleEditable.Select(_ => !Editable) //Toggle Editable
                 )
-                .ToProperty(this, vm => vm.IsEditable);
+                .ToProperty(this, vm => vm.Editable);
 
             _Model = model.ToProperty(this, x => x.Model);
 
