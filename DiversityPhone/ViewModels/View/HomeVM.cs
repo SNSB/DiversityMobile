@@ -64,10 +64,9 @@
                     .Subscribe(_ => addSeries()),
 
                 (GetVocabulary = new ReactiveCommand())
-                    .Subscribe(_ => getVoc()),              
+                    .Subscribe(_ => getVoc()),         
 
-                _messenger.Listen<EventSeries>(MessageContracts.SAVE)
-                    .Subscribe(_ => updateSeriesList())
+                
             };
 
         }
@@ -146,10 +145,7 @@
 
         private void addSeries()
         {
-            _messenger.SendMessage<EventSeries>(
-                new EventSeries(),
-                MessageContracts.EDIT
-                );
+            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES,null));
         }
     }
 }

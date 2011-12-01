@@ -39,7 +39,7 @@ using System.Reactive.Subjects;
             _storage = storage;            
 
             _Current = StateObservable
-                .Select(s=>getUnitFromContext(s.Context))
+                .Select(s=>UnitFromContext(s.Context))
                 .Where(iu => iu != null)
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, x => x.Current);
@@ -56,7 +56,7 @@ using System.Reactive.Subjects;
             };
         }
 
-        private IdentificationUnit getUnitFromContext(string ctx)
+        private IdentificationUnit UnitFromContext(string ctx)
         {
             if (ctx != null)
             {

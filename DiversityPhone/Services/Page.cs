@@ -12,6 +12,8 @@ namespace DiversityPhone.Services
         ViewIU,
         EditCS,
         ViewCS,
+        EditIUAN,
+        EditUserProfile,
         Settings,        
        
     }

@@ -7,11 +7,11 @@ using DiversityPhone.Services;
 using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using DiversityPhone.Utility;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditIUVM : ReactiveObject
+    public class EditIUVM : PageViewModel
     {
         IList<IDisposable> _subscriptions;
 
@@ -22,14 +22,20 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
-
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+        
+        private ObservableAsPropertyHelper<bool> _isEditable;
+        public bool IsEditable
+        {
+            get
+            {
+                return _isEditable.Value;
+            }
+        }
 
         public IdentificationUnit Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
@@ -82,10 +88,21 @@ namespace DiversityPhone.ViewModels
         public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
-            _storage = storage;
-            this._editable = false;
-            var model = _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT);
+            _storage = storage;           
 
+            var model = StateObservable                
+                .Select(s => UnitFromContext(s.Context));
+
+
+            ToggleEditable = new ReactiveCommand();
+            
+
+            _isEditable = StateObservable
+                .Select(s => s.Context == null) //Newly created Units are immediately editable
+                .Merge(
+                    ToggleEditable.Select(_ => !IsEditable) //Toggle Editable
+                )
+                .ToProperty(this, vm => vm.IsEditable);
 
             _Model = model.ToProperty(this, x => x.Model);
 
@@ -98,8 +115,7 @@ namespace DiversityPhone.ViewModels
 
             _subscriptions = new List<IDisposable>()
             {            
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
+                
 
                 model.Select(m => m.TaxonomicGroup)
                     .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
@@ -124,17 +140,21 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-
-        private void setEdit()
+        private IdentificationUnit UnitFromContext(string ctx)
         {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getIdentificationUnitByID(id);
+                }
+            }
+            return new IdentificationUnit();
+        }        
 
 
-         private IObservable<bool> validationObservable()
+        private IObservable<bool> validationObservable()
         {
             var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
                 .Select(term => term != null)

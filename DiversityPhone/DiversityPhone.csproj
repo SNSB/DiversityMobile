@@ -128,8 +128,6 @@
     <Compile Include="Services\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />
     <Compile Include="Services\PageState.cs" />
-    <Compile Include="Utility\PrimaryKeyViolationException.cs" />
-    <Compile Include="Utility\ReflectionOperations.cs" />
     <Compile Include="Utility\SourceID.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />

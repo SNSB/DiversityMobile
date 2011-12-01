@@ -32,9 +32,13 @@
             _subscriptions = new List<IDisposable>()
             {
                 (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Specimen>(Model, MessageContracts.SELECT)),
+                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
+                        new NavigationMessage( Services.Page.ViewCS, Model.CollectionSpecimenID.ToString())
+                        )),
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Specimen>(Model, MessageContracts.EDIT)),
+                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
+                        new NavigationMessage(Services.Page.EditCS, Model.CollectionSpecimenID.ToString())
+                        )),
 
             };
         }

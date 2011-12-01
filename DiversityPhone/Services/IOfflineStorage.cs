@@ -6,5 +6,9 @@ namespace DiversityPhone.Services
     {
         IList<UserProfile> getAllUserProfiles();
         UserProfile getUserProfile(string loginName);
+
+
+
+       
     }
 }

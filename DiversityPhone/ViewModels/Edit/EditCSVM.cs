@@ -5,15 +5,17 @@ using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditCSVM : ReactiveObject
+    public class EditCSVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
 
         #region Services
         private IMessageBus _messenger;
+        private IOfflineStorage _storage;
         #endregion
 
         #region Commands
@@ -42,12 +44,14 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public EditCSVM(IMessageBus messenger)
+        public EditCSVM(IMessageBus messenger, IOfflineStorage storage)
         {
 
             _messenger = messenger;
+            _storage = storage;
 
-            _Model = _messenger.Listen<Specimen>(MessageContracts.EDIT)
+            _Model = StateObservable
+                .Select(s => SpecimenFromContext(s.Context))
                 .ToProperty(this, x => x.Model);
             this._editable = false;
             var modelPropertyObservable = this.ObservableForProperty(x => x.Model)
@@ -111,6 +115,19 @@ namespace DiversityPhone.ViewModels
         {
             //Nur Veränderbare Eigenschaften übernehmen.
             Model.AccesionNumber = AccessionNumber;
+        }
+
+        private Specimen SpecimenFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getSpecimenByID(id); 
+                }
+            }
+            return new Specimen();
         }
     }
 }

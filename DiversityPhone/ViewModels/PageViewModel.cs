@@ -17,14 +17,19 @@ namespace DiversityPhone.ViewModels
 {
     public class PageViewModel : ReactiveObject
     {
+        /// <summary>
+        /// Observable Sequence of incoming PageStates.
+        /// Guaranteed to be non-null
+        /// </summary>
         protected Subject<PageState> StateObservable { get; private set; }
         private ObservableAsPropertyHelper<PageState> _CurrentState;
 
         protected PageState CurrentState { get { return _CurrentState.Value; } }
 
-        public  void SetState(PageState state)
+        public void SetState(PageState state)
         {
-            StateObservable.OnNext(state);
+            if(state != null)
+                StateObservable.OnNext(state);
         }    
         public virtual void SaveState(){}
 

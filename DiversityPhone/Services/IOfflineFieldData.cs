@@ -18,6 +18,7 @@ using Svc = DiversityPhone.Service;
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);
         IList<Event> getEventsWithoutSeries();
+        Event getEventByID(int id);
         void addOrUpdateEvent(Event ev);
 
         IList<CollectionEventProperty> getPropertiesForEvent(Event ev);
@@ -26,6 +27,7 @@ using Svc = DiversityPhone.Service;
         IList<Specimen> getAllSpecimen();
         IList<Specimen> getSpecimenForEvent(Event ev);
         IList<Specimen> getSpecimenWithoutEvent();
+        Specimen getSpecimenByID(int id);
         void addOrUpdateSpecimen(Specimen spec);
 
         IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);

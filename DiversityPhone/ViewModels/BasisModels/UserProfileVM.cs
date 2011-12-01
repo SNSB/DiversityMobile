@@ -35,10 +35,7 @@ namespace DiversityPhone.ViewModels.BasisModels
             Icon = ViewModels.Icon.UserProfile;
             _subscriptions = new List<IDisposable>()
             {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<UserProfile>(Model,MessageContracts.SELECT)),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<UserProfile>(Model,MessageContracts.EDIT)),
+                //TODO
             };
         }
 

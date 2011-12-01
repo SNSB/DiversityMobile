@@ -54,12 +54,13 @@
             _subscriptions = new List<IDisposable>()
             {
                 (Add = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(
-                        new IdentificationUnit()
+                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
+                        new NavigationMessage(Page.EditIU, null)
+                        /*new IdentificationUnit()
                         {
                             SpecimenID = Current.Model.EventID
-                        },
-                        MessageContracts.EDIT)),                        
+                        }*/
+                        )),                        
                 
             };
         }

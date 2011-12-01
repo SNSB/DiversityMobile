@@ -6,6 +6,7 @@
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
     using System.Collections.Generic;
+    using DiversityPhone.Services;
 
     public class EventSeriesVM : ReactiveObject
     {
@@ -43,9 +44,15 @@
             _subscriptions = new List<IDisposable>()
             {
                 (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.SELECT)),
+                    .Subscribe(_ =>
+                        {
+                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewES, Model.SeriesID.ToString()));
+                        }),
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<EventSeries>(Model,MessageContracts.EDIT)),
+                    .Subscribe(_ => 
+                        {
+                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
+                        }),
             };
         }
     }

@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
             _subscriptions = new List<IDisposable>()
             {
                 _messenger.Listen<Page>()
-                    .Subscribe(p => Navigate(p)),
+                    .Subscribe(p => Navigate(p,null)),
                 _messenger.Listen<Message>()
                     .Subscribe(m =>
                         {
@@ -39,25 +39,10 @@ namespace DiversityPhone.Services
                                 default:
                                     break;
                             }
-                        }),
-
-                _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditES)),
-                _messenger.Listen<EventSeries>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewES)),
-
-                _messenger.Listen<Event>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditEV)),
-                _messenger.Listen<Event>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewEV)),
-
-                _messenger.Listen<IdentificationUnit>(MessageContracts.EDIT)
-                    .Subscribe(_=>Navigate(Page.EditIU)),
-                _messenger.Listen<IdentificationUnit>(MessageContracts.SELECT)
-                    .Subscribe(_=>Navigate(Page.ViewIU)),
+                        }),                
 
                 _messenger.Listen<NavigationMessage>()
-                    .Subscribe(msg => Navigate(msg)),
+                    .Subscribe(msg => Navigate(msg.Destination,msg.Context)),
             };            
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
@@ -96,10 +81,10 @@ namespace DiversityPhone.Services
 
 
         }
-        public void Navigate(NavigationMessage msg)
+        public void Navigate(Page p, string context)
         {
             string destination = null;
-            switch (msg.Destination)
+            switch (p)
             {
                 case Page.Home:
                     destination = "/View/Home.xaml";
@@ -143,20 +128,11 @@ namespace DiversityPhone.Services
             {
                 string token = Guid.NewGuid().ToString();
                 Uri uri = new Uri(String.Format("{0}#{1}", destination, token), UriKind.Relative);
-                App.StateTracker.Add(token, new PageState(token, msg.Context));
+                App.StateTracker.Add(token, new PageState(token, context));
 
                 App.RootFrame.Navigate(uri);
             }
-        }
-
-        public void Navigate(Page p)
-        {
-            //Don't use this overload any more
-            System.Diagnostics.Debugger.Break();
-
-
-            Navigate(new NavigationMessage(p, null));
-        }
+        }        
 
         public bool CanNavigateBack()
         {

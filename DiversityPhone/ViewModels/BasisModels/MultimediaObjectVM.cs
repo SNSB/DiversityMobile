@@ -36,10 +36,7 @@ namespace DiversityPhone.ViewModels
             Icon = ViewModels.Icon.Multimedia;
             _subscriptions = new List<IDisposable>()
             {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<MultimediaObject>(Model,MessageContracts.SELECT)),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<MultimediaObject>(Model,MessageContracts.EDIT)),
+                //TODO
             };
         }
     }

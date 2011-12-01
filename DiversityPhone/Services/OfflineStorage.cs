@@ -6,7 +6,6 @@
     using DiversityPhone.Model;
     using ReactiveUI;
     using DiversityPhone.Messages;
-    using DiversityPhone.Utility;
     using DiversityPhone.Common;
     using System.Data.Linq;
     using System.Linq.Expressions;

@@ -9,31 +9,37 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditEVVM : ReactiveObject
+    public class EditEVVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;        
+        private IMessageBus _messenger;
+        private IOfflineStorage _storage;
         #endregion
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
 
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+        private ObservableAsPropertyHelper<bool> _isEditable;
+        public bool IsEditable
+        {
+            get
+            {
+                return _isEditable.Value;
+            }
+        }
 
 
-        private Event _Model;
+        private ObservableAsPropertyHelper<Event> _Model;
         public Event Model
         {
-            get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
+            get { return _Model.Value; }           
         }
 
         private string _LocalityDescription;
@@ -62,7 +68,21 @@ namespace DiversityPhone.ViewModels
         public EditEVVM(IMessageBus messenger)
         {            
             _messenger = messenger;
-            this._editable = false;
+
+            var model = StateObservable
+                .Select(s => EventFromContext(s.Context));            
+
+            _Model = model
+                .ToProperty(this, vm => vm.Model);
+
+            ToggleEditable = new ReactiveCommand();
+
+            _isEditable = StateObservable
+               .Select(s => s.Context == null) //Newly created Units are immediately editable
+               .Merge(
+                   ToggleEditable.Select(_ => !IsEditable) //Toggle Editable
+               )
+               .ToProperty(this, vm => vm.IsEditable);
 
             var canSave = this.ObservableForProperty(x => x.LocalityDescription)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
@@ -71,13 +91,9 @@ namespace DiversityPhone.ViewModels
             _subscriptions = new List<IDisposable>()
             {
                 (Save = new ReactiveCommand(canSave))               
-                    .Subscribe(_ => executeSave()),
+                    .Subscribe(_ => executeSave()),         
 
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Message>(Message.NavigateBack)),
-
-                _messenger.Listen<Event>(MessageContracts.EDIT)
-                    .Subscribe(ev => updateView(ev))
+                model.Subscribe( m => updateView(m)),
             };
         }    
 
@@ -92,15 +108,7 @@ namespace DiversityPhone.ViewModels
         {
             _messenger.SendMessage<Event>(Model, MessageContracts.DELETE);
             _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
+        }      
 
 
         private void updateModel()
@@ -110,11 +118,23 @@ namespace DiversityPhone.ViewModels
         }
 
         private void updateView(Event ev)
-        {
-            Model = ev;
+        {            
             LocalityDescription = Model.LocalityDescription;
             HabitatDescription = Model.HabitatDescription;
             this.RaisePropertyChanged(x => x.CollectionDate);
+        }
+
+        private Event EventFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getEventByID(id);
+                }
+            }
+            return new IdentificationUnit();
         }
     }
 }

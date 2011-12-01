@@ -6,6 +6,7 @@
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
+    using DiversityPhone.Services;
 
     public class IdentificationUnitVM : ReactiveObject
     {
@@ -38,9 +39,15 @@
             _subscriptions = new List<IDisposable>()
             {
                 (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SELECT)),
+                    .Subscribe(_ =>
+                        {
+                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewIU, Model.UnitID.ToString()));
+                        }),
                 (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.EDIT)),
+                    .Subscribe(_ => 
+                        {
+                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditIU, Model.UnitID.ToString()));
+                        }),
 
             };
         }

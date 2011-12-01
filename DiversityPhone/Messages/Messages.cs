@@ -15,10 +15,8 @@ namespace DiversityPhone.Messages
 
     public static class MessageContracts
     {
-        public const string EDIT = "Edit";
         public const string SAVE = "Save";
         public const string DELETE = "Delete";
-        public const string SELECT = "Select";
     }
 
     public class NavigationMessage
