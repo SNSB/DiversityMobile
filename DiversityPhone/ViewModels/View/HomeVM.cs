@@ -11,7 +11,7 @@
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
 
-    public class HomeVM : ReactiveObject
+    public class HomeVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
 
