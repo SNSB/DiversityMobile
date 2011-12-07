@@ -14,40 +14,37 @@
     using System.Threading;
     using System.Windows.Navigation;
 
-    public class EditESVM : ReactiveObject
+    public class EditESVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;        
+        private IMessageBus _messenger;
+        private IOfflineStorage _storage;
         #endregion
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
         public Icon ImageSource { get { return Icon.EventSeries; } }
 
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable, ref _editable, value); } }
+        public ObservableAsPropertyHelper<bool> _Editable;
+        public bool Editable 
+        { 
+            get 
+            { 
+                return _Editable.Value; 
+            } 
+        }
 
-        private EventSeries _Model;
+        private ObservableAsPropertyHelper<EventSeries> _Model;
         public EventSeries Model
         {
-            get { return _Model; }
-            set {            
-                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
-                if (Model != null)
-                {
-                    if (Model.SeriesID == 0 && !Model.Description.Equals(EventSeries.NoEventSeries().Description))
-                        Editable = true;
-                    else
-                        Editable = false;
-                }
-            }
+            get { return _Model.Value; }           
         }
 
         private string _Description;
@@ -99,10 +96,38 @@
         #endregion
 
 
-        public EditESVM(IMessageBus messenger)
-        {
+        public EditESVM(IMessageBus messenger, IOfflineStorage storage)
+        { 
+
 
             _messenger = messenger;
+            _storage = storage;
+
+            var nullOrModel = StateObservable
+                .Select(s => EventSeriesFromContext(s.Context));          
+
+            var model = nullOrModel
+                .Where(es => es != null);
+            _Model = model
+                .ToProperty(this, vm => vm.Model);
+            
+
+            var invalidSeries = nullOrModel
+                .Where(es => es == null);
+            _messenger.RegisterMessageSource(invalidSeries.Select(_ => Message.NavigateBack));
+
+            ToggleEditable = new ReactiveCommand();
+            _Editable = StateObservable
+                .Select(s => s.Context == null)
+                .Merge(
+                    ToggleEditable.Select(_ => !Editable)
+                )
+                .ToProperty(this, vm => vm.Editable);
+
+
+
+                    
+
             
             var canSave = this.ObservableForProperty(x => x.Description)
               .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
@@ -112,12 +137,12 @@
             {
                 (Save = new ReactiveCommand(canSave))               
                     .Subscribe(_ => executeSave()),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
+                
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => executeDelete()),
-                _messenger.Listen<EventSeries>(MessageContracts.EDIT)
-                    .Subscribe(es => updateView(es))
+
+                model.Subscribe( es => updateView(es)),
+            
             };
         }
 
@@ -156,27 +181,16 @@
         {
             updateModel();
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<EventSeries>(Model, MessageContracts.SELECT);
-            //EventSeriesVM vm = new EventSeriesVM(Model, _messenger);//Create Model
-            
-            //_messenger.SendMessage<Message>(Message.NavigateBack);
-            _messenger.SendMessage<Page>(Page.ViewES);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void executeDelete()
         {
             _messenger.SendMessage<EventSeries>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Page>(Page.Home);
+            _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
+        
 
         private void updateModel()
         {
@@ -186,12 +200,23 @@
         }
 
         private void updateView(EventSeries es)
+        {            
+            Description = es.Description ?? "";
+            SeriesCode = es.SeriesCode;            
+            SeriesEnd = es.SeriesEnd;            
+        }
+
+        private EventSeries EventSeriesFromContext(string ctx)
         {
-            Model = es;
-            Description = Model.Description ?? "";
-            SeriesCode = Model.SeriesCode;
-            string s = SeriesStart;
-            SeriesEnd = Model.SeriesEnd;            
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getEventSeriesByID(id);
+                }
+            }
+            return new EventSeries();
         }
     }
 }

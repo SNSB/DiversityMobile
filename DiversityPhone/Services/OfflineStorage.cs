@@ -131,6 +131,14 @@
                 );
         }
 
+        public Event getEventByID(int id)
+        {
+            return singletonQuery(
+                ctx => from ev in ctx.Events
+                       where ev.EventID == id
+                       select ev);
+        }
+
         public IList<Event> getEventsWithoutSeries()
         {
             return cachedQuery(Event.Operations,
@@ -209,6 +217,15 @@
                 select spec
                 );
         
+        }
+      
+
+        public Specimen getSpecimenByID(int id)
+        {
+            return singletonQuery(
+                ctx => from spec in ctx.Specimen
+                       where spec.CollectionSpecimenID == id
+                       select spec);
         }
 
         public IList<Specimen> getSpecimenWithoutEvent()
@@ -749,5 +766,8 @@
 
 
 
+
+
+        
     }
 }

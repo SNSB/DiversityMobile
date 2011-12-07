@@ -37,15 +37,18 @@
             _messenger = messenger;
             _storage = storage;
 
-            var specSelected = _messenger.Listen<Specimen>(MessageContracts.SELECT);
-            var unitSaved = _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE);
+            var rawModel = StateObservable
+                .Select(s => SpecimenFromContext(s.Context));
+            var modelDeleted = rawModel.Select(spec => spec == null);
+            var validModel = rawModel.Where(spec => spec != null);
 
-            _Current = specSelected.Select(cs => new SpecimenVM( _messenger,cs))
+            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
+
+            _Current = validModel.Select(cs => new SpecimenVM(_messenger, cs))
                                 .ToProperty(this, x => x.Current);
-            
 
-            _UnitList = unitSaved.Select(_ => Current.Model)
-                .Merge(specSelected)
+
+            _UnitList = validModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
 
@@ -61,6 +64,19 @@
                  _storage.getTopLevelIUForSpecimen(spec),
                  iu => _storage.getSubUnits(iu),
                  _messenger);
+        }
+
+        private Specimen SpecimenFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getSpecimenByID(id);
+                }
+            }            
+            return null;
         }
 
     }

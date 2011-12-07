@@ -22,7 +22,7 @@
         public Icon Icon { get; private set; }
 
 
-        public EventVM(Event model, IMessageBus _messenger)
+        public EventVM(IMessageBus _messenger,Event model)
         {
             Model = model;
             this._messenger = _messenger;

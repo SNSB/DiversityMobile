@@ -7,7 +7,7 @@ namespace DiversityPhone.Common
 
     public class RotatingCache<T> : IList<T> where T : class
     {
-        public const int DEFAULT_CACHE_SIZE = 40;  
+        public const int DEFAULT_CACHE_SIZE = 10;  
 
         private ICacheSource<T> _source;
         private T[] _store;
@@ -27,7 +27,11 @@ namespace DiversityPhone.Common
         private T getItem(int key)
         {
             if (!inRange(key))
+#if DEBUG
                 throw new IndexOutOfRangeException(String.Format("{0}/{1}",key,Count));
+#else
+                return default(T);
+#endif
             if (!isCacheHit(key))
                 fetchRangeAround(key);
             return _store[KeyToIndex(key)];
