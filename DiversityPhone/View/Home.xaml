@@ -32,8 +32,10 @@
             </Grid>
         </StackPanel>
 
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">            
             <StackPanel>
+                <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}" 
+                                Content="{Binding NoEventSeries}" />
                 <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
             </StackPanel>
         </ScrollViewer>

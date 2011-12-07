@@ -43,6 +43,18 @@
                 this.RaiseAndSetIfChanged(x => x.SeriesList, ref _SeriesList, value);
             }
         }
+
+        private EventSeriesVM _NoEventSeries;
+        public EventSeriesVM NoEventSeries
+        {
+            get
+            {
+                if (_NoEventSeries == null)
+                    _NoEventSeries = new EventSeriesVM(_messenger, EventSeries.NoEventSeries);
+
+                return _NoEventSeries;
+            }
+        }
         #endregion
 
         public HomeVM(IMessageBus messenger, IOfflineStorage storage, Svc.IDiversityService repo)
@@ -118,22 +130,16 @@
                     InfraspecificEpithet = t.InfraspecificEpithet,
                     GenusOrSupragenic = t.GenusOrSupragenic
                 }),0));
-
-
-            insertOrUpdateNoEventSeries();
+            
         }
 
-        private void insertOrUpdateNoEventSeries()
-        {
-            EventSeries noEs = EventSeries.NoEventSeries();
-            _storage.addOrUpdateEventSeries(noEs);
-        }
+        
 
         private void updateSeriesList()
         {
             SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
                 _storage.getAllEventSeries(),
-                (model) => new EventSeriesVM(model, _messenger)
+                (model) => new EventSeriesVM(_messenger,model)
                 );
         }
 

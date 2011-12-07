@@ -27,7 +27,7 @@ namespace DiversityPhone.Common
         private T getItem(int key)
         {
             if (!inRange(key))
-#if DEBUG
+#if !DEBUG
                 throw new IndexOutOfRangeException(String.Format("{0}/{1}",key,Count));
 #else
                 return default(T);

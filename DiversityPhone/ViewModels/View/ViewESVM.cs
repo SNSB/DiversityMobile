@@ -49,7 +49,7 @@
 
 
             _Current = validModel
-                .Select(es => new EventSeriesVM(es, _messenger))
+                .Select(es => new EventSeriesVM(_messenger,es))
                 .ToProperty(this, x => x.Current);
 
             _EventList = validModel
