@@ -612,14 +612,23 @@
                         .FirstOrDefault();
 
                     if (existingRow != null)
-                        table.Attach(row, existingRow);
+                    {
+                        //Second DataContext necessary 
+                        //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
+                        withDataContext((ctx2) =>
+                            {
+                                tableProvider(ctx2).Attach(row, existingRow);
+                                ctx2.SubmitChanges();
+                            });
+                    }
                     else
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
                         table.InsertOnSubmit(row);
+                        ctx.SubmitChanges();
                     }
 
-                    ctx.SubmitChanges();
+                    
                 });
         }
 
