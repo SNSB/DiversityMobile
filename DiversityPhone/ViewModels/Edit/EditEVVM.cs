@@ -56,11 +56,12 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.HabitatDescription, ref _HabitatDescription, value); }
         }
 
+        private ObservableAsPropertyHelper<string> _CollectionDate;
         public string CollectionDate
         {
             get
             {
-                return  "";
+                return  _CollectionDate.Value;
             }
         }
         #endregion
@@ -71,10 +72,14 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
             var model = StateObservable
-                .Select(s => EventFromContext(s.Context));            
+                .Select(s => EventFromState(s));            
 
             _Model = model
                 .ToProperty(this, vm => vm.Model);
+
+            _CollectionDate = model
+                .Select(ev => ev.CollectionDate.ToString())
+                .ToProperty<EditEVVM,string>(this, vm => vm.CollectionDate);
 
             ToggleEditable = new ReactiveCommand();
 
@@ -120,22 +125,36 @@ namespace DiversityPhone.ViewModels
 
         private void updateView(Event ev)
         {            
-            LocalityDescription = Model.LocalityDescription;
-            HabitatDescription = Model.HabitatDescription;
-            this.RaisePropertyChanged(x => x.CollectionDate);
+            LocalityDescription = ev.LocalityDescription;
+            HabitatDescription = ev.HabitatDescription;            
         }
 
-        private Event EventFromContext(string ctx)
+        private Event EventFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getEventByID(id);
                 }
+                else
+                    return null;
             }
-            return new Event();
+            else
+            {
+                var newEvent = new Event()
+                {
+                    SeriesID = null
+                };
+
+                int parent;
+                if (s.Referrer != null && int.TryParse(s.Referrer, out parent))
+                {
+                    newEvent.SeriesID = parent;
+                }
+                return newEvent;
+            }            
         }
     }
 }

@@ -58,26 +58,22 @@
                     (model) => new EventVM(_messenger, model)
                 ) as IList<EventVM>)
                 .ToProperty(this, x => x.EventList);
+
+            //On each Invocation of AddEvent, a new NavigationMessage is generated
+            AddEvent = new ReactiveCommand();
+            var newEventMessageSource = 
+                AddEvent
+                .Timestamp()
+                .CombineLatest(validModel, (a,b) => new {Click = a, Model=b})
+                .DistinctUntilChanged(pair => pair.Click.Timestamp)
+                .Select(pair =>new NavigationMessage(Page.EditEV,null,
+                              pair.Model.SeriesID.ToString())
+                    );
+            _messenger.RegisterMessageSource(newEventMessageSource);
             
 
-            FilterEvents = new ReactiveCommand();
-
-           
-            _subscriptions = new List<IDisposable>()
-            {               
-                (AddEvent = new ReactiveCommand())
-                    .Subscribe(_ => addEvent()),              
-            };
-        }     
-
-
-        private void addEvent()
-        {          
-            _messenger.SendMessage<NavigationMessage>(
-                new NavigationMessage(Page.EditEV,null)
-                );
-        }
-
+            FilterEvents = new ReactiveCommand();         
+        }        
         private EventSeries EventSeriesFromContext(string ctx)
         {
             if (ctx != null)

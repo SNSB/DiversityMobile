@@ -13,6 +13,7 @@
     {
         public Event()
         {
+            this.SeriesID = null;
             this.CollectionDate = DateTime.Now;
             this.DeterminationDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
@@ -22,8 +23,8 @@
         [Column(IsPrimaryKey = true)]
         public int EventID { get; set; }
 
-        [Column]        
-        public int SeriesID { get; set; }
+        [Column(CanBeNull=true)]        
+        public int? SeriesID { get; set; }
 
         [Column]
         public DateTime CollectionDate { get; set; }
