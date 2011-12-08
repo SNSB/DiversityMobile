@@ -21,12 +21,12 @@
         public EventSeries Model
         {
             get { return _Model; }
-            set
+            private set
             {
                 this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
             }
         }
-        //public EventSeries Model { get; private set; }
+        
 
         public string Description { get { return Model.Description; } }
         public Icon Icon { get; private set; }
@@ -39,21 +39,24 @@
             if (EventSeries.isNoEventSeries(model)) //Überprüfen auf NoEventSeries
                 Icon = ViewModels.Icon.NoEventSeries;
             else
+            {
                 Icon = ViewModels.Icon.EventSeries;
 
-            _subscriptions = new List<IDisposable>()
-            {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ =>
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewES, Model.SeriesID.ToString()));
-                        }),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => 
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
-                        }),
-            };
+                //NoEventSeries nicht editierbar/selektierbar
+                _subscriptions = new List<IDisposable>()
+                {
+                    (Select = new ReactiveCommand())
+                        .Subscribe(_ =>
+                            {
+                                _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewES, Model.SeriesID.ToString()));
+                            }),
+                    (Edit = new ReactiveCommand())
+                        .Subscribe(_ => 
+                            {
+                                _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
+                            }),
+                };
+            }
         }
     }
 }
