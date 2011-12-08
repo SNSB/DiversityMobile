@@ -9,7 +9,7 @@
     using DiversityPhone.Services;
 
     [Table]
-    public class Event 
+    public class Event : IModifyable
     {
         public Event()
         {

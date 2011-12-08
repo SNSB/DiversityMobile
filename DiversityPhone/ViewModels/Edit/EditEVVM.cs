@@ -65,9 +65,10 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public EditEVVM(IMessageBus messenger)
+        public EditEVVM(IMessageBus messenger, IOfflineStorage storage)
         {            
             _messenger = messenger;
+            _storage = storage;
 
             var model = StateObservable
                 .Select(s => EventFromContext(s.Context));            

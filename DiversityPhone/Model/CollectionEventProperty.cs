@@ -15,7 +15,7 @@ using DiversityPhone.Services;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class CollectionEventProperty
+    public class CollectionEventProperty : IModifyable
     {
         public CollectionEventProperty()
         {

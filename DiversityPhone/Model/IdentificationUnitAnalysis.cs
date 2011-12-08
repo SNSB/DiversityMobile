@@ -15,7 +15,7 @@ using DiversityPhone.Services;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class IdentificationUnitAnalysis
+    public class IdentificationUnitAnalysis : IModifyable
     {
         [Column]
         public int IdentificationUnitID { get; set; }

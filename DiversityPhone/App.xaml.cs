@@ -26,10 +26,8 @@ namespace DiversityPhone
     {
         public static IOfflineStorage OfflineDB { get; private set; } 
        
-        public static IDiversityService Repository { get; private set; }
-        
-        private static SterlingEngine _engine;
-        private static SterlingDefaultLogger _logger;            
+        public static IDiversityService Repository { get; private set; }       
+           
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.

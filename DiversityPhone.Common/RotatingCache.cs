@@ -27,11 +27,12 @@ namespace DiversityPhone.Common
         private T getItem(int key)
         {
             if (!inRange(key))
-#if !DEBUG
-                throw new IndexOutOfRangeException(String.Format("{0}/{1}",key,Count));
-#else
-                return default(T);
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine(String.Format("Out of Range: {0}/{1}", key, Count));
 #endif
+                return default(T);
+            }
             if (!isCacheHit(key))
                 fetchRangeAround(key);
             return _store[KeyToIndex(key)];

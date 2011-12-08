@@ -86,7 +86,7 @@
         }
 
         public EventSeries getEventSeriesByID(int id)
-        {
+        {            
             return singletonQuery(ctx => from es in ctx.EventSeries
                                          where es.SeriesID == id
                                          select es);
@@ -123,6 +123,9 @@
 
         public IList<Event> getEventsForSeries(EventSeries es)
         {
+            if (EventSeries.isNoEventSeries(es))
+                return getEventsWithoutSeries();
+
             return cachedQuery(Event.Operations,
             ctx =>
                 from ev in ctx.Events
@@ -131,6 +134,16 @@
                 );
         }
 
+        private IList<Event> getEventsWithoutSeries()
+        {
+            return cachedQuery(Event.Operations,
+            ctx =>
+                from ev in ctx.Events
+                where ev.SeriesID == null
+                select ev
+                );
+        }     
+
         public Event getEventByID(int id)
         {
             return singletonQuery(
@@ -138,16 +151,7 @@
                        where ev.EventID == id
                        select ev);
         }
-
-        public IList<Event> getEventsWithoutSeries()
-        {
-            return cachedQuery(Event.Operations,
-            ctx =>
-                from ev in ctx.Events
-                where ev.SeriesID == null 
-                select ev
-                );
-        }       
+          
 
         public void addOrUpdateEvent(Event ev)
         {
@@ -618,34 +622,55 @@
         #endregion
 
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class
+        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class, IModifyable
         {
+            if(row == null)
+            {
+#if DEBUG
+                throw new ArgumentNullException ("row");
+#else
+                return;
+#endif
+            }
 
             withDataContext((ctx) =>
                 {
                     var table = tableProvider(ctx);
                     var allRowsQuery = table as IQueryable<T>;
-                    var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
-                        .FirstOrDefault();
 
-                    if (existingRow != null)
+
+
+                    if (row.IsModified == null)      //New Object
                     {
-                        //Second DataContext necessary 
-                        //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
-                        withDataContext((ctx2) =>
-                            {
-                                tableProvider(ctx2).Attach(row, existingRow);
-                                ctx2.SubmitChanges();
-                            });
+                        operations.SetFreeKeyOnItem(allRowsQuery, row);
+                        row.IsModified = true; //Mark for Upload
+
+                        table.InsertOnSubmit(row);                        
+                        try
+                        {
+                            ctx.SubmitChanges();
+                        }
+                        catch (Exception)
+                        {
+                            //Object not new
+                            //TODO update?
+                        }
                     }
                     else
                     {
-                        operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        table.InsertOnSubmit(row);
-                        ctx.SubmitChanges();
-                    }
-
-                    
+                        var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
+                                                    .FirstOrDefault();
+                        if (existingRow != default(T))
+                        {
+                            //Second DataContext necessary 
+                            //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
+                            withDataContext((ctx2) =>
+                                {
+                                    tableProvider(ctx2).Attach(row, existingRow);
+                                    ctx2.SubmitChanges();
+                                });
+                        }
+                    }              
                 });
         }
 

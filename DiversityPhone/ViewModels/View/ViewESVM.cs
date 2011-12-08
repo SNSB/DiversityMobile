@@ -87,8 +87,12 @@
                 {
                     return _storage.getEventSeriesByID(id);
                 }
+                else                    
+                    return null;
             }
-            return null;
+            else
+                return EventSeries.NoEventSeries;
+            
         }
     }
 }
