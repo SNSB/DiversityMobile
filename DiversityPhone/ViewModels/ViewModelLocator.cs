@@ -40,7 +40,7 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IMessageBus>(),
                 container.Resolve<IOfflineStorage>()
                 ));
-            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
 
 
             _ioc.Register<ViewEVVM>(c => new ViewEVVM(
