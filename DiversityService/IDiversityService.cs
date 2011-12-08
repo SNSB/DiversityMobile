@@ -14,8 +14,7 @@ namespace DiversityService
         [OperationContract]
         IList<Project> GetProjectsForUser(UserProfile user);
 
-        //Todo:
-        //Contract Userinfo
+        //TODO Contract Userinfo
 
         [OperationContract]
         IList<TermList> GetTaxonListsForUser(UserProfile user);

@@ -2,7 +2,7 @@
 {
     public interface INavigationService
     {
-        void Navigate(Page p, string context);
+        void Navigate(Page p, string context, string referrer);
 
         bool CanNavigateBack();
 

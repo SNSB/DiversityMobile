@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
             _subscriptions = new List<IDisposable>()
             {
                 _messenger.Listen<Page>()
-                    .Subscribe(p => Navigate(p,null)),
+                    .Subscribe(p => Navigate(p,null,null)),
                 _messenger.Listen<Message>()
                     .Subscribe(m =>
                         {
@@ -42,7 +42,7 @@ namespace DiversityPhone.Services
                         }),                
 
                 _messenger.Listen<NavigationMessage>()
-                    .Subscribe(msg => Navigate(msg.Destination,msg.Context)),
+                    .Subscribe(msg => Navigate(msg.Destination,msg.Context, msg.Referrer)),
             };            
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
@@ -81,7 +81,7 @@ namespace DiversityPhone.Services
 
 
         }
-        public void Navigate(Page p, string context)
+        public void Navigate(Page p, string context, string referrer)
         {
             string destination = null;
             switch (p)
@@ -128,7 +128,7 @@ namespace DiversityPhone.Services
             {
                 string token = Guid.NewGuid().ToString();
                 Uri uri = new Uri(String.Format("{0}#{1}", destination, token), UriKind.Relative);
-                App.StateTracker.Add(token, new PageState(token, context));
+                App.StateTracker.Add(token, new PageState(token, context, referrer));
 
                 App.RootFrame.Navigate(uri);
             }

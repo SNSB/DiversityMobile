@@ -16,7 +16,7 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
-    public class MapVM:ReactiveObject
+    public class MapVM : ReactiveObject
     {
         IList<IDisposable> _subscriptions;
 
