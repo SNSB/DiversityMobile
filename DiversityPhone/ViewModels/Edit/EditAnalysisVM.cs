@@ -121,8 +121,6 @@ namespace DiversityPhone.ViewModels
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
 
-                _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.EDIT)
-                    .Subscribe(iua => updateView(iua))
             };
         }
 

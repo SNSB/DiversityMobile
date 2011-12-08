@@ -8,7 +8,10 @@
     [Table]
     public class EventSeries 
     {
+        public const string NOEVENT_CONTEXT = "NoEventSeries";
 
+        private static EventSeries _NoEventSeries;
+      
         public EventSeries()
         {
             this.Description = string.Empty;
@@ -21,22 +24,17 @@
         }
 
 
-        public static EventSeries NoEventSeries()
+        public static EventSeries NoEventSeries
         {
-            EventSeries noEs = new EventSeries();
-            noEs.Description = "Go to Events";
-            noEs.SeriesCode = "Go to Events";
-            noEs.IsModified = false;
-            return noEs;
+            get
+            {
+                return _NoEventSeries;
+            }
         }
 
         public static bool isNoEventSeries(EventSeries es)
         {
-            EventSeries noes = EventSeries.NoEventSeries();
-            if (es.Description.Equals(noes.Description))
-                return true;
-            else
-                return false;
+            return _NoEventSeries == es;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -87,6 +85,13 @@
                           {
                               es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKey(q, row => row.SeriesID);
                           });
+
+            _NoEventSeries = new EventSeries()
+            {
+                Description = "Go to Events",
+                SeriesCode = "Go to Events",
+                IsModified = false
+            };
         }
         
 

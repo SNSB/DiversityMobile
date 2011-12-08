@@ -77,8 +77,7 @@ namespace DiversityPhone.ViewModels
                 (Delete = new ReactiveCommand())
                     .Subscribe(_ => delete()),
 
-                _messenger.Listen<UserProfile>(MessageContracts.EDIT)
-                    .Subscribe(prof => updateView(prof))
+               
             };
         }
 

@@ -39,48 +39,56 @@
             _messenger = messenger;
             _storage = storage;
 
-            getEventList();
+
+            var rawModel = StateObservable
+                .Select(s => EventSeriesFromContext(s.Context));
+            var modelDeleted = rawModel.Where(es => es == null);
+            var validModel = rawModel.Where(es => es != null);
+
+            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
+
+
+            _Current = validModel
+                .Select(es => new EventSeriesVM(_messenger,es))
+                .ToProperty(this, x => x.Current);
+
+            _EventList = validModel
+                .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
+                    _storage.getEventsForSeries(es),
+                    (model) => new EventVM(_messenger, model)
+                ) as IList<EventVM>)
+                .ToProperty(this, x => x.EventList);
+            
+
             FilterEvents = new ReactiveCommand();
 
            
             _subscriptions = new List<IDisposable>()
             {               
                 (AddEvent = new ReactiveCommand())
-                    .Subscribe(_ => addEvent()),
-                _messenger.Listen<Event>(MessageContracts.SAVE)
-                    .Subscribe(ev => getEventList())
+                    .Subscribe(_ => addEvent()),              
             };
-        }
-
- 
-        private void getEventList()
-        {
-            var selectES = _messenger.Listen<EventSeries>(MessageContracts.SELECT);
-
-            _Current = selectES
-                .Select(es => new EventSeriesVM(es, _messenger))
-                .ToProperty(this, x => x.Current);
-
-            _EventList = selectES
-                .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
-                    _storage.getEventsForSeries(es),
-                    (model) => new EventVM(model, _messenger)
-                ) as IList<EventVM>)
-                .ToProperty(this, x => x.EventList);
-
-        }
+        }     
 
 
         private void addEvent()
-        {
-            _messenger.SendMessage<Event>(
-                new Event()
-                {
-                    SeriesID = Current.Model.SeriesID
-                },
-                MessageContracts.EDIT
+        {          
+            _messenger.SendMessage<NavigationMessage>(
+                new NavigationMessage(Page.EditEV,null)
                 );
-            _messenger.SendMessage<Page>(Page.EditEV);
+        }
+
+        private EventSeries EventSeriesFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getEventSeriesByID(id);
+                }
+            }
+            return null;
         }
     }
 }

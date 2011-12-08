@@ -38,14 +38,20 @@
             _messenger = messenger;
             _storage = storage;
 
-            var eventSelected = _messenger.Listen<Event>(MessageContracts.SELECT);
-            var unitSaved = _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE);
 
-            _Current = eventSelected.Select(ev => new EventVM(ev, _messenger))
-                                .ToProperty(this, x => x.Current);            
 
-            _SpecList = unitSaved.Select(_ => Current.Model)
-                .Merge(eventSelected)
+            var rawModel = StateObservable
+                .Select(s => EventFromContext(s.Context));
+            var modelDeleted = rawModel.Select(ev => ev == null);
+            var validModel = rawModel.Where(ev => ev != null);
+
+            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
+
+            _Current = validModel
+                .Select(ev => new EventVM(_messenger, ev))
+                .ToProperty(this, x => x.Current);
+
+            _SpecList = validModel               
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
@@ -71,6 +77,19 @@
                 _storage.getSpecimenForEvent(ev),
                 (model) => new SpecimenVM(_messenger, model)
                 );
+        }
+
+        private Event EventFromContext(string ctx)
+        {
+            if (ctx != null)
+            {
+                int id;
+                if (int.TryParse(ctx, out id))
+                {
+                    return _storage.getEventByID(id);
+                }
+            }
+            return null;
         }
     }
 }

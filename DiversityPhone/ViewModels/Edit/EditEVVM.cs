@@ -134,7 +134,7 @@ namespace DiversityPhone.ViewModels
                     return _storage.getEventByID(id);
                 }
             }
-            return new IdentificationUnit();
+            return new Event();
         }
     }
 }

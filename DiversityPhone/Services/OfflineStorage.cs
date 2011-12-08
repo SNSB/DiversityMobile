@@ -131,6 +131,14 @@
                 );
         }
 
+        public Event getEventByID(int id)
+        {
+            return singletonQuery(
+                ctx => from ev in ctx.Events
+                       where ev.EventID == id
+                       select ev);
+        }
+
         public IList<Event> getEventsWithoutSeries()
         {
             return cachedQuery(Event.Operations,
@@ -209,6 +217,15 @@
                 select spec
                 );
         
+        }
+      
+
+        public Specimen getSpecimenByID(int id)
+        {
+            return singletonQuery(
+                ctx => from spec in ctx.Specimen
+                       where spec.CollectionSpecimenID == id
+                       select spec);
         }
 
         public IList<Specimen> getSpecimenWithoutEvent()
@@ -612,14 +629,23 @@
                         .FirstOrDefault();
 
                     if (existingRow != null)
-                        table.Attach(row, existingRow);
+                    {
+                        //Second DataContext necessary 
+                        //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
+                        withDataContext((ctx2) =>
+                            {
+                                tableProvider(ctx2).Attach(row, existingRow);
+                                ctx2.SubmitChanges();
+                            });
+                    }
                     else
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
                         table.InsertOnSubmit(row);
+                        ctx.SubmitChanges();
                     }
 
-                    ctx.SubmitChanges();
+                    
                 });
         }
 
@@ -740,5 +766,8 @@
 
 
 
+
+
+        
     }
 }

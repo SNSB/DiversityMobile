@@ -143,7 +143,7 @@ namespace DiversityPhone
         {
             if (VM != null)
             {
-                VM.Edit.Execute(null);
+                VM.ToggleEditable.Execute(null);
             }
         }
 
