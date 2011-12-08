@@ -8,7 +8,7 @@ namespace DiversityPhone.Model
 {
 
     [Table]
-    public class IdentificationUnit
+    public class IdentificationUnit : IModifyable
     {
         public IdentificationUnit()
         {

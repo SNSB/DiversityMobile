@@ -6,7 +6,7 @@
     using DiversityPhone.Services;
 
     [Table]
-    public class Specimen
+    public class Specimen : IModifyable
     {
         [Column(IsPrimaryKey = true)]
         public int CollectionSpecimenID { get; set; }

@@ -622,34 +622,55 @@
         #endregion
 
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class
+        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class, IModifyable
         {
+            if(row == null)
+            {
+#if DEBUG
+                throw new ArgumentNullException ("row");
+#else
+                return;
+#endif
+            }
 
             withDataContext((ctx) =>
                 {
                     var table = tableProvider(ctx);
                     var allRowsQuery = table as IQueryable<T>;
-                    var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
-                        .FirstOrDefault();
 
-                    if (existingRow != null)
+
+
+                    if (row.IsModified == null)      //New Object
                     {
-                        //Second DataContext necessary 
-                        //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
-                        withDataContext((ctx2) =>
-                            {
-                                tableProvider(ctx2).Attach(row, existingRow);
-                                ctx2.SubmitChanges();
-                            });
+                        operations.SetFreeKeyOnItem(allRowsQuery, row);
+                        row.IsModified = true; //Mark for Upload
+
+                        table.InsertOnSubmit(row);                        
+                        try
+                        {
+                            ctx.SubmitChanges();
+                        }
+                        catch (Exception)
+                        {
+                            //Object not new
+                            //TODO update?
+                        }
                     }
                     else
                     {
-                        operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        table.InsertOnSubmit(row);
-                        ctx.SubmitChanges();
-                    }
-
-                    
+                        var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
+                                                    .FirstOrDefault();
+                        if (existingRow != default(T))
+                        {
+                            //Second DataContext necessary 
+                            //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
+                            withDataContext((ctx2) =>
+                                {
+                                    tableProvider(ctx2).Attach(row, existingRow);
+                                    ctx2.SubmitChanges();
+                                });
+                        }
+                    }              
                 });
         }
 

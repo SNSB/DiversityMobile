@@ -6,7 +6,7 @@
     using DiversityPhone.Services;
 
     [Table]
-    public class EventSeries 
+    public class EventSeries : IModifyable
     {
         public const string NOEVENT_CONTEXT = "NoEventSeries";
 

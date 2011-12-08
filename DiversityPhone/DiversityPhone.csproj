@@ -103,6 +103,7 @@
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
+    <Compile Include="Model\IModifyable.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Property.cs" />
