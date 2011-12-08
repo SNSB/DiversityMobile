@@ -86,7 +86,7 @@
         }
 
         public EventSeries getEventSeriesByID(int id)
-        {
+        {            
             return singletonQuery(ctx => from es in ctx.EventSeries
                                          where es.SeriesID == id
                                          select es);
@@ -123,6 +123,9 @@
 
         public IList<Event> getEventsForSeries(EventSeries es)
         {
+            if (EventSeries.isNoEventSeries(es))
+                return getEventsWithoutSeries();
+
             return cachedQuery(Event.Operations,
             ctx =>
                 from ev in ctx.Events
@@ -131,6 +134,16 @@
                 );
         }
 
+        private IList<Event> getEventsWithoutSeries()
+        {
+            return cachedQuery(Event.Operations,
+            ctx =>
+                from ev in ctx.Events
+                where ev.SeriesID == null
+                select ev
+                );
+        }     
+
         public Event getEventByID(int id)
         {
             return singletonQuery(
@@ -138,16 +151,7 @@
                        where ev.EventID == id
                        select ev);
         }
-
-        public IList<Event> getEventsWithoutSeries()
-        {
-            return cachedQuery(Event.Operations,
-            ctx =>
-                from ev in ctx.Events
-                where ev.SeriesID == null 
-                select ev
-                );
-        }       
+          
 
         public void addOrUpdateEvent(Event ev)
         {

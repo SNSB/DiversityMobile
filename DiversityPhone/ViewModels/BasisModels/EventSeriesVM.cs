@@ -40,23 +40,29 @@
                 Icon = ViewModels.Icon.NoEventSeries;
             else
             {
-                Icon = ViewModels.Icon.EventSeries;
+                Icon = ViewModels.Icon.EventSeries;                
+            }
 
-                //NoEventSeries nicht editierbar/selektierbar
-                _subscriptions = new List<IDisposable>()
+            
+            _subscriptions = new List<IDisposable>()
                 {
                     (Select = new ReactiveCommand())
                         .Subscribe(_ =>
                             {
-                                _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewES, Model.SeriesID.ToString()));
+                                _messenger.SendMessage<NavigationMessage>(
+                                    new NavigationMessage(
+                                        Page.ViewES,
+                                        (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
+                                        ));
                             }),
                     (Edit = new ReactiveCommand())
                         .Subscribe(_ => 
                             {
-                                _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
+                                //NoEventSeries nicht editierbar
+                                if(!EventSeries.isNoEventSeries(Model))
+                                    _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
                             }),
                 };
-            }
         }
     }
 }
