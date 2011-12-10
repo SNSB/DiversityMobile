@@ -131,6 +131,7 @@
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Utility\SourceID.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
+    <Compile Include="ViewModels\BasisModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
