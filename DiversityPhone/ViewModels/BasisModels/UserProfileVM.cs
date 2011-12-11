@@ -18,8 +18,8 @@ namespace DiversityPhone.ViewModels.BasisModels
 {
     public class UserProfileVM : ElementVMBase<UserProfile>
     {        
-        public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get { return ViewModels.Icon.UserProfile; } }
+        public override string Description { get { return Model.ToString(); } }
+        public override Icon Icon { get { return ViewModels.Icon.UserProfile; } }
 
         public UserProfileVM(IMessageBus messenger, UserProfile model)
             : base(messenger,model)
