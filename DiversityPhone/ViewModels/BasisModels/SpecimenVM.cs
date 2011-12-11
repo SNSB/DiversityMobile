@@ -2,45 +2,34 @@
 {
     using System;
     using ReactiveUI;
+    using System.Reactive.Linq;
     using System.Collections.Generic;
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
 
-    public class SpecimenVM : ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
-
-        IMessageBus _messenger;
-
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public Specimen Model { get; private set; }
-        public string Description { get { return string.Format("[{0}] {1}", Model.CollectionSpecimenID, Model.AccesionNumber ?? ""); } }
-        public Icon Icon { get; private set; }
+    public class SpecimenVM : ElementVMBase<Specimen>
+    {        
+        public override string Description { get { return string.Format("[{0}] {1}", Model.CollectionSpecimenID, Model.AccesionNumber ?? ""); } }
+        public override Icon Icon { get { return ViewModels.Icon.Specimen; } }
 
         public SpecimenVM(IMessageBus messenger, Specimen model)
+            : base(messenger,model)
         {
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (model == null) throw new ArgumentNullException("model");
-            Icon = Icon.Specimen;
+            
+            Select = new ReactiveCommand();
+            Edit = new ReactiveCommand();
 
-            _messenger = messenger;
-            Model = model;
-
-            _subscriptions = new List<IDisposable>()
-            {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
-                        new NavigationMessage( Services.Page.ViewCS, Model.CollectionSpecimenID.ToString())
-                        )),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
-                        new NavigationMessage(Services.Page.EditCS, Model.CollectionSpecimenID.ToString())
-                        )),
-
-            };
+            Messenger.RegisterMessageSource(
+                Select
+                .Select(_ => new NavigationMessage( Services.Page.ViewCS, Model.CollectionSpecimenID.ToString()))
+                );
+            Messenger.RegisterMessageSource(
+                Edit
+                .Select(_ => new NavigationMessage(Services.Page.EditCS, Model.CollectionSpecimenID.ToString()))
+                );
         }
 
 

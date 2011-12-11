@@ -4,65 +4,50 @@
     using ReactiveUI;
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
+    using System.Reactive.Linq;
     using DiversityPhone.Messages;
     using System.Collections.Generic;
     using DiversityPhone.Services;
 
-    public class EventSeriesVM : ReactiveObject
+    public class EventSeriesVM : ElementVMBase<EventSeries>
     {
-        IList<IDisposable> _subscriptions;
-        IMessageBus _messenger;
+        public override string Description { get { return Model.Description; } }
 
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-
-        private EventSeries _Model;
-        public EventSeries Model
+        private Icon _esIcon;
+        public override Icon Icon
         {
-            get { return _Model; }
-            private set
+            get
             {
-                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
+                return _esIcon;
             }
+            
         }
-        
-
-        public string Description { get { return Model.Description; } }
-        public Icon Icon { get; private set; }
 
         public EventSeriesVM( IMessageBus messenger,EventSeries model)
-        {
-            _messenger = messenger;
-            Model = model;
-
-            if (EventSeries.isNoEventSeries(model)) //Überprüfen auf NoEventSeries
-                Icon = ViewModels.Icon.NoEventSeries;
+            : base(messenger,model)
+        {           
+            if (EventSeries.isNoEventSeries(Model)) //Überprüfen auf NoEventSeries
+                _esIcon = ViewModels.Icon.NoEventSeries;
             else
             {
-                Icon = ViewModels.Icon.EventSeries;                
+                _esIcon = ViewModels.Icon.EventSeries;                
             }
 
-            
-            _subscriptions = new List<IDisposable>()
-                {
-                    (Select = new ReactiveCommand())
-                        .Subscribe(_ =>
-                            {
-                                _messenger.SendMessage<NavigationMessage>(
-                                    new NavigationMessage(
-                                        Page.ViewES,
-                                        (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
-                                        ));
-                            }),
-                    (Edit = new ReactiveCommand())
-                        .Subscribe(_ => 
-                            {
-                                //NoEventSeries nicht editierbar
-                                if(!EventSeries.isNoEventSeries(Model))
-                                    _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES, Model.SeriesID.ToString()));
-                            }),
-                };
+            Select = new ReactiveCommand();
+            Edit = new ReactiveCommand();
+
+            Messenger.RegisterMessageSource(
+                Select
+                .Select(_ => 
+                    new NavigationMessage(Page.ViewES,
+                        (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
+                        )));
+            Messenger.RegisterMessageSource(
+                Edit
+                .Where(_ => !EventSeries.isNoEventSeries(Model)) //NoEventSeries nicht editierbar
+                .Select(_ => new NavigationMessage(Page.EditES, Model.SeriesID.ToString()))
+                );
+                            
         }
     }
 }

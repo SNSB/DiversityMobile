@@ -2,36 +2,33 @@
 using System.Collections.Generic;
 using ReactiveUI.Xaml;
 using System;
+using System.Reactive.Linq;
 using DiversityPhone.Model;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class AnalysisVM : ReactiveObject
+    public class IUAnalysisVM : ElementVMBase<IdentificationUnitAnalysis>
     {
-        IList<IDisposable> _subscriptions;
-
-        IMessageBus _messenger;
-        public ReactiveCommand Edit { get; private set; }
-
-        public IdentificationUnitAnalysis Model { get; private set; }
-        public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get; private set; }
-
-        public AnalysisVM(IdentificationUnitAnalysis model, IMessageBus messenger)
+        public override string Description { get { return Model.ToString(); } }
+        public override Icon Icon
         {
-            _messenger = messenger;
-            Model = model;
-            Icon=ViewModels.Icon.Analysis;
-            _subscriptions = new List<IDisposable>()
+            get
             {
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ =>
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditIUAN, Model.AnalysisID.ToString()));
-                        }),                
-            };
+                return Icon.Analysis;
+            }
+        }
+
+        public IUAnalysisVM(IdentificationUnitAnalysis model, IMessageBus messenger)
+            : base(messenger, model)
+        {
+            Edit = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                Edit
+                .Select(_ => new NavigationMessage(Page.EditIUAN, Model.AnalysisID.ToString()))
+                );                
+            
         }
 
     }

@@ -208,7 +208,6 @@
     <Compile Include="ViewModels\Extensions.cs" />
     <Compile Include="ViewModels\Icon.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitVM.cs" />
-    <Compile Include="ViewModels\IItemViewModel.cs" />
     <Compile Include="ViewModels\Edit\EditESVM.cs" />
     <Compile Include="ViewModels\View\HomeVM.cs" />
     <Compile Include="ViewModels\View\ViewESVM.cs" />

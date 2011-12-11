@@ -16,28 +16,15 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
-    public class MapVM : ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
-
-        IMessageBus _messenger;
-
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public Map Model { get; private set; }
-        public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get; private set; }
+    public class MapVM : ElementVMBase<Map>
+    {        
+        public override string Description { get { return Model.ToString(); } }
+        public override Icon Icon { get { return Icon.Map; } }
 
         public MapVM(Map model, IMessageBus messenger)
+            : base(messenger,model)
         {
-            _messenger = messenger;
-            Model = model;
-            Icon = ViewModels.Icon.Map;
-            _subscriptions = new List<IDisposable>()
-            {
-                //TODO
-            };
+        
         }
     }
 }

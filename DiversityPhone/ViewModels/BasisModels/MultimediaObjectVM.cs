@@ -17,27 +17,15 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
-    public class MultimediaObjectVM:ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
-        IMessageBus _messenger;
+    public class MultimediaObjectVM : ElementVMBase<MultimediaObject>
+    {        
+        public override string Description { get { return Model.ToString(); } }
+        public override Icon Icon { get{return ViewModels.Icon.Multimedia; }}
 
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public MultimediaObject Model { get; private set; }
-        public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get; private set; }
-
-        public MultimediaObjectVM(MultimediaObject model, IMessageBus messenger)
+        public MultimediaObjectVM(IMessageBus messenger,MultimediaObject model)
+         : base(messenger, model)
         {
-            _messenger = messenger;
-            Model = model;
-            Icon = ViewModels.Icon.Multimedia;
-            _subscriptions = new List<IDisposable>()
-            {
-                //TODO
-            };
+            
         }
     }
 }

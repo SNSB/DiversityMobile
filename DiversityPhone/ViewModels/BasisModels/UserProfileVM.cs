@@ -16,27 +16,15 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels.BasisModels
 {
-    public class UserProfileVM:ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
-        IMessageBus _messenger;
-
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public UserProfile Model { get; private set; }
+    public class UserProfileVM : ElementVMBase<UserProfile>
+    {        
         public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get; private set; }
+        public Icon Icon { get { return ViewModels.Icon.UserProfile; } }
 
-        public UserProfileVM(UserProfile model, IMessageBus messenger)
+        public UserProfileVM(IMessageBus messenger, UserProfile model)
+            : base(messenger,model)
         {
-            _messenger = messenger;
-            Model = model;
-            Icon = ViewModels.Icon.UserProfile;
-            _subscriptions = new List<IDisposable>()
-            {
-                //TODO
-            };
+            
         }
 
     }
