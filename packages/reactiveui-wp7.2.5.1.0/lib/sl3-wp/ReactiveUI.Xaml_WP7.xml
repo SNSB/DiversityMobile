@@ -46,73 +46,6 @@
             Should be fired whenever an async operation fails.
             </summary>
         </member>
-        <member name="T:ReactiveUI.Xaml.ReactiveCommand">
-            <summary>
-            IReactiveCommand is an Rx-enabled version of ICommand that is also an
-            Observable. Its Observable fires once for each invocation of
-            ICommand.Execute and its value is the CommandParameter that was
-            provided.
-            </summary>
-        </member>
-        <member name="M:ReactiveUI.Xaml.ReactiveCommand.#ctor(System.IObservable{System.Boolean},System.Reactive.Concurrency.IScheduler)">
-            <summary>
-            Creates a new ReactiveCommand object.
-            </summary>
-            <param name="canExecute">An Observable, often obtained via
-            ObservableFromProperty, that defines when the Command can
-            execute.</param>
-            <param name="scheduler">The scheduler to publish events on - default
-            is RxApp.DeferredScheduler.</param>
-        </member>
-        <member name="M:ReactiveUI.Xaml.ReactiveCommand.Create(System.Func{System.Object,System.Boolean},System.Action{System.Object},System.Reactive.Concurrency.IScheduler)">
-            <summary>
-            Creates a new ReactiveCommand object in an imperative, non-Rx way,
-            similar to RelayCommand.
-            </summary>
-            <param name="canExecute">A function that determines when the Command
-            can execute.</param>
-            <param name="executed">A method that will be invoked when the
-            Execute method is invoked.</param>
-            <param name="scheduler">The scheduler to publish events on - default
-            is RxApp.DeferredScheduler.</param>
-            <returns>A new ReactiveCommand object.</returns>
-        </member>
-        <member name="P:ReactiveUI.Xaml.ReactiveCommand.CanExecuteObservable">
-            <summary>
-            Fires whenever the CanExecute of the ICommand changes. 
-            </summary>
-        </member>
-        <member name="M:ReactiveUI.Xaml.ReactiveCommandMixins.ToCommand(System.IObservable{System.Boolean},System.Reactive.Concurrency.IScheduler)">
-            <summary>
-            ToCommand is a convenience method for returning a new
-            ReactiveCommand based on an existing Observable chain.
-            </summary>
-            <param name="scheduler">The scheduler to publish events on - default
-            is RxApp.DeferredScheduler.</param>
-            <returns>A new ReactiveCommand whose CanExecute Observable is the
-            current object.</returns>
-        </member>
-        <member name="M:ReactiveUI.Xaml.ReactiveCommandMixins.InvokeCommand``1(System.IObservable{``0},System.Windows.Input.ICommand)">
-            <summary>
-            A utility method that will pipe an Observable to an ICommand (i.e.
-            it will first call its CanExecute with the provided value, then if
-            the command can be executed, Execute() will be called)
-            </summary>
-            <param name="command">The command to be executed.</param>
-            <returns>An object that when disposes, disconnects the Observable
-            from the command.</returns>
-        </member>
-        <member name="M:ReactiveUI.Xaml.DependencyPropertyMixin.ObservableFromDP``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
-            <summary>
-            Creates an IObservable from an existing dependency property. Note
-            that this method is somewhat expensive and should not be called
-            frequently.
-            </summary>
-            <param name="property">An Expression specifying the property to use
-            on the DependencyObject (e.g. x => x.SomeProperty)</param>
-            <returns>An Observable that fires whenever the DP changes, and never
-            completes.</returns>
-        </member>
         <member name="T:ReactiveUI.Xaml.ReactiveAsyncCommand">
             <summary>
             ReactiveAsyncCommand represents commands that run an asynchronous
@@ -234,6 +167,73 @@
              <returns>An Observable representing the items returned by the
              calculation result. Note that with this method it is possible with a
              calculationFunc to return multiple items per invocation of Execute.</returns>
+        </member>
+        <member name="M:ReactiveUI.Xaml.DependencyPropertyMixin.ObservableFromDP``2(``0,System.Linq.Expressions.Expression{System.Func{``0,``1}})">
+            <summary>
+            Creates an IObservable from an existing dependency property. Note
+            that this method is somewhat expensive and should not be called
+            frequently.
+            </summary>
+            <param name="property">An Expression specifying the property to use
+            on the DependencyObject (e.g. x => x.SomeProperty)</param>
+            <returns>An Observable that fires whenever the DP changes, and never
+            completes.</returns>
+        </member>
+        <member name="T:ReactiveUI.Xaml.ReactiveCommand">
+            <summary>
+            IReactiveCommand is an Rx-enabled version of ICommand that is also an
+            Observable. Its Observable fires once for each invocation of
+            ICommand.Execute and its value is the CommandParameter that was
+            provided.
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Xaml.ReactiveCommand.#ctor(System.IObservable{System.Boolean},System.Reactive.Concurrency.IScheduler)">
+            <summary>
+            Creates a new ReactiveCommand object.
+            </summary>
+            <param name="canExecute">An Observable, often obtained via
+            ObservableFromProperty, that defines when the Command can
+            execute.</param>
+            <param name="scheduler">The scheduler to publish events on - default
+            is RxApp.DeferredScheduler.</param>
+        </member>
+        <member name="M:ReactiveUI.Xaml.ReactiveCommand.Create(System.Func{System.Object,System.Boolean},System.Action{System.Object},System.Reactive.Concurrency.IScheduler)">
+            <summary>
+            Creates a new ReactiveCommand object in an imperative, non-Rx way,
+            similar to RelayCommand.
+            </summary>
+            <param name="canExecute">A function that determines when the Command
+            can execute.</param>
+            <param name="executed">A method that will be invoked when the
+            Execute method is invoked.</param>
+            <param name="scheduler">The scheduler to publish events on - default
+            is RxApp.DeferredScheduler.</param>
+            <returns>A new ReactiveCommand object.</returns>
+        </member>
+        <member name="P:ReactiveUI.Xaml.ReactiveCommand.CanExecuteObservable">
+            <summary>
+            Fires whenever the CanExecute of the ICommand changes. 
+            </summary>
+        </member>
+        <member name="M:ReactiveUI.Xaml.ReactiveCommandMixins.ToCommand(System.IObservable{System.Boolean},System.Reactive.Concurrency.IScheduler)">
+            <summary>
+            ToCommand is a convenience method for returning a new
+            ReactiveCommand based on an existing Observable chain.
+            </summary>
+            <param name="scheduler">The scheduler to publish events on - default
+            is RxApp.DeferredScheduler.</param>
+            <returns>A new ReactiveCommand whose CanExecute Observable is the
+            current object.</returns>
+        </member>
+        <member name="M:ReactiveUI.Xaml.ReactiveCommandMixins.InvokeCommand``1(System.IObservable{``0},System.Windows.Input.ICommand)">
+            <summary>
+            A utility method that will pipe an Observable to an ICommand (i.e.
+            it will first call its CanExecute with the provided value, then if
+            the command can be executed, Execute() will be called)
+            </summary>
+            <param name="command">The command to be executed.</param>
+            <returns>An object that when disposes, disconnects the Observable
+            from the command.</returns>
         </member>
     </members>
 </doc>

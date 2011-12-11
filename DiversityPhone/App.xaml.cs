@@ -12,7 +12,6 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
-using Wintellect.Sterling;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
 using DiversityPhone.Service;
