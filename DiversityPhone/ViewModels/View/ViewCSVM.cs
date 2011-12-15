@@ -11,7 +11,11 @@
 
     public class ViewCSVM : PageViewModel
     {
-        IList<IDisposable> _subscriptions;
+        public enum Pivots
+        {
+            Units,
+            Multimedia
+        }       
 
         #region Services
         IMessageBus _messenger;
@@ -23,6 +27,21 @@
         #endregion
 
         #region Properties       
+
+        private Pivots _SelectedPivot;
+        public Pivots SelectedPivot
+        {
+            get
+            {
+                return _SelectedPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
+            }
+        }
+        
+
         public SpecimenVM Current { get { return _Current.Value; } }
         private ObservableAsPropertyHelper<SpecimenVM> _Current;       
 
@@ -51,11 +70,7 @@
             _UnitList = validModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
-
-            _subscriptions = new List<IDisposable>()
-            {
-
-            };
+            
         }
 
         private IList<IdentificationUnitVM> getIdentificationUnitList(Specimen spec)

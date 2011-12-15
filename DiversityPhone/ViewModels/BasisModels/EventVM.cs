@@ -1,46 +1,43 @@
-﻿namespace DiversityPhone.ViewModels
+﻿using System;
+using DiversityPhone.Model;
+using ReactiveUI;
+using System.Reactive.Linq;
+using ReactiveUI.Xaml;
+using DiversityPhone.Messages;
+using System.Collections.Generic;
+using DiversityPhone.Services;
+
+namespace DiversityPhone.ViewModels
 {
-    using System;
-    using DiversityPhone.Model;
-    using ReactiveUI;
-    using ReactiveUI.Xaml;
-    using DiversityPhone.Messages;
-    using System.Collections.Generic;
-    using DiversityPhone.Services;
+    
 
-    public class EventVM : ReactiveObject
+    public class EventVM : ElementVMBase<Event>
     {
-        private IList<IDisposable> _subscriptions;
-
-        private IMessageBus _messenger;
-
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public Event Model { get; private set; }
-        public string Description { get { return Model.LocalityDescription; } }
-        public Icon Icon { get; private set; }
-
-
-        public EventVM(IMessageBus _messenger,Event model)
+        public override string Description { get { return Model.LocalityDescription; } }
+        public override Icon Icon
         {
-            Model = model;
-            this._messenger = _messenger;
-            this.Icon = Icon.Event;
-
-            _subscriptions = new List<IDisposable>()
+            get
             {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ =>
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewEV, Model.EventID.ToString()));
-                        }),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => 
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditEV, Model.EventID.ToString()));
-                        }),
-            };
+                return ViewModels.Icon.Event;
+            }
+        }
+
+
+        public EventVM(IMessageBus messenger,Event model)
+            : base(messenger,model)
+        {       
+            Select = new ReactiveCommand();
+            Edit = new ReactiveCommand();
+            
+            Messenger.RegisterMessageSource<NavigationMessage>(
+                Select
+                .Select( _ => new NavigationMessage(Page.ViewEV, Model.EventID.ToString()))
+                );
+
+            Messenger.RegisterMessageSource(
+                Edit
+                .Select( _ => new NavigationMessage(Page.EditEV, Model.EventID.ToString()))
+                );           
         }
     }
 }

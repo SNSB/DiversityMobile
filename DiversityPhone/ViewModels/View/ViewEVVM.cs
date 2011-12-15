@@ -11,7 +11,13 @@
 
     public class ViewEVVM : PageViewModel
     {
-        IList<IDisposable> _subscriptions;
+        public enum Pivots
+        {
+            Specimen,
+            Descriptions,
+            Multimedia
+        }
+        
 
         #region Services
         IMessageBus _messenger;
@@ -23,9 +29,22 @@
         #endregion
 
         #region Properties
-        public EventVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<EventVM> _Current;        
+        private Pivots _SelectedPivot = Pivots.Specimen;
+        public Pivots SelectedPivot
+        {
+            get
+            {
+                return _SelectedPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(vm => vm.SelectedPivot, ref _SelectedPivot, value);
+            }
+        }
 
+        public EventVM Current { get { return _Current.Value; } }
+        private ObservableAsPropertyHelper<EventVM> _Current;
+        
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
         #endregion
@@ -42,7 +61,7 @@
 
             var rawModel = StateObservable
                 .Select(s => EventFromContext(s.Context));
-            var modelDeleted = rawModel.Select(ev => ev == null);
+            var modelDeleted = rawModel.Where(ev => ev == null);
             var validModel = rawModel.Where(ev => ev != null);
 
             _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
@@ -57,18 +76,26 @@
 
 
 
-            _subscriptions = new List<IDisposable>()
-            {
-                (Add = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<NavigationMessage>(
-                        new NavigationMessage(Page.EditIU, null)
-                        /*new IdentificationUnit()
+            Add = new ReactiveCommand();
+            var addMessageSource =
+                Add
+                .Select(_ =>
+                    {
+                        switch (SelectedPivot)
                         {
-                            SpecimenID = Current.Model.EventID
-                        }*/
-                        )),                        
-                
-            };
+                            case Pivots.Multimedia:
+                            //TODO Multimedia Page
+                            case Pivots.Descriptions:
+                            //TODO Descriptions Page
+                            case Pivots.Specimen:
+                                return Page.EditCS;
+                            default:
+                                return Page.EditCS;
+                        }
+                    })
+                .Select(p => new NavigationMessage(p, null, Current.Model.EventID.ToString()));
+            _messenger.RegisterMessageSource(addMessageSource);
+
         }
 
         private IList<SpecimenVM> getSpecimenList(Event ev)

@@ -55,16 +55,31 @@
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Expression.Interactions, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="ReactiveUI.Blend_WP7">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ReactiveUI\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
+    <Reference Include="ReactiveUI.Routing_WP7">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Routing_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Serialization_WP7">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Serialization_WP7.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI.Xaml_WP7">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Testing_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ReactiveUI\ReactiveUI.Xaml_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI_WP7">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\ReactiveUI\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
@@ -178,7 +193,9 @@
     <Compile Include="View\EditUserProfile.xaml.cs">
       <DependentUpon>EditUserProfile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Converters\IconPathConverter.cs" />
     <Compile Include="View\IconPathConverter.cs" />
+    <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>

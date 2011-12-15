@@ -1,18 +1,27 @@
-﻿namespace DiversityPhone.ViewModels
-{
-    using System;
-    using ReactiveUI;
-    using System.Reactive.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using DiversityPhone.Messages;
-    using DiversityPhone.Services;
-    using ReactiveUI.Xaml;
+﻿using System;
+using ReactiveUI;
+using System.Reactive.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using DiversityPhone.Messages;
+using DiversityPhone.Services;
+using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
+using System.Linq;
+
+namespace DiversityPhone.ViewModels
+{
+  
 
     public class ViewIUVM : PageViewModel
     {
-        IList<IDisposable> _subscriptions;
+        public enum Pivots
+        {
+            Subunits,
+            Analyses,
+            Descriptions,
+            Multimedia
+        }        
 
         #region Services
         IMessageBus _messenger;
@@ -20,14 +29,29 @@ using System.Reactive.Subjects;
         #endregion
 
         #region Commands
-        public ReactiveCommand AddSubunit { get; private set; }
+        public ReactiveCommand Add { get; private set; }
         #endregion
 
         #region Properties
-        public IdentificationUnitVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<IdentificationUnitVM> _Current;
 
-        //Liste Subunits
+        private Pivots _SelectedPivot;
+        public Pivots SelectedPivot
+        {
+            get
+            {
+                return _SelectedPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
+            }
+        }
+
+        private ObservableAsPropertyHelper<IdentificationUnitVM> _Current;
+        public IdentificationUnitVM Current { get { return _Current.Value; } }             
+
+        private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _Subunits;
+        public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
         
         #endregion
 
@@ -36,24 +60,51 @@ using System.Reactive.Subjects;
         public ViewIUVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
-            _storage = storage;            
+            _storage = storage;     
+       
+            var rawModel = 
+                StateObservable
+                .Select(s=>UnitFromContext(s.Context));
 
-            _Current = StateObservable
-                .Select(s=>UnitFromContext(s.Context))
-                .Where(iu => iu != null)
-                .Select(iu => getSubUnits(iu))
+            var unitDeletedMessageSource =
+                rawModel
+                .Where(iu=> iu == null)
+                .Select(_ => Message.NavigateBack);
+            _messenger.RegisterMessageSource(unitDeletedMessageSource);
+
+            var validModel =
+                rawModel
+                .Where(iu => iu != null);        
+            
+
+            _Current = validModel
+                .Select(iu => new IdentificationUnitVM(_messenger, iu, null))
                 .ToProperty(this, x => x.Current);
+            _Subunits = validModel
+                .Select(iu => getSubUnits(iu))
+                .ToProperty(this, vm => vm.Subunits);
 
-            var newSubUnits = (AddSubunit = new ReactiveCommand())
-                                .Select(_ => new NavigationMessage(Page.EditIU,null));
-            _messenger.RegisterMessageSource(newSubUnits);
-
-
-
-            _subscriptions = new List<IDisposable>()
-            {
-
-            };
+            Add = new ReactiveCommand();
+            var addMessageSource = 
+                Add
+                .Select(_ =>
+                    {
+                        switch(SelectedPivot)
+                        {
+                            case Pivots.Analyses:
+                                return Page.EditIUAN;
+                            case Pivots.Multimedia:
+                                //TODO Multimedia Page
+                            case Pivots.Descriptions:
+                                //TODO Description Page
+                            case Pivots.Subunits:
+                                return Page.EditIU;
+                            default:
+                                return Page.EditIU;
+                        }
+                    })
+                .Select(p => new NavigationMessage(p,null, Current.Model.UnitID.ToString()));
+            _messenger.RegisterMessageSource(addMessageSource);         
         }
 
         private IdentificationUnit UnitFromContext(string ctx)
@@ -69,16 +120,11 @@ using System.Reactive.Subjects;
             return null;
         } 
       
-        private IdentificationUnitVM getSubUnits(IdentificationUnit iu)
+        private IList<IdentificationUnitVM> getSubUnits(IdentificationUnit iu)
         {
-            return new IdentificationUnitVM(
-                _messenger,
-                iu,
-                IdentificationUnitVM.getTwoLevelVMFromModelList(
-                    _storage.getSubUnits(iu),
-                    unit => _storage.getSubUnits(unit),
-                    _messenger));
-                    
+            return IdentificationUnitVM.getTwoLevelVMFromModelList(_storage.getSubUnits(iu),
+                iu2 => _storage.getSubUnits(iu2),
+                _messenger);                
         }
     }
 }

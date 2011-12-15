@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="DiversityPhone.View.ViewCS"
+    x:Class="DiversityPhone.View.EditCS"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -14,27 +14,10 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding ViewCS, Source={StaticResource Locator}}">
-    <phone:PhoneApplicationPage.Resources>
-        <vw:ViewCSPivotConverter x:Key="PivotConverter"/>
-    </phone:PhoneApplicationPage.Resources>
-
+    DataContext="{Binding EditCS, Source={StaticResource Locator}}">
+    
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <!--Pivot Control-->
-        <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
-            <!--Pivot item one-->
-            <controls:PivotItem Header="units">
-                <ListBox ItemsSource="{Binding UnitList}"
-                         ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
-            </controls:PivotItem>
-
-
-            <!--Pivot item two-->
-            <controls:PivotItem Header="multimedia">
-               
-            </controls:PivotItem>
-        </controls:Pivot>
-       
+      
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

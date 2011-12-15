@@ -4,52 +4,41 @@
     using ReactiveUI;
     using System.Collections.Generic;
     using DiversityPhone.Model;
+    using System.Reactive.Linq;
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
     using DiversityPhone.Services;
 
-    public class IdentificationUnitVM : ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
-
-        IMessageBus _messenger;
-
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public IdentificationUnit Model { get; private set; }
-        public string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.LastIdentificationCache ?? ""); } }
-        public Icon Icon { get; private set; }
+    public class IdentificationUnitVM : ElementVMBase<IdentificationUnit>
+    {        
+        public override string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.LastIdentificationCache ?? ""); } }
+        public override Icon Icon { get { return Icon.IdentificationUnit; } }
 
         public IList<IdentificationUnitVM> SubUnits { get; private set; }
         public bool HasSubUnits { get { return (SubUnits != null) ? SubUnits.Count > 0 : false; } }
 
 
         public IdentificationUnitVM(IMessageBus messenger, IdentificationUnit model, IList<IdentificationUnitVM> subunits)
+            : base(messenger, model)
         {
             if (messenger == null) throw new ArgumentNullException("messenger");
             if (model == null) throw new ArgumentNullException("model");
+            
+            SubUnits = subunits;       
 
+            Select = new ReactiveCommand();
+            Edit = new ReactiveCommand();
 
-            _messenger = messenger;
-            SubUnits = subunits;
-            Model = model;
-            Icon = Icon.IdentificationUnit;
-
-            _subscriptions = new List<IDisposable>()
-            {
-                (Select = new ReactiveCommand())
-                    .Subscribe(_ =>
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.ViewIU, Model.UnitID.ToString()));
-                        }),
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => 
-                        {
-                            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditIU, Model.UnitID.ToString()));
-                        }),
-
-            };
+            Messenger.RegisterMessageSource(
+                Select
+                .Select(_ => new NavigationMessage(Page.ViewIU, Model.UnitID.ToString()))
+                );
+                        
+            Messenger.RegisterMessageSource(
+                Edit
+                .Select(_ => new NavigationMessage(Page.EditIU, Model.UnitID.ToString()))
+                );
+            
         }
 
         public static IList<IdentificationUnitVM> getTwoLevelVMFromModelList(IList<IdentificationUnit> source, Func<IdentificationUnit, IList<IdentificationUnit>> getSubUnits, IMessageBus messenger)

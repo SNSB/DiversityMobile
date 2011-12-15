@@ -16,28 +16,16 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
-    public class PropertyVM:ReactiveObject
-    {
-        IList<IDisposable> _subscriptions;
+    public class PropertyVM : ElementVMBase<CollectionEventProperty>
+    {       
+        public override string Description { get { return Model.ToString(); } }
+        public override Icon Icon { get { return ViewModels.Icon.CollectionEventProperty; }  }
 
-        IMessageBus _messenger;
+        public PropertyVM(IMessageBus messenger, CollectionEventProperty model)
+            : base(messenger, model)
 
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        public CollectionEventProperty Model { get; private set; }
-        public string Description { get { return Model.ToString(); } }
-        public Icon Icon { get; private set; }
-
-        public PropertyVM(CollectionEventProperty model, IMessageBus messenger)
         {
-            _messenger = messenger;
-            Model = model;
-            Icon=ViewModels.Icon.CollectionEventProperty;
-            _subscriptions = new List<IDisposable>()
-            {
-                //TODO
-            };
+            
         }
     }
 }
