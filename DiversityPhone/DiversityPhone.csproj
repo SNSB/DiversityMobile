@@ -190,6 +190,7 @@
     </Compile>
     <Compile Include="View\IconPathConverter.cs" />
     <Compile Include="View\ViewEVPivotConverter.cs" />
+    <Compile Include="View\ViewIUPivotConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>

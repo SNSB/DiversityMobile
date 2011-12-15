@@ -13,6 +13,10 @@ namespace DiversityPhone.Services
         EditCS,
         ViewCS,
         EditIUAN,
+
+        EditMMO,
+        EditMap,
+        EditProperty,
         EditUserProfile,
         Settings,        
        

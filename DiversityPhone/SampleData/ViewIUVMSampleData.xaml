@@ -1,7 +1,7 @@
 <DiversityPhone_ViewModels:ViewIUVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model">
-	<DiversityPhone_ViewModels:ViewIUVM.AddSubunit>
+	<DiversityPhone_ViewModels:ViewIUVM.Add>
 		<ReactiveUI_Xaml:ReactiveCommand/>
-	</DiversityPhone_ViewModels:ViewIUVM.AddSubunit>
+	</DiversityPhone_ViewModels:ViewIUVM.Add>
 	<DiversityPhone_ViewModels:ViewIUVM.Current>
 		<DiversityPhone_ViewModels:IdentificationUnitVM Description="Nam maecenas" HasSubUnits="True">
 			<DiversityPhone_ViewModels:IdentificationUnitVM.Edit>
