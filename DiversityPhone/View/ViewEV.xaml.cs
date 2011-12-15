@@ -25,5 +25,10 @@ namespace DiversityPhone
             if (VM != null)
                 VM.Add.Execute(null);
         }
+
+        private void Map_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
