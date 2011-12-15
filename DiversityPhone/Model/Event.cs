@@ -15,9 +15,19 @@
         {
             this.SeriesID = null;
             this.CollectionDate = DateTime.Now;
-            this.DeterminationDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
             this.IsModified = null;
+
+            if (UserProfile.Actual != null && UserProfile.Actual.RecordGeoPosition == true)
+            {
+                if (App.Watcher != null)
+                {
+                    this.DeterminationDate = DateTime.Now;
+                    this.Latitude = App.Watcher.Position.Location.Latitude;
+                    this.Longitude = App.Watcher.Position.Location.Longitude;
+                    this.Altitude = App.Watcher.Position.Location.Altitude;
+                }
+            }
         }
 
         [Column(IsPrimaryKey = true)]
@@ -37,13 +47,13 @@
 
 
         [Column]   
-        public double Altitude { get; set; }
+        public double? Altitude { get; set; }
 
         [Column]   
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         [Column]   
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         [Column]
         public DateTime DeterminationDate { get; set; }

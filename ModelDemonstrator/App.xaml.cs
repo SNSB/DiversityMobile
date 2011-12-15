@@ -21,28 +21,28 @@ namespace ModelDemonstrator
     public partial class App : Application
     {
 
-        //static GeoCoordinateWatcher watcher;
+        static GeoCoordinateWatcher Watcher;
 
-        //public static void startWatcher()
-        //{
-        //    watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
-        //    watcher.MovementThreshold = 20;
+        public static void startWatcher()
+        {
+            Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+            Watcher.MovementThreshold = 20;
 
-        //    watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
+            Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
 
-        //    watcher.Start();
-        //}
+            Watcher.Start();
+        }
 
-        //static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
-        //{
-        //    MessageBox.Show(e.Position.Location.ToString());
-        //}
+        static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            MessageBox.Show(e.Position.Location.ToString());
+        }
 
 
-        //public static void stopWatcher()
-        //{
-        //    watcher.Stop();
-        //}
+        public static void stopWatcher()
+        {
+            Watcher.Stop();
+        }
 
 
 

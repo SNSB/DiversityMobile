@@ -50,6 +50,10 @@ namespace DiversityPhone
                 VM.Upload.Execute(null);
         }
 
-        
+        private void LoadedMaps_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Maps.Execute(null);
+        }
     }
 }

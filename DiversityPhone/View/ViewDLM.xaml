@@ -1,0 +1,63 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="DiversityPhone.View.ViewDLM"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYPHONE" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="download maps" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="56" />
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <StackPanel>
+                <TextBox Height="72" HorizontalAlignment="Left" Name="textBox1" Text="" VerticalAlignment="Top" Width="460" TextChanged="textBox1_TextChanged" />
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Name="wifiOnlyCheckbox" IsChecked="True" ></CheckBox>
+                    <TextBlock Text="only download when WiFi is available." VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <CheckBox Name="externalPowerOnlyCheckbox" IsChecked="True" ></CheckBox>
+                    <TextBlock Text="only download when connected to external power." VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}" TextWrapping="Wrap" Height="60" Width="374"></TextBlock>
+                </StackPanel>
+
+                <ListBox Name="URLListBox" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Background="Transparent" Margin="0,0,0,30">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="350"/>
+                                    <ColumnDefinition Width="80"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
+                                </Grid>
+                                <Grid Grid.Column="1">
+                                    <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+        </Grid>
+    </Grid>
+ 
+</phone:PhoneApplicationPage>

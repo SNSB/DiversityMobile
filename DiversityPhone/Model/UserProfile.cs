@@ -33,5 +33,18 @@ namespace DiversityPhone.Model
 
         [Column]
         public bool RecordGeoPosition { get; set; }
+
+        public UserProfile()
+        {
+            this.LoginName = string.Empty;
+            this.Password = string.Empty;
+            this.ProjectID = 0;
+            this.AgentName = String.Empty;
+            this.AgentUri = String.Empty;
+            this.RecordGeoPosition = true;
+        }
+
+        public static UserProfile Actual { get; set; }
+
     }
 }

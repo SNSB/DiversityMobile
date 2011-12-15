@@ -15,7 +15,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Model", "DiversityService.Model\DiversityService.Model.csproj", "{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelDemonstrator", "ModelDemonstrator\ModelDemonstrator.csproj", "{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}"
-=======
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.Test", "DiversityPhone.Test\DiversityPhone.Test.csproj", "{CB18ACEB-2488-43CF-B35C-9C39CC05B3F0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.Common", "DiversityPhone.Common\DiversityPhone.Common.csproj", "{6EF1160E-5902-4E9C-A471-13DED3718AB5}"
@@ -91,8 +91,6 @@ Global
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Mixed Platforms.Deploy.0 = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Release|Any CPU.Build.0 = Release|Any CPU

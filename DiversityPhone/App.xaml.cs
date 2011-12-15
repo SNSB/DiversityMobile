@@ -19,6 +19,8 @@ using DiversityPhone.Service;
 using ReactiveUI;
 using System.Reactive.Concurrency;
 
+using System.Device.Location;
+
 
 namespace DiversityPhone
 {
@@ -50,6 +52,30 @@ namespace DiversityPhone
 
 
         public static IDictionary<string, PageState> StateTracker { get; private set; }
+
+
+        public static GeoCoordinateWatcher Watcher;
+
+        public static void startWatcher()
+        {
+            Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+            Watcher.MovementThreshold = 20;
+
+            Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
+
+            Watcher.Start();
+        }
+
+        static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            MessageBox.Show(e.Position.Location.ToString());
+        }
+
+
+        public static void stopWatcher()
+        {
+            Watcher.Stop();
+        }
         
         /// <summary>
         /// Constructor for the Application object.

@@ -137,6 +137,8 @@ namespace DiversityPhone
         private void ButtonFinish_Click(object sender, RoutedEventArgs e)
         {
             this.VM.SeriesEnd = DateTime.Now;
+            EventSeries.Actual = null;
+            //Georeferenzierung einfügen
         }
 
         private void Edit_Click(object sender, EventArgs e)

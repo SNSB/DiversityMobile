@@ -52,7 +52,7 @@ namespace DiversityPhone.ViewModels
                 c.Resolve<IMessageBus>(),
                 c.Resolve<IOfflineStorage>()
                 ));
-
+            _ioc.Register<ViewLMVM>(c => new ViewLMVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>() ));
 
@@ -82,7 +82,8 @@ namespace DiversityPhone.ViewModels
         public ViewCSVM ViewCS { get { return _ioc.Resolve<ViewCSVM>(); } }
 
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
-        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }  
+        public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
+        public ViewLMVM ViewLM { get { return _ioc.Resolve<ViewLMVM>(); } }
      
         public EditAnalysisVM EditAnalysis{get{ return _ioc.Resolve<EditAnalysisVM>();}}
 

@@ -27,6 +27,7 @@
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand GetVocabulary { get; private set; }
+        public ReactiveCommand Maps { get; private set; }
         public ReactiveAsyncCommand Upload { get; private set; }        
         #endregion
 
@@ -77,8 +78,8 @@
 
                 (GetVocabulary = new ReactiveCommand())
                     .Subscribe(_ => getVoc()),         
-
-                
+                (Maps=new ReactiveCommand())
+                    .Subscribe(_ =>loadMapPage()),                
             };
 
         }
@@ -153,5 +154,11 @@
         {
             _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES,null));
         }
+
+        private void loadMapPage()
+        {
+            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.LoadedMaps, null));
+        }
+
     }
 }

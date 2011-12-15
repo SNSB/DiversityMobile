@@ -68,6 +68,7 @@
       <HintPath>..\Lib\ReactiveUI\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
+    <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.1.10605.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +86,7 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="Wintellect.Sterling.WindowsPhone, Version=1.5.4204.38308, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Wintellect.Sterling.WindowsPhone.IsolatedStorage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
@@ -112,6 +114,11 @@
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Model\UserProfile.cs" />
+    <Compile Include="Service References\MapServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
@@ -143,6 +150,7 @@
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\DPColors.cs" />
@@ -173,6 +181,9 @@
     <Compile Include="View\IconPathConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewDLM.xaml.cs">
+      <DependentUpon>ViewDLM.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewIU.xaml.cs">
       <DependentUpon>ViewIU.xaml</DependentUpon>
@@ -217,6 +228,9 @@
     <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
     <Compile Include="ViewModels\VirtualizingViewModelList.cs" />
     <Compile Include="View\BooleanToVisibilityConverter.cs" />
+    <Compile Include="View\ViewLM.xaml.cs">
+      <DependentUpon>ViewLM.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -267,6 +281,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ViewDLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ViewIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -290,6 +308,10 @@
     <Page Include="Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -371,6 +393,16 @@
     <Content Include="Images\SNSBIcons\virus_40.png" />
     <Content Include="Images\SNSBIcons\virus_80.png" />
     <Content Include="Images\SNSBIcons\WGS84.png" />
+    <None Include="Service References\MapServiceReference\DiversityPhone.MapServiceReference.CompositeType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MapServiceReference\MapService.disco" />
+    <None Include="Service References\MapServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\MapServiceReference\configuration.svcinfo" />
+    <None Include="Service References\MapServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -383,6 +415,19 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Service References\MapServiceReference\MapService.wsdl" />
+    <None Include="Service References\MapServiceReference\MapService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapServiceReference\MapService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapServiceReference\MapService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapServiceReference\MapService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -449,6 +494,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\MapServiceReference\" />
     <WCFMetadataStorage Include="Service References\Service\" />
   </ItemGroup>
   <ItemGroup>

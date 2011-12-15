@@ -88,12 +88,12 @@
 
             _NoEventSeries = new EventSeries()
             {
-                Description = "Go to Events",
-                SeriesCode = "Go to Events",
+                Description = "No EventSeries",
+                SeriesCode = "No EventSeries",
                 IsModified = false
             };
         }
-        
 
+        public static EventSeries Actual { get; set; }
     }
 }

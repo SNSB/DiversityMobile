@@ -99,6 +99,7 @@
                 return;
 
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
+            EventSeries.Actual = newSeries;
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)

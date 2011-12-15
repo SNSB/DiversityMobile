@@ -14,7 +14,8 @@ namespace DiversityPhone.Services
         ViewCS,
         EditIUAN,
         EditUserProfile,
-        Settings,        
-       
+        Settings,
+        LoadedMaps,
+        DownLoadMaps,       
     }
 }

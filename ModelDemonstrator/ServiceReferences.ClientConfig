@@ -2,10 +2,6 @@
     <system.serviceModel>
         <bindings>
             <basicHttpBinding>
-                <binding name="BasicHttpBinding_IDiversityService" maxBufferSize="2147483647"
-                    maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
-                </binding>
                 <binding name="BasicHttpBinding_IMapService" maxBufferSize="2147483647"
                     maxReceivedMessageSize="2147483647">
                     <security mode="None" />
@@ -13,9 +9,6 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
-                bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="Service.IDiversityService" name="BasicHttpBinding_IDiversityService" />
             <endpoint address="http://bsm5.snsb.info:1111/MapService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IMapService"
                 contract="MapServiceReference.IMapService" name="BasicHttpBinding_IMapService" />

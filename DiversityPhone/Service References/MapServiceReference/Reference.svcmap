@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f18a768b-1479-4a8b-819a-0ffe7b41b4e0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://bsm5.snsb.info:1111/MapService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MapService.disco" MetadataType="Disco" ID="0a948122-642a-41fa-a0b1-e10ac1b48440" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?disco" />
+    <MetadataFile FileName="MapService.wsdl" MetadataType="Wsdl" ID="005fe3cc-d795-4781-b353-c0625b0ef89a" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?wsdl" />
+    <MetadataFile FileName="MapService.xsd" MetadataType="Schema" ID="1c440508-055b-4648-a58c-447104b2523b" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd3" />
+    <MetadataFile FileName="MapService1.xsd" MetadataType="Schema" ID="1da6bd23-64cf-48b0-9312-c744121e6c16" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd2" />
+    <MetadataFile FileName="MapService2.xsd" MetadataType="Schema" ID="14f7020a-598d-4458-ac9e-2d4a7a21a159" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MapService3.xsd" MetadataType="Schema" ID="e4b24795-c93b-4e65-929d-74c9332987e2" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

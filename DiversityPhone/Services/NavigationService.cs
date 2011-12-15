@@ -116,7 +116,12 @@ namespace DiversityPhone.Services
                 case Page.ViewCS:
                     destination = "/View/ViewCS.xaml";
                     break;
-
+                case Page.LoadedMaps:
+                    destination = "/View/ViewLM.xaml";
+                    break;
+                case Page.DownLoadMaps:
+                    destination = "/View/ViewDLM.xaml";
+                    break;
 
 
 #if DEBUG

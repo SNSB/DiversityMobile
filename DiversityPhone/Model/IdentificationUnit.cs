@@ -60,13 +60,13 @@ namespace DiversityPhone.Model
 
         //Georeferenzierung
         [Column]
-        public double Altitude { get; set; }
+        public double? Altitude { get; set; }
 
         [Column]
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         [Column]
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         [Column]
         public DateTime AnalysisDate { get; set; }

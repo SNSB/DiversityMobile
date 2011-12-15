@@ -815,7 +815,7 @@ namespace DiversityPhone.Service {
     [System.Runtime.Serialization.DataContractAttribute(Name="Event", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Event : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private double AltitudeField;
+        private double? AltitudeField;
         
         private System.DateTime CollectionDateField;
         
@@ -825,18 +825,18 @@ namespace DiversityPhone.Service {
         
         private string HabitatDescriptionField;
         
-        private double LatitudeField;
+        private double? LatitudeField;
         
         private string LocalityDescriptionField;
         
         private System.DateTime LogUpdatedWhenField;
         
-        private double LongitudeField;
+        private double? LongitudeField;
         
         private System.Nullable<int> SeriesIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Altitude {
+        public double? Altitude {
             get {
                 return this.AltitudeField;
             }
@@ -901,7 +901,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Latitude {
+        public double? Latitude {
             get {
                 return this.LatitudeField;
             }
@@ -940,7 +940,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Longitude {
+        public double? Longitude {
             get {
                 return this.LongitudeField;
             }
