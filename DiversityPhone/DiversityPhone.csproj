@@ -163,9 +163,13 @@
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\DPColors.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditCS.xaml.cs">
+      <DependentUpon>EditCS.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
@@ -188,9 +192,9 @@
     <Compile Include="View\EditUserProfile.xaml.cs">
       <DependentUpon>EditUserProfile.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\IconPathConverter.cs" />
-    <Compile Include="View\ViewEVPivotConverter.cs" />
-    <Compile Include="View\ViewIUPivotConverter.cs" />
+    <Compile Include="View\Converters\IconPathConverter.cs" />
+    <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
+    <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
@@ -235,7 +239,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
     <Compile Include="ViewModels\VirtualizingViewModelList.cs" />
-    <Compile Include="View\BooleanToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -251,6 +255,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditAnalysis.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\EditCS.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

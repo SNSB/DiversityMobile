@@ -6,39 +6,45 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewCS}">
+    DataContext="{Binding ViewCS, Source={StaticResource Locator}}">
+    <phone:PhoneApplicationPage.Resources>
+        <vw:ViewCSPivotConverter x:Key="PivotConverter"/>
+    </phone:PhoneApplicationPage.Resources>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <!--Pivot Control-->
+        <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
+            <!--Pivot item one-->
+            <controls:PivotItem Header="units">
+                <ListBox ItemsSource="{Binding UnitList}"
+                         ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+            </controls:PivotItem>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Current.Description}" 
-                    Command="{Binding Current.Edit}"/>
-        </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding UnitList}"
-                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+            <!--Pivot item two-->
+            <controls:PivotItem Header="multimedia">
+               
+            </controls:PivotItem>
+        </controls:Pivot>
+       
     </Grid>
 
+    <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add" Click="Add_Click"/>
-
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="Add"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="Add"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-
 </phone:PhoneApplicationPage>
