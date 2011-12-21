@@ -190,8 +190,8 @@
     <Compile Include="View\EditMultiMediaObject.xaml.cs">
       <DependentUpon>EditMultiMediaObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditProperty.xaml.cs">
-      <DependentUpon>EditProperty.xaml</DependentUpon>
+    <Compile Include="View\EditEventProperty.xaml.cs">
+      <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditUserProfile.xaml.cs">
       <DependentUpon>EditUserProfile.xaml</DependentUpon>
@@ -286,7 +286,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditProperty.xaml">
+    <Page Include="View\EditEventProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
