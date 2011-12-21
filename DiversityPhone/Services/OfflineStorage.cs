@@ -160,6 +160,13 @@
                   ctx => ctx.Events,
                   ev
               );
+            //Now EventID is set even for new Events
+            Specimen obs = new Specimen()
+            {
+                AccesionNumber = null,
+                CollectionEventID = ev.EventID,
+            };
+            addOrUpdateSpecimen(obs);
         }
         #endregion
 
