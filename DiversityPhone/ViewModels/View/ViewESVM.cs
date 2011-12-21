@@ -67,8 +67,8 @@
                 .CombineLatest(validModel, (a,b) => new {Click = a, Model=b})
                 .DistinctUntilChanged(pair => pair.Click.Timestamp)
                 .Select(pair =>new NavigationMessage(Page.EditEV,null,
-                              pair.Model.SeriesID.ToString())
-                    );
+                              (EventSeries.isNoEventSeries(pair.Model))? null : pair.Model.SeriesID.ToString()
+                    ));
             _messenger.RegisterMessageSource(newEventMessageSource);
             
 
