@@ -658,8 +658,10 @@
                         {
                             ctx.SubmitChanges();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            System.Diagnostics.Debugger.Break();
+                            
                             //Object not new
                             //TODO update?
                         }
