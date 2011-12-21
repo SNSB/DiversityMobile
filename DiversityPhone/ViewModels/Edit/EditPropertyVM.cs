@@ -18,9 +18,9 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditPropertyVM:ReactiveObject
+    public class EditPropertyVM : PageViewModel
     {
-        private IList<IDisposable> _subscriptions;
+        
 
         #region Services
         private IMessageBus _messenger;
@@ -28,32 +28,26 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand Save { get; private set; }        
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
         #region Properties
-
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
-
-
-        private CollectionEventProperty _Model;
-        public CollectionEventProperty Model
-        {
-            get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
-            }
+        private ObservableAsPropertyHelper<EventVM> _Event;
+        public EventVM Event 
+        { 
+            get
+            {
+                return _Event.Value;
+            } 
         }
 
-
-        private IList<Property> _Properties = null;
+        private ObservableAsPropertyHelper<IList<Property>> _Properties;
         public IList<Property> Properties
         {
             get
             {
-                return _Properties?? (_Properties = _storage.getAllProperties());
+                return _Properties.Value;
             }
         }
 
@@ -64,14 +58,12 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.SelectedProperty, ref _SelectedProperty, value); }
         }
 
-        private IList<PropertyName> _PropertyNames = null; //Vorläufige Implementierung Suchfilter benötigt
+        private ObservableAsPropertyHelper<IList<PropertyName>> _PropertyNames; 
         public IList<PropertyName> PropertyNames
         {
             get
             {
-                if(this.SelectedProperty==null)
-                    return null; //No Exceptions in Properties!
-                return _PropertyNames?? (_PropertyNames = _storage.getPropertyNames(this.SelectedProperty));
+                return _PropertyNames.Value;
             }
         }
 
@@ -90,22 +82,29 @@ namespace DiversityPhone.ViewModels
 
             _messenger = messenger;
             _storage = storage;
-            this._editable = false;
 
-            var canSave = this.cansave();
+            _Properties = StateObservable
+                .Select(_ => _storage.getAllProperties())
+                .ToProperty(this, vm => vm.Properties);
+            _PropertyNames = this.ObservableForProperty(vm => vm.SelectedProperty)
+                .Select(prop => _storage.getPropertyNames(prop.Value))
+                .ToProperty(this, vm => vm.PropertyNames);
 
-            _subscriptions = new List<IDisposable>()
-            {
-                (Save = new ReactiveCommand(canSave))               
-                    .Subscribe(_ => executeSave()),
 
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
 
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_ => delete()),
-
-            };
+            Save = new ReactiveCommand(cansave());
+            var saveMessageSource = Save
+                .Select(_ => 
+                    new CollectionEventProperty()
+                        {
+                            EventID = Event.Model.EventID,
+                            PropertyID = SelectedProperty.PropertyID,
+                            PropertyUri = SelectedPropertyName.PropertyUri
+                        }
+                    );
+            _messenger.RegisterMessageSource(saveMessageSource,MessageContracts.SAVE);
+            _messenger.RegisterMessageSource(saveMessageSource.Select(_=>Message.NavigateBack));
+            
         }
 
         IObservable<bool> cansave()
@@ -120,45 +119,22 @@ namespace DiversityPhone.ViewModels
                 .StartWith(false);
 
             return Extensions.BooleanAnd(canSave1, canSave2);
-        }
+        }        
+                        
 
-        private void executeSave()
+        private Event EventFromState(PageState s)
         {
-            updateModel();
-            _messenger.SendMessage<CollectionEventProperty>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            if (s.Context != null)
+            {
+                int id;
+                if (int.TryParse(s.Context, out id))
+                {
+                    return _storage.getEventByID(id);
+                }                
+            }    
+            return null;
         }
 
 
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
-
-
-        private void delete()
-        {
-            _messenger.SendMessage<CollectionEventProperty>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-        private void updateModel()
-        {
-            Model.PropertyID=this.SelectedProperty.PropertyID;
-            Model.DisplayText=this.SelectedProperty.DisplayText;
-            Model.PropertyUri=this.SelectedPropertyName.PropertyUri;
-        }
-
-        private void updateView(CollectionEventProperty cep)
-        {
-            this.Model = cep;
-            this.SelectedProperty = _storage.getPropertyByID(cep.PropertyID);
-            this._Properties=_storage.getAllProperties();
-            this.SelectedPropertyName=_storage.getPropertyNameByURI(cep.PropertyUri);
-            this._PropertyNames=_storage.getPropertyNames(this.SelectedProperty);         
-        }
     }
 }
