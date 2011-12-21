@@ -133,16 +133,24 @@
               .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
               .StartWith(false);
 
+            Save = new ReactiveCommand(canSave);
+            var saveMessageSource = Save
+                .Do( _ => updateModel())
+                .Select(_ => Model);
+            _messenger.RegisterMessageSource(saveMessageSource, MessageContracts.SAVE); //Send off the Object to be saved
+            _messenger.RegisterMessageSource(saveMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
+
+
+            Delete = new ReactiveCommand();
+            var deleteMessageSource = Delete                
+                .Select(_ => Model);
+            _messenger.RegisterMessageSource(deleteMessageSource, MessageContracts.DELETE); //Send off the Object to be deleted
+            _messenger.RegisterMessageSource(deleteMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
+
+
             _subscriptions = new List<IDisposable>()
             {
-                (Save = new ReactiveCommand(canSave))               
-                    .Subscribe(_ => executeSave()),
-                
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_ => executeDelete()),
-
-                model.Subscribe( es => updateView(es)),
-            
+                model.Subscribe( es => updateView(es))           
             };
         }
 
@@ -175,20 +183,7 @@
                 .StartWith(false);
             IObservable<bool> canSave = Extensions.BooleanAnd(editable, description);
             return canSave;
-        }
-
-        private void executeSave()
-        {
-            updateModel();
-            _messenger.SendMessage<EventSeries>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-        private void executeDelete()
-        {
-            _messenger.SendMessage<EventSeries>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
+        }       
 
         
 
