@@ -12,6 +12,7 @@
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
     			<ResourceDictionary Source="Templates.xaml"/>
+                <ResourceDictionary Source="Styles.xaml"/>
     		</ResourceDictionary.MergedDictionaries>
     		<local:ViewModelLocator x:Key="Locator" />
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
