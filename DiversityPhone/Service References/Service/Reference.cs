@@ -815,28 +815,28 @@ namespace DiversityPhone.Service {
     [System.Runtime.Serialization.DataContractAttribute(Name="Event", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Event : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private double? AltitudeField;
+        private System.Nullable<double> AltitudeField;
         
         private System.DateTime CollectionDateField;
         
-        private System.DateTime DeterminationDateField;
+        private System.Nullable<System.DateTime> DeterminationDateField;
         
         private int EventIDField;
         
         private string HabitatDescriptionField;
         
-        private double? LatitudeField;
+        private System.Nullable<double> LatitudeField;
         
         private string LocalityDescriptionField;
         
         private System.DateTime LogUpdatedWhenField;
         
-        private double? LongitudeField;
+        private System.Nullable<double> LongitudeField;
         
         private System.Nullable<int> SeriesIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double? Altitude {
+        public System.Nullable<double> Altitude {
             get {
                 return this.AltitudeField;
             }
@@ -862,7 +862,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime DeterminationDate {
+        public System.Nullable<System.DateTime> DeterminationDate {
             get {
                 return this.DeterminationDateField;
             }
@@ -901,7 +901,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double? Latitude {
+        public System.Nullable<double> Latitude {
             get {
                 return this.LatitudeField;
             }
@@ -940,7 +940,7 @@ namespace DiversityPhone.Service {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double? Longitude {
+        public System.Nullable<double> Longitude {
             get {
                 return this.LongitudeField;
             }

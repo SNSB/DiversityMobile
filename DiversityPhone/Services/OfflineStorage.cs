@@ -160,6 +160,13 @@
                   ctx => ctx.Events,
                   ev
               );
+            //Now EventID is set even for new Events
+            Specimen obs = new Specimen()
+            {
+                AccesionNumber = null,
+                CollectionEventID = ev.EventID,
+            };
+            addOrUpdateSpecimen(obs);
         }
         #endregion
 
@@ -651,8 +658,10 @@
                         {
                             ctx.SubmitChanges();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            System.Diagnostics.Debugger.Break();
+                            
                             //Object not new
                             //TODO update?
                         }

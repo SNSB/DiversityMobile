@@ -46,17 +46,17 @@
         public string HabitatDescription { get; set; }
 
 
-        [Column]   
+        [Column(CanBeNull = true)]
         public double? Altitude { get; set; }
 
-        [Column]   
+        [Column(CanBeNull = true)]
         public double? Latitude { get; set; }
 
-        [Column]   
+        [Column(CanBeNull = true)]
         public double? Longitude { get; set; }
 
-        [Column]
-        public DateTime DeterminationDate { get; set; }
+        [Column(CanBeNull=true)]
+        public DateTime? DeterminationDate { get; set; }
 
         /// <summary>
         /// Tracks modifications to this Object.

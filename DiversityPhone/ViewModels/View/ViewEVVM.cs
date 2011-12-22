@@ -86,7 +86,7 @@
                             case Pivots.Multimedia:
                             //TODO Multimedia Page
                             case Pivots.Descriptions:
-                            //TODO Descriptions Page
+                                return Page.EditEventProperty;
                             case Pivots.Specimen:
                                 return Page.EditCS;
                             default:

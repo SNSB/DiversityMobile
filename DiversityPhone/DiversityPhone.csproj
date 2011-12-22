@@ -62,34 +62,32 @@
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="ReactiveUI.Blend_WP7">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ReactiveUI\ReactiveUI.Blend_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Blend_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Routing_WP7">
+    <Reference Include="ReactiveUI.Routing_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Routing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Serialization_WP7">
+    <Reference Include="ReactiveUI.Serialization_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Serialization_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ReactiveUI\ReactiveUI.Xaml_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Testing_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Testing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI_WP7">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ReactiveUI\ReactiveUI_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Xaml_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive, Version=1.1.10605.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ReactiveUI\System.Reactive.dll</HintPath>
+    <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.10605.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\ReactiveUI\System.Reactive.Windows.Threading.dll</HintPath>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -97,9 +95,14 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Interactivity, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Wintellect.Sterling.WindowsPhone, Version=1.5.4204.38308, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Wintellect.Sterling.WindowsPhone.IsolatedStorage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -116,7 +119,6 @@
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
-    <Compile Include="Model\ImageOptions.cs" />
     <Compile Include="Model\IModifyable.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
@@ -173,9 +175,6 @@
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditCS.xaml.cs">
-      <DependentUpon>EditCS.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
@@ -191,14 +190,17 @@
     <Compile Include="View\EditMultiMediaObject.xaml.cs">
       <DependentUpon>EditMultiMediaObject.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditProperty.xaml.cs">
-      <DependentUpon>EditProperty.xaml</DependentUpon>
+    <Compile Include="View\EditEventProperty.xaml.cs">
+      <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditUserProfile.xaml.cs">
       <DependentUpon>EditUserProfile.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converters\IconPathConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
+    <Compile Include="View\Settings.xaml.cs">
+      <DependentUpon>Settings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
@@ -227,9 +229,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="View\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Edit\EditEVVM.cs" />
     <Compile Include="ViewModels\Edit\EditIUVM.cs" />
@@ -263,17 +262,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\EditAnalysis.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditCS.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\EditES.xaml">
       <SubType>Designer</SubType>
@@ -295,13 +286,17 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditProperty.xaml">
+    <Page Include="View\EditEventProperty.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditUserProfile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ViewCS.xaml">
       <SubType>Designer</SubType>
@@ -324,10 +319,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewEV.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

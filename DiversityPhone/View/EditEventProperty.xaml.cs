@@ -13,9 +13,9 @@ using Microsoft.Phone.Controls;
 
 namespace DiversityPhone.View
 {
-    public partial class EditProperty : PhoneApplicationPage
+    public partial class EditEventProperty : PhoneApplicationPage
     {
-        public EditProperty()
+        public EditEventProperty()
         {
             InitializeComponent();
         }

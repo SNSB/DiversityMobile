@@ -16,7 +16,7 @@ namespace DiversityPhone.Services
 
         EditMMO,
         EditMap,
-        EditProperty,
+        EditEventProperty,
         EditUserProfile,
         Settings,
         LoadedMaps,
