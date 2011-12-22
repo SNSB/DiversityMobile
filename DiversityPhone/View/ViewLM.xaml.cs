@@ -14,6 +14,7 @@ using System.IO.IsolatedStorage;
 using Microsoft.Phone.BackgroundTransfer;
 using System.Xml.Linq;
 using DiversityPhone.ViewModels;
+using DiversityPhone.Model;
 
 
 namespace DiversityPhone.View
@@ -66,8 +67,8 @@ namespace DiversityPhone.View
                     String xmlname = name + ".xml";
                     if (isoStore.FileExists("Maps\\XML\\" + xmlname))
                     {
-                        string description=parseXMLForDescription("Maps\\XML\\" + xmlname);
-                        savedMaps.Add(name,name+" - "+description);
+                        ImageOptions io=ImageOptions.loadImagesOptionsFromFile("Maps\\XML\\" + xmlname);
+                        savedMaps.Add(name,name+" - "+io.Description);
                     }
                 }
             }
@@ -147,7 +148,8 @@ namespace DiversityPhone.View
                                 if (isoStore.FileExists("Maps\\XML\\" + xmlname))
                                     if (!savedMaps.ContainsKey(name))
                                     {
-                                        string description = parseXMLForDescription("Maps\\XML\\" + xmlname);
+                                        ImageOptions io=ImageOptions.loadImagesOptionsFromFile("Maps\\XML\\" + xmlname);
+                                        string description = io.Description;
                                         savedMaps.Add(name, name + " - " + description);
                                     }
                             }
@@ -168,7 +170,8 @@ namespace DiversityPhone.View
                                     {
                                         if (!savedMaps.ContainsKey(name))
                                         {
-                                            string description = parseXMLForDescription(fullFilename);
+                                            ImageOptions io = ImageOptions.loadImagesOptionsFromFile(fullFilename);
+                                            string description = io.Description;
                                             savedMaps.Add(name, name + " - " + description);
                                         }
                                         break;
@@ -213,15 +216,7 @@ namespace DiversityPhone.View
         }
 
 
-        private string parseXMLForDescription(string xmlFileName)
-        {
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                var ImageOptions = XDocument.Parse(xmlFileName);
-                String value=(String) ImageOptions.Element("Description");
-                return value;
-            }
-        }
+        
 
         private void UpdateRequestsList()
         {
