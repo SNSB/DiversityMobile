@@ -33,7 +33,12 @@
 
             <!--Pivot item two-->
             <controls:PivotItem Header="descriptions" >
-               
+                <StackPanel>
+                    <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
+                                    Content="{Binding Current.Model}"/>
+                    <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
+                             ItemsSource="{Binding Properties}"/>
+                </StackPanel>
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
