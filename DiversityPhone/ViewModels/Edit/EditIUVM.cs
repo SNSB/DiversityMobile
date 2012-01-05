@@ -13,8 +13,6 @@ namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : PageViewModel
     {
-        IList<IDisposable> _subscriptions;
-
         #region Services
         IMessageBus _messenger;
         IOfflineStorage _storage;
@@ -36,6 +34,30 @@ namespace DiversityPhone.ViewModels
                 return _isEditable.Value;
             }
         }
+
+        private ObservableAsPropertyHelper<bool> _IsObservation;
+        public bool IsObservation
+        {
+            get
+            {
+                return _IsObservation.Value;
+            }
+        }
+
+
+        private bool _OnlyObserved;
+        public bool OnlyObserved
+        {
+            get
+            {
+                return _OnlyObserved;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.OnlyObserved, ref _OnlyObserved, value);
+            }
+        }
+        
 
         public IdentificationUnit Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
@@ -105,40 +127,49 @@ namespace DiversityPhone.ViewModels
                 .ToProperty(this, vm => vm.Editable);
 
             _Model = model.ToProperty(this, x => x.Model);
+                         
+            _IsToplevel = model
+                            .Select(m => m.RelatedUnitID == null)
+                            .ToProperty(this, x => x.IsToplevel);
+
+            var isObservation =
+                model
+                .Select(m => _storage.getSpecimenByID(m.SpecimenID))
+                .Where(spec => spec != null)
+                .Select(spec => spec.IsObservation());
+
+            isObservation.BindTo(this, vm => vm.OnlyObserved);
+
+            _IsObservation = isObservation                
+                .ToProperty(this, vm => vm.IsObservation);
 
 
-            var isToplevel = model
-                .Select(m => m.RelatedUnitID == null);
-            _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
 
-            var canSave = validationObservable();
+            
 
-            _subscriptions = new List<IDisposable>()
-            {            
-                
+            model.Select(m => m.TaxonomicGroup)
+                .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
+                .BindTo(this, vm => vm.SelectedTaxGroup);
 
-                model.Select(m => m.TaxonomicGroup)
-                    .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
-                    .Subscribe(x => SelectedTaxGroup = x),
+            Save = new ReactiveCommand(validationObservable());
+            _messenger.RegisterMessageSource(
+                Save
+                .Do(_ => updateModel())
+                .Select(_ => Model),
+                MessageContracts.SAVE);
 
-                (Save = new ReactiveCommand(canSave))
-                    .Subscribe(_ =>
-                        {
-                            updateModel();
-                            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);                            
-                            _messenger.SendMessage<Message>(Message.NavigateBack);
-                        }),
+            _messenger.RegisterMessageSource(
+                Delete
+                .Select(_ => Model),
+                MessageContracts.DELETE);                
 
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_=> delete()),
-            };
-        }
-
-        private void delete()
-        {
-            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
+            _messenger.RegisterMessageSource(
+                Delete
+                .Merge(Save)
+                .Select(_ => Message.NavigateBack)
+                );
+            
+        }       
 
         private IdentificationUnit UnitFromState(PageState state)
         {
@@ -150,14 +181,29 @@ namespace DiversityPhone.ViewModels
                 {
                     result = _storage.getIdentificationUnitByID(id);
                 }
-            }
-            result = new IdentificationUnit();
-            if (state.Referrer != null)
+            }            
+            if (result != null && state.ReferrerType != ReferrerType.None)
             {
-                int id;
-                if (int.TryParse(state.Referrer, out id))
+                result = new IdentificationUnit();
+                
+                if (state.ReferrerType == ReferrerType.Specimen)
                 {
-                    result.RelatedUnitID = id;
+                    int id;
+                    if (int.TryParse(state.Referrer, out id))
+                    {
+                        result.SpecimenID = id;
+                    }
+                }
+                else if (state.ReferrerType == ReferrerType.IdentificationUnit)
+                {
+                    int id;
+                    IdentificationUnit parent;
+                    if (int.TryParse(state.Context, out id) 
+                        && (parent = _storage.getIdentificationUnitByID(id)) != null)
+                    {
+                        result.SpecimenID = parent.SpecimenID;
+                        result.RelatedUnitID = parent.UnitID;
+                    }
                 }
             }
 

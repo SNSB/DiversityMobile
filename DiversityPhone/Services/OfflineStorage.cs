@@ -161,12 +161,10 @@
                   ev
               );
             //Now EventID is set even for new Events
-            Specimen obs = new Specimen()
-            {
-                AccesionNumber = null,
-                CollectionEventID = ev.EventID,
-            };
-            addOrUpdateSpecimen(obs);
+            Specimen observation = new Specimen().MakeObservation();
+            observation.CollectionEventID = ev.EventID;
+            
+            addOrUpdateSpecimen(observation);
         }
         #endregion
 
@@ -603,7 +601,7 @@
             {
                 ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
                 ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccesionNumber = "CS" });
+                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
                 ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
                 int id = 1;
                 recSample(0, 0, ref id, ctx);

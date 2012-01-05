@@ -73,7 +73,7 @@ namespace DiversityPhone.ViewModels
                 //Read-Only Eigenschaften direkt ans Model Binden
                 //Nur Veränderbare Properties oder abgeleitete so binden
                 modelPropertyObservable                    
-                    .Select(m => m.AccesionNumber != null ? m.AccesionNumber : "")
+                    .Select(m => m.AccessionNumber != null ? m.AccessionNumber : "")
                     .BindTo(this, x=>x.AccessionNumber),      
                   
             };
@@ -114,7 +114,7 @@ namespace DiversityPhone.ViewModels
         private void updateModel()
         {
             //Nur Veränderbare Eigenschaften übernehmen.
-            Model.AccesionNumber = AccessionNumber;
+            Model.AccessionNumber = AccessionNumber;
         }
 
         private Specimen SpecimenFromContext(string ctx)
