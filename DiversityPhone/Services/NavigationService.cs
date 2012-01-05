@@ -12,7 +12,7 @@ using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.Services
 {
-    public class NavigationService : INavigationService
+    public class NavigationService
     {
         private IMessageBus _messenger;
         private IList<IDisposable> _subscriptions;
@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
             _subscriptions = new List<IDisposable>()
             {
                 _messenger.Listen<Page>()
-                    .Subscribe(p => Navigate(p,null,null)),
+                    .Subscribe(p => System.Diagnostics.Debugger.Break()),
                 _messenger.Listen<Message>()
                     .Subscribe(m =>
                         {
@@ -42,7 +42,7 @@ namespace DiversityPhone.Services
                         }),                
 
                 _messenger.Listen<NavigationMessage>()
-                    .Subscribe(msg => Navigate(msg.Destination,msg.Context, msg.Referrer)),
+                    .Subscribe(msg => Navigate(msg)),
             };            
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
@@ -81,10 +81,10 @@ namespace DiversityPhone.Services
 
 
         }
-        public void Navigate(Page p, string context, string referrer)
+        public void Navigate(NavigationMessage msg)
         {
             string destination = null;
-            switch (p)
+            switch (msg.Destination)
             {
                 case Page.Home:
                     destination = "/View/Home.xaml";
@@ -126,14 +126,15 @@ namespace DiversityPhone.Services
 
 #if DEBUG
                 default:
-                    throw new NotImplementedException();
+                    System.Diagnostics.Debugger.Break();
+                    break;
 #endif
             }
             if (destination != null && App.RootFrame != null)
             {
                 string token = Guid.NewGuid().ToString();
                 Uri uri = new Uri(String.Format("{0}#{1}", destination, token), UriKind.Relative);
-                App.StateTracker.Add(token, new PageState(token, context, referrer));
+                App.StateTracker.Add(token, new PageState(token, msg.Context, msg.ReferrerType, msg.Referrer));
 
                 App.RootFrame.Navigate(uri);
             }

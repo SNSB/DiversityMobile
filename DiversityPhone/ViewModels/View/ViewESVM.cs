@@ -28,7 +28,7 @@
         public EventSeriesVM Current { get { return _Current.Value; } }
         private ObservableAsPropertyHelper<EventSeriesVM> _Current;
 
-        public IList<EventVM> EventList { get { return _EventList.Value; }  }
+        public IList<EventVM> EventList { get { return _EventList.Value; } }
         private ObservableAsPropertyHelper<IList<EventVM>> _EventList;
         #endregion
 
@@ -49,7 +49,7 @@
 
 
             _Current = validModel
-                .Select(es => new EventSeriesVM(_messenger,es))
+                .Select(es => new EventSeriesVM(_messenger, es))
                 .ToProperty(this, x => x.Current);
 
             _EventList = validModel
@@ -61,19 +61,19 @@
 
             //On each Invocation of AddEvent, a new NavigationMessage is generated
             AddEvent = new ReactiveCommand();
-            var newEventMessageSource = 
+            var newEventMessageSource =
                 AddEvent
                 .Timestamp()
-                .CombineLatest(validModel, (a,b) => new {Click = a, Model=b})
+                .CombineLatest(validModel, (a, b) => new { Click = a, Model = b })
                 .DistinctUntilChanged(pair => pair.Click.Timestamp)
-                .Select(pair =>new NavigationMessage(Page.EditEV,null,
-                              (EventSeries.isNoEventSeries(pair.Model))? null : pair.Model.SeriesID.ToString()
+                .Select(pair => new NavigationMessage(Page.EditEV, null, ReferrerType.EventSeries,
+                              (EventSeries.isNoEventSeries(pair.Model)) ? null : pair.Model.SeriesID.ToString()
                     ));
             _messenger.RegisterMessageSource(newEventMessageSource);
-            
 
-            FilterEvents = new ReactiveCommand();         
-        }        
+
+            FilterEvents = new ReactiveCommand();
+        }
         private EventSeries EventSeriesFromContext(string ctx)
         {
             if (ctx != null)
@@ -83,12 +83,12 @@
                 {
                     return _storage.getEventSeriesByID(id);
                 }
-                else                    
+                else
                     return null;
             }
             else
                 return EventSeries.NoEventSeries;
-            
+
         }
     }
 }

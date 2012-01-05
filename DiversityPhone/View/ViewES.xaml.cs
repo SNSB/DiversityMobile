@@ -34,7 +34,7 @@ namespace DiversityPhone
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             IEnumerable<JournalEntry> je= App.RootFrame.BackStack;
-            DiversityPhone.Services.NavigationService.ClearHistoryUntilCurrentPage();
+            
             je = App.RootFrame.BackStack;
         }
 

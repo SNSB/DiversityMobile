@@ -103,7 +103,7 @@ namespace DiversityPhone.ViewModels
                                 return Page.EditIU;
                         }
                     })
-                .Select(p => new NavigationMessage(p,null, Current.Model.UnitID.ToString()));
+                .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
             _messenger.RegisterMessageSource(addMessageSource);         
         }
 

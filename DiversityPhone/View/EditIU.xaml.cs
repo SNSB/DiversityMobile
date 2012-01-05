@@ -33,12 +33,7 @@ namespace DiversityPhone
 
        
 
-        private void Description_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (VM != null)
-                VM.Description = DescTB.Text;
-        }
-
+  
        
 
     }

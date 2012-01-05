@@ -93,7 +93,7 @@
                                 return Page.EditCS;
                         }
                     })
-                .Select(p => new NavigationMessage(p, null, Current.Model.EventID.ToString()));
+                .Select(p => new NavigationMessage(p, null, ReferrerType.Event, Current.Model.EventID.ToString()));
             _messenger.RegisterMessageSource(addMessageSource);
 
         }
