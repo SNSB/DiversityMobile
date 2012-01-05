@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels
             _storage = storage;           
 
             var model = StateObservable                
-                .Select(s => UnitFromContext(s.Context));
+                .Select(s => UnitFromState(s));
 
 
             ToggleEditable = new ReactiveCommand();
@@ -140,17 +140,28 @@ namespace DiversityPhone.ViewModels
             _messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-        private IdentificationUnit UnitFromContext(string ctx)
+        private IdentificationUnit UnitFromState(PageState state)
         {
-            if (ctx != null)
+            IdentificationUnit result = null;
+            if (state.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(state.Context, out id))
                 {
-                    return _storage.getIdentificationUnitByID(id);
+                    result = _storage.getIdentificationUnitByID(id);
                 }
             }
-            return new IdentificationUnit();
+            result = new IdentificationUnit();
+            if (state.Referrer != null)
+            {
+                int id;
+                if (int.TryParse(state.Referrer, out id))
+                {
+                    result.RelatedUnitID = id;
+                }
+            }
+
+            return result;
         }        
 
 

@@ -28,11 +28,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=False}">
-                <TextBlock Text="Accession Number"/>
-                <TextBox  x:Name="AccessionNoTB" Text="{Binding AccessionNumber, Mode=TwoWay}" />
-            </StackPanel>           
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">                    
            
             <toolkit:ListPicker ItemsSource="{Binding TaxonomicGroups}" 
                                 SelectedItem="{Binding SelectedTaxGroup, Mode=TwoWay}"
@@ -40,16 +36,24 @@
                                 Name="_taxonListPicker"
                                 FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
                                 Header="Taxonomic Group"
-                                FullModeHeader="Taxonomic Group"/>           
+                                FullModeHeader="Taxonomic Group"/>
             
+            <TextBlock Text="Genus"/>
+            <TextBox Text="{Binding Genus, Mode=TwoWay}" />
+
+            <TextBlock Text="Species"/>
+            <TextBox Text="{Binding Species, Mode=TwoWay}" />
+                        
+            <ListBox ItemsSource="{Binding IdentificationCandidates}" />
 
             <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
                 <TextBlock Text="Relationship Type"/>
                 <TextBox Text="{Binding RelationshipType, Mode=TwoWay}" />
             </StackPanel>
-
-            <TextBlock Text="Description"/>
-            <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="Description_TextChanged"/>
+            
+            <CheckBox IsChecked="{Binding OnlyObserved}" Content="Only Observed" Visibility="{Binding IsNoObservation}"/>
+            
+            <ListBox ItemsSource="{Binding Circumstances}" SelectedItem="{Binding Circumstance, Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
  

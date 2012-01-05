@@ -147,34 +147,7 @@ namespace DiversityPhone.Services
         public void NavigateBack()
         {
             App.RootFrame.GoBack();
-        }
-
-        public static void ClearHistoryUntilCurrentPage()
-        {
-            Uri thisPage=App.RootFrame.Source;
-            IEnumerable<JournalEntry> stack = App.RootFrame.BackStack;
-            IEnumerator<JournalEntry> loop = App.RootFrame.BackStack.GetEnumerator();
-            loop.Reset();
-            int pos = -1;
-            int count = -1;
-            while (loop.MoveNext())
-            {
-                count++;
-                if (loop.Current.Source.Equals(thisPage))
-                    pos = count;
-            }
-            if (pos >= 0)
-            {
-                int backsteps = count - pos;
-                for (int i = 0; i <= backsteps; i++)
-                    App.RootFrame.RemoveBackEntry();
-            }
-            else
-            {
-                //throw new Exception("Page not found");
-            }
-                
-        }
+        }        
 
         public void ClearHistory()
         {
