@@ -6,7 +6,7 @@
     public interface IOfflineVocabulary
     {
         void addTerms(IEnumerable<Term> terms);
-        IList<Term> getTerms(int source);
+        IList<Term> getTerms(Service.TermList source);
 
         void addAnalyses(IEnumerable<Analysis> analyses);
         IList<Analysis> getAllAnalyses();

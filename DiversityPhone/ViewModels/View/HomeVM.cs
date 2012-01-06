@@ -115,7 +115,7 @@
                     Description = wcf.Description,
                     DisplayText = wcf.DisplayText,
                     ParentCode = wcf.ParentCode,
-                    SourceID = wcf.SourceID
+                    SourceID = wcf.Source
                 })
                 ));
 

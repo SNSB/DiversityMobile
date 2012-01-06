@@ -412,7 +412,7 @@
         public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.EventSeries
+                                        where mm.OwnerType == ReferrerType.EventSeries
                                                 && mm.RelatedId == es.SeriesID
                                         select mm);
         }
@@ -421,7 +421,7 @@
         public IList<MultimediaObject> getMultimediaForEvent(Event ev)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.Event
+                                        where mm.OwnerType == ReferrerType.Event
                                                 && mm.RelatedId == ev.EventID
                                         select mm);
         }
@@ -430,7 +430,7 @@
         public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.Specimen
+                                        where mm.OwnerType == ReferrerType.Specimen
                                                 && mm.RelatedId == spec.CollectionSpecimenID
                                         select mm);
         }
@@ -438,7 +438,7 @@
         public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.IdentificationUnit
+                                        where mm.OwnerType == ReferrerType.IdentificationUnit
                                                 && mm.RelatedId == iu.UnitID
                                         select mm);
         }
@@ -455,7 +455,7 @@
 
         #region Terms
 
-        public IList<Term> getTerms(int source)
+        public IList<Term> getTerms(Service.TermList source)
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source

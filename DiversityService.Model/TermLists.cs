@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DiversityService.Model;
 
-namespace DiversityService
+
+namespace DiversityService.Model
 {
-    public enum TermLists
+    public enum TermList
     {
-        TaxonomicGroups = 0,      
+        TaxonomicGroups = 0,
+        RelationshipTypes,
+        Circumstances,
+        EventImageTypes
     }
 }

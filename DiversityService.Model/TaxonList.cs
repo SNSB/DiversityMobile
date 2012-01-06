@@ -4,14 +4,14 @@ using System.Net;
 
 namespace DiversityService.Model
 {
-    public class TermList
+    public class TaxonList
     {
-        public TermList(int id, string txt)
+        public TaxonList(int id, string txt)
         {
             ListID = id;
             DisplayText = txt;
         }
-        public TermList()
+        public TaxonList()
         {
 
         }

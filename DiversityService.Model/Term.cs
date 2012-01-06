@@ -9,7 +9,7 @@ namespace DiversityService.Model
         //Read-Only
 
         public string Code { get; set; }
-        public int SourceID { get; set; }
+        public TermList Source { get; set; }
         public string Description { get; set; }
         public string DisplayText { get; set; }
         public string ParentCode { get; set; }

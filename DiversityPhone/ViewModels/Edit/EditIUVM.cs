@@ -68,7 +68,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms((int) SourceID.TaxonomicGroup));
+                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(Service.TermList.TaxonomicGroups));
             }
         }
 
@@ -86,6 +86,30 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        private IList<Term> _RelationshipTypes = null;
+        public IList<Term> RelationshipTypes
+        {
+            get
+            {
+                return _RelationshipTypes ?? (_RelationshipTypes = _storage.getTerms(Service.TermList.RelationshipTypes));
+            }
+        }
+
+
+        private Term _SelectedRelationshipType;
+        public Term SelectedRelationshipType
+        {
+            get
+            {
+                return _SelectedRelationshipType;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SelectedRelationshipType, ref _SelectedRelationshipType, value);
+            }
+        }
+        
+
 
         private string _Description;
         public string Description
@@ -101,6 +125,45 @@ namespace DiversityPhone.ViewModels
         }
 
 
+        private string _Genus;
+        public string Genus
+        {
+            get
+            {
+                return _Genus;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Genus, ref _Genus, value);
+            }
+        }
+
+        
+        private string _Species;
+        public string Species
+        {
+            get
+            {
+                return _Species;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Species, ref _Species, value);
+            }
+        }
+
+        private ObservableAsPropertyHelper<IEnumerable<TaxonName>> _AvailableIdentifications;
+        public IEnumerable<TaxonName> AvailableIdentifications
+        {
+            get
+            {
+                return _AvailableIdentifications.Value;
+            }
+        }
+        
+        
+
+
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
         #endregion
@@ -110,13 +173,15 @@ namespace DiversityPhone.ViewModels
         public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
         {
             _messenger = messenger;
-            _storage = storage;           
-
-            var model = StateObservable                
-                .Select(s => UnitFromState(s));
-
+            _storage = storage;
 
             ToggleEditable = new ReactiveCommand();
+            Save = new ReactiveCommand(validationObservable());
+            Delete = new ReactiveCommand();
+
+            #region Update View
+            var model = StateObservable                
+                .Select(s => UnitFromState(s));            
             
 
             _isEditable = StateObservable
@@ -141,17 +206,19 @@ namespace DiversityPhone.ViewModels
             isObservation.BindTo(this, vm => vm.OnlyObserved);
 
             _IsObservation = isObservation                
-                .ToProperty(this, vm => vm.IsObservation);
+                .ToProperty(this, vm => vm.IsObservation);           
 
-
-
-            
-
-            model.Select(m => m.TaxonomicGroup)
+            model
+                .Select(m => m.TaxonomicGroup)
                 .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
                 .BindTo(this, vm => vm.SelectedTaxGroup);
 
-            Save = new ReactiveCommand(validationObservable());
+            model
+                .Select(m => m.RelationType)
+                .Select(reltype => RelationshipTypes.FirstOrDefault(rt => rt.Code == reltype))
+                .BindTo(this, vm => vm.SelectedRelationshipType);
+            #endregion
+
             _messenger.RegisterMessageSource(
                 Save
                 .Do(_ => updateModel())
@@ -223,6 +290,7 @@ namespace DiversityPhone.ViewModels
         private void updateModel()
         {
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
+            Model.RelationType = SelectedRelationshipType.Code;
         }
     }
 }

@@ -126,6 +126,7 @@
     <Compile Include="Model\PropertyName.cs" />
     <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\Specimen.cs" />
+    <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Service References\MapServiceReference\Reference.cs">
@@ -151,7 +152,6 @@
     <Compile Include="Services\Page.cs" />
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
-    <Compile Include="Utility\SourceID.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
@@ -461,13 +461,13 @@
     <None Include="Service References\Service\DiversityPhone.Service.PropertyName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\Service\DiversityPhone.Service.TaxonList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\Service\DiversityPhone.Service.TaxonName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Service\DiversityPhone.Service.Term.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\Service\DiversityPhone.Service.TermList.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\Service\DiversityService.wsdl" />
