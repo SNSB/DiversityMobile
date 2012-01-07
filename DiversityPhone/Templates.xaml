@@ -58,7 +58,14 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
-    
+
+    <DataTemplate x:Key="TaxonNameItemTemplate">
+        <StackPanel Orientation="Horizontal">            
+            <TextBlock Text="{Binding GenusOrSupragenic}"/>
+        </StackPanel>
+    </DataTemplate>
+
+
     <DataTemplate x:Key="GeoRefItemTemplate">
         <TextBlock>GEOREF</TextBlock>
     </DataTemplate>

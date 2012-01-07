@@ -185,7 +185,7 @@ namespace DiversityPhone.ViewModels
 
 
         public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger)
+            : base(messenger, false)
         {
             
             _storage = storage;
@@ -196,9 +196,13 @@ namespace DiversityPhone.ViewModels
 
 
             _AvailableIdentifications = Observable.CombineLatest(
-                this.ObservableForProperty(vm => vm.Genus),
-                this.ObservableForProperty(vm => vm.Species),
-                (g, s) => new { Genus = g.Value, Species = s.Value })
+                this.ObservableForProperty(vm => vm.Genus)
+                .Select(g => g.Value)
+                .StartWith(String.Empty),
+                this.ObservableForProperty(vm => vm.Species)
+                .Select(s => s.Value)
+                .StartWith(String.Empty),
+                (g, s) => new { Genus = g, Species = s })
                 //Don't allow short queries
                 .Where(query => query.Species.Length + query.Genus.Length > 3)
                 .Select(query =>

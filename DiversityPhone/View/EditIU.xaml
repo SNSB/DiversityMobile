@@ -32,8 +32,7 @@
            
             <toolkit:ListPicker ItemsSource="{Binding TaxonomicGroups}" 
                                 SelectedItem="{Binding SelectedTaxGroup, Mode=TwoWay}"
-                                ItemTemplate="{StaticResource TermListItemTemplate}"
-                                Name="_taxonListPicker"
+                                ItemTemplate="{StaticResource TermListItemTemplate}"                                
                                 FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
                                 Header="Taxonomic Group"
                                 FullModeHeader="Taxonomic Group"/>
@@ -43,15 +42,21 @@
 
             <TextBlock Text="Species"/>
             <TextBox Text="{Binding Species, Mode=TwoWay}" />
-                        
-            <ListBox ItemsSource="{Binding IdentificationCandidates}" />
+
+            <ListBox ItemsSource="{Binding AvailableIdentifications}"
+                     
+                     ItemTemplate="{StaticResource TaxonNameItemTemplate}"/>
 
             <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
-                <TextBlock Text="Relationship Type"/>
-                <TextBox Text="{Binding RelationshipType, Mode=TwoWay}" />
+                <toolkit:ListPicker ItemsSource="{Binding RelationshipTypes}" 
+                                SelectedItem="{Binding SelectedRelationshipType, Mode=TwoWay}"
+                                ItemTemplate="{StaticResource TermListItemTemplate}"                                
+                                FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
+                                Header="Relationship Type"
+                                FullModeHeader="Relationship Type"/>
             </StackPanel>
-            
-            <CheckBox IsChecked="{Binding OnlyObserved}" Content="Only Observed" Visibility="{Binding IsNoObservation}"/>
+
+            <CheckBox IsChecked="{Binding OnlyObserved}" Content="Only Observed" Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
             
             <ListBox ItemsSource="{Binding Circumstances}" SelectedItem="{Binding Circumstance, Mode=TwoWay}"/>
         </StackPanel>
