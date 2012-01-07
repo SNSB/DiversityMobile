@@ -11,7 +11,7 @@
 
     public class IdentificationUnitVM : ElementVMBase<IdentificationUnit>
     {        
-        public override string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.LastIdentificationCache ?? ""); } }
+        public override string Description { get { return string.Format("[{0}] {1}", Model.UnitID, Model.WorkingName ?? ""); } }
         public override Icon Icon { get { return Icon.IdentificationUnit; } }
 
         public IList<IdentificationUnitVM> SubUnits { get; private set; }

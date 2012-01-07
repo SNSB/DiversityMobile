@@ -49,11 +49,8 @@ namespace DiversityPhone.Model
 
         //Identification
         [Column]
-        public string LastIdentificationCache { get; set; }
-        [Column]
-        public string FamilyCache { get; set; }
-        [Column]
-        public string OrderCache { get; set; }
+        public string WorkingName { get; set; }
+       
         [Column]
         public string IdentificationUri { get; set; }
 

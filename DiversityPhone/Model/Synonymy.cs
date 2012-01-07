@@ -13,7 +13,7 @@ namespace DiversityPhone.Model
 {
     public enum Synonymy
     {
-        WorkinName,
+        WorkingName,
         Accepted,
         Synonym
     }

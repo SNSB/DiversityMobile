@@ -36,7 +36,7 @@ namespace DiversityPhone.Model
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
         /// </summary>
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = false)]
         public bool? IsModified { get; set; }
 
         [Column]
