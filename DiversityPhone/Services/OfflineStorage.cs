@@ -503,10 +503,19 @@
             }
         }
 
-        public IList<TaxonName> getTaxonNames(int tableID)
+        private IList<TaxonName> getTaxonNames(int tableID)
         {
             return cachedQuery(TaxonName.Operations,
                 ctx => getTaxonTable(ctx, tableID));
+        }
+
+        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => from tn in getTaxonTable(ctx, tableID)
+                        where tn.GenusOrSupragenic.Contains(genus)
+                        && tn.SpeciesEpithet.Contains(species)
+                        select tn);
         }
 
         private int getTaxonTableIDForGroup(Term taxonGroup)
@@ -535,6 +544,24 @@
             else
                 return getTaxonNames(tableID);
         }
+
+        public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
+        {
+            int tableID = getTaxonTableIDForGroup(taxonGroup);
+            genus = genus ?? "";
+            species = species ?? "";
+
+            if (tableID == -1)
+            {
+                return new List<TaxonName>();
+                //TODO Logging?
+            }
+            else
+            {
+                return getTaxonNames(tableID, genus, species);
+            }
+        }
+
 
         #endregion
 

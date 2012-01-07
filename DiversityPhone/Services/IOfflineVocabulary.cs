@@ -19,9 +19,9 @@
         void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);
         //IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
 
-        void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID);
-        IList<TaxonName> getTaxonNames(int tableID);
+        void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID);        
         IList<TaxonName> getTaxonNames(Term taxGroup);
+        IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
 
         void addPropertyNames(IEnumerable<PropertyName> properties);
         IList<PropertyName> getPropertyNames(Property prop);
