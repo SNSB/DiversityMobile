@@ -58,4 +58,8 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
+    
+    <DataTemplate x:Key="GeoRefItemTemplate">
+        <TextBlock>GEOREF</TextBlock>
+    </DataTemplate>
 </ResourceDictionary>
