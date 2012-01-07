@@ -31,10 +31,23 @@ namespace DiversityPhone.ViewModels
         protected abstract T ModelFromState(PageState s);
 
 
+        /// <summary>
+        /// Uses the default setting of doing Refreshing on the model.
+        /// </summary>
+        /// <param name="messenger"></param>
         public ElementPageViewModel(IMessageBus messenger)
+            : this (messenger, true)
+        {
+
+        }
+
+        /// <param name="messenger">Messenger</param>
+        /// <param name="refreshModel">Determines whether or not the Model is updated, when the Page is refreshed</param>
+        public ElementPageViewModel(IMessageBus messenger, bool refreshModel)
             : base(messenger)
         {
-            var model = StateObservable
+            var state = (refreshModel) ? StateObservable : DistinctStateObservable;
+            var model = state
                .Select(s => ModelFromState(s))
                .Publish();
             ValidModel = model.Where(m => m != null);
