@@ -11,10 +11,9 @@ using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditIUVM : PageViewModel
+    public class EditIUVM : ElementPageViewModel<IdentificationUnit>
     {
-        #region Services
-        IMessageBus _messenger;
+        #region Services        
         IOfflineStorage _storage;
         #endregion
 
@@ -160,6 +159,21 @@ namespace DiversityPhone.ViewModels
                 return _AvailableIdentifications.Value;
             }
         }
+
+
+        private TaxonName _CurrentIdentification;
+        public TaxonName CurrentIdentification
+        {
+            get
+            {
+                return _CurrentIdentification;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentIdentification, ref _CurrentIdentification, value);
+            }
+        }
+        
         
         
 
@@ -171,19 +185,40 @@ namespace DiversityPhone.ViewModels
 
 
         public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {
-            _messenger = messenger;
+            
             _storage = storage;
 
             ToggleEditable = new ReactiveCommand();
             Save = new ReactiveCommand(validationObservable());
             Delete = new ReactiveCommand();
 
-            #region Update View
-            var model = StateObservable                
-                .Select(s => UnitFromState(s));            
-            
 
+            _AvailableIdentifications = Observable.CombineLatest(
+                this.ObservableForProperty(vm => vm.Genus),
+                this.ObservableForProperty(vm => vm.Species),
+                (g, s) => new { Genus = g.Value, Species = s.Value })
+                //Don't allow short queries
+                .Where(query => query.Species.Length + query.Genus.Length > 3)
+                .Select(query =>
+                    _storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species)
+                    //Append WorkingName as Identification
+                    .Concat(
+                    new[] { 
+                        new TaxonName() 
+                        { 
+                            GenusOrSupragenic = query.Genus, 
+                            SpeciesEpithet = query.Species, 
+                            Synonymy = DiversityPhone.Model.Synonymy.WorkingName 
+                        } 
+                    }))
+                .ToProperty(this, vm => vm.AvailableIdentifications);
+
+                                        
+
+
+            #region Update View           
             _isEditable = StateObservable
                 .Select(s => s.Context == null) //Newly created Units are immediately editable
                 .Merge(
@@ -191,14 +226,14 @@ namespace DiversityPhone.ViewModels
                 )
                 .ToProperty(this, vm => vm.Editable);
 
-            _Model = model.ToProperty(this, x => x.Model);
+            _Model = ValidModel.ToProperty(this, x => x.Model);
                          
-            _IsToplevel = model
+            _IsToplevel = ValidModel
                             .Select(m => m.RelatedUnitID == null)
                             .ToProperty(this, x => x.IsToplevel);
 
             var isObservation =
-                model
+                ValidModel
                 .Select(m => _storage.getSpecimenByID(m.SpecimenID))
                 .Where(spec => spec != null)
                 .Select(spec => spec.IsObservation());
@@ -206,39 +241,43 @@ namespace DiversityPhone.ViewModels
             isObservation.BindTo(this, vm => vm.OnlyObserved);
 
             _IsObservation = isObservation                
-                .ToProperty(this, vm => vm.IsObservation);           
+                .ToProperty(this, vm => vm.IsObservation);  
+         
 
-            model
+
+            ValidModel
                 .Select(m => m.TaxonomicGroup)
                 .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
                 .BindTo(this, vm => vm.SelectedTaxGroup);
 
-            model
+            ValidModel
                 .Select(m => m.RelationType)
                 .Select(reltype => RelationshipTypes.FirstOrDefault(rt => rt.Code == reltype))
                 .BindTo(this, vm => vm.SelectedRelationshipType);
+
+
             #endregion
 
-            _messenger.RegisterMessageSource(
+            Messenger.RegisterMessageSource(
                 Save
                 .Do(_ => updateModel())
                 .Select(_ => Model),
                 MessageContracts.SAVE);
 
-            _messenger.RegisterMessageSource(
+            Messenger.RegisterMessageSource(
                 Delete
                 .Select(_ => Model),
                 MessageContracts.DELETE);                
 
-            _messenger.RegisterMessageSource(
+            Messenger.RegisterMessageSource(
                 Delete
-                .Merge(Save)
+                .Merge(Save)                
                 .Select(_ => Message.NavigateBack)
                 );
-            
+
         }       
 
-        private IdentificationUnit UnitFromState(PageState state)
+        protected override IdentificationUnit ModelFromState(PageState state)
         {
             IdentificationUnit result = null;
             if (state.Context != null)
@@ -249,7 +288,7 @@ namespace DiversityPhone.ViewModels
                     result = _storage.getIdentificationUnitByID(id);
                 }
             }            
-            if (result != null && state.ReferrerType != ReferrerType.None)
+            if (result == null && state.ReferrerType != ReferrerType.None)
             {
                 result = new IdentificationUnit();
                 
@@ -265,7 +304,7 @@ namespace DiversityPhone.ViewModels
                 {
                     int id;
                     IdentificationUnit parent;
-                    if (int.TryParse(state.Context, out id) 
+                    if (int.TryParse(state.Referrer, out id) 
                         && (parent = _storage.getIdentificationUnitByID(id)) != null)
                     {
                         result.SpecimenID = parent.SpecimenID;

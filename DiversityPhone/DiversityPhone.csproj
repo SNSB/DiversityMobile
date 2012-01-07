@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
+    <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\Utility\ViewLMVM.cs" />

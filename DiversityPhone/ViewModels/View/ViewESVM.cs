@@ -9,13 +9,11 @@
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
 
-    public class ViewESVM : PageViewModel
+    public class ViewESVM : ElementPageViewModel<EventSeries>
     {
         IList<IDisposable> _subscriptions;
 
-        #region Services
-
-        IMessageBus _messenger;
+        #region Services       
         IOfflineStorage _storage;
         #endregion
 
@@ -35,27 +33,18 @@
 
 
         public ViewESVM(IMessageBus messenger, Services.IOfflineStorage storage)
-        {
-            _messenger = messenger;
-            _storage = storage;
-
-
-            var rawModel = StateObservable
-                .Select(s => EventSeriesFromContext(s.Context));
-            var modelDeleted = rawModel.Where(es => es == null);
-            var validModel = rawModel.Where(es => es != null);
-
-            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
-
-
-            _Current = validModel
-                .Select(es => new EventSeriesVM(_messenger, es))
+            : base(messenger)
+        {           
+            _storage = storage; 
+            
+            _Current = ValidModel
+                .Select(es => new EventSeriesVM(Messenger, es))
                 .ToProperty(this, x => x.Current);
 
-            _EventList = validModel
+            _EventList = ValidModel
                 .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
                     _storage.getEventsForSeries(es),
-                    (model) => new EventVM(_messenger, model)
+                    (model) => new EventVM(Messenger, model)
                 ) as IList<EventVM>)
                 .ToProperty(this, x => x.EventList);
 
@@ -64,22 +53,22 @@
             var newEventMessageSource =
                 AddEvent
                 .Timestamp()
-                .CombineLatest(validModel, (a, b) => new { Click = a, Model = b })
+                .CombineLatest(ValidModel, (a, b) => new { Click = a, Model = b })
                 .DistinctUntilChanged(pair => pair.Click.Timestamp)
                 .Select(pair => new NavigationMessage(Page.EditEV, null, ReferrerType.EventSeries,
                               (EventSeries.isNoEventSeries(pair.Model)) ? null : pair.Model.SeriesID.ToString()
                     ));
-            _messenger.RegisterMessageSource(newEventMessageSource);
+            Messenger.RegisterMessageSource(newEventMessageSource);
 
 
             FilterEvents = new ReactiveCommand();
         }
-        private EventSeries EventSeriesFromContext(string ctx)
+        protected override EventSeries ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getEventSeriesByID(id);
                 }

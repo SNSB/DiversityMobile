@@ -15,8 +15,7 @@
     {
         private IList<IDisposable> _subscriptions;
 
-        #region Services
-        private IMessageBus _messenger;
+        #region Services        
         private IOfflineStorage _storage;
         private Svc.IDiversityService _repository;
 
@@ -51,7 +50,7 @@
             get
             {
                 if (_NoEventSeries == null)
-                    _NoEventSeries = new EventSeriesVM(_messenger, EventSeries.NoEventSeries);
+                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries);
 
                 return _NoEventSeries;
             }
@@ -59,8 +58,8 @@
         #endregion
 
         public HomeVM(IMessageBus messenger, IOfflineStorage storage, Svc.IDiversityService repo)
-        {
-            _messenger = messenger;
+            : base(messenger)
+        {            
             _storage = storage;
             _repository = repo;
 
@@ -71,7 +70,7 @@
             _subscriptions = new List<IDisposable>()
             {
                 (Settings = new ReactiveCommand())
-                    .Subscribe(_ => _messenger.SendMessage<Page>(Page.Settings)),    
+                    .Subscribe(_ => Messenger.SendMessage<Page>(Page.Settings)),    
                 
                 (Add = new ReactiveCommand())
                     .Subscribe(_ => addSeries()),
@@ -140,7 +139,7 @@
         {
             SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
                 _storage.getAllEventSeries(),
-                (model) => new EventSeriesVM(_messenger,model)
+                (model) => new EventSeriesVM(Messenger,model)
                 );
         }
 
@@ -152,12 +151,12 @@
 
         private void addSeries()
         {
-            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES,null));
+            Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES,null));
         }
 
         private void loadMapPage()
         {
-            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.LoadedMaps, null));
+            Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.LoadedMaps, null));
         }
 
     }

@@ -9,7 +9,7 @@
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
 
-    public class ViewCSVM : PageViewModel
+    public class ViewCSVM : ElementPageViewModel<Specimen>
     {
         public enum Pivots
         {
@@ -18,7 +18,7 @@
         }       
 
         #region Services
-        IMessageBus _messenger;
+        
         IOfflineStorage _storage;
         #endregion
 
@@ -52,28 +52,23 @@
 
 
         public ViewCSVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {
-            _messenger = messenger;
+            
             _storage = storage;
 
-            Add = new ReactiveCommand();
+            Add = new ReactiveCommand();         
+                 
 
-            var rawModel = StateObservable
-                .Select(s => SpecimenFromContext(s.Context));
-            var modelDeleted = rawModel.Where(spec => spec == null);
-            var validModel = rawModel.Where(spec => spec != null);
-
-            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
-
-            _Current = validModel.Select(cs => new SpecimenVM(_messenger, cs))
+            _Current = ValidModel.Select(cs => new SpecimenVM(Messenger, cs))
                                 .ToProperty(this, x => x.Current);
 
 
-            _UnitList = validModel
+            _UnitList = ValidModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
 
-            _messenger.RegisterMessageSource(
+            Messenger.RegisterMessageSource(
                 Add
                 .Select(_ =>
                 {
@@ -96,15 +91,15 @@
             return IdentificationUnitVM.getTwoLevelVMFromModelList(
                  _storage.getTopLevelIUForSpecimen(spec),
                  iu => _storage.getSubUnits(iu),
-                 _messenger);
+                 Messenger);
         }
 
-        private Specimen SpecimenFromContext(string ctx)
+        protected override Specimen ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getSpecimenByID(id);
                 }

@@ -22,8 +22,7 @@ namespace DiversityPhone.ViewModels
     {
         
 
-        #region Services
-        private IMessageBus _messenger;
+        #region Services        
         IOfflineStorage _storage;
         #endregion
 
@@ -78,9 +77,10 @@ namespace DiversityPhone.ViewModels
 
 
         public EditPropertyVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {
 
-            _messenger = messenger;
+            
             _storage = storage;
 
             _Properties = StateObservable
@@ -102,8 +102,8 @@ namespace DiversityPhone.ViewModels
                             PropertyUri = SelectedPropertyName.PropertyUri
                         }
                     );
-            _messenger.RegisterMessageSource(saveMessageSource,MessageContracts.SAVE);
-            _messenger.RegisterMessageSource(saveMessageSource.Select(_=>Message.NavigateBack));
+            Messenger.RegisterMessageSource(saveMessageSource,MessageContracts.SAVE);
+            Messenger.RegisterMessageSource(saveMessageSource.Select(_=>Message.NavigateBack));
             
         }
 

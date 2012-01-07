@@ -23,8 +23,7 @@ namespace DiversityPhone.ViewModels
             Multimedia
         }        
 
-        #region Services
-        IMessageBus _messenger;
+        #region Services        
         IOfflineStorage _storage;
         #endregion
 
@@ -58,8 +57,9 @@ namespace DiversityPhone.ViewModels
         
 
         public ViewIUVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {
-            _messenger = messenger;
+            
             _storage = storage;     
        
             var rawModel = 
@@ -70,7 +70,7 @@ namespace DiversityPhone.ViewModels
                 rawModel
                 .Where(iu=> iu == null)
                 .Select(_ => Message.NavigateBack);
-            _messenger.RegisterMessageSource(unitDeletedMessageSource);
+            Messenger.RegisterMessageSource(unitDeletedMessageSource);
 
             var validModel =
                 rawModel
@@ -78,7 +78,7 @@ namespace DiversityPhone.ViewModels
             
 
             _Current = validModel
-                .Select(iu => new IdentificationUnitVM(_messenger, iu, null))
+                .Select(iu => new IdentificationUnitVM(Messenger, iu, null))
                 .ToProperty(this, x => x.Current);
             _Subunits = validModel
                 .Select(iu => getSubUnits(iu))
@@ -104,7 +104,7 @@ namespace DiversityPhone.ViewModels
                         }
                     })
                 .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
-            _messenger.RegisterMessageSource(addMessageSource);         
+            Messenger.RegisterMessageSource(addMessageSource);         
         }
 
         private IdentificationUnit UnitFromContext(string ctx)
@@ -124,7 +124,7 @@ namespace DiversityPhone.ViewModels
         {
             return IdentificationUnitVM.getTwoLevelVMFromModelList(_storage.getSubUnits(iu),
                 iu2 => _storage.getSubUnits(iu2),
-                _messenger);                
+                Messenger);                
         }
     }
 }
