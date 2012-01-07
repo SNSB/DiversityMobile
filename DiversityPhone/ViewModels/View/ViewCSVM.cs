@@ -23,7 +23,7 @@
         #endregion
 
         #region Commands
-        public ReactiveCommand AddIdentificationUnit { get; private set; }
+        public ReactiveCommand Add { get; private set; }
         #endregion
 
         #region Properties       
@@ -56,9 +56,11 @@
             _messenger = messenger;
             _storage = storage;
 
+            Add = new ReactiveCommand();
+
             var rawModel = StateObservable
                 .Select(s => SpecimenFromContext(s.Context));
-            var modelDeleted = rawModel.Select(spec => spec == null);
+            var modelDeleted = rawModel.Where(spec => spec == null);
             var validModel = rawModel.Where(spec => spec != null);
 
             _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
@@ -70,6 +72,22 @@
             _UnitList = validModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
+
+            _messenger.RegisterMessageSource(
+                Add
+                .Select(_ =>
+                {
+                    switch (SelectedPivot)
+                    {
+                        case Pivots.Multimedia:
+                            return Page.EditMMO;
+                        case Pivots.Units:
+                        default:
+                            return Page.EditIU;
+                    }
+                })
+                .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+                );
             
         }
 
