@@ -13,7 +13,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=EditIU}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=EditIU}" d:DataContext="{d:DesignData /SampleData/EditIUVMSampleData.xaml}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -28,7 +28,8 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">                    
+		<ScrollViewer Grid.Row="1">
+        <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">                    
            
             <toolkit:ListPicker ItemsSource="{Binding TaxonomicGroups}" 
                                 SelectedItem="{Binding SelectedTaxGroup, Mode=TwoWay}"
@@ -42,10 +43,13 @@
 
             <TextBlock Text="Species"/>
             <TextBox Text="{Binding Species, Mode=TwoWay}" />
-
-            <ListBox ItemsSource="{Binding AvailableIdentifications}"
-                     
-                     ItemTemplate="{StaticResource TaxonNameItemTemplate}"/>
+            <ListBox BorderThickness="3"  ItemsSource="{Binding AvailableIdentifications}"                     
+                     ItemTemplate="{StaticResource TaxonNameItemTemplate}"
+					 Style="{StaticResource ListBoxWhiteStyle}" >
+            	<ListBox.BorderBrush>
+            		<SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
+            	</ListBox.BorderBrush>
+            </ListBox>
 
             <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
                 <toolkit:ListPicker ItemsSource="{Binding RelationshipTypes}" 
@@ -56,10 +60,14 @@
                                 FullModeHeader="Relationship Type"/>
             </StackPanel>
 
-            <CheckBox IsChecked="{Binding OnlyObserved}" Content="Only Observed" Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
+            <CheckBox IsChecked="{Binding OnlyObserved}" 
+					  Content="Only Observed" 
+					  Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
             
-            <ListBox ItemsSource="{Binding Circumstances}" SelectedItem="{Binding Circumstance, Mode=TwoWay}"/>
+            <ListBox ItemsSource="{Binding Circumstances}" 
+                     SelectedItem="{Binding Circumstance, Mode=TwoWay}"/>
         </StackPanel>
+		</ScrollViewer>
     </Grid>
  
    <phone:PhoneApplicationPage.ApplicationBar>

@@ -59,10 +59,9 @@
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="TaxonNameItemTemplate">
-        <StackPanel Orientation="Horizontal">            
-            <TextBlock Text="{Binding GenusOrSupragenic}"/>
-        </StackPanel>
+    <DataTemplate x:Key="TaxonNameItemTemplate">         
+            <TextBlock Text="{Binding GenusOrSupragenic}"
+					   Foreground="{Binding Synonymy, Converter={StaticResource SynonymyToColor}}"/>            	            
     </DataTemplate>
 
 

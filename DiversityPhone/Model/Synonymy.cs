@@ -11,9 +11,9 @@ using System.Windows.Shapes;
 
 namespace DiversityPhone.Model
 {
-    public enum Synonymy
+    public enum Synonymy : int
     {
-        WorkingName,
+        WorkingName = 0,
         Accepted,
         Synonym
     }
