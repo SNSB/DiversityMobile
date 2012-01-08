@@ -6,9 +6,9 @@ using System.Windows.Media;
 namespace DiversityPhone.View
 {
     
-    public class IconPathConverter : IValueConverter
+    public class IconToImageConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public virtual object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value == null)
                 return null;
@@ -25,6 +25,7 @@ namespace DiversityPhone.View
                     return "/Images/SNSBIcons/Event_80.png";
                 case Icon.Event:
                     return "/Images/SNSBIcons/Event_80.png";
+                    
                    
                 
                 case Icon.Observation:

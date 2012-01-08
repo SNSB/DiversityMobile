@@ -46,15 +46,15 @@ Species="Sociis taciti ultricies sit eget">
 		<ReactiveUI_Xaml:ReactiveCommand/>
 	</DiversityPhone_ViewModels:EditIUVM.Save>
 	<!--DiversityPhone_ViewModels:EditIUVM.SelectedTaxGroup>
-		<DiversityPhone_Model:Term Code="Elit massa suscipit venenatis" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="alga" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
 	</DiversityPhone_ViewModels:EditIUVM.SelectedTaxGroup-->
 	<DiversityPhone_ViewModels:EditIUVM.TaxonomicGroups>
-		<DiversityPhone_Model:Term Code="Elit massa suscipit venenatis" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
-		<DiversityPhone_Model:Term Code="Turpis nam vulputate sed" Description="Aliquam adipiscing parturient" DisplayText="Vestibulum vestibulum dis" LastUsed="01/07/2012 19:01:49" ParentCode="Integer curabitur enim erat est" SourceID="RelationshipTypes"/>
-		<DiversityPhone_Model:Term Code="Adipiscing parturient neque quisque eros" Description="Hac varius vivamus leo netus" DisplayText="Ultrices vehicula volutpat vestibulum mus" LastUsed="01/07/2012 19:01:49" ParentCode="Nulla aliquam" SourceID="EventImageTypes"/>
-		<DiversityPhone_Model:Term Code="Nibh nec maecenas" Description="Aliquet praesent porta" DisplayText="Nisi non nisl purus risus" LastUsed="01/07/2012 19:01:49" ParentCode="Blandit nunc commodo accumsan conubia" SourceID="Circumstances"/>
-		<DiversityPhone_Model:Term Code="Velit per cubilia" Description="Sed dapibus odio aenean" DisplayText="Sem egestas" LastUsed="01/07/2012 19:01:49" ParentCode="Bibendum phasellus vestibulum vitae class" SourceID="RelationshipTypes"/>
-		<DiversityPhone_Model:Term Code="Adipiscing parturient consequat sit euismod" Description="Orci mauris feugiat pede" DisplayText="Dictumst quam nullam vestibulum eleifend" LastUsed="01/07/2012 19:01:49" ParentCode="Vel vestibulum convallis dignissim" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="alga" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="bird" Description="Aliquam adipiscing parturient" DisplayText="Vestibulum vestibulum dis" LastUsed="01/07/2012 19:01:49" ParentCode="Integer curabitur enim erat est" SourceID="RelationshipTypes"/>
+		<DiversityPhone_Model:Term Code="other" Description="Hac varius vivamus leo netus" DisplayText="Ultrices vehicula volutpat vestibulum mus" LastUsed="01/07/2012 19:01:49" ParentCode="Nulla aliquam" SourceID="EventImageTypes"/>
+		<DiversityPhone_Model:Term Code="cnidaria" Description="Aliquet praesent porta" DisplayText="Nisi non nisl purus risus" LastUsed="01/07/2012 19:01:49" ParentCode="Blandit nunc commodo accumsan conubia" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="soil" Description="Sed dapibus odio aenean" DisplayText="Sem egestas" LastUsed="01/07/2012 19:01:49" ParentCode="Bibendum phasellus vestibulum vitae class" SourceID="RelationshipTypes"/>
+		<DiversityPhone_Model:Term Code="unknown" Description="Orci mauris feugiat pede" DisplayText="Dictumst quam nullam vestibulum eleifend" LastUsed="01/07/2012 19:01:49" ParentCode="Vel vestibulum convallis dignissim" SourceID="TaxonomicGroups"/>
 		<DiversityPhone_Model:Term Code="Adipiscing quis curae" Description="Parturient gravida urna" DisplayText="Nam vestibulum facilisi faucibus vestibulum" LastUsed="01/07/2012 19:01:49" ParentCode="Adipiscing iaculis donec elementum facilisis" SourceID="TaxonomicGroups"/>
 		<DiversityPhone_Model:Term Code="Etiam aptent" Description="Fermentum sed" DisplayText="Parturient lacinia dis fringilla habitasse" LastUsed="01/07/2012 19:01:49" ParentCode="Vestibulum vestibulum" SourceID="Circumstances"/>
 		<DiversityPhone_Model:Term Code="Cras duis habitant est laoreet" Description="Hendrerit adipiscing parturient hac" DisplayText="Vestibulum leo fusce natoque mus" LastUsed="01/07/2012 19:01:49" ParentCode="Inceptos auctor interdum posuere lorem" SourceID="EventImageTypes"/>
