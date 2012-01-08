@@ -203,17 +203,22 @@ namespace DiversityPhone.ViewModels
                 .Select(s => s.Value)
                 .StartWith(String.Empty),
                 (g, s) => new { Genus = g, Species = s })
-                //Don't allow short queries
-                .Where(query => query.Species.Length + query.Genus.Length > 3)
                 .Select(query =>
-                    _storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species)
+                    {
+                        //Don't allow short queries
+                        if (query.Species.Length + query.Genus.Length > 3)
+                            return _storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
+                        else
+                            return Enumerable.Empty<TaxonName>();
+                    })
+                .Select( candidates =>                     
                     //Append WorkingName as Identification
-                    .Concat(
+                    candidates.Concat(
                     new[] { 
                         new TaxonName() 
                         { 
-                            GenusOrSupragenic = query.Genus, 
-                            SpeciesEpithet = query.Species, 
+                            GenusOrSupragenic = Genus, 
+                            SpeciesEpithet = Species, 
                             Synonymy = DiversityPhone.Model.Synonymy.WorkingName 
                         } 
                     }))

@@ -521,7 +521,8 @@
         private int getTaxonTableIDForGroup(Term taxonGroup)
         {
             int id = -1;
-            withDataContext(ctx =>
+            if(taxonGroup != null)
+                withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.taxonSelection
                                      where a.tableName == taxonGroup.Code && a.isSelected
