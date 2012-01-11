@@ -161,12 +161,10 @@
                   ev
               );
             //Now EventID is set even for new Events
-            Specimen obs = new Specimen()
-            {
-                AccesionNumber = null,
-                CollectionEventID = ev.EventID,
-            };
-            addOrUpdateSpecimen(obs);
+            Specimen observation = new Specimen().MakeObservation();
+            observation.CollectionEventID = ev.EventID;
+            
+            addOrUpdateSpecimen(observation);
         }
         #endregion
 
@@ -414,7 +412,7 @@
         public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.EventSeries
+                                        where mm.OwnerType == ReferrerType.EventSeries
                                                 && mm.RelatedId == es.SeriesID
                                         select mm);
         }
@@ -423,7 +421,7 @@
         public IList<MultimediaObject> getMultimediaForEvent(Event ev)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.Event
+                                        where mm.OwnerType == ReferrerType.Event
                                                 && mm.RelatedId == ev.EventID
                                         select mm);
         }
@@ -432,7 +430,7 @@
         public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.Specimen
+                                        where mm.OwnerType == ReferrerType.Specimen
                                                 && mm.RelatedId == spec.CollectionSpecimenID
                                         select mm);
         }
@@ -440,7 +438,7 @@
         public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
         {
             return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.SourceId == (int)SourceID.IdentificationUnit
+                                        where mm.OwnerType == ReferrerType.IdentificationUnit
                                                 && mm.RelatedId == iu.UnitID
                                         select mm);
         }
@@ -457,7 +455,7 @@
 
         #region Terms
 
-        public IList<Term> getTerms(int source)
+        public IList<Term> getTerms(Service.TermList source)
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source
@@ -505,16 +503,26 @@
             }
         }
 
-        public IList<TaxonName> getTaxonNames(int tableID)
+        private IList<TaxonName> getTaxonNames(int tableID)
         {
             return cachedQuery(TaxonName.Operations,
                 ctx => getTaxonTable(ctx, tableID));
         }
 
+        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => from tn in getTaxonTable(ctx, tableID)
+                        where tn.GenusOrSupragenic.Contains(genus)
+                        && tn.SpeciesEpithet.Contains(species)
+                        select tn);
+        }
+
         private int getTaxonTableIDForGroup(Term taxonGroup)
         {
             int id = -1;
-            withDataContext(ctx =>
+            if(taxonGroup != null)
+                withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.taxonSelection
                                      where a.tableName == taxonGroup.Code && a.isSelected
@@ -537,6 +545,24 @@
             else
                 return getTaxonNames(tableID);
         }
+
+        public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
+        {
+            int tableID = getTaxonTableIDForGroup(taxonGroup);
+            genus = genus ?? "";
+            species = species ?? "";
+
+            if (tableID == -1)
+            {
+                return new List<TaxonName>();
+                //TODO Logging?
+            }
+            else
+            {
+                return getTaxonNames(tableID, genus, species);
+            }
+        }
+
 
         #endregion
 
@@ -603,7 +629,7 @@
             {
                 ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
                 ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccesionNumber = "CS" });
+                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
                 ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
                 int id = 1;
                 recSample(0, 0, ref id, ctx);

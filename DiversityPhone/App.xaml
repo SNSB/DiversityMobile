@@ -16,7 +16,9 @@
     		</ResourceDictionary.MergedDictionaries>
     		<local:ViewModelLocator x:Key="Locator" />
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
-            <vw:IconPathConverter x:Key="IconPathConverter"/>
+            <vw:IconToImageConverter x:Key="IconPathConverter"/>
+            <vw:TermToImageConverter x:Key="TermToImage"/>
+			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
             <Style x:Key="ItemButtonStyle" TargetType="Button">
                 <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>

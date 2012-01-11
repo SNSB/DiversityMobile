@@ -15,7 +15,7 @@
         public int CollectionEventID { get; set; }
 
         [Column]
-        public string AccesionNumber { get; set; }
+        public string AccessionNumber { get; set; }
 
        
         /// <summary>
@@ -31,7 +31,7 @@
 
          public Specimen()
         {
-            this.AccesionNumber = null;
+            this.AccessionNumber = null;
             this.LogUpdatedWhen = DateTime.Now;
             this.IsModified = null;
         }
@@ -57,6 +57,20 @@
                           {
                               spec.CollectionSpecimenID = QueryOperations<Specimen>.FindFreeIntKey(q, row => row.CollectionSpecimenID);
                           });
+        }       
+    }
+
+    public static class SpecimenMixin
+    {
+        public static bool IsObservation(this Specimen spec)
+        {
+            return spec.AccessionNumber == null;
+        }
+
+        public static Specimen MakeObservation(this Specimen spec)
+        {
+            spec.AccessionNumber = null;
+            return spec;
         }
     }
 }

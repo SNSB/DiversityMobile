@@ -9,7 +9,7 @@
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
 
-    public class ViewCSVM : PageViewModel
+    public class ViewCSVM : ElementPageViewModel<Specimen>
     {
         public enum Pivots
         {
@@ -18,12 +18,12 @@
         }       
 
         #region Services
-        IMessageBus _messenger;
+        
         IOfflineStorage _storage;
         #endregion
 
         #region Commands
-        public ReactiveCommand AddIdentificationUnit { get; private set; }
+        public ReactiveCommand Add { get; private set; }
         #endregion
 
         #region Properties       
@@ -52,24 +52,37 @@
 
 
         public ViewCSVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {
-            _messenger = messenger;
+            
             _storage = storage;
 
-            var rawModel = StateObservable
-                .Select(s => SpecimenFromContext(s.Context));
-            var modelDeleted = rawModel.Select(spec => spec == null);
-            var validModel = rawModel.Where(spec => spec != null);
+            Add = new ReactiveCommand();         
+                 
 
-            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
-
-            _Current = validModel.Select(cs => new SpecimenVM(_messenger, cs))
+            _Current = ValidModel.Select(cs => new SpecimenVM(Messenger, cs))
                                 .ToProperty(this, x => x.Current);
 
 
-            _UnitList = validModel
+            _UnitList = ValidModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
+
+            Messenger.RegisterMessageSource(
+                Add
+                .Select(_ =>
+                {
+                    switch (SelectedPivot)
+                    {
+                        case Pivots.Multimedia:
+                            return Page.EditMMO;
+                        case Pivots.Units:
+                        default:
+                            return Page.EditIU;
+                    }
+                })
+                .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+                );
             
         }
 
@@ -78,15 +91,15 @@
             return IdentificationUnitVM.getTwoLevelVMFromModelList(
                  _storage.getTopLevelIUForSpecimen(spec),
                  iu => _storage.getSubUnits(iu),
-                 _messenger);
+                 Messenger);
         }
 
-        private Specimen SpecimenFromContext(string ctx)
+        protected override Specimen ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getSpecimenByID(id);
                 }

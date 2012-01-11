@@ -1,0 +1,66 @@
+﻿<DiversityPhone_ViewModels:EditIUVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" 
+Description="Nulla tempus nam vestibulum vestibulum" 
+Editable="True" 
+Genus="Sed lobortis nascetur pharetra placerat" 
+IsObservation="False" 
+IsToplevel="False" 
+OnlyObserved="True" 
+Species="Sociis taciti ultricies sit eget">
+	<DiversityPhone_ViewModels:EditIUVM.AvailableIdentifications>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Class curabitur nam" InfraspecificEpithet="Aliquam maecenas sed aenean vestibulum" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Accepted" SpeciesEpithet="Curae donec" TaxonNameSinAuth="Duis dis est hac" TaxonNameCache="Praesent etiam phasellus cras" URI="Mauris integer"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Nunc consequat leo" InfraspecificEpithet="Mus quisque adipiscing nec nullam" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Accepted" SpeciesEpithet="Vivamus aliquam aliquet" TaxonNameSinAuth="Commodo accumsan bibendum fusce" TaxonNameCache="Amet blandit parturient" URI="Lorem morbi non"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Per nulla aptent convallis ante" InfraspecificEpithet="Proin arcu" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Accepted" SpeciesEpithet="Dictumst sed" TaxonNameSinAuth="Augue vestibulum" TaxonNameCache="Diam conubia" URI="Cubilia dapibus"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Dignissim sem vestibulum" InfraspecificEpithet="Elementum sit adipiscing auctor" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Accepted" SpeciesEpithet="Facilisis eleifend" TaxonNameSinAuth="Dictum faucibus" TaxonNameCache="Congue fermentum parturient facilisi cursus" URI="Fringilla vel"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Lectus nam libero habitant" InfraspecificEpithet="Dolor fames egestas vestibulum inceptos" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Synonym" SpeciesEpithet="Euismod ligula" TaxonNameSinAuth="Felis adipiscing parturient interdum" TaxonNameCache="Sed vestibulum feugiat" URI="Litora gravida ipsum dis"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Lobortis iaculis nascetur justo" InfraspecificEpithet="Luctus magnis" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="WorkingName" SpeciesEpithet="Mattis lacus lacinia mauris" TaxonNameSinAuth="Enim pharetra placerat erat" TaxonNameCache="Habitasse eget mollis montes elit" URI="Est eros vestibulum nostra"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Pulvinar laoreet nibh natoque" InfraspecificEpithet="Hendrerit posuere himenaeos" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Synonym" SpeciesEpithet="Lorem nisi sagittis" TaxonNameSinAuth="Adipiscing parturient" TaxonNameCache="Ornare platea vestibulum" URI="Vestibulum hac"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Primis rutrum vestibulum" InfraspecificEpithet="Adipiscing magna senectus" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Synonym" SpeciesEpithet="Nisl parturient imperdiet sociosqu vestibulum" TaxonNameSinAuth="Massa malesuada penatibus" TaxonNameCache="Suscipit sapien" URI="Nunc leo"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Porttitor odio vestibulum torquent" InfraspecificEpithet="Tincidunt tristique" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="WorkingName" SpeciesEpithet="Orci ultrices" TaxonNameSinAuth="Pede vehicula ultricies" TaxonNameCache="Potenti mus nec metus" URI="Non volutpat venenatis adipiscing semper"/>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Sociis vulputate per maecenas" InfraspecificEpithet="Sed curabitur parturient pretium" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Synonym" SpeciesEpithet="Praesent taciti rhoncus accumsan bibendum" TaxonNameSinAuth="Dictumst quis eleifend facilisi urna" TaxonNameCache="Vestibulum quam" URI="Phasellus faucibus cras duis consequat"/>
+	</DiversityPhone_ViewModels:EditIUVM.AvailableIdentifications>
+	<DiversityPhone_ViewModels:EditIUVM.CurrentIdentification>
+		<DiversityPhone_Model:TaxonName GenusOrSupragenic="Tellus sodales" InfraspecificEpithet="Nunc vestibulum morbi viverra sem" LogUpdatedWhen="01/07/2012 19:01:49" Synonymy="Synonym" SpeciesEpithet="Convallis habitant inceptos" TaxonNameSinAuth="Dignissim aliquam parturient vel" TaxonNameCache="Adipiscing amet neque interdum sit" URI="Tempor netus integer"/>
+	</DiversityPhone_ViewModels:EditIUVM.CurrentIdentification>
+	<DiversityPhone_ViewModels:EditIUVM.Delete>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditIUVM.Delete>
+	<DiversityPhone_ViewModels:EditIUVM.Model>
+		<DiversityPhone_Model:IdentificationUnit AnalysisDate="01/07/2012 19:01:49" ColonisedSubstratePart="Adipiscing elementum quisque porta" Gender="Pulvinar sagittis purus" IdentificationUri="Facilisis tortor fermentum" LifeStage="Dis risus velit vivamus" LogUpdatedWhen="01/07/2012 19:01:49" OnlyObserved="False" RelationType="Fringilla est senectus vitae class" SpecimenID="86" TaxonomicGroup="Sociosqu hac" UnitID="60" WorkingName="Suscipit turpis parturient"/>
+	</DiversityPhone_ViewModels:EditIUVM.Model>
+	<DiversityPhone_ViewModels:EditIUVM.RelationshipTypes>
+		<DiversityPhone_Model:Term Code="Ante torquent" Description="Vestibulum varius aliquam" DisplayText="Leo mus nec vestibulum" LastUsed="01/07/2012 19:01:49" ParentCode="Curae arcu aenean" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Diam ultrices eget" Description="Adipiscing aliquet elit parturient" DisplayText="Blandit mauris non enim commodo" LastUsed="01/07/2012 19:01:49" ParentCode="Per vestibulum nullam aptent" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="Auctor sed conubia donec" Description="Etiam cubilia sem" DisplayText="Sit habitasse" LastUsed="01/07/2012 19:01:49" ParentCode="Vestibulum fusce congue vehicula adipiscing" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Lorem parturient morbi cursus" Description="Hendrerit vestibulum erat" DisplayText="Dictum eros himenaeos volutpat vestibulum" LastUsed="01/07/2012 19:01:49" ParentCode="Lectus vel libero nulla ligula" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Dapibus egestas maecenas praesent" Description="Adipiscing imperdiet parturient" DisplayText="Nibh euismod accumsan nisi" LastUsed="01/07/2012 19:01:49" ParentCode="Nisl bibendum vestibulum" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Feugiat malesuada" Description="Gravida dictumst nunc odio" DisplayText="Eleifend nam iaculis orci" LastUsed="01/07/2012 19:01:49" ParentCode="Vestibulum penatibus facilisi lacinia" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Litora sed adipiscing" Description="Laoreet luctus magnis" DisplayText="Faucibus parturient dis" LastUsed="01/07/2012 19:01:49" ParentCode="Proin mattis pede" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Augue quam dolor" Description="Fames est quis mauris" DisplayText="Vestibulum urna hac" LastUsed="01/07/2012 19:01:49" ParentCode="Vestibulum mollis cras leo habitant" SourceID="EventImageTypes"/>
+		<DiversityPhone_Model:Term Code="Montes mus" Description="Nostra inceptos nec" DisplayText="Non ornare interdum" LastUsed="01/07/2012 19:01:49" ParentCode="Natoque lobortis" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Posuere nascetur" Description="Duis felis pharetra placerat" DisplayText="Nunc ipsum per adipiscing" LastUsed="01/07/2012 19:01:49" ParentCode="Platea porttitor" SourceID="TaxonomicGroups"/>
+	</DiversityPhone_ViewModels:EditIUVM.RelationshipTypes>
+	<!--DiversityPhone_ViewModels:EditIUVM.SelectedRelationshipType>
+		<DiversityPhone_Model:Term Code="Posuere nascetur" Description="Duis felis pharetra placerat" DisplayText="Nunc ipsum per adipiscing" LastUsed="01/07/2012 19:01:49" ParentCode="Platea porttitor" SourceID="TaxonomicGroups"/>
+	</DiversityPhone_ViewModels:EditIUVM.SelectedRelationshipType-->
+	<DiversityPhone_ViewModels:EditIUVM.Save>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditIUVM.Save>
+	<!--DiversityPhone_ViewModels:EditIUVM.SelectedTaxGroup>
+		<DiversityPhone_Model:Term Code="alga" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
+	</DiversityPhone_ViewModels:EditIUVM.SelectedTaxGroup-->
+	<DiversityPhone_ViewModels:EditIUVM.TaxonomicGroups>
+		<DiversityPhone_Model:Term Code="alga" Description="Metus vestibulum torquent tellus vestibulum" DisplayText="Tempor tempus vel" LastUsed="01/07/2012 19:01:49" ParentCode="Morbi tortor" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="bird" Description="Aliquam adipiscing parturient" DisplayText="Vestibulum vestibulum dis" LastUsed="01/07/2012 19:01:49" ParentCode="Integer curabitur enim erat est" SourceID="RelationshipTypes"/>
+		<DiversityPhone_Model:Term Code="other" Description="Hac varius vivamus leo netus" DisplayText="Ultrices vehicula volutpat vestibulum mus" LastUsed="01/07/2012 19:01:49" ParentCode="Nulla aliquam" SourceID="EventImageTypes"/>
+		<DiversityPhone_Model:Term Code="cnidaria" Description="Aliquet praesent porta" DisplayText="Nisi non nisl purus risus" LastUsed="01/07/2012 19:01:49" ParentCode="Blandit nunc commodo accumsan conubia" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="soil" Description="Sed dapibus odio aenean" DisplayText="Sem egestas" LastUsed="01/07/2012 19:01:49" ParentCode="Bibendum phasellus vestibulum vitae class" SourceID="RelationshipTypes"/>
+		<DiversityPhone_Model:Term Code="unknown" Description="Orci mauris feugiat pede" DisplayText="Dictumst quam nullam vestibulum eleifend" LastUsed="01/07/2012 19:01:49" ParentCode="Vel vestibulum convallis dignissim" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="Adipiscing quis curae" Description="Parturient gravida urna" DisplayText="Nam vestibulum facilisi faucibus vestibulum" LastUsed="01/07/2012 19:01:49" ParentCode="Adipiscing iaculis donec elementum facilisis" SourceID="TaxonomicGroups"/>
+		<DiversityPhone_Model:Term Code="Etiam aptent" Description="Fermentum sed" DisplayText="Parturient lacinia dis fringilla habitasse" LastUsed="01/07/2012 19:01:49" ParentCode="Vestibulum vestibulum" SourceID="Circumstances"/>
+		<DiversityPhone_Model:Term Code="Cras duis habitant est laoreet" Description="Hendrerit adipiscing parturient hac" DisplayText="Vestibulum leo fusce natoque mus" LastUsed="01/07/2012 19:01:49" ParentCode="Inceptos auctor interdum posuere lorem" SourceID="EventImageTypes"/>
+		<DiversityPhone_Model:Term Code="Nunc himenaeos" Description="Potenti nec morbi pretium" DisplayText="Amet imperdiet vestibulum congue" LastUsed="01/07/2012 19:01:49" ParentCode="Non rhoncus" SourceID="RelationshipTypes"/>
+	</DiversityPhone_ViewModels:EditIUVM.TaxonomicGroups>
+	<DiversityPhone_ViewModels:EditIUVM.ToggleEditable>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditIUVM.ToggleEditable>
+</DiversityPhone_ViewModels:EditIUVM>

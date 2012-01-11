@@ -17,19 +17,16 @@ namespace DiversityPhone.ViewModels
 {
     public class ViewLMVM : PageViewModel
     {
-        private IList<IDisposable> _subscriptions;
-
-        #region services
-        private IMessageBus _messenger;
-        #endregion
+        private IList<IDisposable> _subscriptions;    
 
         #region Commands
         public ReactiveCommand AddMaps { get; private set; }
         #endregion
 
         public ViewLMVM(IMessageBus messenger)
+            : base(messenger)
         {
-            _messenger = messenger;
+            
             _subscriptions = new List<IDisposable>()
             {
               
@@ -43,7 +40,7 @@ namespace DiversityPhone.ViewModels
 
         private void addMaps()
         {
-            _messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.DownLoadMaps, null));
+            Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.DownLoadMaps, null));
         }
 
 

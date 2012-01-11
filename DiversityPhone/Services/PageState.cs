@@ -26,6 +26,11 @@ namespace DiversityPhone.Services
         public string Context { get; private set; }
 
         /// <summary>
+        /// Type of the Referrer (Object that originated the Request)
+        /// </summary>
+        public ReferrerType ReferrerType { get; private set; }
+
+        /// <summary>
         /// Information that shows the Origin of the Request, if needed
         /// e.g. ID of the parent object
         /// </summary>
@@ -37,12 +42,12 @@ namespace DiversityPhone.Services
         /// </summary>
         public IDictionary<string, string> State { get; set; }
 
-        public PageState(string token, string context, string referrer = null)
+        public PageState(string token, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
         {
             this.Token = token;
             this.Context = context;
-            this.Referrer = referrer;
-
+            this.ReferrerType = refType;
+            this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
             this.State = new Dictionary<string, string>();
         }
     }

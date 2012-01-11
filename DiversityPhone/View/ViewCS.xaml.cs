@@ -22,7 +22,7 @@
         private void Add_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.AddIdentificationUnit.Execute(null);
+                VM.Add.Execute(null);
         }
     }
 }

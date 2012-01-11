@@ -14,7 +14,7 @@ namespace DiversityPhone.ViewModels
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;
+        
         private IOfflineStorage _storage;
         #endregion
 
@@ -67,8 +67,9 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         public EditEVVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         {            
-            _messenger = messenger;
+            
             _storage = storage;
 
             var model = StateObservable
@@ -106,14 +107,14 @@ namespace DiversityPhone.ViewModels
         private void executeSave()
         {
             updateModel();
-            _messenger.SendMessage<Event>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<Event>(Model, MessageContracts.SAVE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void delete()
         {
-            _messenger.SendMessage<Event>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<Event>(Model, MessageContracts.DELETE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }      
 
 

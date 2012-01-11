@@ -21,7 +21,7 @@
         public string Code { get; set; }
 
         [Column(IsPrimaryKey = true)]
-        public int SourceID { get; set; }
+        public Service.TermList SourceID { get; set; }
 
         [Column]
         public string Description { get; set; }

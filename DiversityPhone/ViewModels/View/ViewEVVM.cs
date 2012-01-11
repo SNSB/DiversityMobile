@@ -9,7 +9,7 @@
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
 
-    public class ViewEVVM : PageViewModel
+    public class ViewEVVM : ElementPageViewModel<Event>
     {
         public enum Pivots
         {
@@ -20,7 +20,7 @@
         
 
         #region Services
-        IMessageBus _messenger;
+        
         IOfflineStorage _storage;
         #endregion
 
@@ -53,24 +53,15 @@
 
 
         public ViewEVVM(IMessageBus messenger, IOfflineStorage storage)
-        {
-            _messenger = messenger;
+            : base(messenger)
+        {            
             _storage = storage;
 
-
-
-            var rawModel = StateObservable
-                .Select(s => EventFromContext(s.Context));
-            var modelDeleted = rawModel.Where(ev => ev == null);
-            var validModel = rawModel.Where(ev => ev != null);
-
-            _messenger.RegisterMessageSource(modelDeleted.Select(_ => Message.NavigateBack));
-
-            _Current = validModel
-                .Select(ev => new EventVM(_messenger, ev))
+            _Current = ValidModel
+                .Select(ev => new EventVM(Messenger, ev))
                 .ToProperty(this, x => x.Current);
 
-            _SpecList = validModel               
+            _SpecList = ValidModel               
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
@@ -93,8 +84,8 @@
                                 return Page.EditCS;
                         }
                     })
-                .Select(p => new NavigationMessage(p, null, Current.Model.EventID.ToString()));
-            _messenger.RegisterMessageSource(addMessageSource);
+                .Select(p => new NavigationMessage(p, null, ReferrerType.Event, Current.Model.EventID.ToString()));
+            Messenger.RegisterMessageSource(addMessageSource);
 
         }
 
@@ -102,16 +93,16 @@
         {
             return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
                 _storage.getSpecimenForEvent(ev),
-                (model) => new SpecimenVM(_messenger, model)
+                (model) => new SpecimenVM(Messenger, model)
                 );
         }
 
-        private Event EventFromContext(string ctx)
+        protected override Event ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getEventByID(id);
                 }

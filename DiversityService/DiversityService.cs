@@ -23,39 +23,13 @@ namespace DiversityService
         {
             throw new NotImplementedException();
         }
-        public IList<Model.TermList> GetTaxonListsForUser(Model.UserProfile user)
+        public IList<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
         }             
 
         public IEnumerable<Term> GetStandardVocabulary()
-        {
-            IEnumerable<Term> efTerms;
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
-            {
-                var taxonGroups =
-                     from taxGrp in ctx.CollTaxonomicGroup_Enum
-                     select new Term()
-                     {
-                         SourceID = 0, //TODO
-                         Code = taxGrp.Code,
-                         Description = taxGrp.Description,
-                         DisplayText = taxGrp.DisplayText,
-                         ParentCode = taxGrp.ParentCode
-                     };
-                var relationTypes =
-                    from relType in ctx.CollUnitRelationType_Enum
-                    select new Term()
-                    {
-                        SourceID = 1,
-                        Code = relType.Code,
-                        Description = relType.Description,
-                        DisplayText = relType.DisplayText,
-                        ParentCode = relType.ParentCode
-                    };
-
-                efTerms = Enumerable.Concat(taxonGroups, relationTypes).ToList(); //Iterate over Enumerables so the context can be disposed safely.
-            }
+        {            
 
             IEnumerable<Term> linqTerms;
             using (var ctx = new DiversityCollectionFunctionsDataContext())
@@ -63,7 +37,7 @@ namespace DiversityService
                 var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
                                       select new Term()
                                       {
-                                          SourceID = 0, //TODO
+                                          Source = TermList.TaxonomicGroups, //TODO
                                           Code = g.Code,
                                           DisplayText = g.DisplayText
                                       };
@@ -71,7 +45,7 @@ namespace DiversityService
                 var unitRelationTypes = from t in ctx.DiversityMobile_UnitRelationTypes()
                                         select new Term()
                                         {
-                                            SourceID = 1, //TODO
+                                            Source = TermList.RelationshipTypes, //TODO
                                             Code = t.Code,
                                             DisplayText = t.DisplayText
                                         };
@@ -79,7 +53,7 @@ namespace DiversityService
                 var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
                                     select new Term()
                                     {
-                                        SourceID = 2,//TODO
+                                        Source = TermList.EventImageTypes,//TODO
                                         Code = eit.Code,
                                         DisplayText = eit.DisplayText
                                     };

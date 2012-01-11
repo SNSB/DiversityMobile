@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.Model
 {
@@ -16,7 +17,7 @@ namespace DiversityPhone.Model
     public class MultimediaObject
     {
         [Column]
-        public int SourceId { get; set; }
+        public ReferrerType OwnerType { get; set; }
 
         [Column]
         public int RelatedId { get; set; }

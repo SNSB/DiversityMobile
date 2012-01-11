@@ -23,13 +23,17 @@ namespace DiversityPhone.Messages
     {
         public Page Destination { get; private set; }
         public string Context { get; private set; }
+        public ReferrerType ReferrerType { get; private set; }
         public string Referrer { get; private set; }
 
-        public NavigationMessage(Page destination, string ctx, string referrer = null)
+        public NavigationMessage(Page destination, string ctx, ReferrerType refType = ReferrerType.None, string referrer = null)
         {
             this.Destination = destination;
             this.Context = ctx;
+            this.ReferrerType = refType;
             this.Referrer = referrer;
         }
+
+        
     }
 }

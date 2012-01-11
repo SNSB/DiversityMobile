@@ -9,12 +9,11 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditCSVM : PageViewModel
+    public class EditCSVM : ElementPageViewModel<Specimen>
     {
         private IList<IDisposable> _subscriptions;
 
-        #region Services
-        private IMessageBus _messenger;
+        #region Services        
         private IOfflineStorage _storage;
         #endregion
 
@@ -45,20 +44,19 @@ namespace DiversityPhone.ViewModels
 
 
         public EditCSVM(IMessageBus messenger, IOfflineStorage storage)
-        {
-
-            _messenger = messenger;
+            : base(messenger)
+        {            
             _storage = storage;
 
-            _Model = StateObservable
-                .Select(s => SpecimenFromContext(s.Context))
-                .ToProperty(this, x => x.Model);
-            this._editable = false;
-            var modelPropertyObservable = this.ObservableForProperty(x => x.Model)
-                .Select(change => change.Value)
-                .Where(x => x != null);
+            _Model = ValidModel.ToProperty(this, x => x.Model);
 
             var canSave = this.canSave();
+
+            //Read-Only Eigenschaften direkt ans Model Binden
+            //Nur Veränderbare Properties oder abgeleitete so binden
+            ValidModel                    
+                .Select(m => m.AccessionNumber != null ? m.AccessionNumber : "")
+                .BindTo(this, x=>x.AccessionNumber);
 
             _subscriptions = new List<IDisposable>()
             {
@@ -69,12 +67,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => setEdit()),        
                
                 (Delete = new ReactiveCommand())
-                    .Subscribe(_ => delete()),
-                //Read-Only Eigenschaften direkt ans Model Binden
-                //Nur Veränderbare Properties oder abgeleitete so binden
-                modelPropertyObservable                    
-                    .Select(m => m.AccesionNumber != null ? m.AccesionNumber : "")
-                    .BindTo(this, x=>x.AccessionNumber),      
+                    .Subscribe(_ => delete()),            
                   
             };
         }
@@ -91,14 +84,14 @@ namespace DiversityPhone.ViewModels
         private void executeSave()
         {
             updateModel();
-            _messenger.SendMessage<Specimen>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<Specimen>(Model, MessageContracts.SAVE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void delete()
         {
-            _messenger.SendMessage<Specimen>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<Specimen>(Model, MessageContracts.DELETE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
 
@@ -114,15 +107,15 @@ namespace DiversityPhone.ViewModels
         private void updateModel()
         {
             //Nur Veränderbare Eigenschaften übernehmen.
-            Model.AccesionNumber = AccessionNumber;
+            Model.AccessionNumber = AccessionNumber;
         }
 
-        private Specimen SpecimenFromContext(string ctx)
+        protected override Specimen ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
                     return _storage.getSpecimenByID(id); 
                 }

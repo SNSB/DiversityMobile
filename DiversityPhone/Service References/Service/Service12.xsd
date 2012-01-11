@@ -26,7 +26,7 @@
   <xs:element name="GetTaxonListsForUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetTaxonListsForUserResult" nillable="true" type="q4:ArrayOfTermList" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetTaxonListsForUserResult" nillable="true" type="q4:ArrayOfTaxonList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

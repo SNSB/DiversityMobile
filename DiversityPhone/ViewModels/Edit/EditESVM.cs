@@ -19,7 +19,7 @@
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;
+        
         private IOfflineStorage _storage;
         #endregion
 
@@ -87,7 +87,7 @@
                         this.RaiseAndSetIfChanged(x => x.SeriesEnd, value);
                     else
                     {
-                        _messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
+                        Messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
                         this.RaisePropertyChanged(x => x.SeriesEnd);
                     }
                 }
@@ -97,10 +97,11 @@
 
 
         public EditESVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger)
         { 
 
 
-            _messenger = messenger;
+            
             _storage = storage;
 
             var nullOrModel = StateObservable
@@ -114,7 +115,7 @@
 
             var invalidSeries = nullOrModel
                 .Where(es => es == null);
-            _messenger.RegisterMessageSource(invalidSeries.Select(_ => Message.NavigateBack));
+            Messenger.RegisterMessageSource(invalidSeries.Select(_ => Message.NavigateBack));
 
             ToggleEditable = new ReactiveCommand();
             _Editable = StateObservable
@@ -137,15 +138,15 @@
             var saveMessageSource = Save
                 .Do( _ => updateModel())
                 .Select(_ => Model);
-            _messenger.RegisterMessageSource(saveMessageSource, MessageContracts.SAVE); //Send off the Object to be saved
-            _messenger.RegisterMessageSource(saveMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
+            Messenger.RegisterMessageSource(saveMessageSource, MessageContracts.SAVE); //Send off the Object to be saved
+            Messenger.RegisterMessageSource(saveMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
 
 
             Delete = new ReactiveCommand();
             var deleteMessageSource = Delete                
                 .Select(_ => Model);
-            _messenger.RegisterMessageSource(deleteMessageSource, MessageContracts.DELETE); //Send off the Object to be deleted
-            _messenger.RegisterMessageSource(deleteMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
+            Messenger.RegisterMessageSource(deleteMessageSource, MessageContracts.DELETE); //Send off the Object to be deleted
+            Messenger.RegisterMessageSource(deleteMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
 
 
             _subscriptions = new List<IDisposable>()

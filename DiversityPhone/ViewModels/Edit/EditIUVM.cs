@@ -11,12 +11,9 @@ using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditIUVM : PageViewModel
+    public class EditIUVM : ElementPageViewModel<IdentificationUnit>
     {
-        IList<IDisposable> _subscriptions;
-
-        #region Services
-        IMessageBus _messenger;
+        #region Services        
         IOfflineStorage _storage;
         #endregion
 
@@ -37,6 +34,30 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        private ObservableAsPropertyHelper<bool> _IsObservation;
+        public bool IsObservation
+        {
+            get
+            {
+                return _IsObservation.Value;
+            }
+        }
+
+
+        private bool _OnlyObserved;
+        public bool OnlyObserved
+        {
+            get
+            {
+                return _OnlyObserved;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.OnlyObserved, ref _OnlyObserved, value);
+            }
+        }
+        
+
         public IdentificationUnit Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
 
@@ -46,7 +67,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms((int) SourceID.TaxonomicGroup));
+                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(Service.TermList.TaxonomicGroups));
             }
         }
 
@@ -64,6 +85,30 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        private IList<Term> _RelationshipTypes = null;
+        public IList<Term> RelationshipTypes
+        {
+            get
+            {
+                return _RelationshipTypes ?? (_RelationshipTypes = _storage.getTerms(Service.TermList.RelationshipTypes));
+            }
+        }
+
+
+        private Term _SelectedRelationshipType;
+        public Term SelectedRelationshipType
+        {
+            get
+            {
+                return _SelectedRelationshipType;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SelectedRelationshipType, ref _SelectedRelationshipType, value);
+            }
+        }
+        
+
 
         private string _Description;
         public string Description
@@ -79,6 +124,60 @@ namespace DiversityPhone.ViewModels
         }
 
 
+        private string _Genus;
+        public string Genus
+        {
+            get
+            {
+                return _Genus;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Genus, ref _Genus, value);
+            }
+        }
+
+        
+        private string _Species;
+        public string Species
+        {
+            get
+            {
+                return _Species;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Species, ref _Species, value);
+            }
+        }
+
+        private ObservableAsPropertyHelper<IEnumerable<TaxonName>> _AvailableIdentifications;
+        public IEnumerable<TaxonName> AvailableIdentifications
+        {
+            get
+            {
+                return _AvailableIdentifications.Value;
+            }
+        }
+
+
+        private TaxonName _CurrentIdentification;
+        public TaxonName CurrentIdentification
+        {
+            get
+            {
+                return _CurrentIdentification;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentIdentification, ref _CurrentIdentification, value);
+            }
+        }
+        
+        
+        
+
+
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
         #endregion
@@ -86,17 +185,49 @@ namespace DiversityPhone.ViewModels
 
 
         public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger, false)
         {
-            _messenger = messenger;
-            _storage = storage;           
-
-            var model = StateObservable                
-                .Select(s => UnitFromContext(s.Context));
-
+            
+            _storage = storage;
 
             ToggleEditable = new ReactiveCommand();
-            
+            Save = new ReactiveCommand(validationObservable());
+            Delete = new ReactiveCommand();
 
+
+            _AvailableIdentifications = Observable.CombineLatest(
+                this.ObservableForProperty(vm => vm.Genus)
+                .Select(g => g.Value)
+                .StartWith(String.Empty),
+                this.ObservableForProperty(vm => vm.Species)
+                .Select(s => s.Value)
+                .StartWith(String.Empty),
+                (g, s) => new { Genus = g, Species = s })
+                .Select(query =>
+                    {
+                        //Don't allow short queries
+                        if (query.Species.Length + query.Genus.Length > 3)
+                            return _storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
+                        else
+                            return Enumerable.Empty<TaxonName>();
+                    })
+                .Select( candidates =>                     
+                    //Append WorkingName as Identification
+                    candidates.Concat(
+                    new[] { 
+                        new TaxonName() 
+                        { 
+                            GenusOrSupragenic = Genus, 
+                            SpeciesEpithet = Species, 
+                            Synonymy = DiversityPhone.Model.Synonymy.WorkingName 
+                        } 
+                    }))
+                .ToProperty(this, vm => vm.AvailableIdentifications);
+
+                                        
+
+
+            #region Update View           
             _isEditable = StateObservable
                 .Select(s => s.Context == null) //Newly created Units are immediately editable
                 .Merge(
@@ -104,53 +235,94 @@ namespace DiversityPhone.ViewModels
                 )
                 .ToProperty(this, vm => vm.Editable);
 
-            _Model = model.ToProperty(this, x => x.Model);
+            _Model = ValidModel.ToProperty(this, x => x.Model);
+                         
+            _IsToplevel = ValidModel
+                            .Select(m => m.RelatedUnitID == null)
+                            .ToProperty(this, x => x.IsToplevel);
+
+            var isObservation =
+                ValidModel
+                .Select(m => _storage.getSpecimenByID(m.SpecimenID))
+                .Where(spec => spec != null)
+                .Select(spec => spec.IsObservation());
+
+            isObservation.BindTo(this, vm => vm.OnlyObserved);
+
+            _IsObservation = isObservation                
+                .ToProperty(this, vm => vm.IsObservation);  
+         
 
 
-            var isToplevel = model
-                .Select(m => m.RelatedUnitID == null);
-            _IsToplevel = isToplevel.ToProperty(this, x => x.IsToplevel);
+            ValidModel
+                .Select(m => m.TaxonomicGroup)
+                .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
+                .BindTo(this, vm => vm.SelectedTaxGroup);
 
-            var canSave = validationObservable();
+            ValidModel
+                .Select(m => m.RelationType)
+                .Select(reltype => RelationshipTypes.FirstOrDefault(rt => rt.Code == reltype))
+                .BindTo(this, vm => vm.SelectedRelationshipType);
 
-            _subscriptions = new List<IDisposable>()
-            {            
-                
 
-                model.Select(m => m.TaxonomicGroup)
-                    .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
-                    .Subscribe(x => SelectedTaxGroup = x),
+            #endregion
 
-                (Save = new ReactiveCommand(canSave))
-                    .Subscribe(_ =>
-                        {
-                            updateModel();
-                            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.SAVE);                            
-                            _messenger.SendMessage<Message>(Message.NavigateBack);
-                        }),
+            Messenger.RegisterMessageSource(
+                Save
+                .Do(_ => updateModel())
+                .Select(_ => Model),
+                MessageContracts.SAVE);
 
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_=> delete()),
-            };
-        }
+            Messenger.RegisterMessageSource(
+                Delete
+                .Select(_ => Model),
+                MessageContracts.DELETE);                
 
-        private void delete()
+            Messenger.RegisterMessageSource(
+                Delete
+                .Merge(Save)                
+                .Select(_ => Message.NavigateBack)
+                );
+
+        }       
+
+        protected override IdentificationUnit ModelFromState(PageState state)
         {
-            _messenger.SendMessage<IdentificationUnit>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-        private IdentificationUnit UnitFromContext(string ctx)
-        {
-            if (ctx != null)
+            IdentificationUnit result = null;
+            if (state.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(state.Context, out id))
                 {
-                    return _storage.getIdentificationUnitByID(id);
+                    result = _storage.getIdentificationUnitByID(id);
+                }
+            }            
+            if (result == null && state.ReferrerType != ReferrerType.None)
+            {
+                result = new IdentificationUnit();
+                
+                if (state.ReferrerType == ReferrerType.Specimen)
+                {
+                    int id;
+                    if (int.TryParse(state.Referrer, out id))
+                    {
+                        result.SpecimenID = id;
+                    }
+                }
+                else if (state.ReferrerType == ReferrerType.IdentificationUnit)
+                {
+                    int id;
+                    IdentificationUnit parent;
+                    if (int.TryParse(state.Referrer, out id) 
+                        && (parent = _storage.getIdentificationUnitByID(id)) != null)
+                    {
+                        result.SpecimenID = parent.SpecimenID;
+                        result.RelatedUnitID = parent.UnitID;
+                    }
                 }
             }
-            return new IdentificationUnit();
+
+            return result;
         }        
 
 
@@ -166,6 +338,7 @@ namespace DiversityPhone.ViewModels
         private void updateModel()
         {
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
+            Model.RelationType = SelectedRelationshipType.Code;
         }
     }
 }

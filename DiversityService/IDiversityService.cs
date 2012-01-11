@@ -8,7 +8,7 @@ using DiversityService.Model;
 namespace DiversityService
 {
     // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Schnittstellennamen "IDivService" sowohl im Code als auch in der Konfigurationsdatei ändern.
-    [ServiceContract]
+    [ServiceContract]    
     public interface IDiversityService
     {
         [OperationContract]
@@ -17,7 +17,7 @@ namespace DiversityService
         //TODO Contract Userinfo
 
         [OperationContract]
-        IList<TermList> GetTaxonListsForUser(UserProfile user);
+        IList<TaxonList> GetTaxonListsForUser(UserProfile user);
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(string list);
 

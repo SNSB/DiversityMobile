@@ -30,7 +30,7 @@ using DiversityPhone.Services;
         public string InfraspecificEpithet { get; set; }
 
         [Column]
-        public string Synonymy { get; set; }
+        public Synonymy Synonymy { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

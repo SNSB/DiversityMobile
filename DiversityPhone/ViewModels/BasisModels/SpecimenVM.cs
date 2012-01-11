@@ -14,14 +14,14 @@
         {
             get
             {
-                return Model.AccesionNumber ?? "Observation";
+                return Model.AccessionNumber ?? "Observation";
             }
         }
         public override Icon Icon
         {
             get
             {
-                return (Model.AccesionNumber == null) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
+                return (Model.AccessionNumber == null) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
             }
         }
 

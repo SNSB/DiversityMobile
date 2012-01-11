@@ -54,16 +54,10 @@ namespace DiversityPhone.Model
         /// Names as displyed on the screen
         /// </summary>
         [Column]
-        public string Name{ get; set; }
-        
-        /// <summary>
-        /// Primary key in TaxonNames
-        /// null for WorkingNames
-        /// </summary>
+        public string WorkingName { get; set; }
+       
         [Column]
-        public string NameURI { get; set; } 
-     
-        
+        public string IdentificationUri { get; set; }
 
 
         //Georeferenzierung

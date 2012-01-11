@@ -25,19 +25,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Project" nillable="true" type="tns:Project" />
-  <xs:complexType name="ArrayOfTermList">
+  <xs:complexType name="ArrayOfTaxonList">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="TermList" nillable="true" type="tns:TermList" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonList" nillable="true" type="tns:TaxonList" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfTermList" nillable="true" type="tns:ArrayOfTermList" />
-  <xs:complexType name="TermList">
+  <xs:element name="ArrayOfTaxonList" nillable="true" type="tns:ArrayOfTaxonList" />
+  <xs:complexType name="TaxonList">
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ListID" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="TermList" nillable="true" type="tns:TermList" />
+  <xs:element name="TaxonList" nillable="true" type="tns:TaxonList" />
   <xs:complexType name="ArrayOfTaxonName">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonName" nillable="true" type="tns:TaxonName" />
@@ -69,10 +69,19 @@
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
       <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="SourceID" type="xs:int" />
+      <xs:element minOccurs="0" name="Source" type="tns:TermList" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Term" nillable="true" type="tns:Term" />
+  <xs:simpleType name="TermList">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TaxonomicGroups" />
+      <xs:enumeration value="RelationshipTypes" />
+      <xs:enumeration value="Circumstances" />
+      <xs:enumeration value="EventImageTypes" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="TermList" nillable="true" type="tns:TermList" />
   <xs:complexType name="ArrayOfAnalysisResult">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />

@@ -54,7 +54,7 @@
     <Compile Include="Specimen.cs" />
     <Compile Include="TaxonName.cs" />
     <Compile Include="Term.cs" />
-    <Compile Include="TermList.cs" />
+    <Compile Include="TaxonList.cs" />
     <Compile Include="TermLists.cs" />
     <Compile Include="UserProfile.cs" />
   </ItemGroup>
