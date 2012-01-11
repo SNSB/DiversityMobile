@@ -18,6 +18,12 @@ namespace DiversityPhone.View
         public EditMultiMediaObject()
         {
             InitializeComponent();
+            String s=NavigationContext.QueryString["Source"];
+            ViewModels.ViewModelLocator loc=this.Resou
+            switch (s)
+            {
+                case "Event": DataContext=
+            }
         }
     }
 }

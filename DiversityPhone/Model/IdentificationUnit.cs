@@ -26,7 +26,9 @@ namespace DiversityPhone.Model
         [Column]
         public int? RelatedUnitID { get; set; }
 
-
+        /// <summary>
+        /// Collected Part of the IU in physical Form. Always true for Observations
+        /// </summary>
         [Column]
         public bool OnlyObserved { get; set; }
         
@@ -48,14 +50,20 @@ namespace DiversityPhone.Model
      
 
         //Identification
+        /// <summary>
+        /// Names as displyed on the screen
+        /// </summary>
         [Column]
-        public string LastIdentificationCache { get; set; }
+        public string Name{ get; set; }
+        
+        /// <summary>
+        /// Primary key in TaxonNames
+        /// null for WorkingNames
+        /// </summary>
         [Column]
-        public string FamilyCache { get; set; }
-        [Column]
-        public string OrderCache { get; set; }
-        [Column]
-        public string IdentificationUri { get; set; }
+        public string NameURI { get; set; } 
+     
+        
 
 
         //Georeferenzierung
