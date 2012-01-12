@@ -38,7 +38,7 @@ using Svc = DiversityPhone.Service;
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
 
         IList<MultimediaObject> getAllMultimediaObjects();
-        IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
+        MultimediaObject getMultimediaForObject(ReferrerType objectType, int id);
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
 

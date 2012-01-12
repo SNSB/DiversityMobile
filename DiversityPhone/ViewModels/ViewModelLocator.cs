@@ -57,7 +57,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>() ));
 
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
-            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
             _ioc.Register<EditUserProfileVM>(c => new EditUserProfileVM(c.Resolve<IMessageBus>()));
 

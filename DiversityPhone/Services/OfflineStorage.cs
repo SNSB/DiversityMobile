@@ -409,39 +409,31 @@
             return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
-        public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
+        public MultimediaObject getMultimediaForObject(DiversityPhone.Services.ReferrerType refType, int key)
         {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.EventSeries
-                                                && mm.RelatedId == es.SeriesID
+            IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.OwnerType == refType
+                                                && mm.RelatedId == key
                                         select mm);
+            if (objects.Count == 0)
+                throw new KeyNotFoundException();
+            if (objects.Count > 1)
+                throw new DuplicateKeyException(objects);
+            return objects[0];
         }
 
-
-        public IList<MultimediaObject> getMultimediaForEvent(Event ev)
+        public MultimediaObject getMultimediaByURI(string uri)
         {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.Event
-                                                && mm.RelatedId == ev.EventID
-                                        select mm);
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.Uri==uri
+                                                                   select mm);
+            if (objects.Count == 0)
+                throw new KeyNotFoundException();
+            if (objects.Count > 1)
+                throw new DuplicateKeyException(objects);
+            return objects[0];
         }
-
-
-        public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
-        {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.Specimen
-                                                && mm.RelatedId == spec.CollectionSpecimenID
-                                        select mm);
-        }
-
-        public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
-        {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.IdentificationUnit
-                                                && mm.RelatedId == iu.UnitID
-                                        select mm);
-        }
+     
 
         public void addMultimediaObject(MultimediaObject mmo)
         {

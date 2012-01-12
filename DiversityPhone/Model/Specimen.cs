@@ -29,7 +29,7 @@
         public DateTime LogUpdatedWhen { get; set; }
 
 
-         public Specimen()
+        public Specimen()
         {
             this.AccessionNumber = null;
             this.LogUpdatedWhen = DateTime.Now;
