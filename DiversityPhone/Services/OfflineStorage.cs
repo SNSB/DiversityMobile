@@ -463,7 +463,6 @@
                 ctx.Terms.InsertAllOnSubmit(terms);
                 ctx.SubmitChanges();
             }
-
             sampleData();
         }
 

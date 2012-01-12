@@ -13,23 +13,24 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 
-namespace DiversityPhone
+namespace DiversityPhone.View
 {
-    public partial class EditIU : PhoneApplicationPage
+    public partial class EditMMO : PhoneApplicationPage
     {
-        private EditIUVM VM { get { return DataContext as EditIUVM; } }
+        private EditMultimediaObjectVM VM { get { return DataContext as EditMultimediaObjectVM; } }
 
-        public EditIU()
+        public EditMMO()
         {
             InitializeComponent();
-            
-        }
-
-        private void Save_Click(object sender, EventArgs e)
-        {
             if (VM != null)
-                VM.Save.Execute(null);
-        }
+            {
+                MultimediaObject mmo = VM.Model;
+                if (mmo.Uri == null || mmo.Uri == String.Empty)
+                    textBlock1.Text = "NewItem";
+                else
+                    textBlock1.Text = mmo.Uri;
 
+            }
+        }
     }
 }

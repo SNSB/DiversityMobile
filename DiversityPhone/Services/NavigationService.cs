@@ -122,8 +122,17 @@ namespace DiversityPhone.Services
                 case Page.DownLoadMaps:
                     destination = "/View/ViewDLM.xaml";
                     break;
+                case Page.EditESMMO:
+                    destination = "/View/EditMMO.xaml?Source=EventSeries";
+                    break;
                 case Page.EditEVMMO:
-                    destination = "/View/EditMultiMediaObject.xaml?Source=Event";
+                    destination = "/View/EditMMO.xaml?Source=Event";
+                    break;
+                case Page.EditCSMMO:
+                    destination = "/View/EditMMO.xaml?Source=Specimen";
+                    break;
+                case Page.EditIUMMO:
+                    destination = "/View/EditMMO.xaml?Source=IdentificationUnit";
                     break;
 
 

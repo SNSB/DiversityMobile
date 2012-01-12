@@ -53,6 +53,8 @@ namespace DiversityPhone.ViewModels
             
             this._editable = false;
 
+
+
             _Model = ValidModel
                 .ToProperty(this, vm => vm.Model);
 
@@ -114,11 +116,8 @@ namespace DiversityPhone.ViewModels
                         return new MultimediaObject()
                          {
                              RelatedId = parent,
-                             OwnerType = s.ReferrerType,
-                             
+                             OwnerType = s.ReferrerType,                            
                          };
-
-
                 }
             }
             return null;

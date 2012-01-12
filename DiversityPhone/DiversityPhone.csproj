@@ -185,6 +185,9 @@
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EditCS.xaml.cs">
+      <DependentUpon>EditCS.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EditES.xaml.cs">
       <DependentUpon>EditES.xaml</DependentUpon>
     </Compile>
@@ -197,8 +200,8 @@
     <Compile Include="View\EditMap.xaml.cs">
       <DependentUpon>EditMap.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditMultiMediaObject.xaml.cs">
-      <DependentUpon>EditMultiMediaObject.xaml</DependentUpon>
+    <Compile Include="View\EditMMO.xaml.cs">
+      <DependentUpon>EditMMO.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
@@ -292,6 +295,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\EditCS.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\EditES.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -308,7 +315,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditMultiMediaObject.xaml">
+    <Page Include="View\EditMMO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

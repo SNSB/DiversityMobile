@@ -17,7 +17,7 @@ using System.Windows.Navigation;
 using DiversityPhone.Service;
 using ReactiveUI;
 using System.Reactive.Concurrency;
-
+using DiversityPhone.ViewModels;
 using System.Device.Location;
 
 
