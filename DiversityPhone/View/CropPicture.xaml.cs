@@ -13,17 +13,11 @@ using Microsoft.Phone.Controls;
 
 namespace DiversityPhone.View
 {
-    public partial class EditMultiMediaObject : PhoneApplicationPage
+    public partial class CropPicture : PhoneApplicationPage
     {
-        public EditMultiMediaObject()
+        public CropPicture()
         {
             InitializeComponent();
-            String s=NavigationContext.QueryString["Source"];
-            ViewModels.ViewModelLocator loc=this.
-            switch (s)
-            {
-                case "Event": DataContext=
-            }
         }
     }
 }
