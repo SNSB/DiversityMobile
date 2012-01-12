@@ -33,5 +33,17 @@ namespace DiversityService.Properties {
                 return ((string)(this["DiversityCollection_TestConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=141.84.65.107,5432;Initial Catalog=DiversityMobile;Persist Security I" +
+            "nfo=True;User ID=Rollinger;Password=Rolli#2-AI4@UBT;MultipleActiveResultSets=Tru" +
+            "e;Application Name=EntityFramework")]
+        public string DiversityMobileConnectionString {
+            get {
+                return ((string)(this["DiversityMobileConnectionString"]));
+            }
+        }
     }
 }
