@@ -122,6 +122,9 @@ namespace DiversityPhone.Services
                 case Page.DownLoadMaps:
                     destination = "/View/ViewDLM.xaml";
                     break;
+                case Page.EditEVMMO:
+                    destination = "/View/EditMultiMediaObject.xaml?Source=Event";
+                    break;
 
 
 #if DEBUG

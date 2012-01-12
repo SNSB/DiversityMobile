@@ -14,7 +14,9 @@ namespace DiversityPhone.Services
         ViewCS,
         EditIUAN,
 
-        EditMMO,
+        EditEVMMO,
+        EditSpecMMO,
+        EditIUMMO,
         EditMap,
         EditEventProperty,
         EditUserProfile,
