@@ -38,10 +38,8 @@ using Svc = DiversityPhone.Service;
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
 
         IList<MultimediaObject> getAllMultimediaObjects();
-        IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es);
-        IList<MultimediaObject> getMultimediaForEvent(Event ev);
-        IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec);
-        IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu);
+        IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
+        MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
 
 

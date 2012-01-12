@@ -34,7 +34,8 @@
   <xs:complexType name="TaxonList">
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ListID" type="xs:int" />
+      <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TaxonList" nillable="true" type="tns:TaxonList" />

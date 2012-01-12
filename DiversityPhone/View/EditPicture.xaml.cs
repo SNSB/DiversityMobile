@@ -99,7 +99,4 @@ namespace DiversityPhone.View
             }
         }
     }
-
-
-    }
 }

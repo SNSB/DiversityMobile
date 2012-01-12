@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityMobile" Class="DiversityCollectionFunctionsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityMobile;Persist Security Info=True;User ID=Rollinger;MultipleActiveResultSets=True;Application Name=EntityFramework" SettingsObjectName="DiversityService.Properties.Settings" SettingsPropertyName="DiversityMobileConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DiversityCollection_Test" Class="DiversityCollectionFunctionsDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_Test;User ID=Rollinger" SettingsObjectName="DiversityService.Properties.Settings" SettingsPropertyName="DiversityCollection_TestConnectionString1" Provider="System.Data.SqlClient" />
   <Function Name="dbo.DiversityMobile_UnitRelationTypes" Method="DiversityMobile_UnitRelationTypes" IsComposable="true">
     <ElementType Name="DiversityMobile_UnitRelationTypesResult">
       <Column Name="Code" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
@@ -50,14 +50,6 @@
       <Column Name="AnalysisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="TaxonomicGroup" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="RowGUID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.TaxonListsForUser" Method="TaxonListsForUser" IsComposable="true">
-    <Parameter Name="Login" Parameter="login" Type="System.String" DbType="NVarChar(50)" />
-    <ElementType Name="TaxonListsForUserResult">
-      <Column Name="DataSource" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="DisplayText" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="TaxonomicGroup" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
 </Database>

@@ -118,9 +118,9 @@
                 })
                 ));
 
-            var taxonFunc = Observable.FromAsyncPattern<string, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+            var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
 
-            taxonFunc.Invoke("").Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+            taxonFunc.Invoke(null).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
                 t => new Model.TaxonName()
                 {
                     URI = t.URI,

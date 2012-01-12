@@ -13,15 +13,16 @@ using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditMultimediaObjectVM:ReactiveObject
+    public class EditMultimediaObjectVM : ElementPageViewModel<MultimediaObject>
     {
         private IList<IDisposable> _subscriptions;
 
         #region Services
-        private IMessageBus _messenger;
+        private IOfflineStorage _storage;
         #endregion
 
         #region Commands
@@ -33,24 +34,27 @@ namespace DiversityPhone.ViewModels
         #region Properties
         //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.
         public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }       
 
 
-        private MultimediaObject _Model;
+        private ObservableAsPropertyHelper<MultimediaObject> _Model;
         public MultimediaObject Model
         {
-            get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value); }
+            get { return _Model.Value; }            
         }
 
 
         #endregion
 
-        public EditMultimediaObjectVM(IMessageBus messenger)
+        public EditMultimediaObjectVM(IMessageBus messenger, IOfflineStorage storage)
+            :base(messenger)
         {
-
-            _messenger = messenger;
+            _storage = storage;
+            
             this._editable = false;
+
+            _Model = ValidModel
+                .ToProperty(this, vm => vm.Model);
 
             _subscriptions = new List<IDisposable>()
             {
@@ -72,8 +76,8 @@ namespace DiversityPhone.ViewModels
         private void executeSave()
         {
             updateModel();
-            _messenger.SendMessage<MultimediaObject>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.SAVE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
 
@@ -88,18 +92,36 @@ namespace DiversityPhone.ViewModels
 
         private void delete()
         {
-            _messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
+            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
         private void updateModel()
         {
 
-        }
+        }       
 
-        private void updateView(MultimediaObject mmo)
+        protected override MultimediaObject ModelFromState(Services.PageState s)
         {
-            this.Model = mmo;
+            if (s.Referrer != null)
+            {
+                int parent;
+                if (int.TryParse(s.Referrer, out parent))
+                {
+                    if (s.Context != null)
+                        return _storage.getMultimediaByURI(s.Context);
+                    else
+                        return new MultimediaObject()
+                         {
+                             RelatedId = parent,
+                             OwnerType = s.ReferrerType,
+                             
+                         };
+
+
+                }
+            }
+            return null;
         }
     }
     

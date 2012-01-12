@@ -8,7 +8,7 @@ using DiversityService.Model;
 namespace DiversityService
 {
     public class DiversityService : IDiversityService
-    {       
+    {
 
         public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
@@ -27,22 +27,22 @@ namespace DiversityService
         public IList<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
 
-            
-             using (var ctx = new DiversityCollectionFunctionsDataContext())
-            {
-                return 
-                    (from tl in ctx.TaxonListsForUser(user.LoginName)
-                    select new TaxonList()
-                    {
-                        DisplayText = tl.DisplayText,
-                        Table = tl.DataSource,
-                        TaxonomicGroup = tl.TaxonomicGroup
-                    }).ToList();
-            }
-        }             
+            return null;
+            //using (var ctx = new DiversityCollectionFunctionsDataContext())
+            //{
+            //    return
+            //        (from tl in ctx.TaxonListsForUser(user.LoginName)
+            //         select new TaxonList()
+            //         {
+            //             DisplayText = tl.DisplayText,
+            //             Table = tl.DataSource,
+            //             TaxonomicGroup = tl.TaxonomicGroup
+            //         }).ToList();
+            //}
+        }
 
         public IEnumerable<Term> GetStandardVocabulary()
-        {            
+        {
 
             IEnumerable<Term> linqTerms;
             using (var ctx = new DiversityCollectionFunctionsDataContext())
@@ -73,7 +73,7 @@ namespace DiversityService
                 linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
             }
             return linqTerms;
-           
+
         }
 
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list)
@@ -86,15 +86,15 @@ namespace DiversityService
             using (var ctx = new DiversityMobileEntities())
             {
                 return (from tn in ctx.TaxRef_BfN_VPlants
-                       select new TaxonName()
-                       {
-                           URI = tn.NameURI,
-                           TaxonNameCache = tn.TaxonNameCache,
-                           TaxonNameSinAuth = tn.TaxonNameSinAuthors,
-                           GenusOrSupragenic = tn.GenusOrSupragenericName,
-                           SpeciesEpithet = tn.SpeciesEpithet,
-                           InfraspecificEpithet = tn.InfraspecificEpithet
-                       }).ToList();
+                        select new TaxonName()
+                        {
+                            URI = tn.NameURI,
+                            TaxonNameCache = tn.TaxonNameCache,
+                            TaxonNameSinAuth = tn.TaxonNameSinAuthors,
+                            GenusOrSupragenic = tn.GenusOrSupragenericName,
+                            SpeciesEpithet = tn.SpeciesEpithet,
+                            InfraspecificEpithet = tn.InfraspecificEpithet
+                        }).ToList();
             }
         }
 
@@ -110,16 +110,16 @@ namespace DiversityService
 
         public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p)
         {
-            using(var ctx = new DiversityCollectionFunctionsDataContext())
+            using (var ctx = new DiversityCollectionFunctionsDataContext())
             {
                 var analysisProjectList = from apl in ctx.DiversityMobile_AnalysisProjectList(p.ProjectID)
-                                             select new Analysis()
-                                             {
-                                                 AnalysisID = apl.AnalysisID,
-                                                 Description = apl.Description,
-                                                 DisplayText = apl.DisplayText,
-                                                 MeasurementUnit = apl.MeasurementUnit
-                                             };
+                                          select new Analysis()
+                                          {
+                                              AnalysisID = apl.AnalysisID,
+                                              Description = apl.Description,
+                                              DisplayText = apl.DisplayText,
+                                              MeasurementUnit = apl.MeasurementUnit
+                                          };
                 return analysisProjectList.ToList();
             }
         }
@@ -127,15 +127,15 @@ namespace DiversityService
         {
             using (var ctx = new DiversityCollectionFunctionsDataContext())
             {
-                var analysisResults = from ar in ctx.DiversityMobile_AnalysisResultForProject(p.ProjectID) 
-                                          select new AnalysisResult()
-                                          {
-                                              AnalysisID = ar.AnalysisID,
-                                              Description = ar.Description,
-                                              DisplayText = ar.DisplayText,
-                                              Notes = ar.Notes,
-                                              Result = ar.AnalysisResult
-                                          };
+                var analysisResults = from ar in ctx.DiversityMobile_AnalysisResultForProject(p.ProjectID)
+                                      select new AnalysisResult()
+                                      {
+                                          AnalysisID = ar.AnalysisID,
+                                          Description = ar.Description,
+                                          DisplayText = ar.DisplayText,
+                                          Notes = ar.Notes,
+                                          Result = ar.AnalysisResult
+                                      };
                 return analysisResults.ToList();
             }
         }
@@ -146,7 +146,7 @@ namespace DiversityService
         {
             var result = new HierarchySection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
-            {               
+            {
                 var newEventEntity = hierarchy.Event.ToEntity();
                 ctx.CollectionEvent.AddObject(newEventEntity);
 
