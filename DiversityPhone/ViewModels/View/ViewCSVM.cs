@@ -75,7 +75,7 @@
                     switch (SelectedPivot)
                     {
                         case Pivots.Multimedia:
-                            return Page.EditSpecMMO;
+                            return Page.EditCSMMO;
                         case Pivots.Units:
                         default:
                             return Page.EditIU;

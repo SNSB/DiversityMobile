@@ -22,7 +22,7 @@ namespace DiversityService
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="DiversityCollection_Test")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="DiversityMobile")]
 	public partial class DiversityCollectionFunctionsDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -33,7 +33,7 @@ namespace DiversityService
     #endregion
 		
 		public DiversityCollectionFunctionsDataContext() : 
-				base(global::DiversityService.Properties.Settings.Default.DiversityCollection_TestConnectionString, mappingSource)
+				base(global::DiversityService.Properties.Settings.Default.DiversityMobileConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -96,6 +96,12 @@ namespace DiversityService
 		public IQueryable<DiversityMobile_AnalysisTaxonomicGroupsForProjectResult> DiversityMobile_AnalysisTaxonomicGroupsForProject([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ProjectID", DbType="Int")] System.Nullable<int> projectID)
 		{
 			return this.CreateMethodCallQuery<DiversityMobile_AnalysisTaxonomicGroupsForProjectResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), projectID);
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.TaxonListsForUser", IsComposable=true)]
+		public IQueryable<TaxonListsForUserResult> TaxonListsForUser([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Login", DbType="NVarChar(50)")] string login)
+		{
+			return this.CreateMethodCallQuery<TaxonListsForUserResult>(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), login);
 		}
 	}
 	
@@ -592,6 +598,68 @@ namespace DiversityService
 				if ((this._RowGUID != value))
 				{
 					this._RowGUID = value;
+				}
+			}
+		}
+	}
+	
+	public partial class TaxonListsForUserResult
+	{
+		
+		private string _DataSource;
+		
+		private string _DisplayText;
+		
+		private string _TaxonomicGroup;
+		
+		public TaxonListsForUserResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DataSource", DbType="NVarChar(50)")]
+		public string DataSource
+		{
+			get
+			{
+				return this._DataSource;
+			}
+			set
+			{
+				if ((this._DataSource != value))
+				{
+					this._DataSource = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayText", DbType="NVarChar(50)")]
+		public string DisplayText
+		{
+			get
+			{
+				return this._DisplayText;
+			}
+			set
+			{
+				if ((this._DisplayText != value))
+				{
+					this._DisplayText = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TaxonomicGroup", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string TaxonomicGroup
+		{
+			get
+			{
+				return this._TaxonomicGroup;
+			}
+			set
+			{
+				if ((this._TaxonomicGroup != value))
+				{
+					this._TaxonomicGroup = value;
 				}
 			}
 		}

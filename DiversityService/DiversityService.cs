@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DiversityService.Model;
 
+
 namespace DiversityService
 {
     public class DiversityService : IDiversityService
@@ -16,7 +17,7 @@ namespace DiversityService
 
         public IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
         {
-            throw new NotImplementedException();
+            return null; //TODO
         }
 
         public IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
@@ -25,7 +26,19 @@ namespace DiversityService
         }
         public IList<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
-            throw new NotImplementedException();
+
+            
+             using (var ctx = new DiversityCollectionFunctionsDataContext())
+            {
+                return 
+                    (from tl in ctx.TaxonListsForUser(user.LoginName)
+                    select new TaxonList()
+                    {
+                        DisplayText = tl.DisplayText,
+                        Table = tl.DataSource,
+                        TaxonomicGroup = tl.TaxonomicGroup
+                    }).ToList();
+            }
         }             
 
         public IEnumerable<Term> GetStandardVocabulary()
@@ -63,8 +76,13 @@ namespace DiversityService
            
         }
 
-        public IEnumerable<TaxonName> DownloadTaxonList(string list)
+        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list)
         {
+            //using (var db = new DiversityMobile())
+            //{
+            //    db.Query<CollectionTaxonName>(
+            //}
+
             using (var ctx = new DiversityMobileEntities())
             {
                 return (from tn in ctx.TaxRef_BfN_VPlants

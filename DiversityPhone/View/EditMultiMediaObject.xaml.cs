@@ -19,10 +19,14 @@ namespace DiversityPhone.View
         {
             InitializeComponent();
             String s=NavigationContext.QueryString["Source"];
-            ViewModels.ViewModelLocator loc=this.
+            ViewModels.ViewModelLocator loc=this.FindName("Locator") as ViewModels.ViewModelLocator;
+            if(loc == null)
+                return;
             switch (s)
             {
-                case "Event": DataContext=
+                case "Event":                 
+                    DataContext = loc.EditEVMMO;
+                    break;                    
             }
         }
     }
