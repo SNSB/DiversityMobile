@@ -88,7 +88,7 @@ namespace DiversityPhone.ViewModels
         public EditAnalysisVM EditAnalysis{get{ return _ioc.Resolve<EditAnalysisVM>();}}
 
         public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }
-        public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
+        public EditMultimediaObjectVM EditEVMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
        
     }

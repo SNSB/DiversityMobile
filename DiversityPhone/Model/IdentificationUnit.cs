@@ -27,7 +27,7 @@ namespace DiversityPhone.Model
         public int? RelatedUnitID { get; set; }
 
         /// <summary>
-        /// Collected Part of the IU in physical Form. Always true for Observations
+        /// No part of the IU collected in physical Form. Always true for Observations
         /// </summary>
         [Column]
         public bool OnlyObserved { get; set; }
@@ -51,7 +51,7 @@ namespace DiversityPhone.Model
 
         //Identification
         /// <summary>
-        /// Names as displyed on the screen
+        /// Names as displayed on the screen
         /// </summary>
         [Column]
         public string WorkingName { get; set; }
