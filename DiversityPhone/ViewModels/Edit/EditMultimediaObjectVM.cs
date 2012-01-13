@@ -14,6 +14,7 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
+using System.IO.IsolatedStorage;
 
 namespace DiversityPhone.ViewModels
 {
@@ -95,6 +96,11 @@ namespace DiversityPhone.ViewModels
         private void delete()
         {
             Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(Model.Uri))
+            {
+                myStore.DeleteFile(Model.Uri);
+            }
             Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 

@@ -369,6 +369,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\appbar.feature.audio.rest.png" />
+    <Content Include="Images\appbar.feature.audio.rest80.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
     <Content Include="Images\SNSBIcons\Event_80.png" />

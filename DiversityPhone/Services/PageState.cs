@@ -10,9 +10,11 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 
+
 namespace DiversityPhone.Services
 {
-    public class PageState
+    
+    public class PageState 
     {
         /// <summary>
         /// GUID string uniquely identifying this Page visit
