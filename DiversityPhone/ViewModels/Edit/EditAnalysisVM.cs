@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reactive.Linq;
 using ReactiveUI;
+using System.Linq;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
@@ -20,7 +21,7 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditAnalysisVM:ReactiveObject
+    public class EditAnalysisVM : ElementPageViewModel<IdentificationUnitAnalysis>
     {
        private IList<IDisposable> _subscriptions;
 
@@ -31,34 +32,29 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
+        public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
 
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
+        
 
         #region Properties
-        private IdentificationUnitAnalysis _Model;
-        public IdentificationUnitAnalysis Model
-        {
-            get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
-            this._Parent = _storage.getIdentificationUnitByID(_Model.IdentificationUnitID);
-            }
-        }
+        private ObservableAsPropertyHelper<bool> _IsEditable;
+        public bool IsEditable { get { return _IsEditable.Value; } }
 
-        private IdentificationUnit _Parent;
+        private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
+        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
 
-        private IList<Analysis> _Analyses = null;
+        private ObservableAsPropertyHelper<IdentificationUnit> _Parent;
+        public IdentificationUnit Parent { get { return _Parent.Value; } }
+
+        private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
         public IList<Analysis> Analyses
         {
             get
             {
-                if (_Parent == null)
-                    return null; //No Exceptions in Properties!
-                return _Analyses?? (_Analyses = _storage.getPossibleAnalyses(_Parent.TaxonomicGroup));
+                return _Analyses.Value;
             }
         }
 
@@ -69,19 +65,17 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysis, ref _SelectedAnalysis, value); }
         }
 
-        private IList<AnalysisResult> _AnalysisResults = null;
+        private ObservableAsPropertyHelper<IList<AnalysisResult>> _AnalysisResults = null;
         public IList<AnalysisResult> AnalysisResults
         {
             get
             {
-                if (Model == null)
-                    return null; //No Exceptions in Properties!
-                else return _AnalysisResults ?? (_AnalysisResults = _storage.getPossibleAnalysisResults(Model.AnalysisID));
+                return _AnalysisResults.Value;
             }
         }
 
-        public string _SelectedAnalysisResult;
-        public string SelectedAnalysisResult
+        public AnalysisResult _SelectedAnalysisResult;
+        public AnalysisResult SelectedAnalysisResult
         {
             get { return _SelectedAnalysisResult; }
             set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysisResult, ref _SelectedAnalysisResult, value); }
@@ -100,67 +94,118 @@ namespace DiversityPhone.ViewModels
 
 
         public EditAnalysisVM(IMessageBus messenger, IOfflineStorage storage)
+            : base(messenger, false)
         {
+            _IsEditable = StateObservable
+                .Select(s => s.Context == null) //New IUANs are editable
+                .Merge(
+                    ToggleEditable
+                    .Select(_ => !IsEditable)
+                )
+                .ToProperty(this, vm => vm.IsEditable);
 
-            _messenger = messenger;
-            _storage = storage;
-            this._editable = false;
+            ValidModel
+                .ToProperty(this, vm => vm.Model);
+
+            var viewUpdate = ValidModel
+                .Select(iuan => 
+                    {
+                        var parent = _storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
+                        var analyses = _storage.getPossibleAnalyses(parent.TaxonomicGroup);
+                        var selectedAN = (from an in analyses
+                                          where an.AnalysisID == iuan.AnalysisID
+                                          select an).FirstOrDefault() ?? analyses.First();
+                        var results = _storage.getPossibleAnalysisResults(selectedAN.AnalysisID);
+                        var selectedResult = (from res in results
+                                              where res.Result == iuan.AnalysisResult
+                                              select res).FirstOrDefault() ?? results.First();
+
+                        return new {
+                            Parent = parent,
+                            Analyses = analyses,
+                            SelectedAN = selectedAN,
+                            Results = results,
+                            SelectedResult = selectedResult
+                        };
+                    })                
+                .Publish();
+            viewUpdate.Connect();
+
+            _Parent = viewUpdate
+                .Select(u => u.Parent)
+                .ToProperty(this, vm => vm.Parent);
+            _Analyses = viewUpdate
+                .Select(u => u.Analyses)
+                .ToProperty(this, vm => vm.Analyses);
+            viewUpdate
+                .Select(u => u.SelectedAN)
+                .BindTo(this, x => x.SelectedAnalysis);
+            _AnalysisResults = viewUpdate
+                .Select(u => u.Results)
+                .ToProperty(this, vm => vm.AnalysisResults);
+            viewUpdate
+                .Select(u => u.SelectedResult)
+                .BindTo(this, x => x.SelectedAnalysisResult);
+
+
+            
+                                     
 
             var canSave = this.ObservableForProperty(x => x.SelectedAnalysisResult)
-                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                .Select(desc => desc.Value != null)
                 .StartWith(false);
 
-            _subscriptions = new List<IDisposable>()
-            {
-                (Save = new ReactiveCommand(canSave))               
-                    .Subscribe(_ => executeSave()),
-
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
-
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_ => delete()),
-
-            };
-        }
 
 
+            Messenger.RegisterMessageSource(
+                Save
+                .Do(_ => updateModel())
+                .Select(_ => Model),
+                MessageContracts.SAVE);
 
-        private void executeSave()
-        {
-            updateModel();
-            _messenger.SendMessage<IdentificationUnitAnalysis>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
+            Messenger.RegisterMessageSource(
+                Delete
+                .Select(_ => Model),
+                MessageContracts.DELETE);
 
-
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
-
-        private void delete()
-        {
-            _messenger.SendMessage<IdentificationUnitAnalysis>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
+            Messenger.RegisterMessageSource(
+                Delete
+                .Merge(Save)
+                .Select(_ => Message.NavigateBack)
+                );
+        }       
 
         private void updateModel()
         {
             Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
-            Model.AnalysisResult = this.SelectedAnalysisResult;
+            Model.AnalysisResult = this.SelectedAnalysisResult.Result;
             Model.AnalysisDate = this.AnalysisDate;
-        }
+        }       
 
-        private void updateView(IdentificationUnitAnalysis iua)
+        protected override IdentificationUnitAnalysis ModelFromState(PageState s)
         {
-            this.Model = iua;
-            this.SelectedAnalysis = _storage.getAnalysisByID(Model.AnalysisID);
-            this.SelectedAnalysisResult = Model.AnalysisResult;
-            this.AnalysisDate = Model.AnalysisDate;           
+            //Existing IUAN
+            if (s.Context != null)
+            {
+                int anID;
+                if (int.TryParse(s.Context, out anID))
+                {
+                    return _storage.getIUANByID(anID);
+                }                        
+            }
+            //New IUAN
+            if (s.ReferrerType == ReferrerType.IdentificationUnit && s.Referrer != null)
+            {
+                int unitID;
+                if (int.TryParse(s.Referrer, out unitID))
+                {
+                    return new IdentificationUnitAnalysis()
+                    {
+                        IdentificationUnitID = unitID,
+                    };
+                }
+            }
+            return null;
         }
     }
 }

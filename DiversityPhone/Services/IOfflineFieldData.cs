@@ -34,7 +34,8 @@ using Svc = DiversityPhone.Service;
         IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
 
-        IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu);
+        IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu);
+        IdentificationUnitAnalysis getIUANByID(int analysisID);
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
 
         IList<MultimediaObject> getAllMultimediaObjects();
