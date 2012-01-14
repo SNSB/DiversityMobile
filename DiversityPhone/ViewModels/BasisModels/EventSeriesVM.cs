@@ -23,8 +23,8 @@
             
         }
 
-        public EventSeriesVM( IMessageBus messenger,EventSeries model)
-            : base(messenger,model)
+        public EventSeriesVM( IMessageBus messenger, EventSeries model, Page targetPage, Predicate<EventSeries> canSelectPredicate = null)
+            : base(messenger,model, targetPage)
         {           
             if (EventSeries.isNoEventSeries(Model)) //Überprüfen auf NoEventSeries
                 _esIcon = ViewModels.Icon.NoEventSeries;
@@ -33,21 +33,19 @@
                 _esIcon = ViewModels.Icon.EventSeries;                
             }
 
-            Select = new ReactiveCommand();
-            Edit = new ReactiveCommand();
+            if(canSelectPredicate != null)
+                CanSelect.OnNext(canSelectPredicate(Model));
+        }
 
-            Messenger.RegisterMessageSource(
-                Select
-                .Select(_ => 
-                    new NavigationMessage(Page.ViewES,
-                        (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
-                        )));
-            Messenger.RegisterMessageSource(
-                Edit
-                .Where(_ => !EventSeries.isNoEventSeries(Model)) //NoEventSeries nicht editierbar
-                .Select(_ => new NavigationMessage(Page.EditES, Model.SeriesID.ToString()))
-                );
-                            
+        protected override NavigationMessage NavigationMessage
+        {
+            get
+            {
+                return new NavigationMessage(
+                    TargetPage,
+                    (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
+                    );
+            }
         }
     }
 }

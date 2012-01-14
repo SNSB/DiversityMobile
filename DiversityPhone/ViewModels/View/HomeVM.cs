@@ -50,7 +50,7 @@
             get
             {
                 if (_NoEventSeries == null)
-                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries);
+                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries, Page.ViewES);
 
                 return _NoEventSeries;
             }
@@ -139,7 +139,7 @@
         {
             SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
                 _storage.getAllEventSeries(),
-                (model) => new EventSeriesVM(Messenger,model)
+                (model) => new EventSeriesVM(Messenger,model, Page.ViewES)
                 );
         }
 

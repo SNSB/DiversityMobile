@@ -1,18 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿
 using ReactiveUI;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
@@ -21,11 +13,15 @@ namespace DiversityPhone.ViewModels
         public override string Description { get { return Model.ToString(); } }
         public override Icon Icon { get { return ViewModels.Icon.CollectionEventProperty; }  }
 
-        public PropertyVM(IMessageBus messenger, CollectionEventProperty model)
-            : base(messenger, model)
-
+        protected override NavigationMessage NavigationMessage
         {
-            
+            get { return new NavigationMessage(TargetPage, Model.PropertyID.ToString(), Services.ReferrerType.Event, Model.EventID.ToString()); }
+        }
+
+        public PropertyVM(IMessageBus _messenger, CollectionEventProperty model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
+
         }
     }
 }

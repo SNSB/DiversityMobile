@@ -21,23 +21,15 @@ namespace DiversityPhone.ViewModels
                 return ViewModels.Icon.Event;
             }
         }
+        protected override NavigationMessage NavigationMessage
+        {
+            get { return new NavigationMessage(TargetPage, Model.EventID.ToString()); }
+        }
 
+        public EventVM(IMessageBus _messenger, Event model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
 
-        public EventVM(IMessageBus messenger,Event model)
-            : base(messenger,model)
-        {       
-            Select = new ReactiveCommand();
-            Edit = new ReactiveCommand();
-            
-            Messenger.RegisterMessageSource<NavigationMessage>(
-                Select
-                .Select( _ => new NavigationMessage(Page.ViewEV, Model.EventID.ToString()))
-                );
-
-            Messenger.RegisterMessageSource(
-                Edit
-                .Select( _ => new NavigationMessage(Page.EditEV, Model.EventID.ToString()))
-                );           
         }
     }
 }

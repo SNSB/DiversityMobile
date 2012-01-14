@@ -7,6 +7,7 @@
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
+using DiversityPhone.Services;
 
     public class SpecimenVM : ElementVMBase<Specimen>
     {
@@ -25,23 +26,15 @@
             }
         }
 
-        public SpecimenVM(IMessageBus messenger, Specimen model)
-            : base(messenger, model)
+        protected override NavigationMessage NavigationMessage
         {
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (model == null) throw new ArgumentNullException("model");
+            get { return new NavigationMessage(TargetPage, Model.CollectionSpecimenID.ToString()); }
+        }
 
-            Select = new ReactiveCommand();
-            Edit = new ReactiveCommand();
+        public SpecimenVM(IMessageBus _messenger, Specimen model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
 
-            Messenger.RegisterMessageSource(
-                Select
-                .Select(_ => new NavigationMessage(Services.Page.ViewCS, Model.CollectionSpecimenID.ToString()))
-                );
-            Messenger.RegisterMessageSource(
-                Edit
-                .Select(_ => new NavigationMessage(Services.Page.EditCS, Model.CollectionSpecimenID.ToString()))
-                );
         }
     }
 }

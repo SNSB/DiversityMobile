@@ -78,7 +78,7 @@ namespace DiversityPhone.ViewModels
             
 
             _Current = validModel
-                .Select(iu => new IdentificationUnitVM(Messenger, iu, null))
+                .Select(iu => new IdentificationUnitVM(Messenger, iu,Page.EditIU, null))
                 .ToProperty(this, x => x.Current);
             _Subunits = validModel
                 .Select(iu => getSubUnits(iu))

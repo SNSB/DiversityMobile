@@ -10,8 +10,7 @@
     using DiversityPhone.Messages;
 
     public class ViewESVM : ElementPageViewModel<EventSeries>
-    {
-        IList<IDisposable> _subscriptions;
+    {       
 
         #region Services       
         IOfflineStorage _storage;
@@ -38,13 +37,13 @@
             _storage = storage; 
             
             _Current = ValidModel
-                .Select(es => new EventSeriesVM(Messenger, es))
+                .Select(es => new EventSeriesVM(Messenger, es, Page.EditES))
                 .ToProperty(this, x => x.Current);
 
             _EventList = ValidModel
                 .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
                     _storage.getEventsForSeries(es),
-                    (model) => new EventVM(Messenger, model)
+                    (model) => new EventVM(Messenger, model, Page.ViewEV)
                 ) as IList<EventVM>)
                 .ToProperty(this, x => x.EventList);
 

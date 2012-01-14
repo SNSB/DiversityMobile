@@ -60,7 +60,7 @@
             Add = new ReactiveCommand();         
                  
 
-            _Current = ValidModel.Select(cs => new SpecimenVM(Messenger, cs))
+            _Current = ValidModel.Select(cs => new SpecimenVM(Messenger, cs, Page.EditCS))
                                 .ToProperty(this, x => x.Current);
 
 
