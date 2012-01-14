@@ -20,7 +20,7 @@ namespace DiversityPhone.Model
         public CollectionEventProperty()
         {
             LogUpdatedWhen = DateTime.Now;
-            this.IsModified = null;
+            this.ModificationState = null;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -43,7 +43,7 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 

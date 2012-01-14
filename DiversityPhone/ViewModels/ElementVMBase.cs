@@ -59,6 +59,7 @@ namespace DiversityPhone.ViewModels
         {
             this.Model = model;
             this.Messenger = _messenger;
+            this.TargetPage = targetPage;
             this.CanSelect = new Subject<bool>();                    
             this.Select = new ReactiveCommand(CanSelect);
 

@@ -95,7 +95,7 @@
         private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries( EventSeries es)
         {
             var events = _storage.getEventsForSeries(es)
-                        .Where(ev => ev.IsModified == null); // Only New Events
+                        .Where(ev => ev.ModificationState == null); // Only New Events
             
             foreach (var series in events)
             {

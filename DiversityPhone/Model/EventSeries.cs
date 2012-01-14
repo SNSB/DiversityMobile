@@ -20,7 +20,7 @@
             this.SeriesEnd = null;
             this.SeriesID = 0;
             this.LogUpdatedWhen = DateTime.Now;
-            this.IsModified = null;
+            this.ModificationState = null;
         }
 
 
@@ -58,7 +58,7 @@
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
@@ -90,7 +90,7 @@
             {
                 Description = "No EventSeries",
                 SeriesCode = "No EventSeries",
-                IsModified = false
+                ModificationState = false
             };
         }
 

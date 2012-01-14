@@ -82,7 +82,7 @@
 
         public IList<EventSeries> getNewEventSeries()
         {
-            return esQuery(es => es.IsModified == null);
+            return esQuery(es => es.ModificationState == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
@@ -156,15 +156,20 @@
 
         public void addOrUpdateEvent(Event ev)
         {
+            var wasNewEvent = ev.IsNew();
+
             addOrUpdateRow(Event.Operations,
                   ctx => ctx.Events,
                   ev
               );
-            //Now EventID is set even for new Events
-            Specimen observation = new Specimen().MakeObservation();
-            observation.CollectionEventID = ev.EventID;
-            
-            addOrUpdateSpecimen(observation);
+
+            if (wasNewEvent)
+            {
+                //Now EventID is set even for new Events
+                Specimen observation = new Specimen().MakeObservation();
+                observation.CollectionEventID = ev.EventID;
+                addOrUpdateSpecimen(observation);
+            }
         }
         #endregion
 
@@ -305,7 +310,7 @@
         {
             using (var ctx = new DiversityDataContext())
             {
-                if (iu.IsModified == null)
+                if (iu.ModificationState == null)
                     iu.UnitID = findFreeUnitID(ctx);
                 ctx.IdentificationUnits.InsertOnSubmit(iu);
                 ctx.SubmitChanges();
@@ -665,15 +670,15 @@
 
 
 
-                    if (row.IsModified == null)      //New Object
+                    if (row.IsNew())      //New Object
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        row.IsModified = true; //Mark for Upload
+                        row.ModificationState = true; //Mark for Upload
 
                         table.InsertOnSubmit(row);                        
                         try
                         {
-                            ctx.SubmitChanges();
+                            ctx.SubmitChanges();                            
                         }
                         catch (Exception ex)
                         {
