@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 
 namespace DiversityPhone.Services
@@ -19,24 +20,24 @@ namespace DiversityPhone.Services
         /// <summary>
         /// GUID string uniquely identifying this Page visit
         /// </summary>
-        public string Token { get; private set; }
+        public string Token { get; set; }
 
         /// <summary>
         /// Information that should be displayed by the visited Page
         /// e.g. ID of the object that the user wants to edit etc...
         /// </summary>
-        public string Context { get; private set; }
+        public string Context { get; set; }
 
         /// <summary>
         /// Type of the Referrer (Object that originated the Request)
         /// </summary>
-        public ReferrerType ReferrerType { get; private set; }
+        public ReferrerType ReferrerType { get; set; }
 
         /// <summary>
         /// Information that shows the Origin of the Request, if needed
         /// e.g. ID of the parent object
         /// </summary>
-        public string Referrer { get; private set; }
+        public string Referrer { get; set; }
 
         /// <summary>
         /// State Dictionary, that should be used by the Page to persist custom state
@@ -51,6 +52,10 @@ namespace DiversityPhone.Services
             this.ReferrerType = refType;
             this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
             this.State = new Dictionary<string, string>();
+        }
+        public PageState()
+        {
+
         }
     }
 }
