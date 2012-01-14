@@ -75,7 +75,7 @@
                         switch (SelectedPivot)
                         {
                             case Pivots.Multimedia:
-                                return Page.EditEVMMO;
+                                return Page.EditMMO;
                             case Pivots.Descriptions:
                                 return Page.EditEventProperty;
                             case Pivots.Specimen:

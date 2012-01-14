@@ -94,7 +94,7 @@ namespace DiversityPhone.ViewModels
                             case Pivots.Analyses:
                                 return Page.EditIUAN;
                             case Pivots.Multimedia:
-                                //TODO Multimedia Page
+                                return Page.EditMMO;
                             case Pivots.Descriptions:
                                 //TODO Description Page
                             case Pivots.Subunits:

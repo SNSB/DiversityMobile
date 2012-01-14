@@ -15,9 +15,7 @@ namespace DiversityPhone.Services
         EditIUAN,
 
         EditESMMO,
-        EditEVMMO,
-        EditCSMMO,
-        EditIUMMO,
+        EditMMO,        
         EditMap,
         EditEventProperty,
         EditUserProfile,

@@ -125,7 +125,7 @@ namespace DiversityPhone.Services
                 case Page.EditESMMO:
                     destination = "/View/EditMMO.xaml?Source=EventSeries";
                     break;
-                case Page.EditEVMMO:
+                case Page.EditMMO:
                     destination = "/View/EditMMO.xaml?Source=Event";
                     //destination = "/View/EditPicture.xaml";
                     break;
