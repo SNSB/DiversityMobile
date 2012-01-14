@@ -322,7 +322,7 @@
         #region Analyses 
 
 
-        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
             return cachedQuery(IdentificationUnitAnalysis.Operations,
             ctx =>
@@ -330,6 +330,14 @@
                 where iuan.IdentificationUnitID == iu.UnitID 
                 select iuan
                 );
+        }
+
+
+        public IdentificationUnitAnalysis getIUANByID(int iuanalysisID)
+        {
+            return singletonQuery(ctx => from iuan in ctx.IdentificationUnitAnalyses
+                                         where iuan.IdentificationUnitAnalysisID == iuanalysisID
+                                         select iuan);
         }
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
@@ -825,6 +833,8 @@
 
 
 
-        
+
+
+
     }
 }
