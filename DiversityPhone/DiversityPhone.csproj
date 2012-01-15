@@ -611,5 +611,5 @@
   -->
   <ProjectExtensions />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\WindowsPhone\v7.1\Microsoft.Expression.Blend.WindowsPhone.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  
 </Project>
