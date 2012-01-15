@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
+using DiversityMobile;
 
 
 namespace DiversityService
@@ -78,24 +79,21 @@ namespace DiversityService
 
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list)
         {
-            //using (var db = new DiversityMobile())
-            //{
-            //    db.Query<CollectionTaxonName>(
-            //}
-
-            using (var ctx = new DiversityMobileEntities())
+            using (var db = new DiversityMobile.DiversityMobile())
             {
-                return (from tn in ctx.TaxRef_BfN_VPlants
-                        select new TaxonName()
-                        {
-                            URI = tn.NameURI,
-                            TaxonNameCache = tn.TaxonNameCache,
-                            TaxonNameSinAuth = tn.TaxonNameSinAuthors,
-                            GenusOrSupragenic = tn.GenusOrSupragenericName,
-                            SpeciesEpithet = tn.SpeciesEpithet,
-                            InfraspecificEpithet = tn.InfraspecificEpithet
-                        }).ToList();
-            }
+                //TODO Improve SQL Sanitation
+                if (list.Table.Contains(';') ||
+                    list.Table.Contains('\'') ||
+                    list.Table.Contains('"'))
+                    return Enumerable.Empty<TaxonName>();  //SQL Injection ?
+
+                var sql = PetaPoco.Sql.Builder
+                    .From(String.Format("[{0}] AS [TaxonName]",list.Table))                    
+                    .SQL;
+               
+                
+                return db.Query<TaxonName>(sql).ToList();
+            }         
         }
 
         public IEnumerable<string> GetAvailablePropertyLists()

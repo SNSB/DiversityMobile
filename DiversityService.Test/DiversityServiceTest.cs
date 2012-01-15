@@ -15,43 +15,63 @@ namespace DiversityService.Test
             _target = new DiversityService();
         }
 
-        [Fact]
-        public void svc_should_insert_single_event_hierarchy()
-        {
-            //Prepare
-            var hierarchy = new HierarchySection()
-            {
-                Event = new Event()
-                {
-                    EventID = 0,
-                    SeriesID = null,
-                    LocalityDescription = "TestLocality",
-                    HabitatDescription = "TestHabitat",
-                    CollectionDate = new DateTime(2001,01,02)                                        
-                }
-            };
+        //[Fact]
+        //public void svc_should_insert_single_event_hierarchy()
+        //{
+        //    //Prepare
+        //    var hierarchy = new HierarchySection()
+        //    {
+        //        Event = new Event()
+        //        {
+        //            EventID = 0,
+        //            SeriesID = null,
+        //            LocalityDescription = "TestLocality",
+        //            HabitatDescription = "TestHabitat",
+        //            CollectionDate = new DateTime(2001,01,02)                                        
+        //        }
+        //    };
 
-            //Execute
-            var updatedHierarchy = _target.InsertHierarchy(hierarchy);
-            var updatedEvent = updatedHierarchy.Event;
+        //    //Execute
+        //    var updatedHierarchy = _target.InsertHierarchy(hierarchy);
+        //    var updatedEvent = updatedHierarchy.Event;
 
             
-            var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();
-            var addedEntity = ( from ev in ctx.CollectionEvent
-                                where ev.CollectionEventID == updatedEvent.EventID
-                                select ev).FirstOrDefault();
+        //    var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();
+        //    var addedEntity = ( from ev in ctx.CollectionEvent
+        //                        where ev.CollectionEventID == updatedEvent.EventID
+        //                        select ev).FirstOrDefault();
 
-            //Cleanup
-            if (addedEntity != null)
+        //    //Cleanup
+        //    if (addedEntity != null)
+        //    {
+        //        ctx.CollectionEvent.DeleteObject(addedEntity);
+        //        ctx.SaveChanges();
+        //    }
+
+
+        //    //Assert
+        //    Assert.NotNull(addedEntity); 
+
+        //}
+
+        [Fact]
+        public void taxonNames_via_PetaPoco_should_work()
+        {
+             //Prepare
+            var tl = new TaxonList()
             {
-                ctx.CollectionEvent.DeleteObject(addedEntity);
-                ctx.SaveChanges();
-            }
+                DisplayText = "N/A",
+                Table = "TaxRef_BfN_VPlants",
+                TaxonomicGroup = "plants"
+            };
+            
+
+            //Execute
+            var taxa = _target.DownloadTaxonList(tl);
 
 
             //Assert
-            Assert.NotNull(addedEntity); 
-
+            Assert.NotEmpty(taxa);
         }
 
     }
