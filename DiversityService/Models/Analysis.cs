@@ -1,5 +1,6 @@
 ﻿using System;
 using PetaPoco;
+using System.Runtime.Serialization;
 
 
 namespace DiversityService.Model
@@ -9,6 +10,11 @@ namespace DiversityService.Model
         //Read-Only
         [Column("AnalysisID")]
         public int AnalysisID { get; set; }
+
+        [Column("AnalysisParentID")]
+        [IgnoreDataMember]
+        public int AnalysisParentID { get; set; }
+
         [Column("DisplayText")]
         public String DisplayText { get; set; }
         [Column("Description")]

@@ -32,16 +32,15 @@ namespace DiversityService
             {
                 var flattenQueue = new Queue<AnalysisTaxonomicGroup>(db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", p.ProjectID));                    
                 var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
+                var analyses = GetAnalysesForProject(p);
 
                 while(flattenQueue.Count > 0)
                 {
                     var atg = flattenQueue.Dequeue();
                     flattened.Add(atg);
-                    var childANs = db.Query<Analysis>(
-                        PetaPoco.Sql.Builder
-                            .Append("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis] ", p.ProjectID)
-                            .Where(" [Analysis].[AnalysisParentID] = @0 ", atg.AnalysisID)
-                            );
+                    var childANs = from an in analyses
+                                   where an.AnalysisParentID == atg.AnalysisID
+                                   select an;
                     foreach (var an in childANs)
                     {
                         flattenQueue.Enqueue(new AnalysisTaxonomicGroup() { AnalysisID = an.AnalysisID, TaxonomicGroup = atg.TaxonomicGroup });
