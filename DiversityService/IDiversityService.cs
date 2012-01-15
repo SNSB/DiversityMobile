@@ -26,7 +26,7 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
         [OperationContract]
-        IEnumerable<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys);
+        IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p);
 
         [OperationContract]
         IEnumerable<Model.Analysis> GetAnalysesForProject(Project p);

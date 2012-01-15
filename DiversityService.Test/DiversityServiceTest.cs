@@ -125,5 +125,23 @@ namespace DiversityService.Test
             Assert.NotEmpty(ar);
         }
 
+        [Fact]
+        public void GetAnalysisTaxonomicGroupsForProject_should_work()
+        {
+            //Prepare
+            var project = new Project()
+            {
+                ProjectID = 1100,
+            };
+
+            //Execute
+            var ar = _target.GetAnalysisTaxonomicGroupsForProject(project);
+
+
+            //Assert
+            Assert.NotEmpty(ar);
+            Assert.True(ar.Distinct().Count() == ar.Count());
+        }
+
     }
 }

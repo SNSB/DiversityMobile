@@ -1,4 +1,5 @@
 ﻿using System;
+using PetaPoco;
 
 
 namespace DiversityService.Model
@@ -7,10 +8,10 @@ namespace DiversityService.Model
     {
         //Read-Only
         public int AnalysisID { get; set; }
+        [Column("AnalysisResult")]
         public string Result { get; set; }
         public string Description { get; set; }
         public string Notes { get; set; }
-        public string DisplayText { get; set; }
-        public DateTime LogUpdatedWhen { get; set; }
+        public string DisplayText { get; set; }      
     }
 }

@@ -13,7 +13,12 @@ namespace DiversityService
 
         public IEnumerable<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
-            throw new NotImplementedException();
+            //using (var db = new DiversityCollection.DiversityCollection())
+            //{
+            //    return db.Query<Project>
+            //}
+
+            return Enumerable.Empty<Project>();
         }
 
         public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
@@ -21,9 +26,29 @@ namespace DiversityService
             return null; //TODO
         }
 
-        public IEnumerable<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
+        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p)
         {
-            throw new NotImplementedException();
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                var flattenQueue = new Queue<AnalysisTaxonomicGroup>(db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", p.ProjectID));                    
+                var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
+
+                while(flattenQueue.Count > 0)
+                {
+                    var atg = flattenQueue.Dequeue();
+                    flattened.Add(atg);
+                    var childANs = db.Query<Analysis>(
+                        PetaPoco.Sql.Builder
+                            .Append("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis] ", p.ProjectID)
+                            .Where(" [Analysis].[AnalysisParentID] = @0 ", atg.AnalysisID)
+                            );
+                    foreach (var an in childANs)
+                    {
+                        flattenQueue.Enqueue(new AnalysisTaxonomicGroup() { AnalysisID = an.AnalysisID, TaxonomicGroup = atg.TaxonomicGroup });
+                    }
+                }
+                return flattened;
+            }
         }
 
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
@@ -103,14 +128,14 @@ namespace DiversityService
         {
             using (var db = new DiversityCollection.DiversityCollection())
             {
-                return db.Query<Analysis>("FROM [AnalysisProjectList](@0) AS [Analysis]", p.ProjectID).ToList();
+                return db.Query<Analysis>("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis]", p.ProjectID).ToList();
             }
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
         {
             using (var db = new DiversityCollection.DiversityCollection())
             {
-                return db.Query<AnalysisResult>("FROM [AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
+                return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
                                       
                 
             }
