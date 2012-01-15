@@ -25,6 +25,7 @@ namespace DiversityService
         {
             throw new NotImplementedException();
         }
+
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
 
