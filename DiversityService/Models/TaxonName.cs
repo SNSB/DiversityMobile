@@ -3,8 +3,7 @@ using PetaPoco;
 
 
 namespace DiversityService.Model
-{
-    [ExplicitColumns]    
+{       
     public class TaxonName
     {
         //Read-Only

@@ -12,21 +12,21 @@ namespace DiversityService
     public interface IDiversityService
     {
         [OperationContract]
-        IList<Project> GetProjectsForUser(UserProfile user);
+        IEnumerable<Project> GetProjectsForUser(UserProfile user);
 
         //TODO Contract Userinfo
 
         [OperationContract]
-        IList<TaxonList> GetTaxonListsForUser(UserProfile user);
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserProfile user);
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list);
 
         [OperationContract]
         IEnumerable<Term> GetStandardVocabulary();
         [OperationContract]
-        IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
+        IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
         [OperationContract]
-        IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys);
+        IEnumerable<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys);
 
         [OperationContract]
         IEnumerable<Model.Analysis> GetAnalysesForProject(Project p);

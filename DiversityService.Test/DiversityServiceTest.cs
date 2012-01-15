@@ -57,7 +57,7 @@ namespace DiversityService.Test
         [Fact]
         public void taxonNames_via_PetaPoco_should_work()
         {
-             //Prepare
+            //Prepare
             var tl = new TaxonList()
             {
                 DisplayText = "N/A",
@@ -72,6 +72,23 @@ namespace DiversityService.Test
 
             //Assert
             Assert.NotEmpty(taxa);
+        }
+
+        [Fact]
+        public void taxonNamesForUser_should_work()
+        {
+            //Prepare
+            var profile = new UserProfile()
+            {
+                LoginName = "rollinger",
+            };
+
+            //Execute
+            var lists = _target.GetTaxonListsForUser(profile);
+
+
+            //Assert
+            Assert.NotEmpty(lists);
         }
 
     }

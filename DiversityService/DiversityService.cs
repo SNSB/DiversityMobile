@@ -11,35 +11,27 @@ namespace DiversityService
     public class DiversityService : IDiversityService
     {
 
-        public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
+        public IEnumerable<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
             throw new NotImplementedException();
         }
 
-        public IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
+        public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
         {
             return null; //TODO
         }
 
-        public IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
+        public IEnumerable<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
         {
             throw new NotImplementedException();
         }
-        public IList<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
+        public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
 
-            return null;
-            //using (var ctx = new DiversityCollectionFunctionsDataContext())
-            //{
-            //    return
-            //        (from tl in ctx.TaxonListsForUser(user.LoginName)
-            //         select new TaxonList()
-            //         {
-            //             DisplayText = tl.DisplayText,
-            //             Table = tl.DataSource,
-            //             TaxonomicGroup = tl.TaxonomicGroup
-            //         }).ToList();
-            //}
+            using (var db = new DiversityMobile.DiversityMobile())
+            {
+                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", user.LoginName).ToList();
+            }
         }
 
         public IEnumerable<Term> GetStandardVocabulary()
