@@ -97,7 +97,7 @@ namespace DiversityService.Test
             //Prepare
             var project = new Project()
             {
-                ProjectID = 371,
+                ProjectID = 1100,
             };
 
             //Execute
@@ -106,6 +106,23 @@ namespace DiversityService.Test
 
             //Assert
             Assert.NotEmpty(analyses);
+        }
+
+        [Fact]
+        public void AnalysisResultsForProject_should_work()
+        {
+            //Prepare
+            var project = new Project()
+            {
+                ProjectID = 1100,
+            };
+
+            //Execute
+            var ar = _target.GetAnalysisResultsForProject(project);
+
+
+            //Assert
+            Assert.NotEmpty(ar);
         }
 
     }

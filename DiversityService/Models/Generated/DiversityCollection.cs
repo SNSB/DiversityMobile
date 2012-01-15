@@ -4,9 +4,9 @@
 // 
 // The following connection settings were used to generate this file
 // 
-//     Connection String Name: `DiversityService.Properties.Settings.DiversityCollection_BaseTestConnectionString`
+//     Connection String Name: `DiversityService.Properties.Settings.DiversityCollection_TestConnectionString`
 //     Provider:               `System.Data.SqlClient`
-//     Connection String:      `Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_BaseTest;Persist Security Info=True;User ID=Rollinger;Password=Rolli#2-AI4@UBT`
+//     Connection String:      `Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_Test;Persist Security Info=True;User ID=Rollinger;Password=Rolli#2-AI4@UBT`
 //     Schema:                 ``
 //     Include Views:          `False`
 
@@ -21,7 +21,7 @@ namespace DiversityCollection
 	public partial class DiversityCollection : Database
 	{
 		public DiversityCollection() 
-			: base("DiversityService.Properties.Settings.DiversityCollection_BaseTestConnectionString")
+			: base("DiversityService.Properties.Settings.DiversityCollection_TestConnectionString")
 		{
 			CommonConstruct();
 		}

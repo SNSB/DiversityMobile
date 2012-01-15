@@ -108,18 +108,11 @@ namespace DiversityService
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
         {
-            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            using (var db = new DiversityCollection.DiversityCollection())
             {
-                var analysisResults = from ar in ctx.DiversityMobile_AnalysisResultForProject(p.ProjectID)
-                                      select new AnalysisResult()
-                                      {
-                                          AnalysisID = ar.AnalysisID,
-                                          Description = ar.Description,
-                                          DisplayText = ar.DisplayText,
-                                          Notes = ar.Notes,
-                                          Result = ar.AnalysisResult
-                                      };
-                return analysisResults.ToList();
+                return db.Query<AnalysisResult>("FROM [AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
+                                      
+                
             }
         }
 

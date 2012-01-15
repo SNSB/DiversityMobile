@@ -1,7 +1,7 @@
 ﻿<#@ include file="PetaPoco.Core.ttinclude" #>
 <#
 	// Settings
-    ConnectionStringName = "DiversityService.Properties.Settings.DiversityCollection_BaseTestConnectionString";			// Uses last connection string in config if not specified
+    ConnectionStringName = "DiversityService.Properties.Settings.DiversityCollection_TestConnectionString";			// Uses last connection string in config if not specified
     Namespace = "DiversityCollection";
     RepoName = "DiversityCollection";
     GenerateOperations = true;
