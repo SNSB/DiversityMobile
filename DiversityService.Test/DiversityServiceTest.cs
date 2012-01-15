@@ -91,5 +91,22 @@ namespace DiversityService.Test
             Assert.NotEmpty(lists);
         }
 
+        [Fact]
+        public void AnalysesForProject_should_work()
+        {
+            //Prepare
+            var project = new Project()
+            {
+                ProjectID = 371,
+            };
+
+            //Execute
+            var analyses = _target.GetAnalysesForProject(project);
+
+
+            //Assert
+            Assert.NotEmpty(analyses);
+        }
+
     }
 }
