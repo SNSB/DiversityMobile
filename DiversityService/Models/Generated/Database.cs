@@ -16,17 +16,17 @@ using System.Linq;
 using System.Web;
 using PetaPoco;
 
-namespace DiversityMobileEntities
+namespace DiversityMobile
 {
-	public partial class DiversityMobileEntities : Database
+	public partial class DiversityMobile : Database
 	{
-		public DiversityMobileEntities() 
+		public DiversityMobile() 
 			: base("DiversityService.Properties.Settings.DiversityMobileConnectionString")
 		{
 			CommonConstruct();
 		}
 
-		public DiversityMobileEntities(string connectionStringName) 
+		public DiversityMobile(string connectionStringName) 
 			: base(connectionStringName)
 		{
 			CommonConstruct();
@@ -36,11 +36,11 @@ namespace DiversityMobileEntities
 		
 		public interface IFactory
 		{
-			DiversityMobileEntities GetInstance();
+			DiversityMobile GetInstance();
 		}
 		
 		public static IFactory Factory { get; set; }
-        public static DiversityMobileEntities GetInstance()
+        public static DiversityMobile GetInstance()
         {
 			if (_instance!=null)
 				return _instance;
@@ -48,10 +48,10 @@ namespace DiversityMobileEntities
 			if (Factory!=null)
 				return Factory.GetInstance();
 			else
-				return new DiversityMobileEntities();
+				return new DiversityMobile();
         }
 
-		[ThreadStatic] static DiversityMobileEntities _instance;
+		[ThreadStatic] static DiversityMobile _instance;
 		
 		public override void OnBeginTransaction()
 		{
@@ -67,7 +67,7 @@ namespace DiversityMobileEntities
         
 		public class Record<T> where T:new()
 		{
-			public static DiversityMobileEntities repo { get { return DiversityMobileEntities.GetInstance(); } }
+			public static DiversityMobile repo { get { return DiversityMobile.GetInstance(); } }
 			public bool IsNew() { return repo.IsNew(this); }
 			public object Insert() { return repo.Insert(this); }
 			public int Update(IEnumerable<string> columns) { return repo.Update(this, columns); }
@@ -129,340 +129,6 @@ namespace DiversityMobileEntities
 	}
 	
 
-    
-	[TableName("ProjectTaxonLists")]
-	[PrimaryKey("ProjectID", autoIncrement=false)]
-	[ExplicitColumns]
-    public partial class ProjectTaxonList : DiversityMobileEntities.Record<ProjectTaxonList>  
-    {
-        [Column] 
-		public int ProjectID 
-		{ 
-			get
-			{
-				return _ProjectID;
-			}
-			set
-			{
-				_ProjectID = value;
-				MarkColumnModified("ProjectID");
-			}
-		}
-		int _ProjectID;
-
-        [Column] 
-		public string TaxonList 
-		{ 
-			get
-			{
-				return _TaxonList;
-			}
-			set
-			{
-				_TaxonList = value;
-				MarkColumnModified("TaxonList");
-			}
-		}
-		string _TaxonList;
-
-        [Column] 
-		public string TaxonomicGroup 
-		{ 
-			get
-			{
-				return _TaxonomicGroup;
-			}
-			set
-			{
-				_TaxonomicGroup = value;
-				MarkColumnModified("TaxonomicGroup");
-			}
-		}
-		string _TaxonomicGroup;
-
-	}
-    
-	[TableName("TermsLists")]
-	[PrimaryKey("PropertyID", autoIncrement=false)]
-	[ExplicitColumns]
-    public partial class TermsList : DiversityMobileEntities.Record<TermsList>  
-    {
-        [Column] 
-		public int PropertyID 
-		{ 
-			get
-			{
-				return _PropertyID;
-			}
-			set
-			{
-				_PropertyID = value;
-				MarkColumnModified("PropertyID");
-			}
-		}
-		int _PropertyID;
-
-        [Column] 
-		public string Datasource 
-		{ 
-			get
-			{
-				return _Datasource;
-			}
-			set
-			{
-				_Datasource = value;
-				MarkColumnModified("Datasource");
-			}
-		}
-		string _Datasource;
-
-	}
-    
-	[TableName("UserTermsLists")]
-	[PrimaryKey("Login", autoIncrement=false)]
-	[ExplicitColumns]
-    public partial class UserTermsList : DiversityMobileEntities.Record<UserTermsList>  
-    {
-        [Column] 
-		public string Login 
-		{ 
-			get
-			{
-				return _Login;
-			}
-			set
-			{
-				_Login = value;
-				MarkColumnModified("Login");
-			}
-		}
-		string _Login;
-
-        [Column] 
-		public int PropertyID 
-		{ 
-			get
-			{
-				return _PropertyID;
-			}
-			set
-			{
-				_PropertyID = value;
-				MarkColumnModified("PropertyID");
-			}
-		}
-		int _PropertyID;
-
-	}
-    
-	[TableName("UserTaxonLists")]
-	[PrimaryKey("Login", autoIncrement=false)]
-	[ExplicitColumns]
-    public partial class UserTaxonList : DiversityMobileEntities.Record<UserTaxonList>  
-    {
-        [Column] 
-		public string Login 
-		{ 
-			get
-			{
-				return _Login;
-			}
-			set
-			{
-				_Login = value;
-				MarkColumnModified("Login");
-			}
-		}
-		string _Login;
-
-        [Column] 
-		public int ProjectID 
-		{ 
-			get
-			{
-				return _ProjectID;
-			}
-			set
-			{
-				_ProjectID = value;
-				MarkColumnModified("ProjectID");
-			}
-		}
-		int _ProjectID;
-
-        [Column] 
-		public string TaxonomicGroup 
-		{ 
-			get
-			{
-				return _TaxonomicGroup;
-			}
-			set
-			{
-				_TaxonomicGroup = value;
-				MarkColumnModified("TaxonomicGroup");
-			}
-		}
-		string _TaxonomicGroup;
-
-	}
-    
-	[TableName("TaxRef_UBT_Herbivores")]
-	[ExplicitColumns]
-    public partial class TaxRef_UBT_Herbivore : DiversityMobileEntities.Record<TaxRef_UBT_Herbivore>  
-    {
-        [Column] 
-		public string NameURI 
-		{ 
-			get
-			{
-				return _NameURI;
-			}
-			set
-			{
-				_NameURI = value;
-				MarkColumnModified("NameURI");
-			}
-		}
-		string _NameURI;
-
-        [Column] 
-		public string TaxonNameCache 
-		{ 
-			get
-			{
-				return _TaxonNameCache;
-			}
-			set
-			{
-				_TaxonNameCache = value;
-				MarkColumnModified("TaxonNameCache");
-			}
-		}
-		string _TaxonNameCache;
-
-        [Column] 
-		public string TaxonNameSinAuthors 
-		{ 
-			get
-			{
-				return _TaxonNameSinAuthors;
-			}
-			set
-			{
-				_TaxonNameSinAuthors = value;
-				MarkColumnModified("TaxonNameSinAuthors");
-			}
-		}
-		string _TaxonNameSinAuthors;
-
-        [Column] 
-		public string GenusOrSupragenericName 
-		{ 
-			get
-			{
-				return _GenusOrSupragenericName;
-			}
-			set
-			{
-				_GenusOrSupragenericName = value;
-				MarkColumnModified("GenusOrSupragenericName");
-			}
-		}
-		string _GenusOrSupragenericName;
-
-        [Column] 
-		public string SpeciesEpithet 
-		{ 
-			get
-			{
-				return _SpeciesEpithet;
-			}
-			set
-			{
-				_SpeciesEpithet = value;
-				MarkColumnModified("SpeciesEpithet");
-			}
-		}
-		string _SpeciesEpithet;
-
-        [Column] 
-		public string InfraspecificEpithet 
-		{ 
-			get
-			{
-				return _InfraspecificEpithet;
-			}
-			set
-			{
-				_InfraspecificEpithet = value;
-				MarkColumnModified("InfraspecificEpithet");
-			}
-		}
-		string _InfraspecificEpithet;
-
-        [Column] 
-		public string Synonymy 
-		{ 
-			get
-			{
-				return _Synonymy;
-			}
-			set
-			{
-				_Synonymy = value;
-				MarkColumnModified("Synonymy");
-			}
-		}
-		string _Synonymy;
-
-        [Column] 
-		public string Family 
-		{ 
-			get
-			{
-				return _Family;
-			}
-			set
-			{
-				_Family = value;
-				MarkColumnModified("Family");
-			}
-		}
-		string _Family;
-
-        [Column] 
-		public string Order 
-		{ 
-			get
-			{
-				return _Order;
-			}
-			set
-			{
-				_Order = value;
-				MarkColumnModified("Order");
-			}
-		}
-		string _Order;
-
-        [Column("class")] 
-		public string hvClass 
-		{ 
-			get
-			{
-				return _hvClass;
-			}
-			set
-			{
-				_hvClass = value;
-				MarkColumnModified("class");
-			}
-		}
-		string _hvClass;
-
-	}
 }
 
 

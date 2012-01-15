@@ -12,8 +12,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Service", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Test", "DiversityService.Test\DiversityService.Test.csproj", "{3AF3BEB2-CD9B-4277-8291-420D6ED7338B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.Model", "DiversityService.Model\DiversityService.Model.csproj", "{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelDemonstrator", "ModelDemonstrator\ModelDemonstrator.csproj", "{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.Test", "DiversityPhone.Test\DiversityPhone.Test.csproj", "{CB18ACEB-2488-43CF-B35C-9C39CC05B3F0}"
@@ -77,16 +75,6 @@ Global
 		{3AF3BEB2-CD9B-4277-8291-420D6ED7338B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3AF3BEB2-CD9B-4277-8291-420D6ED7338B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3AF3BEB2-CD9B-4277-8291-420D6ED7338B}.Release|x86.ActiveCfg = Release|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C34D0F0B-32B5-4E09-BEDE-B7C187ACDFEB}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

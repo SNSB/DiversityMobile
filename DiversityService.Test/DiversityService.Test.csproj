@@ -54,17 +54,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}</Project>
-      <Name>DiversityService.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DiversityService\DiversityService.csproj">
       <Project>{DEBEAB2D-FA96-4898-B867-A029F134F12E}</Project>
       <Name>DiversityService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
