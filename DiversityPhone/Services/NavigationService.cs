@@ -32,10 +32,7 @@ namespace DiversityPhone.Services
                             {                            
                                 case Message.NavigateBack:
                                     NavigateBack();
-                                    break;
-                                case Message.ClearHistory:
-                                    ClearHistory();
-                                    break;
+                                    break;                          
                                 default:
                                     break;
                             }
@@ -157,13 +154,13 @@ namespace DiversityPhone.Services
 
         public void NavigateBack()
         {
+            var currentToken = App.RootFrame.CurrentSource.Fragment;
+            if (App.StateTracker.ContainsKey(currentToken))
+                App.StateTracker.Remove(currentToken);
+
             App.RootFrame.GoBack();
         }        
 
-        public void ClearHistory()
-        {
-            while (App.RootFrame.CanGoBack)
-                App.RootFrame.RemoveBackEntry();
-        }
+      
     }
 }

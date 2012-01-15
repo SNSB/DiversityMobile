@@ -9,8 +9,7 @@ namespace DiversityPhone.Messages
 
     public enum Message
     {
-        NavigateBack,
-        ClearHistory
+        NavigateBack,        
     }
 
     public static class MessageContracts
