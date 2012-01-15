@@ -22,7 +22,7 @@
             get { return new NavigationMessage(TargetPage, Model.UnitID.ToString()); }
         }
 
-        public IdentificationUnitVM(IMessageBus messenger, IdentificationUnit model, Page targetPage, IList<IdentificationUnitVM> subunits)
+        public IdentificationUnitVM(IMessageBus messenger, IdentificationUnit model, Page targetPage, IList<IdentificationUnitVM> subunits = null)
             : base(messenger, model,targetPage)
         {          
             SubUnits = subunits;    

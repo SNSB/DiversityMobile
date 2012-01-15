@@ -575,6 +575,9 @@
     <WCFMetadataStorage Include="Service References\Service\" />
   </ItemGroup>
   <ItemGroup>
+    <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
     <DesignData Include="SampleData\EditIUVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
@@ -611,5 +614,4 @@
   -->
   <ProjectExtensions />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\WindowsPhone\v7.1\Microsoft.Expression.Blend.WindowsPhone.targets" />
-  
 </Project>

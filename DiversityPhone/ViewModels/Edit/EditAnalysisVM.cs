@@ -22,11 +22,9 @@ using DiversityPhone.Services;
 namespace DiversityPhone.ViewModels
 {
     public class EditAnalysisVM : ElementPageViewModel<IdentificationUnitAnalysis>
-    {
-       private IList<IDisposable> _subscriptions;
+    {       
 
-        #region Services
-        private IMessageBus _messenger;
+        #region Services        
         IOfflineStorage _storage;
         #endregion
 
@@ -46,8 +44,8 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
         public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
 
-        private ObservableAsPropertyHelper<IdentificationUnit> _Parent;
-        public IdentificationUnit Parent { get { return _Parent.Value; } }
+        private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
+        public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
         private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
         public IList<Analysis> Analyses
@@ -114,6 +112,8 @@ namespace DiversityPhone.ViewModels
         public EditAnalysisVM(IMessageBus messenger, IOfflineStorage storage)
             : base(messenger, false)
         {
+            _storage = storage;
+
             _IsEditable = StateObservable
                 .Select(s => s.Context == null) //New IUANs are editable
                 .Merge(
@@ -122,7 +122,7 @@ namespace DiversityPhone.ViewModels
                 )
                 .ToProperty(this, vm => vm.IsEditable);
 
-            ValidModel
+            _Model = ValidModel
                 .ToProperty(this, vm => vm.Model);
 
             var viewUpdate = ValidModel
@@ -150,7 +150,7 @@ namespace DiversityPhone.ViewModels
             viewUpdate.Connect();
 
             _Parent = viewUpdate
-                .Select(u => u.Parent)
+                .Select(u => new IdentificationUnitVM(Messenger,u.Parent, Services.Page.Current))
                 .ToProperty(this, vm => vm.Parent);
             _Analyses = viewUpdate
                 .Select(u => u.Analyses)
