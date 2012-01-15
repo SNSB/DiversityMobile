@@ -55,7 +55,7 @@ namespace DiversityPhone.ViewModels
         protected abstract NavigationMessage NavigationMessage { get; }
 
 
-        public ElementVMBase(IMessageBus _messenger, T model, Page targetPage)
+        public ElementVMBase(IMessageBus _messenger, T model, Page targetPage, bool canSelect = true)
         {
             this.Model = model;
             this.Messenger = _messenger;
@@ -63,7 +63,7 @@ namespace DiversityPhone.ViewModels
             this.CanSelect = new Subject<bool>();                    
             this.Select = new ReactiveCommand(CanSelect);
 
-            CanSelect.OnNext(true);
+            CanSelect.OnNext(canSelect);
 
             Messenger.RegisterMessageSource(
                 Select

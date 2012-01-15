@@ -86,6 +86,11 @@ namespace DiversityPhone.Services
             string destination = null;
             switch (msg.Destination)
             {
+                case Page.Current:
+                    return;
+                case Page.Previous:
+                    NavigateBack();
+                    return;
                 case Page.Home:
                     destination = "/View/Home.xaml";
                     break;
