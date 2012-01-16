@@ -24,6 +24,8 @@ namespace DiversityPhone.Services
 
         void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list);
         int getTaxonTableFreeCount();
+        public IList<TaxonSelection> getTaxonSelections();
+        public void clearTaxonTable(TaxonSelection selection);
         IList<TaxonName> getTaxonNames(Term taxGroup);
         IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
 
