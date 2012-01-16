@@ -94,12 +94,24 @@
       <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
       <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+  <xs:complexType name="ArrayOfAnalysisTaxonomicGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysisTaxonomicGroup" nillable="true" type="tns:ArrayOfAnalysisTaxonomicGroup" />
+  <xs:complexType name="AnalysisTaxonomicGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
   <xs:complexType name="ArrayOfAnalysis">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Analysis" nillable="true" type="tns:Analysis" />
@@ -111,7 +123,6 @@
       <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
       <xs:element minOccurs="0" name="MeasurementUnit" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

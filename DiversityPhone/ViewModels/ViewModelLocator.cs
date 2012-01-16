@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
-using DiversityPhone.Service;
+using DiversityPhone.DiversityService;
 
 namespace DiversityPhone.ViewModels
 {

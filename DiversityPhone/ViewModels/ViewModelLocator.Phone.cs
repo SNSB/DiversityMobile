@@ -1,7 +1,7 @@
 ﻿using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
-using DiversityPhone.Service;
+using DiversityPhone.DiversityService;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DiversityPhone.ViewModels

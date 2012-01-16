@@ -1,6 +1,6 @@
 ﻿using System;
 using Client = DiversityPhone.Model;
-using Service = DiversityPhone.Service;
+using Service = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
 {

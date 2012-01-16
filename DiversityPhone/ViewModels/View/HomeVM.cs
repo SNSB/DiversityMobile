@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
-    using Svc = DiversityPhone.Service;
+    using Svc = DiversityPhone.DiversityService;
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using DiversityPhone.Services;
@@ -105,7 +105,7 @@
 
         private void getVoc()
         {
-            var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.Service.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
+            var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
 
             vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
                 wcf => new DiversityPhone.Model.Term()

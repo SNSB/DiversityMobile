@@ -70,17 +70,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetAnalysisTaxonomicGroupsResults">
+  <xs:element name="GetAnalysisTaxonomicGroupsForProject">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="analysisKeys" nillable="true" type="q10:ArrayOfint" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="p" nillable="true" type="q10:Project" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetAnalysisTaxonomicGroupsResultsResponse">
+  <xs:element name="GetAnalysisTaxonomicGroupsForProjectResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetAnalysisTaxonomicGroupsResultsResult" nillable="true" type="q11:ArrayOfAnalysisResult" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetAnalysisTaxonomicGroupsForProjectResult" nillable="true" type="q11:ArrayOfAnalysisTaxonomicGroup" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

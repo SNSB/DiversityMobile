@@ -9,7 +9,7 @@
     using DiversityPhone.Common;
     using System.Data.Linq;
     using System.Linq.Expressions;
-    using Svc = DiversityPhone.Service;
+    using Svc = DiversityPhone.DiversityService;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -460,7 +460,7 @@
 
         #region Terms
 
-        public IList<Term> getTerms(Service.TermList source)
+        public IList<Term> getTerms(Svc.TermList source)
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source
@@ -672,16 +672,16 @@
         #region SampleData
         private void sampleData()
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
-                ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
-                int id = 1;
-                recSample(0, 0, ref id, ctx);
-                ctx.SubmitChanges();
-            }
+            //using (var ctx = new DiversityDataContext())
+            //{
+            //    ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
+            //    ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
+            //    ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
+            //    ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
+            //    int id = 1;
+            //    recSample(0, 0, ref id, ctx);
+            //    ctx.SubmitChanges();
+            //}
 
         }
         private void recSample(int depth, int parent, ref int id, DiversityDataContext ctx)

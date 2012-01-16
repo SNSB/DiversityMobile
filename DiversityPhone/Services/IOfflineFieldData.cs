@@ -2,7 +2,7 @@
 {
 using System.Collections.Generic;
 using DiversityPhone.Model;
-using Svc = DiversityPhone.Service;
+using Svc = DiversityPhone.DiversityService;
 
     public interface IOfflineFieldData
     {

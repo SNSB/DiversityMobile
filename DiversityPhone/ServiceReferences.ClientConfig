@@ -18,7 +18,7 @@
                 contract="MapServiceReference.IMapService" name="BasicHttpBinding_IMapService" />
             <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="Service.IDiversityService" name="BasicHttpBinding_IDiversityService" />
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>
 </configuration>

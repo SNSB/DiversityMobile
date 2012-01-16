@@ -38,11 +38,11 @@
   <wsdl:message name="IDiversityService_GetAnalysisResults_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAnalysisResultsResponse" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsResults_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsResults" />
+  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsForProject" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsResults_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsResultsResponse" />
+  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsForProjectResponse" />
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetAnalysesForProject_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAnalysesForProject" />
@@ -95,9 +95,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResults" message="tns:IDiversityService_GetAnalysisResults_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsResponse" message="tns:IDiversityService_GetAnalysisResults_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetAnalysisTaxonomicGroupsResults">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsResults" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsResults_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsResultsResponse" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsResults_OutputMessage" />
+    <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProjectResponse" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysesForProject">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysesForProject" message="tns:IDiversityService_GetAnalysesForProject_InputMessage" />
@@ -167,8 +167,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetAnalysisTaxonomicGroupsResults">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsResults" style="document" />
+    <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
