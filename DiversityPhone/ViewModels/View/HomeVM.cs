@@ -107,16 +107,16 @@
         {
             var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
 
-            //vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
-            //    wcf => new DiversityPhone.Model.Term()
-            //    {
-            //        Code = wcf.Code,
-            //        Description = wcf.Description,
-            //        DisplayText = wcf.DisplayText,
-            //        ParentCode = wcf.ParentCode,
-            //        SourceID = wcf.Source
-            //    })
-            //    ));
+            vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
+                wcf => new DiversityPhone.Model.Term()
+                {
+                    Code = wcf.Code,
+                    Description = wcf.Description,
+                    DisplayText = wcf.DisplayText,
+                    ParentCode = wcf.ParentCode,
+                    SourceID = wcf.Source
+                })
+                ));
 
             var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
             var sampleTaxonList = new Svc.TaxonList() { Table = "TaxRef_BfN_VPlants" };
