@@ -19,7 +19,8 @@
         void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);
         //IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
 
-        void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID);        
+        void addTaxonNames(IEnumerable<TaxonName> taxa, Service.TaxonList list);
+        int getTaxonTableFreeCount();
         IList<TaxonName> getTaxonNames(Term taxGroup);
         IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
 

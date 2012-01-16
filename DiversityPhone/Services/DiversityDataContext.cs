@@ -41,7 +41,7 @@
         public Table<Term> Terms;
 
         // Es werden 10 Tabellen für TaxonNames angelegt
-        public Table<TaxonSelection> taxonSelection;
+        public Table<TaxonSelection> TaxonSelection;
         public Table<TaxonName> TaxonNames0;
         public Table<TaxonName> TaxonNames1;
         public Table<TaxonName> TaxonNames2;
@@ -51,8 +51,7 @@
         public Table<TaxonName> TaxonNames6;
         public Table<TaxonName> TaxonNames7;
         public Table<TaxonName> TaxonNames8;
-        public Table<TaxonName> TaxonNames9;
-        public Table<TaxonName> TaxonNames10;
+        public Table<TaxonName> TaxonNames9;       
 
         
 

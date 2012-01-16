@@ -483,10 +483,43 @@
 
         #region TaxonNames
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID)
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list)
         {
-            throw new NotImplementedException();
+            withDataContext(ctx =>
+                {
+                    Table<TaxonName> targetTable = null;
+                    var existingTable = (from ts in ctx.TaxonSelection
+                                        where ts.TableName == list.Table
+                                        select ts).FirstOrDefault();
+                    if (existingTable != null)
+                    {
+                        targetTable = getTaxonTable(ctx, existingTable.TableID);
+                        targetTable.DeleteAllOnSubmit(targetTable);
+                        ctx.SubmitChanges();
+                    }
+                    else
+                    {
+                        var unusedIDs = getUnusedTaxonTableIDs(ctx);
+                        if (unusedIDs.Count() > 0)
+                            targetTable = getTaxonTable(ctx, unusedIDs.First());
+                        else
+                            throw new InvalidOperationException("No Unused Taxon Table");
+                    }
+
+                    targetTable.InsertAllOnSubmit(taxa);
+                    ctx.SubmitChanges();
+                }
+            );
         }
+
+        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
+        {
+            var usedTableIDs = from ts in ctx.TaxonSelection
+                               select ts.TableID;
+            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
+        }
+
+        
 
         private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
         {
@@ -505,6 +538,16 @@
                 default:
                     throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
             }
+        }
+
+        public int getTaxonTableFreeCount()
+        {
+            int result = 0;
+            withDataContext(ctx =>
+                {
+                    result = getUnusedTaxonTableIDs(ctx).Count();
+                });
+            return result;
         }
 
         private IList<TaxonName> getTaxonNames(int tableID)
@@ -528,9 +571,9 @@
             if(taxonGroup != null)
                 withDataContext(ctx =>
                 {
-                    var assignment = from a in ctx.taxonSelection
-                                     where a.tableName == taxonGroup.Code && a.isSelected
-                                     select a.tableID;
+                    var assignment = from a in ctx.TaxonSelection
+                                     where a.TableName == taxonGroup.Code && a.IsSelected
+                                     select a.TableID;
                     if (assignment.Any())
                         id = assignment.First();
                 });

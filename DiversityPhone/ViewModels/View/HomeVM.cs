@@ -119,8 +119,8 @@
                 ));
 
             var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-
-            taxonFunc.Invoke(null).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+            var sampleTaxonList = new Svc.TaxonList() { Table = "TaxRef_BfN_VPlants" };
+            taxonFunc.Invoke(sampleTaxonList).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
                 t => new Model.TaxonName()
                 {
                     URI = t.URI,
@@ -129,7 +129,7 @@
                     SpeciesEpithet = t.SpeciesEpithet,
                     InfraspecificEpithet = t.InfraspecificEpithet,
                     GenusOrSupragenic = t.GenusOrSupragenic
-                }),0));
+                }), sampleTaxonList));
             
         }
 
