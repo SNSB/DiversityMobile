@@ -94,7 +94,7 @@ namespace DiversityService
 
         }
 
-        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list)
+        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
         {
             using (var db = new DiversityMobile.DiversityMobile())
             {
@@ -107,9 +107,9 @@ namespace DiversityService
                 var sql = PetaPoco.Sql.Builder
                     .From(String.Format("[{0}] AS [TaxonName]",list.Table))                    
                     .SQL;
-               
-                
-                return db.Query<TaxonName>(sql).ToList();
+
+
+                return db.Page<TaxonName>(page, 1000, sql).Items;               
             }         
         }
 

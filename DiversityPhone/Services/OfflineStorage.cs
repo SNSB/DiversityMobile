@@ -494,8 +494,6 @@
                     if (existingTable != null)
                     {
                         targetTable = getTaxonTable(ctx, existingTable.TableID);
-                        targetTable.DeleteAllOnSubmit(targetTable);
-                        ctx.SubmitChanges();
                     }
                     else
                     {
@@ -512,72 +510,34 @@
             );
         }
 
-        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
+        public IList<TaxonSelection> getTaxonSelections()
         {
-            var usedTableIDs = from ts in ctx.TaxonSelection
-                               select ts.TableID;
-            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
+            IList<TaxonSelection> result = null;
+            withDataContext(ctx =>
+                {
+                    result = (ctx.TaxonSelection.ToList());
+                });
+            return result;
         }
 
-        
-
-        private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
+        public void clearTaxonTable(TaxonSelection selection)
         {
-            switch (tableID)
-            {
-                case 0: return ctx.TaxonNames0;
-                case 1: return ctx.TaxonNames1;
-                case 2: return ctx.TaxonNames2;
-                case 3: return ctx.TaxonNames3;
-                case 4: return ctx.TaxonNames4;
-                case 5: return ctx.TaxonNames5;
-                case 6: return ctx.TaxonNames6;
-                case 7: return ctx.TaxonNames7;
-                case 8: return ctx.TaxonNames8;
-                case 9: return ctx.TaxonNames9;
-                default:
-                    throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
-            }
+            withDataContext(ctx =>
+                {
+                    var targetTable = getTaxonTable(ctx, selection.TableID);
+                    targetTable.DeleteAllOnSubmit(targetTable);
+                    ctx.SubmitChanges();
+                });
         }
 
         public int getTaxonTableFreeCount()
         {
             int result = 0;
             withDataContext(ctx =>
-                {
-                    result = getUnusedTaxonTableIDs(ctx).Count();
-                });
+            {
+                result = getUnusedTaxonTableIDs(ctx).Count();
+            });
             return result;
-        }
-
-        private IList<TaxonName> getTaxonNames(int tableID)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => getTaxonTable(ctx, tableID));
-        }
-
-        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => from tn in getTaxonTable(ctx, tableID)
-                        where tn.GenusOrSupragenic.Contains(genus)
-                        && tn.SpeciesEpithet.Contains(species)
-                        select tn);
-        }
-
-        private int getTaxonTableIDForGroup(Term taxonGroup)
-        {
-            int id = -1;
-            if(taxonGroup != null)
-                withDataContext(ctx =>
-                {
-                    var assignment = from a in ctx.TaxonSelection
-                                     where a.TableName == taxonGroup.Code && a.IsSelected
-                                     select a.TableID;
-                    if (assignment.Any())
-                        id = assignment.First();
-                });
-            return id;
         }
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup)
@@ -609,6 +569,68 @@
                 return getTaxonNames(tableID, genus, species);
             }
         }
+
+        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
+        {
+            var usedTableIDs = from ts in ctx.TaxonSelection
+                               select ts.TableID;
+            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
+        }
+
+        
+
+        private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
+        {
+            switch (tableID)
+            {
+                case 0: return ctx.TaxonNames0;
+                case 1: return ctx.TaxonNames1;
+                case 2: return ctx.TaxonNames2;
+                case 3: return ctx.TaxonNames3;
+                case 4: return ctx.TaxonNames4;
+                case 5: return ctx.TaxonNames5;
+                case 6: return ctx.TaxonNames6;
+                case 7: return ctx.TaxonNames7;
+                case 8: return ctx.TaxonNames8;
+                case 9: return ctx.TaxonNames9;
+                default:
+                    throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+            }
+        }
+
+       
+
+        private IList<TaxonName> getTaxonNames(int tableID)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => getTaxonTable(ctx, tableID));
+        }
+
+        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => from tn in getTaxonTable(ctx, tableID)
+                        where tn.GenusOrSupragenic.Contains(genus)
+                        && tn.SpeciesEpithet.Contains(species)
+                        select tn);
+        }
+
+        private int getTaxonTableIDForGroup(Term taxonGroup)
+        {
+            int id = -1;
+            if(taxonGroup != null)
+                withDataContext(ctx =>
+                {
+                    var assignment = from a in ctx.TaxonSelection
+                                     where a.TableName == taxonGroup.Code && a.IsSelected
+                                     select a.TableID;
+                    if (assignment.Any())
+                        id = assignment.First();
+                });
+            return id;
+        }
+
+        
 
 
         #endregion

@@ -1397,7 +1397,7 @@ namespace DiversityPhone.DiversityService {
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonList> EndGetTaxonListsForUser(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadTaxonList", ReplyAction="http://tempuri.org/IDiversityService/DownloadTaxonListResponse")]
-        System.IAsyncResult BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, int page, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName> EndDownloadTaxonList(System.IAsyncResult result);
         
@@ -1898,8 +1898,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginDownloadTaxonList(list, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, int page, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginDownloadTaxonList(list, page, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1909,7 +1909,8 @@ namespace DiversityPhone.DiversityService {
         
         private System.IAsyncResult OnBeginDownloadTaxonList(object[] inValues, System.AsyncCallback callback, object asyncState) {
             DiversityPhone.DiversityService.TaxonList list = ((DiversityPhone.DiversityService.TaxonList)(inValues[0]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginDownloadTaxonList(list, callback, asyncState);
+            int page = ((int)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginDownloadTaxonList(list, page, callback, asyncState);
         }
         
         private object[] OnEndDownloadTaxonList(System.IAsyncResult result) {
@@ -1925,11 +1926,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void DownloadTaxonListAsync(DiversityPhone.DiversityService.TaxonList list) {
-            this.DownloadTaxonListAsync(list, null);
+        public void DownloadTaxonListAsync(DiversityPhone.DiversityService.TaxonList list, int page) {
+            this.DownloadTaxonListAsync(list, page, null);
         }
         
-        public void DownloadTaxonListAsync(DiversityPhone.DiversityService.TaxonList list, object userState) {
+        public void DownloadTaxonListAsync(DiversityPhone.DiversityService.TaxonList list, int page, object userState) {
             if ((this.onBeginDownloadTaxonListDelegate == null)) {
                 this.onBeginDownloadTaxonListDelegate = new BeginOperationDelegate(this.OnBeginDownloadTaxonList);
             }
@@ -1940,7 +1941,8 @@ namespace DiversityPhone.DiversityService {
                 this.onDownloadTaxonListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadTaxonListCompleted);
             }
             base.InvokeAsync(this.onBeginDownloadTaxonListDelegate, new object[] {
-                        list}, this.onEndDownloadTaxonListDelegate, this.onDownloadTaxonListCompletedDelegate, userState);
+                        list,
+                        page}, this.onEndDownloadTaxonListDelegate, this.onDownloadTaxonListCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2409,9 +2411,10 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[1];
+            public System.IAsyncResult BeginDownloadTaxonList(DiversityPhone.DiversityService.TaxonList list, int page, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
                 _args[0] = list;
+                _args[1] = page;
                 System.IAsyncResult _result = base.BeginInvoke("DownloadTaxonList", _args, callback, asyncState);
                 return _result;
             }

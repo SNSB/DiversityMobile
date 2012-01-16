@@ -67,7 +67,7 @@ namespace DiversityService.Test
             
 
             //Execute
-            var taxa = _target.DownloadTaxonList(tl);
+            var taxa = _target.DownloadTaxonList(tl,0);
 
 
             //Assert
