@@ -70,13 +70,23 @@ namespace DiversityPhone.Services
         void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
-            if (page != null && page.DataContext is PageViewModel)
+
+            if (page != null )
             {
-                var vm = page.DataContext as PageViewModel;
-                vm.SaveState();
+                if(e.NavigationMode == NavigationMode.Back)
+                {
+                    var currentToken = GetFragment(App.RootFrame.CurrentSource);
+                    if (App.StateTracker.ContainsKey(currentToken))
+                        App.StateTracker.Remove(currentToken);
+                }
+                else if (page.DataContext is PageViewModel)
+                {
+                    var vm = page.DataContext as PageViewModel;
+                    vm.SaveState();
+                }
             }
 
-
+            
         }
         public void Navigate(NavigationMessage msg)
         {
@@ -153,14 +163,21 @@ namespace DiversityPhone.Services
         }
 
         public void NavigateBack()
-        {
-            var currentToken = App.RootFrame.CurrentSource.Fragment;
-            if (App.StateTracker.ContainsKey(currentToken))
-                App.StateTracker.Remove(currentToken);
+        {           
 
             App.RootFrame.GoBack();
-        }        
+        }
 
+        private static string GetFragment(Uri uri)
+        {
+            string uristr = uri.ToString();
+            string result = string.Empty;
+            int startIdx = uristr.LastIndexOf('#')+1;
+            if(startIdx > 0)
+                result = uristr.Substring(startIdx, uristr.Length - startIdx);
+
+            return result;
+        }
       
     }
 }
