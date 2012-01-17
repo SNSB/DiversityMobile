@@ -24,7 +24,9 @@ namespace DiversityPhone.ViewModels
         IdentificationUnit,
         Analysis,
         Map,
-        Multimedia,
+        Photo,
+        Audio,
+        Video,
         UserProfile
     }
 }

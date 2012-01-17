@@ -66,6 +66,7 @@
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.13\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="ReactiveUI.Blend_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
@@ -371,6 +372,12 @@
   <ItemGroup>
     <Content Include="Images\appbar.feature.audio.rest.png" />
     <Content Include="Images\appbar.feature.audio.rest80.png" />
+    <Content Include="Images\AudioIcons\blank.png" />
+    <Content Include="Images\AudioIcons\microphone.png" />
+    <Content Include="Images\AudioIcons\play.png" />
+    <Content Include="Images\AudioIcons\record.png" />
+    <Content Include="Images\AudioIcons\speaker.png" />
+    <Content Include="Images\AudioIcons\stop.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
     <Content Include="Images\SNSBIcons\Event_80.png" />

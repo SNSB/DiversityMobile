@@ -20,7 +20,23 @@ namespace DiversityPhone.ViewModels
     public class MultimediaObjectVM : ElementVMBase<MultimediaObject>
     {        
         public override string Description { get { return Model.ToString(); } }
-        public override Icon Icon { get{return ViewModels.Icon.Multimedia; }}
+        public override Icon Icon
+        {
+            get
+            {
+                switch (Model.MediaType)
+                {
+                    case Services.MediaType.Audio:
+                        return ViewModels.Icon.Audio;
+                    case Services.MediaType.Video:
+                        return ViewModels.Icon.Video;
+                    case Services.MediaType.Image:
+                        return ViewModels.Icon.Photo;
+                    default:
+                        return ViewModels.Icon.Photo;
+                }
+            }
+        }
 
         public MultimediaObjectVM(IMessageBus messenger,MultimediaObject model)
          : base(messenger, model)

@@ -80,7 +80,6 @@ namespace DiversityPhone.ViewModels
         {
             updateModel();
             Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.SAVE);
-            Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
 

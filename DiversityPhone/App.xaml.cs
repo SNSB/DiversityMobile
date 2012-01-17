@@ -19,6 +19,7 @@ using ReactiveUI;
 using System.Reactive.Concurrency;
 using DiversityPhone.ViewModels;
 using System.Device.Location;
+using System.Runtime.Serialization;
 
 
 namespace DiversityPhone
@@ -110,7 +111,7 @@ namespace DiversityPhone
 
                 // Enable non-production analysis visualization mode, 
                 // which shows areas of a page that are handed off GPU with a colored overlay.
-                //Application.Current.Host.Settings.EnableCacheVisualization = true;
+                //Application.Current.Host.Settings.EnableCacheVisualizat*ion = true;
 
                 // Disable the application idle detection by setting the UserIdleDetectionMode property of the
                 // application's PhoneApplicationService object to Disabled.
@@ -118,8 +119,6 @@ namespace DiversityPhone
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
-
             
         }
        
@@ -153,7 +152,7 @@ namespace DiversityPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            // Ensure that required application state is persisted here.
+            // Ensure that required application state is persisted here./
             PhoneApplicationService.Current.State["StateTracking"] = StateTracker;
         }
 

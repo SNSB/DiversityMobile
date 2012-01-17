@@ -25,10 +25,21 @@ namespace DiversityPhone.View
                     return "/Images/SNSBIcons/Event_80.png";
                 case Icon.Event:
                     return "/Images/SNSBIcons/Event_80.png";
-                    
-                   
-                
+                case Icon.CollectionEventProperty:
+                    return "/Images/SNSBIcons/Habitat_80.png";
+                case Icon.Specimen:
+                    return "/Images/SNSBIcons/Beleg_80.png";
                 case Icon.Observation:
+                    return "/Images/SNSBIcons/Observation_80.png";
+                case Icon.Analysis:
+                    return "/Images/SNSBIcons/Analysis_80.png";
+                case Icon.Photo:
+                    return "/Images/appbar.feature.camera.rest.png";
+                case Icon.Audio:
+                    return "/Images/appbar.feature.audio.rest80.png";
+                case Icon.Video:
+                    return "/Images/appbar.feature.video.rest.png";
+                default:
                     break;
                                   
             }
