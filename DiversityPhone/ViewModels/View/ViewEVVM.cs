@@ -58,7 +58,7 @@
             _storage = storage;
 
             _Current = ValidModel
-                .Select(ev => new EventVM(Messenger, ev))
+                .Select(ev => new EventVM(Messenger, ev, Page.EditEV))
                 .ToProperty(this, x => x.Current);
 
             _SpecList = ValidModel               
@@ -75,7 +75,7 @@
                         switch (SelectedPivot)
                         {
                             case Pivots.Multimedia:
-                                return Page.EditEVMMO;
+                                return Page.EditMMO;
                             case Pivots.Descriptions:
                                 return Page.EditEventProperty;
                             case Pivots.Specimen:
@@ -93,7 +93,7 @@
         {
             return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
                 _storage.getSpecimenForEvent(ev),
-                (model) => new SpecimenVM(Messenger, model)
+                (model) => new SpecimenVM(Messenger, model, Page.ViewCS)
                 );
         }
 

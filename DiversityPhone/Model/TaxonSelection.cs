@@ -9,29 +9,36 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DiversityPhone.Model
 {
-    [Table]
+    [Table]    
     public class TaxonSelection
-    {
+    {     
         [Column(IsPrimaryKey = true)]
-        public int tableID;
+        public int TableID;
 
         [Column]
-        public string tableName;
+        public string TableName;
 
         [Column]
-        public string tableDisplayName;
+        public string TableDisplayName;
 
         [Column]
-        public string taxonomicGroup;
+        public string TaxonomicGroup;
 
         [Column]
-        public bool isSelected;
+        public bool IsSelected;
 
-        public TaxonSelection()
+
+        public static IEnumerable<int> ValidTableIDs
         {
+            get
+            {
+                return Enumerable.Range(0, 10);
+            }
         }
     }
 }

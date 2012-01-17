@@ -14,7 +14,7 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
-using DiversityPhone.Service;
+using DiversityPhone.DiversityService;
 using ReactiveUI;
 using System.Reactive.Concurrency;
 using DiversityPhone.ViewModels;

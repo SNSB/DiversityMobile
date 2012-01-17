@@ -32,10 +32,7 @@ namespace DiversityPhone.Services
                             {                            
                                 case Message.NavigateBack:
                                     NavigateBack();
-                                    break;
-                                case Message.ClearHistory:
-                                    ClearHistory();
-                                    break;
+                                    break;                          
                                 default:
                                     break;
                             }
@@ -73,19 +70,34 @@ namespace DiversityPhone.Services
         void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
-            if (page != null && page.DataContext is PageViewModel)
+
+            if (page != null )
             {
-                var vm = page.DataContext as PageViewModel;
-                vm.SaveState();
+                if(e.NavigationMode == NavigationMode.Back)
+                {
+                    var currentToken = GetFragment(App.RootFrame.CurrentSource);
+                    if (App.StateTracker.ContainsKey(currentToken))
+                        App.StateTracker.Remove(currentToken);
+                }
+                else if (page.DataContext is PageViewModel)
+                {
+                    var vm = page.DataContext as PageViewModel;
+                    vm.SaveState();
+                }
             }
 
-
+            
         }
         public void Navigate(NavigationMessage msg)
         {
             string destination = null;
             switch (msg.Destination)
             {
+                case Page.Current:
+                    return;
+                case Page.Previous:
+                    NavigateBack();
+                    return;
                 case Page.Home:
                     destination = "/View/Home.xaml";
                     break;
@@ -122,19 +134,11 @@ namespace DiversityPhone.Services
                 case Page.DownLoadMaps:
                     destination = "/View/ViewDLM.xaml";
                     break;
-                case Page.EditESMMO:
-                    destination = "/View/EditMMO.xaml?Source=EventSeries";
-                    break;
-                case Page.EditEVMMO:
-                    destination = "/View/EditMMO.xaml?Source=Event";
+                
+                case Page.EditMMO:
+                    destination = "/View/EditMMO.xaml";
                     //destination = "/View/EditPicture.xaml";
-                    break;
-                case Page.EditCSMMO:
-                    destination = "/View/EditMMO.xaml?Source=Specimen";
-                    break;
-                case Page.EditIUMMO:
-                    destination = "/View/EditMMO.xaml?Source=IdentificationUnit";
-                    break;
+                    break; 
 
 
 #if DEBUG
@@ -159,14 +163,21 @@ namespace DiversityPhone.Services
         }
 
         public void NavigateBack()
-        {
-            App.RootFrame.GoBack();
-        }        
+        {           
 
-        public void ClearHistory()
-        {
-            while (App.RootFrame.CanGoBack)
-                App.RootFrame.RemoveBackEntry();
+            App.RootFrame.GoBack();
         }
+
+        private static string GetFragment(Uri uri)
+        {
+            string uristr = uri.ToString();
+            string result = string.Empty;
+            int startIdx = uristr.LastIndexOf('#')+1;
+            if(startIdx > 0)
+                result = uristr.Substring(startIdx, uristr.Length - startIdx);
+
+            return result;
+        }
+      
     }
 }

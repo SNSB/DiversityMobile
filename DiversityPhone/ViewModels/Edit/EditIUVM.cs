@@ -4,10 +4,11 @@ using System.Reactive.Linq;
 using System.Linq;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
-using DiversityPhone.Model;
+using Svc = DiversityPhone.DiversityService;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.ViewModels
 {
@@ -67,7 +68,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(Service.TermList.TaxonomicGroups));
+                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(Svc.TermList.TaxonomicGroups));
             }
         }
 
@@ -90,7 +91,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _RelationshipTypes ?? (_RelationshipTypes = _storage.getTerms(Service.TermList.RelationshipTypes));
+                return _RelationshipTypes ?? (_RelationshipTypes = _storage.getTerms(Svc.TermList.RelationshipTypes));
             }
         }
 

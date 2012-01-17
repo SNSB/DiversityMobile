@@ -1,18 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿
 using ReactiveUI;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 
 namespace DiversityPhone.ViewModels
@@ -38,10 +30,15 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public MultimediaObjectVM(IMessageBus messenger,MultimediaObject model)
-         : base(messenger, model)
+        protected override NavigationMessage NavigationMessage
         {
-            
+            get { return new NavigationMessage(TargetPage, Model.Uri); }
+        }
+
+        public MultimediaObjectVM(IMessageBus _messenger, MultimediaObject model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
+
         }
     }
 }

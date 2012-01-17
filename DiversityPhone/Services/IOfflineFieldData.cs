@@ -2,7 +2,7 @@
 {
 using System.Collections.Generic;
 using DiversityPhone.Model;
-using Svc = DiversityPhone.Service;
+using Svc = DiversityPhone.DiversityService;
 
     public interface IOfflineFieldData
     {
@@ -34,7 +34,8 @@ using Svc = DiversityPhone.Service;
         IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
 
-        IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu);
+        IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu);
+        IdentificationUnitAnalysis getIUANByID(int analysisID);
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
 
         IList<MultimediaObject> getAllMultimediaObjects();

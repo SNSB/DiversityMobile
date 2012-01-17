@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
-    using Svc = DiversityPhone.Service;
+    using Svc = DiversityPhone.DiversityService;
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using DiversityPhone.Services;
@@ -50,7 +50,7 @@
             get
             {
                 if (_NoEventSeries == null)
-                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries);
+                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries, Page.ViewES);
 
                 return _NoEventSeries;
             }
@@ -95,7 +95,7 @@
         private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries( EventSeries es)
         {
             var events = _storage.getEventsForSeries(es)
-                        .Where(ev => ev.IsModified == null); // Only New Events
+                        .Where(ev => ev.ModificationState == null); // Only New Events
             
             foreach (var series in events)
             {
@@ -105,7 +105,7 @@
 
         private void getVoc()
         {
-            var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.Service.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
+            var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
 
             vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
                 wcf => new DiversityPhone.Model.Term()
@@ -118,9 +118,11 @@
                 })
                 ));
 
-            var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-
-            taxonFunc.Invoke(null).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+            var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+            var sampleTaxonList = new Svc.TaxonList() { Table = "TaxRef_BfN_VPlants" };
+            
+            //TODO Page
+            taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
                 t => new Model.TaxonName()
                 {
                     URI = t.URI,
@@ -129,7 +131,7 @@
                     SpeciesEpithet = t.SpeciesEpithet,
                     InfraspecificEpithet = t.InfraspecificEpithet,
                     GenusOrSupragenic = t.GenusOrSupragenic
-                }),0));
+                }), sampleTaxonList));
             
         }
 
@@ -139,7 +141,7 @@
         {
             SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
                 _storage.getAllEventSeries(),
-                (model) => new EventSeriesVM(Messenger,model)
+                (model) => new EventSeriesVM(Messenger,model, Page.ViewES)
                 );
         }
 

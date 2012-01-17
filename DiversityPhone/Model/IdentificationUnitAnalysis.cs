@@ -37,7 +37,7 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = false)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

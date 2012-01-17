@@ -19,17 +19,15 @@ namespace DiversityPhone.ViewModels
                 return Icon.Analysis;
             }
         }
-
-        public IUAnalysisVM(IdentificationUnitAnalysis model, IMessageBus messenger)
-            : base(messenger, model)
+        protected override NavigationMessage NavigationMessage
         {
-            Edit = new ReactiveCommand();
-            Messenger.RegisterMessageSource(
-                Edit
-                .Select(_ => new NavigationMessage(Page.EditIUAN, Model.AnalysisID.ToString()))
-                );                
-            
+            get { return new NavigationMessage(TargetPage, Model.IdentificationUnitAnalysisID.ToString()); }
         }
 
+        public IUAnalysisVM(IMessageBus _messenger, IdentificationUnitAnalysis model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
+
+        }
     }
 }

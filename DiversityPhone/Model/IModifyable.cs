@@ -13,6 +13,18 @@ namespace DiversityPhone.Model
         /// false - persisted remotely, local copy unchanged
         /// true - persisted only locally OR the local copy has been changed
         /// </summary>
-        bool? IsModified { get; set; }
+        bool? ModificationState { get; set; }
+    }
+
+    public static class ModifyableMixin
+    {
+        public static bool IsNew(this IModifyable modObj)
+        {
+            return modObj.ModificationState == null;
+        }
+        public static bool IsModified(this IModifyable modObj)
+        {
+            return modObj.ModificationState == true;
+        }
     }
 }

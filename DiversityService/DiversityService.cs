@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
+using DiversityMobile;
 
 
 namespace DiversityService
@@ -10,35 +11,52 @@ namespace DiversityService
     public class DiversityService : IDiversityService
     {
 
-        public IList<Model.Project> GetProjectsForUser(Model.UserProfile user)
+        public IEnumerable<Model.Project> GetProjectsForUser(Model.UserProfile user)
         {
-            throw new NotImplementedException();
+            //using (var db = new DiversityCollection.DiversityCollection())
+            //{
+            //    return db.Query<Project>
+            //}
+
+            return Enumerable.Empty<Project>();
         }
 
-        public IList<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
+        public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
         {
             return null; //TODO
         }
 
-        public IList<AnalysisResult> GetAnalysisTaxonomicGroupsResults(IList<int> analysisKeys)
+        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p)
         {
-            throw new NotImplementedException();
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                var flattenQueue = new Queue<AnalysisTaxonomicGroup>(db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", p.ProjectID));                    
+                var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
+                var analyses = GetAnalysesForProject(p);
+
+                while(flattenQueue.Count > 0)
+                {
+                    var atg = flattenQueue.Dequeue();
+                    flattened.Add(atg);
+                    var childANs = from an in analyses
+                                   where an.AnalysisParentID == atg.AnalysisID
+                                   select an;
+                    foreach (var an in childANs)
+                    {
+                        flattenQueue.Enqueue(new AnalysisTaxonomicGroup() { AnalysisID = an.AnalysisID, TaxonomicGroup = atg.TaxonomicGroup });
+                    }
+                }
+                return flattened;
+            }
         }
-        public IList<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
+
+        public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
 
-            return null;
-            //using (var ctx = new DiversityCollectionFunctionsDataContext())
-            //{
-            //    return
-            //        (from tl in ctx.TaxonListsForUser(user.LoginName)
-            //         select new TaxonList()
-            //         {
-            //             DisplayText = tl.DisplayText,
-            //             Table = tl.DataSource,
-            //             TaxonomicGroup = tl.TaxonomicGroup
-            //         }).ToList();
-            //}
+            using (var db = new DiversityMobile.DiversityMobile())
+            {
+                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", user.LoginName).ToList();
+            }
         }
 
         public IEnumerable<Term> GetStandardVocabulary()
@@ -76,26 +94,23 @@ namespace DiversityService
 
         }
 
-        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list)
+        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
         {
-            //using (var db = new DiversityMobile())
-            //{
-            //    db.Query<CollectionTaxonName>(
-            //}
-
-            using (var ctx = new DiversityMobileEntities())
+            using (var db = new DiversityMobile.DiversityMobile())
             {
-                return (from tn in ctx.TaxRef_BfN_VPlants
-                        select new TaxonName()
-                        {
-                            URI = tn.NameURI,
-                            TaxonNameCache = tn.TaxonNameCache,
-                            TaxonNameSinAuth = tn.TaxonNameSinAuthors,
-                            GenusOrSupragenic = tn.GenusOrSupragenericName,
-                            SpeciesEpithet = tn.SpeciesEpithet,
-                            InfraspecificEpithet = tn.InfraspecificEpithet
-                        }).ToList();
-            }
+                //TODO Improve SQL Sanitation
+                if (list.Table.Contains(';') ||
+                    list.Table.Contains('\'') ||
+                    list.Table.Contains('"'))
+                    return Enumerable.Empty<TaxonName>();  //SQL Injection ?
+
+                var sql = PetaPoco.Sql.Builder
+                    .From(String.Format("[{0}] AS [TaxonName]",list.Table))                    
+                    .SQL;
+
+
+                return db.Page<TaxonName>(page, 1000, sql).Items;               
+            }         
         }
 
         public IEnumerable<string> GetAvailablePropertyLists()
@@ -110,33 +125,18 @@ namespace DiversityService
 
         public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p)
         {
-            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            using (var db = new DiversityCollection.DiversityCollection())
             {
-                var analysisProjectList = from apl in ctx.DiversityMobile_AnalysisProjectList(p.ProjectID)
-                                          select new Analysis()
-                                          {
-                                              AnalysisID = apl.AnalysisID,
-                                              Description = apl.Description,
-                                              DisplayText = apl.DisplayText,
-                                              MeasurementUnit = apl.MeasurementUnit
-                                          };
-                return analysisProjectList.ToList();
+                return db.Query<Analysis>("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis]", p.ProjectID).ToList();
             }
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
         {
-            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            using (var db = new DiversityCollection.DiversityCollection())
             {
-                var analysisResults = from ar in ctx.DiversityMobile_AnalysisResultForProject(p.ProjectID)
-                                      select new AnalysisResult()
-                                      {
-                                          AnalysisID = ar.AnalysisID,
-                                          Description = ar.Description,
-                                          DisplayText = ar.DisplayText,
-                                          Notes = ar.Notes,
-                                          Result = ar.AnalysisResult
-                                      };
-                return analysisResults.ToList();
+                return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
+                                      
+                
             }
         }
 

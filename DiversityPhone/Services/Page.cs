@@ -3,6 +3,9 @@ namespace DiversityPhone.Services
 {
     public enum Page
     {
+        Current,
+        Previous,
+
         Home,
         EditES,
         ViewES,
@@ -15,9 +18,7 @@ namespace DiversityPhone.Services
         EditIUAN,
 
         EditESMMO,
-        EditEVMMO,
-        EditCSMMO,
-        EditIUMMO,
+        EditMMO,        
         EditMap,
         EditEventProperty,
         EditUserProfile,

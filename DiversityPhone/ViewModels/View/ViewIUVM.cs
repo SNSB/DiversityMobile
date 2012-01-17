@@ -78,7 +78,7 @@ namespace DiversityPhone.ViewModels
             
 
             _Current = validModel
-                .Select(iu => new IdentificationUnitVM(Messenger, iu, null))
+                .Select(iu => new IdentificationUnitVM(Messenger, iu,Page.EditIU, null))
                 .ToProperty(this, x => x.Current);
             _Subunits = validModel
                 .Select(iu => getSubUnits(iu))
@@ -94,7 +94,7 @@ namespace DiversityPhone.ViewModels
                             case Pivots.Analyses:
                                 return Page.EditIUAN;
                             case Pivots.Multimedia:
-                                //TODO Multimedia Page
+                                return Page.EditMMO;
                             case Pivots.Descriptions:
                                 //TODO Description Page
                             case Pivots.Subunits:

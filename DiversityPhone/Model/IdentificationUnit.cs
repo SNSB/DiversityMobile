@@ -12,7 +12,7 @@ namespace DiversityPhone.Model
     {
         public IdentificationUnit()
         {
-            this.IsModified = null;
+            this.ModificationState = null;
             this.LogUpdatedWhen = DateTime.Now;
             this.RelatedUnitID = null;
         }
@@ -78,7 +78,7 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

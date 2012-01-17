@@ -9,7 +9,7 @@
     using DiversityPhone.Common;
     using System.Data.Linq;
     using System.Linq.Expressions;
-    using Svc = DiversityPhone.Service;
+    using Svc = DiversityPhone.DiversityService;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -82,7 +82,7 @@
 
         public IList<EventSeries> getNewEventSeries()
         {
-            return esQuery(es => es.IsModified == null);
+            return esQuery(es => es.ModificationState == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
@@ -156,15 +156,20 @@
 
         public void addOrUpdateEvent(Event ev)
         {
+            var wasNewEvent = ev.IsNew();
+
             addOrUpdateRow(Event.Operations,
                   ctx => ctx.Events,
                   ev
               );
-            //Now EventID is set even for new Events
-            Specimen observation = new Specimen().MakeObservation();
-            observation.CollectionEventID = ev.EventID;
-            
-            addOrUpdateSpecimen(observation);
+
+            if (wasNewEvent)
+            {
+                //Now EventID is set even for new Events
+                Specimen observation = new Specimen().MakeObservation();
+                observation.CollectionEventID = ev.EventID;
+                addOrUpdateSpecimen(observation);
+            }
         }
         #endregion
 
@@ -305,7 +310,7 @@
         {
             using (var ctx = new DiversityDataContext())
             {
-                if (iu.IsModified == null)
+                if (iu.ModificationState == null)
                     iu.UnitID = findFreeUnitID(ctx);
                 ctx.IdentificationUnits.InsertOnSubmit(iu);
                 ctx.SubmitChanges();
@@ -317,7 +322,7 @@
         #region Analyses 
 
 
-        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
             return cachedQuery(IdentificationUnitAnalysis.Operations,
             ctx =>
@@ -325,6 +330,14 @@
                 where iuan.IdentificationUnitID == iu.UnitID 
                 select iuan
                 );
+        }
+
+
+        public IdentificationUnitAnalysis getIUANByID(int iuanalysisID)
+        {
+            return singletonQuery(ctx => from iuan in ctx.IdentificationUnitAnalyses
+                                         where iuan.IdentificationUnitAnalysisID == iuanalysisID
+                                         select iuan);
         }
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
@@ -447,7 +460,7 @@
 
         #region Terms
 
-        public IList<Term> getTerms(Service.TermList source)
+        public IList<Term> getTerms(Svc.TermList source)
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source
@@ -470,58 +483,61 @@
 
         #region TaxonNames
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID)
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list)
         {
-            throw new NotImplementedException();
-        }
-
-        private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
-        {
-            switch (tableID)
-            {
-                case 0: return ctx.TaxonNames0;
-                case 1: return ctx.TaxonNames1;
-                case 2: return ctx.TaxonNames2;
-                case 3: return ctx.TaxonNames3;
-                case 4: return ctx.TaxonNames4;
-                case 5: return ctx.TaxonNames5;
-                case 6: return ctx.TaxonNames6;
-                case 7: return ctx.TaxonNames7;
-                case 8: return ctx.TaxonNames8;
-                case 9: return ctx.TaxonNames9;
-                default:
-                    throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
-            }
-        }
-
-        private IList<TaxonName> getTaxonNames(int tableID)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => getTaxonTable(ctx, tableID));
-        }
-
-        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => from tn in getTaxonTable(ctx, tableID)
-                        where tn.GenusOrSupragenic.Contains(genus)
-                        && tn.SpeciesEpithet.Contains(species)
-                        select tn);
-        }
-
-        private int getTaxonTableIDForGroup(Term taxonGroup)
-        {
-            int id = -1;
-            if(taxonGroup != null)
-                withDataContext(ctx =>
+            withDataContext(ctx =>
                 {
-                    var assignment = from a in ctx.taxonSelection
-                                     where a.tableName == taxonGroup.Code && a.isSelected
-                                     select a.tableID;
-                    if (assignment.Any())
-                        id = assignment.First();
+                    Table<TaxonName> targetTable = null;
+                    var existingTable = (from ts in ctx.TaxonSelection
+                                        where ts.TableName == list.Table
+                                        select ts).FirstOrDefault();
+                    if (existingTable != null)
+                    {
+                        targetTable = getTaxonTable(ctx, existingTable.TableID);
+                    }
+                    else
+                    {
+                        var unusedIDs = getUnusedTaxonTableIDs(ctx);
+                        if (unusedIDs.Count() > 0)
+                            targetTable = getTaxonTable(ctx, unusedIDs.First());
+                        else
+                            throw new InvalidOperationException("No Unused Taxon Table");
+                    }
+
+                    targetTable.InsertAllOnSubmit(taxa);
+                    ctx.SubmitChanges();
+                }
+            );
+        }
+
+        public IList<TaxonSelection> getTaxonSelections()
+        {
+            IList<TaxonSelection> result = null;
+            withDataContext(ctx =>
+                {
+                    result = (ctx.TaxonSelection.ToList());
                 });
-            return id;
+            return result;
+        }
+
+        public void clearTaxonTable(TaxonSelection selection)
+        {
+            withDataContext(ctx =>
+                {
+                    var targetTable = getTaxonTable(ctx, selection.TableID);
+                    targetTable.DeleteAllOnSubmit(targetTable);
+                    ctx.SubmitChanges();
+                });
+        }
+
+        public int getTaxonTableFreeCount()
+        {
+            int result = 0;
+            withDataContext(ctx =>
+            {
+                result = getUnusedTaxonTableIDs(ctx).Count();
+            });
+            return result;
         }
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup)
@@ -553,6 +569,68 @@
                 return getTaxonNames(tableID, genus, species);
             }
         }
+
+        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
+        {
+            var usedTableIDs = from ts in ctx.TaxonSelection
+                               select ts.TableID;
+            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
+        }
+
+        
+
+        private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
+        {
+            switch (tableID)
+            {
+                case 0: return ctx.TaxonNames0;
+                case 1: return ctx.TaxonNames1;
+                case 2: return ctx.TaxonNames2;
+                case 3: return ctx.TaxonNames3;
+                case 4: return ctx.TaxonNames4;
+                case 5: return ctx.TaxonNames5;
+                case 6: return ctx.TaxonNames6;
+                case 7: return ctx.TaxonNames7;
+                case 8: return ctx.TaxonNames8;
+                case 9: return ctx.TaxonNames9;
+                default:
+                    throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
+            }
+        }
+
+       
+
+        private IList<TaxonName> getTaxonNames(int tableID)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => getTaxonTable(ctx, tableID));
+        }
+
+        private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
+        {
+            return cachedQuery(TaxonName.Operations,
+                ctx => from tn in getTaxonTable(ctx, tableID)
+                        where tn.GenusOrSupragenic.Contains(genus)
+                        && tn.SpeciesEpithet.Contains(species)
+                        select tn);
+        }
+
+        private int getTaxonTableIDForGroup(Term taxonGroup)
+        {
+            int id = -1;
+            if(taxonGroup != null)
+                withDataContext(ctx =>
+                {
+                    var assignment = from a in ctx.TaxonSelection
+                                     where a.TableName == taxonGroup.Code && a.IsSelected
+                                     select a.TableID;
+                    if (assignment.Any())
+                        id = assignment.First();
+                });
+            return id;
+        }
+
+        
 
 
         #endregion
@@ -616,16 +694,16 @@
         #region SampleData
         private void sampleData()
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
-                ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
-                int id = 1;
-                recSample(0, 0, ref id, ctx);
-                ctx.SubmitChanges();
-            }
+            //using (var ctx = new DiversityDataContext())
+            //{
+            //    ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
+            //    ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
+            //    ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
+            //    ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
+            //    int id = 1;
+            //    recSample(0, 0, ref id, ctx);
+            //    ctx.SubmitChanges();
+            //}
 
         }
         private void recSample(int depth, int parent, ref int id, DiversityDataContext ctx)
@@ -665,15 +743,15 @@
 
 
 
-                    if (row.IsModified == null)      //New Object
+                    if (row.IsNew())      //New Object
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        row.IsModified = true; //Mark for Upload
+                        row.ModificationState = true; //Mark for Upload
 
                         table.InsertOnSubmit(row);                        
                         try
                         {
-                            ctx.SubmitChanges();
+                            ctx.SubmitChanges();                            
                         }
                         catch (Exception ex)
                         {
@@ -820,6 +898,8 @@
 
 
 
-        
+
+
+
     }
 }
