@@ -34,8 +34,12 @@ namespace DiversityPhone.View
         private EditMultimediaObjectVM VM { get { return DataContext as EditMultimediaObjectVM; } }
 
         //Photo Components
-        private WriteableBitmap capturedImage;
+        private WriteableBitmap storedImage=null; //Image as saved in the Isolated storage
+        private WriteableBitmap actualImage=null; //Image saved after a cropping procedure
         private CameraCaptureTask takePhoto;
+        //Variables for the crop feature
+        System.Windows.Point p1, p2;
+        bool cropping = false;
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
@@ -56,13 +60,25 @@ namespace DiversityPhone.View
         ApplicationBarIconButton btnPlay;
         ApplicationBarIconButton btnStop;
         ApplicationBarIconButton btnPause;
-        ApplicationBarIconButton bntCrop;
+
         ApplicationBarIconButton btnCamera;
+        ApplicationBarIconButton btnCrop;
+        
+        ApplicationBarIconButton btnReset;
+        ApplicationBarIconButton btnSave;
 
 
         public EditMMO()
         {
             InitializeComponent();
+            //Create new instance of CameraCaptureClass
+            takePhoto = new CameraCaptureTask();
+
+            //Create new event handler for capturing a photo
+            takePhoto.Completed += new EventHandler<PhotoResult>(takePhoto_Completed);
+
+            //Used for rendering the cropping rectangle on the image.
+            CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
            
         }
 
@@ -71,9 +87,6 @@ namespace DiversityPhone.View
             
         }
 
-     
-
-
       
         #region Photo
 
@@ -81,11 +94,8 @@ namespace DiversityPhone.View
         {
             this.PageTitle.Text = "photo";
             VM.Model.MediaType = MediaType.Image;
-            //Create new instance of CameraCaptureClass
-            takePhoto = new CameraCaptureTask();
-
-            //Create new event handler for capturing a photo
-            takePhoto.Completed += new EventHandler<PhotoResult>(takePhoto_Completed);
+            PhotoImage.Visibility = Visibility.Visible;
+           
 
 
             textStatus.Text = "";
@@ -95,7 +105,7 @@ namespace DiversityPhone.View
 
         }
 
-        void takePhoto_Completed(object sender, PhotoResult e)
+        private void takePhoto_Completed(object sender, PhotoResult e)
         {
 
             if (e.TaskResult == TaskResult.OK && e.ChosenPhoto != null)
@@ -107,57 +117,263 @@ namespace DiversityPhone.View
                 progressBar1.Visibility = Visibility.Visible;
 
                 //Take JPEG stream and decode into a WriteableBitmap object
-                this.capturedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
-
+                this.storedImage = PictureDecoder.DecodeJpeg(e.ChosenPhoto);
+                this.actualImage = storedImage;
+                PhotoImage.Source = actualImage;
                 //Collapse visibility on the progress bar once writeable bitmap is visible.
                 progressBar1.Visibility = Visibility.Collapsed;
-
-
-                //Populate image control with WriteableBitmap object.
-                MainImage.Source = this.capturedImage;
-                MainImage.Visibility = Visibility.Visible;
-
-                //Adjust ApplicationBar
-                this.ApplicationBar.IsVisible = false;
-
-                //Save Picture
-                //
-
-                //Make progress bar visible for the event handler as there may be posible latency.
-                progressBar1.Visibility = Visibility.Visible;
-
-                //Create filename for JPEG in isolated storage as a Guid and filename for thumb
-                Guid g = Guid.NewGuid();
-                String uri = g.ToString()+".jpg";
-                String thumbUri = "thumb" + uri;
-
-                //Create virtual store and file stream. Check for duplicate tempJPEG files.
-                var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-                if (myStore.FileExists(uri))
-                {
-                    myStore.DeleteFile(uri);
-                }
-                if (myStore.FileExists(thumbUri))
-                    myStore.DeleteFile(thumbUri);
-                IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
-                //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
-                System.Windows.Media.Imaging.Extensions.SaveJpeg(this.capturedImage, myFileStream, this.capturedImage.PixelWidth, this.capturedImage.PixelHeight, 0, 85);
-                //Save Thumb
-                myFileStream = myStore.CreateFile(thumbUri);
-                int width=Math.Min(this.capturedImage.PixelWidth,80);
-                double ratio=(double) this.capturedImage.PixelHeight/(double) this.capturedImage.PixelWidth;
-                int height=(int) (width*ratio);
-                System.Windows.Media.Imaging.Extensions.SaveJpeg(this.capturedImage, myFileStream, width, height, 0, 70);
-                VM.Model.Uri = uri;
-                myFileStream.Close();
-                VM.Save.Execute(null);
-                progressBar1.Visibility = Visibility.Collapsed;
+                saveCapturedImage();
+                setPhotoBar();
+                setPhotoButtonStates(true, false, false, false);
+                
             }
             else
             {
                 textStatus.Text = "You decided not to take a picture.";
+                setPhotoBar();
+                setPhotoButtonStates(true, false, false, false);
+            }
+            
+        }
+
+        private void btnSaveCroppedImage_Click(object sender, EventArgs e)
+        {
+            if (this.actualImage == null)
+                return;
+            this.storedImage = this.actualImage;
+            saveCapturedImage();
+            setPhotoButtonStates(true, false, false, false);
+        }
+
+        private void btnResetPhoto_Click(object sender, EventArgs e)
+        {
+            this.actualImage = this.storedImage;
+            PhotoImage.Source = actualImage;
+            setPhotoButtonStates(true, false, false, false);
+        }
+
+        /// <summary>
+        /// Click event handler for the crop button on the application bar.
+        /// This code creates the new cropped writeable bitmap object.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void btnCrop_Click(object sender, EventArgs e)
+        {
+
+            if (this.actualImage == null)
+                return;
+
+            // Get the size of the source image prepared for cropping
+            double originalImageWidth = this.actualImage.PixelWidth;
+            double originalImageHeight = this.actualImage.PixelHeight;
+
+
+            // Get the size of the image when it is displayed on the phone
+            double displayedWidth = PhotoImage.ActualWidth;
+            double displayedHeight = PhotoImage.ActualHeight;
+
+            // Calculate the ratio of the original image to the displayed image
+            double widthRatio = originalImageWidth / displayedWidth;
+            double heightRatio = originalImageHeight / displayedHeight;
+
+            // Create a new WriteableBitmap. The size of the bitmap is the size of the cropping rectangle
+            // drawn by the user, multiplied by the image size ratio.
+            WriteableBitmap workImage = new WriteableBitmap((int)(widthRatio * Math.Abs(p2.X - p1.X)), (int)(heightRatio * Math.Abs(p2.Y - p1.Y)));
+
+
+            // Calculate the offset of the cropped image. This is the distance, in pixels, to the top left corner
+            // of the cropping rectangle, multiplied by the image size ratio.
+            int xoffset = (int)(((p1.X < p2.X) ? p1.X : p2.X) * widthRatio);
+            int yoffset = (int)(((p1.Y < p2.Y) ? p1.Y : p2.Y) * heightRatio);
+
+            // Copy the pixels from the targeted region of the source image into the target image, 
+            // using the calculated offset
+            for (int i = 0; i < workImage.Pixels.Length; i++)
+            {
+                int x = (int)((i % workImage.PixelWidth) + xoffset);
+                int y = (int)((i / workImage.PixelWidth) + yoffset);
+                workImage.Pixels[i] = this.actualImage.Pixels[y * this.actualImage.PixelWidth + x];
+            }
+            //Replace the croppedImage with the new generated workImage
+            this.actualImage = workImage;
+            PhotoImage.Source = actualImage;
+            rect.Visibility = Visibility.Collapsed;
+
+
+            //Enable  accept and reject buttons to save or discard current cropped image.
+            //Disable crop button until a new cropping region is selected.
+            setPhotoButtonStates(true, false, true, true);
+
+            //Instructional text
+            textStatus.Text = "Continue to crop image, accept, or reject.";
+        }
+
+        #region cropping helper
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            if (cropping)
+            {
+                rect.SetValue(Canvas.LeftProperty, (p1.X < p2.X) ? p1.X : p2.X);
+                rect.SetValue(Canvas.TopProperty, (p1.Y < p2.Y) ? p1.Y : p2.Y);
+                rect.Width = (int)Math.Abs(p2.X - p1.X);
+                rect.Height = (int)Math.Abs(p2.Y - p1.Y);
             }
         }
+
+
+        /// <summary>
+        /// Click event handler for mouse move.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void PhotoImage_MouseMove(object sender, MouseEventArgs e)
+        {
+            p2 = e.GetPosition(PhotoImage);
+        }
+
+        /// <summary>
+        /// Click event handler for mouse left button up
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void PhotoImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            p2 = e.GetPosition(PhotoImage);
+            cropping = false;
+
+
+        }
+
+        /// <summary>
+        /// Click event handler for mouse left button down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        void PhotoImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            btnCrop.IsEnabled = true;
+            p1 = e.GetPosition(PhotoImage);
+            p2 = p1;
+            rect.Visibility = Visibility.Visible;
+            cropping = true;
+        }
+
+        /// <summary>
+        /// Click event handler for the reject button on the application bar.
+        /// This will allow you to reject the cropped image and set back to the original image.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+
+        #endregion
+
+        private void saveCapturedImage()
+        {
+            //Save Picture
+            //
+
+            //Make progress bar visible for the event handler as there may be posible latency.
+            progressBar1.Visibility = Visibility.Visible;
+
+            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
+            String uri;
+            String thumbUri;
+
+            if (VM.Model.Uri == null || VM.Model.Uri.Equals(String.Empty))
+            {
+                Guid g = Guid.NewGuid();
+                uri = g.ToString() + ".jpg";
+                thumbUri = "thumb" + uri;
+            }
+            else
+            {
+                uri = VM.Model.Uri;
+                thumbUri = "thumb" + uri;
+            }
+            //Create virtual store and file stream. Check for duplicate tempJPEG files.
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(uri))
+            {
+                myStore.DeleteFile(uri);
+            }
+            if (myStore.FileExists(thumbUri))
+                myStore.DeleteFile(thumbUri);
+            IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
+            //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
+            System.Windows.Media.Imaging.Extensions.SaveJpeg(this.storedImage, myFileStream, this.storedImage.PixelWidth, this.storedImage.PixelHeight, 0, 85);
+            //Save Thumb
+            myFileStream = myStore.CreateFile(thumbUri);
+            int width = Math.Min(this.storedImage.PixelWidth, 80);
+            double ratio = (double)this.storedImage.PixelHeight / (double)this.storedImage.PixelWidth;
+            int height = (int)(width * ratio);
+            System.Windows.Media.Imaging.Extensions.SaveJpeg(this.storedImage, myFileStream, width, height, 0, 70);
+            myFileStream.Close();
+            if (VM.Model.Uri == null || VM.Model.Uri.Equals(String.Empty))
+            {
+                VM.Model.Uri = uri;
+                VM.Save.Execute(null);
+            }
+            progressBar1.Visibility = Visibility.Collapsed;
+        }
+
+
+        private void setPhotoBar()
+        {
+            progressBar1.Visibility = Visibility.Visible;
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.IsVisible = true;
+            
+            //This code creates the application bar icon buttons.
+            btnCamera = new ApplicationBarIconButton(new Uri("/Images/appbar.feature.camera.rest.png", UriKind.Relative));
+            btnCrop = new ApplicationBarIconButton(new Uri("/Images/appbar.edit.rest.png", UriKind.Relative));
+            btnReset = new ApplicationBarIconButton(new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative));
+            btnSave = new ApplicationBarIconButton(new Uri("/Images/appbar.save.rest.png", UriKind.Relative));
+
+            //Labels for the application bar buttons.
+            btnCamera.Text = "camera";
+            btnCrop.Text = "crop";
+            btnReset.Text = "reset";
+            btnSave.Text = "save";
+
+            //This code adds buttons to application bar.
+            ApplicationBar.Buttons.Add(btnCamera);
+            ApplicationBar.Buttons.Add(btnCrop);
+            ApplicationBar.Buttons.Add(btnReset);
+            ApplicationBar.Buttons.Add(btnSave);
+
+            
+            //This code will create event handlers for buttons.
+            btnCamera.Click += new EventHandler(NewPhoto_Click);
+            btnCrop.Click += new EventHandler(btnCrop_Click);
+            btnReset.Click += new EventHandler(btnResetPhoto_Click);
+            btnSave.Click += new EventHandler(btnSaveCroppedImage_Click);
+            progressBar1.Visibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Helper method to change the IsEnabled property for the ApplicationBarIconButtons.
+        /// </summary>
+        /// <param name="cameraEnabled">New state for the camera button.</param>
+        /// <param name="cropEnabled">New state for the crop button.</param>
+        /// <param name="resetEnabled">New state for the reset button.</param>
+         /// <param name="saveEnabled">New state for the save button.</param>
+        private void setPhotoButtonStates(bool cameraEnabled, bool cropEnabled, bool resetEnabled, bool saveEnabled)
+        {
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = cameraEnabled;
+            (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = cropEnabled;
+            (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = resetEnabled;
+            (ApplicationBar.Buttons[3] as ApplicationBarIconButton).IsEnabled = saveEnabled;
+        }
+
+
         #endregion
 
 
@@ -168,6 +384,7 @@ namespace DiversityPhone.View
         {
             this.PageTitle.Text = "audio";
             VM.Model.MediaType = MediaType.Audio;
+            AudioStatusImage.Visibility = Visibility.Visible;
             // Timer to simulate the XNA Framework game loop (Microphone is 
             // from the XNA Framework). We also use this timer to monitor the 
             // state of audio playback so we can update the UI appropriately.
@@ -181,9 +398,9 @@ namespace DiversityPhone.View
 
             setAudioBar();
 
-            blankImage = new BitmapImage(new Uri("Images/AudioIcons/blank.png", UriKind.RelativeOrAbsolute));
-            microphoneImage = new BitmapImage(new Uri("Images/AudioIcons/microphone.png", UriKind.RelativeOrAbsolute));
-            speakerImage = new BitmapImage(new Uri("Images/AudioIcons/speaker.png", UriKind.RelativeOrAbsolute));
+            blankImage = new BitmapImage(new Uri("/Images/AudioIcons/blank.png", UriKind.RelativeOrAbsolute));
+            microphoneImage = new BitmapImage(new Uri("/Images/AudioIcons/microphone.png", UriKind.RelativeOrAbsolute));
+            speakerImage = new BitmapImage(new Uri("/Images/AudioIcons/speaker.png", UriKind.RelativeOrAbsolute));
         }
 
 
@@ -191,6 +408,7 @@ namespace DiversityPhone.View
         {
             ApplicationBar = new ApplicationBar();
             ApplicationBar.IsVisible = true;
+            
 
             //This code creates the application bar icon buttons.
             btnRecord = new ApplicationBarIconButton(new Uri("/Images/AudioIcons/record.png", UriKind.Relative));
@@ -248,11 +466,13 @@ namespace DiversityPhone.View
                     // Update the UI to reflect that the 
                     // sound has stopped playing
                     SetAudioButtonStates(true, true, false);
-                    MainImage.Source = blankImage;
-                    MainImage.Visibility = Visibility.Visible;
+                    AudioStatusImage.Source = blankImage;
+                    
                 }
             }
         }
+
+        #region audiohelper
 
         /// <summary>
         /// The Microphone.BufferReady event handler.
@@ -334,7 +554,7 @@ namespace DiversityPhone.View
             stream.Seek(oldPos, SeekOrigin.Begin);
         }
 
-
+        #endregion
         /// <summary>
         /// Handles the Click event for the record button.
         /// Sets up the microphone and data buffers to collect audio data,
@@ -357,7 +577,7 @@ namespace DiversityPhone.View
             microphone.Start();
             WriteWavHeader(audioStream, microphone.SampleRate);
             SetAudioButtonStates(false, false, true);
-            MainImage.Source = microphoneImage;
+            AudioStatusImage.Source = microphoneImage;
         }
 
         /// <summary>
@@ -407,7 +627,7 @@ namespace DiversityPhone.View
             }
 
             SetAudioButtonStates(true, true, false);
-            MainImage.Source = blankImage;
+            AudioStatusImage.Source = blankImage;
         }
 
         /// <summary>
@@ -423,7 +643,7 @@ namespace DiversityPhone.View
                 // Update the UI to reflect that
                 // sound is playing
                 SetAudioButtonStates(false, false, true);
-                MainImage.Source = speakerImage;
+                AudioStatusImage.Source = speakerImage;
 
                 // Play the audio in a new thread so the UI can update.
                 Thread soundThread = new Thread(new ThreadStart(playSound));

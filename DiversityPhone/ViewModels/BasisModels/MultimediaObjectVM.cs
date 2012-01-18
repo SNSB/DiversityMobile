@@ -11,7 +11,7 @@ namespace DiversityPhone.ViewModels
 {
     public class MultimediaObjectVM : ElementVMBase<MultimediaObject>
     {        
-        public override string Description { get { return Model.ToString(); } }
+        public override string Description { get { return Model.MediaType.ToString(); } }
         public override Icon Icon
         {
             get

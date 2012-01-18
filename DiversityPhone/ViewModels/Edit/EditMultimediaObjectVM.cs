@@ -105,7 +105,7 @@ namespace DiversityPhone.ViewModels
 
         private void updateModel()
         {
-
+            Model.LogUpdatedWhen = DateTime.Now;
         }       
 
         protected override MultimediaObject ModelFromState(Services.PageState s)

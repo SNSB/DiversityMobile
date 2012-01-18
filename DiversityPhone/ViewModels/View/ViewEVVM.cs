@@ -47,6 +47,10 @@
         
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
+
+        public IList<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
+        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _MMOList;
+
         #endregion
 
 
@@ -65,7 +69,9 @@
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
-
+            _MMOList = ValidModel
+               .Select(ev => getMMOList(ev))
+               .ToProperty(this, x => x.MMOList);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -94,6 +100,14 @@
             return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
                 _storage.getSpecimenForEvent(ev),
                 (model) => new SpecimenVM(Messenger, model, Page.ViewCS)
+                );
+        }
+
+        private IList<MultimediaObjectVM> getMMOList(Event ev)
+        {
+            return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
+                _storage.getMultimediaForObject(ReferrerType.Event,ev.EventID),
+                (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
                 );
         }
 

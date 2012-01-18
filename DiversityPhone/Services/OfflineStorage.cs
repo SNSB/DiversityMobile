@@ -36,6 +36,8 @@
 
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
+                _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
+                    .Subscribe(mmo => addMultimediaObject(mmo)),
             };
 
             using (var context = new DiversityDataContext())
@@ -422,17 +424,14 @@
             return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
-        public MultimediaObject getMultimediaForObject(DiversityPhone.Services.ReferrerType refType, int key)
+        public IList<MultimediaObject> getMultimediaForObject(DiversityPhone.Services.ReferrerType refType, int key)
         {
-            IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+             IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                         where mm.OwnerType == refType
                                                 && mm.RelatedId == key
                                         select mm);
-            if (objects.Count == 0)
-                throw new KeyNotFoundException();
-            if (objects.Count > 1)
-                throw new DuplicateKeyException(objects);
-            return objects[0];
+             return objects;
+
         }
 
         public MultimediaObject getMultimediaByURI(string uri)
