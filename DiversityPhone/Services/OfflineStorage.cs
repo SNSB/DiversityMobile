@@ -513,7 +513,7 @@
                                 TableID = unusedIDs.First(),
                                 TableName = list.Table,
                                 TaxonomicGroup = list.TaxonomicGroup,
-                                IsSelected = TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable)
+                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable)
                             };
                             ctx.TaxonSelection.InsertOnSubmit(selection);
 
@@ -655,7 +655,7 @@
                 withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.TaxonSelection
-                                     where a.TableName == taxonGroup && a.IsSelected
+                                     where a.TaxonomicGroup == taxonGroup && a.IsSelected
                                      select a.TableID;
                     if (assignment.Any())
                         id = assignment.First();
