@@ -38,6 +38,9 @@
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
                 _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
                     .Subscribe(mmo => addMultimediaObject(mmo)),
+
+                _messenger.Listen<Term>(MessageContracts.USE)
+                    .Subscribe(term => updateLastUsed(term)),
             };
 
             using (var context = new DiversityDataContext())
@@ -300,23 +303,9 @@
             return result;
         }
 
-        private static int findFreeUnitID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.IdentificationUnits.Any())
-                min = (from iu in ctx.IdentificationUnits select iu.UnitID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
-
         public void addOrUpdateIUnit(IdentificationUnit iu)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                if (iu.ModificationState == null)
-                    iu.UnitID = findFreeUnitID(ctx);
-                ctx.IdentificationUnits.InsertOnSubmit(iu);
-                ctx.SubmitChanges();
-            }
+            addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);           
         }
 
         #endregion
@@ -463,7 +452,9 @@
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source
-                                        select t);
+                                        orderby t.LastUsed descending
+                                        select t
+                                        );
         }
 
 
@@ -483,6 +474,26 @@
                 }
             }
             sampleData();
+        }
+
+        public void updateLastUsed(Term term)
+        {
+            if (term == null)
+            {
+#if DEBUG
+                throw new ArgumentNullException("term");
+#else
+                return;
+#endif
+                //TODO Log
+            }
+
+            withDataContext(ctx =>
+            {
+                ctx.Terms.Attach(term);
+                term.LastUsed = DateTime.Now;
+                ctx.SubmitChanges();
+            });
         }
 
         #endregion
@@ -596,19 +607,18 @@
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
         {
-            int tableID = getTaxonTableIDForGroup(taxonGroup.Code);
-            genus = genus ?? "";
-            species = species ?? "";
-
-            if (tableID == -1)
+            int tableID;
+            if (taxonGroup == null 
+                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == -1)
             {
+                System.Diagnostics.Debugger.Break();
+                //TODO Logging
                 return new List<TaxonName>();
-                //TODO Logging?
-            }
-            else
-            {
-                return getTaxonNames(tableID, genus, species);
-            }
+            }            
+            genus = genus ?? "";
+            species = species ?? "";          
+            
+            return getTaxonNames(tableID, genus, species);
         }
 
         private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
@@ -766,6 +776,7 @@
                 throw new ArgumentNullException ("row");
 #else
                 return;
+                //TODO Log
 #endif
             }
 
@@ -805,7 +816,14 @@
                             withDataContext((ctx2) =>
                                 {
                                     tableProvider(ctx2).Attach(row, existingRow);
-                                    ctx2.SubmitChanges();
+                                    try
+                                    {
+                                        ctx2.SubmitChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        System.Diagnostics.Debugger.Break();
+                                    }
                                 });
                         }
                     }              
