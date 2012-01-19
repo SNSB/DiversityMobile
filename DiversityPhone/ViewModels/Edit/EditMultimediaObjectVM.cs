@@ -40,7 +40,11 @@ namespace DiversityPhone.ViewModels
         public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }       
 
         private BitmapImage  _savedImage;
-        public BitmapImage SavedImage { get { return _savedImage; } set { this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value); } } 
+        public BitmapImage SavedImage { get { return _savedImage; } set { this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value); } }
+
+        private ObservableAsPropertyHelper<BitmapImage> _bi;
+        public BitmapImage BIImage { get { return _bi.Value; } }
+
         private ObservableAsPropertyHelper<MultimediaObject> _Model;
         public MultimediaObject Model
         {
@@ -84,40 +88,21 @@ namespace DiversityPhone.ViewModels
             if (mmo.MediaType != MediaType.Image)
                 return;
             // The image will be read from isolated storage into the following byte array
-
             byte[] data;
             // Read the entire image in one go into a byte array
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
 
-                // Open the file - error handling omitted for brevity
-
-                // Note: If the image does not exist in isolated storage the following exception will be generated:
-
-                // System.IO.IsolatedStorage.IsolatedStorageException was unhandled
-
-                // Message=Operation not permitted on IsolatedStorageFileStream
 
                 using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
                 {
-
-                    // Allocate an array large enough for the entire file
-
                     data = new byte[isfs.Length];
-
-
-
-                    // Read the entire file and then close it
-
                     isfs.Read(data, 0, data.Length);
-
                     isfs.Close();
 
                 }
 
             }
-
-
 
             // Create memory stream and bitmap
 
@@ -125,6 +110,8 @@ namespace DiversityPhone.ViewModels
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
             SavedImage = bi;
+            //Observable -- kann ich irgendwie das Bild auuch in _bi speichern?
+
         }
 
 

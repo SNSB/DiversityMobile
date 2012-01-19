@@ -14,7 +14,7 @@ using DiversityPhone.Services;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class MultimediaObject
+    public class MultimediaObject 
     {
         [Column]
         public ReferrerType OwnerType { get; set; }
