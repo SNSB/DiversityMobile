@@ -473,7 +473,14 @@
             using (var ctx = new DiversityDataContext())
             {
                 ctx.Terms.InsertAllOnSubmit(terms);
-                ctx.SubmitChanges();
+                try
+                {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    //TODO Log
+                }
             }
             sampleData();
         }
@@ -487,18 +494,31 @@
             withDataContext(ctx =>
                 {
                     Table<TaxonName> targetTable = null;
-                    var existingTable = (from ts in ctx.TaxonSelection
+                    var existingSelection = (from ts in ctx.TaxonSelection
                                         where ts.TableName == list.Table
                                         select ts).FirstOrDefault();
-                    if (existingTable != null)
+                    if (existingSelection != null)
                     {
-                        targetTable = getTaxonTable(ctx, existingTable.TableID);
+                        targetTable = getTaxonTable(ctx, existingSelection.TableID);
                     }
                     else
                     {
                         var unusedIDs = getUnusedTaxonTableIDs(ctx);
                         if (unusedIDs.Count() > 0)
-                            targetTable = getTaxonTable(ctx, unusedIDs.First());
+                        {
+                            var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
+                            var selection = new TaxonSelection()
+                            {
+                                TableDisplayName = list.DisplayText,
+                                TableID = unusedIDs.First(),
+                                TableName = list.Table,
+                                TaxonomicGroup = list.TaxonomicGroup,
+                                IsSelected = TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable)
+                            };
+                            ctx.TaxonSelection.InsertOnSubmit(selection);
+
+                            targetTable = getTaxonTable(ctx, selection.TableID );
+                        }
                         else
                             throw new InvalidOperationException("No Unused Taxon Table");
                     }
@@ -519,12 +539,42 @@
             return result;
         }
 
+        public void updateTaxonSelection(TaxonSelection sel)
+        {
+            withDataContext(ctx =>
+                {
+                    var existingSelection = from s in ctx.TaxonSelection
+                                            where s.TableID == sel.TableID
+                                            select s;
+                    if (existingSelection.Any())
+                    {
+                        var selToUdate = existingSelection.First();
+
+                        selToUdate.IsSelected = sel.IsSelected;
+                        selToUdate.TableDisplayName = sel.TableDisplayName;
+                        selToUdate.TableName = sel.TableName;
+                        selToUdate.TaxonomicGroup = sel.TaxonomicGroup;
+
+                        ctx.SubmitChanges();
+                    }
+                    else
+                    {
+                        //TODO Log
+                    }
+                }
+            );
+        }
+
         public void clearTaxonTable(TaxonSelection selection)
         {
             withDataContext(ctx =>
                 {
                     var targetTable = getTaxonTable(ctx, selection.TableID);
                     targetTable.DeleteAllOnSubmit(targetTable);
+
+                    ctx.TaxonSelection.Attach(selection);
+                    ctx.TaxonSelection.DeleteOnSubmit(selection);
+
                     ctx.SubmitChanges();
                 });
         }
@@ -541,20 +591,12 @@
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup)
         {
-            int tableID = getTaxonTableIDForGroup(taxonGroup);
-
-            if (tableID == -1)
-            {
-                return new List<TaxonName>();
-                //TODO Logging?
-            }
-            else
-                return getTaxonNames(tableID);
+            return getTaxonNames(taxonGroup, null, null);
         }
 
         public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
         {
-            int tableID = getTaxonTableIDForGroup(taxonGroup);
+            int tableID = getTaxonTableIDForGroup(taxonGroup.Code);
             genus = genus ?? "";
             species = species ?? "";
 
@@ -595,15 +637,7 @@
                 default:
                     throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
             }
-        }
-
-       
-
-        private IList<TaxonName> getTaxonNames(int tableID)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => getTaxonTable(ctx, tableID));
-        }
+        }      
 
         private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
         {
@@ -614,14 +648,14 @@
                         select tn);
         }
 
-        private int getTaxonTableIDForGroup(Term taxonGroup)
+        private int getTaxonTableIDForGroup(string taxonGroup)
         {
             int id = -1;
             if(taxonGroup != null)
                 withDataContext(ctx =>
                 {
                     var assignment = from a in ctx.TaxonSelection
-                                     where a.TableName == taxonGroup.Code && a.IsSelected
+                                     where a.TableName == taxonGroup && a.IsSelected
                                      select a.TableID;
                     if (assignment.Any())
                         id = assignment.First();
