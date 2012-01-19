@@ -42,7 +42,7 @@
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
+                <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                          ItemsSource="{Binding MMOList}"/>
             </controls:PivotItem>
         </controls:Pivot>

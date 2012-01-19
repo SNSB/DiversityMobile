@@ -27,6 +27,7 @@ namespace DiversityPhone.ViewModels
         Photo,
         Audio,
         Video,
-        UserProfile
+        UserProfile,
+        None
     }
 }

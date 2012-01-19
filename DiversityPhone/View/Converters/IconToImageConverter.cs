@@ -12,9 +12,9 @@ namespace DiversityPhone.View
         {
             if (value == null)
                 return null;
-            
-            if (!(value.GetType().ToString().Contains(typeof(Icon).ToString()))) //Design Time Data
-                throw new NotSupportedException(value.GetType().ToString());
+
+            if (!(value.GetType().ToString().Contains(typeof(Icon).ToString())))//Design Time Data
+                    throw new NotSupportedException(value.GetType().ToString());
 
             string imageURI = "/Images/appbar.add.rest.png";
             switch ((Icon)Enum.Parse(typeof(Icon),value.ToString(), false))
@@ -39,6 +39,8 @@ namespace DiversityPhone.View
                     return "/Images/appbar.feature.audio.rest80.png";
                 case Icon.Video:
                     return "/Images/appbar.feature.video.rest.png";
+                case Icon.None: 
+                    return null;
                 default:
                     break;
                                   

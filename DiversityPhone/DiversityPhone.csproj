@@ -175,13 +175,11 @@
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
-    <Compile Include="View\CropPicture.xaml.cs">
-      <DependentUpon>CropPicture.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\DPColors.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
@@ -265,6 +263,9 @@
     <Compile Include="View\ViewLM.xaml.cs">
       <DependentUpon>ViewLM.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewMMO.xaml.cs">
+      <DependentUpon>ViewMMO.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -287,10 +288,6 @@
     <Page Include="Styles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\CropPicture.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditAnalysis.xaml">
       <SubType>Designer</SubType>
@@ -365,6 +362,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ViewLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMMO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

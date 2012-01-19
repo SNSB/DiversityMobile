@@ -9,7 +9,8 @@ namespace DiversityPhone.Messages
 
     public enum Message
     {
-        NavigateBack,        
+        NavigateBack,
+        ModelCreated,
     }
 
     public static class MessageContracts

@@ -134,10 +134,11 @@ namespace DiversityPhone.Services
                 case Page.DownLoadMaps:
                     destination = "/View/ViewDLM.xaml";
                     break;
-                
+                case Page.ViewMMO:
+                    destination = "/View/ViewMMO.xaml";
+                    break; 
                 case Page.EditMMO:
                     destination = "/View/EditMMO.xaml";
-                    //destination = "/View/EditPicture.xaml";
                     break; 
 
 

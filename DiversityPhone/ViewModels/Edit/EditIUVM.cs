@@ -218,6 +218,7 @@ namespace DiversityPhone.ViewModels
                     new[] { 
                         new TaxonName() 
                         { 
+                            TaxonNameCache = Genus + " " + Species,
                             GenusOrSupragenic = Genus, 
                             SpeciesEpithet = Species, 
                             Synonymy = DiversityPhone.Model.Synonymy.WorkingName 

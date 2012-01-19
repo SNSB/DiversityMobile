@@ -12,21 +12,43 @@ namespace DiversityPhone.ViewModels
     public class MultimediaObjectVM : ElementVMBase<MultimediaObject>
     {        
         public override string Description { get { return Model.MediaType.ToString(); } }
+
+        //General Implementation
         public override Icon Icon
         {
             get
             {
                 switch (Model.MediaType)
                 {
-                    case Services.MediaType.Audio:
-                        return ViewModels.Icon.Audio;
-                    case Services.MediaType.Video:
-                        return ViewModels.Icon.Video;
-                    case Services.MediaType.Image:
-                        return ViewModels.Icon.Photo;
+                    case MediaType.Image:
+                        return Icon.Photo;
+                    case MediaType.Audio:
+                        return Icon.Audio;
+                    case MediaType.Video:
+                        return Icon.Video;
                     default:
-                        return ViewModels.Icon.Photo;
+                        return Icon.Photo;
                 }
+            }
+        }
+
+
+        //Implementation as String for beeing aable to display thumbs
+        public string IconPath
+        {
+            get
+            {
+                switch(Model.MediaType)
+                {
+                    case MediaType.Image:
+                            return Model.Uri;
+                    case MediaType.Audio:
+                            return "/Images/appbar.feature.audio.rest80.png";
+                    case MediaType.Video:
+                            return "/Images/appbar.feature.video.rest.png";
+                    default:
+                            return "/Images/appbar.feature.camera.rest.png";
+                 }
             }
         }
 

@@ -17,6 +17,7 @@
     		<local:ViewModelLocator x:Key="Locator" />
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>
+            <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
             <vw:TermToImageConverter x:Key="TermToImage"/>
 			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
             <Style x:Key="ItemButtonStyle" TargetType="Button">

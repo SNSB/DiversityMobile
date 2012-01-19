@@ -21,7 +21,14 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
-
+    <DataTemplate x:Key="MMOTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{Binding IconPath, Converter={StaticResource IconUrlConverter}}" Height="50" Width="50"/>
+            <Button Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Select}"/>
+        </StackPanel>
+    </DataTemplate>
     <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image />
@@ -66,7 +73,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="TaxonNameItemTemplate">         
-            <TextBlock Text="{Binding GenusOrSupragenic}"
+            <TextBlock Text="{Binding TaxonNameCache}"
 					   Foreground="{Binding Synonymy, Converter={StaticResource SynonymyToColor}}"/>            	            
     </DataTemplate>
 
