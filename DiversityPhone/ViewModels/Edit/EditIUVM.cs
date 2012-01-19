@@ -12,29 +12,9 @@ using DiversityPhone.Model;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditIUVM : ElementPageViewModel<IdentificationUnit>
+    public class EditIUVM : EditElementPageVMBase<IdentificationUnit>
     {
-        #region Services        
-        IOfflineStorage _storage;
-        #endregion
-
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        #endregion
-
         #region Properties
-        
-        private ObservableAsPropertyHelper<bool> _IsEditable;
-        public bool Editable
-        {
-            get
-            {
-                return _IsEditable.Value;
-            }
-        }
-
         private ObservableAsPropertyHelper<bool> _IsObservation;
         public bool IsObservation
         {
@@ -57,11 +37,6 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.OnlyObserved, ref _OnlyObserved, value);
             }
         }
-        
-
-        public IdentificationUnit Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<IdentificationUnit> _Model;
-
 
         private ObservableAsPropertyHelper<IList<Term>> _TaxonomicGroups;
         public IList<Term> TaxonomicGroups
@@ -109,8 +84,6 @@ namespace DiversityPhone.ViewModels
             }
         }
         
-
-
         private string _Description;
         public string Description
         {
@@ -124,7 +97,6 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
         private string _Genus;
         public string Genus
         {
@@ -137,7 +109,6 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.Genus, ref _Genus, value);
             }
         }
-
         
         private string _Species;
         public string Species
@@ -174,10 +145,6 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.CurrentIdentification, ref _CurrentIdentification, value);
             }
         }
-        
-        
-        
-
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
@@ -185,34 +152,17 @@ namespace DiversityPhone.ViewModels
 
 
 
-        public EditIUVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger, false)
+        public EditIUVM()
+            : base(false)
         {
-            
-            _storage = storage;
-
-            ToggleEditable = new ReactiveCommand();
-            Save = new ReactiveCommand(validationObservable());
-            Delete = new ReactiveCommand();
-
             #region Update View
-            _IsEditable = DistinctStateObservable
-                .Select(s => s.Context == null) //Newly created Units are immediately editable
-                .Merge(
-                    ToggleEditable.Select(_ => !Editable) //Toggle Editable
-                )
-                .ToProperty(this, vm => vm.Editable);
-
-
-            _Model = ValidModel.ToProperty(this, x => x.Model);
-
             _IsToplevel = ValidModel
                             .Select(m => m.RelatedUnitID == null)
                             .ToProperty(this, x => x.IsToplevel);
 
             var isObservation =
                 ValidModel
-                .Select(m => _storage.getSpecimenByID(m.SpecimenID))
+                .Select(m => Storage.getSpecimenByID(m.SpecimenID))
                 .Where(spec => spec != null)
                 .Select(spec => spec.IsObservation());
 
@@ -220,11 +170,6 @@ namespace DiversityPhone.ViewModels
 
             _IsObservation = isObservation
                 .ToProperty(this, vm => vm.IsObservation);
-
-
-
-
-
             #endregion
 
             #region Vocabulary
@@ -240,7 +185,7 @@ namespace DiversityPhone.ViewModels
                     {
                         //Don't allow short queries
                         if (query.Species.Length + query.Genus.Length > 3)
-                            return _storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
+                            return Storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
                         else
                             return Enumerable.Empty<TaxonName>();
                     })
@@ -261,12 +206,12 @@ namespace DiversityPhone.ViewModels
 
 
             _TaxonomicGroups = DistinctStateObservable
-                .Select(_ => _storage.getTerms(Svc.TermList.TaxonomicGroups))
+                .Select(_ => Storage.getTerms(Svc.TermList.TaxonomicGroups))
                 .ToProperty(this, vm => vm.TaxonomicGroups);
 
             _RelationshipTypes = _IsToplevel
                 .Where(isToplevel => isToplevel)
-                .Select(isToplevel => _storage.getTerms(Svc.TermList.RelationshipTypes))
+                .Select(isToplevel => Storage.getTerms(Svc.TermList.RelationshipTypes))
                 .ToProperty(this, vm => vm.RelationshipTypes);
             #endregion
 
@@ -275,47 +220,28 @@ namespace DiversityPhone.ViewModels
             this.ObservableForProperty(x => x.AvailableIdentifications)
                 .Select(change => change.Value)
                 .Where(x => x != null)
-                .Select(ids => (Model != null) ? ids.FirstOrDefault(id => id.URI == Model.IdentificationUri) : null)
+                .Select(ids => (Current != null) ? ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) : null)
                 .BindTo(this, vm => vm.CurrentIdentification);
 
             
             this.ObservableForProperty(x => x.TaxonomicGroups)
                 .Select(change => change.Value)
                 .Where(x => x != null)
-                .Select(tgs => ((Model != null) ? tgs.FirstOrDefault(tg => tg.Code == Model.TaxonomicGroup) : null ) ?? tgs.FirstOrDefault())
+                .Select(tgs => ((Current != null) ? tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup) : null ) ?? tgs.FirstOrDefault())
                 .BindTo(this, vm => vm.SelectedTaxGroup);
 
             
             this.ObservableForProperty(x => x.RelationshipTypes)
                 .Select(change => change.Value)
                 .Where(x => x != null)
-                .Select(rels => ((Model != null) ? rels.FirstOrDefault(rel => rel.Code == Model.RelationType) : null) ?? rels.FirstOrDefault())
+                .Select(rels => ((Current != null) ? rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType) : null) ?? rels.FirstOrDefault())
                 .BindTo(this, x => x.SelectedRelationshipType);
-            #endregion
-
-
-            Messenger.RegisterMessageSource(
-                Save
-                .Do(_ => updateModel())
-                .Select(_ => Model),
-                MessageContracts.SAVE);
+            #endregion          
 
             Messenger.RegisterMessageSource(
                 Save                
                 .Select(_ => SelectedTaxGroup),
-                MessageContracts.USE);
-
-            Messenger.RegisterMessageSource(
-                Delete
-                .Select(_ => Model),
-                MessageContracts.DELETE);                
-
-            Messenger.RegisterMessageSource(
-                Delete
-                .Merge(Save)                
-                .Select(_ => Message.NavigateBack)
-                );
-
+                MessageContracts.USE); 
         }       
 
         protected override IdentificationUnit ModelFromState(PageState state)
@@ -326,7 +252,7 @@ namespace DiversityPhone.ViewModels
                 int id;
                 if (int.TryParse(state.Context, out id))
                 {
-                    result = _storage.getIdentificationUnitByID(id);
+                    result = Storage.getIdentificationUnitByID(id);
                 }
             }            
             if (result == null && state.ReferrerType != ReferrerType.None)
@@ -345,8 +271,8 @@ namespace DiversityPhone.ViewModels
                 {
                     int id;
                     IdentificationUnit parent;
-                    if (int.TryParse(state.Referrer, out id) 
-                        && (parent = _storage.getIdentificationUnitByID(id)) != null)
+                    if (int.TryParse(state.Referrer, out id)
+                        && (parent = Storage.getIdentificationUnitByID(id)) != null)
                     {
                         result.SpecimenID = parent.SpecimenID;
                         result.RelatedUnitID = parent.UnitID;
@@ -358,7 +284,7 @@ namespace DiversityPhone.ViewModels
         }        
 
 
-        private IObservable<bool> validationObservable()
+        protected override IObservable<bool> CanSave()
         {
             var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
                 .Select(term => term.Value != null)
@@ -371,13 +297,18 @@ namespace DiversityPhone.ViewModels
             return taxonomicGroupIsSet.BooleanAnd(identificationIsSelected);
         }
 
-        private void updateModel()
+        protected override void UpdateModel()
         {
-            Model.TaxonomicGroup = SelectedTaxGroup.Code;
-            Model.WorkingName = (CurrentIdentification.Synonymy == Synonymy.WorkingName) ? CurrentIdentification.TaxonNameCache : null;
-            Model.OnlyObserved = this.OnlyObserved;
-            Model.IdentificationUri = CurrentIdentification.URI;
-            Model.RelationType = (SelectedRelationshipType != null) ? SelectedRelationshipType.Code : null;
+            Current.Model.TaxonomicGroup = SelectedTaxGroup.Code;
+            Current.Model.WorkingName = (CurrentIdentification.Synonymy == Synonymy.WorkingName) ? CurrentIdentification.TaxonNameCache : null;
+            Current.Model.OnlyObserved = this.OnlyObserved;
+            Current.Model.IdentificationUri = CurrentIdentification.URI;
+            Current.Model.RelationType = (SelectedRelationshipType != null) ? SelectedRelationshipType.Code : null;
+        }
+        
+        protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
+        {
+            return new IdentificationUnitVM(Messenger, model, Page.Current);
         }
     }
 }

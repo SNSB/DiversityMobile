@@ -158,6 +158,7 @@
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
+    <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="ViewModels\Edit\EditMapVM.cs" />

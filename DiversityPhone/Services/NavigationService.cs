@@ -24,13 +24,14 @@ namespace DiversityPhone.Services
             _subscriptions = new List<IDisposable>()
             {
                 _messenger.Listen<Page>()
-                    .Subscribe(p => System.Diagnostics.Debugger.Break()),
+                    .Subscribe(p => Navigate(new NavigationMessage(p,null))),
                 _messenger.Listen<Message>()
                     .Subscribe(m =>
                         {
                             switch (m)
                             {                            
                                 case Message.NavigateBack:
+                                    System.Diagnostics.Debugger.Break();
                                     NavigateBack();
                                     break;                          
                                 default:

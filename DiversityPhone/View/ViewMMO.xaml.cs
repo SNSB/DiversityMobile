@@ -47,7 +47,7 @@ namespace DiversityPhone.View
 
                 // Message=Operation not permitted on IsolatedStorageFileStream
 
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(VM.Model.Uri, FileMode.Open, FileAccess.Read))
+                using (IsolatedStorageFileStream isfs = isf.OpenFile(VM.Current.Model.Uri, FileMode.Open, FileAccess.Read))
                 {
 
                     // Allocate an array large enough for the entire file

@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Reactive.Linq;
 using ReactiveUI;
 using System.Linq;
+using System.Reactive.Linq;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 
@@ -21,29 +10,9 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditAnalysisVM : ElementPageViewModel<IdentificationUnitAnalysis>
-    {       
-
-        #region Services        
-        IOfflineStorage _storage;
-        #endregion
-
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        #endregion
-
-
-        
-
+    public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
+    { 
         #region Properties
-        private ObservableAsPropertyHelper<bool> _IsEditable;
-        public bool IsEditable { get { return _IsEditable.Value; } }
-
-        private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
-        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
-
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
@@ -82,7 +51,6 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysisResult, ref _SelectedAnalysisResult, value); }
         }
 
-
         private string _CustomResult;
         public string CustomResult
         {
@@ -94,8 +62,7 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.CustomResult, ref _CustomResult, value);
             }
-        }
-        
+        }        
 
         public DateTime _AnalysisDate;
         public DateTime AnalysisDate
@@ -109,31 +76,17 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public EditAnalysisVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger, false)
-        {
-            _storage = storage;
-
-            _IsEditable = StateObservable
-                .Select(s => s.Context == null) //New IUANs are editable
-                .Merge(
-                    ToggleEditable
-                    .Select(_ => !IsEditable)
-                )
-                .ToProperty(this, vm => vm.IsEditable);
-
-            _Model = ValidModel
-                .ToProperty(this, vm => vm.Model);
-
+        public EditAnalysisVM()
+        {            
             var viewUpdate = ValidModel
                 .Select(iuan => 
                     {
-                        var parent = _storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
-                        var analyses = _storage.getPossibleAnalyses(parent.TaxonomicGroup);
+                        var parent = Storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
+                        var analyses = Storage.getPossibleAnalyses(parent.TaxonomicGroup);
                         var selectedAN = (from an in analyses
                                           where an.AnalysisID == iuan.AnalysisID
                                           select an).FirstOrDefault() ?? analyses.First();
-                        var results = _storage.getPossibleAnalysisResults(selectedAN.AnalysisID);                        
+                        var results = Storage.getPossibleAnalysisResults(selectedAN.AnalysisID);                        
                         var selectedResult = (from res in results
                                               where res.Result == iuan.AnalysisResult
                                               select res).FirstOrDefault() ?? results.FirstOrDefault();
@@ -170,30 +123,9 @@ namespace DiversityPhone.ViewModels
             viewUpdate
                 .Select(_ => String.Empty)
                 .BindTo(this, x => x.CustomResult);
-
-
-            Save = new ReactiveCommand(canSave());
-            Delete = new ReactiveCommand();
-
-            Messenger.RegisterMessageSource(
-                Save
-                .Do(_ => updateModel())
-                .Select(_ => Model),
-                MessageContracts.SAVE);
-
-            Messenger.RegisterMessageSource(
-                Delete
-                .Select(_ => Model),
-                MessageContracts.DELETE);
-
-            Messenger.RegisterMessageSource(
-                Delete
-                .Merge(Save)
-                .Select(_ => Message.NavigateBack)
-                );
         }
 
-        private IObservable<bool> canSave()
+        protected override IObservable<bool> CanSave()
         {
             var vocabularyResultValid = this.ObservableForProperty(x => x.SelectedAnalysisResult)
                 .Select(change => change.Value != null);
@@ -208,11 +140,11 @@ namespace DiversityPhone.ViewModels
             return resultValid;
         }       
 
-        private void updateModel()
+        protected override void UpdateModel()
         {
-            Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
-            Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
-            Model.AnalysisDate = this.AnalysisDate;
+            Current.Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
+            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
+            Current.Model.AnalysisDate = this.AnalysisDate;
         }       
 
         protected override IdentificationUnitAnalysis ModelFromState(PageState s)
@@ -223,7 +155,7 @@ namespace DiversityPhone.ViewModels
                 int anID;
                 if (int.TryParse(s.Context, out anID))
                 {
-                    return _storage.getIUANByID(anID);
+                    return Storage.getIUANByID(anID);
                 }                        
             }
             //New IUAN
@@ -239,6 +171,11 @@ namespace DiversityPhone.ViewModels
                 }
             }
             return null;
+        }
+
+        protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
+        {
+            return new IUAnalysisVM(Messenger, model, Page.Current);
         }
     }
 }

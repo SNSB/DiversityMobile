@@ -10,39 +10,24 @@
     using DiversityPhone.Messages;
 
     public class ViewESVM : ElementPageViewModel<EventSeries>
-    {       
-
-        #region Services       
-        IOfflineStorage _storage;
-        #endregion
-
+    { 
         #region Commands
         public ReactiveCommand AddEvent { get; private set; }
         public ReactiveCommand FilterEvents { get; private set; }
         #endregion
 
         #region Properties
-        public EventSeriesVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<EventSeriesVM> _Current;
-
         public IList<EventVM> EventList { get { return _EventList.Value; } }
         private ObservableAsPropertyHelper<IList<EventVM>> _EventList;
         #endregion
 
+        
 
-
-        public ViewESVM(IMessageBus messenger, Services.IOfflineStorage storage)
-            : base(messenger)
-        {           
-            _storage = storage; 
-            
-            _Current = ValidModel
-                .Select(es => new EventSeriesVM(Messenger, es, Page.EditES))
-                .ToProperty(this, x => x.Current);
-
+        public ViewESVM()            
+        {   
             _EventList = ValidModel
                 .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
-                    _storage.getEventsForSeries(es),
+                    Storage.getEventsForSeries(es),
                     (model) => new EventVM(Messenger, model, Page.ViewEV)
                 ) as IList<EventVM>)
                 .ToProperty(this, x => x.EventList);
@@ -62,6 +47,7 @@
 
             FilterEvents = new ReactiveCommand();
         }
+
         protected override EventSeries ModelFromState(PageState s)
         {
             if (s.Context != null)
@@ -69,7 +55,7 @@
                 int id;
                 if (int.TryParse(s.Context, out id))
                 {
-                    return _storage.getEventSeriesByID(id);
+                    return Storage.getEventSeriesByID(id);
                 }
                 else
                     return null;
@@ -77,6 +63,11 @@
             else
                 return EventSeries.NoEventSeries;
 
+        }
+
+        protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
+        {
+            return new EventSeriesVM(Messenger, model, Page.EditES);
         }
     }
 }

@@ -41,9 +41,9 @@ namespace DiversityPhone
                     .DistinctUntilChanged()
                     .Subscribe(canSave => setSaveEnabled(canSave));
                 setSaveEnabled(VM.Save.CanExecute(null));
-                VM.ObservableForProperty(vm => vm.Editable)
+                VM.ObservableForProperty(vm => vm.IsEditable)
                     .Select(change => change.Value)
-                    .StartWith(VM.Editable)
+                    .StartWith(VM.IsEditable)
                     .Subscribe(value => adjustApplicationBar(value));
             }          
         }
@@ -59,7 +59,7 @@ namespace DiversityPhone
             //Named Buttons don't work :/
             if (ApplicationBar.Buttons.Count>0)
             {
-                if (VM.Editable == false)
+                if (VM.IsEditable == false)
                     ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
                 else
                     ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = state;
