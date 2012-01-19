@@ -26,12 +26,12 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
         
-        private ObservableAsPropertyHelper<bool> _isEditable;
+        private ObservableAsPropertyHelper<bool> _IsEditable;
         public bool Editable
         {
             get
             {
-                return _isEditable.Value;
+                return _IsEditable.Value;
             }
         }
 
@@ -63,12 +63,12 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IdentificationUnit> _Model;
 
 
-        private IList<Term> _TaxonomicGroups = null;
+        private ObservableAsPropertyHelper<IList<Term>> _TaxonomicGroups;
         public IList<Term> TaxonomicGroups
         {
             get
             {
-                return _TaxonomicGroups ?? (_TaxonomicGroups = _storage.getTerms(Svc.TermList.TaxonomicGroups));
+                return _TaxonomicGroups.Value;
             }
         }
 
@@ -86,12 +86,12 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private IList<Term> _RelationshipTypes = null;
+        private ObservableAsPropertyHelper<IList<Term>> _RelationshipTypes;
         public IList<Term> RelationshipTypes
         {
             get
             {
-                return _RelationshipTypes ?? (_RelationshipTypes = _storage.getTerms(Svc.TermList.RelationshipTypes));
+                return _RelationshipTypes.Value;
             }
         }
 
@@ -195,7 +195,39 @@ namespace DiversityPhone.ViewModels
             Save = new ReactiveCommand(validationObservable());
             Delete = new ReactiveCommand();
 
+            #region Update View
+            _IsEditable = DistinctStateObservable
+                .Select(s => s.Context == null) //Newly created Units are immediately editable
+                .Merge(
+                    ToggleEditable.Select(_ => !Editable) //Toggle Editable
+                )
+                .ToProperty(this, vm => vm.Editable);
 
+
+            _Model = ValidModel.ToProperty(this, x => x.Model);
+
+            _IsToplevel = ValidModel
+                            .Select(m => m.RelatedUnitID == null)
+                            .ToProperty(this, x => x.IsToplevel);
+
+            var isObservation =
+                ValidModel
+                .Select(m => _storage.getSpecimenByID(m.SpecimenID))
+                .Where(spec => spec != null)
+                .Select(spec => spec.IsObservation());
+
+            isObservation.BindTo(this, vm => vm.OnlyObserved);
+
+            _IsObservation = isObservation
+                .ToProperty(this, vm => vm.IsObservation);
+
+
+
+
+
+            #endregion
+
+            #region Vocabulary
             _AvailableIdentifications = Observable.CombineLatest(
                 this.ObservableForProperty(vm => vm.Genus)
                 .Select(g => g.Value)
@@ -221,59 +253,57 @@ namespace DiversityPhone.ViewModels
                             TaxonNameCache = Genus + " " + Species,
                             GenusOrSupragenic = Genus, 
                             SpeciesEpithet = Species, 
-                            Synonymy = DiversityPhone.Model.Synonymy.WorkingName 
+                            Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
+                            URI = null,
                         } 
                     }))
                 .ToProperty(this, vm => vm.AvailableIdentifications);
 
-                                        
 
+            _TaxonomicGroups = DistinctStateObservable
+                .Select(_ => _storage.getTerms(Svc.TermList.TaxonomicGroups))
+                .ToProperty(this, vm => vm.TaxonomicGroups);
 
-            #region Update View           
-            _isEditable = StateObservable
-                .Select(s => s.Context == null) //Newly created Units are immediately editable
-                .Merge(
-                    ToggleEditable.Select(_ => !Editable) //Toggle Editable
-                )
-                .ToProperty(this, vm => vm.Editable);
+            _RelationshipTypes = _IsToplevel
+                .Where(isToplevel => isToplevel)
+                .Select(isToplevel => _storage.getTerms(Svc.TermList.RelationshipTypes))
+                .ToProperty(this, vm => vm.RelationshipTypes);
+            #endregion
 
-            _Model = ValidModel.ToProperty(this, x => x.Model);
-                         
-            _IsToplevel = ValidModel
-                            .Select(m => m.RelatedUnitID == null)
-                            .ToProperty(this, x => x.IsToplevel);
+            #region Preserve Selections
+            
+            this.ObservableForProperty(x => x.AvailableIdentifications)
+                .Select(change => change.Value)
+                .Where(x => x != null)
+                .Select(ids => (Model != null) ? ids.FirstOrDefault(id => id.URI == Model.IdentificationUri) : null)
+                .BindTo(this, vm => vm.CurrentIdentification);
 
-            var isObservation =
-                ValidModel
-                .Select(m => _storage.getSpecimenByID(m.SpecimenID))
-                .Where(spec => spec != null)
-                .Select(spec => spec.IsObservation());
-
-            isObservation.BindTo(this, vm => vm.OnlyObserved);
-
-            _IsObservation = isObservation                
-                .ToProperty(this, vm => vm.IsObservation);  
-         
-
-
-            ValidModel
-                .Select(m => m.TaxonomicGroup)
-                .Select(tg => TaxonomicGroups.FirstOrDefault(t => t.Code == tg) ?? ((TaxonomicGroups.Count > 0) ? TaxonomicGroups[0] : null))
+            
+            this.ObservableForProperty(x => x.TaxonomicGroups)
+                .Select(change => change.Value)
+                .Where(x => x != null)
+                .Select(tgs => ((Model != null) ? tgs.FirstOrDefault(tg => tg.Code == Model.TaxonomicGroup) : null ) ?? tgs.FirstOrDefault())
                 .BindTo(this, vm => vm.SelectedTaxGroup);
 
-            ValidModel
-                .Select(m => m.RelationType)
-                .Select(reltype => RelationshipTypes.FirstOrDefault(rt => rt.Code == reltype))
-                .BindTo(this, vm => vm.SelectedRelationshipType);
-
-
+            
+            this.ObservableForProperty(x => x.RelationshipTypes)
+                .Select(change => change.Value)
+                .Where(x => x != null)
+                .Select(rels => ((Model != null) ? rels.FirstOrDefault(rel => rel.Code == Model.RelationType) : null) ?? rels.FirstOrDefault())
+                .BindTo(this, x => x.SelectedRelationshipType);
             #endregion
+
 
             Messenger.RegisterMessageSource(
                 Save
                 .Do(_ => updateModel())
                 .Select(_ => Model),
                 MessageContracts.SAVE);
+
+            Messenger.RegisterMessageSource(
+                Save                
+                .Select(_ => SelectedTaxGroup),
+                MessageContracts.USE);
 
             Messenger.RegisterMessageSource(
                 Delete
@@ -331,16 +361,23 @@ namespace DiversityPhone.ViewModels
         private IObservable<bool> validationObservable()
         {
             var taxonomicGroupIsSet = this.ObservableForProperty(x => x.SelectedTaxGroup)
-                .Select(term => term != null)
-                .StartWith(false);           
+                .Select(term => term.Value != null)
+                .StartWith(false);
 
-            return taxonomicGroupIsSet;
+            var identificationIsSelected = this.ObservableForProperty(x => x.CurrentIdentification)
+                .Select(id => id.Value != null)
+                .StartWith(false);
+
+            return taxonomicGroupIsSet.BooleanAnd(identificationIsSelected);
         }
 
         private void updateModel()
         {
             Model.TaxonomicGroup = SelectedTaxGroup.Code;
-            Model.RelationType = SelectedRelationshipType.Code;
+            Model.WorkingName = (CurrentIdentification.Synonymy == Synonymy.WorkingName) ? CurrentIdentification.TaxonNameCache : null;
+            Model.OnlyObserved = this.OnlyObserved;
+            Model.IdentificationUri = CurrentIdentification.URI;
+            Model.RelationType = (SelectedRelationshipType != null) ? SelectedRelationshipType.Code : null;
         }
     }
 }
