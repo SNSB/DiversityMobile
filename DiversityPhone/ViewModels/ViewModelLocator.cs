@@ -61,6 +61,10 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
             _ioc.Register<EditUserProfileVM>(c => new EditUserProfileVM(c.Resolve<IMessageBus>()));
 
+            _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
+                                                                        c.Resolve<IOfflineStorage>(),
+                                                                        c.Resolve<IDiversityService>()));
+
             #endregion
 
             #region ViewModel Instantiation
@@ -91,6 +95,8 @@ namespace DiversityPhone.ViewModels
         public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
+
+        public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }
        
     }
 }
