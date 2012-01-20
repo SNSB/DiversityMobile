@@ -36,18 +36,21 @@
                                 ItemTemplate="{StaticResource TermListItemTemplate}"                                
                                 FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
                                 Header="Taxonomic Group"
-                                FullModeHeader="Taxonomic Group"/>
+                                FullModeHeader="Taxonomic Group"
+                                IsEnabled="{Binding IsEditable}"/>
             
             <TextBlock Text="Genus"/>
-            <TextBox Text="{Binding Genus, Mode=TwoWay}" />
+            <TextBox Text="{Binding Genus, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
 
             <TextBlock Text="Species"/>
-            <TextBox Text="{Binding Species, Mode=TwoWay}" />
+                <TextBox Text="{Binding Species, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
             <ListBox BorderThickness="3"  
                      ItemsSource="{Binding AvailableIdentifications}"                     
                      SelectedItem="{Binding CurrentIdentification, Mode=TwoWay}"
                      ItemTemplate="{StaticResource TaxonNameItemTemplate}"
-					 Style="{StaticResource ListBoxWhiteStyle}" >
+					 Style="{StaticResource ListBoxWhiteStyle}" 
+                     Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
+                     IsEnabled="{Binding IsEditable}">
             	<ListBox.BorderBrush>
             		<SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
             	</ListBox.BorderBrush>
@@ -59,15 +62,18 @@
                                 ItemTemplate="{StaticResource TermListItemTemplate}"                                
                                 FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
                                 Header="Relationship Type"
-                                FullModeHeader="Relationship Type"/>
+                                FullModeHeader="Relationship Type"
+                                IsEnabled="{Binding IsEditable}" />
             </StackPanel>
 
             <CheckBox IsChecked="{Binding OnlyObserved}" 
 					  Content="Only Observed" 
-					  Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
+					  Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"
+                      IsEnabled="{Binding IsEditable}"/>
             
             <ListBox ItemsSource="{Binding Circumstances}" 
-                     SelectedItem="{Binding Circumstance, Mode=TwoWay}"/>
+                     SelectedItem="{Binding Circumstance, Mode=TwoWay}"
+                     IsEnabled="{Binding IsEditable}"/>
         </StackPanel>
 		</ScrollViewer>
     </Grid>
