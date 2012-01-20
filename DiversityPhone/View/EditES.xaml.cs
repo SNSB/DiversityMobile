@@ -19,7 +19,7 @@ using System.Globalization;
 using DiversityPhone.Model;
 using ReactiveUI;
 
-namespace DiversityPhone
+namespace DiversityPhone.View
 {
     public partial class EditES : PhoneApplicationPage
     {
