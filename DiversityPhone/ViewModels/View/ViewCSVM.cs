@@ -90,7 +90,7 @@
 
         protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
         {
-            return new SpecimenVM(Messenger, model, Page.EditCS);
+            return new SpecimenVM(Messenger, model, Page.EditCS, spec => !spec.IsObservation());
         }
     }
 }

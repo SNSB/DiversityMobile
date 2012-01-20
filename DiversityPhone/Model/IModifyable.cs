@@ -26,5 +26,10 @@ namespace DiversityPhone.Model
         {
             return modObj.ModificationState == true;
         }
+        public static bool IsUnmodified(this IModifyable modObj)
+        {
+            return modObj.ModificationState == false;
+        }
+
     }
 }

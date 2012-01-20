@@ -11,18 +11,19 @@ using DiversityPhone.Services;
 
     public class SpecimenVM : ElementVMBase<Specimen>
     {
+
         public override string Description
         {
             get
             {
-                return Model.AccessionNumber ?? "Observation";
+                return (!Model.IsObservation()) ? Model.AccessionNumber : "Observation";
             }
         }
         public override Icon Icon
         {
             get
             {
-                return (Model.AccessionNumber == null) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
+                return (Model.IsObservation()) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
             }
         }
 
@@ -31,10 +32,11 @@ using DiversityPhone.Services;
             get { return new NavigationMessage(TargetPage, Model.CollectionSpecimenID.ToString()); }
         }
 
-        public SpecimenVM(IMessageBus _messenger, Specimen model, Page targetPage)
+        public SpecimenVM(IMessageBus _messenger, Specimen model, Page targetPage, Func<Specimen, bool> canSelectPredicate = null)
             : base(_messenger, model, targetPage)
         {
-
+            if(canSelectPredicate != null)
+                CanSelect.OnNext(canSelectPredicate(Model));
         }
     }
 }
