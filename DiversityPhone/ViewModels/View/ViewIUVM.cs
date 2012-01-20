@@ -38,7 +38,12 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
-        }           
+        }
+
+
+        public SpecimenVM Parent { get { return _Parent.Value; } }
+        private ObservableAsPropertyHelper<SpecimenVM> _Parent;
+        
 
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _Subunits;
         public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
@@ -52,6 +57,12 @@ namespace DiversityPhone.ViewModels
             _Subunits = ValidModel
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, vm => vm.Subunits);
+
+            _Parent = ValidModel
+                .Select(iu => Storage.getSpecimenByID(iu.SpecimenID))
+                .Select(spec => new SpecimenVM(Messenger, spec, Page.Current))
+                .ToProperty(this, x => x.Parent);
+
 
             Add = new ReactiveCommand();
             var addMessageSource = 
