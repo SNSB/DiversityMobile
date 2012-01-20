@@ -103,8 +103,7 @@
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
 
-            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            EventSeries.Actual = newSeries;
+            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);            
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)

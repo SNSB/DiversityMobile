@@ -8,8 +8,6 @@
     [Table]
     public class EventSeries : IModifyable
     {
-        public const string NOEVENT_CONTEXT = "NoEventSeries";
-
         private static EventSeries _NoEventSeries;
       
         public EventSeries()
@@ -92,8 +90,6 @@
                 SeriesCode = "No EventSeries",
                 ModificationState = false
             };
-        }
-
-        public static EventSeries Actual { get; set; }
+        }       
     }
 }
