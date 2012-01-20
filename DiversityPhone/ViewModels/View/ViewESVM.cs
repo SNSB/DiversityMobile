@@ -67,7 +67,7 @@
 
         protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
         {
-            return new EventSeriesVM(Messenger, model, Page.EditES);
+            return new EventSeriesVM(Messenger, model, Page.EditES, es => !EventSeries.isNoEventSeries(es));
         }
     }
 }

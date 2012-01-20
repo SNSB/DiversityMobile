@@ -13,7 +13,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    d:DataContext="{x:Null}"
+    d:DataContext="{d:DesignData /SampleData/EditESVMSampleData.xaml}"
     DataContext="{Binding Source={StaticResource Locator}, Path=EditES}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -26,24 +26,26 @@
                 <!--TitlePanel contains the name of the application and page title-->
             <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
                 <TextBlock x:Name="PageTitle" Text="eventseries" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Left" Width="363" />
-                <Image Source="{Binding ImageSource, Converter={StaticResource IconPathConverter}}" HorizontalAlignment="Right" Margin="0,6,18,2" Name="image1" Stretch="Fill" VerticalAlignment="Center" Height="80" Width="80" />
+                <Image Source="{Binding Current.Icon, Converter={StaticResource IconPathConverter}}" HorizontalAlignment="Right" Margin="0,6,18,2" Stretch="Fill" VerticalAlignment="Center" Height="80" Width="80" />
             </Grid>
 
             <!--ContentPanel - place additional content here-->
             <ScrollViewer>
                 <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">   
                     <TextBlock Text="Description"/>
-                    <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding Editable}" Background="#BFFFFFFF" />
+                    <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding IsEditable}" Background="#BFFFFFFF" />
                     <TextBlock Text="SeriesCode"/>
-                    <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}" TextChanged="SeriesCodeTB_TextChanged" IsEnabled="{Binding Editable}" />
+                    <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}" TextChanged="SeriesCodeTB_TextChanged" IsEnabled="{Binding IsEditable}" />
                     <TextBlock Text="Series Start"/>
-                    <TextBox IsReadOnly="True" Text="{Binding SeriesStart, Mode=OneWay}" IsEnabled="{Binding Editable}"/>
+                    <TextBox IsReadOnly="True" Text="{Binding SeriesStart, Mode=OneWay}" IsEnabled="{Binding IsEditable}"/>
                     <Grid Height="71">
                         <TextBlock Text="Series End" HorizontalAlignment="Left" VerticalAlignment="Center" />
-                        <Button Content="Finish Series" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" IsEnabled="{Binding Editable}" Click="ButtonFinish_Click" FontSize="20" />
+                        <Button Content="Finish Series" Margin="0,0,6,0" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                Command="{Binding FinishSeries}"
+                                IsEnabled="{Binding IsEditable}"  FontSize="20" />
                     </Grid>
-                    <toolkit:DatePicker Value="{Binding SeriesEnd, Mode=TwoWay}" IsEnabled="{Binding Editable}" />
-                    <toolkit:TimePicker Value="{Binding SeriesEnd, Mode=TwoWay}" IsEnabled="{Binding Editable}" />
+                    <toolkit:DatePicker Value="{Binding SeriesEnd, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+                    <toolkit:TimePicker Value="{Binding SeriesEnd, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
                 </StackPanel>
             </ScrollViewer>
         </StackPanel>
@@ -51,9 +53,7 @@
  
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <!--<shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save" Click="Save_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.delete.rest.png" Text="delete" Click="Delete_Click" />
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.edit.rest.png" Text="edit" Click="Edit_Click" />-->    
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

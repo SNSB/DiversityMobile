@@ -16,6 +16,8 @@
 
     public class EditESVM : EditElementPageVMBase<EventSeries>
     {
+        public ReactiveCommand FinishSeries { get; private set; }
+
         #region Properties
         private string _Description;
         public string Description
@@ -83,7 +85,11 @@
                 .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString()))
                 .ToProperty(this, x => x.SeriesStart);
 
+            FinishSeries = new ReactiveCommand();
 
+            FinishSeries
+                .Select(_ => DateTime.Now as DateTime?)
+                .BindTo(this, x => x.SeriesEnd);
 
         }        
 

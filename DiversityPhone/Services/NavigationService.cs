@@ -141,7 +141,9 @@ namespace DiversityPhone.Services
                 case Page.EditMMO:
                     destination = "/View/EditMMO.xaml";
                     break; 
-
+                case Page.EditIUAN:
+                    destination = "/View/EditAnalysis.xaml";
+                    break;
 
 #if DEBUG
                 default:

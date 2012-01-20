@@ -591,6 +591,9 @@
     <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
+    <DesignData Include="SampleData\EditESVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
     <DesignData Include="SampleData\EditIUVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
