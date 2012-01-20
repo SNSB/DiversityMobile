@@ -17,10 +17,11 @@ using DiversityPhone.Services;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows.Media.Imaging;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditMultimediaObjectVM : ElementPageViewModel<MultimediaObject>
+    public class EditMultimediaObjectVM : EditElementPageVMBase<MultimediaObject>
     {
         private IList<IDisposable> _subscriptions;
 
@@ -35,39 +36,33 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
-        //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.
+        //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.   
         public bool _editable;
         public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }       
 
-        private BitmapImage  _savedImage;
+        private BitmapImage _savedImage;
         public BitmapImage SavedImage { get { return _savedImage; } set { this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value); } }
 
-        private ObservableAsPropertyHelper<BitmapImage> _bi;
-        public BitmapImage BIImage { get { return _bi.Value; } }
-
-        private ObservableAsPropertyHelper<MultimediaObject> _Model;
-        public MultimediaObject Model
+        private ObservableAsPropertyHelper<BitmapImage> _bi; //Wie Wert übergeben?
+        public BitmapImage SavedImage
         {
-            get { return _Model.Value; }            
+            get
+            {
+                return _savedImage;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value);
+            }
         }
+
+            this._editable = false;
 
 
         #endregion
 
-        public EditMultimediaObjectVM(IMessageBus messenger, IOfflineStorage storage)
-            :base(messenger)
+        public EditMultimediaObjectVM()            
         {
-            _storage = storage;
-            
-            this._editable = false;
-
-
-
-            _Model = ValidModel
-                .ToProperty(this, vm => vm.Model);
-
-            _subscriptions = new List<IDisposable>()
-            {
                 (Save = new ReactiveCommand())               
                     .Subscribe(_ => executeSave()),
 
@@ -79,7 +74,7 @@ namespace DiversityPhone.ViewModels
             };
 
  
-
+        
         }
 
         private void LoadImage(MultimediaObject mmo)
@@ -88,21 +83,40 @@ namespace DiversityPhone.ViewModels
             if (mmo.MediaType != MediaType.Image)
                 return;
             // The image will be read from isolated storage into the following byte array
+
             byte[] data;
             // Read the entire image in one go into a byte array
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
 
+                // Open the file - error handling omitted for brevity
+
+                // Note: If the image does not exist in isolated storage the following exception will be generated:
+
+                // System.IO.IsolatedStorage.IsolatedStorageException was unhandled
+
+                // Message=Operation not permitted on IsolatedStorageFileStream
 
                 using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
                 {
+
+                    // Allocate an array large enough for the entire file
+
                     data = new byte[isfs.Length];
+
+
+
+                    // Read the entire file and then close it
+
                     isfs.Read(data, 0, data.Length);
+
                     isfs.Close();
 
                 }
 
             }
+
+
 
             // Create memory stream and bitmap
 
@@ -113,7 +127,7 @@ namespace DiversityPhone.ViewModels
             //Observable -- kann ich irgendwie das Bild auuch in _bi speichern?
 
         }
-
+      
 
         private void executeSave()
         {
@@ -131,27 +145,27 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private void delete()
-        {
+        protected override void OnDelete()
+        {            
             Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(Model.Uri))
+            if (myStore.FileExists(Current.Model.Uri))
             {
-                myStore.DeleteFile(Model.Uri);
+                myStore.DeleteFile(Current.Model.Uri);
             }
             Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
-        private void updateModel()
+        protected override void UpdateModel()
         {
-            Model.LogUpdatedWhen = DateTime.Now;
-        }       
+            Current.Model.LogUpdatedWhen = DateTime.Now;
+        }
 
         protected override MultimediaObject ModelFromState(Services.PageState s)
         {
             if (s.Context != null)
             {
-                MultimediaObject mmo= _storage.getMultimediaByURI(s.Context);
+                MultimediaObject mmo = Storage.getMultimediaByURI(s.Context);
                 if (mmo != null && mmo.MediaType == MediaType.Image)
                     LoadImage(mmo);
                 return mmo;
@@ -168,9 +182,19 @@ namespace DiversityPhone.ViewModels
                         };
                 }
             }
-            
+
             return null;
         }
+
+        protected override IObservable<bool> CanSave()
+        {
+            return Observable.Return(false);
+        }
+
+        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
+        {
+            return new MultimediaObjectVM(Messenger, model, Page.Current);
+        }
     }
-    
+
 }

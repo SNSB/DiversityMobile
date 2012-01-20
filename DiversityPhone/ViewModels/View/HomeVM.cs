@@ -119,7 +119,12 @@
                 ));
 
             var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-            var sampleTaxonList = new Svc.TaxonList() { Table = "TaxRef_BfN_VPlants" };
+            var sampleTaxonList = new Svc.TaxonList() 
+            { 
+                Table = "TaxRef_BfN_VPlants",
+                TaxonomicGroup = "plant",
+                DisplayText = "Plants"
+            };
             
             //TODO Page
             taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(

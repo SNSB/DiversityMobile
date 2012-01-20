@@ -19,7 +19,9 @@
         <vw:ViewCSPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <StackPanel x:Name="LayoutRoot" Background="Transparent">
+        <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}"
+                        Content="{Binding Current}"/>
         <!--Pivot Control-->
         <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
@@ -35,7 +37,7 @@
             </controls:PivotItem>
         </controls:Pivot>
        
-    </Grid>
+    </StackPanel>
 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>

@@ -17,6 +17,7 @@ namespace DiversityPhone.Messages
     {
         public const string SAVE = "Save";
         public const string DELETE = "Delete";
+        public const string USE = "Use";
     }
 
     public class NavigationMessage

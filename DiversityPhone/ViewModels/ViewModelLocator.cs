@@ -34,32 +34,27 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<IDiversityService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
+            _ioc.Register<EditESVM>(c => new EditESVM());
 
-            _ioc.Register<ViewESVM>(container => new ViewESVM(
-                container.Resolve<IMessageBus>(),
-                container.Resolve<IOfflineStorage>()
-                ));
-            _ioc.Register<EditEVVM>(c => new EditEVVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
+            _ioc.Register<ViewESVM>(container => new ViewESVM());
+            _ioc.Register<EditEVVM>(c => new EditEVVM());
 
 
-            _ioc.Register<ViewEVVM>(c => new ViewEVVM(
-                c.Resolve<IMessageBus>(),
-                c.Resolve<IOfflineStorage>()
-                ));
+            _ioc.Register<ViewEVVM>(c => new ViewEVVM());
 
-            _ioc.Register<ViewCSVM>(c => new ViewCSVM(
-                c.Resolve<IMessageBus>(),
-                c.Resolve<IOfflineStorage>()
-                ));
+            _ioc.Register<ViewCSVM>(c => new ViewCSVM());
             _ioc.Register<ViewLMVM>(c => new ViewLMVM(c.Resolve<IMessageBus>()));
-            _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
-            _ioc.Register<ViewIUVM>(c => new ViewIUVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>() ));
+            _ioc.Register<EditIUVM>(c => new EditIUVM());
+            _ioc.Register<ViewIUVM>(c => new ViewIUVM());
 
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
-            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM(c.Resolve<IMessageBus>(), c.Resolve<IOfflineStorage>()));
+            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
             _ioc.Register<EditUserProfileVM>(c => new EditUserProfileVM(c.Resolve<IMessageBus>()));
+
+            _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
+                                                                        c.Resolve<IOfflineStorage>(),
+                                                                        c.Resolve<IDiversityService>()));
 
             #endregion
 
@@ -91,6 +86,8 @@ namespace DiversityPhone.ViewModels
         public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
+
+        public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }
        
     }
 }

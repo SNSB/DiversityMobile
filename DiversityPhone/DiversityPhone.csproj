@@ -158,6 +158,7 @@
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
+    <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="ViewModels\Edit\EditMapVM.cs" />
@@ -171,6 +172,7 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
@@ -587,6 +589,9 @@
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\EditESVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
     <DesignData Include="SampleData\EditIUVMSampleData.xaml">

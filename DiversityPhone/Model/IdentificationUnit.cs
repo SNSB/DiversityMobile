@@ -14,6 +14,8 @@ namespace DiversityPhone.Model
         {
             this.ModificationState = null;
             this.LogUpdatedWhen = DateTime.Now;
+            
+            this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
         }
 

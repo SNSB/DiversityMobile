@@ -93,7 +93,7 @@ namespace DiversityPhone.View
         private void NewPhoto_Click(object sender, EventArgs e)
         {
             this.PageTitle.Text = "photo";
-            VM.Model.MediaType = MediaType.Image;
+            VM.Current.Model.MediaType = MediaType.Image;
             PhotoImage.Visibility = Visibility.Visible;
            
 
@@ -287,7 +287,7 @@ namespace DiversityPhone.View
             String uri;
             String thumbUri;
 
-            if (VM.Model.Uri == null || VM.Model.Uri.Equals(String.Empty))
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
                 Guid g = Guid.NewGuid();
                 uri = g.ToString() + ".jpg";
@@ -295,7 +295,7 @@ namespace DiversityPhone.View
             }
             else
             {
-                uri = VM.Model.Uri;
+                uri = VM.Current.Model.Uri;
                 thumbUri = "thumb" + uri;
             }
             //Create virtual store and file stream. Check for duplicate tempJPEG files.
@@ -316,9 +316,9 @@ namespace DiversityPhone.View
             int height = (int)(width * ratio);
             System.Windows.Media.Imaging.Extensions.SaveJpeg(this.storedImage, myFileStream, width, height, 0, 70);
             myFileStream.Close();
-            if (VM.Model.Uri == null || VM.Model.Uri.Equals(String.Empty))
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
-                VM.Model.Uri = uri;
+                VM.Current.Model.Uri = uri;
                 VM.Save.Execute(null);
             }
             progressBar1.Visibility = Visibility.Collapsed;
@@ -383,7 +383,7 @@ namespace DiversityPhone.View
         private void NewAudio_Click(object sender, EventArgs e)
         {
             this.PageTitle.Text = "audio";
-            VM.Model.MediaType = MediaType.Audio;
+            VM.Current.Model.MediaType = MediaType.Audio;
             AudioStatusImage.Visibility = Visibility.Visible;
             // Timer to simulate the XNA Framework game loop (Microphone is 
             // from the XNA Framework). We also use this timer to monitor the 
@@ -597,21 +597,21 @@ namespace DiversityPhone.View
                 //Save MemoryStream
                 progressBar1.Visibility = Visibility.Visible;
                 //Create filename fpr isolated storage
-                if (VM.Model.Uri == null)
+                if (VM.Current.Model.Uri == null)
                 {
                     Guid g = Guid.NewGuid();
                     String uri = g.ToString() + ".wav";
-                    VM.Model.Uri = uri;
+                    VM.Current.Model.Uri = uri;
                 }
 
                 //Create virtual store and file stream. Check for duplicate tempJPEG files.
                 var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-                if (myStore.FileExists(VM.Model.Uri))
+                if (myStore.FileExists(VM.Current.Model.Uri))
                 {
-                    myStore.DeleteFile(VM.Model.Uri);
+                    myStore.DeleteFile(VM.Current.Model.Uri);
                 }
                 UpdateWavHeader(audioStream);
-                IsolatedStorageFileStream myFileStream = myStore.CreateFile(VM.Model.Uri);
+                IsolatedStorageFileStream myFileStream = myStore.CreateFile(VM.Current.Model.Uri);
                 audioStream.WriteTo(myFileStream);
                 myFileStream.Flush();
                 myFileStream.Close();
@@ -673,7 +673,7 @@ namespace DiversityPhone.View
         private void NewVideo_Click(object sender, EventArgs e)
         {
             this.PageTitle.Text = "video";
-            VM.Model.MediaType = MediaType.Video;
+            VM.Current.Model.MediaType = MediaType.Video;
         }
 
         #endregion

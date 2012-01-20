@@ -1,0 +1,22 @@
+﻿<DiversityPhone_ViewModels:EditESVM 
+xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" 
+xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" 
+Description="Curabitur vestibulum cras nam adipiscing" 
+IsEditable="True" 
+SeriesStart="20.01.2012 10:09" 
+SeriesCode="Duis parturient aenean">	
+	<DiversityPhone_ViewModels:EditESVM.Current>
+		<DiversityPhone_ViewModels:EventSeriesVM Icon="EventSeries">
+			
+		</DiversityPhone_ViewModels:EventSeriesVM>
+	</DiversityPhone_ViewModels:EditESVM.Current>
+	<DiversityPhone_ViewModels:EditESVM.Delete>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditESVM.Delete>
+	<DiversityPhone_ViewModels:EditESVM.Save>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditESVM.Save>
+	<DiversityPhone_ViewModels:EditESVM.ToggleEditable>
+		<ReactiveUI_Xaml:ReactiveCommand/>
+	</DiversityPhone_ViewModels:EditESVM.ToggleEditable>
+</DiversityPhone_ViewModels:EditESVM>

@@ -1,22 +1,27 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using DiversityPhone.Services;
+﻿using DiversityPhone.Services;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DiversityPhone.Messages;
+using ReactiveUI.Xaml;
+using System;
 
 namespace DiversityPhone.ViewModels
 {
     public abstract class ElementPageViewModel<T> : PageViewModel
     {
+        protected IOfflineStorage Storage { get; private set; }
+
+
+        private ObservableAsPropertyHelper<ElementVMBase<T>> _Current;
+        /// <summary>
+        /// Provides Access to the most recent Model Object
+        /// </summary>
+        public ElementVMBase<T> Current
+        {
+            get { return _Current.Value; }
+        }
+
+
         /// <summary>
         /// Provides the model retrieved from the PageState 
         /// if it is valid (i.e. non-null)
@@ -30,27 +35,44 @@ namespace DiversityPhone.ViewModels
         /// <returns>a Model object associated with this state, or null if there is none</returns>
         protected abstract T ModelFromState(PageState s);
 
-
+        /// <summary>
+        /// Provides a ViewModel for the Current Model
+        /// </summary>
+        /// <param name="model">Current Model</param>
+        /// <returns>ViewModel for it</returns>
+        protected abstract ElementVMBase<T> ViewModelFromModel(T model);
         /// <summary>
         /// Uses the default setting of doing Refreshing on the model.
         /// </summary>
         /// <param name="messenger"></param>
-        public ElementPageViewModel(IMessageBus messenger)
-            : this (messenger, true)
+        public ElementPageViewModel()
+            : this (true)
+        {
+
+        }
+
+        public ElementPageViewModel(bool refreshModel)
+            : this(MessageBus.Current, App.OfflineDB, refreshModel)
         {
 
         }
 
         /// <param name="messenger">Messenger</param>
         /// <param name="refreshModel">Determines whether or not the Model is updated, when the Page is refreshed</param>
-        public ElementPageViewModel(IMessageBus messenger, bool refreshModel)
+        public ElementPageViewModel(IMessageBus messenger, IOfflineStorage storage, bool refreshModel)
             : base(messenger)
         {
+            Storage = storage;            
+
             var state = (refreshModel) ? StateObservable : DistinctStateObservable;
             var model = state
                .Select(s => ModelFromState(s))
                .Publish();
             ValidModel = model.Where(m => m != null);
+
+            _Current = ValidModel
+                .Select(m => ViewModelFromModel(m))
+                .ToProperty(this, x => x.Current);            
 
             //Automatically navigate back, if there's no valid model.
             Messenger.RegisterMessageSource(

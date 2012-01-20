@@ -18,20 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.Test", "Dive
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.Common", "DiversityPhone.Common\DiversityPhone.Common.csproj", "{6EF1160E-5902-4E9C-A471-13DED3718AB5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C6082531-67A2-4BD9-8118-A349C8260BEB}"
-EndProject
-Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "NuGet", ".nuget\NuGet.exe", "{E8BBEF79-06F0-49D5-A382-0499D56D20B7}"
-	ProjectSection(DebuggerProjectSystem) = preProject
-		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Users\btn411\Documents\PhoneDiversity\.nuget\NuGet.exe
-		RemoteMachine = BTN4NF
-		StartingDirectory = C:\Users\btn411\Documents\PhoneDiversity\.nuget
-		Environment = Default
-		LaunchingEngine = 00000000-0000-0000-0000-000000000000
-		LaunchSQLEngine = No
-		AttachLaunchAction = No
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PhoneDiversity.vsmdi
@@ -121,17 +107,8 @@ Global
 		{6EF1160E-5902-4E9C-A471-13DED3718AB5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6EF1160E-5902-4E9C-A471-13DED3718AB5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6EF1160E-5902-4E9C-A471-13DED3718AB5}.Release|x86.ActiveCfg = Release|Any CPU
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Debug|x86.ActiveCfg = Debug|x86
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Release|Any CPU.ActiveCfg = Debug|x86
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Release|Mixed Platforms.ActiveCfg = Debug|x86
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7}.Release|x86.ActiveCfg = Debug|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{E8BBEF79-06F0-49D5-A382-0499D56D20B7} = {C6082531-67A2-4BD9-8118-A349C8260BEB}
 	EndGlobalSection
 EndGlobal

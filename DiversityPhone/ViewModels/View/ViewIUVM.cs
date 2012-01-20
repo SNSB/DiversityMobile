@@ -11,9 +11,7 @@ using System.Linq;
 
 namespace DiversityPhone.ViewModels
 {
-  
-
-    public class ViewIUVM : PageViewModel
+    public class ViewIUVM : ElementPageViewModel<IdentificationUnit>
     {
         public enum Pivots
         {
@@ -21,11 +19,7 @@ namespace DiversityPhone.ViewModels
             Analyses,
             Descriptions,
             Multimedia
-        }        
-
-        #region Services        
-        IOfflineStorage _storage;
-        #endregion
+        }     
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
@@ -44,10 +38,7 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
-        }
-
-        private ObservableAsPropertyHelper<IdentificationUnitVM> _Current;
-        public IdentificationUnitVM Current { get { return _Current.Value; } }             
+        }           
 
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _Subunits;
         public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
@@ -56,31 +47,9 @@ namespace DiversityPhone.ViewModels
 
         
 
-        public ViewIUVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger)
-        {
-            
-            _storage = storage;     
-       
-            var rawModel = 
-                StateObservable
-                .Select(s=>UnitFromContext(s.Context));
-
-            var unitDeletedMessageSource =
-                rawModel
-                .Where(iu=> iu == null)
-                .Select(_ => Message.NavigateBack);
-            Messenger.RegisterMessageSource(unitDeletedMessageSource);
-
-            var validModel =
-                rawModel
-                .Where(iu => iu != null);        
-            
-
-            _Current = validModel
-                .Select(iu => new IdentificationUnitVM(Messenger, iu,Page.EditIU, null))
-                .ToProperty(this, x => x.Current);
-            _Subunits = validModel
+        public ViewIUVM()
+        {            
+            _Subunits = ValidModel
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, vm => vm.Subunits);
 
@@ -107,24 +76,51 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(addMessageSource);         
         }
 
-        private IdentificationUnit UnitFromContext(string ctx)
+        protected override IdentificationUnit ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
-                    return _storage.getIdentificationUnitByID(id);
+                    return Storage.getIdentificationUnitByID(id);
                 }               
             }
+            else if (s.Referrer != null)
+            {
+                int parentID;
+                if (int.TryParse(s.Referrer, out parentID))
+                {
+                    if (s.ReferrerType == ReferrerType.IdentificationUnit)
+                    {
+                        var parent = Storage.getIdentificationUnitByID(parentID);
+                        if (parent != null)
+                            return new IdentificationUnit()
+                            {
+                                RelatedUnitID = parentID,
+                                SpecimenID = parent.SpecimenID,
+                            };
+                    }
+                    else if (s.ReferrerType == ReferrerType.Specimen)
+                        return new IdentificationUnit()
+                        {
+                            SpecimenID = parentID
+                        };
+                }
+            }                
             return null;
         } 
       
         private IList<IdentificationUnitVM> getSubUnits(IdentificationUnit iu)
         {
-            return IdentificationUnitVM.getTwoLevelVMFromModelList(_storage.getSubUnits(iu),
-                iu2 => _storage.getSubUnits(iu2),
+            return IdentificationUnitVM.getTwoLevelVMFromModelList(Storage.getSubUnits(iu),
+                iu2 => Storage.getSubUnits(iu2),
                 Messenger);                
+        }
+
+        protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
+        {
+            return new IdentificationUnitVM(Messenger, model, Page.EditIU);
         }
     }
 }

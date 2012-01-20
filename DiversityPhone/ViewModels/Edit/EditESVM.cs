@@ -14,39 +14,11 @@
     using System.Threading;
     using System.Windows.Navigation;
 
-    public class EditESVM : PageViewModel
+    public class EditESVM : EditElementPageVMBase<EventSeries>
     {
-        private IList<IDisposable> _subscriptions;
-
-        #region Services
-        
-        private IOfflineStorage _storage;
-        #endregion
-
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        #endregion
+        public ReactiveCommand FinishSeries { get; private set; }
 
         #region Properties
-        public Icon ImageSource { get { return Icon.EventSeries; } }
-
-        public ObservableAsPropertyHelper<bool> _Editable;
-        public bool Editable 
-        { 
-            get 
-            { 
-                return _Editable.Value; 
-            } 
-        }
-
-        private ObservableAsPropertyHelper<EventSeries> _Model;
-        public EventSeries Model
-        {
-            get { return _Model.Value; }           
-        }
-
         private string _Description;
         public string Description
         {
@@ -61,30 +33,28 @@
             set { this.RaiseAndSetIfChanged(x => x.SeriesCode, ref _SeriesCode, value); }
         }
 
-        public string _SeriesStart;
+        public ObservableAsPropertyHelper<string> _SeriesStart;
         public string SeriesStart
         {
             get
             {
-                if (Model != null)
-                    return this.RaiseAndSetIfChanged(x => x.SeriesStart, String.Concat(Model.SeriesStart.ToShortDateString()," ",Model.SeriesStart.ToShortTimeString()));
-                else
-                    return String.Empty;
+                return _SeriesStart.Value;                
             }
-
         }
 
-        public DateTime? _SeriesEnd;
-
+        private DateTime? _SeriesEnd;
         public DateTime? SeriesEnd
         {
-            get { return _SeriesEnd; }
+            get
+            {
+                return _SeriesEnd;
+            }
             set
             {
                 if (value != null)
                 {
-                    if (value >= Model.SeriesStart)
-                        this.RaiseAndSetIfChanged(x => x.SeriesEnd, value);
+                    if (value >= Current.Model.SeriesStart)
+                        this.RaiseAndSetIfChanged(x => x.SeriesEnd,ref _SeriesEnd, value);
                     else
                     {
                         Messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
@@ -96,123 +66,66 @@
         #endregion
 
 
-        public EditESVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger)
-        { 
-
-
-            
-            _storage = storage;
-
-            var nullOrModel = StateObservable
-                .Select(s => EventSeriesFromContext(s.Context));          
-
-            var model = nullOrModel
-                .Where(es => es != null);
-            _Model = model
-                .ToProperty(this, vm => vm.Model);
-            
-
-            var invalidSeries = nullOrModel
-                .Where(es => es == null);
-            Messenger.RegisterMessageSource(invalidSeries.Select(_ => Message.NavigateBack));
-
-            ToggleEditable = new ReactiveCommand();
-            _Editable = StateObservable
-                .Select(s => s.Context == null)
-                .Merge(
-                    ToggleEditable.Select(_ => !Editable)
-                )
-                .ToProperty(this, vm => vm.Editable);
-
-
-
-                    
-
-            
-            var canSave = this.ObservableForProperty(x => x.Description)
-              .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
-              .StartWith(false);
-
-            Save = new ReactiveCommand(canSave);
-            var saveMessageSource = Save
-                .Do( _ => updateModel())
-                .Select(_ => Model);
-            Messenger.RegisterMessageSource(saveMessageSource, MessageContracts.SAVE); //Send off the Object to be saved
-            Messenger.RegisterMessageSource(saveMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
-
-
-            Delete = new ReactiveCommand();
-            var deleteMessageSource = Delete                
-                .Select(_ => Model);
-            Messenger.RegisterMessageSource(deleteMessageSource, MessageContracts.DELETE); //Send off the Object to be deleted
-            Messenger.RegisterMessageSource(deleteMessageSource.Select(_ => Message.NavigateBack)); //Then Navigate Back
-
-
-            _subscriptions = new List<IDisposable>()
-            {
-                model.Subscribe( es => updateView(es))           
-            };
-        }
-
-        IObservable<bool> canSave(IList<MemberInfo> notNullable)
+        public EditESVM()
         {
-            IObservable<bool> canSave = this.ObservableForProperty(x => x.Editable)
-                    .Select(edit => this.Editable)
-                    .StartWith(false);
-            foreach (MemberInfo mi in notNullable)
-            {
-                if (mi.MemberType == MemberTypes.Property)
-                {
-                    IObservable<bool> attribute = this.ObservableForProperty(x => mi) //Geht nicht mit dem Ausdruck
-                        .Select(att => !(att.Value==null))
-                        .StartWith(false);
-                    canSave = Extensions.BooleanAnd(canSave, attribute);
-                }
-            }
-            return canSave;
-        }
+            ValidModel
+                .Select(es => es.Description ?? String.Empty)
+                .BindTo(this, x => x.Description);
 
-        //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden
-        IObservable<bool> canSave()
-        {
-            IObservable<bool> editable = this.ObservableForProperty(x => x.Editable)
-                    .Select(edit => this.Editable)
-                    .StartWith(false);
+            ValidModel
+                .Select(es => es.SeriesCode)
+                .BindTo(this, x => x.SeriesCode);
+
+            ValidModel
+                .Select(es => es.SeriesEnd)
+                .BindTo(this, x => x.SeriesEnd);
+
+            _SeriesStart = ValidModel
+                .Select(es => es.SeriesStart)
+                .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString()))
+                .ToProperty(this, x => x.SeriesStart);
+
+            FinishSeries = new ReactiveCommand();
+
+            FinishSeries
+                .Select(_ => DateTime.Now as DateTime?)
+                .BindTo(this, x => x.SeriesEnd);
+
+        }        
+
+        //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden        
+        protected override IObservable<bool> CanSave()
+        {            
             IObservable<bool> description = this.ObservableForProperty(x => x.Description)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
                 .StartWith(false);
-            IObservable<bool> canSave = Extensions.BooleanAnd(editable, description);
-            return canSave;
-        }       
-
-        
-
-        private void updateModel()
-        {
-            Model.Description = Description;
-            Model.SeriesCode = SeriesCode;
-            Model.SeriesEnd = SeriesEnd ?? Model.SeriesEnd;
+            
+            return description;
         }
 
-        private void updateView(EventSeries es)
-        {            
-            Description = es.Description ?? "";
-            SeriesCode = es.SeriesCode;            
-            SeriesEnd = es.SeriesEnd;            
+        protected override void UpdateModel()
+        {
+            Current.Model.Description = Description;
+            Current.Model.SeriesCode = SeriesCode;
+            Current.Model.SeriesEnd = SeriesEnd ?? Current.Model.SeriesEnd;
         }
 
-        private EventSeries EventSeriesFromContext(string ctx)
+        protected override EventSeries ModelFromState(PageState s)
         {
-            if (ctx != null)
+            if (s.Context != null)
             {
                 int id;
-                if (int.TryParse(ctx, out id))
+                if (int.TryParse(s.Context, out id))
                 {
-                    return _storage.getEventSeriesByID(id);
+                    return Storage.getEventSeriesByID(id);
                 }
             }
             return new EventSeries();
+        }
+
+        protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
+        {
+            return new EventSeriesVM(Messenger, model, Page.Current);
         }
     }
 }

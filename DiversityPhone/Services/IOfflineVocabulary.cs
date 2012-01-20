@@ -22,9 +22,31 @@ namespace DiversityPhone.Services
         void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);
         //IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
 
-        void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list);
+        /// <summary>
+        /// Adds new TaxonNames to the database
+        /// </summary>        
+        /// <param name="taxa">List of TaxonNames</param>
+        /// <param name="source">Source</param>
+        void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList source);
+        /// <summary>
+        /// Queries how many Taxon tables are unused
+        /// </summary>
+        /// <returns>Number of free Taxon tables</returns>
         int getTaxonTableFreeCount();
+        /// <summary>
+        /// Updates a Taxon Selection
+        /// </summary>
+        /// <param name="sel"></param>
+        void updateTaxonSelection(TaxonSelection sel);
+        /// <summary>
+        /// Gets all defined Taxon Selections
+        /// </summary>
+        /// <returns></returns>
         IList<TaxonSelection> getTaxonSelections();
+        /// <summary>
+        /// Removes a Taxon Selection and empties its Taxon Table
+        /// </summary>
+        /// <param name="selection"></param>
         void clearTaxonTable(TaxonSelection selection);
         IList<TaxonName> getTaxonNames(Term taxGroup);
         IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
