@@ -14,7 +14,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <vw:ViewIUPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
@@ -27,7 +27,9 @@
         <controls:Pivot VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
             <controls:PivotItem Header="subunits">
-               
+                <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Subunits}"
+                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
             </controls:PivotItem>
 
             <!--Pivot item two-->
