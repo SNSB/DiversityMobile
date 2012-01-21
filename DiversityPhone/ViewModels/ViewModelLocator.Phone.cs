@@ -11,6 +11,7 @@ namespace DiversityPhone.ViewModels
         static ViewModelLocator()
         {
             _ioc = new Container();
+            _ioc.DefaultReuse = ReuseScope.None;
 
             #region Service Registration
             _ioc.Register<IMessageBus>(RxApp.MessageBus);           
