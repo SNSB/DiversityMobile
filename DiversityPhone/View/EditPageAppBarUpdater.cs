@@ -12,10 +12,11 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.ViewModels;
 using ReactiveUI;
 using System.Reactive.Linq;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.View
 {
-    public class EditPageAppBarUpdater<T>
+    public class EditPageAppBarUpdater<T> where T : IModifyable
     {
         IApplicationBar _appbar;
         EditElementPageVMBase<T> _vm;
