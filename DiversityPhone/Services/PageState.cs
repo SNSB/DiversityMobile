@@ -15,12 +15,7 @@ namespace DiversityPhone.Services
 {
     
     public class PageState 
-    {
-        /// <summary>
-        /// GUID string uniquely identifying this Page visit
-        /// </summary>        
-        public string Token { get; set; }
-        
+    {  
         /// <summary>
         /// Information that should be displayed by the visited Page
         /// e.g. ID of the object that the user wants to edit etc...
@@ -44,9 +39,8 @@ namespace DiversityPhone.Services
         /// </summary>        
         public IDictionary<string, string> State { get; set; }
 
-        public PageState(string token, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
-        {
-            this.Token = token;
+        public PageState(string context, ReferrerType refType = ReferrerType.None, string referrer = null)
+        {            
             this.Context = context;
             this.ReferrerType = refType;
             this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
