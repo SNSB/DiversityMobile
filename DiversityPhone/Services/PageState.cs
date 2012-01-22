@@ -15,7 +15,12 @@ namespace DiversityPhone.Services
 {
     
     public class PageState 
-    {  
+    {
+        /// <summary>
+        /// The Page this state belongs to
+        /// </summary>
+        public Page Page { get; set; }
+
         /// <summary>
         /// Information that should be displayed by the visited Page
         /// e.g. ID of the object that the user wants to edit etc...
@@ -39,8 +44,9 @@ namespace DiversityPhone.Services
         /// </summary>        
         public IDictionary<string, string> State { get; set; }
 
-        public PageState(string context, ReferrerType refType = ReferrerType.None, string referrer = null)
-        {            
+        public PageState(Page p, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
+        {
+            this.Page = p;
             this.Context = context;
             this.ReferrerType = refType;
             this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
