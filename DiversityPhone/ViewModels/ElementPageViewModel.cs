@@ -21,6 +21,11 @@ namespace DiversityPhone.ViewModels
             get { return _Current.Value; }
         }
 
+        /// <summary>
+        /// Provides the viewmodel retrieved from the PageState 
+        /// if it is valid (i.e. non-null)
+        /// </summary>
+        protected IObservable<ElementVMBase<T>> CurrentObservable { get; private set; }
 
         /// <summary>
         /// Provides the model retrieved from the PageState 
@@ -68,10 +73,18 @@ namespace DiversityPhone.ViewModels
             var model = state
                .Select(s => ModelFromState(s))
                .Publish();
-            ValidModel = model.Where(m => m != null);
-
-            _Current = ValidModel
+            model.Connect();
+            var currentObs = model
+                .Where(m => m != null)
                 .Select(m => ViewModelFromModel(m))
+                .Publish();
+            CurrentObservable = currentObs;
+            currentObs.Connect();
+
+            ValidModel = CurrentObservable
+                .Select(vm => vm.Model);
+
+            _Current = CurrentObservable                
                 .ToProperty(this, x => x.Current);            
 
             //Automatically navigate back, if there's no valid model.
@@ -81,7 +94,7 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => Message.NavigateBack)
                 );
 
-            model.Connect();
+            
         }
     }
 }
