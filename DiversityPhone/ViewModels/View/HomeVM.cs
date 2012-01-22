@@ -31,17 +31,13 @@
         #endregion
 
         #region Properties
-        private IList<EventSeriesVM> _SeriesList;
+        private ObservableAsPropertyHelper<IList<EventSeriesVM>> _SeriesList;
         public IList<EventSeriesVM> SeriesList
         {
             get
             {
-                return _SeriesList;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(x => x.SeriesList, ref _SeriesList, value);
-            }
+                return _SeriesList.Value;
+            }            
         }
 
         private EventSeriesVM _NoEventSeries;
@@ -63,7 +59,11 @@
             _storage = storage;
             _repository = repo;
 
-            updateSeriesList();
+            _SeriesList = StateObservable
+                .Select(_ => updatedSeriesList())
+                .ToProperty(this, x => x.SeriesList);
+
+            
 
             registerUpload();
 
@@ -80,6 +80,8 @@
                 (Maps=new ReactiveCommand())
                     .Subscribe(_ =>loadMapPage()),                
             };
+
+
 
         }
 
@@ -142,19 +144,13 @@
 
         
 
-        private void updateSeriesList()
+        private IList<EventSeriesVM> updatedSeriesList()
         {
-            SeriesList = new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
+            return new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
                 _storage.getAllEventSeries(),
                 (model) => new EventSeriesVM(Messenger,model, Page.ViewES)
                 );
-        }
-
-        private void saveSeries(EventSeries es)
-        {
-            _storage.addOrUpdateEventSeries(es);
-            updateSeriesList();
-        }
+        }        
 
         private void addSeries()
         {
