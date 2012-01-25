@@ -70,7 +70,7 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back);
+            _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
             _frame.Navigated += (s,args) => NavigationFinished();             
         }
 
@@ -89,16 +89,19 @@ namespace DiversityPhone.Services
             var page = App.RootFrame.Content as PhoneApplicationPage;
 
             if (page != null && page.DataContext is PageViewModel)
-            {
+            {                
                 if(isBack)
                 {
                     var thisPage = States.Pop();
-                    var previousPage = States.Peek();
-
-                    if (thisPage.Page == previousPage.Page)
+                    if (States.Any())
                     {
-                        NavigationFinished();
-                        return true;
+                        var previousPage = States.Peek();
+
+                        if (thisPage.Page == previousPage.Page)
+                        {
+                            NavigationFinished();
+                            return true;
+                        }
                     }
                 }
                 else
