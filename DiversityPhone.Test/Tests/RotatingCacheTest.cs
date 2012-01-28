@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Xunit;
+
 using DiversityPhone.Common;
+using Xunit;
 
 namespace DiversityPhone.Test
 {
+    
     public class RotatingCacheTest
     {
         RotatingCache<string> _target;
