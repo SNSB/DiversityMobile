@@ -173,6 +173,8 @@ namespace DiversityPhone.Common
         {
 #if DEBUG
             throw new NotImplementedException();
+#else
+            return false;
 #endif
         }
 

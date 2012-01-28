@@ -50,20 +50,6 @@
             }
         }
 
-        #region UserProfile
-
-        public IList<UserProfile> getAllUserProfiles()
-        {
-            return uncachedQuery(ctx => ctx.Profiles);
-        }
-        public UserProfile getUserProfile(string loginName)
-        {
-            return singletonQuery(ctx => ctx.Profiles
-                .Where(p => p.LoginName == loginName));
-        }
-
-        #endregion
-
         #region EventSeries
 
         private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)

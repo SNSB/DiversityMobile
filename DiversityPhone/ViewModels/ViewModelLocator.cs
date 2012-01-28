@@ -50,8 +50,7 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
-            _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));
-            _ioc.Register<EditUserProfileVM>(c => new EditUserProfileVM(c.Resolve<IMessageBus>()));
+            _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));            
 
             _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
                                                                         c.Resolve<IOfflineStorage>(),
@@ -63,8 +62,7 @@ namespace DiversityPhone.ViewModels
             _homeVM = _ioc.Resolve<HomeVM>();                        
             #endregion
 
-        }
-        public EditUserProfileVM EditProfile { get { return _ioc.Resolve<EditUserProfileVM>(); } }
+        }       
 
         public HomeVM Home { get { return _homeVM; } }
 
