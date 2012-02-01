@@ -16,13 +16,7 @@
             Specimen,
             Descriptions,
             Multimedia
-        }
-        
-
-        #region Services
-        
-        IOfflineStorage _storage;
-        #endregion
+        }        
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
@@ -41,31 +35,27 @@
                 this.RaiseAndSetIfChanged(vm => vm.SelectedPivot, ref _SelectedPivot, value);
             }
         }
-
-        public EventVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<EventVM> _Current;
         
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
+
+        public IList<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
+        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _MMOList;
+
         #endregion
 
 
 
 
-        public ViewEVVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger)
-        {            
-            _storage = storage;
-
-            _Current = ValidModel
-                .Select(ev => new EventVM(Messenger, ev))
-                .ToProperty(this, x => x.Current);
-
+        public ViewEVVM()            
+        {
             _SpecList = ValidModel               
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
-
+            _MMOList = ValidModel
+               .Select(ev => getMMOList(ev))
+               .ToProperty(this, x => x.MMOList);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -75,7 +65,7 @@
                         switch (SelectedPivot)
                         {
                             case Pivots.Multimedia:
-                            //TODO Multimedia Page
+                                return Page.EditMMO;
                             case Pivots.Descriptions:
                                 return Page.EditEventProperty;
                             case Pivots.Specimen:
@@ -92,8 +82,16 @@
         private IList<SpecimenVM> getSpecimenList(Event ev)
         {
             return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
-                _storage.getSpecimenForEvent(ev),
-                (model) => new SpecimenVM(Messenger, model)
+                Storage.getSpecimenForEvent(ev),
+                (model) => new SpecimenVM(Messenger, model, Page.ViewCS)
+                );
+        }
+
+        private IList<MultimediaObjectVM> getMMOList(Event ev)
+        {
+            return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
+                Storage.getMultimediaForObject(ReferrerType.Event,ev.EventID),
+                (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
                 );
         }
 
@@ -104,10 +102,15 @@
                 int id;
                 if (int.TryParse(s.Context, out id))
                 {
-                    return _storage.getEventByID(id);
+                    return Storage.getEventByID(id);
                 }
             }
             return null;
+        }
+
+        protected override ElementVMBase<Event> ViewModelFromModel(Event model)
+        {
+            return new EventVM(Messenger, model, Page.EditEV);
         }
     }
 }

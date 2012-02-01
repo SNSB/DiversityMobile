@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using Microsoft.Phone.Controls;
 using ReactiveUI;
@@ -16,26 +17,44 @@ namespace DiversityPhone.Services
     {
         private IMessageBus _messenger;
         private IList<IDisposable> _subscriptions;
+        private PhoneApplicationFrame _frame;
+
+        private Stack<PageState> _States = null;
+        public Stack<PageState> States 
+        {
+            get
+            {
+                if(_States == null)
+                {
+                    _States = new Stack<PageState>();
+                    _States.Push(new PageState()); //Home Page State                    
+                }
+                return _States;
+            }
+            set
+            {
+                if (value != null)
+                    _States = value;
+            }
+        }
 
         public NavigationService(IMessageBus messenger)
         {
-            _messenger = messenger;    
+            _messenger = messenger;                   
        
             _subscriptions = new List<IDisposable>()
             {
                 _messenger.Listen<Page>()
-                    .Subscribe(p => System.Diagnostics.Debugger.Break()),
+                    .Subscribe(p => Navigate(new NavigationMessage(p,null))),
                 _messenger.Listen<Message>()
                     .Subscribe(m =>
                         {
                             switch (m)
                             {                            
                                 case Message.NavigateBack:
+                                    System.Diagnostics.Debugger.Break();
                                     NavigateBack();
-                                    break;
-                                case Message.ClearHistory:
-                                    ClearHistory();
-                                    break;
+                                    break;                          
                                 default:
                                     break;
                             }
@@ -47,45 +66,62 @@ namespace DiversityPhone.Services
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {
-            if (frame != null)
-            {
-                frame.Navigating += RootFrame_Navigating;
-                frame.FragmentNavigation += new FragmentNavigationEventHandler(frame_FragmentNavigation);                
-            }
+            if (frame == null)
+                throw new ArgumentNullException("frame");
+
+            _frame = frame;
+            _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
+            _frame.Navigated += (s,args) => NavigationFinished();             
         }
 
-        void frame_FragmentNavigation(object sender, FragmentNavigationEventArgs e)
+        void NavigationFinished()
         {
-            var page = App.RootFrame.Content as PhoneApplicationPage;
-            var token = e.Fragment;
-            PageState storedState = null;
-            if (token != null)
-            {
-                App.StateTracker.TryGetValue(token, out storedState);                
-            }
-            
-            if (storedState != null && page != null && page.DataContext is PageViewModel)
+            var page = _frame.Content as PhoneApplicationPage;       
+
+            if (States.Any() && page != null && page.DataContext is PageViewModel)
             {
                 var vm = page.DataContext as PageViewModel;
-                vm.SetState(storedState);
+                vm.SetState(States.Peek());
             }
-        }
-        void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        }        
+        bool NavigationStarted(bool isBack)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
+
             if (page != null && page.DataContext is PageViewModel)
-            {
-                var vm = page.DataContext as PageViewModel;
-                vm.SaveState();
+            {                
+                if(isBack)
+                {
+                    var thisPage = States.Pop();
+                    if (States.Any())
+                    {
+                        var previousPage = States.Peek();
+
+                        if (thisPage.Page == previousPage.Page)
+                        {
+                            NavigationFinished();
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    var vm = page.DataContext as PageViewModel;
+                    vm.SaveState();                    
+                }
             }
-
-
+            return false;
         }
         public void Navigate(NavigationMessage msg)
         {
             string destination = null;
             switch (msg.Destination)
             {
+                case Page.Current:
+                    return;
+                case Page.Previous:
+                    NavigateBack();
+                    return;
                 case Page.Home:
                     destination = "/View/Home.xaml";
                     break;
@@ -122,7 +158,15 @@ namespace DiversityPhone.Services
                 case Page.DownLoadMaps:
                     destination = "/View/ViewDLM.xaml";
                     break;
-
+                case Page.ViewMMO:
+                    destination = "/View/ViewMMO.xaml";
+                    break; 
+                case Page.EditMMO:
+                    destination = "/View/EditMMO.xaml";
+                    break; 
+                case Page.EditIUAN:
+                    destination = "/View/EditAnalysis.xaml";
+                    break;
 
 #if DEBUG
                 default:
@@ -130,13 +174,21 @@ namespace DiversityPhone.Services
                     break;
 #endif
             }
-            if (destination != null && App.RootFrame != null)
+            if (destination != null && _frame != null)
             {
-                string token = Guid.NewGuid().ToString();
-                Uri uri = new Uri(String.Format("{0}#{1}", destination, token), UriKind.Relative);
-                App.StateTracker.Add(token, new PageState(token, msg.Context, msg.ReferrerType, msg.Referrer));
+                bool onTheSpotNavigation = States.Any() && States.Peek().Page == msg.Destination;               
 
-                App.RootFrame.Navigate(uri);
+                var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
+                States.Push(new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer));
+
+                if(!onTheSpotNavigation)
+                    _frame.Navigate(destURI);
+                else
+                {
+                    //Simulate Navigation (staying on the same Page)
+                    NavigationStarted(false);
+                    NavigationFinished();
+                }
             }
         }        
 
@@ -146,14 +198,10 @@ namespace DiversityPhone.Services
         }
 
         public void NavigateBack()
-        {
-            App.RootFrame.GoBack();
-        }        
+        {           
 
-        public void ClearHistory()
-        {
-            while (App.RootFrame.CanGoBack)
-                App.RootFrame.RemoveBackEntry();
-        }
+            App.RootFrame.GoBack();
+        }     
+      
     }
 }

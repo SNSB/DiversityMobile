@@ -1,8 +1,10 @@
-﻿namespace DiversityPhone.Model
+﻿using System;
+using System.Data.Linq.Mapping;
+using Microsoft.Phone.Data.Linq.Mapping;
+using DiversityPhone.DiversityService;
+
+namespace DiversityPhone.Model
 {
-    using System;
-    using System.Data.Linq.Mapping;
-    using Microsoft.Phone.Data.Linq.Mapping;
 
     [Table]
     [Index(Columns = "LastUsed", IsUnique = false, Name = "term_lastusage")]
@@ -21,7 +23,7 @@
         public string Code { get; set; }
 
         [Column(IsPrimaryKey = true)]
-        public Service.TermList SourceID { get; set; }
+        public TermList SourceID { get; set; }
 
         [Column]
         public string Description { get; set; }

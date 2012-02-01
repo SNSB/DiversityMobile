@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using System.Reactive.Linq;
+using DiversityPhone.Services;
+using DiversityPhone.Messages;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
@@ -25,14 +20,10 @@ namespace DiversityPhone.ViewModels
         protected IMessageBus Messenger { get; private set; }
 
         /// <summary>
-        /// Operation: Select (Go To ViewXX Page)
+        /// Operation: Select (Go To Target Page)
         /// </summary>
-        public ReactiveCommand Select { get; protected set; }
-        /// <summary>
-        /// Operation: Edit (Go To EditXX Page)
-        /// </summary>
-        public ReactiveCommand Edit { get; protected set; }
-
+        public ReactiveCommand Select { get; private set; }
+        
         /// <summary>
         /// Encapsulated Model Instance
         /// </summary>
@@ -48,11 +39,36 @@ namespace DiversityPhone.ViewModels
         /// </summary>
         public abstract Icon Icon { get; }
 
+        /// <summary>
+        /// Enables and Disables the Select Command
+        /// </summary>
+        protected Subject<bool> CanSelect { get; private set; }
 
-        public ElementVMBase(IMessageBus _messenger, T model)
+        /// <summary>
+        /// The Page, that the Select Command will navigate to.
+        /// </summary>
+        protected Page TargetPage { get; private set; }
+
+        /// <summary>
+        /// Retrieves the Context string to be sent on Select
+        /// </summary>
+        protected abstract NavigationMessage NavigationMessage { get; }
+
+
+        public ElementVMBase(IMessageBus _messenger, T model, Page targetPage, bool canSelect = true)
         {
             this.Model = model;
-            this.Messenger = _messenger;    
+            this.Messenger = _messenger;
+            this.TargetPage = targetPage;
+            this.CanSelect = new Subject<bool>();                    
+            this.Select = new ReactiveCommand(CanSelect);
+
+            CanSelect.OnNext(canSelect);
+
+            Messenger.RegisterMessageSource(
+                Select
+                .Select(_ => NavigationMessage)
+                );
            
         }
     }

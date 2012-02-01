@@ -23,17 +23,17 @@
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
 
-         public Specimen()
+        public Specimen()
         {
             this.AccessionNumber = null;
             this.LogUpdatedWhen = DateTime.Now;
-            this.IsModified = null;
+            this.ModificationState = null;
         }
 
 
@@ -64,7 +64,8 @@
     {
         public static bool IsObservation(this Specimen spec)
         {
-            return spec.AccessionNumber == null;
+            return spec.AccessionNumber == null 
+                && !spec.IsNew();
         }
 
         public static Specimen MakeObservation(this Specimen spec)

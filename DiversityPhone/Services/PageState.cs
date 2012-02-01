@@ -10,45 +10,51 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 
+
 namespace DiversityPhone.Services
 {
-    public class PageState
+    
+    public class PageState 
     {
         /// <summary>
-        /// GUID string uniquely identifying this Page visit
+        /// The Page this state belongs to
         /// </summary>
-        public string Token { get; private set; }
+        public Page Page { get; set; }
 
         /// <summary>
         /// Information that should be displayed by the visited Page
         /// e.g. ID of the object that the user wants to edit etc...
-        /// </summary>
-        public string Context { get; private set; }
+        /// </summary>        
+        public string Context { get;  set; }
 
         /// <summary>
         /// Type of the Referrer (Object that originated the Request)
-        /// </summary>
-        public ReferrerType ReferrerType { get; private set; }
+        /// </summary>        
+        public ReferrerType ReferrerType { get;  set; }
 
         /// <summary>
         /// Information that shows the Origin of the Request, if needed
         /// e.g. ID of the parent object
-        /// </summary>
-        public string Referrer { get; private set; }
+        /// </summary>        
+        public string Referrer { get;  set; }
 
         /// <summary>
         /// State Dictionary, that should be used by the Page to persist custom state
         /// (internal to the Page)
-        /// </summary>
+        /// </summary>        
         public IDictionary<string, string> State { get; set; }
 
-        public PageState(string token, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
+        public PageState(Page p, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
         {
-            this.Token = token;
+            this.Page = p;
             this.Context = context;
             this.ReferrerType = refType;
             this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
             this.State = new Dictionary<string, string>();
+        }
+        public PageState()
+        {
+
         }
     }
 }

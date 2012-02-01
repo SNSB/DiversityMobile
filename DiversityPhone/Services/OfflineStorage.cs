@@ -9,7 +9,7 @@
     using DiversityPhone.Common;
     using System.Data.Linq;
     using System.Linq.Expressions;
-    using Svc = DiversityPhone.Service;
+    using Svc = DiversityPhone.DiversityService;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -36,6 +36,11 @@
 
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
+                _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
+                    .Subscribe(mmo => addMultimediaObject(mmo)),
+
+                _messenger.Listen<Term>(MessageContracts.USE)
+                    .Subscribe(term => updateLastUsed(term)),
             };
 
             using (var context = new DiversityDataContext())
@@ -44,20 +49,6 @@
                     context.CreateDatabase();
             }
         }
-
-        #region UserProfile
-
-        public IList<UserProfile> getAllUserProfiles()
-        {
-            return uncachedQuery(ctx => ctx.Profiles);
-        }
-        public UserProfile getUserProfile(string loginName)
-        {
-            return singletonQuery(ctx => ctx.Profiles
-                .Where(p => p.LoginName == loginName));
-        }
-
-        #endregion
 
         #region EventSeries
 
@@ -82,7 +73,7 @@
 
         public IList<EventSeries> getNewEventSeries()
         {
-            return esQuery(es => es.IsModified == null);
+            return esQuery(es => es.ModificationState == null);
         }
 
         public EventSeries getEventSeriesByID(int id)
@@ -98,8 +89,7 @@
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
 
-            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            EventSeries.Actual = newSeries;
+            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);            
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
@@ -156,15 +146,20 @@
 
         public void addOrUpdateEvent(Event ev)
         {
+            var wasNewEvent = ev.IsNew();
+
             addOrUpdateRow(Event.Operations,
                   ctx => ctx.Events,
                   ev
               );
-            //Now EventID is set even for new Events
-            Specimen observation = new Specimen().MakeObservation();
-            observation.CollectionEventID = ev.EventID;
-            
-            addOrUpdateSpecimen(observation);
+
+            if (wasNewEvent)
+            {
+                //Now EventID is set even for new Events
+                Specimen observation = new Specimen().MakeObservation();
+                observation.CollectionEventID = ev.EventID;
+                addOrUpdateSpecimen(observation);
+            }
         }
         #endregion
 
@@ -293,23 +288,9 @@
             return result;
         }
 
-        private static int findFreeUnitID(DiversityDataContext ctx)
-        {
-            int min = -1;
-            if (ctx.IdentificationUnits.Any())
-                min = (from iu in ctx.IdentificationUnits select iu.UnitID).Min();
-            return (min > -1) ? -1 : min - 1;
-        }
-
         public void addOrUpdateIUnit(IdentificationUnit iu)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                if (iu.IsModified == null)
-                    iu.UnitID = findFreeUnitID(ctx);
-                ctx.IdentificationUnits.InsertOnSubmit(iu);
-                ctx.SubmitChanges();
-            }
+            addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);           
         }
 
         #endregion
@@ -317,7 +298,7 @@
         #region Analyses 
 
 
-        public IList<IdentificationUnitAnalysis> getIUAForIU(IdentificationUnit iu)
+        public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
             return cachedQuery(IdentificationUnitAnalysis.Operations,
             ctx =>
@@ -325,6 +306,14 @@
                 where iuan.IdentificationUnitID == iu.UnitID 
                 select iuan
                 );
+        }
+
+
+        public IdentificationUnitAnalysis getIUANByID(int iuanalysisID)
+        {
+            return singletonQuery(ctx => from iuan in ctx.IdentificationUnitAnalyses
+                                         where iuan.IdentificationUnitAnalysisID == iuanalysisID
+                                         select iuan);
         }
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
@@ -409,39 +398,28 @@
             return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
-        public IList<MultimediaObject> getMultimediaForEventSeries(EventSeries es)
+        public IList<MultimediaObject> getMultimediaForObject(DiversityPhone.Services.ReferrerType refType, int key)
         {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.EventSeries
-                                                && mm.RelatedId == es.SeriesID
+             IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                        where mm.OwnerType == refType
+                                                && mm.RelatedId == key
                                         select mm);
+             return objects;
+
         }
 
-
-        public IList<MultimediaObject> getMultimediaForEvent(Event ev)
+        public MultimediaObject getMultimediaByURI(string uri)
         {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.Event
-                                                && mm.RelatedId == ev.EventID
-                                        select mm);
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.Uri==uri
+                                                                   select mm);
+            if (objects.Count == 0)
+                throw new KeyNotFoundException();
+            if (objects.Count > 1)
+                throw new DuplicateKeyException(objects);
+            return objects[0];
         }
-
-
-        public IList<MultimediaObject> getMultimediaForSpecimen(Specimen spec)
-        {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.Specimen
-                                                && mm.RelatedId == spec.CollectionSpecimenID
-                                        select mm);
-        }
-
-        public IList<MultimediaObject> getMultimediaForIdentificationUnit(IdentificationUnit iu)
-        {
-            return uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == ReferrerType.IdentificationUnit
-                                                && mm.RelatedId == iu.UnitID
-                                        select mm);
-        }
+     
 
         public void addMultimediaObject(MultimediaObject mmo)
         {
@@ -455,11 +433,13 @@
 
         #region Terms
 
-        public IList<Term> getTerms(Service.TermList source)
+        public IList<Term> getTerms(Svc.TermList source)
         {
             return uncachedQuery(ctx => from t in ctx.Terms
                                         where t.SourceID == source
-                                        select t);
+                                        orderby t.LastUsed descending
+                                        select t
+                                        );
         }
 
 
@@ -469,20 +449,171 @@
             using (var ctx = new DiversityDataContext())
             {
                 ctx.Terms.InsertAllOnSubmit(terms);
-                ctx.SubmitChanges();
+                try
+                {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    //TODO Log
+                }
+            }
+            sampleData();
+        }
+
+        public void updateLastUsed(Term term)
+        {
+            if (term == null)
+            {
+#if DEBUG
+                throw new ArgumentNullException("term");
+#else
+                return;
+#endif
+                //TODO Log
             }
 
-            sampleData();
+            withDataContext(ctx =>
+            {
+                ctx.Terms.Attach(term);
+                term.LastUsed = DateTime.Now;
+                ctx.SubmitChanges();
+            });
         }
 
         #endregion
 
         #region TaxonNames
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, int tableID)
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list)
         {
-            throw new NotImplementedException();
+            withDataContext(ctx =>
+                {
+                    Table<TaxonName> targetTable = null;
+                    var existingSelection = (from ts in ctx.TaxonSelection
+                                        where ts.TableName == list.Table
+                                        select ts).FirstOrDefault();
+                    if (existingSelection != null)
+                    {
+                        targetTable = getTaxonTable(ctx, existingSelection.TableID);
+                    }
+                    else
+                    {
+                        var unusedIDs = getUnusedTaxonTableIDs(ctx);
+                        if (unusedIDs.Count() > 0)
+                        {
+                            var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
+                            var selection = new TaxonSelection()
+                            {
+                                TableDisplayName = list.DisplayText,
+                                TableID = unusedIDs.First(),
+                                TableName = list.Table,
+                                TaxonomicGroup = list.TaxonomicGroup,
+                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable)
+                            };
+                            ctx.TaxonSelection.InsertOnSubmit(selection);
+
+                            targetTable = getTaxonTable(ctx, selection.TableID );
+                        }
+                        else
+                            throw new InvalidOperationException("No Unused Taxon Table");
+                    }
+
+                    targetTable.InsertAllOnSubmit(taxa);
+                    ctx.SubmitChanges();
+                }
+            );
         }
+
+        public IList<TaxonSelection> getTaxonSelections()
+        {
+            IList<TaxonSelection> result = null;
+            withDataContext(ctx =>
+                {
+                    result = (ctx.TaxonSelection.ToList());
+                });
+            return result;
+        }
+
+        public void updateTaxonSelection(TaxonSelection sel)
+        {
+            withDataContext(ctx =>
+                {
+                    var existingSelection = from s in ctx.TaxonSelection
+                                            where s.TableID == sel.TableID
+                                            select s;
+                    if (existingSelection.Any())
+                    {
+                        var selToUdate = existingSelection.First();
+
+                        selToUdate.IsSelected = sel.IsSelected;
+                        selToUdate.TableDisplayName = sel.TableDisplayName;
+                        selToUdate.TableName = sel.TableName;
+                        selToUdate.TaxonomicGroup = sel.TaxonomicGroup;
+
+                        ctx.SubmitChanges();
+                    }
+                    else
+                    {
+                        //TODO Log
+                    }
+                }
+            );
+        }
+
+        public void clearTaxonTable(TaxonSelection selection)
+        {
+            withDataContext(ctx =>
+                {
+                    var targetTable = getTaxonTable(ctx, selection.TableID);
+                    targetTable.DeleteAllOnSubmit(targetTable);
+
+                    ctx.TaxonSelection.Attach(selection);
+                    ctx.TaxonSelection.DeleteOnSubmit(selection);
+
+                    ctx.SubmitChanges();
+                });
+        }
+
+        public int getTaxonTableFreeCount()
+        {
+            int result = 0;
+            withDataContext(ctx =>
+            {
+                result = getUnusedTaxonTableIDs(ctx).Count();
+            });
+            return result;
+        }
+
+        public IList<TaxonName> getTaxonNames(Term taxonGroup)
+        {
+            return getTaxonNames(taxonGroup, null, null);
+        }
+
+        public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
+        {
+            int tableID;
+            if (taxonGroup == null 
+                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == -1)
+            {
+                System.Diagnostics.Debugger.Break();
+                //TODO Logging
+                return new List<TaxonName>();
+            }            
+            genus = genus ?? "";
+            species = species ?? "";          
+            
+            return getTaxonNames(tableID, genus, species);
+        }
+
+        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
+        {
+            var usedTableIDs = from ts in ctx.TaxonSelection
+                               select ts.TableID;
+            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
+        }
+
+        
 
         private Table<TaxonName> getTaxonTable(DiversityDataContext ctx, int tableID)
         {
@@ -501,13 +632,7 @@
                 default:
                     throw new IndexOutOfRangeException("Only 10 tables are supported. Id is not between 0 and 9");
             }
-        }
-
-        private IList<TaxonName> getTaxonNames(int tableID)
-        {
-            return cachedQuery(TaxonName.Operations,
-                ctx => getTaxonTable(ctx, tableID));
-        }
+        }      
 
         private IList<TaxonName> getTaxonNames(int tableID, string genus, string species)
         {
@@ -518,50 +643,22 @@
                         select tn);
         }
 
-        private int getTaxonTableIDForGroup(Term taxonGroup)
+        private int getTaxonTableIDForGroup(string taxonGroup)
         {
             int id = -1;
             if(taxonGroup != null)
                 withDataContext(ctx =>
                 {
-                    var assignment = from a in ctx.taxonSelection
-                                     where a.tableName == taxonGroup.Code && a.isSelected
-                                     select a.tableID;
+                    var assignment = from a in ctx.TaxonSelection
+                                     where a.TaxonomicGroup == taxonGroup && a.IsSelected
+                                     select a.TableID;
                     if (assignment.Any())
                         id = assignment.First();
                 });
             return id;
         }
 
-        public IList<TaxonName> getTaxonNames(Term taxonGroup)
-        {
-            int tableID = getTaxonTableIDForGroup(taxonGroup);
-
-            if (tableID == -1)
-            {
-                return new List<TaxonName>();
-                //TODO Logging?
-            }
-            else
-                return getTaxonNames(tableID);
-        }
-
-        public IList<TaxonName> getTaxonNames(Term taxonGroup, string genus, string species)
-        {
-            int tableID = getTaxonTableIDForGroup(taxonGroup);
-            genus = genus ?? "";
-            species = species ?? "";
-
-            if (tableID == -1)
-            {
-                return new List<TaxonName>();
-                //TODO Logging?
-            }
-            else
-            {
-                return getTaxonNames(tableID, genus, species);
-            }
-        }
+        
 
 
         #endregion
@@ -625,16 +722,16 @@
         #region SampleData
         private void sampleData()
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
-                ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-                ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
-                int id = 1;
-                recSample(0, 0, ref id, ctx);
-                ctx.SubmitChanges();
-            }
+            //using (var ctx = new DiversityDataContext())
+            //{
+            //    ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
+            //    ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
+            //    ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
+            //    ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
+            //    int id = 1;
+            //    recSample(0, 0, ref id, ctx);
+            //    ctx.SubmitChanges();
+            //}
 
         }
         private void recSample(int depth, int parent, ref int id, DiversityDataContext ctx)
@@ -664,6 +761,7 @@
                 throw new ArgumentNullException ("row");
 #else
                 return;
+                //TODO Log
 #endif
             }
 
@@ -674,15 +772,15 @@
 
 
 
-                    if (row.IsModified == null)      //New Object
+                    if (row.IsNew())      //New Object
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        row.IsModified = true; //Mark for Upload
+                        row.ModificationState = true; //Mark for Upload
 
                         table.InsertOnSubmit(row);                        
                         try
                         {
-                            ctx.SubmitChanges();
+                            ctx.SubmitChanges();                            
                         }
                         catch (Exception ex)
                         {
@@ -703,7 +801,14 @@
                             withDataContext((ctx2) =>
                                 {
                                     tableProvider(ctx2).Attach(row, existingRow);
-                                    ctx2.SubmitChanges();
+                                    try
+                                    {
+                                        ctx2.SubmitChanges();
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        System.Diagnostics.Debugger.Break();
+                                    }
                                 });
                         }
                     }              
@@ -829,6 +934,8 @@
 
 
 
-        
+
+
+
     }
 }

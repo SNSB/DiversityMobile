@@ -13,12 +13,12 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
-                bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="Service.IDiversityService" name="BasicHttpBinding_IDiversityService" />
             <endpoint address="http://bsm5.snsb.info:1111/MapService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IMapService"
                 contract="MapServiceReference.IMapService" name="BasicHttpBinding_IMapService" />
+            <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_IDiversityService"
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>
 </configuration>

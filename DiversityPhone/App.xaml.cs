@@ -14,11 +14,12 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
-using DiversityPhone.Service;
+using DiversityPhone.DiversityService;
 using ReactiveUI;
 using System.Reactive.Concurrency;
-
+using DiversityPhone.ViewModels;
 using System.Device.Location;
+using System.Runtime.Serialization;
 
 
 namespace DiversityPhone
@@ -47,11 +48,6 @@ namespace DiversityPhone
                     return _NavSvc = new Services.NavigationService(MessageBus.Current);
             }
         }
-
-
-
-        public static IDictionary<string, PageState> StateTracker { get; private set; }
-
 
         public static GeoCoordinateWatcher Watcher;
 
@@ -86,9 +82,7 @@ namespace DiversityPhone
             
             Repository = new DiversityServiceClient(); //Push Nav-Service
 
-            OfflineDB = new OfflineStorage(MessageBus.Current);
-
-            StateTracker = new Dictionary<string, PageState>();
+            OfflineDB = new OfflineStorage(MessageBus.Current);                        
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -110,7 +104,7 @@ namespace DiversityPhone
 
                 // Enable non-production analysis visualization mode, 
                 // which shows areas of a page that are handed off GPU with a colored overlay.
-                //Application.Current.Host.Settings.EnableCacheVisualization = true;
+                //Application.Current.Host.Settings.EnableCacheVisualizat*ion = true;
 
                 // Disable the application idle detection by setting the UserIdleDetectionMode property of the
                 // application's PhoneApplicationService object to Disabled.
@@ -118,8 +112,6 @@ namespace DiversityPhone
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
-
             
         }
        
@@ -141,8 +133,11 @@ namespace DiversityPhone
 
             if (PhoneApplicationService.Current.State.TryGetValue("StateTracking", out savedStates)
                 && savedStates != null
-                && savedStates is IDictionary<string, PageState>)
-                StateTracker = (IDictionary<string, PageState>)savedStates;
+                && savedStates is IList<PageState>)
+            {
+                var stack = new Stack<PageState>(savedStates as IList<PageState>);
+                NavSvc.States = stack;
+            }
                 
             
             // Ensure that application state is restored appropriately
@@ -153,8 +148,8 @@ namespace DiversityPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            // Ensure that required application state is persisted here.
-            PhoneApplicationService.Current.State["StateTracking"] = StateTracker;
+            // Ensure that required application state is persisted here./
+            PhoneApplicationService.Current.State["StateTracking"] = NavSvc.States.ToList();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

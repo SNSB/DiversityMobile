@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Reactive.Linq;
 using ReactiveUI;
+using System.Linq;
+using System.Reactive.Linq;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 
@@ -20,45 +10,18 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditAnalysisVM:ReactiveObject
-    {
-       private IList<IDisposable> _subscriptions;
-
-        #region Services
-        private IMessageBus _messenger;
-        IOfflineStorage _storage;
-        #endregion
-
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        #endregion
-
-
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }
-
+    public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
+    { 
         #region Properties
-        private IdentificationUnitAnalysis _Model;
-        public IdentificationUnitAnalysis Model
-        {
-            get { return _Model; }
-            set { this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
-            this._Parent = _storage.getIdentificationUnitByID(_Model.IdentificationUnitID);
-            }
-        }
+        private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
+        public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
-        private IdentificationUnit _Parent;
-
-        private IList<Analysis> _Analyses = null;
+        private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
         public IList<Analysis> Analyses
         {
             get
             {
-                if (_Parent == null)
-                    return null; //No Exceptions in Properties!
-                return _Analyses?? (_Analyses = _storage.getPossibleAnalyses(_Parent.TaxonomicGroup));
+                return _Analyses.Value;
             }
         }
 
@@ -69,23 +32,37 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysis, ref _SelectedAnalysis, value); }
         }
 
-        private IList<AnalysisResult> _AnalysisResults = null;
+        private ObservableAsPropertyHelper<IList<AnalysisResult>> _AnalysisResults = null;
         public IList<AnalysisResult> AnalysisResults
         {
             get
             {
-                if (Model == null)
-                    return null; //No Exceptions in Properties!
-                else return _AnalysisResults ?? (_AnalysisResults = _storage.getPossibleAnalysisResults(Model.AnalysisID));
+                return _AnalysisResults.Value;
             }
         }
 
-        public string _SelectedAnalysisResult;
-        public string SelectedAnalysisResult
+        private ObservableAsPropertyHelper<bool> _IsCustomResult;
+        public bool IsCustomResult { get { return _IsCustomResult.Value; } }
+
+        public AnalysisResult _SelectedAnalysisResult;
+        public AnalysisResult SelectedAnalysisResult
         {
             get { return _SelectedAnalysisResult; }
             set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysisResult, ref _SelectedAnalysisResult, value); }
-        }   
+        }
+
+        private string _CustomResult;
+        public string CustomResult
+        {
+            get
+            {
+                return _CustomResult;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CustomResult, ref _CustomResult, value);
+            }
+        }        
 
         public DateTime _AnalysisDate;
         public DateTime AnalysisDate
@@ -99,68 +76,106 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public EditAnalysisVM(IMessageBus messenger, IOfflineStorage storage)
+        public EditAnalysisVM()
+        {            
+            var viewUpdate = ValidModel
+                .Select(iuan => 
+                    {
+                        var parent = Storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
+                        var analyses = Storage.getPossibleAnalyses(parent.TaxonomicGroup);
+                        var selectedAN = (from an in analyses
+                                          where an.AnalysisID == iuan.AnalysisID
+                                          select an).FirstOrDefault() ?? analyses.First();
+                        var results = Storage.getPossibleAnalysisResults(selectedAN.AnalysisID);                        
+                        var selectedResult = (from res in results
+                                              where res.Result == iuan.AnalysisResult
+                                              select res).FirstOrDefault() ?? results.FirstOrDefault();
+
+                        return new {
+                            Parent = parent,
+                            Analyses = analyses,
+                            SelectedAN = selectedAN,
+                            Results = results,
+                            SelectedResult = selectedResult
+                        };
+                    })                
+                .Publish();
+            viewUpdate.Connect();
+
+            _Parent = viewUpdate
+                .Select(u => new IdentificationUnitVM(Messenger,u.Parent, Services.Page.Current))
+                .ToProperty(this, vm => vm.Parent);
+            _Analyses = viewUpdate
+                .Select(u => u.Analyses)
+                .ToProperty(this, vm => vm.Analyses);
+            viewUpdate
+                .Select(u => u.SelectedAN)
+                .BindTo(this, x => x.SelectedAnalysis);
+            _AnalysisResults = viewUpdate
+                .Select(u => u.Results)
+                .ToProperty(this, vm => vm.AnalysisResults);
+            _IsCustomResult = viewUpdate
+                .Select(u => u.Results.Count == 0)
+                .ToProperty(this, vm => vm.IsCustomResult);
+            viewUpdate
+                .Select(u => u.SelectedResult)
+                .BindTo(this, x => x.SelectedAnalysisResult);
+            viewUpdate
+                .Select(_ => String.Empty)
+                .BindTo(this, x => x.CustomResult);
+        }
+
+        protected override IObservable<bool> CanSave()
         {
+            var vocabularyResultValid = this.ObservableForProperty(x => x.SelectedAnalysisResult)
+                .Select(change => change.Value != null);
 
-            _messenger = messenger;
-            _storage = storage;
-            this._editable = false;
+            var customResultValid = this.ObservableForProperty(x => x.CustomResult)
+                .Select(change => !string.IsNullOrWhiteSpace(change.Value));
 
-            var canSave = this.ObservableForProperty(x => x.SelectedAnalysisResult)
-                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
-                .StartWith(false);
+            var resultValid = this.ObservableForProperty(x => x.IsCustomResult)
+                .Select(change => change.Value)
+                .SelectMany(isCustomResult => (isCustomResult) ? customResultValid : vocabularyResultValid);
 
-            _subscriptions = new List<IDisposable>()
+            return resultValid;
+        }       
+
+        protected override void UpdateModel()
+        {
+            Current.Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
+            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
+            Current.Model.AnalysisDate = this.AnalysisDate;
+        }       
+
+        protected override IdentificationUnitAnalysis ModelFromState(PageState s)
+        {
+            //Existing IUAN
+            if (s.Context != null)
             {
-                (Save = new ReactiveCommand(canSave))               
-                    .Subscribe(_ => executeSave()),
-
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
-
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_ => delete()),
-
-            };
+                int anID;
+                if (int.TryParse(s.Context, out anID))
+                {
+                    return Storage.getIUANByID(anID);
+                }                        
+            }
+            //New IUAN
+            if (s.ReferrerType == ReferrerType.IdentificationUnit && s.Referrer != null)
+            {
+                int unitID;
+                if (int.TryParse(s.Referrer, out unitID))
+                {
+                    return new IdentificationUnitAnalysis()
+                    {
+                        IdentificationUnitID = unitID,
+                    };
+                }
+            }
+            return null;
         }
 
-
-
-        private void executeSave()
+        protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
         {
-            updateModel();
-            _messenger.SendMessage<IdentificationUnitAnalysis>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
-
-        private void delete()
-        {
-            _messenger.SendMessage<IdentificationUnitAnalysis>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
-        }
-
-        private void updateModel()
-        {
-            Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
-            Model.AnalysisResult = this.SelectedAnalysisResult;
-            Model.AnalysisDate = this.AnalysisDate;
-        }
-
-        private void updateView(IdentificationUnitAnalysis iua)
-        {
-            this.Model = iua;
-            this.SelectedAnalysis = _storage.getAnalysisByID(Model.AnalysisID);
-            this.SelectedAnalysisResult = Model.AnalysisResult;
-            this.AnalysisDate = Model.AnalysisDate;           
+            return new IUAnalysisVM(Messenger, model, Page.Current);
         }
     }
 }

@@ -1,31 +1,66 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿
 using ReactiveUI;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 
 namespace DiversityPhone.ViewModels
 {
     public class MultimediaObjectVM : ElementVMBase<MultimediaObject>
     {        
-        public override string Description { get { return Model.ToString(); } }
-        public override Icon Icon { get{return ViewModels.Icon.Multimedia; }}
+        public override string Description { get { return Model.MediaType.ToString(); } }
 
-        public MultimediaObjectVM(IMessageBus messenger,MultimediaObject model)
-         : base(messenger, model)
+        //General Implementation
+        public override Icon Icon
         {
-            
+            get
+            {
+                switch (Model.MediaType)
+                {
+                    case MediaType.Image:
+                        return Icon.Photo;
+                    case MediaType.Audio:
+                        return Icon.Audio;
+                    case MediaType.Video:
+                        return Icon.Video;
+                    default:
+                        return Icon.Photo;
+                }
+            }
+        }
+
+
+        //Implementation as String for beeing aable to display thumbs
+        public string IconPath
+        {
+            get
+            {
+                switch(Model.MediaType)
+                {
+                    case MediaType.Image:
+                            return Model.Uri;
+                    case MediaType.Audio:
+                            return "/Images/appbar.feature.audio.rest80.png";
+                    case MediaType.Video:
+                            return "/Images/appbar.feature.video.rest.png";
+                    default:
+                            return "/Images/appbar.feature.camera.rest.png";
+                 }
+            }
+        }
+
+        protected override NavigationMessage NavigationMessage
+        {
+            get { return new NavigationMessage(TargetPage, Model.Uri); }
+        }
+
+        public MultimediaObjectVM(IMessageBus _messenger, MultimediaObject model, Page targetPage)
+            : base(_messenger, model, targetPage)
+        {
+
         }
     }
 }

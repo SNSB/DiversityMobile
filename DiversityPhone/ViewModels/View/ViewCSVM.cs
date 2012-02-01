@@ -15,19 +15,13 @@
         {
             Units,
             Multimedia
-        }       
-
-        #region Services
-        
-        IOfflineStorage _storage;
-        #endregion
-
+        }
+     
         #region Commands
         public ReactiveCommand Add { get; private set; }
         #endregion
 
-        #region Properties       
-
+        #region Properties
         private Pivots _SelectedPivot;
         public Pivots SelectedPivot
         {
@@ -41,29 +35,16 @@
             }
         }
         
-
-        public SpecimenVM Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<SpecimenVM> _Current;       
-
         public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
         #endregion
 
 
 
-        public ViewCSVM(IMessageBus messenger, IOfflineStorage storage)
-            : base(messenger)
-        {
+        public ViewCSVM()            
+        { 
+            Add = new ReactiveCommand();    
             
-            _storage = storage;
-
-            Add = new ReactiveCommand();         
-                 
-
-            _Current = ValidModel.Select(cs => new SpecimenVM(Messenger, cs))
-                                .ToProperty(this, x => x.Current);
-
-
             _UnitList = ValidModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
@@ -89,8 +70,8 @@
         private IList<IdentificationUnitVM> getIdentificationUnitList(Specimen spec)
         {
             return IdentificationUnitVM.getTwoLevelVMFromModelList(
-                 _storage.getTopLevelIUForSpecimen(spec),
-                 iu => _storage.getSubUnits(iu),
+                 Storage.getTopLevelIUForSpecimen(spec),
+                 iu => Storage.getSubUnits(iu),
                  Messenger);
         }
 
@@ -101,11 +82,15 @@
                 int id;
                 if (int.TryParse(s.Context, out id))
                 {
-                    return _storage.getSpecimenByID(id);
+                    return Storage.getSpecimenByID(id);
                 }
             }            
             return null;
-        }
+        }   
 
+        protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
+        {
+            return new SpecimenVM(Messenger, model, Page.EditCS, spec => !spec.IsObservation());
+        }
     }
 }

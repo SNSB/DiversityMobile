@@ -13,6 +13,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\DiversityPhone\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -52,10 +54,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiversityService.Model\DiversityService.Model.csproj">
-      <Project>{9AF1CC2F-00E9-4AF5-9167-E842669E02D8}</Project>
-      <Name>DiversityService.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DiversityService\DiversityService.csproj">
       <Project>{DEBEAB2D-FA96-4898-B867-A029F134F12E}</Project>
       <Name>DiversityService</Name>

@@ -1,7 +1,7 @@
 ﻿using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
-using DiversityPhone.Service;
+using DiversityPhone.DiversityService;
 using System.Diagnostics.CodeAnalysis;
 
 namespace DiversityPhone.ViewModels
@@ -11,6 +11,7 @@ namespace DiversityPhone.ViewModels
         static ViewModelLocator()
         {
             _ioc = new Container();
+            _ioc.DefaultReuse = ReuseScope.None;
 
             #region Service Registration
             _ioc.Register<IMessageBus>(RxApp.MessageBus);           
@@ -19,7 +20,9 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<IOfflineStorage>(App.OfflineDB);            
 
-            _ioc.Register<IDiversityService>(App.Repository);            
+            _ioc.Register<IDiversityService>(App.Repository); 
+
+            _ioc.Register<SettingsService>(new SettingsService(_ioc.Resolve<IMessageBus>()));
             #endregion            
         }       
     }

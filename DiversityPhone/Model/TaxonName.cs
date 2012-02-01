@@ -31,11 +31,7 @@ using DiversityPhone.Services;
 
         [Column]
         public Synonymy Synonymy { get; set; }
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
-
-
+        
         public static IQueryOperations<TaxonName> Operations
         {
             get;

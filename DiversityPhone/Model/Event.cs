@@ -16,18 +16,7 @@
             this.SeriesID = null;
             this.CollectionDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
-            this.IsModified = null;
-
-            if (UserProfile.Actual != null && UserProfile.Actual.RecordGeoPosition == true)
-            {
-                if (App.Watcher != null)
-                {
-                    this.DeterminationDate = DateTime.Now;
-                    this.Latitude = App.Watcher.Position.Location.Latitude;
-                    this.Longitude = App.Watcher.Position.Location.Longitude;
-                    this.Altitude = App.Watcher.Position.Location.Altitude;
-                }
-            }
+            this.ModificationState = null;          
         }
 
         [Column(IsPrimaryKey = true)]
@@ -63,7 +52,7 @@
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

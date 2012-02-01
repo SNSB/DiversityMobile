@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="DiversityPhone.EditEV"
+    x:Class="DiversityPhone.View.EditEV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -28,11 +28,13 @@
         </StackPanel>
         
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
             <TextBlock Text="Locality Description"/>
-            <TextBox x:Name="LocalityTB" Text="{Binding LocalityDescription, Mode=TwoWay}" TextChanged="LocalityTB_TextChanged"/>
+            <TextBox x:Name="LocalityTB" Text="{Binding LocalityDescription, Mode=TwoWay}" 
+                     TextChanged="LocalityTB_TextChanged" IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Habitat Description"/>
-            <TextBox x:Name="HabitatTB" Text="{Binding HabitatDescription, Mode=TwoWay}" TextChanged="HabitatTB_TextChanged"/>
+            <TextBox x:Name="HabitatTB" Text="{Binding HabitatDescription, Mode=TwoWay}" 
+                     TextChanged="HabitatTB_TextChanged" IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Collection Date"/>
             <TextBox IsReadOnly="True" Text="{Binding CollectionDate, Mode=OneWay}"/>            
         </StackPanel>
@@ -40,9 +42,7 @@
  
     
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save" Click="Save_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel" Click="Cancel_Click"/>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">         
             
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

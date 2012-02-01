@@ -12,8 +12,10 @@ namespace DiversityPhone.Model
     {
         public IdentificationUnit()
         {
-            this.IsModified = null;
+            this.ModificationState = null;
             this.LogUpdatedWhen = DateTime.Now;
+            
+            this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
         }
 
@@ -26,7 +28,9 @@ namespace DiversityPhone.Model
         [Column]
         public int? RelatedUnitID { get; set; }
 
-
+        /// <summary>
+        /// No part of the IU collected in physical Form. Always true for Observations
+        /// </summary>
         [Column]
         public bool OnlyObserved { get; set; }
         
@@ -48,6 +52,9 @@ namespace DiversityPhone.Model
      
 
         //Identification
+        /// <summary>
+        /// Names as displayed on the screen
+        /// </summary>
         [Column]
         public string WorkingName { get; set; }
        
@@ -73,7 +80,7 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

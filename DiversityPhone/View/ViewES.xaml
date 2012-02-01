@@ -20,13 +20,8 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" DataContext="{Binding}">
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    DataContext="{Binding Current}"
-                    Command="{Binding Edit}">
-                <StackPanel>
-                    <TextBlock Text="{Binding Description}"/>
-                </StackPanel>
-            </Button>            
+            <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}"
+                            Content="{Binding Current}"/>            
             <ListBox ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>     
         </StackPanel>
 

@@ -7,41 +7,36 @@
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
     using DiversityPhone.Messages;
+using DiversityPhone.Services;
 
     public class SpecimenVM : ElementVMBase<Specimen>
     {
+
         public override string Description
         {
             get
             {
-                return Model.AccessionNumber ?? "Observation";
+                return (!Model.IsObservation()) ? Model.AccessionNumber : "Observation";
             }
         }
         public override Icon Icon
         {
             get
             {
-                return (Model.AccessionNumber == null) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
+                return (Model.IsObservation()) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
             }
         }
 
-        public SpecimenVM(IMessageBus messenger, Specimen model)
-            : base(messenger, model)
+        protected override NavigationMessage NavigationMessage
         {
-            if (messenger == null) throw new ArgumentNullException("messenger");
-            if (model == null) throw new ArgumentNullException("model");
+            get { return new NavigationMessage(TargetPage, Model.CollectionSpecimenID.ToString()); }
+        }
 
-            Select = new ReactiveCommand();
-            Edit = new ReactiveCommand();
-
-            Messenger.RegisterMessageSource(
-                Select
-                .Select(_ => new NavigationMessage(Services.Page.ViewCS, Model.CollectionSpecimenID.ToString()))
-                );
-            Messenger.RegisterMessageSource(
-                Edit
-                .Select(_ => new NavigationMessage(Services.Page.EditCS, Model.CollectionSpecimenID.ToString()))
-                );
+        public SpecimenVM(IMessageBus _messenger, Specimen model, Page targetPage, Func<Specimen, bool> canSelectPredicate = null)
+            : base(_messenger, model, targetPage)
+        {
+            if(canSelectPredicate != null)
+                CanSelect.OnNext(canSelectPredicate(Model));
         }
     }
 }
