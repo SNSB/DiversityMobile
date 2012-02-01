@@ -22,6 +22,11 @@ namespace DiversityService
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page);
 
         [OperationContract]
+        IEnumerable<Project> GetAvailableProjects();
+        
+
+
+        [OperationContract]
         IEnumerable<Term> GetStandardVocabulary();
         [OperationContract]
         IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);

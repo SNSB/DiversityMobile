@@ -155,5 +155,11 @@ namespace DiversityService
             }
             return result;
         }
+
+
+        public IEnumerable<Project> GetAvailableProjects()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

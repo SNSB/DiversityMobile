@@ -12,6 +12,7 @@ using Funq;
 using DiversityPhone.Services;
 using ReactiveUI;
 using DiversityPhone.DiversityService;
+using DiversityPhone.ViewModels.Utility;
 
 namespace DiversityPhone.ViewModels
 {
@@ -56,6 +57,8 @@ namespace DiversityPhone.ViewModels
                                                                         c.Resolve<IOfflineStorage>(),
                                                                         c.Resolve<IDiversityService>()));
 
+            _ioc.Register<SettingsVM>(c => new SettingsVM(c.Resolve<SettingsService>()));
+
             #endregion
 
             #region ViewModel Instantiation
@@ -87,6 +90,7 @@ namespace DiversityPhone.ViewModels
         public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
 
         public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }
+        public SettingsVM Settings { get { return _ioc.Resolve<SettingsVM>(); } }
        
     }
 }

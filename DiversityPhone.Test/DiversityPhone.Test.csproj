@@ -89,7 +89,6 @@
     <Compile Include="Tests\RotatingCacheTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tests\TestClass1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">

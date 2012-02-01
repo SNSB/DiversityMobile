@@ -62,8 +62,17 @@ namespace DiversityPhone.ViewModels
         }    
         public virtual void SaveState(){}
 
+        public PageViewModel()
+            : this(null)
+        {
+
+        }
+
         public PageViewModel(IMessageBus messenger)
         {
+            if (messenger == null)
+                messenger = MessageBus.Current;
+
             Messenger = messenger;
             _StateObservable = new Subject<PageState>();
 
