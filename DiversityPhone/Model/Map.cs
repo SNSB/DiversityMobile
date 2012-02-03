@@ -37,6 +37,7 @@ namespace DiversityPhone.Model
 
         public Map()
         {
+            
             this.IsModified = null;
             this.LogUpdatedWhen = DateTime.Now;
         }
