@@ -133,8 +133,11 @@ namespace DiversityPhone
 
             if (PhoneApplicationService.Current.State.TryGetValue("StateTracking", out savedStates)
                 && savedStates != null
-                && savedStates is Stack<PageState>)
-                NavSvc.States = savedStates as Stack<PageState>;
+                && savedStates is IList<PageState>)
+            {
+                var stack = new Stack<PageState>(savedStates as IList<PageState>);
+                NavSvc.States = stack;
+            }
                 
             
             // Ensure that application state is restored appropriately
@@ -146,7 +149,7 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./
-            PhoneApplicationService.Current.State["StateTracking"] = NavSvc.States;
+            PhoneApplicationService.Current.State["StateTracking"] = NavSvc.States.ToList();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Windows Phone Test Project Notes</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+  	body {
+  		font-family: Segoe UI, Tahoma;
+  		font-size: 10pt;
+  		max-width: 600px;
+  		margin-left: 17px;
+  		margin-top: 0px;
+  	}
+  	h1 {
+  		font-family: Trebuchet MS, Segoe UI, Tahoma;
+  		font-size: 15pt;
+  		font-weight: normal;
+  		color: #32A700;
+  		margin-top: 14px;
+  		margin-bottom: 5px;
+  	}
+    h2 {
+  		font-family: Trebuchet MS, Segoe UI, Tahoma;
+  		font-size: 13pt;
+  		font-weight: normal;
+  		color: #32A700;
+  		margin-top: 14px;
+  		margin-bottom: 5px;
+  	}
+  	p 
+  	{
+  	    margin-top: 14px;
+  	    margin-bottom: 14px;
+  	}
+  	a, a:visited, a:active, a:hover {
+  		color: #0000bb;
+  	}
+  	kbd {
+  		font-family: Consolas, Lucida Console, Courier;
+  		font-weight: bold;
+  		color: #000099;
+  	}
+  	.ps {
+  	    color: #626464;
+  	}
+  </style>
+</head>
+<body>
+    <h1>
+        Before you can compile!</h1>
+        <ol>
+        <li>Make sure NuGet is installed. <a href="http://NuGet.org" target="_blank">NuGet.org</a></li>
+        <li>Open Package Manager Console (Tools, Library Package Manager, Package Manger Console)</li>
+        <li>
+             <kbd>Install-Package Silverlight.UnitTest</kbd> (No Mango Support)<br />
+             or<br />
+             <kbd>Install-Package WindowsPhoneEssentials.Testing</kbd> (Includes Updated Silverlight.UnitTest, Helpers, Abstractions and Mango Support. Details below)
+        </li>
+        </ol>
+    <p>
+        <strong>That's all! Your project should compile.</strong>
+    </p>
+    <p>
+        To keep project clean, create at least one sub folder to put your tests in. Rather
+        than using the project root</p>
+    <p class="ps">
+        PS: This HTML file won't self-destruct. You'll probably want to delete it when done.
+    </p>
+    <p></p>
+    <h2>WindowsPhoneEssentials.Testing</h2>
+    <p>WindowsPhoneEssentials has an <i>Abstractions</i> (Think System.Web.Abstractions) namespace, containing interfaces and wrappers for many static WP7 classes 
+    improving the testability of the entire platform. Including PhoneApplicationFrame, PhoneApplicationService, Tasks/Choosers 
+    and the IsolatedStorageFile class. WindowsPhoneEssentials.Testing has test implementations so you don't have to write it yourself.</p>
+    <p>As time goes on more testing helpers will be added to WindowsPhoneEssentials.Testing to improve the WP7 testing story.</p>
+</body>
+</html>

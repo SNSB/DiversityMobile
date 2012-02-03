@@ -35,7 +35,7 @@
 
         public Table<MultimediaObject> MultimediaObjects;
         public Table<Map> Maps;
-        public Table<UserProfile> Profiles;
+        
         
 
         public Table<Term> Terms;

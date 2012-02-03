@@ -57,42 +57,43 @@
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Expression.Interactions, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\Microsoft.Expression.Interactions.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.13\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx_Experimental-Testing.1.1.11111\lib\SL3-WP\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="ReactiveUI.Blend_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Blend_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Blend_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Routing_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Routing_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Testing_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-testing.2.5.2.0\lib\SL3-WP\ReactiveUI.Testing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Serialization_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Serialization_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Xaml_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Testing_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Testing_WP7.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI.Xaml_WP7.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI_WP7, Version=2.5.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\ReactiveUI_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-core.2.5.2.0\lib\SL3-WP\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Reactive.dll</HintPath>
+    <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx_Experimental-Main.1.1.11111\lib\SL3-WP\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11011.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Reactive.Windows.Threading.dll</HintPath>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rx_Experimental-Xaml.1.1.11111\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -100,9 +101,6 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
-    <Reference Include="System.Windows.Interactivity, Version=3.7.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\reactiveui-wp7.2.5.1.0\lib\sl3-wp\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
@@ -117,9 +115,11 @@
     <Compile Include="Controls\StringValueControl.xaml.cs">
       <DependentUpon>StringValueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Model\Analysis.cs" />
     <Compile Include="Model\AnalysisResult.cs" />
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
+    <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
     <Compile Include="Model\IModifyable.cs" />
@@ -131,7 +131,6 @@
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
-    <Compile Include="Model\UserProfile.cs" />
     <Compile Include="Service References\MapServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -142,6 +141,7 @@
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DiversityDataContext.cs" />
+    <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\IApplicationState.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\ImageOptions.cs" />
@@ -156,8 +156,8 @@
     <Compile Include="Services\Page.cs" />
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
+    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
-    <Compile Include="ViewModels\BasisModels\UserProfileVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
@@ -168,16 +168,17 @@
     <Compile Include="ViewModels\BasisModels\MultimediaObjectVM.cs" />
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
-    <Compile Include="ViewModels\Edit\EditUserProfileVM.cs" />
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
+    <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
@@ -333,8 +334,8 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewCS.xaml">
       <SubType>Designer</SubType>
@@ -481,10 +482,11 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <Resource Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Resource Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Resource Include="Toolkit.Content\ApplicationBar.Select.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+    <None Include="app.config" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
