@@ -14,7 +14,7 @@ using DiversityPhone.Services;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class MultimediaObject 
+    public class MultimediaObject : IModifyable
     {
         [Column]
         public ReferrerType OwnerType { get; set; }
@@ -34,7 +34,7 @@ namespace DiversityPhone.Model
         /// is null for newly created Objects
         /// </summary>
         [Column(CanBeNull = true)]
-        public bool? IsModified { get; set; }
+        public bool? ModificationState { get; set; }
         
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

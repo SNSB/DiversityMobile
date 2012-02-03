@@ -49,11 +49,6 @@ namespace DiversityPhone
             }
         }
 
-
-
-        public static IDictionary<string, PageState> StateTracker { get; private set; }
-
-
         public static GeoCoordinateWatcher Watcher;
 
         public static void startWatcher()
@@ -87,9 +82,7 @@ namespace DiversityPhone
             
             Repository = new DiversityServiceClient(); //Push Nav-Service
 
-            OfflineDB = new OfflineStorage(MessageBus.Current);
-
-            StateTracker = new Dictionary<string, PageState>();
+            OfflineDB = new OfflineStorage(MessageBus.Current);                        
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -140,8 +133,8 @@ namespace DiversityPhone
 
             if (PhoneApplicationService.Current.State.TryGetValue("StateTracking", out savedStates)
                 && savedStates != null
-                && savedStates is IDictionary<string, PageState>)
-                StateTracker = (IDictionary<string, PageState>)savedStates;
+                && savedStates is Stack<PageState>)
+                NavSvc.States = savedStates as Stack<PageState>;
                 
             
             // Ensure that application state is restored appropriately
@@ -153,7 +146,7 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./
-            PhoneApplicationService.Current.State["StateTracking"] = StateTracker;
+            PhoneApplicationService.Current.State["StateTracking"] = NavSvc.States;
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

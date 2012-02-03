@@ -13,32 +13,23 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using System.Reactive.Linq;
 using Microsoft.Phone.Shell;
+using DiversityPhone.Model;
 
 
-namespace DiversityPhone
+
+namespace DiversityPhone.View
 {
     public partial class EditEV : PhoneApplicationPage
     {
         private EditEVVM VM { get { return DataContext as EditEVVM; } }
+        private EditPageAppBarUpdater<Event> _appbar;
 
         public EditEV()
         {
             InitializeComponent();
 
-            if (VM != null)
-            {
-                VM.Save.CanExecuteObservable
-                    .DistinctUntilChanged()
-                    .Subscribe(canSave => setSaveEnabled(canSave));
-                setSaveEnabled(VM.Save.CanExecute(null));
-            }      
-        }
-
-        private void setSaveEnabled(bool canSave)
-        {
-            //Named Buttons don't work :/
-            ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = canSave;
-        }
+            _appbar = new EditPageAppBarUpdater<Event>(this.ApplicationBar, VM);
+        }      
 
         private void LocalityTB_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -50,18 +41,6 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.HabitatDescription = HabitatTB.Text;
-        }
-
-        private void Save_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Save.Execute(null);
-        }
-
-        private void Cancel_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.ToggleEditable.Execute(null);
-        }
+        }              
     }
 }

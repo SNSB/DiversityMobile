@@ -50,17 +50,14 @@
                 return _SeriesEnd;
             }
             set
-            {
-                if (value != null)
-                {
-                    if (value >= Current.Model.SeriesStart)
-                        this.RaiseAndSetIfChanged(x => x.SeriesEnd,ref _SeriesEnd, value);
-                    else
-                    {
-                        Messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
-                        this.RaisePropertyChanged(x => x.SeriesEnd);
-                    }
-                }
+            {                
+                this.RaiseAndSetIfChanged(x => x.SeriesEnd,ref _SeriesEnd, value);
+                //    else
+                //    {
+                //        Messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
+                //        this.RaisePropertyChanged(x => x.SeriesEnd);
+                //    }
+                //}
             }
         }
         #endregion
@@ -96,11 +93,17 @@
         //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden        
         protected override IObservable<bool> CanSave()
         {            
-            IObservable<bool> description = this.ObservableForProperty(x => x.Description)
+            var descriptionNonEmpty = 
+                this.ObservableForProperty(x => x.Description)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
                 .StartWith(false);
+
+            var endsAfterItBegins =
+                this.ObservableForProperty(x => x.SeriesEnd)
+                .CombineLatest(ValidModel, (end, model) => new { SeriesEnd = end, Model = model })
+                .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart);
             
-            return description;
+            return descriptionNonEmpty.BooleanAnd(endsAfterItBegins);
         }
 
         protected override void UpdateModel()

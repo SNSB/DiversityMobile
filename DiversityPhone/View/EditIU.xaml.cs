@@ -13,23 +13,19 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 
-namespace DiversityPhone
+namespace DiversityPhone.View
 {
     public partial class EditIU : PhoneApplicationPage
     {
         private EditIUVM VM { get { return DataContext as EditIUVM; } }
 
+        private EditPageAppBarUpdater<IdentificationUnit> _appb;
+
         public EditIU()
         {
             InitializeComponent();
-            
-        }
 
-        private void Save_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Save.Execute(null);
-        }
-
+            _appb = new EditPageAppBarUpdater<IdentificationUnit>(this.ApplicationBar, VM);
+        }        
     }
 }

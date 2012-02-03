@@ -56,7 +56,7 @@ namespace DiversityPhone.ViewModels
                 return _SelectedTaxGroup;
             }
             set
-            {
+            {             
                 this.RaiseAndSetIfChanged(x => x.SelectedTaxGroup, ref _SelectedTaxGroup, value);
             }
         }
@@ -206,12 +206,12 @@ namespace DiversityPhone.ViewModels
 
 
             _TaxonomicGroups = DistinctStateObservable
-                .Select(_ => Storage.getTerms(Svc.TermList.TaxonomicGroups))
+                .Select(_ => Storage.getTerms(Svc.TermList.TaxonomicGroups))                
                 .ToProperty(this, vm => vm.TaxonomicGroups);
 
             _RelationshipTypes = _IsToplevel
                 .Where(isToplevel => isToplevel)
-                .Select(isToplevel => Storage.getTerms(Svc.TermList.RelationshipTypes))
+                .Select(isToplevel => Storage.getTerms(Svc.TermList.RelationshipTypes))                
                 .ToProperty(this, vm => vm.RelationshipTypes);
             #endregion
 
@@ -220,9 +220,10 @@ namespace DiversityPhone.ViewModels
             this.ObservableForProperty(x => x.AvailableIdentifications)
                 .Select(change => change.Value)
                 .Where(x => x != null)
-                .Select(ids => (Current != null) ? ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) : null)
+                .Select(ids => ((Current != null) ? ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) : null))
+                .Where(x => x != null)
                 .BindTo(this, vm => vm.CurrentIdentification);
-
+            
             
             this.ObservableForProperty(x => x.TaxonomicGroups)
                 .Select(change => change.Value)
@@ -235,6 +236,7 @@ namespace DiversityPhone.ViewModels
                 .Select(change => change.Value)
                 .Where(x => x != null)
                 .Select(rels => ((Current != null) ? rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType) : null) ?? rels.FirstOrDefault())
+                .Where(x => x != null)
                 .BindTo(this, x => x.SelectedRelationshipType);
             #endregion          
 

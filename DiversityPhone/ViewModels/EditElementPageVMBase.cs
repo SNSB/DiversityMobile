@@ -4,10 +4,11 @@ using System.Reactive.Linq;
 using System;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.ViewModels
 {
-    public abstract class EditElementPageVMBase<T> : ElementPageViewModel<T>
+    public abstract class EditElementPageVMBase<T> : ElementPageViewModel<T> where T : IModifyable
     {
         #region Commands
         public ReactiveCommand Save { get; private set; }
@@ -56,7 +57,10 @@ namespace DiversityPhone.ViewModels
             : base(refreshModel)
         {
             Save = new ReactiveCommand(CanSave());
-            Delete = new ReactiveCommand();
+            Delete = new ReactiveCommand(
+                ValidModel
+                .Select(m => !m.IsNew())
+                );
             ToggleEditable = new ReactiveCommand();
 
             _IsEditable = DistinctStateObservable
@@ -77,8 +81,8 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(
                Delete
                .Where(_ => Current != null)
-               .Do(_ => OnDelete())
-               .Select(_ => Current.Model),
+               .Select(_ => Current.Model)               
+               .Do(_ => OnDelete()),
                MessageContracts.DELETE);
 
             //On Delete or Save, Navigate Back

@@ -207,6 +207,7 @@
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EditPageAppBarUpdater.cs" />
     <Compile Include="View\EditPicture.xaml.cs">
       <DependentUpon>EditPicture.xaml</DependentUpon>
     </Compile>

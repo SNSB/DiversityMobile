@@ -19,11 +19,13 @@ using System.Globalization;
 using DiversityPhone.Model;
 using ReactiveUI;
 
-namespace DiversityPhone
+namespace DiversityPhone.View
 {
     public partial class EditES : PhoneApplicationPage
     {
         private EditESVM VM { get { return this.DataContext as EditESVM; } }
+
+        private EditPageAppBarUpdater<EventSeries> _appbarupd;
 
         private IList<Control> _toStore;
        
@@ -32,70 +34,15 @@ namespace DiversityPhone
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-De");//Zum setzen eines Default gut genug. Über UserProfile Customizable machen.
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-De");
             InitializeComponent();
+
+            _appbarupd = new EditPageAppBarUpdater<EventSeries>(this.ApplicationBar, VM);
             if (VM != null)
             {
                 this._toStore = new List<Control> { this.DescTB };
-                this.adjustStoreBackgroundColors();
-                
-                VM.Save.CanExecuteObservable
-                    .DistinctUntilChanged()
-                    .Subscribe(canSave => setSaveEnabled(canSave));
-                setSaveEnabled(VM.Save.CanExecute(null));
-                VM.ObservableForProperty(vm => vm.IsEditable)
-                    .Select(change => change.Value)
-                    .StartWith(VM.IsEditable)
-                    .Subscribe(value => adjustApplicationBar(value));
+                this.adjustStoreBackgroundColors();                
+                                
             }          
         }
-
-        private void Save_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Save.Execute(null);
-        }
-
-        void setSaveEnabled(bool state)
-        {
-            //Named Buttons don't work :/
-            if (ApplicationBar.Buttons.Count>0)
-            {
-                if (VM.IsEditable == false)
-                    ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = true;
-                else
-                    ((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = state;
-                //((ApplicationBarIconButton)ApplicationBar.Buttons[0]).IsEnabled = state;
-            }
-        }
-
-        private void adjustApplicationBar(bool editable)
-        {
-            {
-                this.ApplicationBar.Buttons.Clear();
-                if (editable == true)
-                {
-                    ApplicationBarIconButton save = new ApplicationBarIconButton();
-                    save.Text = "save";
-                    save.IconUri =new Uri("/Images/appbar.save.rest.png",UriKind.Relative);
-                    save.Click += new EventHandler(Save_Click);
-                    ApplicationBar.Buttons.Add(save);
-                    ApplicationBarIconButton delete = new ApplicationBarIconButton();
-                    delete.Text = "delete";
-                    delete.IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative);
-                    delete.Click += new EventHandler(Delete_Click);
-                    ApplicationBar.Buttons.Add(delete);
-                }
-                else
-                {
-                    ApplicationBarIconButton edit = new ApplicationBarIconButton();
-                    edit.Text = "edit";
-                    edit.IconUri = new Uri("/Images/appbar.edit.rest.png", UriKind.Relative);
-                    edit.Click += new EventHandler(Edit_Click);
-                    ApplicationBar.Buttons.Add(edit);
-                }
-            }
-        }
-
-
         private void SeriesCodeTB_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (VM != null)
@@ -132,22 +79,6 @@ namespace DiversityPhone
                 tb.Background = DPColors.INPUTMISSSING;
             else
                 tb.Background = DPColors.STANDARD;
-        }        
-
-        private void Edit_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-            {
-                VM.ToggleEditable.Execute(null);
-            }
-        }
-
-        private void Delete_Click(object sender, EventArgs e)
-        {
-
-            if (VM != null)
-                VM.Delete.Execute(null);
-        }
- 
+        } 
     }
 }

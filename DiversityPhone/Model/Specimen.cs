@@ -64,7 +64,8 @@
     {
         public static bool IsObservation(this Specimen spec)
         {
-            return spec.AccessionNumber == null;
+            return spec.AccessionNumber == null 
+                && !spec.IsNew();
         }
 
         public static Specimen MakeObservation(this Specimen spec)
