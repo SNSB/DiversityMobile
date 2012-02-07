@@ -28,7 +28,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <TextBox Height="72" HorizontalAlignment="Left" Name="textBox1" Text="" VerticalAlignment="Top" Width="460" TextChanged="textBox1_TextChanged" />
+                <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" Text="" VerticalAlignment="Top" Width="460" TextChanged="textBox1_TextChanged" />
                 <StackPanel Orientation="Horizontal">
                     <CheckBox Name="wifiOnlyCheckbox" IsChecked="True" ></CheckBox>
                     <TextBlock Text="only download when WiFi is available." VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"></TextBlock>
@@ -47,7 +47,7 @@
                                     <ColumnDefinition Width="80"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid Grid.Column="0">
-                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
+                                    <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
                                 </Grid>
                                 <Grid Grid.Column="1">
                                     <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>

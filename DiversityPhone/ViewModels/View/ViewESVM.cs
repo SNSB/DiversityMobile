@@ -44,7 +44,6 @@
                     ));
             Messenger.RegisterMessageSource(newEventMessageSource);
 
-
             FilterEvents = new ReactiveCommand();
         }
 

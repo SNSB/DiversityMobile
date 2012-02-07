@@ -69,7 +69,7 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <ListBox Name="SavedMapsListBox" Margin="0,10,0,0">
+                <ListBox Name="SavedMapsListBox" ItemsSource="{Binding SavedMaps}" Margin="0,10,0,0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Background="Transparent" Margin="0,0,0,30">
@@ -91,10 +91,8 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="load maps" Click="LoadMaps_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/remove.png" Text="Cancel All" Click="CancelAllButton_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.cancel.rest.png" Text="cancel all" Click="CancelAllButton_Click"/>
         </shell:ApplicationBar>
-
-
     </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>

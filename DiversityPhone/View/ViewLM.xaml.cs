@@ -15,6 +15,7 @@ using Microsoft.Phone.BackgroundTransfer;
 using System.Xml.Linq;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
+using System.Windows.Data;
 
 
 namespace DiversityPhone.View
@@ -33,7 +34,7 @@ namespace DiversityPhone.View
         private bool WaitingForExternalPowerDueToBatterySaverMode;
         private bool WaitingForNonVoiceBlockingNetwork;
         private bool WaitingForWiFi;
-        private Dictionary<String,String> savedMaps;
+        
         public ViewLM()
         {
             InitializeComponent();
@@ -52,27 +53,13 @@ namespace DiversityPhone.View
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            VM.LoadMaps.Execute(null);
             // Reset all of the user action booleans on page load.
             WaitingForExternalPower = false;
             WaitingForExternalPowerDueToBatterySaverMode = false;
             WaitingForNonVoiceBlockingNetwork = false;
             WaitingForWiFi = false;
-            savedMaps = new Dictionary<String, String>();
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                IList<String> mapimages = isoStore.GetFileNames("Maps\\MapImages\\*");
-                foreach (String mapimage in mapimages)
-                {
-                    String name=mapimage.Substring(0,mapimage.LastIndexOf("."));
-                    String xmlname = name + ".xml";
-                    if (isoStore.FileExists("Maps\\XML\\" + xmlname))
-                    {
-                        ImageOptions io=ImageOptions.loadImagesOptionsFromFile("Maps\\XML\\" + xmlname);
-                        savedMaps.Add(name,name+" - "+io.Description);
-                    }
-                }
-            }
-            SavedMapsListBox.ItemsSource = savedMaps;
+           
             // When the page loads, refresh the list of file transfers.
             InitialTansferStatusCheck();
             UpdateUI();
@@ -126,14 +113,12 @@ namespace DiversityPhone.View
                         // queue for more transfers. Transfers are not automatically
                         // removed by the system.
                         RemoveTransferRequest(transfer.RequestId);
-
-                        // In this example, the downloaded file is moved into the root
-                        // Isolated Storage directory
                         using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
                         {
                             string filename = transfer.Tag;
                             string path = transfer.DownloadLocation.OriginalString.Substring(0, transfer.DownloadLocation.OriginalString.LastIndexOf("\\"));
-
+                            Dictionary<String, String> maps = new Dictionary<string, string>();
+                            //As XML-Files and correponding maps are downloaded via Backgroundservices it hast to be differntiated which type of file is being processed
                             if (path.Contains("MapImages"))
                             {
                                 string fullFilename = "Maps\\MapImages\\" + filename;
@@ -141,17 +126,26 @@ namespace DiversityPhone.View
                                 {
                                     isoStore.DeleteFile(fullFilename);
                                 }
+                                //Move file From Shred-Folder to root of isloated storage
                                 isoStore.MoveFile(transfer.DownloadLocation.OriginalString, fullFilename);
                                 //Add map to the savedMapsList
                                 String name = filename.Substring(0, filename.LastIndexOf("."));
                                 String xmlname = name + ".xml";
                                 if (isoStore.FileExists("Maps\\XML\\" + xmlname))
-                                    if (!savedMaps.ContainsKey(name))
+                                {
+                                    MapParameter io = MapParameter.loadMapParameterFromFile("Maps\\XML\\" + xmlname);
+                                    string description = io.Description;
+                                    maps.Add(name, name + " - " + description);
+                                    foreach (KeyValuePair<String, String> kvp in VM.SavedMaps)
                                     {
-                                        ImageOptions io=ImageOptions.loadImagesOptionsFromFile("Maps\\XML\\" + xmlname);
-                                        string description = io.Description;
-                                        savedMaps.Add(name, name + " - " + description);
+                                        if (!maps.ContainsKey(kvp.Key))
+                                        {
+                                            maps.Add(kvp.Key, kvp.Value);
+                                        }
                                     }
+                                    maps.OrderBy(map => maps.Keys);
+                                    VM.SavedMaps = maps;
+                                }
                             }
                             else if (path.Contains("XML"))
                             {   
@@ -168,16 +162,24 @@ namespace DiversityPhone.View
                                 {
                                     if (mapimage.Contains(name))
                                     {
-                                        if (!savedMaps.ContainsKey(name))
+                                        MapParameter mp = MapParameter.loadMapParameterFromFile(fullFilename);
+                                        string description = mp.Description;
+                                        maps.Add(name, name + " - " + description);
+                                        foreach (KeyValuePair<String, String> kvp in VM.SavedMaps)
                                         {
-                                            ImageOptions io = ImageOptions.loadImagesOptionsFromFile(fullFilename);
-                                            string description = io.Description;
-                                            savedMaps.Add(name, name + " - " + description);
+                                            if (!maps.ContainsKey(kvp.Key))
+                                            {
+                                                maps.Add(kvp.Key,kvp.Value);
+                                            }
                                         }
-                                        break;
+                                        maps.OrderBy(map => maps.Keys);
+                                        VM.SavedMaps = maps;
                                     }
                                 }   
                             }
+                            
+                           
+                            UpdateUI();
                         }
                     }
                     else
@@ -208,6 +210,7 @@ namespace DiversityPhone.View
                     WaitingForWiFi = true;
                     break;
             }
+            UpdateUI();
         }
 
         void transfer_TransferProgressChanged(object sender, BackgroundTransferEventArgs e)
@@ -230,6 +233,7 @@ namespace DiversityPhone.View
                 }
             }
             transferRequests = BackgroundTransferService.Requests;
+            
         }
 
         private void UpdateUI()

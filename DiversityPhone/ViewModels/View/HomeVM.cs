@@ -120,6 +120,7 @@
                 })
                 ));
 
+
             var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
             var sampleTaxonList = new Svc.TaxonList() 
             { 

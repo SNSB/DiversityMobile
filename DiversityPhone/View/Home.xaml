@@ -48,6 +48,7 @@
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="get vocabulary" Click="GetVoc_Click"/>  
                 <shell:ApplicationBarMenuItem Text="upload changes" Click="Upload_Click"/>
+                <shell:ApplicationBarMenuItem Text="upload multimedia" Click="UploadMMO_Click" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
         

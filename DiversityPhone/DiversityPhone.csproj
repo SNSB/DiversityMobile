@@ -136,6 +136,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\MediaService4\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
@@ -144,7 +149,7 @@
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\IApplicationState.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
-    <Compile Include="Services\ImageOptions.cs" />
+    <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
     <Compile Include="Services\IOfflineVocabulary.cs" />
@@ -172,6 +177,7 @@
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
+    <Compile Include="ViewModels\Utility\SelectMapsVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
@@ -487,6 +493,20 @@
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MediaService4\MediaService4.wsdl" />
+    <None Include="Service References\MediaService4\MediaService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MediaService4\MediaService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Resource Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Resource Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -518,7 +538,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\MapServiceReference\MapService.disco" />
-    <None Include="Service References\MapServiceReference\configuration91.svcinfo" />
+    <None Include="Service References\MapServiceReference\configuration91.svcinfo">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\MapServiceReference\configuration.svcinfo" />
     <None Include="Service References\MapServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
@@ -545,7 +567,9 @@
     <None Include="Service References\MapServiceReference\MapService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\DiversityService.wsdl">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -570,6 +594,13 @@
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\ApplicationIcon.png" />
+    <None Include="Service References\MediaService4\MediaService4.disco" />
+    <None Include="Service References\MediaService4\configuration91.svcinfo" />
+    <None Include="Service References\MediaService4\configuration.svcinfo" />
+    <None Include="Service References\MediaService4\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
@@ -589,6 +620,7 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\MapServiceReference\" />
     <WCFMetadataStorage Include="Service References\DiversityService\" />
+    <WCFMetadataStorage Include="Service References\MediaService4\" />
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">

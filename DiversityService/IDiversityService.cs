@@ -28,6 +28,9 @@ namespace DiversityService
 
         [OperationContract]
         IEnumerable<Term> GetStandardVocabulary();
+
+        [OperationContract]
+        String GetXMLStandardVocabulary();
         [OperationContract]
         IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
         [OperationContract]

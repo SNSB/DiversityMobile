@@ -94,6 +94,7 @@
     <Compile Include="Models\TaxonList.cs" />
     <Compile Include="Models\TaxonName.cs" />
     <Compile Include="Models\Term.cs" />
+    <Compile Include="Models\TermExportList.cs" />
     <Compile Include="Models\TermLists.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,7 +112,9 @@
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="DiversityMobile.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
@@ -131,7 +134,9 @@
     </None>
     <None Include="Models\Generated\PetaPoco.Core.ttinclude" />
     <None Include="Models\Generated\PetaPoco.Generator.ttinclude" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_BaseTestEntities.datasource" />
     <None Include="Properties\DataSources\DiversityMobileEntities.datasource" />
     <None Include="Properties\Settings.settings">
@@ -146,6 +151,7 @@
   <ItemGroup>
     <None Include="DiversityCollectionFunctions.dbml.layout">
       <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
         #region Commands
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand Edit { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
+
         #endregion
 
         #region Properties
@@ -41,7 +41,7 @@ namespace DiversityPhone.ViewModels
         public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }       
 
         private BitmapImage _savedImage;
-        public BitmapImage SavedImage { get { return _savedImage; } set { this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value); } }
+
 
         private ObservableAsPropertyHelper<BitmapImage> _bi; //Wie Wert übergeben?
         public BitmapImage SavedImage
@@ -56,25 +56,14 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-            this._editable = false;
 
 
         #endregion
 
         public EditMultimediaObjectVM()            
         {
-                (Save = new ReactiveCommand())               
-                    .Subscribe(_ => executeSave()),
 
-                (Edit = new ReactiveCommand())
-                    .Subscribe(_ => setEdit()),
 
-                (Delete = new ReactiveCommand())
-                    .Subscribe(_ => delete()),
-            };
-
- 
-        
         }
 
         private void LoadImage(MultimediaObject mmo)
@@ -115,11 +104,7 @@ namespace DiversityPhone.ViewModels
                 }
 
             }
-
-
-
             // Create memory stream and bitmap
-
             MemoryStream ms = new MemoryStream(data);
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
@@ -131,23 +116,15 @@ namespace DiversityPhone.ViewModels
 
         private void executeSave()
         {
-            updateModel();
-            Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.SAVE);
+            UpdateModel();
+            Messenger.SendMessage<MultimediaObject>(Current.Model, MessageContracts.SAVE);
         }
 
-
-        private void setEdit()
-        {
-            if (Editable == false)
-                Editable = true;
-            else
-                Editable = false;
-        }
 
 
         protected override void OnDelete()
         {            
-            Messenger.SendMessage<MultimediaObject>(Model, MessageContracts.DELETE);
+            Messenger.SendMessage<MultimediaObject>(Current.Model, MessageContracts.DELETE);
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
             if (myStore.FileExists(Current.Model.Uri))
             {
@@ -193,7 +170,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {
-            return new MultimediaObjectVM(Messenger, model, Page.Current);
+            return new MultimediaObjectVM(Messenger, model, DiversityPhone.Services.Page.Current);
         }
     }
 

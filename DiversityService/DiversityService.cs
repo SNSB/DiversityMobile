@@ -1,9 +1,13 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
 using DiversityMobile;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 
 namespace DiversityService
@@ -92,6 +96,33 @@ namespace DiversityService
             }
             return linqTerms;
 
+        }
+
+        #region XML serialization for Android WebService
+        private String Term2XMLSerialization(IEnumerable<Term> linqTerms)
+        {
+            String xmlString = null;
+            TermExportList terms = new TermExportList(linqTerms);
+            XmlSerializer ser = new XmlSerializer(typeof(TermExportList));
+            MemoryStream memoryStream = new MemoryStream();
+            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+            ser.Serialize(memoryStream, terms);
+            memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
+            xmlString = UTF8ByteArrayToString(memoryStream.ToArray());
+            return xmlString;
+        }
+
+        private String UTF8ByteArrayToString(Byte[] characters)
+        {
+            UTF8Encoding encoding = new UTF8Encoding();
+            String constructedString = encoding.GetString(characters);
+            return (constructedString);
+        }
+        #endregion
+        public String GetXMLStandardVocabulary()
+        {
+            IEnumerable<Term> linqTerms = GetStandardVocabulary();
+            return Term2XMLSerialization(linqTerms);
         }
 
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)

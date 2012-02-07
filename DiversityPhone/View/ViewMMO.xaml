@@ -30,7 +30,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
         <!--Image for the camera capture.-->
-        <Image x:Name="PhotoImage" Width="480" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible" Source="{Binding Model.SavedImage}" />
+        <Image x:Name="PhotoImage" Width="480" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible" Source="{Binding SavedImage}" />
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->

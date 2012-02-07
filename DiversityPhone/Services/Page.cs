@@ -25,6 +25,8 @@ namespace DiversityPhone.Services
         EditUserProfile,
         Settings,
         LoadedMaps,
-        DownLoadMaps,       
+        DownLoadMaps,
+        SelectMaps,
+        ViewMap
     }
 }

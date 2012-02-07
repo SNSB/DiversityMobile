@@ -26,11 +26,23 @@
   <wsdl:message name="IDiversityService_DownloadTaxonList_OutputMessage">
     <wsdl:part name="parameters" element="tns:DownloadTaxonListResponse" />
   </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailableProjects_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableProjects" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailableProjects_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableProjectsResponse" />
+  </wsdl:message>
   <wsdl:message name="IDiversityService_GetStandardVocabulary_InputMessage">
     <wsdl:part name="parameters" element="tns:GetStandardVocabulary" />
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetStandardVocabulary_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetStandardVocabularyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLStandardVocabulary" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLStandardVocabularyResponse" />
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetAnalysisResults_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAnalysisResults" />
@@ -87,9 +99,17 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetAvailableProjects">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAvailableProjects" message="tns:IDiversityService_GetAvailableProjects_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAvailableProjectsResponse" message="tns:IDiversityService_GetAvailableProjects_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetStandardVocabulary">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabulary" message="tns:IDiversityService_GetStandardVocabulary_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse" message="tns:IDiversityService_GetStandardVocabulary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLStandardVocabulary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse" message="tns:IDiversityService_GetXMLStandardVocabulary_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysisResults">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResults" message="tns:IDiversityService_GetAnalysisResults_InputMessage" />
@@ -149,8 +169,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetAvailableProjects">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAvailableProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetStandardVocabulary">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/GetStandardVocabulary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLStandardVocabulary">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
