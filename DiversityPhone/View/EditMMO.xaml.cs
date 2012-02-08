@@ -318,7 +318,7 @@ namespace DiversityPhone.View
             myFileStream.Close();
             if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
-                VM.Current.Model.Uri = uri;
+                VM.Uri = uri;
                 VM.Save.Execute(null);
             }
             progressBar1.Visibility = Visibility.Collapsed;

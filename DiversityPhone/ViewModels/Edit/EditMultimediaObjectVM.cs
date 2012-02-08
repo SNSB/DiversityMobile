@@ -29,21 +29,21 @@ namespace DiversityPhone.ViewModels
         private IOfflineStorage _storage;
         #endregion
 
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand Edit { get; private set; }
-
-        #endregion
 
         #region Properties
         //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.   
-        public bool _editable;
-        public bool Editable { get { return _editable; } set { this.RaiseAndSetIfChanged(x => x.Editable,ref _editable, value); } }       
+
+        #region Properties
+        private string _Uri;
+        public string Uri
+        {
+            get { return _Uri; }
+            set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
+        }
+        #endregion
 
         private BitmapImage _savedImage;
-
-
-        private ObservableAsPropertyHelper<BitmapImage> _bi; //Wie Wert übergeben?
+        //private ObservableAsPropertyHelper<BitmapImage> _bi; ?
         public BitmapImage SavedImage
         {
             get
@@ -55,9 +55,6 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value);
             }
         }
-
-
-
         #endregion
 
         public EditMultimediaObjectVM()            
@@ -79,28 +76,18 @@ namespace DiversityPhone.ViewModels
             {
 
                 // Open the file - error handling omitted for brevity
-
                 // Note: If the image does not exist in isolated storage the following exception will be generated:
-
                 // System.IO.IsolatedStorage.IsolatedStorageException was unhandled
-
                 // Message=Operation not permitted on IsolatedStorageFileStream
 
                 using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
                 {
 
                     // Allocate an array large enough for the entire file
-
                     data = new byte[isfs.Length];
-
-
-
                     // Read the entire file and then close it
-
                     isfs.Read(data, 0, data.Length);
-
                     isfs.Close();
-
                 }
 
             }
@@ -109,7 +96,7 @@ namespace DiversityPhone.ViewModels
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
             SavedImage = bi;
-            //Observable -- kann ich irgendwie das Bild auuch in _bi speichern?
+         
 
         }
       
@@ -136,7 +123,10 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             Current.Model.LogUpdatedWhen = DateTime.Now;
+            Current.Model.Uri = Uri;
         }
+
+      
 
         protected override MultimediaObject ModelFromState(Services.PageState s)
         {
@@ -165,8 +155,15 @@ namespace DiversityPhone.ViewModels
 
         protected override IObservable<bool> CanSave()
         {
-            return Observable.Return(false);
+            return this.ObservableForProperty(x => x.SavedImage)
+                .Select(im => im.Value.UriSource != null)
+                .StartWith(false);
         }
+
+        //protected override IObservable<bool> CanSave()
+        //{
+        //    return Observable.Return(false);
+        //}
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {

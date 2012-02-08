@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="d91f88b0-df74-4de0-80c6-efaee251bbde" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="05aa949f-2384-4f3e-a387-4f8fc3f5a097" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -20,13 +20,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="   http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MediaService4.wsdl" MetadataType="Wsdl" ID="37dd89fd-415e-4faf-9286-292b29bd9eef" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?wsdl" />
-    <MetadataFile FileName="MediaService4.xsd" MetadataType="Schema" ID="75fd9b76-000a-49dd-ac96-c0fdd460868a" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" />
-    <MetadataFile FileName="MediaService41.xsd" MetadataType="Schema" ID="80b479a5-5819-4abe-b19d-4d7789a19ae3" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" />
-    <MetadataFile FileName="MediaService4.disco" MetadataType="Disco" ID="000ae53c-d634-4170-ac03-2cff8f3d6357" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?disco" />
+    <MetadataFile FileName="MediaService4.wsdl" MetadataType="Wsdl" ID="768a5755-8058-4c8e-86cc-b71ee20de8a5" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?wsdl" />
+    <MetadataFile FileName="MediaService4.xsd" MetadataType="Schema" ID="5e110a35-f5e3-49c5-99f4-f8338741d304" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" />
+    <MetadataFile FileName="MediaService41.xsd" MetadataType="Schema" ID="96e63076-f32d-4cef-8cae-04e3f52bc675" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" />
+    <MetadataFile FileName="MediaService4.disco" MetadataType="Disco" ID="2a3ffa07-6fbc-4ac0-ab7f-e520ba798ca2" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

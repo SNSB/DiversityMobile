@@ -33,7 +33,7 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        //Implementation as String for beeing aable to display thumbs
+        //Implementation as String for beeing able to display thumbs
         public string IconPath
         {
             get

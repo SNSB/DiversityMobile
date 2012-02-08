@@ -13,26 +13,26 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.BackgroundTransfer;
 using System.IO.IsolatedStorage;
-using DiversityPhone.MapServiceReference;
+using DiversityPhone.PhoneMediaService;
 
 namespace DiversityPhone.View
 {
     public partial class ViewDLM : PhoneApplicationPage
     {
 
-        private MapServiceClient mapinfo;
+        private PhoneMediaServiceClient mapinfo;
         private IList<String> maps;
         private IList<String> filteredMaps;
 
         public ViewDLM()
         {
             InitializeComponent();
-            mapinfo = new MapServiceClient();
+            mapinfo = new PhoneMediaServiceClient();
             mapinfo.GetMapListAsync();
-            mapinfo.GetMapListCompleted += new EventHandler<MapServiceReference.GetMapListCompletedEventArgs>(mapinfo_GetMapListCompleted);
+            mapinfo.GetMapListCompleted += new EventHandler<GetMapListCompletedEventArgs>(mapinfo_GetMapListCompleted);
             mapinfo.GetMapUrlCompleted+=new EventHandler<GetMapUrlCompletedEventArgs>(mapinfo_GetMapUrlCompleted);
             mapinfo.GetXmlUrlCompleted+=new EventHandler<GetXmlUrlCompletedEventArgs>(mapinfo_GetXmlUrlCompleted);
-            
+          
 
             // Make sure that the required "transfers" directory exists
             // in isolated storage.
@@ -51,13 +51,13 @@ namespace DiversityPhone.View
 
         #region asynchronous Events
 
-        public void mapinfo_GetMapListCompleted(object sender, MapServiceReference.GetMapListCompletedEventArgs e)
+        public void mapinfo_GetMapListCompleted(object sender, GetMapListCompletedEventArgs e)
         {
             maps = e.Result;
             filterMaps();
         }
 
-        public void mapinfo_GetMapUrlCompleted(object sender, MapServiceReference.GetMapUrlCompletedEventArgs e)
+        public void mapinfo_GetMapUrlCompleted(object sender, GetMapUrlCompletedEventArgs e)
         {
             //Thus method is called after the Add-Button_Click Event which selects a map.
 
@@ -130,7 +130,7 @@ namespace DiversityPhone.View
             }
         }
 
-        public void mapinfo_GetXmlUrlCompleted(object sender, MapServiceReference.GetXmlUrlCompletedEventArgs e)
+        public void mapinfo_GetXmlUrlCompleted(object sender, GetXmlUrlCompletedEventArgs e)
         {
             if (BackgroundTransferService.Requests.Count() >= 5)
             {
