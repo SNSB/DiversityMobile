@@ -11,6 +11,10 @@ namespace DiversityService
     [ServiceContract]    
     public interface IDiversityService
     {
+
+        [OperationContract]
+        UserProfile GetUserInfo();
+
         [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserProfile user);
 

@@ -192,5 +192,14 @@ namespace DiversityService
         {
             throw new NotImplementedException();
         }
+
+        public UserProfile GetUserInfo()
+        {
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                return db.Query<UserProfile>("[DiversityMobile_UserInfo] () AS [UserProfile]").Single(); ;
+            }
+
+        }
     }
 }
