@@ -493,9 +493,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
     <None Include="Service References\MediaService4\MediaService4.xsd">
       <SubType>Designer</SubType>
