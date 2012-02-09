@@ -8,6 +8,7 @@ using DiversityMobile;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.ServiceModel;
 
 
 namespace DiversityService
@@ -194,10 +195,10 @@ namespace DiversityService
         }
 
         public UserProfile GetUserInfo()
-        {
+        {           
             using (var db = new DiversityCollection.DiversityCollection())
             {
-                return db.Query<UserProfile>("[DiversityMobile_UserInfo] () AS [UserProfile]").Single(); ;
+                return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
             }
 
         }
