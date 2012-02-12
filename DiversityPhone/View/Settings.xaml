@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vw="clr-namespace:DiversityPhone.View"
@@ -21,21 +22,39 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot Title="SETTINGS">
+        <StackPanel Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}}">
+            <ProgressBar IsIndeterminate="True" Visibility="{Binding InProgress, Converter={StaticResource BoolToVis}}"/>
+        <controls:Pivot Title="SETUP" >
             <!--Pivot item one-->
             <controls:PivotItem Header="Login">
                 <Grid/>
             </controls:PivotItem>
 
             <!--Pivot item two-->
-            <controls:PivotItem Header="Repository">
+            <controls:PivotItem Header="Repository" IsEnabled="{Binding EnableRepository}">
                 <Grid/>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="Preferences">
+            <controls:PivotItem Header="Project" IsEnabled="{Binding EnableProjects}">
                 <Grid/>
             </controls:PivotItem>
         </controls:Pivot>
+        </StackPanel>
+
+        <ScrollViewer Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
+            <StackPanel>
+                <TextBlock Text="User"/>
+                <TextBlock Text="{Binding Model.AgentName}"/>
+                
+                <TextBlock Text="Repository"/>
+                <TextBlock Text="{Binding Model.HomeDBName}"/>
+                
+                <TextBlock Text="Project"/>
+                <TextBlock Text="{Binding Model.CurrentProjectName}"/>
+                
+                <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS}"/>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

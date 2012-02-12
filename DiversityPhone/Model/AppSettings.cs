@@ -19,7 +19,9 @@ namespace DiversityPhone.Model
         public string AgentURI { get; set; }
         public bool SavePassword { get; set; }
         public bool UseGPS { get; set; }
+
         public string HomeDB { get; set; }
+        public string HomeDBName { get; set; }
 
         public int CurrentProject { get; set; }
         public string CurrentProjectName { get; set; }
