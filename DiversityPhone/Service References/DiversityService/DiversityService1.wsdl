@@ -14,6 +14,12 @@
   <wsdl:message name="IDiversityService_GetUserInfo_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserInfoResponse" />
   </wsdl:message>
+  <wsdl:message name="IDiversityService_GetRepositories_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRepositories" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetRepositories_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRepositoriesResponse" />
+  </wsdl:message>
   <wsdl:message name="IDiversityService_GetProjectsForUser_InputMessage">
     <wsdl:part name="parameters" element="tns:GetProjectsForUser" />
   </wsdl:message>
@@ -97,6 +103,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfo" message="tns:IDiversityService_GetUserInfo_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfoResponse" message="tns:IDiversityService_GetUserInfo_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetRepositories">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetRepositories" message="tns:IDiversityService_GetRepositories_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetRepositoriesResponse" message="tns:IDiversityService_GetRepositories_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetProjectsForUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUser" message="tns:IDiversityService_GetProjectsForUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUserResponse" message="tns:IDiversityService_GetProjectsForUser_OutputMessage" />
@@ -154,6 +164,15 @@
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetUserInfo">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/GetUserInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetRepositories">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetRepositories" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

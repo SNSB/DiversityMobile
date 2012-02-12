@@ -17,6 +17,66 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserCredentials", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class UserCredentials : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string PasswordField;
+        
+        private string RepositoryField;
+        
+        private string UserNameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Password {
+            get {
+                return this.PasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Repository {
+            get {
+                return this.RepositoryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RepositoryField, value) != true)) {
+                    this.RepositoryField = value;
+                    this.RaisePropertyChanged("Repository");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string UserName {
+            get {
+                return this.UserNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
+                    this.UserNameField = value;
+                    this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="UserProfile", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class UserProfile : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -61,6 +121,51 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.UserNameField, value) != true)) {
                     this.UserNameField = value;
                     this.RaisePropertyChanged("UserName");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Repository", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class Repository : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string DatabaseField;
+        
+        private string DisplayNameField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Database {
+            get {
+                return this.DatabaseField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DatabaseField, value) != true)) {
+                    this.DatabaseField = value;
+                    this.RaisePropertyChanged("Database");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DisplayName {
+            get {
+                return this.DisplayNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DisplayNameField, value) != true)) {
+                    this.DisplayNameField = value;
+                    this.RaisePropertyChanged("DisplayName");
                 }
             }
         }
@@ -1342,12 +1447,17 @@ namespace DiversityPhone.DiversityService {
     public interface IDiversityService {
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetUserInfo", ReplyAction="http://tempuri.org/IDiversityService/GetUserInfoResponse")]
-        System.IAsyncResult BeginGetUserInfo(System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginGetUserInfo(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         DiversityPhone.DiversityService.UserProfile EndGetUserInfo(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetRepositories", ReplyAction="http://tempuri.org/IDiversityService/GetRepositoriesResponse")]
+        System.IAsyncResult BeginGetRepositories(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> EndGetRepositories(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetProjectsForUser", ReplyAction="http://tempuri.org/IDiversityService/GetProjectsForUserResponse")]
-        System.IAsyncResult BeginGetProjectsForUser(DiversityPhone.DiversityService.UserProfile user, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginGetProjectsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Project> EndGetProjectsForUser(System.IAsyncResult result);
         
@@ -1432,6 +1542,25 @@ namespace DiversityPhone.DiversityService {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((DiversityPhone.DiversityService.UserProfile)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class GetRepositoriesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public GetRepositoriesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository>)(this.results[0]));
             }
         }
     }
@@ -1693,6 +1822,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onGetUserInfoCompletedDelegate;
         
+        private BeginOperationDelegate onBeginGetRepositoriesDelegate;
+        
+        private EndOperationDelegate onEndGetRepositoriesDelegate;
+        
+        private System.Threading.SendOrPostCallback onGetRepositoriesCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetProjectsForUserDelegate;
         
         private EndOperationDelegate onEndGetProjectsForUserDelegate;
@@ -1826,6 +1961,8 @@ namespace DiversityPhone.DiversityService {
         
         public event System.EventHandler<GetUserInfoCompletedEventArgs> GetUserInfoCompleted;
         
+        public event System.EventHandler<GetRepositoriesCompletedEventArgs> GetRepositoriesCompleted;
+        
         public event System.EventHandler<GetProjectsForUserCompletedEventArgs> GetProjectsForUserCompleted;
         
         public event System.EventHandler<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUserCompleted;
@@ -1857,8 +1994,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetUserInfo(System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetUserInfo(callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetUserInfo(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetUserInfo(login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1867,7 +2004,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         private System.IAsyncResult OnBeginGetUserInfo(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetUserInfo(callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetUserInfo(login, callback, asyncState);
         }
         
         private object[] OnEndGetUserInfo(System.IAsyncResult result) {
@@ -1883,11 +2021,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void GetUserInfoAsync() {
-            this.GetUserInfoAsync(null);
+        public void GetUserInfoAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetUserInfoAsync(login, null);
         }
         
-        public void GetUserInfoAsync(object userState) {
+        public void GetUserInfoAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginGetUserInfoDelegate == null)) {
                 this.onBeginGetUserInfoDelegate = new BeginOperationDelegate(this.OnBeginGetUserInfo);
             }
@@ -1897,12 +2035,59 @@ namespace DiversityPhone.DiversityService {
             if ((this.onGetUserInfoCompletedDelegate == null)) {
                 this.onGetUserInfoCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetUserInfoCompleted);
             }
-            base.InvokeAsync(this.onBeginGetUserInfoDelegate, null, this.onEndGetUserInfoDelegate, this.onGetUserInfoCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetUserInfoDelegate, new object[] {
+                        login}, this.onEndGetUserInfoDelegate, this.onGetUserInfoCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetProjectsForUser(DiversityPhone.DiversityService.UserProfile user, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetProjectsForUser(user, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetRepositories(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetRepositories(login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> DiversityPhone.DiversityService.IDiversityService.EndGetRepositories(System.IAsyncResult result) {
+            return base.Channel.EndGetRepositories(result);
+        }
+        
+        private System.IAsyncResult OnBeginGetRepositories(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetRepositories(login, callback, asyncState);
+        }
+        
+        private object[] OnEndGetRepositories(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndGetRepositories(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnGetRepositoriesCompleted(object state) {
+            if ((this.GetRepositoriesCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.GetRepositoriesCompleted(this, new GetRepositoriesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void GetRepositoriesAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetRepositoriesAsync(login, null);
+        }
+        
+        public void GetRepositoriesAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginGetRepositoriesDelegate == null)) {
+                this.onBeginGetRepositoriesDelegate = new BeginOperationDelegate(this.OnBeginGetRepositories);
+            }
+            if ((this.onEndGetRepositoriesDelegate == null)) {
+                this.onEndGetRepositoriesDelegate = new EndOperationDelegate(this.OnEndGetRepositories);
+            }
+            if ((this.onGetRepositoriesCompletedDelegate == null)) {
+                this.onGetRepositoriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetRepositoriesCompleted);
+            }
+            base.InvokeAsync(this.onBeginGetRepositoriesDelegate, new object[] {
+                        login}, this.onEndGetRepositoriesDelegate, this.onGetRepositoriesCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetProjectsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetProjectsForUser(login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -1911,8 +2096,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         private System.IAsyncResult OnBeginGetProjectsForUser(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            DiversityPhone.DiversityService.UserProfile user = ((DiversityPhone.DiversityService.UserProfile)(inValues[0]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetProjectsForUser(user, callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetProjectsForUser(login, callback, asyncState);
         }
         
         private object[] OnEndGetProjectsForUser(System.IAsyncResult result) {
@@ -1928,11 +2113,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void GetProjectsForUserAsync(DiversityPhone.DiversityService.UserProfile user) {
-            this.GetProjectsForUserAsync(user, null);
+        public void GetProjectsForUserAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetProjectsForUserAsync(login, null);
         }
         
-        public void GetProjectsForUserAsync(DiversityPhone.DiversityService.UserProfile user, object userState) {
+        public void GetProjectsForUserAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginGetProjectsForUserDelegate == null)) {
                 this.onBeginGetProjectsForUserDelegate = new BeginOperationDelegate(this.OnBeginGetProjectsForUser);
             }
@@ -1943,7 +2128,7 @@ namespace DiversityPhone.DiversityService {
                 this.onGetProjectsForUserCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetProjectsForUserCompleted);
             }
             base.InvokeAsync(this.onBeginGetProjectsForUserDelegate, new object[] {
-                        user}, this.onEndGetProjectsForUserDelegate, this.onGetProjectsForUserCompletedDelegate, userState);
+                        login}, this.onEndGetProjectsForUserDelegate, this.onGetProjectsForUserCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2568,8 +2753,9 @@ namespace DiversityPhone.DiversityService {
                     base(client) {
             }
             
-            public System.IAsyncResult BeginGetUserInfo(System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[0];
+            public System.IAsyncResult BeginGetUserInfo(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = login;
                 System.IAsyncResult _result = base.BeginInvoke("GetUserInfo", _args, callback, asyncState);
                 return _result;
             }
@@ -2580,9 +2766,22 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginGetProjectsForUser(DiversityPhone.DiversityService.UserProfile user, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginGetRepositories(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
-                _args[0] = user;
+                _args[0] = login;
+                System.IAsyncResult _result = base.BeginInvoke("GetRepositories", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> EndGetRepositories(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository>)(base.EndInvoke("GetRepositories", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginGetProjectsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = login;
                 System.IAsyncResult _result = base.BeginInvoke("GetProjectsForUser", _args, callback, asyncState);
                 return _result;
             }

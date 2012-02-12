@@ -13,13 +13,13 @@ namespace DiversityService
     {
 
         [OperationContract]
-        UserProfile GetUserInfo();
+        UserProfile GetUserInfo(UserCredentials login);
 
         [OperationContract]
-        IEnumerable<Repository> GetRepositories();
+        IEnumerable<Repository> GetRepositories(UserCredentials login);
 
         [OperationContract]
-        IEnumerable<Project> GetProjectsForUser(UserProfile user);
+        IEnumerable<Project> GetProjectsForUser(UserCredentials login);
 
         //TODO Contract Userinfo
 

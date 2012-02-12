@@ -20,7 +20,7 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<IOfflineStorage>(App.OfflineDB);            
 
-            _ioc.Register<IDiversityService>(App.Repository); 
+            _ioc.Register<IDiversityServiceClient>(App.Repository); 
 
             _ioc.Register<SettingsService>(new SettingsService(_ioc.Resolve<IMessageBus>()));
             #endregion            

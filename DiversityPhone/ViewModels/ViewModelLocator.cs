@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
                 container.Resolve<IOfflineStorage>(),
-                container.Resolve<IDiversityService>()
+                container.Resolve<IDiversityServiceClient>()
                 ));
             
             _ioc.Register<EditESVM>(c => new EditESVM());
@@ -55,7 +55,7 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
                                                                         c.Resolve<IOfflineStorage>(),
-                                                                        c.Resolve<IDiversityService>()));
+                                                                        c.Resolve<IDiversityServiceClient>()));
 
             _ioc.Register<SettingsVM>(c => new SettingsVM(c.Resolve<SettingsService>()));
 
