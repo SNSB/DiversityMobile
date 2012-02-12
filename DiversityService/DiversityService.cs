@@ -202,5 +202,18 @@ namespace DiversityService
             }
 
         }
+
+
+        public IEnumerable<Repository> GetRepositories()
+        {
+            return new Repository[]
+            {
+                new Repository()
+                { 
+                    DisplayName = "Test",
+                    Database = "DiversityCollection_Test"
+                },
+            };
+        }
     }
 }

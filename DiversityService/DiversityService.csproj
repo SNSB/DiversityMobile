@@ -91,6 +91,7 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyName.cs" />
+    <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\Specimen.cs" />
     <Compile Include="Models\TaxonList.cs" />
     <Compile Include="Models\TaxonName.cs" />
@@ -104,7 +105,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SQLLoginValidator.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="DiversityCollection_Base.edmx">
