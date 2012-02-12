@@ -28,7 +28,7 @@ namespace DiversityPhone
     {
         public static IOfflineStorage OfflineDB { get; private set; } 
        
-        public static IDiversityService Repository { get; private set; }       
+        public static IDiversityServiceClient Repository { get; private set; }       
            
 
         /// <summary>

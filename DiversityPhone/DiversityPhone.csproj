@@ -146,9 +146,11 @@
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DiversityDataContext.cs" />
+    <Compile Include="Services\DiversityServiceClient.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\IApplicationState.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
+    <Compile Include="Services\IDiversityService.cs" />
     <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
@@ -488,6 +490,9 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
