@@ -30,7 +30,7 @@ namespace DiversityPhone.View
                     return 0;
                 case SettingsVM.Pivots.Repository:
                     return 1;
-                case SettingsVM.Pivots.Preferences:
+                case SettingsVM.Pivots.Projects:
                     return 2;
                 default:
                     return 0;
@@ -53,7 +53,7 @@ namespace DiversityPhone.View
                 case 1:
                     return SettingsVM.Pivots.Repository;
                 case 2:
-                    return SettingsVM.Pivots.Preferences; 
+                    return SettingsVM.Pivots.Projects; 
                 default:
                     return SettingsVM.Pivots.Login;
             }  
