@@ -71,7 +71,11 @@ namespace DiversityPhone.Services
 
             _frame = frame;
             _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
-            _frame.Navigated += (s,args) => NavigationFinished();             
+            _frame.Navigated += (s, args) =>
+                {
+                    if (!args.Uri.IsAbsoluteUri || args.Uri.Scheme != "app:")
+                        NavigationFinished();
+                };
         }
 
         void NavigationFinished()
