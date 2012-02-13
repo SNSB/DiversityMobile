@@ -70,14 +70,10 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s, args) =>
-            {
-                if (args.IsNavigationInitiator)
-                    args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back);
-            };
+            _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
             _frame.Navigated += (s, args) =>
                 {
-                    if (args.IsNavigationInitiator)
+                    if (!args.Uri.IsAbsoluteUri || args.Uri.Scheme != "app:")
                         NavigationFinished();
                 };
         }

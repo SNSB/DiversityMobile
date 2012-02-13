@@ -16,14 +16,12 @@ namespace DiversityService
     public class DiversityService : IDiversityService
     {
 
-        public IEnumerable<Model.Project> GetProjectsForUser(Model.UserProfile user)
+        public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
         {
-            //using (var db = new DiversityCollection.DiversityCollection())
-            //{
-            //    return db.Query<Project>
-            //}
-
-            return Enumerable.Empty<Project>();
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                return db.Query<Project>("FROM [DiversityCollection_Test].[dbo].[DiversityMobile_ProjectList] () AS [Project]"); //TODO Use credential DB
+            }            
         }
 
         public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
@@ -247,7 +245,7 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
-        public UserProfile GetUserInfo()
+        public UserProfile GetUserInfo(UserCredentials login)
         {           
             using (var db = new DiversityCollection.DiversityCollection())
             {
@@ -257,7 +255,7 @@ namespace DiversityService
         }
 
 
-        public IEnumerable<Repository> GetRepositories()
+        public IEnumerable<Repository> GetRepositories(UserCredentials login)
         {
             return new Repository[]
             {

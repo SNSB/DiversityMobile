@@ -58,7 +58,7 @@
         }
         #endregion
 
-        public HomeVM(IMessageBus messenger, IOfflineStorage storage, Svc.IDiversityService repo)
+        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo)
             : base(messenger)
         {            
             _storage = storage;
@@ -117,7 +117,7 @@
 
         private void getVoc()
         {
-            var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
+            //var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
 
             vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
                 wcf => new DiversityPhone.Model.Term()

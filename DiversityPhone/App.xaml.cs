@@ -14,7 +14,6 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
 using System.Reactive.Subjects;
 using System.Windows.Navigation;
-using DiversityPhone.DiversityService;
 using ReactiveUI;
 using System.Reactive.Concurrency;
 using DiversityPhone.ViewModels;
@@ -28,7 +27,7 @@ namespace DiversityPhone
     {
         public static IOfflineStorage OfflineDB { get; private set; } 
        
-        public static IDiversityService Repository { get; private set; }       
+        public static IDiversityServiceClient Repository { get; private set; }       
            
 
         /// <summary>

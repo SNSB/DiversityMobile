@@ -98,6 +98,7 @@
     <Compile Include="Models\Term.cs" />
     <Compile Include="Models\TermExportList.cs" />
     <Compile Include="Models\TermLists.cs" />
+    <Compile Include="Models\UserCredentials.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
