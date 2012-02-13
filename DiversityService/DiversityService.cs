@@ -209,7 +209,11 @@ namespace DiversityService
                     ctx.CollectionSpecimen.AddObject(spec);
                 }
                 ctx.SaveChanges();
+                //TODO: Update CollectionEventLocalisation for geography
                 result.Specimen = newSpecimen.ToModel();
+
+
+                //Ab hier TODO:
                 //var newAgents = hierarchy.Specimen.ToAgents();
                 //foreach(DiversityCollection.CollectionAgent agent in newAgents)
                 //{
