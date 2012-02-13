@@ -21,7 +21,7 @@
 
         #region Services        
         private IOfflineStorage _storage;
-        private Svc.IDiversityService _repository;
+        private IDiversityServiceClient _repository;
         private DiversityPhone.MediaService4.MediaService4Client msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
@@ -97,8 +97,8 @@
 
         private void registerUpload()
         {
-            var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
-            Upload = new ReactiveAsyncCommand();
+            //var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
+            //Upload = new ReactiveAsyncCommand();
             //    .Select(_ => getUploadSectionsForSeries().ToObservable()).First()
             //.Select(section => Tuple.Create(section, uploadHierarchy(section).First()))
             //.ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));
@@ -119,37 +119,37 @@
         {
             //var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
 
-            vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
-                wcf => new DiversityPhone.Model.Term()
-                {
-                    Code = wcf.Code,
-                    Description = wcf.Description,
-                    DisplayText = wcf.DisplayText,
-                    ParentCode = wcf.ParentCode,
-                    SourceID = wcf.Source
-                })
-                ));
+            //vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
+            //    wcf => new DiversityPhone.Model.Term()
+            //    {
+            //        Code = wcf.Code,
+            //        Description = wcf.Description,
+            //        DisplayText = wcf.DisplayText,
+            //        ParentCode = wcf.ParentCode,
+            //        SourceID = wcf.Source
+            //    })
+            //    ));
 
 
-            var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-            var sampleTaxonList = new Svc.TaxonList() 
-            { 
-                Table = "TaxRef_BfN_VPlants",
-                TaxonomicGroup = "plant",
-                DisplayText = "Plants"
-            };
+            //var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
+            //var sampleTaxonList = new Svc.TaxonList() 
+            //{ 
+            //    Table = "TaxRef_BfN_VPlants",
+            //    TaxonomicGroup = "plant",
+            //    DisplayText = "Plants"
+            //};
             
-            //TODO Page
-            taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
-                t => new Model.TaxonName()
-                {
-                    URI = t.URI,
-                    TaxonNameSinAuth = t.TaxonNameSinAuth,
-                    TaxonNameCache = t.TaxonNameCache,
-                    SpeciesEpithet = t.SpeciesEpithet,
-                    InfraspecificEpithet = t.InfraspecificEpithet,
-                    GenusOrSupragenic = t.GenusOrSupragenic
-                }), sampleTaxonList));
+            ////TODO Page
+            //taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+            //    t => new Model.TaxonName()
+            //    {
+            //        URI = t.URI,
+            //        TaxonNameSinAuth = t.TaxonNameSinAuth,
+            //        TaxonNameCache = t.TaxonNameCache,
+            //        SpeciesEpithet = t.SpeciesEpithet,
+            //        InfraspecificEpithet = t.InfraspecificEpithet,
+            //        GenusOrSupragenic = t.GenusOrSupragenic
+            //    }), sampleTaxonList));
             
         }
 

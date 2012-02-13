@@ -15,7 +15,7 @@ namespace DiversityService
 {
     public class DiversityService : IDiversityService
     {
-
+        #region Get
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
         {
             using (var db = new DiversityCollection.DiversityCollection())
@@ -26,7 +26,7 @@ namespace DiversityService
 
         public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
         {
-            return null; //TODO
+            throw new NotImplementedException();
         }
 
         public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p)
@@ -97,33 +97,9 @@ namespace DiversityService
 
         }
 
-        #region XML serialization for Android WebService
-        private String Term2XMLSerialization(IEnumerable<Term> linqTerms)
-        {
-            String xmlString = null;
-            TermExportList terms = new TermExportList(linqTerms);
-            XmlSerializer ser = new XmlSerializer(typeof(TermExportList));
-            MemoryStream memoryStream = new MemoryStream();
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-            ser.Serialize(memoryStream, terms);
-            memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
-            xmlString = UTF8ByteArrayToString(memoryStream.ToArray());
-            return xmlString;
-        }
+      
 
-        private String UTF8ByteArrayToString(Byte[] characters)
-        {
-            UTF8Encoding encoding = new UTF8Encoding();
-            String constructedString = encoding.GetString(characters);
-            return (constructedString);
-        }
-        #endregion
-
-        public String GetXMLStandardVocabulary()
-        {
-            IEnumerable<Term> linqTerms = GetStandardVocabulary();
-            return Term2XMLSerialization(linqTerms);
-        }
+       
 
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
         {
@@ -171,6 +147,25 @@ namespace DiversityService
             }
         }
 
+
+        public IEnumerable<Project> GetAvailableProjects()
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserProfile GetUserInfo(UserCredentials login)
+        {           
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
+            }
+
+        }
+        #endregion
+
+       
+
+
         public IList<EventSeries> InsertEventSeries(IList<EventSeries> series)
         {
             throw new NotImplementedException();
@@ -181,26 +176,40 @@ namespace DiversityService
             var result = new HierarchySection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
+                //Adjust Events
                 var newEventEntity = hierarchy.Event.ToEntity();
                 ctx.CollectionEvent.AddObject(newEventEntity);
-                var newLocalisations = hierarchy.Event.ToLocalisations(newEventEntity, hierarchy.Profile);
+                //Store Geodata
+                double? altitude = result.Event.Altitude;
+                double? latitude = result.Event.Latitude;
+                double? longitude = result.Event.Longitude;
+
+                //Save Event
+                ctx.SaveChanges();
+                result.Event = newEventEntity.ToModel(altitude,latitude,longitude); //Annahme SaveChanges aktualisiert mit anschließendem ToModel aktualisiert Primärschlüssel -- Sonst über Guid suchen
+
+
+                //Adjust directly from event depending entities
+                var newLocalisations = hierarchy.Event.ToLocalisations(hierarchy.Profile);
                 foreach (DiversityCollection.CollectionEventLocalisation loc in newLocalisations)
                 {
                     ctx.CollectionEventLocalisation.AddObject(loc);
                 }
 
-                var newProperties = hierarchy.Properties.ToEntity(newEventEntity,hierarchy.Profile);
+                var newProperties = hierarchy.Properties.ToEntity(result.Event,hierarchy.Profile);
                 foreach (DiversityCollection.CollectionEventProperty prop in newProperties)
                 {
                     ctx.CollectionEventProperties.AddObject(prop);
                 }
-                ctx.SaveChanges();
+               
 
-                var newSpecimen = hierarchy.Specimen.ToEntity(newEventEntity);
+                var newSpecimen = hierarchy.Specimen.ToEntity(result.Event);
                 foreach (DiversityCollection.CollectionSpecimen spec in newSpecimen)
                 {
                     ctx.CollectionSpecimen.AddObject(spec);
                 }
+                ctx.SaveChanges();
+                result.Specimen = newSpecimen.ToModel();
                 //var newAgents = hierarchy.Specimen.ToAgents();
                 //foreach(DiversityCollection.CollectionAgent agent in newAgents)
                 //{
@@ -232,29 +241,14 @@ namespace DiversityService
                 //{
                 //    ctx.IdentificationUnitAnalysis.AddObject(iua);
                 //}
-                result.Event = newEventEntity.ToModel();
-               
+                
+
 
             }
             return result; //Wann Updates von abhängigen Objekten?
         }
 
-
-        public IEnumerable<Project> GetAvailableProjects()
-        {
-            throw new NotImplementedException();
-        }
-
-        public UserProfile GetUserInfo(UserCredentials login)
-        {           
-            using (var db = new DiversityCollection.DiversityCollection())
-            {
-                return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
-            }
-
-        }
-
-
+        #region utility
         public IEnumerable<Repository> GetRepositories(UserCredentials login)
         {
             return new Repository[]
@@ -276,5 +270,33 @@ namespace DiversityService
                 //},
             };
         }
+        #endregion
+
+        #region XML serialization for Android WebService
+        private String Term2XMLSerialization(IEnumerable<Term> linqTerms)
+        {
+            String xmlString = null;
+            TermExportList terms = new TermExportList(linqTerms);
+            XmlSerializer ser = new XmlSerializer(typeof(TermExportList));
+            MemoryStream memoryStream = new MemoryStream();
+            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
+            ser.Serialize(memoryStream, terms);
+            memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
+            xmlString = UTF8ByteArrayToString(memoryStream.ToArray());
+            return xmlString;
+        }
+        public String GetXMLStandardVocabulary()
+        {
+            IEnumerable<Term> linqTerms = GetStandardVocabulary();
+            return Term2XMLSerialization(linqTerms);
+        }
+        private String UTF8ByteArrayToString(Byte[] characters)
+        {
+            UTF8Encoding encoding = new UTF8Encoding();
+            String constructedString = encoding.GetString(characters);
+            return (constructedString);
+        }
+        #endregion
+
     }
 }
