@@ -57,7 +57,10 @@ namespace DiversityPhone.ViewModels
                                                                         c.Resolve<IOfflineStorage>(),
                                                                         c.Resolve<IDiversityServiceClient>()));
 
-            _ioc.Register<SettingsVM>(c => new SettingsVM(c.Resolve<SettingsService>()));
+            _ioc.Register<SettingsVM>(c => new SettingsVM(
+                c.Resolve<SettingsService>(),
+                c.Resolve<IDiversityServiceClient>()
+                ));
 
             #endregion
 

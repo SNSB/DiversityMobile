@@ -21,7 +21,7 @@ namespace DiversityPhone.ViewModels
     {
         #region Services
         private IOfflineStorage Storage { get; set; }
-        private DiversityService.IDiversityService Service { get; set; }
+        private IDiversityServiceClient Service { get; set; }
         #endregion
 
         #region Properties
@@ -41,35 +41,35 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public TaxonManagementVM(IMessageBus messenger, IOfflineStorage storage, DiversityService.IDiversityService service)
+        public TaxonManagementVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient service)
             : base(messenger)
         {
-            Storage = storage;
-            Service = service;
+            //Storage = storage;
+            //Service = service;
 
-            var taxonListsForUser = Observable.FromAsyncPattern<DiversityService.UserProfile,IEnumerable<DiversityService.TaxonList>>(Service.BeginGetTaxonListsForUser, Service.EndGetTaxonListsForUser);
+            //var taxonListsForUser = Observable.FromAsyncPattern<DiversityService.UserProfile,IEnumerable<DiversityService.TaxonList>>(Service.BeginGetTaxonListsForUser, Service.EndGetTaxonListsForUser);
 
-            _TaxonLists = DistinctStateObservable
-                .Select(_ => taxonListsForUser(new DiversityService.UserProfile() { LoginName = "rollinger" }))
-                .SelectMany(id => id)
-                .Select(taxlists =>
-                    {
-                        var selections = 
-                            Storage.getTaxonSelections()
-                                .OrderBy( tls => tls.TableName);
-                        var availableLists = 
-                            taxlists
-                                .OrderBy(tl => tl.Table);
+            //_TaxonLists = DistinctStateObservable
+            //    .Select(_ => taxonListsForUser(new DiversityService.UserProfile() { LoginName = "rollinger" }))
+            //    .SelectMany(id => id)
+            //    .Select(taxlists =>
+            //        {
+            //            var selections = 
+            //                Storage.getTaxonSelections()
+            //                    .OrderBy( tls => tls.TableName);
+            //            var availableLists = 
+            //                taxlists
+            //                    .OrderBy(tl => tl.Table);
                         
                         
 
 
-                        return from tl in taxlists
-                               join sel in selections on tl.Table equals sel.TableName into outer
-                               from sel in outer.DefaultIfEmpty()
-                               select new TaxonSelectionVM(this, tl, sel);
-                    })
-                .ToProperty(this, vm => vm.TaxonLists);
+            //            return from tl in taxlists
+            //                   join sel in selections on tl.Table equals sel.TableName into outer
+            //                   from sel in outer.DefaultIfEmpty()
+            //                   select new TaxonSelectionVM(this, tl, sel);
+            //        })
+            //    .ToProperty(this, vm => vm.TaxonLists);
                              
                 
                 
