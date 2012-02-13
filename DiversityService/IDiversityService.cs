@@ -16,6 +16,9 @@ namespace DiversityService
         UserProfile GetUserInfo();
 
         [OperationContract]
+        IEnumerable<Repository> GetRepositories();
+
+        [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserProfile user);
 
         //TODO Contract Userinfo

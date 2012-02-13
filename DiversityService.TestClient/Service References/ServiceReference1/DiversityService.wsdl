@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DiversityService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost/DiversityService/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost/DiversityService/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/DiversityService/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
+      <xsd:import schemaLocation="http://localhost/DiversityService/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDiversityService_GetUserInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserInfo" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetUserInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetProjectsForUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectsForUser" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetProjectsForUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetProjectsForUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetTaxonListsForUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTaxonListsForUser" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetTaxonListsForUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTaxonListsForUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadTaxonList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadTaxonList" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadTaxonList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadTaxonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailableProjects_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableProjects" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailableProjects_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailableProjectsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetStandardVocabulary_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetStandardVocabulary" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetStandardVocabulary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetStandardVocabularyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLStandardVocabulary" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetXMLStandardVocabularyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisResults_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisResults" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisResults_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisResultsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsForProject" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsForProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysesForProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysesForProject" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysesForProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysesForProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisResultsForProject_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisResultsForProject" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAnalysisResultsForProject_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAnalysisResultsForProjectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailablePropertyLists_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailablePropertyLists" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_GetAvailablePropertyLists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailablePropertyListsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadPropertyList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyList" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_DownloadPropertyList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertHierarchy_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertHierarchy" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertHierarchy_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertHierarchyResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IDiversityService">
+    <wsdl:operation name="GetUserInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfo" message="tns:IDiversityService_GetUserInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfoResponse" message="tns:IDiversityService_GetUserInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectsForUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUser" message="tns:IDiversityService_GetProjectsForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUserResponse" message="tns:IDiversityService_GetProjectsForUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxonListsForUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser" message="tns:IDiversityService_GetTaxonListsForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse" message="tns:IDiversityService_GetTaxonListsForUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadTaxonList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableProjects">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAvailableProjects" message="tns:IDiversityService_GetAvailableProjects_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAvailableProjectsResponse" message="tns:IDiversityService_GetAvailableProjects_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetStandardVocabulary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabulary" message="tns:IDiversityService_GetStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse" message="tns:IDiversityService_GetStandardVocabulary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLStandardVocabulary">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse" message="tns:IDiversityService_GetXMLStandardVocabulary_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisResults">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResults" message="tns:IDiversityService_GetAnalysisResults_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsResponse" message="tns:IDiversityService_GetAnalysisResults_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProjectResponse" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysesForProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysesForProject" message="tns:IDiversityService_GetAnalysesForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysesForProjectResponse" message="tns:IDiversityService_GetAnalysesForProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisResultsForProject">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject" message="tns:IDiversityService_GetAnalysisResultsForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProjectResponse" message="tns:IDiversityService_GetAnalysisResultsForProject_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailablePropertyLists">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAvailablePropertyLists" message="tns:IDiversityService_GetAvailablePropertyLists_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAvailablePropertyListsResponse" message="tns:IDiversityService_GetAvailablePropertyLists_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DownloadPropertyList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyList" message="tns:IDiversityService_DownloadPropertyList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyListResponse" message="tns:IDiversityService_DownloadPropertyList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertHierarchy">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchyResponse" message="tns:IDiversityService_InsertHierarchy_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IDiversityService" type="tns:IDiversityService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetUserInfo">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetUserInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetProjectsForUser">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetProjectsForUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTaxonListsForUser">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetTaxonListsForUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadTaxonList">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadTaxonList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableProjects">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAvailableProjects" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetStandardVocabulary">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetStandardVocabulary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetXMLStandardVocabulary">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisResults">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisResults" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysesForProject">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysesForProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAnalysisResultsForProject">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailablePropertyLists">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAvailablePropertyLists" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DownloadPropertyList">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadPropertyList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertHierarchy">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertHierarchy" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DiversityService">
+    <wsdl:port name="BasicHttpBinding_IDiversityService" binding="tns:BasicHttpBinding_IDiversityService">
+      <soap:address location="http://localhost/DiversityService/Service1.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

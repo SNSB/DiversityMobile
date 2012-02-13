@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq" />
+    <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -90,6 +91,7 @@
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\Property.cs" />
     <Compile Include="Models\PropertyName.cs" />
+    <Compile Include="Models\Repository.cs" />
     <Compile Include="Models\Specimen.cs" />
     <Compile Include="Models\TaxonList.cs" />
     <Compile Include="Models\TaxonName.cs" />
