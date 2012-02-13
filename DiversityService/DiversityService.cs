@@ -85,7 +85,6 @@ namespace DiversityService
                                             Code = t.Code,
                                             DisplayText = t.DisplayText
                                         };
-
                 var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
                                     select new Term()
                                     {
@@ -93,7 +92,8 @@ namespace DiversityService
                                         Code = eit.Code,
                                         DisplayText = eit.DisplayText
                                     };
-                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
+  
+                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).Concat(eventImgTypes).ToList();
             }
             return linqTerms;
 
@@ -120,6 +120,7 @@ namespace DiversityService
             return (constructedString);
         }
         #endregion
+
         public String GetXMLStandardVocabulary()
         {
             IEnumerable<Term> linqTerms = GetStandardVocabulary();
@@ -172,7 +173,10 @@ namespace DiversityService
             }
         }
 
-
+        public IList<EventSeries> InsertEventSeries(IList<EventSeries> series)
+        {
+            throw new NotImplementedException();
+        }
 
         public HierarchySection InsertHierarchy(HierarchySection hierarchy)
         {
@@ -181,11 +185,60 @@ namespace DiversityService
             {
                 var newEventEntity = hierarchy.Event.ToEntity();
                 ctx.CollectionEvent.AddObject(newEventEntity);
+                var newLocalisations = hierarchy.Event.ToLocalisations(newEventEntity, hierarchy.Profile);
+                foreach (DiversityCollection.CollectionEventLocalisation loc in newLocalisations)
+                {
+                    ctx.CollectionEventLocalisation.AddObject(loc);
+                }
 
+                var newProperties = hierarchy.Properties.ToEntity(newEventEntity,hierarchy.Profile);
+                foreach (DiversityCollection.CollectionEventProperty prop in newProperties)
+                {
+                    ctx.CollectionEventProperties.AddObject(prop);
+                }
                 ctx.SaveChanges();
+
+                var newSpecimen = hierarchy.Specimen.ToEntity(newEventEntity);
+                foreach (DiversityCollection.CollectionSpecimen spec in newSpecimen)
+                {
+                    ctx.CollectionSpecimen.AddObject(spec);
+                }
+                //var newAgents = hierarchy.Specimen.ToAgents();
+                //foreach(DiversityCollection.CollectionAgent agent in newAgents)
+                //{
+                //    ctx.CollectionAgents.AddObject(agent);
+                //}
+                //var newprojects = hierarchy.Specimen.ToProjects();
+                //foreach(DiversityCollection.CollectionProject proj in newprojects)
+                //{
+                //    ctx.CollectionProjects.AddObject(proj);
+                //}
+                //var newUnits = hierarchy.IdentificationUnits.ToEntity();
+                //foreach (DiversityCollection.IdentificationUnit unit in newUnits)
+                //{
+                //    ctx.IdentificationUnit.AddObject(unit);
+                //}
+                //var newIdentifications = hierarchy.IdentificationUnits.ToIdentifications();
+                //foreach (DiversityCollection.Identification ident in newIdentifications)
+                //{
+                //    ctx.Identifications.AddObject(ident);
+                //}
+
+                //var newGeoAnalyses=hierarchy.IdentificationUnits.ToGeoanalyses();
+                //foreach (DiversityCollection.IdentificationUnitGeoAnalysi iuga in newGeoAnalyses)
+                //{
+                //    ctx.IdentificationUnitGeoAnalysis.AddObject(iuga);
+                //}
+                //var newAnalyses = hierarchy.Analyses.ToEntity();
+                //foreach (DiversityCollection.IdentificationUnitAnalysis iua in newAnalyses)
+                //{
+                //    ctx.IdentificationUnitAnalysis.AddObject(iua);
+                //}
                 result.Event = newEventEntity.ToModel();
+               
+
             }
-            return result;
+            return result; //Wann Updates von abhängigen Objekten?
         }
 
 
@@ -213,6 +266,16 @@ namespace DiversityService
                     DisplayName = "Test",
                     Database = "DiversityCollection_Test"
                 },
+                //new Repository() // In München funktionen noch nicht implementiert
+                //{
+                //    DisplayName="DiversityCollection",
+                //    Database="DiversityCollection",
+                //},
+                 //new Repository() // In München funktionen noch nicht implementiert
+                //{
+                //    DisplayName="DiversityCollection Monitoring",
+                //    Database="DiversityCollection_Monitoring",
+                //},
             };
         }
     }

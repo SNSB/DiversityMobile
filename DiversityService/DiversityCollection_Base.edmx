@@ -2933,12 +2933,12 @@
         <EntityTypeShape EntityType="DiversityCollection.IdentificationUnit" Width="1.875" PointX="9.375" PointY="0.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitAnalysis" Width="2" PointX="12.25" PointY="0.5" Height="0.4" IsExpanded="false" />
         <AssociationConnector Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.5" PointY="0.7" />
-          <ConnectorPoint PointX="3.5" PointY="0.7" />
+          <ConnectorPoint PointX="2.5" PointY="0.6655167307692299" />
+          <ConnectorPoint PointX="3.5" PointY="0.6655167307692299" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.5" PointY="0.89353846153846161" />
-          <ConnectorPoint PointX="3.28125" PointY="1.1122884615384621" />
+          <ConnectorPoint PointX="3.5196913076923075" PointY="0.9" />
+          <ConnectorPoint PointX="3.28125" PointY="1.1384413076923075" />
           <ConnectorPoint PointX="3.28125" PointY="3.03125" />
           <ConnectorPoint PointX="3.5" PointY="3.25" />
         </AssociationConnector>
@@ -3020,8 +3020,8 @@
         <AssociationConnector Association="DiversityCollection.FK_CollectionEventImage_CollectionEvent" >
           <ConnectorPoint PointX="3.5067682307692305" PointY="0.9" />
           <ConnectorPoint PointX="3.125" PointY="1.2817682307692309" />
-          <ConnectorPoint PointX="3.125" PointY="3.9996933076923082" />
-          <ConnectorPoint PointX="3.5003066923076918" PointY="4.375" />
+          <ConnectorPoint PointX="3.125" PointY="3.9996933076923091" />
+          <ConnectorPoint PointX="3.5003066923076909" PointY="4.375" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionEventProperty_CollectionEvent" >
           <ConnectorPoint PointX="4.4785981538461535" PointY="0.9" />
@@ -3054,8 +3054,8 @@
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollEventImageType_Enum_CollEventImageType_Enum" >
           <ConnectorPoint PointX="4.2660769230769233" PointY="5.775" />
-          <ConnectorPoint PointX="4.2660769230769233" PointY="6.025" />
-          <ConnectorPoint PointX="4.8730384615384619" PointY="6.025" />
+          <ConnectorPoint PointX="4.2660769230769233" PointY="6.0249999999999995" />
+          <ConnectorPoint PointX="4.8730384615384619" PointY="6.0249999999999995" />
           <ConnectorPoint PointX="4.8730384615384619" PointY="5.775" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollEventSeriesImageType_Enum_CollEventSeriesImageType_Enum" >
@@ -3066,18 +3066,18 @@
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_Descriptor_Descriptor" >
           <ConnectorPoint PointX="4.264153846153846" PointY="2.65" />
-          <ConnectorPoint PointX="4.264153846153846" PointY="2.9000000000000004" />
-          <ConnectorPoint PointX="4.7470769230769232" PointY="2.9000000000000004" />
+          <ConnectorPoint PointX="4.264153846153846" PointY="2.8999999999999995" />
+          <ConnectorPoint PointX="4.7470769230769232" PointY="2.8999999999999995" />
           <ConnectorPoint PointX="4.7470769230769232" PointY="2.65" />
         </AssociationConnector>
         <EntityTypeShape EntityType="DiversityCollection.CollectionAgent" Width="1.5" PointX="6.375" PointY="1.375" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionProject" Width="1.5" PointX="6.375" PointY="2.25" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.Entity" Width="1.5" PointX="15" PointY="0.5" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.EntityContext_Enum" Width="1.625" PointX="14.875" PointY="3.125" Height="0.4" IsExpanded="false" />
+        <EntityTypeShape EntityType="DiversityCollection.EntityContext_Enum" Width="1.625" PointX="15" PointY="3.125" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.EntityRepresentation" Width="1.5" PointX="15" PointY="1.25" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.EntityUsage" Width="1.5" PointX="15" PointY="2.125" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.Identification" Width="1.5" PointX="9.5" PointY="1.375" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitGeoAnalysi" Width="1.5" PointX="12.375" PointY="4.25" Height="0.4" IsExpanded="false" />
+        <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitGeoAnalysi" Width="2.5" PointX="12.375" PointY="4.25" Height="3.3263964843749996" IsExpanded="true" />
         <AssociationConnector Association="DiversityCollection.FK_CollectionAgent_CollectionSpecimen" >
           <ConnectorPoint PointX="7.125" PointY="0.9" />
           <ConnectorPoint PointX="7.125" PointY="1.375" />
@@ -3106,15 +3106,14 @@
           <ConnectorPoint PointX="16.5" PointY="2.125" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_EntityRepresentation_EntityContext_Enum" >
-          <ConnectorPoint PointX="14.875" PointY="3.125" />
-          <ConnectorPoint PointX="14.5" PointY="2.7500000000000009" />
-          <ConnectorPoint PointX="14.625" PointY="2.7500000000000009" />
+          <ConnectorPoint PointX="15" PointY="3.125" />
+          <ConnectorPoint PointX="14.625" PointY="2.75" />
           <ConnectorPoint PointX="14.625" PointY="2.0249999999999986" />
           <ConnectorPoint PointX="15" PointY="1.65" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_EntityUsage_EntityContext_Enum" >
-          <ConnectorPoint PointX="15.75" PointY="3.125" />
-          <ConnectorPoint PointX="15.75" PointY="2.525" />
+          <ConnectorPoint PointX="15.7812525" PointY="3.125" />
+          <ConnectorPoint PointX="15.7812525" PointY="2.525" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_Identification_IdentificationUnit" >
           <ConnectorPoint PointX="10.25" PointY="0.9" />

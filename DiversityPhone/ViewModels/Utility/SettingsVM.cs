@@ -92,8 +92,8 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        public IList<string> Databases { get { return _Databases.Value; } }
-        private ObservableAsPropertyHelper<IList<DiversityService.>> _Databases;
+        //public IList<string> Databases { get { return _Databases.Value; } }
+        //private ObservableAsPropertyHelper<IList<DiversityService.>> _Databases;
 
 
         private string _CurrentDB;

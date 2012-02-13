@@ -153,6 +153,13 @@ namespace DiversityPhone.ViewModels
             return null;
         }
 
+        public override void SaveState()
+        {
+            base.SaveState();
+
+
+        }
+
         protected override IObservable<bool> CanSave()
         {
             return this.ObservableForProperty(x => x.SavedImage)

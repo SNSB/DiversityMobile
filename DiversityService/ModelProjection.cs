@@ -4,11 +4,16 @@ using System.Linq;
 using System.Text;
 using DB = DiversityCollection;
 using Model = DiversityService.Model;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using System.ServiceModel;
 
 namespace DiversityService
 {
     public static class ModelProjection
     {
+        #region eventseries
         public static DB.CollectionEventSeries ToEntity(this Model.EventSeries model)
         {        
             return new DB.CollectionEventSeries()
@@ -38,24 +43,59 @@ namespace DiversityService
             };
         }
 
+        #endregion
+
+        #region event
         public static DB.CollectionEvent ToEntity(this Model.Event model)
         {
             return new DB.CollectionEvent()
             {
-                CollectionEventID = model.EventID,
-                SeriesID = model.SeriesID,
-
+                //CollectionEventID = model.EventID,
+                //EventID Autogenrated
+                SeriesID = model.SeriesID, //Setzt Anpassung durch vorherige Datenübertragung voraus
                 CollectionYear = (short)model.CollectionDate.Year,
                 CollectionMonth = (byte)model.CollectionDate.Month,
                 CollectionDay = (byte)model.CollectionDate.Day,
                 LocalityDescription = model.LocalityDescription,
                 HabitatDescription = model.HabitatDescription,
-                
-                //TODO CollectingMethod
-                
-
+      
                 RowGUID = Guid.NewGuid(),
             };
+        }
+
+        public static IList<DB.CollectionEventLocalisation> ToLocalisations(this Model.Event model, DB.CollectionEvent entity, Model.UserProfile profile)
+        {
+            IList<DB.CollectionEventLocalisation> localisations = new List<DB.CollectionEventLocalisation>();
+
+            DB.CollectionEventLocalisation altitude = new DB.CollectionEventLocalisation();
+            altitude.AverageAltitudeCache = model.Altitude;
+            altitude.AverageLatitudeCache = model.Latitude;
+            altitude.AverageLongitudeCache = model.Longitude;
+            altitude.CollectionEvent = entity;
+            altitude.CollectionEventID = entity.CollectionEventID;
+            altitude.DeterminationDate = model.DeterminationDate;
+            altitude.LocalisationSystemID = 4;
+            altitude.Location1 = model.Altitude.ToString();
+            altitude.ResponsibleAgentURI = profile.AgentUri;
+            altitude.ResponsibleName = profile.UserName;
+            altitude.RowGUID = Guid.NewGuid();
+            localisations.Add(altitude);
+
+            DB.CollectionEventLocalisation wgs84 = new DB.CollectionEventLocalisation();
+            wgs84.AverageAltitudeCache = model.Altitude;
+            wgs84.AverageLatitudeCache = model.Latitude;
+            wgs84.AverageLongitudeCache = model.Longitude;
+            wgs84.CollectionEvent = entity;
+            wgs84.CollectionEventID = entity.CollectionEventID;
+            wgs84.DeterminationDate = model.DeterminationDate;
+            wgs84.LocalisationSystemID = 8;
+            wgs84.Location1 = model.Latitude.ToString();
+            wgs84.Location2 = model.Longitude.ToString();
+            wgs84.ResponsibleAgentURI = profile.AgentUri;
+            wgs84.ResponsibleName = profile.UserName;
+            wgs84.RowGUID = Guid.NewGuid();
+            localisations.Add(wgs84);
+            return localisations;
         }
 
         public static Model.Event ToModel(this DB.CollectionEvent entity)
@@ -68,11 +108,60 @@ namespace DiversityService
                 CollectionDate = 
                 (entity.CollectionYear != null && entity.CollectionMonth != null && entity.CollectionDay != null) ? 
                     new DateTime((int)entity.CollectionYear, (int)entity.CollectionMonth, (int)entity.CollectionDay) 
-                    : DateTime.Now, 
+                    : DateTime.Now, //TODO bei fehlenden Werten differenzieren
                 LocalityDescription = entity.LocalityDescription,
                 HabitatDescription = entity.HabitatDescription,
-                
+                //Todo zugehörige Localisations laden
             };
         }
+
+        
+        public static IList<DB.CollectionEventProperty> ToEntity(this IList<Model.CollectionEventProperty> models, DB.CollectionEvent ev, Model.UserProfile profile)
+        {
+            IList<DB.CollectionEventProperty> exportList = new List<DB.CollectionEventProperty>();
+            foreach (Model.CollectionEventProperty model in models)
+            {
+                DB.CollectionEventProperty export = new DB.CollectionEventProperty();
+                export.CollectionEvent = ev;
+                export.CollectionEventID = ev.CollectionEventID;
+                export.DisplayText = model.DisplayText;
+                export.Property=null;//TODO storage anbinden?
+                export.PropertyID = model.PropertyID;
+                export.PropertyURI = model.PropertyUri;
+                export.ResponsibleAgentURI=profile.AgentUri;
+                export.ResponsibleName=profile.UserName;
+                export.RowGUID = Guid.NewGuid();
+                exportList.Add(export);
+            }
+            return exportList;
+        }
+        #endregion
+
+        #region specimen
+        public static IList<DB.CollectionSpecimen> ToEntity(this IList<Model.Specimen> specimen, DB.CollectionEvent ev)
+        {
+            IList<DB.CollectionSpecimen> exportList = new List<DB.CollectionSpecimen>();
+            foreach (Model.Specimen spec in specimen)
+            {
+                //CollectionSpecimenID Autogenerated
+                DB.CollectionSpecimen export = new DB.CollectionSpecimen();
+                export.CollectionEvent = ev;
+                export.CollectionEventID = ev.CollectionEventID;
+                export.AccessionNumber = spec.AccesionNumber;
+                export.Version = 1;
+                export.RowGUID = Guid.NewGuid();
+                exportList.Add(export);
+            }
+            return exportList;
+        }
+        #endregion
+
+        #region units
+        #endregion
+
+        #region analyses
+        #endregion
+
+
     }
 }
