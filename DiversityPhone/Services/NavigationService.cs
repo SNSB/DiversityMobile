@@ -70,10 +70,13 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s,args) => args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
+            _frame.Navigating += (s, args) =>
+                {                    
+                    args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
+                };
             _frame.Navigated += (s, args) =>
                 {
-                    if (!args.Uri.IsAbsoluteUri || args.Uri.Scheme != "app:")
+                    if (!args.Uri.IsAbsoluteUri || args.Uri.Scheme != "app")
                         NavigationFinished();
                 };
         }
@@ -85,16 +88,17 @@ namespace DiversityPhone.Services
             if (States.Any() && page != null && page.DataContext is PageViewModel)
             {
                 var vm = page.DataContext as PageViewModel;
-                vm.SetState(States.Peek());
+                var state = States.Peek();
+                vm.SetState(state);
             }
         }        
-        bool NavigationStarted(bool isBack)
+        bool NavigationStarted(bool isInternalBackNavigation)
         {
             var page = App.RootFrame.Content as PhoneApplicationPage;
 
             if (page != null && page.DataContext is PageViewModel)
             {                
-                if(isBack)
+                if(isInternalBackNavigation)
                 {
                     var thisPage = States.Pop();
                     if (States.Any())
