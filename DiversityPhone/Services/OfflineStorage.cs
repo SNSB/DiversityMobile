@@ -923,6 +923,16 @@
             throw new NotImplementedException();
         }
 
+        public IList<Svc.EventSeries> getUploadServiceEventSeries()
+        {
+            IList<Svc.EventSeries> seriesSVC = new List<Svc.EventSeries>();
+            IList<EventSeries> seriesPhone = this.getAllEventSeries();
+            foreach (EventSeries es in seriesPhone)
+                if(es.IsModified())
+                    seriesSVC.Add(EventSeries.ConvertToServiceObject(es));
+            return seriesSVC;               
+        }
+
         public void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to)
         {
             throw new NotImplementedException();

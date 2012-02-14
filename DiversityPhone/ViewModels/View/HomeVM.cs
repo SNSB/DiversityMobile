@@ -22,7 +22,8 @@
         #region Services        
         private IOfflineStorage _storage;
         private IDiversityServiceClient _repository;
-        private DiversityPhone.MediaService4.MediaService4Client msc;
+        private DiversityService.DiversityServiceClient _plainUploadClient;
+        private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
 
@@ -32,6 +33,7 @@
         public ReactiveCommand GetVocabulary { get; private set; }
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand UploadMMO { get; private set; }
+        public ReactiveCommand UploadPlain { get; private set; }
         public ReactiveAsyncCommand Upload { get; private set; }        
         #endregion
 
@@ -63,16 +65,19 @@
         {            
             _storage = storage;
             _repository = repo;
+            
 
             //Initialize MultimediaTranfsfer
            
-            msc=new MediaService4.MediaService4Client();
-            msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
+            _msc=new MediaService4.MediaService4Client();
+            _msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
             _SeriesList = StateObservable
                 .Select(_ => updatedSeriesList())
                 .ToProperty(this, x => x.SeriesList);
 
-           
+            //Initialize PlainUpload
+            _plainUploadClient = new Svc.DiversityServiceClient();
+            _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
 
             registerUpload();
 
@@ -86,7 +91,9 @@
                 (UploadMMO = new ReactiveCommand())
                     .Subscribe(_ => uploadMMos()),
                 (GetVocabulary = new ReactiveCommand())
-                    .Subscribe(_ => getVoc()),         
+                    .Subscribe(_ => getVoc()), 
+                (UploadPlain=new ReactiveCommand())
+                    .Subscribe(_ =>uploadPlain()),
                 (Maps=new ReactiveCommand())
                     .Subscribe(_ =>loadMapPage()),                
             };
@@ -97,6 +104,7 @@
 
         private void registerUpload()
         {
+            
             //var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
             //Upload = new ReactiveAsyncCommand();
             //    .Select(_ => getUploadSectionsForSeries().ToObservable()).First()
@@ -104,14 +112,14 @@
             //.ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));
         }
 
-        private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries( EventSeries es)
+        private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries(EventSeries es)
         {
             var events = _storage.getEventsForSeries(es)
                         .Where(ev => ev.ModificationState == null); // Only New Events
             
-            foreach (var series in events)
+            foreach (var ev in events)
             {
-                yield return _storage.getNewHierarchyBelow(series);
+                yield return _storage.getNewHierarchyBelow(ev);
             }
         }
 
@@ -153,6 +161,38 @@
             
         }
 
+        private void uploadPlain()
+        {
+            IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
+            System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = DiversityPhone.Utility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
+            _plainUploadClient.InsertEventSeriesAsync(es);
+        }
+
+        private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
+        {
+            Dictionary<Svc.EventSeries,Svc.EventSeries> series = args.Result;
+            //Adjust keys and ModificationState
+            IList<EventSeries> phoneSeries = _storage.getAllEventSeries();
+            foreach (EventSeries ps in phoneSeries)
+            {
+                foreach(KeyValuePair<Svc.EventSeries,Svc.EventSeries> kvp in series)
+                {
+                    if (ps.SeriesID == kvp.Key.SeriesID)
+                    {
+                        IList<Event> phoneEvent = _storage.getEventsForSeries(ps);
+                        ps.SeriesID = kvp.Value.SeriesID;
+                        ps.ModificationState = false;
+                        _storage.addOrUpdateEventSeries(ps);
+                        foreach (Event ev in phoneEvent)
+                        {
+                            ev.SeriesID = ps.SeriesID;
+                            _storage.addOrUpdateEvent(ev);
+                        }
+                    }
+                }
+            }           
+        }
+
         #region Upload MMO
         private void uploadMMos()
         {
@@ -183,7 +223,7 @@
                     }
 
                 }
-                msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(),  0, 0, 0, "Test", DateTime.Now.ToShortDateString(), 371,data);
+                _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(),  0, 0, 0, "Test", DateTime.Now.ToShortDateString(), 371,data);
             }
         }
 
@@ -211,5 +251,7 @@
             Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.LoadedMaps, null));
         }
 
+
+       
     }
 }
