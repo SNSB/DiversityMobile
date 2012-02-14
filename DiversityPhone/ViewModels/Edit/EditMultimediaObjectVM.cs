@@ -31,6 +31,7 @@ namespace DiversityPhone.ViewModels
 
 
         #region Properties
+
         //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.   
 
         #region Properties
