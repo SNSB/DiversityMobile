@@ -13,6 +13,7 @@ using DiversityPhone.Model;
 using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using ReactiveUI;
+using System.Linq;
 using System.Collections.Generic;
 using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
@@ -109,7 +110,7 @@ namespace DiversityPhone.ViewModels.Utility
         }
         
 
-        public IList<Repository> Databases { get { return _Databases.Value; } }
+        public IList<Repository> Databases { get { return (_Databases != null) ? _Databases.Value : null; } }
         private ObservableAsPropertyHelper<IList<Repository>> _Databases;
 
 
@@ -127,7 +128,7 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
 
-        public IList<Project> Projects { get { return _Projects.Value; } }
+        public IList<Project> Projects { get { return (_Projects != null) ? _Projects.Value : null; } }
         private ObservableAsPropertyHelper<IList<Project>> _Projects;
 
 
@@ -143,10 +144,8 @@ namespace DiversityPhone.ViewModels.Utility
                 this.RaiseAndSetIfChanged(x => x.CurrentProject, ref _CurrentProject, value);
             }
         }
-
-
-        private UserProfile Profile { get { return _Profile.Value; } }
-        private ObservableAsPropertyHelper<UserProfile> _Profile;
+        
+        private IObservable<UserProfile> _Profile;
         
 
         #endregion
@@ -180,8 +179,7 @@ namespace DiversityPhone.ViewModels.Utility
         public SettingsVM(SettingsService set, IDiversityServiceClient divsvc)            
         {
             _settings = set;          
-            _DivSvc = divsvc;
-            Save = new ReactiveCommand(CanSave());            
+            _DivSvc = divsvc;                      
 
             _Model =_ModelBackingStore
                 .ToProperty(this, x => x.Model);           
@@ -193,11 +191,11 @@ namespace DiversityPhone.ViewModels.Utility
 
             _IsFirstSetup
                 .Where(x => x)
-                .Do(_ => OnSetup());
+                .Subscribe(_ => OnSetup());
 
             _IsFirstSetup
                 .Where(x => !x)
-                .Do(_ => OnSettings());
+                .Subscribe(_ => OnSettings());
 
             _ModelBackingStore.OnNext(_settings.getSettings());            
         }
@@ -216,8 +214,22 @@ namespace DiversityPhone.ViewModels.Utility
 
         private void OnSetup()
         {
-            var onPivot = this.ObservableForProperty(x => x.CurrentPivot)
-                              .Where(p => p.Value != Pivots.Login);
+            var creds =
+            Observable.Zip(
+                this.ObservableForProperty(x => x.UserName),
+                this.ObservableForProperty(x => x.Password),
+                (user, pass) => new UserCredentials() { UserName = user.Value, Password = pass.Value }
+                ).DistinctUntilChanged();
+
+            var credsWithRepo =
+                Observable.Zip(
+                creds,
+                this.ObservableForProperty(x => x.CurrentDB).Where(repo => repo != null),
+                (usercreds, repo) =>
+                {
+                    usercreds.Repository = repo.Value.Database;
+                    return usercreds;
+                }).DistinctUntilChanged();
 
             var gettingDBs = new Subject<bool>();
             var gettingProjects = new Subject<bool>();
@@ -228,19 +240,29 @@ namespace DiversityPhone.ViewModels.Utility
                 )
                 .ToProperty(this, x => x.InProgress);
 
-            _Databases = onPivot
-                .Where(p => p.Value == Pivots.Repository)
+            _Databases = creds                
                 .Do(_ => gettingDBs.OnNext(true))
-                .SelectMany(_ => _DivSvc.GetRepositories(new UserCredentials() { UserName = UserName, Password = Password }))
+                .SelectMany(login => _DivSvc.GetRepositories(login))
                 .Do(_ => gettingDBs.OnNext(false))
                 .ToProperty(this, x => x.Databases);
+            _Databases
+                .Select(dbs => dbs.FirstOrDefault())
+                .BindTo(this, x => x.CurrentDB);
 
-            _Projects = onPivot
-               .Where(p => p.Value == Pivots.Projects)
+            _Projects = credsWithRepo               
                .Do(_ => gettingProjects.OnNext(true))
-               .SelectMany(_ => _DivSvc.GetProjectsForUser(new UserCredentials() { UserName = UserName, Password = Password, Repository = (CurrentDB == null) ? null : CurrentDB.Database  }))
+               .SelectMany(login => _DivSvc.GetProjectsForUser(login))
                .Do(_ => gettingProjects.OnNext(false))
                .ToProperty(this, x => x.Projects);
+            _Projects
+                .Select(projects => projects.FirstOrDefault())
+                .BindTo(this, x => x.CurrentProject);
+
+            _Profile = creds                
+                .SelectMany(login => _DivSvc.GetUserInfo(login))
+                .StartWith(new UserProfile[]{null})
+                .Replay(1);
+
 
             Save = new ReactiveCommand(CanSave());
             Save.Select(_ => Model)
@@ -251,10 +273,12 @@ namespace DiversityPhone.ViewModels.Utility
 
         private AppSettings updateModel(AppSettings m)
         {
-            m.AgentName = Profile.UserName;
-            m.AgentURI = Profile.AgentUri;
+            var profile = _Profile.First();
+
+            m.AgentName = profile.UserName;
+            m.AgentURI = profile.AgentUri;
             m.CurrentProject = CurrentProject.ProjectID;
-            m.CurrentProjectName = CurrentProject.Name;
+            m.CurrentProjectName = CurrentProject.DisplayText;
             m.HomeDB = CurrentDB.Database;
             m.HomeDBName = CurrentDB.DisplayName;
             m.Password = (SavePassword)? Password : null;

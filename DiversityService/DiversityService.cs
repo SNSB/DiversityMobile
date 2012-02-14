@@ -20,7 +20,13 @@ namespace DiversityService
         {
             using (var db = new DiversityCollection.DiversityCollection())
             {
-                return db.Query<Project>("FROM [DiversityCollection_Test].[dbo].[DiversityMobile_ProjectList] () AS [Project]"); //TODO Use credential DB
+                return db.Query<Project>("FROM [DiversityCollection_Test].[dbo].[DiversityMobile_ProjectList] () AS [Project]")
+                    .Select(p =>
+                        {
+                            p.DisplayText = p.DisplayText ?? "No Description";
+                            return p;
+                        })
+                    .ToList(); //TODO Use credential DB
             }            
         }
 

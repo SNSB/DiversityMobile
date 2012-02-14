@@ -14,7 +14,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Settings, Source={StaticResource Locator}}">
     <phone:PhoneApplicationPage.Resources>
         <vw:SettingsPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
@@ -22,23 +23,47 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
-        <controls:Pivot Title="SETUP" Visibility="{Binding IsSetup, Converter={StaticResource BoolToVis}}">
+        <controls:Pivot Title="SETUP" Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}}"
+                        SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
             <controls:PivotItem Header="Login">
-                <Grid/>
+                <StackPanel>
+                    <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
+                    <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <TextBox Text="{Binding Password, Mode=TwoWay}"/>
+                </StackPanel>
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="Repository">
-                <Grid/>
+                <StackPanel>
+                    <toolkit:ListPicker ItemsSource="{Binding Databases}"
+                                        SelectedItem="{Binding CurrentDB, Mode=TwoWay}">
+                        <toolkit:ListPicker.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </toolkit:ListPicker.ItemTemplate>
+                    </toolkit:ListPicker>
+                </StackPanel>
             </controls:PivotItem>
 
             <controls:PivotItem Header="Project">
-                <Grid/>
+                <StackPanel>
+                    <toolkit:ListPicker ItemsSource="{Binding Projects}"
+                                        SelectedItem="{Binding CurrentProject, Mode=TwoWay}">
+                        <toolkit:ListPicker.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayText}"/>
+                            </DataTemplate>
+                        </toolkit:ListPicker.ItemTemplate>
+                    </toolkit:ListPicker>
+                </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>
-        
-        <ScrollViewer Visibility="{Binding IsSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
+
+        <ScrollViewer Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
             <StackPanel>
                 <TextBlock TextWrapping="Wrap" Text="Settings" Style="{StaticResource PhoneTextTitle1Style}"/>
                 <TextBlock Text="User" Style="{StaticResource PhoneTextSmallStyle}"/>

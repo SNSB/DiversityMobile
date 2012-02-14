@@ -37,8 +37,7 @@
   <xs:element name="ArrayOfProject" nillable="true" type="tns:ArrayOfProject" />
   <xs:complexType name="Project">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
