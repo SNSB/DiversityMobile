@@ -1867,6 +1867,11 @@ namespace DiversityPhone.DiversityService {
         
         System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse")]
+        System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, System.AsyncCallback callback, object asyncState);
+        
+        void EndInsertGeographyIntoSeries(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
         System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState);
         
@@ -2275,6 +2280,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onInsertEventSeriesCompletedDelegate;
         
+        private BeginOperationDelegate onBeginInsertGeographyIntoSeriesDelegate;
+        
+        private EndOperationDelegate onEndInsertGeographyIntoSeriesDelegate;
+        
+        private System.Threading.SendOrPostCallback onInsertGeographyIntoSeriesCompletedDelegate;
+        
         private BeginOperationDelegate onBeginInsertHierarchyDelegate;
         
         private EndOperationDelegate onEndInsertHierarchyDelegate;
@@ -2363,6 +2374,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<DownloadPropertyListCompletedEventArgs> DownloadPropertyListCompleted;
         
         public event System.EventHandler<InsertEventSeriesCompletedEventArgs> InsertEventSeriesCompleted;
+        
+        public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> InsertGeographyIntoSeriesCompleted;
         
         public event System.EventHandler<InsertHierarchyCompletedEventArgs> InsertHierarchyCompleted;
         
@@ -3055,6 +3068,51 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertGeographyIntoSeries(int seriesID, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginInsertGeographyIntoSeries(seriesID, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        void DiversityPhone.DiversityService.IDiversityService.EndInsertGeographyIntoSeries(System.IAsyncResult result) {
+            base.Channel.EndInsertGeographyIntoSeries(result);
+        }
+        
+        private System.IAsyncResult OnBeginInsertGeographyIntoSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int seriesID = ((int)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertGeographyIntoSeries(seriesID, callback, asyncState);
+        }
+        
+        private object[] OnEndInsertGeographyIntoSeries(System.IAsyncResult result) {
+            ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertGeographyIntoSeries(result);
+            return null;
+        }
+        
+        private void OnInsertGeographyIntoSeriesCompleted(object state) {
+            if ((this.InsertGeographyIntoSeriesCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.InsertGeographyIntoSeriesCompleted(this, new System.ComponentModel.AsyncCompletedEventArgs(e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void InsertGeographyIntoSeriesAsync(int seriesID) {
+            this.InsertGeographyIntoSeriesAsync(seriesID, null);
+        }
+        
+        public void InsertGeographyIntoSeriesAsync(int seriesID, object userState) {
+            if ((this.onBeginInsertGeographyIntoSeriesDelegate == null)) {
+                this.onBeginInsertGeographyIntoSeriesDelegate = new BeginOperationDelegate(this.OnBeginInsertGeographyIntoSeries);
+            }
+            if ((this.onEndInsertGeographyIntoSeriesDelegate == null)) {
+                this.onEndInsertGeographyIntoSeriesDelegate = new EndOperationDelegate(this.OnEndInsertGeographyIntoSeries);
+            }
+            if ((this.onInsertGeographyIntoSeriesCompletedDelegate == null)) {
+                this.onInsertGeographyIntoSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnInsertGeographyIntoSeriesCompleted);
+            }
+            base.InvokeAsync(this.onBeginInsertGeographyIntoSeriesDelegate, new object[] {
+                        seriesID}, this.onEndInsertGeographyIntoSeriesDelegate, this.onInsertGeographyIntoSeriesCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginInsertHierarchy(hierarchy, callback, asyncState);
         }
@@ -3366,6 +3424,18 @@ namespace DiversityPhone.DiversityService {
                 object[] _args = new object[0];
                 System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> _result = ((System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries>)(base.EndInvoke("InsertEventSeries", _args, result)));
                 return _result;
+            }
+            
+            public System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = seriesID;
+                System.IAsyncResult _result = base.BeginInvoke("InsertGeographyIntoSeries", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public void EndInsertGeographyIntoSeries(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                base.EndInvoke("InsertGeographyIntoSeries", _args, result);
             }
             
             public System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState) {

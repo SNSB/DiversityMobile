@@ -15,6 +15,7 @@ using Svc = DiversityPhone.DiversityService;
         IList<EventSeries> getNewEventSeries();
         void addOrUpdateEventSeries(EventSeries newSeries);
         void deleteEventSeries(EventSeries es);
+        void adjustSeriesAfterUpload(int oldSeries, int newSeries);
 
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);        

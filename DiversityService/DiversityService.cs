@@ -97,10 +97,6 @@ namespace DiversityService
 
         }
 
-      
-
-       
-
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
         {
             using (var db = new DiversityMobile.DiversityMobile())
@@ -163,27 +159,43 @@ namespace DiversityService
         }
         #endregion
 
-       
-
 
         public Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series)
         {
             Dictionary<EventSeries,EventSeries> result = new Dictionary<EventSeries, EventSeries>();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
-                //Adjus EventSeries
+                //Adjust EventSeries
                 foreach (EventSeries es in series)
                 {
                     var newSeries = es.ToEntity();
                     ctx.CollectionEventSeries.AddObject(newSeries);
                     ctx.SaveChanges();
+                    
                     EventSeries newSeriesBack = newSeries.ToModel();
+                    newSeriesBack.Geography = es.Geography;
                     result.Add(es,newSeriesBack);
+                    if(newSeriesBack.Geography!=null && newSeriesBack.Geography!=String.Empty)
+                        InsertGeographyIntoSeries(newSeriesBack.SeriesID,newSeriesBack.Geography);
                 }
+                
             }
+          
             return result;
             
         }
+
+        public void InsertGeographyIntoSeries(int seriesID, String geoString)
+        {
+            //Adjust GeoData
+            using (var db = new DiversityCollection.DiversityCollection())
+            {
+                String sql = "Update [DiversityCollection_BaseTest].[dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
+                db.Execute(sql);
+            }      
+        }
+
+    
 
         public HierarchySection InsertHierarchy(HierarchySection hierarchy)
         {

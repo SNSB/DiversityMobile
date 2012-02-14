@@ -98,6 +98,12 @@
   <wsdl:message name="IDiversityService_InsertEventSeries_OutputMessage">
     <wsdl:part name="parameters" element="tns:InsertEventSeriesResponse" />
   </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertGeographyIntoSeries_InputMessage">
+    <wsdl:part name="parameters" element="tns:InsertGeographyIntoSeries" />
+  </wsdl:message>
+  <wsdl:message name="IDiversityService_InsertGeographyIntoSeries_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InsertGeographyIntoSeriesResponse" />
+  </wsdl:message>
   <wsdl:message name="IDiversityService_InsertHierarchy_InputMessage">
     <wsdl:part name="parameters" element="tns:InsertHierarchy" />
   </wsdl:message>
@@ -164,6 +170,10 @@
     <wsdl:operation name="InsertEventSeries">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeries" message="tns:IDiversityService_InsertEventSeries_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesResponse" message="tns:IDiversityService_InsertEventSeries_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertGeographyIntoSeries">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries" message="tns:IDiversityService_InsertGeographyIntoSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse" message="tns:IDiversityService_InsertGeographyIntoSeries_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertHierarchy">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
@@ -300,6 +310,15 @@
     </wsdl:operation>
     <wsdl:operation name="InsertEventSeries">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertEventSeries" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertGeographyIntoSeries">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

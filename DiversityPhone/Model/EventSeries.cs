@@ -43,6 +43,9 @@
         public string Description { get; set; }
 
         [Column]
+        public string GeoSource { get; set; }
+
+        [Column]
         public string SeriesCode { get; set; }
 
         [Column]
@@ -78,19 +81,36 @@
                 //Equals
                           (q, es) => q.Where(row => row.SeriesID == es.SeriesID),
                 //Orderby
-                          (q) => q.OrderBy(es => es.SeriesID),
+                          (q) => q.OrderBy(es => -es.SeriesID),//As EventSeries have negative Values Unlike the other entities in DiversityCollection we need to order by the nagtive value to get the same behaviour
                 //FreeKey
                           (q, es) =>
                           {
-                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKey(q, row => row.SeriesID);
+                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
                           });
 
             _NoEventSeries = new EventSeries()
             {
-                Description = "No EventSeries",
+                Description = "Events",
                 SeriesCode = "No EventSeries",
                 ModificationState = false
             };
+        }
+
+   
+
+        public static EventSeries Clone(EventSeries es)
+        {
+            EventSeries clone = new EventSeries();
+            clone.Description = es.Description;
+            clone.GeoSource = es.GeoSource;
+            clone.LogUpdatedWhen = es.LogUpdatedWhen;
+            clone.ModificationState = es.ModificationState;
+            clone.SeriesCode = es.SeriesCode;
+            clone.SeriesEnd = es.SeriesEnd;
+            clone.SeriesID=es.SeriesID;
+            clone.SeriesStart=es.SeriesStart;
+            return clone;
+
         }
 
         public static Svc.EventSeries ConvertToServiceObject(EventSeries es)
@@ -103,8 +123,14 @@
             export.SeriesEnd = es.SeriesEnd;
             export.Description = es.Description;
             export.LogUpdatedWhen = es.LogUpdatedWhen;
+            //Todo: export.Geography = EventSeries.convertGeoSourceToString(es.GeoSource);
             return export;
-            //export.Geography= TODO
+            
+        }
+
+        public static String convertGeoSourceToString(String path)
+        {
+            throw new NotImplementedException();
         }
     }
 }

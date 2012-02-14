@@ -169,6 +169,7 @@
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Utility\GeographySerialization.cs" />
     <Compile Include="Utility\ObservableConverter.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />

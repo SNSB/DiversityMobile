@@ -39,7 +39,7 @@ namespace DiversityService
                 Description = entity.Description,
                 SeriesCode = entity.SeriesCode,
                 LogUpdatedWhen = entity.LogUpdatedWhen
-                //TODO Geography                
+                //TODO Geography -- has to be stored externally               
             };
         }
 

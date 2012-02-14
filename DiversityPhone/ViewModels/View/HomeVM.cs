@@ -163,34 +163,22 @@
 
         private void uploadPlain()
         {
+
             IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
             System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = DiversityPhone.Utility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
             _plainUploadClient.InsertEventSeriesAsync(es);
         }
 
+
+
         private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
         {
             Dictionary<Svc.EventSeries,Svc.EventSeries> series = args.Result;
-            //Adjust keys and ModificationState
-            IList<EventSeries> phoneSeries = _storage.getAllEventSeries();
-            foreach (EventSeries ps in phoneSeries)
+            foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
             {
-                foreach(KeyValuePair<Svc.EventSeries,Svc.EventSeries> kvp in series)
-                {
-                    if (ps.SeriesID == kvp.Key.SeriesID)
-                    {
-                        IList<Event> phoneEvent = _storage.getEventsForSeries(ps);
-                        ps.SeriesID = kvp.Value.SeriesID;
-                        ps.ModificationState = false;
-                        _storage.addOrUpdateEventSeries(ps);
-                        foreach (Event ev in phoneEvent)
-                        {
-                            ev.SeriesID = ps.SeriesID;
-                            _storage.addOrUpdateEvent(ev);
-                        }
-                    }
-                }
-            }           
+                _storage.adjustSeriesAfterUpload(kvp.Key.SeriesID, kvp.Value.SeriesID);
+            }
+            updatedSeriesList();
         }
 
         #region Upload MMO

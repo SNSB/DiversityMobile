@@ -122,9 +122,9 @@ namespace DiversityPhone.View
                 PhotoImage.Source = actualImage;
                 //Collapse visibility on the progress bar once writeable bitmap is visible.
                 progressBar1.Visibility = Visibility.Collapsed;
-                saveCapturedImage();
+                saveCapturedImage(); //Erst im iso speichern, wenn das Bild fertig ist
                 setPhotoBar();
-                setPhotoButtonStates(true, false, false, false);
+                setPhotoButtonStates(true, true, false, true);
                 
             }
             else
@@ -136,13 +136,14 @@ namespace DiversityPhone.View
             
         }
 
-        private void btnSaveCroppedImage_Click(object sender, EventArgs e)
+        private void btnSaveImage_Click(object sender, EventArgs e)
         {
             if (this.actualImage == null)
                 return;
             this.storedImage = this.actualImage;
             saveCapturedImage();
-            setPhotoButtonStates(true, false, false, false);
+            VM.Save.Execute(null);
+            setPhotoButtonStates(false, false, false, false);
         }
 
         private void btnResetPhoto_Click(object sender, EventArgs e)
@@ -319,7 +320,7 @@ namespace DiversityPhone.View
             if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
                 VM.Uri = uri;
-                VM.Save.Execute(null);
+                
             }
             progressBar1.Visibility = Visibility.Collapsed;
         }
@@ -354,7 +355,7 @@ namespace DiversityPhone.View
             btnCamera.Click += new EventHandler(NewPhoto_Click);
             btnCrop.Click += new EventHandler(btnCrop_Click);
             btnReset.Click += new EventHandler(btnResetPhoto_Click);
-            btnSave.Click += new EventHandler(btnSaveCroppedImage_Click);
+            btnSave.Click += new EventHandler(btnSaveImage_Click);
             progressBar1.Visibility = Visibility.Collapsed;
         }
 

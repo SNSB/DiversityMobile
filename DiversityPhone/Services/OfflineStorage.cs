@@ -97,6 +97,32 @@
             deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
         }
 
+        public void adjustSeriesAfterUpload(int oldSeriesKey, int newSeriesKey)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                var savedSeries =
+                    from es in ctx.EventSeries
+                    where es.SeriesID == oldSeriesKey
+                    select es;
+                EventSeries oldSeries = savedSeries.First();
+                ctx.EventSeries.DeleteOnSubmit(oldSeries);
+                EventSeries newSeries = EventSeries.Clone(oldSeries);
+
+                newSeries.SeriesID = newSeriesKey;
+                newSeries.ModificationState = false;
+                ctx.EventSeries.InsertOnSubmit(newSeries);
+                var savedEvents =
+                    from ev in ctx.Events
+                    where ev.SeriesID == oldSeriesKey
+                    select ev;
+                foreach (Event eve in savedEvents)
+                    eve.SeriesID = newSeriesKey;
+                ctx.SubmitChanges();
+            }
+        }
+
+
         #endregion
 
         #region Event

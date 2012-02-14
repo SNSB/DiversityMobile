@@ -71,6 +71,16 @@ namespace DiversityPhone.Model
                 lowerthanMin = table.Select(keySelector).Min() - 1;
 
             return (lowerthanMin < -1) ? lowerthanMin : -1;
-        }        
+        }
+
+        public static int FindFreeIntKeyUp(IQueryable<T> table, Expression<Func<T, int>> keySelector) //CollectionEventSeries Autoinckey is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
+        {
+            var largerThanMax = 1;
+
+            if (table.Any())
+                largerThanMax= table.Select(keySelector).Max()+1;
+
+            return (largerThanMax > 1) ? largerThanMax : 1;
+        }   
     }
 }
