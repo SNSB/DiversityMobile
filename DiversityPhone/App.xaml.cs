@@ -134,7 +134,7 @@ namespace DiversityPhone
                 && savedStates != null
                 && savedStates is IList<PageState>)
             {
-                var stack = new Stack<PageState>(savedStates as IList<PageState>);
+                var stack = new Stack<PageState>((savedStates as IList<PageState>).Reverse());
                 NavSvc.States = stack;
             }
                 
