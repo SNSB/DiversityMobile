@@ -166,9 +166,23 @@ namespace DiversityService
        
 
 
-        public IList<EventSeries> InsertEventSeries(IList<EventSeries> series)
+        public Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series)
         {
-            throw new NotImplementedException();
+            Dictionary<EventSeries,EventSeries> result = new Dictionary<EventSeries, EventSeries>();
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                //Adjus EventSeries
+                foreach (EventSeries es in series)
+                {
+                    var newSeries = es.ToEntity();
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    EventSeries newSeriesBack = newSeries.ToModel();
+                    result.Add(es,newSeriesBack);
+                }
+            }
+            return result;
+            
         }
 
         public HierarchySection InsertHierarchy(HierarchySection hierarchy)
@@ -187,8 +201,8 @@ namespace DiversityService
                 //Save Event
                 ctx.SaveChanges();
                 result.Event = newEventEntity.ToModel(altitude,latitude,longitude); //Annahme SaveChanges aktualisiert mit anschließendem ToModel aktualisiert Primärschlüssel -- Sonst über Guid suchen
-
-
+                
+                
                 //Adjust directly from event depending entities
                 var newLocalisations = hierarchy.Event.ToLocalisations(hierarchy.Profile);
                 foreach (DiversityCollection.CollectionEventLocalisation loc in newLocalisations)

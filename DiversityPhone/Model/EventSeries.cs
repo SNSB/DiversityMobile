@@ -4,9 +4,10 @@
     using System.Linq;
     using System.Data.Linq.Mapping;
     using DiversityPhone.Services;
+    using Svc = DiversityPhone.DiversityService;
 
     [Table]
-    public class EventSeries : IModifyable
+    public class EventSeries :  IModifyable
     {
         private static EventSeries _NoEventSeries;
       
@@ -90,6 +91,20 @@
                 SeriesCode = "No EventSeries",
                 ModificationState = false
             };
-        }       
+        }
+
+        public static Svc.EventSeries ConvertToServiceObject(EventSeries es)
+        {
+            
+            Svc.EventSeries export = new Svc.EventSeries();
+            export.SeriesID = es.SeriesID;
+            export.SeriesCode = es.SeriesCode;
+            export.SeriesStart = es.SeriesStart;
+            export.SeriesEnd = es.SeriesEnd;
+            export.Description = es.Description;
+            export.LogUpdatedWhen = es.LogUpdatedWhen;
+            return export;
+            //export.Geography= TODO
+        }
     }
 }

@@ -169,6 +169,7 @@
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Utility\ObservableConverter.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
@@ -495,29 +496,32 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\Service11.disco" />
+    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
-    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
+    <None Include="Service References\DiversityService\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service131.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service132.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service133.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />

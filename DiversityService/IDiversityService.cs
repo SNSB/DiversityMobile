@@ -55,7 +55,7 @@ namespace DiversityService
         IEnumerable<PropertyName> DownloadPropertyList(string list);
 
         [OperationContract]
-        IList<EventSeries> InsertEventSeries(IList<EventSeries> series);
+        Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series);
 
 
         [OperationContract]

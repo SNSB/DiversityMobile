@@ -53,7 +53,7 @@ namespace DiversityPhone
         private void Upload_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.Upload.Execute(null);
+                VM.UploadPlain.Execute(null);
         }
 
         private void LoadedMaps_Click(object sender, EventArgs e)
