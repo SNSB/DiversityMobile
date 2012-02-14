@@ -201,7 +201,7 @@
   <xs:element name="InsertEventSeriesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="InsertEventSeriesResult" nillable="true" type="q24:ArrayOfEventSeries" />
+        <xs:element xmlns:q24="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="InsertEventSeriesResult" nillable="true" type="q24:ArrayOfKeyValueOfEventSeriesEventSeriesOmhpO3Iy" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

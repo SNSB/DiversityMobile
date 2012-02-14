@@ -1850,7 +1850,7 @@ namespace DiversityPhone.DiversityService {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertEventSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertEventSeriesResponse")]
         System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result);
+        System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
         System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState);
@@ -2139,10 +2139,10 @@ namespace DiversityPhone.DiversityService {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> Result {
+        public System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries>)(this.results[0]));
+                return ((System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries>)(this.results[0]));
             }
         }
     }
@@ -2999,7 +2999,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeries(System.IAsyncResult result) {
+        System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeries(System.IAsyncResult result) {
             return base.Channel.EndInsertEventSeries(result);
         }
         
@@ -3009,7 +3009,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         private object[] OnEndInsertEventSeries(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeries(result);
+            System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeries(result);
             return new object[] {
                     retVal};
         }
@@ -3347,9 +3347,9 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result) {
+            public System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries>)(base.EndInvoke("InsertEventSeries", _args, result)));
+                System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> _result = ((System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries>)(base.EndInvoke("InsertEventSeries", _args, result)));
                 return _result;
             }
             
