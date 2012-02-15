@@ -17,6 +17,7 @@ using System.Linq;
 using System.Collections.Generic;
 using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
+using DiversityPhone.Messages;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -24,6 +25,7 @@ namespace DiversityPhone.ViewModels.Utility
     {
         SettingsService _settings;
         IDiversityServiceClient _DivSvc;
+        IOfflineStorage _storage;
 
         public bool IsFirstSetup { get { return _IsFirstSetup.Value; } }
         private ObservableAsPropertyHelper<bool> _IsFirstSetup;
@@ -145,7 +147,7 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
         
-        private IObservable<UserProfile> _Profile;
+        private ISubject<UserProfile> _Profile = new ReplaySubject<UserProfile>(1);
         
 
         #endregion
@@ -163,9 +165,7 @@ namespace DiversityPhone.ViewModels.Utility
             {
                 this.RaiseAndSetIfChanged(x => x.UseGPS,ref _UseGPS, value);
             }
-        }
-        
-
+        }             
         public ReactiveCommand Save { get; private set; }
 
         public ReactiveCommand Reset { get; private set; }
@@ -173,13 +173,15 @@ namespace DiversityPhone.ViewModels.Utility
 
         public AppSettings Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<AppSettings> _Model;
-        private Subject<AppSettings> _ModelBackingStore = new Subject<AppSettings>();
+        private ISubject<AppSettings> _ModelBackingStore = new Subject<AppSettings>();
+
+        private IDisposable test1, test2;
         
-        
-        public SettingsVM(SettingsService set, IDiversityServiceClient divsvc)            
+        public SettingsVM(SettingsService set, IDiversityServiceClient divsvc, IOfflineStorage storage)            
         {
             _settings = set;          
-            _DivSvc = divsvc;                      
+            _DivSvc = divsvc;
+            _storage = storage;     
 
             _Model =_ModelBackingStore
                 .ToProperty(this, x => x.Model);           
@@ -189,6 +191,9 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select( x => x.UserName == null)
                 .ToProperty(this, x => x.IsFirstSetup);
 
+            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x));
+            Save = new ReactiveCommand(CanSave());
+
             _IsFirstSetup
                 .Where(x => x)
                 .Subscribe(_ => OnSetup());
@@ -197,32 +202,70 @@ namespace DiversityPhone.ViewModels.Utility
                 .Where(x => !x)
                 .Subscribe(_ => OnSettings());
 
+
+            Save.Select(_ => Model)
+              .Select(m =>
+                  {
+                      if (IsFirstSetup)
+                          return updateModel(m);
+                      else
+                      {
+                          m.UseGPS = UseGPS;
+                          return m;
+                      }
+                  })
+              .Subscribe(m =>
+              {
+                  _settings.saveSettings(m);
+                  _ModelBackingStore.OnNext(m);
+              });
+
+            Messenger.RegisterMessageSource(
+                Save
+                .Where(_ => !IsFirstSetup)
+                .Select(_ => new NavigationMessage(Services.Page.Previous))
+                );
+
+
             _ModelBackingStore.OnNext(_settings.getSettings());            
         }
 
         private void OnSettings()
         {
- 	        Save = new ReactiveCommand();
-
             Messenger.RegisterMessageSource(
-                Save
-                .Do(_ => Model.UseGPS = UseGPS)
-                .Do(_ => _settings.saveSettings(Model))
-                .Select(_ => Messages.Message.NavigateBack)
-            );
+                Reset
+                .Take(1)
+                .Select(_ => new DialogMessage(
+                    Messages.DialogType.YesNo, 
+                    "Are you sure?", 
+                    "All diversity data you have not already uploaded will be lost!",
+                    res =>
+                    {
+                        if(res == DialogResult.OKYes)
+                            OnReset();
+                    }
+                    )));
+                
+        }
+
+        private void OnReset()
+        {
+            _storage.clearDatabase();
+            _settings.saveSettings(new AppSettings());
+            _ModelBackingStore.OnNext(new AppSettings());
         }
 
         private void OnSetup()
         {
             var creds =
-            Observable.Zip(
+            Observable.CombineLatest(
                 this.ObservableForProperty(x => x.UserName),
                 this.ObservableForProperty(x => x.Password),
                 (user, pass) => new UserCredentials() { UserName = user.Value, Password = pass.Value }
                 ).DistinctUntilChanged();
 
             var credsWithRepo =
-                Observable.Zip(
+                Observable.CombineLatest(
                 creds,
                 this.ObservableForProperty(x => x.CurrentDB).Where(repo => repo != null),
                 (usercreds, repo) =>
@@ -258,17 +301,13 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(projects => projects.FirstOrDefault())
                 .BindTo(this, x => x.CurrentProject);
 
-            _Profile = creds                
-                .SelectMany(login => _DivSvc.GetUserInfo(login))
+            creds
+                .SelectMany(login => _DivSvc.GetUserInfo(login)) 
                 .StartWith(new UserProfile[]{null})
-                .Replay(1);
+                .Subscribe(_Profile);               
 
-
-            Save = new ReactiveCommand(CanSave());
-            Save.Select(_ => Model)
-                .Select(m => updateModel(m))
-                .Do(m => _settings.saveSettings(m))
-                .Do(m => _ModelBackingStore.OnNext(m));
+          
+                
         }
 
         private AppSettings updateModel(AppSettings m)
@@ -291,17 +330,22 @@ namespace DiversityPhone.ViewModels.Utility
         private IObservable<bool> CanSave()
         {
             var username = this.ObservableForProperty(x => x.UserName)
-                               .Select(change => !string.IsNullOrWhiteSpace(change.Value));
+                               .Select(change => !string.IsNullOrWhiteSpace(change.Value))
+                               .StartWith(false);
             var password = this.ObservableForProperty(x => x.Password)
-                               .Select(change => string.IsNullOrEmpty(change.Value));
+                               .Select(change => !string.IsNullOrEmpty(change.Value));
             var homeDB = this.ObservableForProperty(x => x.CurrentDB)
-                             .Select(change => CurrentDB != null);
+                             .Select(change => change.Value != null);
             var project = this.ObservableForProperty(x => x.CurrentProject)
                               .Select(change => change.Value != null);
 
             var profile = _Profile.Select(p => p != null);
 
-            return Extensions.BooleanAnd(username,password,homeDB,project, profile);
+            var settingsValid = Extensions.BooleanAnd(username,password,homeDB,project, profile);
+
+            //Can Save if the settings are valid (on setup)
+            //Or always (on non-setup)
+            return settingsValid.BooleanOr(_IsFirstSetup.Select(x => !x)).StartWith(false).Replay(1);
         }
     }
 }

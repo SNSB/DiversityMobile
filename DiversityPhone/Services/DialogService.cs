@@ -19,10 +19,13 @@
 
         private void showDialog(DialogMessage msg)
         {
-            MessageBox.Show(
+            var result = MessageBox.Show(
                 msg.Text,
                 msg.Caption,
-                (msg.Type == DialogType.OK) ? MessageBoxButton.OK : MessageBoxButton.OKCancel);                
+                (msg.Type == DialogType.OK) ? MessageBoxButton.OK : MessageBoxButton.OKCancel);
+
+            if (msg.CallBack != null)
+                msg.CallBack((result == MessageBoxResult.OK) ? DialogResult.OKYes : DialogResult.CancelNo);
         }
     }
 }

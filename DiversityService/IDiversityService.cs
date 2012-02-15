@@ -57,7 +57,7 @@ namespace DiversityService
         [OperationContract]
         Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series);
         [OperationContract]
-        void InsertGeographyIntoSeries(int seriesID);
+        void InsertGeographyIntoSeries(int seriesID, string geostring);
 
         [OperationContract]
         HierarchySection InsertHierarchy(HierarchySection hierarchy);

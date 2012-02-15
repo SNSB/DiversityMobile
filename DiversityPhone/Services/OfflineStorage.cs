@@ -973,5 +973,14 @@
 
 
 
+
+        public void clearDatabase()
+        {
+            using (var context = new DiversityDataContext())
+            {
+                context.DeleteDatabase();
+                context.CreateDatabase();
+            }
+        }
     }
 }

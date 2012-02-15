@@ -6,6 +6,9 @@ using Svc = DiversityPhone.DiversityService;
 
     public interface IOfflineFieldData
     {
+        void clearDatabase();
+
+
         Svc.HierarchySection getNewHierarchyBelow(Event ev);
         IList<Svc.EventSeries> getUploadServiceEventSeries();
         void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to);

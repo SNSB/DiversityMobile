@@ -27,7 +27,7 @@ namespace DiversityPhone.Messages
         public ReferrerType ReferrerType { get; private set; }
         public string Referrer { get; private set; }
 
-        public NavigationMessage(Page destination, string ctx, ReferrerType refType = ReferrerType.None, string referrer = null)
+        public NavigationMessage(Page destination, string ctx=null, ReferrerType refType = ReferrerType.None, string referrer = null)
         {
             this.Destination = destination;
             this.Context = ctx;
