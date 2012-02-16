@@ -163,13 +163,13 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand Save { get; private set; }
 
         public ReactiveCommand Reset { get; private set; }
+
+        public ReactiveCommand ManageTaxa { get; private set; }
         
 
         public AppSettings Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<AppSettings> _Model;
-        private ISubject<AppSettings> _ModelBackingStore = new Subject<AppSettings>();
-
-        private IDisposable test1, test2;
+        private ISubject<AppSettings> _ModelBackingStore = new Subject<AppSettings>();       
         
         public SettingsVM(ISettingsService set, IDiversityServiceClient divsvc, IOfflineStorage storage)            
         {
@@ -178,7 +178,11 @@ namespace DiversityPhone.ViewModels.Utility
             _storage = storage;     
 
             _Model =_ModelBackingStore                
-                .ToProperty(this, x => x.Model);           
+                .ToProperty(this, x => x.Model);
+
+            _ModelBackingStore
+                .Select(m => m.UseGPS)
+                .BindTo(this, x => x.UseGPS);
 
             _IsFirstSetup =
                 _ModelBackingStore
@@ -213,11 +217,17 @@ namespace DiversityPhone.ViewModels.Utility
                   _settings.saveSettings(m);
                   _ModelBackingStore.OnNext(m.Clone()); //Clone, so Property will get updated
               });
-
+                                   
             Messenger.RegisterMessageSource(
                 Save
                 .Where(_ => !IsFirstSetup)
                 .Select(_ => new NavigationMessage(Services.Page.Previous))
+                );
+
+            ManageTaxa = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                ManageTaxa
+                .Select(_ => new NavigationMessage(Services.Page.TaxonManagement))
                 );
 
 
@@ -326,19 +336,25 @@ namespace DiversityPhone.ViewModels.Utility
                                .Select(change => !string.IsNullOrWhiteSpace(change.Value))
                                .StartWith(false);
             var password = this.ObservableForProperty(x => x.Password)
-                               .Select(change => !string.IsNullOrEmpty(change.Value));
+                               .Select(change => !string.IsNullOrEmpty(change.Value))
+                               .StartWith(false);
             var homeDB = this.ObservableForProperty(x => x.CurrentDB)
-                             .Select(change => change.Value != null);
+                             .Select(change => change.Value != null)
+                             .StartWith(false);
             var project = this.ObservableForProperty(x => x.CurrentProject)
-                              .Select(change => change.Value != null);
+                              .Select(change => change.Value != null)
+                              .StartWith(false);
 
-            var profile = _Profile.Select(p => p != null);
+
+            var profile = _Profile
+                .Select(p => p != null)
+                .StartWith(false);
 
             var settingsValid = Extensions.BooleanAnd(username,password,homeDB,project, profile);
 
             //Can Save if the settings are valid (on setup)
             //Or always (on non-setup)
-            return settingsValid.BooleanOr(_IsFirstSetup.Select(x => !x)).StartWith(false).Replay(1);
+            return settingsValid.BooleanOr(_IsFirstSetup.Select(x => !x)).StartWith(false);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace DiversityPhone.Services
         LoadedMaps,
         DownLoadMaps,
         SelectMaps,
-        ViewMap
+        ViewMap,
+        TaxonManagement
     }
 }

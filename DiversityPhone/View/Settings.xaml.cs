@@ -64,5 +64,11 @@ namespace DiversityPhone.View
             if (VM != null)
                 VM.Reset.Execute(null);
         }
+
+        private void ManageTaxa_Click(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+                VM.ManageTaxa.Execute(null);
+        }
     }
 }

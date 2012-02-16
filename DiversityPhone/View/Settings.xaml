@@ -75,7 +75,8 @@
                 <TextBlock Text="Project" Style="{StaticResource PhoneTextSmallStyle}"/>
                 <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
                 
-                <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS}"/>
+                <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
+                <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

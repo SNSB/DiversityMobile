@@ -13,6 +13,11 @@ namespace DiversityPhone.Model
 {
     public class AppSettings
     {
+        public AppSettings()
+        {
+            UseGPS = true;
+        }
+
         public string UserName { get; set; }
         public string Password { get; set; }
         public string AgentName { get; set; }

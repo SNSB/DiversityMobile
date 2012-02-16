@@ -175,6 +175,9 @@ namespace DiversityPhone.Services
                 case Page.EditIUAN:
                     destination = "/View/EditAnalysis.xaml";
                     break;
+                case Page.TaxonManagement:
+                    destination = "/View/TaxonManagement.xaml";
+                    break;
 
 #if DEBUG
                 default:
