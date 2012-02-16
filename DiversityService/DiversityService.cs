@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
-using DiversityMobile;
+using Diversity;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
@@ -15,12 +15,14 @@ namespace DiversityService
 {
     public class DiversityService : IDiversityService
     {
+        private const string CATALOG_DIVERSITYMOBILE = "DiversityMobile";
+
         #region Get
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
         {
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity(login))
             {
-                return db.Query<Project>("FROM [DiversityCollection_Test].[dbo].[DiversityMobile_ProjectList] () AS [Project]")
+                return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
                     .Select(p =>
                         {
                             p.DisplayText = p.DisplayText ?? "No Description";
@@ -37,7 +39,7 @@ namespace DiversityService
 
         public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p)
         {
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity())
             {
                 var flattenQueue = new Queue<AnalysisTaxonomicGroup>(db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", p.ProjectID));                    
                 var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
@@ -62,7 +64,7 @@ namespace DiversityService
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
         {
 
-            using (var db = new DiversityMobile.DiversityMobile())
+            using (var db = new Diversity.Diversity())
             {
                 return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", user.LoginName).ToList();
             }
@@ -105,7 +107,7 @@ namespace DiversityService
 
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
         {
-            using (var db = new DiversityMobile.DiversityMobile())
+            using (var db = new Diversity.Diversity())
             {
                 //TODO Improve SQL Sanitation
                 if (list.Table.Contains(';') ||
@@ -134,14 +136,14 @@ namespace DiversityService
 
         public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p)
         {
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity())
             {
                 return db.Query<Analysis>("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis]", p.ProjectID).ToList();
             }
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
         {
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity())
             {
                 return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
                                       
@@ -157,7 +159,7 @@ namespace DiversityService
 
         public UserProfile GetUserInfo(UserCredentials login)
         {           
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity())
             {
                 return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
             }
@@ -194,7 +196,7 @@ namespace DiversityService
         public void InsertGeographyIntoSeries(int seriesID, String geoString)
         {
             //Adjust GeoData
-            using (var db = new DiversityCollection.DiversityCollection())
+            using (var db = new Diversity.Diversity())
             {
                 String sql = "Update [DiversityCollection_BaseTest].[dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
                 db.Execute(sql);

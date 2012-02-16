@@ -73,11 +73,7 @@
     <Compile Include="Models\CollectionEventProperty.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventSeries.cs" />
-    <Compile Include="Models\Generated\DiversityMobile.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityMobile.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Generated\Diversity.cs" />
     <Compile Include="Models\Generated\DiversityCollection.cs">
       <DependentUpon>DiversityCollection.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -126,10 +122,6 @@
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>DiversityCollectionFunctions.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Models\Generated\DiversityMobile.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DiversityMobile.cs</LastGenOutput>
     </None>
     <None Include="Models\Generated\DiversityCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -16,17 +16,17 @@ using System.Linq;
 using System.Web;
 using PetaPoco;
 
-namespace DiversityCollection
+namespace Diversity
 {
-	public partial class DiversityCollection : Database
+	public partial class Diversity : Database
 	{
-		public DiversityCollection() 
+		public Diversity() 
 			: base("DiversityService.Properties.Settings.DiversityCollection_TestConnectionString")
 		{
 			CommonConstruct();
 		}
 
-		public DiversityCollection(string connectionStringName) 
+		public Diversity(string connectionStringName) 
 			: base(connectionStringName)
 		{
 			CommonConstruct();
@@ -36,11 +36,11 @@ namespace DiversityCollection
 		
 		public interface IFactory
 		{
-			DiversityCollection GetInstance();
+			Diversity GetInstance();
 		}
 		
 		public static IFactory Factory { get; set; }
-        public static DiversityCollection GetInstance()
+        public static Diversity GetInstance()
         {
 			if (_instance!=null)
 				return _instance;
@@ -48,10 +48,10 @@ namespace DiversityCollection
 			if (Factory!=null)
 				return Factory.GetInstance();
 			else
-				return new DiversityCollection();
+				return new Diversity();
         }
 
-		[ThreadStatic] static DiversityCollection _instance;
+		[ThreadStatic] static Diversity _instance;
 		
 		public override void OnBeginTransaction()
 		{
@@ -67,7 +67,7 @@ namespace DiversityCollection
         
 		public class Record<T> where T:new()
 		{
-			public static DiversityCollection repo { get { return DiversityCollection.GetInstance(); } }
+			public static Diversity repo { get { return Diversity.GetInstance(); } }
 			public bool IsNew() { return repo.IsNew(this); }
 			public object Insert() { return repo.Insert(this); }
 			public int Update(IEnumerable<string> columns) { return repo.Update(this, columns); }

@@ -68,7 +68,12 @@ namespace DiversityPhone.ViewModels.Utility
         
         
 
-        private string _UserName;
+        private string _UserName
+#if DEBUG
+            = "Rollinge";
+#else
+        ;
+#endif
 
         public string UserName
         {
@@ -83,7 +88,12 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
 
-        private string _Password;
+        private string _Password
+#if DEBUG
+             = "Rolli#2-AI4@UB";
+#else
+        ;
+#endif
         public string Password
         {
             get
