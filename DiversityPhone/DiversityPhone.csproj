@@ -156,6 +156,7 @@
     <Compile Include="Services\IApplicationState.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityService.cs" />
+    <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />

@@ -6,7 +6,7 @@ using DiversityPhone.Messages;
 
 namespace DiversityPhone.Services
 {
-    public class SettingsService
+    public class SettingsService : ISettingsService
     {
         private const string SETTINGS_KEY = "Settings";   
      

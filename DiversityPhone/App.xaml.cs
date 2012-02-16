@@ -25,9 +25,7 @@ namespace DiversityPhone
 {
     public partial class App : Application
     {
-        public static IOfflineStorage OfflineDB { get; private set; } 
-       
-        public static IDiversityServiceClient Repository { get; private set; }       
+        public static IOfflineStorage OfflineDB { get; private set; }       
            
 
         /// <summary>
@@ -77,9 +75,8 @@ namespace DiversityPhone
         public App()
         {
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;           
+            UnhandledException += Application_UnhandledException;            
             
-            Repository = new DiversityServiceClient(); //Push Nav-Service
 
             OfflineDB = new OfflineStorage(MessageBus.Current);                        
 

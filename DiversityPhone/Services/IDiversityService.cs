@@ -11,7 +11,7 @@ namespace DiversityPhone.Services
         
         IObservable<IList<Project>> GetProjectsForUser(UserCredentials login);
       
-        IObservable<TaxonList> GetTaxonListsForUser(UserProfile user);
+        IObservable<IEnumerable<TaxonList>> GetTaxonLists();
        
         IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list);
        

@@ -23,7 +23,7 @@ namespace DiversityPhone.ViewModels.Utility
 {
     public class SettingsVM : PageViewModel
     {
-        SettingsService _settings;
+        ISettingsService _settings;
         IDiversityServiceClient _DivSvc;
         IOfflineStorage _storage;
 
@@ -104,23 +104,7 @@ namespace DiversityPhone.ViewModels.Utility
             {
                 this.RaiseAndSetIfChanged(x => x.Password, ref _Password, value);
             }
-        }
-
-
-        private bool _SavePassword;
-
-        public bool SavePassword
-        {
-            get
-            {
-                return _SavePassword;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.SavePassword, ref _SavePassword, value);
-            }
-        }
-        
+        }        
 
         public IList<Repository> Databases { get { return (_Databases != null) ? _Databases.Value : null; } }
         private ObservableAsPropertyHelper<IList<Repository>> _Databases;
@@ -187,17 +171,17 @@ namespace DiversityPhone.ViewModels.Utility
 
         private IDisposable test1, test2;
         
-        public SettingsVM(SettingsService set, IDiversityServiceClient divsvc, IOfflineStorage storage)            
+        public SettingsVM(ISettingsService set, IDiversityServiceClient divsvc, IOfflineStorage storage)            
         {
             _settings = set;          
             _DivSvc = divsvc;
             _storage = storage;     
 
-            _Model =_ModelBackingStore
+            _Model =_ModelBackingStore                
                 .ToProperty(this, x => x.Model);           
 
             _IsFirstSetup =
-                _Model
+                _ModelBackingStore
                 .Select( x => x.UserName == null)
                 .ToProperty(this, x => x.IsFirstSetup);
 
@@ -227,7 +211,7 @@ namespace DiversityPhone.ViewModels.Utility
               .Subscribe(m =>
               {
                   _settings.saveSettings(m);
-                  _ModelBackingStore.OnNext(m);
+                  _ModelBackingStore.OnNext(m.Clone()); //Clone, so Property will get updated
               });
 
             Messenger.RegisterMessageSource(
@@ -330,8 +314,7 @@ namespace DiversityPhone.ViewModels.Utility
             m.CurrentProjectName = CurrentProject.DisplayText;
             m.HomeDB = CurrentDB.Database;
             m.HomeDBName = CurrentDB.DisplayName;
-            m.Password = (SavePassword)? Password : null;
-            m.SavePassword = SavePassword;
+            m.Password = Password;            
             m.UserName = UserName;
 
             return m;

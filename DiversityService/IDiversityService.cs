@@ -20,17 +20,12 @@ namespace DiversityService
 
         [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserCredentials login);
-
-        //TODO Contract Userinfo
+        
 
         [OperationContract]
-        IEnumerable<TaxonList> GetTaxonListsForUser(UserProfile user);
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page);
-
-        [OperationContract]
-        IEnumerable<Project> GetAvailableProjects();
-        
 
 
         [OperationContract]

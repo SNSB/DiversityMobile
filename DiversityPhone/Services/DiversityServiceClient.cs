@@ -19,6 +19,23 @@ namespace DiversityPhone.Services
     public class DiversityServiceClient : IDiversityServiceClient
     {
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
+        ISettingsService _settings;
+
+        public DiversityServiceClient(ISettingsService settings)
+        {
+            _settings = settings;
+        }
+
+        private UserCredentials GetCreds()
+        {
+            var settings = _settings.getSettings();
+            return new UserCredentials()
+            {
+                UserName = settings.UserName,
+                Password = settings.Password,
+                Repository = settings.HomeDB
+            };
+        }
 
 
         public IObservable<DiversityService.UserProfile> GetUserInfo(DiversityService.UserCredentials login)
@@ -48,9 +65,13 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<DiversityService.TaxonList> GetTaxonListsForUser(DiversityService.UserProfile user)
-        {
-            throw new NotImplementedException();
+        public IObservable<IEnumerable<TaxonList>> GetTaxonLists()
+        {            
+            var res = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d)
+                .Select(args => args.Result as IEnumerable<TaxonList>)
+                .Take(1);
+            _svc.GetTaxonListsForUserAsync(GetCreds());
+            return res;
         }
 
         public IObservable<System.Collections.Generic.IEnumerable<DiversityService.TaxonName>> DownloadTaxonListChunked(DiversityService.TaxonList list)

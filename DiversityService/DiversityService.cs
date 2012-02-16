@@ -20,16 +20,23 @@ namespace DiversityService
         #region Get
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
         {
-            using (var db = new Diversity.Diversity(login))
+            try
             {
-                return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
-                    .Select(p =>
-                        {
-                            p.DisplayText = p.DisplayText ?? "No Description";
-                            return p;
-                        })
-                    .ToList(); //TODO Use credential DB
-            }            
+                using (var db = new Diversity.Diversity(login))
+                {
+                    return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
+                        .Select(p =>
+                            {
+                                p.DisplayText = p.DisplayText ?? "No Description";
+                                return p;
+                            })
+                        .ToList(); //TODO Use credential DB
+                }
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
@@ -61,12 +68,12 @@ namespace DiversityService
             }
         }
 
-        public IEnumerable<Model.TaxonList> GetTaxonListsForUser(Model.UserProfile user)
+        public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
 
-            using (var db = new Diversity.Diversity())
+            using (var db = new Diversity.Diversity(login))
             {
-                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", user.LoginName).ToList();
+                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", login.UserName).ToList();
             }
         }
 
@@ -149,19 +156,20 @@ namespace DiversityService
                                       
                 
             }
-        }
-
-
-        public IEnumerable<Project> GetAvailableProjects()
-        {
-            throw new NotImplementedException();
-        }
+        }     
 
         public UserProfile GetUserInfo(UserCredentials login)
-        {           
-            using (var db = new Diversity.Diversity())
+        {
+            try
             {
-                return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
+                using (var db = new Diversity.Diversity())
+                {
+                    return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
+                }
+            }
+            catch
+            {
+                return null;
             }
 
         }
