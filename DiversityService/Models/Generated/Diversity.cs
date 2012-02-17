@@ -19,7 +19,7 @@ namespace Diversity
             {
                 var template = cs.ConnectionString;
                 return string.Format(template,
-                    connection.UserName,
+                    connection.LoginName,
                     connection.Password,
                     connection.Repository ?? "DiversityCollection_Test");
             }

@@ -73,7 +73,7 @@ namespace DiversityService
 
             using (var db = new Diversity.Diversity(login))
             {
-                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", login.UserName).ToList();
+                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", login.LoginName).ToList();
             }
         }
 

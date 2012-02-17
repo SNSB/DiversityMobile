@@ -31,7 +31,10 @@ namespace DiversityPhone.Services
             var settings = _settings.getSettings();
             return new UserCredentials()
             {
-                UserName = settings.UserName,
+                LoginName = settings.UserName,
+                AgentName=settings.AgentName,
+                AgentURI=settings.AgentURI,
+                ProjectID=settings.CurrentProject,
                 Password = settings.Password,
                 Repository = settings.HomeDB
             };

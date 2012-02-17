@@ -265,7 +265,7 @@ namespace DiversityPhone.ViewModels.Utility
             Observable.CombineLatest(
                 this.ObservableForProperty(x => x.UserName),
                 this.ObservableForProperty(x => x.Password),
-                (user, pass) => new UserCredentials() { UserName = user.Value, Password = pass.Value }
+                (user, pass) => new UserCredentials() { LoginName = user.Value, Password = pass.Value }
                 ).DistinctUntilChanged();
 
             var credsWithRepo =
