@@ -9,7 +9,7 @@ using Svc = DiversityPhone.DiversityService;
         void clearDatabase();
 
 
-        Svc.HierarchySection getNewHierarchyBelow(Event ev);
+        Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev, Svc.UserProfile profile, int projectID);
         IList<Svc.EventSeries> getUploadServiceEventSeries();
         void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to);
 
@@ -18,12 +18,13 @@ using Svc = DiversityPhone.DiversityService;
         IList<EventSeries> getNewEventSeries();
         void addOrUpdateEventSeries(EventSeries newSeries);
         void deleteEventSeries(EventSeries es);
-        void adjustSeriesAfterUpload(int oldSeries, int newSeries);
+        void updateSeriesKey(int oldSeriesKey, int newSeriesKey);
 
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);        
         Event getEventByID(int id);
         void addOrUpdateEvent(Event ev);
+        void updateEventKey(int oldEventKey, int newEventKey);
 
         IList<CollectionEventProperty> getPropertiesForEvent(Event ev);
         void addOrUpdateCollectionEventProperty(CollectionEventProperty cep);
@@ -33,11 +34,13 @@ using Svc = DiversityPhone.DiversityService;
         IList<Specimen> getSpecimenWithoutEvent();
         Specimen getSpecimenByID(int id);
         void addOrUpdateSpecimen(Specimen spec);
+        void updateSpecimenKey(int oldSSpecimenKey, int newSpecimenKey);
 
         IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);
         IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
         IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
+        void updateIUKey(int oldIUKey, int newIUKey);
 
         IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu);
         IdentificationUnitAnalysis getIUANByID(int analysisID);

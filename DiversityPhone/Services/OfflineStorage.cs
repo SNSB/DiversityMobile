@@ -942,21 +942,83 @@
 
         #endregion
 
+
         #region IOfflineFieldData Members
 
-        public Svc.HierarchySection getNewHierarchyBelow(Event ev)
+        public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev, Svc.UserProfile profile, int projectID) //Userprofile nur dabei bis Personalisierung beendet ist. Dann über Modellklasse.
         {
-            throw new NotImplementedException();
+
+
+            Svc.HierarchySection result = new Svc.HierarchySection();
+            result.ProjectID = projectID;
+            result.Properties = new System.Collections.ObjectModel.ObservableCollection<Svc.CollectionEventProperty>();
+            result.Specimen = new System.Collections.ObjectModel.ObservableCollection<Svc.Specimen>();
+            result.IdentificationUnits = new System.Collections.ObjectModel.ObservableCollection<Svc.IdentificationUnit>();
+            result.IdentificationUnitAnalyses = new System.Collections.ObjectModel.ObservableCollection<Svc.IdentificationUnitAnalysis>();
+
+            result.Profile = profile;
+            if (ev.IsModified())
+                result.Event = Event.ConvertToServiceObject(ev);
+
+
+            withDataContext(ctx =>
+            {
+
+                IQueryable<CollectionEventProperty> clientPropertyList =
+                    from cep in ctx.CollectionEventProperties
+                    where cep.EventID == ev.EventID && cep.ModificationState == true
+                    select cep;
+                foreach (CollectionEventProperty cep in clientPropertyList)
+                {
+                    Svc.CollectionEventProperty serverCep = CollectionEventProperty.ConvertToServiceObject(cep);
+                    result.Properties.Add(serverCep);
+                }
+
+                IQueryable<Specimen> clientSpecList =
+                    from spec in ctx.Specimen
+                    where spec.CollectionEventID == ev.EventID && spec.ModificationState == true
+                    select spec;
+                foreach (Specimen spec in clientSpecList)
+                {
+                    Svc.Specimen serverSpec = Specimen.ConvertToServiceObject(spec);
+                    result.Specimen.Add(serverSpec);
+                    IQueryable<IdentificationUnit> clientIUListForSpec =
+                        from iu in ctx.IdentificationUnits
+                        where iu.UnitID == spec.CollectionSpecimenID && iu.ModificationState == true
+                        select iu;
+                    foreach (IdentificationUnit iu in clientIUListForSpec)
+                    {
+                        Svc.IdentificationUnit serverIU = IdentificationUnit.ConvertToServiceObject(iu);
+                        result.IdentificationUnits.Add(serverIU);
+
+                        IQueryable<IdentificationUnitAnalysis> clientIUAListForIU =
+                            from iua in ctx.IdentificationUnitAnalyses
+                            where iua.IdentificationUnitID == iu.UnitID && iu.ModificationState == true
+                            select iua;
+                        foreach (IdentificationUnitAnalysis iua in clientIUAListForIU)
+                        {
+                            Svc.IdentificationUnitAnalysis serverIUA = IdentificationUnitAnalysis.ConvertToServiceObject(iua);
+                            result.IdentificationUnitAnalyses.Add(serverIUA);
+                        }
+                    }
+                }
+            });
+            return result;
         }
 
         public IList<Svc.EventSeries> getUploadServiceEventSeries()
         {
             IList<Svc.EventSeries> seriesSVC = new List<Svc.EventSeries>();
-            IList<EventSeries> seriesPhone = this.getAllEventSeries();
-            foreach (EventSeries es in seriesPhone)
-                if(es.IsModified())
+            withDataContext(ctx =>
+            {
+                IQueryable<EventSeries> seriesPhone =
+                    from es in ctx.EventSeries
+                    where es.ModificationState == true
+                    select es;
+                foreach (EventSeries es in seriesPhone)
                     seriesSVC.Add(EventSeries.ConvertToServiceObject(es));
-            return seriesSVC;               
+            });
+            return seriesSVC;
         }
 
         public void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to)
@@ -964,8 +1026,144 @@
             throw new NotImplementedException();
         }
 
+        #region KeyUpdate
+
+        public void updateSeriesKey(int oldSeriesKey, int newSeriesKey)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                var savedSeries =
+                    from es in ctx.EventSeries
+                    where es.SeriesID == oldSeriesKey
+                    select es;
+                EventSeries oldSeries = savedSeries.First(); //TODO: Check if there is a key valuation
+                ctx.EventSeries.DeleteOnSubmit(oldSeries);
+                EventSeries newSeries = EventSeries.Clone(oldSeries);
+                newSeries.SeriesID = newSeriesKey;
+                newSeries.ModificationState = false;
+                ctx.EventSeries.InsertOnSubmit(newSeries);
+                var savedEvents =
+                    from ev in ctx.Events
+                    where ev.SeriesID == oldSeriesKey
+                    select ev;
+                foreach (Event eve in savedEvents)
+                    eve.SeriesID = newSeriesKey;
+                var seriesMMO =
+                    from mmo in ctx.MultimediaObjects
+                    where mmo.RelatedId == oldSeriesKey && mmo.OwnerType == ReferrerType.EventSeries
+                    select mmo;
+                foreach (MultimediaObject mmo in seriesMMO)
+                    mmo.RelatedId = newSeriesKey;
+                ctx.SubmitChanges();
+            }
+        }
+
+        public void updateEventKey(int oldKey, int newKey)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                var savedEvents =
+                    from ev in ctx.Events
+                    where ev.EventID == oldKey
+                    select ev;
+                Event oldEvent = savedEvents.First();//TODO: Check if there is a key valuation
+                ctx.Events.DeleteOnSubmit(oldEvent); //Guid evtl. kleineres Übel
+                Event newEvent = Event.Clone(oldEvent);
+                newEvent.EventID = newKey;
+                newEvent.ModificationState = false;
+                ctx.Events.InsertOnSubmit(newEvent);
+                var savedSpecimen =
+                    from spec in ctx.Specimen
+                    where spec.CollectionEventID == oldKey
+                    select spec;
+                foreach (Specimen spec in savedSpecimen)
+                    spec.CollectionEventID = newKey;
+                var evMMO =
+                    from mmo in ctx.MultimediaObjects
+                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.Event
+                    select mmo;
+                foreach (MultimediaObject mmo in evMMO)
+                    mmo.RelatedId = newKey;
+                var ceProperties =
+                    from cep in ctx.CollectionEventProperties
+                    where cep.EventID == oldKey
+                    select cep;
+                foreach (CollectionEventProperty cep in ceProperties)
+                    cep.EventID = newKey;
+                ctx.SubmitChanges();
+            }
+        }
+
+        public void updateSpecimenKey(int oldKey, int newKey)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                var savedSpecimens =
+                    from spec in ctx.Specimen
+                    where spec.CollectionSpecimenID == oldKey
+                    select spec;
+                Specimen oldSpecimen = savedSpecimens.First();//TODO: Check if there is a key valuation
+                ctx.Specimen.DeleteOnSubmit(oldSpecimen); //Guid evtl. kleineres Übel
+                Specimen newSpecimen = Specimen.Clone(oldSpecimen);
+                newSpecimen.CollectionSpecimenID = newKey;
+                newSpecimen.ModificationState = false;
+                ctx.Specimen.InsertOnSubmit(newSpecimen);
+                var savedIU =
+                    from iu in ctx.IdentificationUnits
+                    where iu.SpecimenID == oldKey
+                    select iu;
+                foreach (IdentificationUnit iu in savedIU)
+                    iu.SpecimenID = newKey;
+                var specMMO =
+                    from mmo in ctx.MultimediaObjects
+                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.Specimen
+                    select mmo;
+                foreach (MultimediaObject mmo in specMMO)
+                    mmo.RelatedId = newKey;
+
+                ctx.SubmitChanges();
+            }
+        }
+
+        public void updateIUKey(int oldKey, int newKey) //Mit delete sehr heikel-evtl. paralleler zugriff möglich
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                var savedIUs =
+                    from iu in ctx.IdentificationUnits
+                    where iu.UnitID == oldKey
+                    select iu;
+                IdentificationUnit oldIU = savedIUs.First();//TODO: Check if there is a key valuation
+                ctx.IdentificationUnits.DeleteOnSubmit(oldIU); //Guid evtl. kleineres Übel
+                IdentificationUnit newIU = IdentificationUnit.Clone(oldIU);
+                newIU.UnitID = newKey;
+                newIU.ModificationState = false;
+                ctx.IdentificationUnits.InsertOnSubmit(newIU);
+                var relatedIU =
+                    from iu in ctx.IdentificationUnits
+                    where iu.RelatedUnitID == oldKey
+                    select iu;
+                foreach (IdentificationUnit iu in relatedIU)
+                    iu.RelatedUnitID = newKey;
+                var iuaList =
+                    from iua in ctx.IdentificationUnitAnalyses
+                    where iua.IdentificationUnitID == oldKey
+                    select iua;
+                foreach (IdentificationUnitAnalysis iua in iuaList)
+                    iua.IdentificationUnitID = newKey;
+                var iuMMO =
+                    from mmo in ctx.MultimediaObjects
+                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.IdentificationUnit
+                    select mmo;
+                foreach (MultimediaObject mmo in iuMMO)
+                    mmo.RelatedId = newKey;
+                ctx.SubmitChanges();
+            }
+        }
+
         #endregion
 
+        #endregion
 
 
 

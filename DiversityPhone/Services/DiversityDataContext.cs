@@ -24,7 +24,6 @@
         public Table<Property> Properties;
         
         public Table<Specimen> Specimen;
-        public Table<MultimediaObject> SpecimenImages;
 
         public Table<IdentificationUnit> IdentificationUnits;
 
