@@ -11,7 +11,7 @@ namespace DiversityService.Model
         public int SeriesID { get; set; }
         public string Description { get; set; }
         public string SeriesCode { get; set; }
-        public String Geography { get; set; }//Todo:Adjsutments for handling
+        public String Geography { get; set; }//Geostring for setting the Geography
         public DateTime? SeriesStart { get; set; }
         public DateTime? SeriesEnd { get; set; }
 

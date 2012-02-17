@@ -3282,6 +3282,30 @@ namespace DiversityCollection
         private global::System.Guid _RowGUID;
         partial void OnRowGUIDChanging(global::System.Guid value);
         partial void OnRowGUIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
 
         #endregion
     
@@ -3855,6 +3879,30 @@ namespace DiversityCollection
         private global::System.Guid _RowGUID;
         partial void OnRowGUIDChanging(global::System.Guid value);
         partial void OnRowGUIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String RecordingMethod
+        {
+            get
+            {
+                return _RecordingMethod;
+            }
+            set
+            {
+                OnRecordingMethodChanging(value);
+                ReportPropertyChanging("RecordingMethod");
+                _RecordingMethod = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("RecordingMethod");
+                OnRecordingMethodChanged();
+            }
+        }
+        private global::System.String _RecordingMethod;
+        partial void OnRecordingMethodChanging(global::System.String value);
+        partial void OnRecordingMethodChanged();
 
         #endregion
     
@@ -5129,6 +5177,30 @@ namespace DiversityCollection
         private global::System.Guid _RowGUID;
         partial void OnRowGUIDChanging(global::System.Guid value);
         partial void OnRowGUIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
 
         #endregion
     
@@ -6835,6 +6907,30 @@ namespace DiversityCollection
         private global::System.Guid _RowGUID;
         partial void OnRowGUIDChanging(global::System.Guid value);
         partial void OnRowGUIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Description
+        {
+            get
+            {
+                return _Description;
+            }
+            set
+            {
+                OnDescriptionChanging(value);
+                ReportPropertyChanging("Description");
+                _Description = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Description");
+                OnDescriptionChanged();
+            }
+        }
+        private global::System.String _Description;
+        partial void OnDescriptionChanging(global::System.String value);
+        partial void OnDescriptionChanged();
 
         #endregion
     

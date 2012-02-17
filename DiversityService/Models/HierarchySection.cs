@@ -6,11 +6,11 @@ using System.Runtime.Serialization;
 
 namespace DiversityService.Model
 {
-    
     public class HierarchySection
     {
         //Wird nicht synchroniniert. Enthält Informationen über den Sammler
         public UserProfile Profile { get; set; }
+        public int ProjectID;
 
         //Nur Modelklassen. Abgeleitet Serverklassen stehen im Kommentar
         public Event Event { get; set; }
@@ -25,6 +25,7 @@ namespace DiversityService.Model
         //->Identification
         //->IdentificationUnitGeoAnalysis
 
-        public IList<IdentificationUnitAnalysis> Analyses { get; set; }
+        public IList<IdentificationUnitAnalysis> IdentificationUnitAnalyses { get; set; }
+
     }
 }

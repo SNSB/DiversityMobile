@@ -291,6 +291,7 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="xml" />
         </EntityType>
         <!--Errors Found During Generation:
       warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_BaseTest.dbo.CollectionEventLocalisation' was excluded.
@@ -319,6 +320,7 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RecordingMethod" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="CollectionEventProperty">
           <Key>
@@ -378,6 +380,7 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="xml" />
         </EntityType>
         <EntityType Name="CollectionProject">
           <Key>
@@ -451,6 +454,7 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Description" Type="xml" />
         </EntityType>
         <EntityType Name="CollEventImageType_Enum">
           <Key>
@@ -1426,6 +1430,7 @@
           <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="RowGUID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" FromRole="CollectionEventLocalisation" ToRole="CollectionEvent" />
+          <Property Type="String" Name="RecordingMethod" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollectionEventSeries">
           <Key>
@@ -1780,6 +1785,7 @@
           <Property Type="Guid" Name="RowGUID" Nullable="false" />
           <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionEventImage_CollectionEvent" FromRole="CollectionEventImage" ToRole="CollectionEvent" />
           <NavigationProperty Name="CollEventImageType_Enum" Relationship="DiversityCollection.FK_CollectionEventImage_CollEventImageType_Enum" FromRole="CollectionEventImage" ToRole="CollEventImageType_Enum" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollectionEventProperty">
           <Key>
@@ -1822,6 +1828,7 @@
           <Property Type="Guid" Name="RowGUID" Nullable="false" />
           <NavigationProperty Name="CollectionEventSery" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" FromRole="CollectionEventSeriesImage" ToRole="CollectionEventSeries" />
           <NavigationProperty Name="CollEventSeriesImageType_Enum" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum" FromRole="CollectionEventSeriesImage" ToRole="CollEventSeriesImageType_Enum" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollectionSpecimenImage">
           <Key>
@@ -1844,6 +1851,7 @@
           <NavigationProperty Name="CollectionSpeciman" Relationship="DiversityCollection.FK_CollectionSpecimenImage_CollectionSpecimen" FromRole="CollectionSpecimenImage" ToRole="CollectionSpecimen" />
           <NavigationProperty Name="IdentificationUnit" Relationship="DiversityCollection.FK_CollectionSpecimenImage_IdentificationUnit" FromRole="CollectionSpecimenImage" ToRole="IdentificationUnit" />
           <NavigationProperty Name="CollSpecimenImageType_Enum" Relationship="DiversityCollection.FK_CollectionSpecimenImage_CollSpecimenImageType_Enum" FromRole="CollectionSpecimenImage" ToRole="CollSpecimenImageType_Enum" />
+          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CollEventImageType_Enum">
           <Key>
@@ -2437,7 +2445,8 @@
             <ScalarProperty Name="ReferenceDetails" ColumnName="ReferenceDetails" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="CollectionEventLocalisation"><EntityTypeMapping TypeName="DiversityCollection.CollectionEventLocalisation"><MappingFragment StoreEntitySet="CollectionEventLocalisation">
-            <ScalarProperty Name="CollectionEventID" ColumnName="CollectionEventID" />
+            <ScalarProperty Name="RecordingMethod" ColumnName="RecordingMethod" />
+                <ScalarProperty Name="CollectionEventID" ColumnName="CollectionEventID" />
             <ScalarProperty Name="LocalisationSystemID" ColumnName="LocalisationSystemID" />
             <ScalarProperty Name="Location1" ColumnName="Location1" />
             <ScalarProperty Name="Location2" ColumnName="Location2" />
@@ -2626,6 +2635,7 @@
           <EntitySetMapping Name="CollectionEventImages">
             <EntityTypeMapping TypeName="DiversityCollection.CollectionEventImage">
               <MappingFragment StoreEntitySet="CollectionEventImage">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
                 <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
                 <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
@@ -2664,6 +2674,7 @@
           <EntitySetMapping Name="CollectionEventSeriesImages">
             <EntityTypeMapping TypeName="DiversityCollection.CollectionEventSeriesImage">
               <MappingFragment StoreEntitySet="CollectionEventSeriesImage">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
                 <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
                 <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
@@ -2681,6 +2692,7 @@
           <EntitySetMapping Name="CollectionSpecimenImages">
             <EntityTypeMapping TypeName="DiversityCollection.CollectionSpecimenImage">
               <MappingFragment StoreEntitySet="CollectionSpecimenImage">
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
                 <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
                 <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />

@@ -55,6 +55,9 @@ namespace DiversityService
         void InsertGeographyIntoSeries(int seriesID, string geostring);
 
         [OperationContract]
-        HierarchySection InsertHierarchy(HierarchySection hierarchy);
+        KeyProjection InsertHierarchy(HierarchySection hierarchy);
+
+        [OperationContract]
+        HierarchySection CreateNewHierarchy();
     }   
 }

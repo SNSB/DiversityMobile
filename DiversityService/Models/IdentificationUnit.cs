@@ -27,9 +27,9 @@ namespace DiversityService.Model
         public string IdentificationUri { get; set; }
 
         //Georeferenzierung anstelle der IdentificationUnitGeoAnalysis
-        public double Altitude { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
+        public double? Altitude { get; set; }
+        public double? Latitude { get; set; }
+        public double? Longitude { get; set; }
         public DateTime AnalysisDate { get; set; }
 
         public DateTime LogUpdatedWhen { get; set; }
