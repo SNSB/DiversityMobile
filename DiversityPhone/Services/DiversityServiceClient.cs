@@ -13,6 +13,7 @@ using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using System.Collections;
 using System.Collections.Generic;
+using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
 {
@@ -87,6 +88,15 @@ namespace DiversityPhone.Services
             throw new NotImplementedException();
         }
 
+        public IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section)
+        {
+            _svc.InsertHierarchyAsync(section, this.GetCreds());
+        }
+
+        public Dictionary<EventSeries, EventSeries> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList)
+        {
+            _svc.InsertEventSeriesAsync(seriesList);
+        }
         
     }
 }

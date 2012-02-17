@@ -22,7 +22,7 @@
         #region Services        
         private IOfflineStorage _storage;
         private IDiversityServiceClient _repository;
-        private DiversityService.DiversityServiceClient _plainUploadClient;
+        //private DiversityService.DiversityServiceClient _plainUploadClient;
         private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
@@ -76,9 +76,9 @@
                 .ToProperty(this, x => x.SeriesList);
 
             //Initialize PlainUpload
-            _plainUploadClient = new Svc.DiversityServiceClient();
-            _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
-            _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
+            //_plainUploadClient = new Svc.DiversityServiceClient();
+            //_plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
+            //_plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
             registerUpload();
 
@@ -169,7 +169,7 @@
             if (series != null && series.Count > 0)
             {
                 System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
-                _plainUploadClient.InsertEventSeriesAsync(es);
+                _repository.InsertEventSeries(es);
             }
             else
             {
@@ -180,14 +180,13 @@
         private void syncHierarchies()
         {
             IList<EventSeries> seriesList = _storage.getAllEventSeries();
-            //Missing: DiversityServiceClient GetCreds
             foreach (EventSeries es in seriesList)
             {
                 IList<Event> eventList = _storage.getEventsForSeries(es);
                 foreach (Event ev in eventList)
                 {
                     Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
-                    _plainUploadClient.InsertHierarchyAsync(section);
+                    _repository.InsertHierarchy(section);
                 }
             }
         }

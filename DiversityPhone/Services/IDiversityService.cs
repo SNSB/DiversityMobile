@@ -1,6 +1,7 @@
 ﻿using DiversityPhone.DiversityService;
 using System;
 using System.Collections.Generic;
+using Svc = DiversityPhone.DiversityService;
 namespace DiversityPhone.Services
 {
     public interface IDiversityServiceClient 
@@ -15,6 +16,11 @@ namespace DiversityPhone.Services
        
         IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list);
        
-        IObservable<IEnumerable<Term>> GetStandardVocabulary();    
+        IObservable<IEnumerable<Term>> GetStandardVocabulary();
+
+        IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
+
+        Dictionary<EventSeries, EventSeries> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList);
+
     }
 }
