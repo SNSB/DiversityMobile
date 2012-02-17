@@ -95,7 +95,13 @@ namespace DiversityPhone.Services
                 .Take(1);
             _svc.InsertHierarchyAsync(section, this.GetCreds());
             return res;
-        }       
-        
+        }
+
+
+
+        public IObservable<Dictionary<int, int>> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
