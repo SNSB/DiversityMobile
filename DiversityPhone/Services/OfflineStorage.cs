@@ -945,18 +945,15 @@
 
         #region IOfflineFieldData Members
 
-        public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev, Svc.UserProfile profile, int projectID) //Userprofile nur dabei bis Personalisierung beendet ist. Dann über Modellklasse.
+        public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev) //Userprofile nur dabei bis Personalisierung beendet ist. Dann über Modellklasse.
         {
 
 
             Svc.HierarchySection result = new Svc.HierarchySection();
-            result.ProjectID = projectID;
             result.Properties = new System.Collections.ObjectModel.ObservableCollection<Svc.CollectionEventProperty>();
             result.Specimen = new System.Collections.ObjectModel.ObservableCollection<Svc.Specimen>();
             result.IdentificationUnits = new System.Collections.ObjectModel.ObservableCollection<Svc.IdentificationUnit>();
             result.IdentificationUnitAnalyses = new System.Collections.ObjectModel.ObservableCollection<Svc.IdentificationUnitAnalysis>();
-
-            result.Profile = profile;
             if (ev.IsModified())
                 result.Event = Event.ConvertToServiceObject(ev);
 

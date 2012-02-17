@@ -9,7 +9,7 @@ using Svc = DiversityPhone.DiversityService;
         void clearDatabase();
 
 
-        Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev, Svc.UserProfile profile, int projectID);
+        Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev);
         IList<Svc.EventSeries> getUploadServiceEventSeries();
         void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to);
 

@@ -203,7 +203,7 @@ namespace DiversityService
 
 
 
-        public KeyProjection InsertHierarchy(HierarchySection hierarchy)
+        public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred)
         {
             KeyProjection result = new KeyProjection();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
@@ -232,7 +232,7 @@ namespace DiversityService
 
 
                     //Adjust directly from event depending entities with new key
-                    var newLocalisations = hierarchy.Event.ToLocalisations(hierarchy.Profile, newEventEntity.CollectionEventID);
+                    var newLocalisations = hierarchy.Event.ToLocalisations(cred, newEventEntity.CollectionEventID);
                     foreach (DiversityCollection.CollectionEventLocalisation loc in newLocalisations)
                     {
                         ctx.CollectionEventLocalisation.AddObject(loc);
@@ -248,7 +248,7 @@ namespace DiversityService
                     }
                 }
 
-                var newProperties = hierarchy.Properties.ToEntity(hierarchy.Profile);
+                var newProperties = hierarchy.Properties.ToEntity(cred);
                 foreach (DiversityCollection.CollectionEventProperty prop in newProperties)
                 {
                     ctx.CollectionEventProperties.AddObject(prop);
@@ -271,9 +271,9 @@ namespace DiversityService
                 foreach (KeyValuePair<Specimen, DiversityCollection.CollectionSpecimen> syncPair in newSpecimen)
                 {
                     //Sync Projects
-                    ctx.CollectionProjects.AddObject(ModelProjection.ToProject(syncPair.Value.CollectionSpecimenID, hierarchy.ProjectID));
+                    ctx.CollectionProjects.AddObject(ModelProjection.ToProject(syncPair.Value.CollectionSpecimenID, cred.ProjectID));
                     //Sync Agents
-                    ctx.CollectionAgents.AddObject(ModelProjection.ToAgent(syncPair.Value.CollectionSpecimenID, hierarchy.Profile));
+                    ctx.CollectionAgents.AddObject(ModelProjection.ToAgent(syncPair.Value.CollectionSpecimenID, cred));
                     //adjust keys
                     result.specimenKeys.Add(syncPair.Key.CollectionSpecimenID, syncPair.Value.CollectionSpecimenID);
                     foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
@@ -343,12 +343,12 @@ namespace DiversityService
                     }
                 }
 
-                var newIdentifications = hierarchy.IdentificationUnits.ToIdentifications(hierarchy.Profile);
+                var newIdentifications = hierarchy.IdentificationUnits.ToIdentifications(cred);
                 foreach (DiversityCollection.Identification ident in newIdentifications)
                 {
                     ctx.Identifications.AddObject(ident);
                 }
-                var newGeoAnalyses = hierarchy.IdentificationUnits.ToGeoAnalyses(hierarchy.Profile);
+                var newGeoAnalyses = hierarchy.IdentificationUnits.ToGeoAnalyses(cred);
                 foreach (DiversityCollection.IdentificationUnitGeoAnalysi iuga in newGeoAnalyses)
                 {
                     ctx.IdentificationUnitGeoAnalysis.AddObject(iuga);
@@ -378,7 +378,7 @@ namespace DiversityService
                 #endregion
 
                 #region IUA
-                var newAnalyses = hierarchy.IdentificationUnitAnalyses.ToEntity(hierarchy.Profile);
+                var newAnalyses = hierarchy.IdentificationUnitAnalyses.ToEntity(cred);
 
                 //Add specimenkeys to Analysis
                 foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)

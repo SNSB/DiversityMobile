@@ -122,7 +122,7 @@ namespace DiversityPhone.View
                 PhotoImage.Source = actualImage;
                 //Collapse visibility on the progress bar once writeable bitmap is visible.
                 progressBar1.Visibility = Visibility.Collapsed;
-                saveCapturedImage(); //Erst im iso speichern, wenn das Bild fertig ist
+                saveCapturedImage(); //TODO: Erst im iso speichern, wenn das Bild fertig ist
                 setPhotoBar();
                 setPhotoButtonStates(true, true, false, true);
                 
@@ -597,14 +597,14 @@ namespace DiversityPhone.View
 
                 //Save MemoryStream
                 progressBar1.Visibility = Visibility.Visible;
-                //Create filename fpr isolated storage
+                //Create filename for isolated storage TODO:Adjust URI-Setting Analog to Photo
                 if (VM.Current.Model.Uri == null)
                 {
                     Guid g = Guid.NewGuid();
                     String uri = g.ToString() + ".wav";
                     VM.Current.Model.Uri = uri;
                 }
-
+                //TODO: Save after svaButton_Click, Integrate seve button
                 //Create virtual store and file stream. Check for duplicate tempJPEG files.
                 var myStore = IsolatedStorageFile.GetUserStoreForApplication();
                 if (myStore.FileExists(VM.Current.Model.Uri))

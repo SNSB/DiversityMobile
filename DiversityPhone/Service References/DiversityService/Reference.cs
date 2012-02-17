@@ -1018,10 +1018,6 @@ namespace DiversityPhone.DiversityService {
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> IdentificationUnitsField;
         
-        private DiversityPhone.DiversityService.UserProfile ProfileField;
-        
-        private int ProjectIDField;
-        
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty> PropertiesField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Specimen> SpecimenField;
@@ -1061,32 +1057,6 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.IdentificationUnitsField, value) != true)) {
                     this.IdentificationUnitsField = value;
                     this.RaisePropertyChanged("IdentificationUnits");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.UserProfile Profile {
-            get {
-                return this.ProfileField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ProfileField, value) != true)) {
-                    this.ProfileField = value;
-                    this.RaisePropertyChanged("Profile");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ProjectID {
-            get {
-                return this.ProjectIDField;
-            }
-            set {
-                if ((this.ProjectIDField.Equals(value) != true)) {
-                    this.ProjectIDField = value;
-                    this.RaisePropertyChanged("ProjectID");
                 }
             }
         }
@@ -1973,7 +1943,7 @@ namespace DiversityPhone.DiversityService {
         void EndInsertGeographyIntoSeries(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
-        System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState);
         
         DiversityPhone.DiversityService.KeyProjection EndInsertHierarchy(System.IAsyncResult result);
         
@@ -3176,8 +3146,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginInsertHierarchy(hierarchy, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginInsertHierarchy(hierarchy, cred, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3187,7 +3157,8 @@ namespace DiversityPhone.DiversityService {
         
         private System.IAsyncResult OnBeginInsertHierarchy(object[] inValues, System.AsyncCallback callback, object asyncState) {
             DiversityPhone.DiversityService.HierarchySection hierarchy = ((DiversityPhone.DiversityService.HierarchySection)(inValues[0]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertHierarchy(hierarchy, callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials cred = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertHierarchy(hierarchy, cred, callback, asyncState);
         }
         
         private object[] OnEndInsertHierarchy(System.IAsyncResult result) {
@@ -3203,11 +3174,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void InsertHierarchyAsync(DiversityPhone.DiversityService.HierarchySection hierarchy) {
-            this.InsertHierarchyAsync(hierarchy, null);
+        public void InsertHierarchyAsync(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred) {
+            this.InsertHierarchyAsync(hierarchy, cred, null);
         }
         
-        public void InsertHierarchyAsync(DiversityPhone.DiversityService.HierarchySection hierarchy, object userState) {
+        public void InsertHierarchyAsync(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred, object userState) {
             if ((this.onBeginInsertHierarchyDelegate == null)) {
                 this.onBeginInsertHierarchyDelegate = new BeginOperationDelegate(this.OnBeginInsertHierarchy);
             }
@@ -3218,7 +3189,8 @@ namespace DiversityPhone.DiversityService {
                 this.onInsertHierarchyCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnInsertHierarchyCompleted);
             }
             base.InvokeAsync(this.onBeginInsertHierarchyDelegate, new object[] {
-                        hierarchy}, this.onEndInsertHierarchyDelegate, this.onInsertHierarchyCompletedDelegate, userState);
+                        hierarchy,
+                        cred}, this.onEndInsertHierarchyDelegate, this.onInsertHierarchyCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3534,9 +3506,10 @@ namespace DiversityPhone.DiversityService {
                 base.EndInvoke("InsertGeographyIntoSeries", _args, result);
             }
             
-            public System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[1];
+            public System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
                 _args[0] = hierarchy;
+                _args[1] = cred;
                 System.IAsyncResult _result = base.BeginInvoke("InsertHierarchy", _args, callback, asyncState);
                 return _result;
             }

@@ -63,7 +63,7 @@ namespace DiversityService
             };
         }
 
-        public static IList<DB.CollectionEventLocalisation> ToLocalisations(this Model.Event model, Model.UserProfile profile, int actualizedKey)
+        public static IList<DB.CollectionEventLocalisation> ToLocalisations(this Model.Event model, Model.UserCredentials profile, int actualizedKey)
         {
             IList<DB.CollectionEventLocalisation> localisations = new List<DB.CollectionEventLocalisation>();
             if (model.Altitude != null)
@@ -76,8 +76,8 @@ namespace DiversityService
                 altitude.DeterminationDate = model.DeterminationDate;
                 altitude.LocalisationSystemID = 4;
                 altitude.Location1 = model.Altitude.ToString();
-                altitude.ResponsibleAgentURI = profile.AgentUri;
-                altitude.ResponsibleName = profile.UserName;
+                altitude.ResponsibleAgentURI = profile.AgentURI;
+                altitude.ResponsibleName = profile.AgentName;
                 altitude.RecordingMethod = "Generated via DiversityMobile";
                 //altitude.RowGUID = Guid.NewGuid();
                 localisations.Add(altitude);
@@ -93,8 +93,8 @@ namespace DiversityService
                 wgs84.LocalisationSystemID = 8;
                 wgs84.Location1 = model.Latitude.ToString();
                 wgs84.Location2 = model.Longitude.ToString();
-                wgs84.ResponsibleAgentURI = profile.AgentUri;
-                wgs84.ResponsibleName = profile.UserName;
+                wgs84.ResponsibleAgentURI = profile.AgentURI;
+                wgs84.ResponsibleName = profile.AgentName;
                 wgs84.RecordingMethod = "Generated via DiversityMobile";
                 //wgs84.RowGUID = Guid.NewGuid();
                 localisations.Add(wgs84);
@@ -103,20 +103,20 @@ namespace DiversityService
         }
 
 
-        public static DB.CollectionEventProperty ToEntity(Model.CollectionEventProperty model, Model.UserProfile profile)
+        public static DB.CollectionEventProperty ToEntity(Model.CollectionEventProperty model, Model.UserCredentials profile)
         {
             DB.CollectionEventProperty export = new DB.CollectionEventProperty();
             export.CollectionEventID = model.EventID;
             export.DisplayText = model.DisplayText;
             export.PropertyID = model.PropertyID;
             export.PropertyURI = model.PropertyUri;
-            export.ResponsibleAgentURI = profile.AgentUri;
-            export.ResponsibleName = profile.UserName;
+            export.ResponsibleAgentURI = profile.AgentURI;
+            export.ResponsibleName = profile.AgentName;
             export.RowGUID = Guid.NewGuid();
             return export;
         }
 
-        public static IList<DB.CollectionEventProperty> ToEntity(this IList<Model.CollectionEventProperty> models, Model.UserProfile profile)
+        public static IList<DB.CollectionEventProperty> ToEntity(this IList<Model.CollectionEventProperty> models, Model.UserCredentials profile)
         {
             IList<DB.CollectionEventProperty> exportList = new List<DB.CollectionEventProperty>();
             foreach (Model.CollectionEventProperty model in models)
@@ -201,12 +201,12 @@ namespace DiversityService
             return export;
         }
 
-        public static DB.CollectionAgent ToAgent(int specimenID,Model.UserProfile profile)
+        public static DB.CollectionAgent ToAgent(int specimenID,Model.UserCredentials profile)
         {
             DB.CollectionAgent export = new DB.CollectionAgent();
             export.CollectionSpecimenID=specimenID;
-            export.CollectorsAgentURI=profile.AgentUri;
-            export.CollectorsName=profile.UserName;
+            export.CollectorsAgentURI = profile.AgentURI;
+            export.CollectorsName = profile.AgentName;
             return export;
         }
 
@@ -241,7 +241,7 @@ namespace DiversityService
             return exportDictionary;
         }
 
-        public static DB.Identification ToIdentification(this Model.IdentificationUnit iu, Model.UserProfile profile)
+        public static DB.Identification ToIdentification(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
             DB.Identification export = new DB.Identification();
             export.CollectionSpecimenID = iu.SpecimenID;
@@ -254,12 +254,12 @@ namespace DiversityService
             export.TaxonomicName=iu.LastIdentificationCache;
             export.NameURI=iu.IdentificationUri;
             export.IdentificationCategory = "determination";
-            export.ResponsibleName = profile.UserName;
-            export.ResponsibleAgentURI = profile.AgentUri;
+            export.ResponsibleName = profile.AgentName;
+            export.ResponsibleAgentURI = profile.AgentURI;
             return export;
         }
 
-        public static IList<DB.Identification> ToIdentifications(this IList<Model.IdentificationUnit> unitList, Model.UserProfile profile)
+        public static IList<DB.Identification> ToIdentifications(this IList<Model.IdentificationUnit> unitList, Model.UserCredentials profile)
         {
             List<DB.Identification> exportList = new List<DB.Identification>();
             foreach (Model.IdentificationUnit iu in unitList)
@@ -269,18 +269,18 @@ namespace DiversityService
             return exportList;
         }
 
-        public static DB.IdentificationUnitGeoAnalysi ToGeoAnalysis(this Model.IdentificationUnit iu, Model.UserProfile profile)
+        public static DB.IdentificationUnitGeoAnalysi ToGeoAnalysis(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
             DB.IdentificationUnitGeoAnalysi export=new DB.IdentificationUnitGeoAnalysi();
             export.AnalysisDate = iu.AnalysisDate;
             export.IdentificationUnitID = iu.UnitID;
             export.CollectionSpecimenID = iu.SpecimenID;
-            export.ResponsibleName = profile.UserName;
-            export.ResponsibleAgentURI = profile.AgentUri;
+            export.ResponsibleName = profile.AgentName;
+            export.ResponsibleAgentURI = profile.AgentURI;
             return export;
         }
 
-        public static IList<DB.IdentificationUnitGeoAnalysi> ToGeoAnalyses(this IList<Model.IdentificationUnit> unitList, Model.UserProfile profile)
+        public static IList<DB.IdentificationUnitGeoAnalysi> ToGeoAnalyses(this IList<Model.IdentificationUnit> unitList, Model.UserCredentials profile)
         {
             List<DB.IdentificationUnitGeoAnalysi> exportList = new List<DB.IdentificationUnitGeoAnalysi>();
             foreach (Model.IdentificationUnit iu in unitList)
@@ -294,7 +294,7 @@ namespace DiversityService
 
         #region IUA
 
-        public static DB.IdentificationUnitAnalysis ToEntity(this Model.IdentificationUnitAnalysis iua,Model.UserProfile profile)
+        public static DB.IdentificationUnitAnalysis ToEntity(this Model.IdentificationUnitAnalysis iua,Model.UserCredentials profile)
         {
             DB.IdentificationUnitAnalysis export = new DB.IdentificationUnitAnalysis();
             export.AnalysisID = iua.AnalysisID;
@@ -303,8 +303,8 @@ namespace DiversityService
             export.AnalysisNumber = iua.IdentificationUnitAnalysisID.ToString();
             export.AnalysisResult = iua.AnalysisResult;
             export.AnalysisDate = iua.AnalysisDate.ToShortDateString();
-            export.ResponsibleName = profile.UserName;
-            export.ResponsibleAgentURI = profile.AgentUri;
+            export.ResponsibleName = profile.AgentName;
+            export.ResponsibleAgentURI = profile.AgentURI;
             return export;
         }
 
@@ -318,7 +318,7 @@ namespace DiversityService
         //    return exportList;
         //}
 
-        public static Dictionary<Model.IdentificationUnitAnalysis,DB.IdentificationUnitAnalysis> ToEntity(this IList<Model.IdentificationUnitAnalysis> iuaList, Model.UserProfile profile)
+        public static Dictionary<Model.IdentificationUnitAnalysis,DB.IdentificationUnitAnalysis> ToEntity(this IList<Model.IdentificationUnitAnalysis> iuaList, Model.UserCredentials profile)
         {
             Dictionary<Model.IdentificationUnitAnalysis, DB.IdentificationUnitAnalysis> exportDictionary= new Dictionary<Model.IdentificationUnitAnalysis, DB.IdentificationUnitAnalysis>();
             foreach (Model.IdentificationUnitAnalysis iua in iuaList)

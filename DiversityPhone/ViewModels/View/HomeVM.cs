@@ -78,6 +78,7 @@
             //Initialize PlainUpload
             _plainUploadClient = new Svc.DiversityServiceClient();
             _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
+            _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
             registerUpload();
 
@@ -119,7 +120,7 @@
             
             foreach (var ev in events)
             {
-                yield return _storage.getNewHierarchyBelow(ev);
+                yield return _storage.getNewHierarchyToSyncBelow(ev);
             }
         }
 
@@ -165,21 +166,56 @@
         {
 
             IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
-            System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = DiversityPhone.Utility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
-            _plainUploadClient.InsertEventSeriesAsync(es);
+            if (series != null && series.Count > 0)
+            {
+                System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
+                _plainUploadClient.InsertEventSeriesAsync(es);
+            }
+            else
+            {
+                syncHierarchies();
+            }
         }
 
-
+        private void syncHierarchies()
+        {
+            IList<EventSeries> seriesList = _storage.getAllEventSeries();
+            //Missing: DiversityServiceClient GetCreds
+            foreach (EventSeries es in seriesList)
+            {
+                IList<Event> eventList = _storage.getEventsForSeries(es);
+                foreach (Event ev in eventList)
+                {
+                    Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
+                    _plainUploadClient.InsertHierarchyAsync(section);
+                }
+            }
+        }
 
         private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
         {
-            Dictionary<Svc.EventSeries,Svc.EventSeries> series = args.Result;
+            Dictionary<Svc.EventSeries, Svc.EventSeries> series = args.Result;
             foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
             {
-                _storage.adjustSeriesAfterUpload(kvp.Key.SeriesID, kvp.Value.SeriesID);
+                _storage.updateSeriesKey(kvp.Key.SeriesID, kvp.Value.SeriesID);
             }
-            updatedSeriesList();
+            syncHierarchies();
         }
+
+
+        private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
+        {
+            Svc.KeyProjection keysToUpdate = args.Result;
+            if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
+                _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
+            foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
+                _storage.updateSpecimenKey(specPair.Key, specPair.Value);
+            foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
+                _storage.updateIUKey(iuPair.Key, iuPair.Value);
+        }
+
+
+
 
         #region Upload MMO
         private void uploadMMos()

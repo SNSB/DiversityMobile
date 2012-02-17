@@ -189,8 +189,6 @@
       <xs:element minOccurs="0" name="Event" nillable="true" type="tns:Event" />
       <xs:element minOccurs="0" name="IdentificationUnitAnalyses" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
       <xs:element minOccurs="0" name="IdentificationUnits" nillable="true" type="tns:ArrayOfIdentificationUnit" />
-      <xs:element minOccurs="0" name="Profile" nillable="true" type="tns:UserProfile" />
-      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
       <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCollectionEventProperty" />
       <xs:element minOccurs="0" name="Specimen" nillable="true" type="tns:ArrayOfSpecimen" />
     </xs:sequence>

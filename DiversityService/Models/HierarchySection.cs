@@ -8,9 +8,6 @@ namespace DiversityService.Model
 {
     public class HierarchySection
     {
-        //Wird nicht synchroniniert. Enthält Informationen über den Sammler
-        public UserProfile Profile { get; set; }
-        public int ProjectID;
 
         //Nur Modelklassen. Abgeleitet Serverklassen stehen im Kommentar
         public Event Event { get; set; }

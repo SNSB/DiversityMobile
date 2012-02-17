@@ -681,6 +681,10 @@
       <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
       <Name>DiversityPhone.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
+      <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
+      <Name>GeneralUtility</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
