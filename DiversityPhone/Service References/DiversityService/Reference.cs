@@ -894,6 +894,8 @@ namespace DiversityPhone.DiversityService {
         
         private string DescriptionField;
         
+        private System.Nullable<int> DiversityCollectionEventSeriesIDField;
+        
         private string GeographyField;
         
         private System.Nullable<System.DateTime> LogUpdatedWhenField;
@@ -915,6 +917,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
                     this.DescriptionField = value;
                     this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventSeriesID {
+            get {
+                return this.DiversityCollectionEventSeriesIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventSeriesIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventSeriesIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventSeriesID");
                 }
             }
         }
@@ -1108,6 +1123,8 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<System.DateTime> DeterminationDateField;
         
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
         private int EventIDField;
         
         private string HabitatDescriptionField;
@@ -1157,6 +1174,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.DeterminationDateField.Equals(value) != true)) {
                     this.DeterminationDateField = value;
                     this.RaisePropertyChanged("DeterminationDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
                 }
             }
         }
@@ -1363,6 +1393,8 @@ namespace DiversityPhone.DiversityService {
         
         private string ColonisedSubstratePartField;
         
+        private System.Nullable<int> DiversityCollectionUnitIDField;
+        
         private string FamilyCacheField;
         
         private string GenderField;
@@ -1428,6 +1460,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.ColonisedSubstratePartField, value) != true)) {
                     this.ColonisedSubstratePartField = value;
                     this.RaisePropertyChanged("ColonisedSubstratePart");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionUnitID {
+            get {
+                return this.DiversityCollectionUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionUnitID");
                 }
             }
         }
@@ -1738,6 +1783,8 @@ namespace DiversityPhone.DiversityService {
         
         private int CollectionSpecimenIDField;
         
+        private System.Nullable<int> DiversityCollectionSpecimenIDField;
+        
         private System.DateTime LogUpdatedWhenField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
@@ -1775,6 +1822,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
                     this.CollectionSpecimenIDField = value;
                     this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSpecimenID {
+            get {
+                return this.DiversityCollectionSpecimenIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSpecimenIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSpecimenID");
                 }
             }
         }

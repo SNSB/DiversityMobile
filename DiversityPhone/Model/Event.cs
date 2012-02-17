@@ -18,10 +18,14 @@
             this.CollectionDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
+            this.DiversityCollectionEventID = null;
         }
 
         [Column(IsPrimaryKey = true)]
         public int EventID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionEventID { get; set; }
 
         [Column(CanBeNull = true)]
         public int? SeriesID { get; set; }
@@ -84,6 +88,7 @@
         public static Svc.Event ConvertToServiceObject(Event ev)
         {
             Svc.Event export = new Svc.Event();
+            export.DiversityCollectionEventID = ev.DiversityCollectionEventID;
             export.Altitude = ev.Altitude;
             export.CollectionDate = ev.CollectionDate;
             export.EventID = ev.EventID;
@@ -94,11 +99,6 @@
             export.Longitude = ev.Longitude;
             export.SeriesID = ev.SeriesID;
             return export;
-        }
-
-        public static Event Clone(Event ev)
-        {
-            throw new NotImplementedException();
         }
     }
 }

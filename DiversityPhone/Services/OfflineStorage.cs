@@ -945,7 +945,11 @@
 
         #region IOfflineFieldData Members
 
-        public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev) //Userprofile nur dabei bis Personalisierung beendet ist. Dann über Modellklasse.
+        /// <summary>
+        /// Creates s Tree of IModifyable Objects with ModificationState==true with an Event as the root.
+        /// It has to be searched the complete Specimen and IdentificationUnitLevel of the event as there can be changes on these objects even when the event or corresponding epcimen,iu is unchanged.
+        /// </summary>
+        public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev) 
         {
 
 
@@ -973,20 +977,26 @@
 
                 IQueryable<Specimen> clientSpecList =
                     from spec in ctx.Specimen
-                    where spec.CollectionEventID == ev.EventID && spec.ModificationState == true
+                    where spec.CollectionEventID == ev.EventID
                     select spec;
                 foreach (Specimen spec in clientSpecList)
                 {
-                    Svc.Specimen serverSpec = Specimen.ConvertToServiceObject(spec);
-                    result.Specimen.Add(serverSpec);
+                    if (spec.ModificationState == true)
+                    {
+                        Svc.Specimen serverSpec = Specimen.ConvertToServiceObject(spec);
+                        result.Specimen.Add(serverSpec);
+                    }
                     IQueryable<IdentificationUnit> clientIUListForSpec =
                         from iu in ctx.IdentificationUnits
-                        where iu.UnitID == spec.CollectionSpecimenID && iu.ModificationState == true
+                        where iu.UnitID == spec.CollectionSpecimenID
                         select iu;
                     foreach (IdentificationUnit iu in clientIUListForSpec)
                     {
-                        Svc.IdentificationUnit serverIU = IdentificationUnit.ConvertToServiceObject(iu);
-                        result.IdentificationUnits.Add(serverIU);
+                        if (iu.ModificationState == true)
+                        {
+                            Svc.IdentificationUnit serverIU = IdentificationUnit.ConvertToServiceObject(iu);
+                            result.IdentificationUnits.Add(serverIU);
+                        }
 
                         IQueryable<IdentificationUnitAnalysis> clientIUAListForIU =
                             from iua in ctx.IdentificationUnitAnalyses
@@ -1063,9 +1073,9 @@
                     from ev in ctx.Events
                     where ev.EventID == oldKey
                     select ev;
-                Event oldEvent = savedEvents.First();//TODO: Check if there is a key valuation
-                ctx.Events.DeleteOnSubmit(oldEvent); //Guid evtl. kleineres Übel
-                Event newEvent = Event.Clone(oldEvent);
+                Event manipulatedEvent = savedEvents.First();//TODO: Check if there is a key valuation
+                manipulatedEvent.DiversityCollectionEventID = newKey;
+                //KeyUpdates-Below nicht nötig weil der Schlüssel gleich bleibt
                 newEvent.EventID = newKey;
                 newEvent.ModificationState = false;
                 ctx.Events.InsertOnSubmit(newEvent);

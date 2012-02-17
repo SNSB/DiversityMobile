@@ -20,6 +20,7 @@
             this.SeriesID = 0;
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
+            this.DiversityCollectionEventSeriesID = null;
             this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
         }
 
@@ -39,6 +40,9 @@
 
         [Column(IsPrimaryKey = true)]
         public int SeriesID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionEventSeriesID { get; set; }
 
         [Column(CanBeNull = false)]
         public string Description { get; set; }
@@ -99,26 +103,27 @@
 
 
 
-        public static EventSeries Clone(EventSeries es)
-        {
-            EventSeries clone = new EventSeries();
-            clone.Description = es.Description;
-            clone.GeoSource = es.GeoSource;
-            clone.LogUpdatedWhen = es.LogUpdatedWhen;
-            clone.ModificationState = es.ModificationState;
-            clone.SeriesCode = es.SeriesCode;
-            clone.SeriesEnd = es.SeriesEnd;
-            clone.SeriesID = es.SeriesID;
-            clone.SeriesStart = es.SeriesStart;
-            return clone;
+        //public static EventSeries Clone(EventSeries es)
+        //{
+        //    EventSeries clone = new EventSeries();
+        //    clone.Description = es.Description;
+        //    clone.GeoSource = es.GeoSource;
+        //    clone.LogUpdatedWhen = es.LogUpdatedWhen;
+        //    clone.ModificationState = es.ModificationState;
+        //    clone.SeriesCode = es.SeriesCode;
+        //    clone.SeriesEnd = es.SeriesEnd;
+        //    clone.SeriesID = es.SeriesID;
+        //    clone.SeriesStart = es.SeriesStart;
+        //    return clone;
 
-        }
+        //}
 
         public static Svc.EventSeries ConvertToServiceObject(EventSeries es)
         {
 
             Svc.EventSeries export = new Svc.EventSeries();
             export.SeriesID = es.SeriesID;
+            export.DiversityCollectionEventSeriesID = es.DiversityCollectionEventSeriesID;
             export.SeriesCode = es.SeriesCode;
             export.SeriesStart = es.SeriesStart;
             export.SeriesEnd = es.SeriesEnd;

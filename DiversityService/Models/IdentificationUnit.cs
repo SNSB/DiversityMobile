@@ -9,6 +9,7 @@ namespace DiversityService.Model
     {
         public int SpecimenID { get; set; }
         public int UnitID { get; set; }
+        public int? DiversityCollectionUnitID { get; set; }
         public int? RelatedUnitID { get; set; }
 
 

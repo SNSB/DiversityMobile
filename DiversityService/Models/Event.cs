@@ -10,6 +10,7 @@ namespace DiversityService.Model
     {
         public int EventID { get; set; }
         public int? SeriesID { get; set; }
+        public int? DiversityCollectionEventID { get; set; }
         public DateTime CollectionDate { get; set; }
         public string LocalityDescription { get; set; }
         public string HabitatDescription { get; set; } 

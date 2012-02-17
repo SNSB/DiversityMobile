@@ -12,6 +12,9 @@
         [Column(IsPrimaryKey = true)]
         public int CollectionSpecimenID { get; set; }
 
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionSpecimenID { get; set; }
+
         [Column]
         public int CollectionEventID { get; set; }
 
@@ -35,6 +38,7 @@
             this.AccessionNumber = null;
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
+            this.DiversityCollectionSpecimenID = 0;
         }
 
 
@@ -63,6 +67,7 @@
         public static Svc.Specimen ConvertToServiceObject(Specimen spec)
         {
             Svc.Specimen export = new Svc.Specimen();
+            export.DiversityCollectionSpecimenID = spec.DiversityCollectionSpecimenID;
             export.AccesionNumber = spec.AccessionNumber;
             export.CollectionEventID = spec.CollectionEventID;
             export.CollectionSpecimenID = spec.CollectionSpecimenID;
@@ -70,10 +75,10 @@
         }
 
 
-        public static Specimen Clone(Specimen spec)
-        {
-            throw new NotImplementedException();
-        }
+        //public static Specimen Clone(Specimen spec)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
     }
 

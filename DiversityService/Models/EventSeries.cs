@@ -9,6 +9,7 @@ namespace DiversityService.Model
     public class EventSeries
     {       
         public int SeriesID { get; set; }
+        public int? DiversityCollectionEventSeriesID { get; set; }
         public string Description { get; set; }
         public string SeriesCode { get; set; }
         public String Geography { get; set; }//Geostring for setting the Geography

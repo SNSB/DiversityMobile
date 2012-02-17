@@ -18,6 +18,7 @@ namespace DiversityPhone.Model
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
+            this.DiversityCollectionUnitID = null;
         }
 
         [Column]
@@ -25,6 +26,9 @@ namespace DiversityPhone.Model
 
         [Column(IsPrimaryKey = true)]
         public int UnitID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionUnitID { get; set; }
 
         [Column]
         public int? RelatedUnitID { get; set; }
@@ -111,6 +115,7 @@ namespace DiversityPhone.Model
         public static Svc.IdentificationUnit ConvertToServiceObject(IdentificationUnit iu)
         {
             Svc.IdentificationUnit export = new Svc.IdentificationUnit();
+            export.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
             export.Altitude = iu.Altitude;
             export.AnalysisDate = iu.AnalysisDate;
             export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
@@ -133,9 +138,9 @@ namespace DiversityPhone.Model
         }
 
 
-        public static IdentificationUnit Clone(IdentificationUnit iu)
-        {
-            throw new NotImplementedException();
-        }
+        //public static IdentificationUnit Clone(IdentificationUnit iu)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

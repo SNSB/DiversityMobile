@@ -205,13 +205,14 @@ namespace DiversityService
 
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred)
         {
-            KeyProjection result = new KeyProjection();
+            KeyProjection result = new KeyProjectin(); //TODO: Synchronisation auf neues Verfahren überarbeiten. Immer nach dem DiversityCollectionKey gucken und den Originalschlüssel unverändert lassen
+            //Es werden auch die Keys fon nicht zu synchronisierenden Objekten benötigt
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
                 //Adjust Event
                 DiversityCollection.CollectionEvent newEventEntity = null;
                 #region event
-                if (hierarchy.Event != null) //Event is not synced before
+                if (hierarchy.Event != null) //Event is not synced before-Event is always needed for key or related keys have to be saved and adjusted
                 {
                     newEventEntity = hierarchy.Event.ToEntity();
                     ctx.CollectionEvent.AddObject(newEventEntity);
