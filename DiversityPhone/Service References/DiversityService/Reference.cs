@@ -1012,30 +1012,19 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="HierarchySection", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class HierarchySection : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> AnalysesField;
-        
         private DiversityPhone.DiversityService.Event EventField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> IdentificationUnitAnalysesField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> IdentificationUnitsField;
         
         private DiversityPhone.DiversityService.UserProfile ProfileField;
         
+        private int ProjectIDField;
+        
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty> PropertiesField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Specimen> SpecimenField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> Analyses {
-            get {
-                return this.AnalysesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysesField, value) != true)) {
-                    this.AnalysesField = value;
-                    this.RaisePropertyChanged("Analyses");
-                }
-            }
-        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public DiversityPhone.DiversityService.Event Event {
@@ -1046,6 +1035,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.EventField, value) != true)) {
                     this.EventField = value;
                     this.RaisePropertyChanged("Event");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> IdentificationUnitAnalyses {
+            get {
+                return this.IdentificationUnitAnalysesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnitAnalysesField, value) != true)) {
+                    this.IdentificationUnitAnalysesField = value;
+                    this.RaisePropertyChanged("IdentificationUnitAnalyses");
                 }
             }
         }
@@ -1072,6 +1074,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.ProfileField, value) != true)) {
                     this.ProfileField = value;
                     this.RaisePropertyChanged("Profile");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ProjectID {
+            get {
+                return this.ProjectIDField;
+            }
+            set {
+                if ((this.ProjectIDField.Equals(value) != true)) {
+                    this.ProjectIDField = value;
+                    this.RaisePropertyChanged("ProjectID");
                 }
             }
         }
@@ -1372,7 +1387,7 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnit", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class IdentificationUnit : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private double AltitudeField;
+        private System.Nullable<double> AltitudeField;
         
         private System.DateTime AnalysisDateField;
         
@@ -1386,13 +1401,13 @@ namespace DiversityPhone.DiversityService {
         
         private string LastIdentificationCacheField;
         
-        private double LatitudeField;
+        private System.Nullable<double> LatitudeField;
         
         private string LifeStageField;
         
         private System.DateTime LogUpdatedWhenField;
         
-        private double LongitudeField;
+        private System.Nullable<double> LongitudeField;
         
         private bool OnlyObservedField;
         
@@ -1409,7 +1424,7 @@ namespace DiversityPhone.DiversityService {
         private int UnitIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Altitude {
+        public System.Nullable<double> Altitude {
             get {
                 return this.AltitudeField;
             }
@@ -1500,7 +1515,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Latitude {
+        public System.Nullable<double> Latitude {
             get {
                 return this.LatitudeField;
             }
@@ -1539,7 +1554,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public double Longitude {
+        public System.Nullable<double> Longitude {
             get {
                 return this.LongitudeField;
             }
@@ -1817,6 +1832,66 @@ namespace DiversityPhone.DiversityService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="KeyProjection", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class KeyProjection : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private System.Collections.Generic.KeyValuePair<System.Nullable<int>, System.Nullable<int>> eventKeyField;
+        
+        private System.Collections.Generic.Dictionary<int, int> iuKeysField;
+        
+        private System.Collections.Generic.Dictionary<int, int> specimenKeysField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.KeyValuePair<System.Nullable<int>, System.Nullable<int>> eventKey {
+            get {
+                return this.eventKeyField;
+            }
+            set {
+                if ((this.eventKeyField.Equals(value) != true)) {
+                    this.eventKeyField = value;
+                    this.RaisePropertyChanged("eventKey");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Dictionary<int, int> iuKeys {
+            get {
+                return this.iuKeysField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.iuKeysField, value) != true)) {
+                    this.iuKeysField = value;
+                    this.RaisePropertyChanged("iuKeys");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.Generic.Dictionary<int, int> specimenKeys {
+            get {
+                return this.specimenKeysField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.specimenKeysField, value) != true)) {
+                    this.specimenKeysField = value;
+                    this.RaisePropertyChanged("specimenKeys");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DiversityService.IDiversityService")]
     public interface IDiversityService {
@@ -1900,7 +1975,12 @@ namespace DiversityPhone.DiversityService {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
         System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, System.AsyncCallback callback, object asyncState);
         
-        DiversityPhone.DiversityService.HierarchySection EndInsertHierarchy(System.IAsyncResult result);
+        DiversityPhone.DiversityService.KeyProjection EndInsertHierarchy(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/CreateNewHierarchy", ReplyAction="http://tempuri.org/IDiversityService/CreateNewHierarchyResponse")]
+        System.IAsyncResult BeginCreateNewHierarchy(System.AsyncCallback callback, object asyncState);
+        
+        DiversityPhone.DiversityService.HierarchySection EndCreateNewHierarchy(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2184,6 +2264,25 @@ namespace DiversityPhone.DiversityService {
             this.results = results;
         }
         
+        public DiversityPhone.DiversityService.KeyProjection Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((DiversityPhone.DiversityService.KeyProjection)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class CreateNewHierarchyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public CreateNewHierarchyCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
         public DiversityPhone.DiversityService.HierarchySection Result {
             get {
                 base.RaiseExceptionIfNecessary();
@@ -2292,6 +2391,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onInsertHierarchyCompletedDelegate;
         
+        private BeginOperationDelegate onBeginCreateNewHierarchyDelegate;
+        
+        private EndOperationDelegate onEndCreateNewHierarchyDelegate;
+        
+        private System.Threading.SendOrPostCallback onCreateNewHierarchyCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -2376,6 +2481,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> InsertGeographyIntoSeriesCompleted;
         
         public event System.EventHandler<InsertHierarchyCompletedEventArgs> InsertHierarchyCompleted;
+        
+        public event System.EventHandler<CreateNewHierarchyCompletedEventArgs> CreateNewHierarchyCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -3074,7 +3181,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DiversityPhone.DiversityService.HierarchySection DiversityPhone.DiversityService.IDiversityService.EndInsertHierarchy(System.IAsyncResult result) {
+        DiversityPhone.DiversityService.KeyProjection DiversityPhone.DiversityService.IDiversityService.EndInsertHierarchy(System.IAsyncResult result) {
             return base.Channel.EndInsertHierarchy(result);
         }
         
@@ -3084,7 +3191,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         private object[] OnEndInsertHierarchy(System.IAsyncResult result) {
-            DiversityPhone.DiversityService.HierarchySection retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertHierarchy(result);
+            DiversityPhone.DiversityService.KeyProjection retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertHierarchy(result);
             return new object[] {
                     retVal};
         }
@@ -3112,6 +3219,50 @@ namespace DiversityPhone.DiversityService {
             }
             base.InvokeAsync(this.onBeginInsertHierarchyDelegate, new object[] {
                         hierarchy}, this.onEndInsertHierarchyDelegate, this.onInsertHierarchyCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginCreateNewHierarchy(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginCreateNewHierarchy(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        DiversityPhone.DiversityService.HierarchySection DiversityPhone.DiversityService.IDiversityService.EndCreateNewHierarchy(System.IAsyncResult result) {
+            return base.Channel.EndCreateNewHierarchy(result);
+        }
+        
+        private System.IAsyncResult OnBeginCreateNewHierarchy(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginCreateNewHierarchy(callback, asyncState);
+        }
+        
+        private object[] OnEndCreateNewHierarchy(System.IAsyncResult result) {
+            DiversityPhone.DiversityService.HierarchySection retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndCreateNewHierarchy(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnCreateNewHierarchyCompleted(object state) {
+            if ((this.CreateNewHierarchyCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.CreateNewHierarchyCompleted(this, new CreateNewHierarchyCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void CreateNewHierarchyAsync() {
+            this.CreateNewHierarchyAsync(null);
+        }
+        
+        public void CreateNewHierarchyAsync(object userState) {
+            if ((this.onBeginCreateNewHierarchyDelegate == null)) {
+                this.onBeginCreateNewHierarchyDelegate = new BeginOperationDelegate(this.OnBeginCreateNewHierarchy);
+            }
+            if ((this.onEndCreateNewHierarchyDelegate == null)) {
+                this.onEndCreateNewHierarchyDelegate = new EndOperationDelegate(this.OnEndCreateNewHierarchy);
+            }
+            if ((this.onCreateNewHierarchyCompletedDelegate == null)) {
+                this.onCreateNewHierarchyCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnCreateNewHierarchyCompleted);
+            }
+            base.InvokeAsync(this.onBeginCreateNewHierarchyDelegate, null, this.onEndCreateNewHierarchyDelegate, this.onCreateNewHierarchyCompletedDelegate, userState);
         }
         
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
@@ -3390,9 +3541,21 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public DiversityPhone.DiversityService.HierarchySection EndInsertHierarchy(System.IAsyncResult result) {
+            public DiversityPhone.DiversityService.KeyProjection EndInsertHierarchy(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                DiversityPhone.DiversityService.HierarchySection _result = ((DiversityPhone.DiversityService.HierarchySection)(base.EndInvoke("InsertHierarchy", _args, result)));
+                DiversityPhone.DiversityService.KeyProjection _result = ((DiversityPhone.DiversityService.KeyProjection)(base.EndInvoke("InsertHierarchy", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginCreateNewHierarchy(System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[0];
+                System.IAsyncResult _result = base.BeginInvoke("CreateNewHierarchy", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public DiversityPhone.DiversityService.HierarchySection EndCreateNewHierarchy(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                DiversityPhone.DiversityService.HierarchySection _result = ((DiversityPhone.DiversityService.HierarchySection)(base.EndInvoke("CreateNewHierarchy", _args, result)));
                 return _result;
             }
         }

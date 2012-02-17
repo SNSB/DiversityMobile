@@ -11,6 +11,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
+using Svc = DiversityPhone.DiversityService;
+
 
 namespace DiversityPhone.Model
 {
@@ -19,13 +21,13 @@ namespace DiversityPhone.Model
     {
         [Column]
         public int IdentificationUnitID { get; set; }
-        
+
         [Column]
         public int AnalysisID { get; set; }
-        
+
         [Column(IsPrimaryKey = true)]
         public int IdentificationUnitAnalysisID { get; set; }
-        
+
         [Column]
         public string AnalysisResult { get; set; }
 
@@ -43,7 +45,7 @@ namespace DiversityPhone.Model
         public DateTime LogUpdatedWhen { get; set; }
 
 
-         public static IQueryOperations<IdentificationUnitAnalysis> Operations
+        public static IQueryOperations<IdentificationUnitAnalysis> Operations
         {
             get;
             private set;
@@ -63,6 +65,17 @@ namespace DiversityPhone.Model
                           {
                               iuan.IdentificationUnitAnalysisID = QueryOperations<IdentificationUnitAnalysis>.FindFreeIntKey(q, row => row.IdentificationUnitAnalysisID);
                           });
+        }
+
+        public static Svc.IdentificationUnitAnalysis ConvertToServiceObject(IdentificationUnitAnalysis iua)
+        {
+            Svc.IdentificationUnitAnalysis export = new Svc.IdentificationUnitAnalysis();
+            export.AnalysisDate = iua.AnalysisDate;
+            export.AnalysisID = iua.AnalysisID;
+            export.AnalysisResult = iua.AnalysisResult;
+            export.IdentificationUnitAnalysisID = iua.IdentificationUnitAnalysisID;
+            export.IdentificationUnitID = iua.IdentificationUnitID;
+            return export;
         }
     }
 }

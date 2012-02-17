@@ -508,6 +508,9 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -531,6 +534,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />

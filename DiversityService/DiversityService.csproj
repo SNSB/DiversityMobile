@@ -154,9 +154,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utility\Utility.csproj">
-      <Project>{06353AEC-9654-4D2E-8F60-3BC9F6EB095B}</Project>
-      <Name>Utility</Name>
+    <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
+      <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
+      <Name>GeneralUtility</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

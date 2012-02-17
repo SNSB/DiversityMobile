@@ -7,6 +7,7 @@
     using System.Text;
     using Microsoft.Phone.Data.Linq.Mapping;
     using DiversityPhone.Services;
+    using Svc = DiversityPhone.DiversityService;
 
     [Table]
     public class Event : IModifyable
@@ -16,13 +17,13 @@
             this.SeriesID = null;
             this.CollectionDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
-            this.ModificationState = null;          
+            this.ModificationState = null;
         }
 
         [Column(IsPrimaryKey = true)]
         public int EventID { get; set; }
 
-        [Column(CanBeNull=true)]        
+        [Column(CanBeNull = true)]
         public int? SeriesID { get; set; }
 
         [Column]
@@ -44,7 +45,7 @@
         [Column(CanBeNull = true)]
         public double? Longitude { get; set; }
 
-        [Column(CanBeNull=true)]
+        [Column(CanBeNull = true)]
         public DateTime? DeterminationDate { get; set; }
 
         /// <summary>
@@ -58,7 +59,7 @@
         public DateTime LogUpdatedWhen { get; set; }
 
 
-       public static IQueryOperations<Event> Operations
+        public static IQueryOperations<Event> Operations
         {
             get;
             private set;
@@ -78,6 +79,26 @@
                           {
                               ev.EventID = QueryOperations<Event>.FindFreeIntKey(q, row => row.EventID);
                           });
+        }
+
+        public static Svc.Event ConvertToServiceObject(Event ev)
+        {
+            Svc.Event export = new Svc.Event();
+            export.Altitude = ev.Altitude;
+            export.CollectionDate = ev.CollectionDate;
+            export.EventID = ev.EventID;
+            export.HabitatDescription = ev.HabitatDescription;
+            export.Latitude = ev.Latitude;
+            export.LocalityDescription = ev.LocalityDescription;
+            export.LogUpdatedWhen = ev.LogUpdatedWhen;
+            export.Longitude = ev.Longitude;
+            export.SeriesID = ev.SeriesID;
+            return export;
+        }
+
+        public static Event Clone(Event ev)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -4,6 +4,7 @@
     using System.Linq;
     using System.Data.Linq.Mapping;
     using DiversityPhone.Services;
+    using Svc = DiversityPhone.DiversityService;
 
     [Table]
     public class Specimen : IModifyable
@@ -17,7 +18,7 @@
         [Column]
         public string AccessionNumber { get; set; }
 
-       
+
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
@@ -57,14 +58,31 @@
                           {
                               spec.CollectionSpecimenID = QueryOperations<Specimen>.FindFreeIntKey(q, row => row.CollectionSpecimenID);
                           });
-        }       
+        }
+
+        public static Svc.Specimen ConvertToServiceObject(Specimen spec)
+        {
+            Svc.Specimen export = new Svc.Specimen();
+            export.AccesionNumber = spec.AccessionNumber;
+            export.CollectionEventID = spec.CollectionEventID;
+            export.CollectionSpecimenID = spec.CollectionSpecimenID;
+            return export;
+        }
+
+
+        public static Specimen Clone(Specimen spec)
+        {
+            throw new NotImplementedException();
+        }
+
     }
+
 
     public static class SpecimenMixin
     {
         public static bool IsObservation(this Specimen spec)
         {
-            return spec.AccessionNumber == null 
+            return spec.AccessionNumber == null
                 && !spec.IsNew();
         }
 
@@ -74,4 +92,5 @@
             return spec;
         }
     }
+
 }

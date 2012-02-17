@@ -7,10 +7,10 @@
     using Svc = DiversityPhone.DiversityService;
 
     [Table]
-    public class EventSeries :  IModifyable
+    public class EventSeries : IModifyable
     {
         private static EventSeries _NoEventSeries;
-      
+
         public EventSeries()
         {
             this.Description = string.Empty;
@@ -20,6 +20,7 @@
             this.SeriesID = 0;
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
+            this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
         }
 
 
@@ -54,7 +55,7 @@
         [Column(CanBeNull = true)]
         public DateTime? SeriesEnd { get; set; }
 
-        
+
         /// <summary>
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
@@ -96,7 +97,7 @@
             };
         }
 
-   
+
 
         public static EventSeries Clone(EventSeries es)
         {
@@ -107,15 +108,15 @@
             clone.ModificationState = es.ModificationState;
             clone.SeriesCode = es.SeriesCode;
             clone.SeriesEnd = es.SeriesEnd;
-            clone.SeriesID=es.SeriesID;
-            clone.SeriesStart=es.SeriesStart;
+            clone.SeriesID = es.SeriesID;
+            clone.SeriesStart = es.SeriesStart;
             return clone;
 
         }
 
         public static Svc.EventSeries ConvertToServiceObject(EventSeries es)
         {
-            
+
             Svc.EventSeries export = new Svc.EventSeries();
             export.SeriesID = es.SeriesID;
             export.SeriesCode = es.SeriesCode;
@@ -125,7 +126,7 @@
             export.LogUpdatedWhen = es.LogUpdatedWhen;
             //Todo: export.Geography = EventSeries.convertGeoSourceToString(es.GeoSource);
             return export;
-            
+
         }
 
         public static String convertGeoSourceToString(String path)

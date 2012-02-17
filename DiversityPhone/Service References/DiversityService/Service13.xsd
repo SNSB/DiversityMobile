@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityService.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+  <xs:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="UserCredentials">
     <xs:sequence>
       <xs:element minOccurs="0" name="AgentName" nillable="true" type="xs:string" />
@@ -184,15 +186,31 @@
   <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
   <xs:complexType name="HierarchySection">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Analyses" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
       <xs:element minOccurs="0" name="Event" nillable="true" type="tns:Event" />
+      <xs:element minOccurs="0" name="IdentificationUnitAnalyses" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
       <xs:element minOccurs="0" name="IdentificationUnits" nillable="true" type="tns:ArrayOfIdentificationUnit" />
       <xs:element minOccurs="0" name="Profile" nillable="true" type="tns:UserProfile" />
+      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
       <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCollectionEventProperty" />
       <xs:element minOccurs="0" name="Specimen" nillable="true" type="tns:ArrayOfSpecimen" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="HierarchySection" nillable="true" type="tns:HierarchySection" />
+  <xs:complexType name="Event">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="CollectionDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DeterminationDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EventID" type="xs:int" />
+      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Event" nillable="true" type="tns:Event" />
   <xs:complexType name="ArrayOfIdentificationUnitAnalysis">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
@@ -209,21 +227,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
-  <xs:complexType name="Event">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
-      <xs:element minOccurs="0" name="CollectionDate" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="DeterminationDate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="EventID" type="xs:int" />
-      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
-      <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
-      <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Event" nillable="true" type="tns:Event" />
   <xs:complexType name="ArrayOfIdentificationUnit">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
@@ -232,17 +235,17 @@
   <xs:element name="ArrayOfIdentificationUnit" nillable="true" type="tns:ArrayOfIdentificationUnit" />
   <xs:complexType name="IdentificationUnit">
     <xs:sequence>
-      <xs:element minOccurs="0" name="Altitude" type="xs:double" />
+      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="AnalysisDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="ColonisedSubstratePart" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FamilyCache" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Gender" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IdentificationUri" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LastIdentificationCache" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Latitude" type="xs:double" />
+      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="LifeStage" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="Longitude" type="xs:double" />
+      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="OnlyObserved" type="xs:boolean" />
       <xs:element minOccurs="0" name="OrderCache" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="RelatedUnitID" nillable="true" type="xs:int" />
@@ -284,4 +287,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Specimen" nillable="true" type="tns:Specimen" />
+  <xs:complexType name="KeyProjection">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/System.Collections.Generic" minOccurs="0" name="eventKey" type="q1:KeyValuePairOfNullableOfintNullableOfint_ShTDFhl_P" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="iuKeys" nillable="true" type="q2:ArrayOfKeyValueOfintint" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="specimenKeys" nillable="true" type="q3:ArrayOfKeyValueOfintint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="KeyProjection" nillable="true" type="tns:KeyProjection" />
 </xs:schema>

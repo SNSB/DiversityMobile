@@ -1,8 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Linq;
 using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
+using Svc = DiversityPhone.DiversityService;
+
 
 namespace DiversityPhone.Model
 {
@@ -14,7 +15,7 @@ namespace DiversityPhone.Model
         {
             this.ModificationState = null;
             this.LogUpdatedWhen = DateTime.Now;
-            
+
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
         }
@@ -33,7 +34,7 @@ namespace DiversityPhone.Model
         /// </summary>
         [Column]
         public bool OnlyObserved { get; set; }
-        
+
         [Column]
         public string TaxonomicGroup { get; set; }
 
@@ -49,7 +50,7 @@ namespace DiversityPhone.Model
         [Column]
         public string Gender { get; set; }
 
-     
+
 
         //Identification
         /// <summary>
@@ -57,7 +58,7 @@ namespace DiversityPhone.Model
         /// </summary>
         [Column]
         public string WorkingName { get; set; }
-       
+
         [Column]
         public string IdentificationUri { get; set; }
 
@@ -85,7 +86,7 @@ namespace DiversityPhone.Model
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
-      public static IQueryOperations<IdentificationUnit> Operations
+        public static IQueryOperations<IdentificationUnit> Operations
         {
             get;
             private set;
@@ -105,6 +106,36 @@ namespace DiversityPhone.Model
                           {
                               iu.UnitID = QueryOperations<IdentificationUnit>.FindFreeIntKey(q, row => row.UnitID);
                           });
+        }
+
+        public static Svc.IdentificationUnit ConvertToServiceObject(IdentificationUnit iu)
+        {
+            Svc.IdentificationUnit export = new Svc.IdentificationUnit();
+            export.Altitude = iu.Altitude;
+            export.AnalysisDate = iu.AnalysisDate;
+            export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
+            //export.FamilyCache=iu. Is not supported on clientModel
+            export.Gender = iu.Gender;
+            export.IdentificationUri = iu.IdentificationUri;
+            export.LastIdentificationCache = iu.WorkingName;
+            export.Latitude = iu.Latitude;
+            export.LifeStage = iu.LifeStage;
+            export.LogUpdatedWhen = iu.LogUpdatedWhen;
+            export.Longitude = iu.Longitude;
+            export.OnlyObserved = iu.OnlyObserved;
+            //export.OrderCache=iu.Is not supported on clientModel
+            export.RelatedUnitID = iu.RelatedUnitID;
+            export.RelationType = iu.RelationType;
+            export.SpecimenID = iu.SpecimenID;
+            export.TaxonomicGroup = iu.TaxonomicGroup;
+            export.UnitID = iu.UnitID;
+            return export;
+        }
+
+
+        public static IdentificationUnit Clone(IdentificationUnit iu)
+        {
+            throw new NotImplementedException();
         }
     }
 }

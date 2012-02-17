@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
+using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
 {
@@ -71,6 +72,17 @@ namespace DiversityPhone.Model
                           {
                               //Not Applicable
                           });
+        }
+
+        public static Svc.CollectionEventProperty ConvertToServiceObject(CollectionEventProperty cep)
+        {
+            Svc.CollectionEventProperty export = new Svc.CollectionEventProperty();
+            export.DisplayText = cep.DisplayText;
+            export.EventID = cep.EventID;
+            export.LogUpdatedWhen = cep.LogUpdatedWhen;
+            export.PropertyID = cep.PropertyID;
+            export.PropertyUri = cep.PropertyUri;
+            return export;
         }
     }
 }
