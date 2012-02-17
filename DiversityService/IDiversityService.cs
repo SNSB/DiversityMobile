@@ -50,7 +50,7 @@ namespace DiversityService
         IEnumerable<PropertyName> DownloadPropertyList(string list);
 
         [OperationContract]
-        Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series);
+        Dictionary<int,int> InsertEventSeries(IList<EventSeries> series);
         [OperationContract]
         void InsertGeographyIntoSeries(int seriesID, string geostring);
 

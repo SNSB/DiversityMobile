@@ -20,7 +20,7 @@ namespace DiversityPhone.Services
 
         IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
 
-        Dictionary<EventSeries, EventSeries> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList);
+        IObservable<Dictionary<int, int>> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList);
 
     }
 }

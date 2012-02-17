@@ -176,9 +176,9 @@ namespace DiversityService
         #endregion
 
 
-        public Dictionary<EventSeries,EventSeries> InsertEventSeries(IList<EventSeries> series)
+        public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series)
         {
-            Dictionary<EventSeries,EventSeries> result = new Dictionary<EventSeries, EventSeries>();
+            Dictionary<int, int> result = new Dictionary<int, int>();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
                 //Adjust EventSeries
@@ -186,13 +186,12 @@ namespace DiversityService
                 {
                     var newSeries = es.ToEntity();
                     ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();
+                    ctx.SaveChanges();                
                     
-                    EventSeries newSeriesBack = newSeries.ToModel();
-                    newSeriesBack.Geography = es.Geography;
-                    result.Add(es,newSeriesBack);
-                    if(newSeriesBack.Geography!=null && newSeriesBack.Geography!=String.Empty)
-                        InsertGeographyIntoSeries(newSeriesBack.SeriesID,newSeriesBack.Geography);
+                    
+                    result.Add(es.SeriesID,newSeries.SeriesID);
+                    if(!string.IsNullOrEmpty(es.Geography))
+                        InsertGeographyIntoSeries(es.SeriesID,es.Geography);
                 }
                 
             }

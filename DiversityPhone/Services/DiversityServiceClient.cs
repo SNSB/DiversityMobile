@@ -90,13 +90,18 @@ namespace DiversityPhone.Services
 
         public IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section)
         {
+            var res = Observable.FromEvent<EventHandler<InsertHierarchyCompletedEventArgs>, InsertHierarchyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertHierarchyCompleted += d, d => _svc.InsertHierarchyCompleted -= d)
+                .Select(args => args.Result)
+                .Take(1);
             _svc.InsertHierarchyAsync(section, this.GetCreds());
+            return res;
         }
 
-        public Dictionary<EventSeries, EventSeries> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList)
+
+
+        public IObservable<Dictionary<int, int>> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList)
         {
-            _svc.InsertEventSeriesAsync(seriesList);
+            throw new NotImplementedException();
         }
-        
     }
 }
