@@ -13,14 +13,14 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
-<!--LayoutRoot is the root grid where all page content is placed-->
+    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivot Control-->
         <controls:Pivot Title="SELECT" Margin="0,129,0,0" Height="639" VerticalAlignment="Top">
             <!--Pivot item one-->
             <controls:PivotItem Header="subunits">
                 <Grid>
-                    <ListBox Height="529" HorizontalAlignment="Left" Margin="6,6,0,0" Name="listBox1" VerticalAlignment="Top" Width="450" ItemsSource="{Binding}">               
+                    <ListBox Height="529" HorizontalAlignment="Left" Margin="6,6,0,0" Name="listBox1" VerticalAlignment="Top" Width="450" ItemsSource="{Binding}">
                         <Canvas Height="60" HorizontalAlignment="Left" Margin="26,0,0,0" Name="canvas2" VerticalAlignment="Top" Width="410" Tap="canvas1_Tap">
                             <Image Height="37" Name="image2" Stretch="Fill" Width="41" Canvas.Left="21" Canvas.Top="9" Source="/Images/Myxomycete_80.png" />
                             <TextBlock Height="42" Name="textBlock2" Text="gemeiner Schleimpilz" Width="285" Canvas.Left="100" Canvas.Top="9" FontSize="26" />
@@ -52,20 +52,20 @@
                         <Canvas Height="60" HorizontalAlignment="Left" Margin="26,0,0,0" Name="canvasa3" VerticalAlignment="Top" Width="410" Tap="canvas1_Tap">
                             <Image Height="37" Name="imagea3" Stretch="Fill" Width="41" Canvas.Left="21" Canvas.Top="9" Source="/Images/Analysis.png" />
                             <TextBlock Height="42" Name="textBlocka3" Text="fruchtkörper: 72" Width="285" Canvas.Left="100" Canvas.Top="9" FontSize="26" Tap="textBlocka3_Tap" />
-                        </Canvas>                
-                       
+                        </Canvas>
+
 
                     </ListBox>
                 </Grid>
             </controls:PivotItem>
             <!--Pivot item three-->
             <controls:PivotItem Header="descriptions">
-                
+
             </controls:PivotItem>
             <!--Pivot item three-->
             <controls:PivotItem Header="multimedia">
                 <Grid>
-                    <ListBox Height="529" HorizontalAlignment="Left" Margin="6,6,0,0" Name="listBox4" VerticalAlignment="Top" Width="450" ItemsSource="{Binding}">   
+                    <ListBox Height="529" HorizontalAlignment="Left" Margin="6,6,0,0" Name="listBox4" VerticalAlignment="Top" Width="450" ItemsSource="{Binding}">
                         <Canvas Height="60" HorizontalAlignment="Left" Margin="26,0,0,0" Name="canvas7" VerticalAlignment="Top" Width="410" Tap="canvas1_Tap">
                             <Image Height="37" Name="image7" Stretch="Fill" Width="41" Canvas.Left="21" Canvas.Top="9" Source="/Images/appbar.feature.camera.rest.png" />
                             <TextBlock Height="42" Name="textBlock7" Text="picture 1" Width="285" Canvas.Left="100" Canvas.Top="9" FontSize="26" />
@@ -78,7 +78,7 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
-        <TextBlock Height="26" HorizontalAlignment="Left" Margin="16,11,0,0" Name="textBlock0" Text="DIVERSITYPHONE" VerticalAlignment="Top" Width="204" />
+        <TextBlock Height="26" HorizontalAlignment="Left" Margin="16,11,0,0" Name="textBlock0" Text="DIVERSITYMOBILE" VerticalAlignment="Top" Width="204" />
         <TextBlock Height="68" HorizontalAlignment="Left" Margin="16,43,0,0" Name="textBlock00" Text="boletus edulis" VerticalAlignment="Top" Width="380" FontSize="48" />
         <Image Height="79" HorizontalAlignment="Right" Margin="0,44,12,0" Name="image0" Stretch="Fill" VerticalAlignment="Top" Width="81" Source="/Images/Fungus_80.png" />
     </Grid>
@@ -93,7 +93,7 @@
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-  
- 
-    
+
+
+
 </phone:PhoneApplicationPage>
