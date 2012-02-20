@@ -10,10 +10,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reactive.Linq;
 using System.Linq;
-using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using System.Collections;
 using System.Collections.Generic;
+using DiversityPhone.DiversityService;
 using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
@@ -91,14 +91,14 @@ namespace DiversityPhone.Services
                         if(taxonChunk.Any())
                         {
                             //There might still be more Taxa -> request next chunk
-                            localclient.DownloadTaxonListAsync(list, ++chunk);
+                            localclient.DownloadTaxonListAsync(list, ++chunk, GetCreds());
                             return true;
                         }
                         else //Transfer finished
                             return false;
                     });
             //Request first chunk
-            localclient.DownloadTaxonListAsync(list,chunk);
+            localclient.DownloadTaxonListAsync(list,chunk, GetCreds());
             return res;
         }
 
@@ -122,7 +122,7 @@ namespace DiversityPhone.Services
 
 
 
-        public IObservable<Dictionary<int, int>> InsertEventSeries(System.Collections.ObjectModel.ObservableCollection<EventSeries> seriesList)
+        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<EventSeries> seriesList)
         {
             throw new NotImplementedException();
         }

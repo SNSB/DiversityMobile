@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="KeyProjection" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>DiversityPhone.DiversityService.KeyProjection, Service References.DiversityService.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>DiversityPhone.DiversityService.KeyProjection</TypeInfo>
 </GenericObjectDataSource>
