@@ -679,7 +679,7 @@
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
       <Name>GeneralUtility</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
+    <ProjectReference Include="..\Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
       <Project>{0754458A-7AFC-463A-B27D-2F6980522119}</Project>
       <Name>Microsoft.Phone.Controls.Toolkit</Name>
     </ProjectReference>
