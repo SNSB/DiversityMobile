@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="HierarchySection" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>DiversityPhone.DiversityService.HierarchySection</TypeInfo>
+   <TypeInfo>DiversityPhone.DiversityService.HierarchySection, DiversityPhone, Version=0.0.0.1, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

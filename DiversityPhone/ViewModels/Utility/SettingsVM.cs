@@ -179,7 +179,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             _IsFirstSetup =
                 _ModelBackingStore
-                .Select( x => x.UserName == null)
+                .Select( x => x.UserName == null)                
                 .ToProperty(this, x => x.IsFirstSetup);
 
             Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x));

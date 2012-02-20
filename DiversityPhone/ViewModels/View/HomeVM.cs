@@ -22,6 +22,7 @@
         #region Services        
         private IOfflineStorage _storage;
         private IDiversityServiceClient _repository;
+        private ISettingsService _settings;
         //private DiversityService.DiversityServiceClient _plainUploadClient;
         private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
@@ -60,11 +61,12 @@
         }
         #endregion
 
-        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo)
+        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo, ISettingsService settings)
             : base(messenger)
         {            
             _storage = storage;
             _repository = repo;
+            _settings = settings;
             
 
             //Initialize MultimediaTransfer
@@ -99,8 +101,7 @@
                     .Subscribe(_ =>loadMapPage()),                
             };
 
-
-
+            
         }
 
         private void registerUpload()

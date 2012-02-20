@@ -10,13 +10,15 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"	
 	d:DataContext="{d:DesignData /SampleData/HomeVMSampleData.xaml}"
-    DataContext="{Binding Source={StaticResource Locator}, Path=Home}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
+    Loaded="PhoneApplicationPage_Loaded">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent" >
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -38,10 +40,14 @@
             </StackPanel>
         </ScrollViewer>
     </Grid>
- 
-    
+    <Grid x:Name="Splash" Background="Black" Visibility="Visible">
+        <Image Source="/Images/ApplicationIcon.png" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    </Grid>
+    </Grid>
+
+
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+        <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add series" Click="AddSeries_Click"/>            
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="userprofile" Click="Settings_Click"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="userprofile" Click="LoadedMaps_Click"/>

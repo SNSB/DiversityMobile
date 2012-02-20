@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
+﻿
 using DiversityPhone.ViewModels;
+using ReactiveUI;
+using DiversityPhone.Services;
+using System.Windows;
+using System;
+using Microsoft.Phone.Controls;
 
 
 
@@ -60,6 +54,18 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Maps.Execute(null);
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var currentSettings = App.Settings.getSettings();
+            if (string.IsNullOrWhiteSpace(currentSettings.UserName))
+                MessageBus.Current.SendMessage<Page>(Page.Settings);
+            else
+            {
+                Splash.Visibility = Visibility.Collapsed;
+                ApplicationBar.IsVisible = true;
+            }
         }
     }
 }

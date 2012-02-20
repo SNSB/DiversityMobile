@@ -128,7 +128,7 @@ namespace DiversityService
                     .SQL;
 
 
-                var res = db.Page<TaxonName>(page, 200, sql).Items;
+                var res = db.Page<TaxonName>(page, 1000, sql).Items;
                 return res;
             }         
         }
