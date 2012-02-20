@@ -16,7 +16,7 @@ namespace DiversityPhone.Services
             if (msg != null)
                 msg.Listen<AppSettings>(MessageContracts.SAVE)
                     .Subscribe(s => saveSettings(s));
-
+            
             if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out _settings))
                 _settings = new AppSettings();
 	    }
@@ -30,6 +30,7 @@ namespace DiversityPhone.Services
         {
             _settings = settings;
             IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
+            IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
         
