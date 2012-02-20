@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reactive.Linq;
+using System.Linq;
 using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using System.Collections;
@@ -78,14 +79,36 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<System.Collections.Generic.IEnumerable<DiversityService.TaxonName>> DownloadTaxonListChunked(DiversityService.TaxonList list)
+        public IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list)
         {
-            throw new NotImplementedException();
+            var localclient = new Svc.DiversityServiceClient(); //Avoid race conditions from chunked download
+            int chunk = 1; //First Chunk is 1, not 0!
+
+            var res = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadTaxonListCompleted += d, d => localclient.DownloadTaxonListCompleted -= d)                
+                .Select(args => args.Result as IEnumerable<TaxonName>)
+                .TakeWhile(taxonChunk => 
+                    {
+                        if(taxonChunk.Any())
+                        {
+                            //There might still be more Taxa -> request next chunk
+                            localclient.DownloadTaxonListAsync(list, ++chunk);
+                            return true;
+                        }
+                        else //Transfer finished
+                            return false;
+                    });
+            //Request first chunk
+            localclient.DownloadTaxonListAsync(list,chunk);
+            return res;
         }
 
-        public IObservable<System.Collections.Generic.IEnumerable<DiversityService.Term>> GetStandardVocabulary()
+        public IObservable<IEnumerable<Term>> GetStandardVocabulary()
         {
-            throw new NotImplementedException();
+            var res = Observable.FromEvent<EventHandler<GetStandardVocabularyCompletedEventArgs>, GetStandardVocabularyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetStandardVocabularyCompleted += d, d => _svc.GetStandardVocabularyCompleted -= d)
+               .Select(args => args.Result as IEnumerable<Term>)
+               .Take(1);
+            _svc.GetStandardVocabularyAsync();
+            return res;
         }
 
         public IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section)

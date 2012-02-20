@@ -67,7 +67,7 @@
             _repository = repo;
             
 
-            //Initialize MultimediaTranfsfer
+            //Initialize MultimediaTransfer
            
             _msc=new MediaService4.MediaService4Client();
             _msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
@@ -126,39 +126,39 @@
 
         private void getVoc()
         {
-            //var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
+            _repository.GetStandardVocabulary()
+                .Select(voc => 
+                    voc.Select(wcf => new DiversityPhone.Model.Term()
+                                        {
+                                            Code = wcf.Code,
+                                            Description = wcf.Description,
+                                            DisplayText = wcf.DisplayText,
+                                            ParentCode = wcf.ParentCode,
+                                            SourceID = wcf.Source
+                                        }))
+                .Subscribe(vocabulary => _storage.addTerms(vocabulary));
 
-            //vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
-            //    wcf => new DiversityPhone.Model.Term()
-            //    {
-            //        Code = wcf.Code,
-            //        Description = wcf.Description,
-            //        DisplayText = wcf.DisplayText,
-            //        ParentCode = wcf.ParentCode,
-            //        SourceID = wcf.Source
-            //    })
-            //    ));
 
 
-            //var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-            //var sampleTaxonList = new Svc.TaxonList() 
-            //{ 
-            //    Table = "TaxRef_BfN_VPlants",
-            //    TaxonomicGroup = "plant",
-            //    DisplayText = "Plants"
-            //};
-            
-            ////TODO Page
-            //taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
-            //    t => new Model.TaxonName()
-            //    {
-            //        URI = t.URI,
-            //        TaxonNameSinAuth = t.TaxonNameSinAuth,
-            //        TaxonNameCache = t.TaxonNameCache,
-            //        SpeciesEpithet = t.SpeciesEpithet,
-            //        InfraspecificEpithet = t.InfraspecificEpithet,
-            //        GenusOrSupragenic = t.GenusOrSupragenic
-            //    }), sampleTaxonList));
+            var sampleTaxonList = new Svc.TaxonList()
+            {
+                Table = "TaxRef_BfN_VPlants",
+                TaxonomicGroup = "plant",
+                DisplayText = "Plants"
+            };
+
+            //TODO Page
+            _repository.DownloadTaxonListChunked(sampleTaxonList)
+                .Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
+                t => new Model.TaxonName()
+                {
+                    URI = t.URI,
+                    TaxonNameSinAuth = t.TaxonNameSinAuth,
+                    TaxonNameCache = t.TaxonNameCache,
+                    SpeciesEpithet = t.SpeciesEpithet,
+                    InfraspecificEpithet = t.InfraspecificEpithet,
+                    GenusOrSupragenic = t.GenusOrSupragenic
+                }), sampleTaxonList));
             
         }
 
