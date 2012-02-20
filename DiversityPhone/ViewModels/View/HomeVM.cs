@@ -193,10 +193,10 @@
 
         private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
         {
-            Dictionary<Svc.EventSeries, Svc.EventSeries> series = args.Result;
-            foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
+            Dictionary<int, int> series = args.Result;
+            foreach (var kvp in series)
             {
-                _storage.updateSeriesKey(kvp.Key.SeriesID, kvp.Value.SeriesID);
+                _storage.updateSeriesKey(kvp.Key, kvp.Value);
             }
             syncHierarchies();
         }

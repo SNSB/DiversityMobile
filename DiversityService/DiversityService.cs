@@ -35,7 +35,7 @@ namespace DiversityService
             }
             catch
             {
-                return null;
+                return Enumerable.Empty<Project>();
             }
         }
 

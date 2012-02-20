@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using DiversityPhone.Messages;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -30,12 +31,14 @@ namespace DiversityPhone.ViewModels.Utility
         public bool IsFirstSetup { get { return _IsFirstSetup.Value; } }
         private ObservableAsPropertyHelper<bool> _IsFirstSetup;
 
+        public bool InProgress { get { return _InProgress.Value; } }        
+        private ISubject<bool> _InProgressBackingStore = new Subject<bool>();
+        private ObservableAsPropertyHelper<bool> _InProgress;
 
 
         #region FirstSetup
 
-        public bool InProgress { get { return _InProgress.Value; } }
-        private ObservableAsPropertyHelper<bool> _InProgress;
+        
         
 
         public enum Pivots
@@ -56,17 +59,7 @@ namespace DiversityPhone.ViewModels.Utility
             {
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
-        }
-
-
-        public bool EnableRepository { get { return _EnableRepository.Value; } }
-        private ObservableAsPropertyHelper<bool> _EnableRepository;
-
-
-        public bool EnableProjects { get { return _EnableProjects.Value; } }
-        private ObservableAsPropertyHelper<bool> _EnableProjects;
-        
-        
+        }  
 
         private string _UserName
 #if DEBUG
@@ -178,7 +171,7 @@ namespace DiversityPhone.ViewModels.Utility
             _storage = storage;     
 
             _Model =_ModelBackingStore                
-                .ToProperty(this, x => x.Model);
+                .ToProperty(this, x => x.Model);            
 
             _ModelBackingStore
                 .Select(m => m.UseGPS)
@@ -190,16 +183,21 @@ namespace DiversityPhone.ViewModels.Utility
                 .ToProperty(this, x => x.IsFirstSetup);
 
             Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x));
-            Save = new ReactiveCommand(CanSave());
+            Save = new ReactiveCommand(CanSave());         
 
             _IsFirstSetup
                 .Where(x => x)
-                .Subscribe(_ => OnSetup());
+                .Take(1)
+                .Subscribe(_ => OnSetupOnce());
 
             _IsFirstSetup
-                .Where(x => !x)
+                .Where(x => !x)                
                 .Subscribe(_ => OnSettings());
 
+            _InProgress = _InProgressBackingStore
+                .ToProperty(this, x => x.InProgress);
+
+            
 
             Save.Select(_ => Model)
               .Select(m =>
@@ -232,7 +230,7 @@ namespace DiversityPhone.ViewModels.Utility
 
 
             _ModelBackingStore.OnNext(_settings.getSettings());            
-        }
+        }        
 
         private void OnSettings()
         {
@@ -259,7 +257,7 @@ namespace DiversityPhone.ViewModels.Utility
             _ModelBackingStore.OnNext(new AppSettings());
         }
 
-        private void OnSetup()
+        private void OnSetupOnce()
         {
             var creds =
             Observable.CombineLatest(
@@ -280,29 +278,30 @@ namespace DiversityPhone.ViewModels.Utility
 
             var gettingDBs = new Subject<bool>();
             var gettingProjects = new Subject<bool>();
-            _InProgress =
-                Observable.Merge(
-                    gettingDBs,
-                    gettingProjects
-                )
-                .ToProperty(this, x => x.InProgress);
+            Observable.Merge(
+                gettingDBs,
+                gettingProjects
+            )
+            .Subscribe(_InProgressBackingStore);
 
             _Databases = creds                
                 .Do(_ => gettingDBs.OnNext(true))
-                .SelectMany(login => _DivSvc.GetRepositories(login))
+                .SelectMany(login => _DivSvc.GetRepositories(login))                
                 .Do(_ => gettingDBs.OnNext(false))
                 .ToProperty(this, x => x.Databases);
             _Databases
-                .Select(dbs => dbs.FirstOrDefault())
+                .Where(dbs => dbs.Any())
+                .Select(dbs => dbs.First())
                 .BindTo(this, x => x.CurrentDB);
 
             _Projects = credsWithRepo               
                .Do(_ => gettingProjects.OnNext(true))
-               .SelectMany(login => _DivSvc.GetProjectsForUser(login))
+               .SelectMany(login => _DivSvc.GetProjectsForUser(login))               
                .Do(_ => gettingProjects.OnNext(false))
                .ToProperty(this, x => x.Projects);
             _Projects
-                .Select(projects => projects.FirstOrDefault())
+                .Where(projects => projects.Any())
+                .Select(projects => projects.First())
                 .BindTo(this, x => x.CurrentProject);
 
             creds
