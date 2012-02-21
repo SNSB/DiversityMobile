@@ -96,17 +96,17 @@ namespace DiversityService
                                         {
                                             Source = TermList.RelationshipTypes, //TODO
                                             Code = t.Code,
-                                            DisplayText = t.DisplayText
+                                            DisplayText = t.DisplayText,                                            
                                         };
-                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
+                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()                                    
                                     select new Term()
                                     {
                                         Source = TermList.EventImageTypes,//TODO
                                         Code = eit.Code,
                                         DisplayText = eit.DisplayText
-                                    };
+                                    };               
   
-                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).Concat(eventImgTypes).ToList();
+                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
             }
             return linqTerms;
 

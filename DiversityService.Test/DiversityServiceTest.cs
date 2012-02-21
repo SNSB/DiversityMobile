@@ -151,5 +151,34 @@ namespace DiversityService.Test
             Assert.True(ar.Distinct().Count() == ar.Count());
         }
 
+        [Fact]
+        public void Terms_in_Vocabulary_should_be_unique()
+        {
+            //Prepare
+            
+
+            //Execute
+            var ar = _target.GetStandardVocabulary();
+
+
+            //Assert
+            Assert.NotEmpty(ar);
+            Assert.Equal(ar.Distinct(new TermComparer()).Count(),ar.Count());
+        }
+
+        private class TermComparer : IEqualityComparer<Term>
+        {
+
+            public bool Equals(Term x, Term y)
+            {
+                return x.Code == y.Code && x.Source == y.Source;
+            }
+
+            public int GetHashCode(Term obj)
+            {
+                return (obj.Code.GetHashCode() ^ obj.Source.GetHashCode());
+            }
+        }
+
     }
 }
