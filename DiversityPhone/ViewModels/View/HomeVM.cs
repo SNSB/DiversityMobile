@@ -127,16 +127,8 @@
 
         private void getVoc()
         {
-            _repository.GetStandardVocabulary()
-                .Select(voc => 
-                    voc.Select(wcf => new DiversityPhone.Model.Term()
-                                        {
-                                            Code = wcf.Code,
-                                            Description = wcf.Description,
-                                            DisplayText = wcf.DisplayText,
-                                            ParentCode = wcf.ParentCode,
-                                            SourceID = wcf.Source
-                                        }))
+            _repository
+                .GetStandardVocabulary()                
                 .Subscribe(vocabulary => _storage.addTerms(vocabulary));
 
 
@@ -150,27 +142,17 @@
 
             //TODO Page
             _repository.DownloadTaxonListChunked(sampleTaxonList)
-                .Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
-                t => new Model.TaxonName()
-                {
-                    URI = t.URI,
-                    TaxonNameSinAuth = t.TaxonNameSinAuth,
-                    TaxonNameCache = t.TaxonNameCache,
-                    SpeciesEpithet = t.SpeciesEpithet,
-                    InfraspecificEpithet = t.InfraspecificEpithet,
-                    GenusOrSupragenic = t.GenusOrSupragenic
-                }), sampleTaxonList));
+                .Subscribe(taxa => _storage.addTaxonNames(taxa, sampleTaxonList));
             
         }
 
         private void uploadPlain()
         {
 
-            IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
+            IList<EventSeries> series = _storage.getUploadServiceEventSeries();
             if (series != null && series.Count > 0)
-            {
-                System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
-                _repository.InsertEventSeries(es);
+            {                
+                _repository.InsertEventSeries(series);
             }
             else
             {

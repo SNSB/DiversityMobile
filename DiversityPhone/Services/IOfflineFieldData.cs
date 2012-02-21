@@ -10,7 +10,7 @@ using Svc = DiversityPhone.DiversityService;
 
 
         Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev);
-        IList<Svc.EventSeries> getUploadServiceEventSeries();
+        IList<EventSeries> getUploadServiceEventSeries();
         void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to);
 
         IList<EventSeries> getAllEventSeries();
