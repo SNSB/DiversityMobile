@@ -1,29 +1,19 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Reactive.Linq;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Collections;
+﻿
 using System.Collections.Generic;
+using Client = DiversityPhone.Model;
+using System;
+using System.Reactive.Linq;
 using DiversityPhone.DiversityService;
-using Svc = DiversityPhone.DiversityService;
+using System.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class DiversityServiceClient : IDiversityServiceClient
+    public class DiversityServiceObservableClient : IDiversityServiceClient
     {
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         ISettingsService _settings;
 
-        public DiversityServiceClient(ISettingsService settings)
+        public DiversityServiceObservableClient(ISettingsService settings)
         {
             _settings = settings;
         }
@@ -43,7 +33,7 @@ namespace DiversityPhone.Services
         }
 
 
-        public IObservable<DiversityService.UserProfile> GetUserInfo(DiversityService.UserCredentials login)
+        public IObservable<UserProfile> GetUserInfo(UserCredentials login)
         {
             var res = Observable.FromEvent<EventHandler<GetUserInfoCompletedEventArgs>, GetUserInfoCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetUserInfoCompleted += d, d => _svc.GetUserInfoCompleted -= d)
                 .Select(args => args.Result)
@@ -79,13 +69,24 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list)
+        public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(TaxonList list)
         {
-            var localclient = new Svc.DiversityServiceClient(); //Avoid race conditions from chunked download
+            var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
             int chunk = 1; //First Chunk is 1, not 0!
 
-            var res = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadTaxonListCompleted += d, d => localclient.DownloadTaxonListCompleted -= d)                
-                .Select(args => args.Result as IEnumerable<TaxonName>)
+            var res = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadTaxonListCompleted += d, d => localclient.DownloadTaxonListCompleted -= d)                                
+                .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
+                .Select(taxa => taxa.Select(
+                    taxon => new Client.TaxonName()
+                    {
+                        GenusOrSupragenic = taxon.GenusOrSupragenic,
+                        InfraspecificEpithet = taxon.InfraspecificEpithet,
+                        SpeciesEpithet = taxon.SpeciesEpithet,
+                        Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy),taxon.Synonymy,true),
+                        TaxonNameCache = taxon.TaxonNameCache,
+                        TaxonNameSinAuth = taxon.TaxonNameSinAuth,
+                        URI = taxon.URI
+                    }))
                 .TakeWhile(taxonChunk => 
                     {
                         if(taxonChunk.Any())
@@ -102,16 +103,25 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<Term>> GetStandardVocabulary()
+        public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
         {
             var res = Observable.FromEvent<EventHandler<GetStandardVocabularyCompletedEventArgs>, GetStandardVocabularyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetStandardVocabularyCompleted += d, d => _svc.GetStandardVocabularyCompleted -= d)
-               .Select(args => args.Result as IEnumerable<Term>)
+               .Select(args => args.Result)
+               .Select(terms => terms
+                   .Select(term => new Client.Term()
+                   {
+                       Code = term.Code,
+                       Description = term.Description,
+                       DisplayText = term.DisplayText,
+                       ParentCode = term.ParentCode,
+                       SourceID = term.Source
+                   }))
                .Take(1);
             _svc.GetStandardVocabularyAsync();
             return res;
         }
 
-        public IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section)
+        public IObservable<KeyProjection> InsertHierarchy(HierarchySection section)
         {
             var res = Observable.FromEvent<EventHandler<InsertHierarchyCompletedEventArgs>, InsertHierarchyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertHierarchyCompleted += d, d => _svc.InsertHierarchyCompleted -= d)
                 .Select(args => args.Result)
@@ -122,7 +132,7 @@ namespace DiversityPhone.Services
 
 
 
-        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<EventSeries> seriesList)
+        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<Client.EventSeries> seriesList)
         {
             throw new NotImplementedException();
         }
