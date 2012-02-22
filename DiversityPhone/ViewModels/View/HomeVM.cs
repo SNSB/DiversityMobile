@@ -149,11 +149,10 @@
         private void uploadPlain()
         {
 
-            IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
+            IList<EventSeries> series = _storage.getUploadServiceEventSeries();
             if (series != null && series.Count > 0)
             {
-                System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
-                _repository.InsertEventSeries(es);
+                _repository.InsertEventSeries(series);
             }
             else
             {
