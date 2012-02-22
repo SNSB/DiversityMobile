@@ -191,27 +191,27 @@
             }
         }
 
-        private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
-        {
-            Dictionary<Svc.EventSeries, Svc.EventSeries> series = args.Result;
-            foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
-            {
-                _storage.updateSeriesKey(kvp.Key.SeriesID, kvp.Value.SeriesID);
-            }
-            syncHierarchies();
-        }
+        //private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
+        //{
+        //    Dictionary<Svc.EventSeries, Svc.EventSeries> series = args.Result;
+        //    foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
+        //    {
+        //        _storage.updateSeriesKey(kvp.Key.SeriesID, kvp.Value.SeriesID);
+        //    }
+        //    syncHierarchies();
+        //}
 
 
-        private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
-        {
-            Svc.KeyProjection keysToUpdate = args.Result;
-            if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
-                _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
-            foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
-                _storage.updateSpecimenKey(specPair.Key, specPair.Value);
-            foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
-                _storage.updateIUKey(iuPair.Key, iuPair.Value);
-        }
+        //private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
+        //{
+        //    Svc.KeyProjection keysToUpdate = args.Result;
+        //    if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
+        //        _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
+        //    foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
+        //        _storage.updateSpecimenKey(specPair.Key, specPair.Value);
+        //    foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
+        //        _storage.updateIUKey(iuPair.Key, iuPair.Value);
+        //}
 
 
 

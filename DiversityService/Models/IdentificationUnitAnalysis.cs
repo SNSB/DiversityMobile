@@ -6,6 +6,7 @@ namespace DiversityService.Model
     public class IdentificationUnitAnalysis
     {
         public int IdentificationUnitID { get; set; }
+        public int? DiversityCollectionUnitID { get; set; }
         public int AnalysisID { get; set; }
         public int IdentificationUnitAnalysisID { get; set; }
         public string AnalysisResult { get; set; }

@@ -22,6 +22,9 @@ namespace DiversityPhone.Model
         [Column]
         public int RelatedId { get; set; }
 
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionRelatedID { get; set; }
+
         [Column(IsPrimaryKey = true)]
         public String Uri { get; set; }
 

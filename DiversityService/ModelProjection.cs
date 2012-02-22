@@ -22,10 +22,7 @@ namespace DiversityService
                 DateStart = model.SeriesStart,
                 DateEnd = model.SeriesEnd,
                 Description = model.Description,
-                SeriesCode = model.SeriesCode,
-                //TODO Geography    
-            
-                RowGUID = Guid.NewGuid(),
+                SeriesCode = model.SeriesCode,   
             };
         }
 
@@ -50,16 +47,13 @@ namespace DiversityService
         {
             return new DB.CollectionEvent()
             {
-                //CollectionEventID = model.EventID,
                 //EventID Autogenrated
-                SeriesID = model.SeriesID, //Setzt Anpassung durch vorherige Datenübertragung voraus
+                SeriesID = model.DiversityCollectionSeriesID, //Setzt Anpassung durch vorherige Datenübertragung voraus
                 CollectionYear = (short)model.CollectionDate.Year,
                 CollectionMonth = (byte)model.CollectionDate.Month,
                 CollectionDay = (byte)model.CollectionDate.Day,
                 LocalityDescription = model.LocalityDescription,
                 HabitatDescription = model.HabitatDescription,
-      
-                RowGUID = Guid.NewGuid(),
             };
         }
 
@@ -79,7 +73,6 @@ namespace DiversityService
                 altitude.ResponsibleAgentURI = profile.AgentURI;
                 altitude.ResponsibleName = profile.AgentName;
                 altitude.RecordingMethod = "Generated via DiversityMobile";
-                //altitude.RowGUID = Guid.NewGuid();
                 localisations.Add(altitude);
             }
             if (model.Latitude != null && model.Longitude != null)
@@ -96,7 +89,6 @@ namespace DiversityService
                 wgs84.ResponsibleAgentURI = profile.AgentURI;
                 wgs84.ResponsibleName = profile.AgentName;
                 wgs84.RecordingMethod = "Generated via DiversityMobile";
-                //wgs84.RowGUID = Guid.NewGuid();
                 localisations.Add(wgs84);
             }
             return localisations;
@@ -105,8 +97,10 @@ namespace DiversityService
 
         public static DB.CollectionEventProperty ToEntity(Model.CollectionEventProperty model, Model.UserCredentials profile)
         {
+            if (model.DiversityCollectionEventID == null)
+                throw new KeyNotFoundException();
             DB.CollectionEventProperty export = new DB.CollectionEventProperty();
-            export.CollectionEventID = model.EventID;
+            export.CollectionEventID = (int) model.DiversityCollectionEventID;
             export.DisplayText = model.DisplayText;
             export.PropertyID = model.PropertyID;
             export.PropertyURI = model.PropertyUri;
@@ -126,31 +120,31 @@ namespace DiversityService
             return exportList;
         }
 
-        public static Model.Event ToModel(this DB.CollectionEvent entity)
-        {
-            return new Model.Event()
-            {
-                EventID = entity.CollectionEventID,
-                SeriesID = entity.SeriesID,
+        //public static Model.Event ToModel(this DB.CollectionEvent entity)
+        //{
+        //    return new Model.Event()
+        //    {
+        //        EventID = entity.CollectionEventID,
+        //        SeriesID = entity.SeriesID,
 
-                CollectionDate = 
-                (entity.CollectionYear != null && entity.CollectionMonth != null && entity.CollectionDay != null) ? 
-                    new DateTime((int)entity.CollectionYear, (int)entity.CollectionMonth, (int)entity.CollectionDay) 
-                    : DateTime.Now, //TODO bei fehlenden Werten differenzieren
-                LocalityDescription = entity.LocalityDescription,
-                HabitatDescription = entity.HabitatDescription,
-                //Todo zugehörige Localisations laden
-            };
-        }
+        //        CollectionDate = 
+        //        (entity.CollectionYear != null && entity.CollectionMonth != null && entity.CollectionDay != null) ? 
+        //            new DateTime((int)entity.CollectionYear, (int)entity.CollectionMonth, (int)entity.CollectionDay) 
+        //            : DateTime.Now, //TODO bei fehlenden Werten differenzieren
+        //        LocalityDescription = entity.LocalityDescription,
+        //        HabitatDescription = entity.HabitatDescription,
+        //        //Todo zugehörige Localisations laden
+        //    };
+        //}
 
-        public static Model.Event ToModel(this DB.CollectionEvent entity, double? altitude, double? latitude, double? longitude)
-        {
-            Model.Event ev = entity.ToModel();
-            ev.Altitude = altitude;
-            ev.Latitude = latitude;
-            ev.Longitude = longitude;
-            return ev;
-        }
+        //public static Model.Event ToModel(this DB.CollectionEvent entity, double? altitude, double? latitude, double? longitude)
+        //{
+        //    Model.Event ev = entity.ToModel();
+        //    ev.Altitude = altitude;
+        //    ev.Latitude = latitude;
+        //    ev.Longitude = longitude;
+        //    return ev;
+        //}
        
         #endregion
 
@@ -160,10 +154,9 @@ namespace DiversityService
         {
             //CollectionSpecimenID Autogenerated
             DB.CollectionSpecimen export = new DB.CollectionSpecimen();
-            export.CollectionEventID = spec.CollectionEventID;
+            export.CollectionEventID = spec.DiversityCollectionSpecimenID;
             export.AccessionNumber = spec.AccesionNumber;
             export.Version = 1;
-            //export.RowGUID = Guid.NewGuid();
             return export;
         }
 
@@ -177,21 +170,21 @@ namespace DiversityService
             return exportDictionary;
         }
 
-        public static IList<Model.Specimen> ToModel(this Dictionary<Model.Specimen, DB.CollectionSpecimen> specimen)
-        {
-            IList<Model.Specimen> importList = new List<Model.Specimen>();
-            foreach (KeyValuePair<Model.Specimen, DB.CollectionSpecimen> spec in specimen)
-            {
-                Model.Specimen import = new Model.Specimen();
-                import.CollectionSpecimenID = spec.Value.CollectionSpecimenID;
-                if (spec.Value.CollectionEventID != null)
-                    import.CollectionEventID = (int)spec.Value.CollectionEventID;
-                else throw new KeyNotFoundException("Events in DiversityPhone cannot be null");
-                import.AccesionNumber = spec.Value.AccessionNumber;
-                importList.Add(import);
-            }
-            return importList;
-        }
+        //public static IList<Model.Specimen> ToModel(this Dictionary<Model.Specimen, DB.CollectionSpecimen> specimen)
+        //{
+        //    IList<Model.Specimen> importList = new List<Model.Specimen>();
+        //    foreach (KeyValuePair<Model.Specimen, DB.CollectionSpecimen> spec in specimen)
+        //    {
+        //        Model.Specimen import = new Model.Specimen();
+        //        import.CollectionSpecimenID = spec.Value.CollectionSpecimenID;
+        //        if (spec.Value.CollectionEventID != null)
+        //            import.CollectionEventID = (int)spec.Value.CollectionEventID;
+        //        else throw new KeyNotFoundException("Events in DiversityPhone cannot be null");
+        //        import.AccesionNumber = spec.Value.AccessionNumber;
+        //        importList.Add(import);
+        //    }
+        //    return importList;
+        //}
 
         public static DB.CollectionProject ToProject(int specimenID, int projectID)
         {
@@ -216,9 +209,11 @@ namespace DiversityService
 
         public static DB.IdentificationUnit ToEntity(this Model.IdentificationUnit iu)
         {
+            if (iu.DiversityCollectionSpecimenID == null)
+                throw new KeyNotFoundException();
             DB.IdentificationUnit export = new DB.IdentificationUnit();
             //IdentificationUnitID is autoinc
-            export.CollectionSpecimenID = iu.SpecimenID;
+            export.CollectionSpecimenID = (int) iu.DiversityCollectionSpecimenID;
             export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
             export.FamilyCache = iu.FamilyCache;
             export.Gender = iu.Gender;
@@ -226,7 +221,7 @@ namespace DiversityService
             export.LifeStage = iu.LifeStage;
             export.OnlyObserved = iu.OnlyObserved;
             export.OrderCache = iu.OrderCache;
-            export.RelatedUnitID = iu.RelatedUnitID;
+            export.RelatedUnitID = iu.DiversityCollectionRelatedUnitID;
             export.RelationType = iu.RelationType;
             return export;
         }
@@ -243,9 +238,11 @@ namespace DiversityService
 
         public static DB.Identification ToIdentification(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
+            if (iu.DiversityCollectionUnitID == null || iu.DiversityCollectionSpecimenID == null)
+                throw new KeyNotFoundException();
             DB.Identification export = new DB.Identification();
-            export.CollectionSpecimenID = iu.SpecimenID;
-            export.IdentificationUnitID = iu.UnitID;
+            export.CollectionSpecimenID = (int) iu.DiversityCollectionSpecimenID;
+            export.IdentificationUnitID = (int) iu.DiversityCollectionUnitID;
             export.IdentificationSequence = 1;
             export.IdentificationDay =(byte?) iu.LogUpdatedWhen.Day;
             export.IdentificationMonth =(byte?) iu.LogUpdatedWhen.Month;
@@ -271,10 +268,12 @@ namespace DiversityService
 
         public static DB.IdentificationUnitGeoAnalysi ToGeoAnalysis(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
+            if (iu.DiversityCollectionUnitID == null || iu.DiversityCollectionSpecimenID == null)
+                throw new KeyNotFoundException();
             DB.IdentificationUnitGeoAnalysi export=new DB.IdentificationUnitGeoAnalysi();
             export.AnalysisDate = iu.AnalysisDate;
-            export.IdentificationUnitID = iu.UnitID;
-            export.CollectionSpecimenID = iu.SpecimenID;
+            export.IdentificationUnitID = (int) iu.DiversityCollectionUnitID;
+            export.CollectionSpecimenID = (int) iu.DiversityCollectionSpecimenID;
             export.ResponsibleName = profile.AgentName;
             export.ResponsibleAgentURI = profile.AgentURI;
             return export;
@@ -296,9 +295,11 @@ namespace DiversityService
 
         public static DB.IdentificationUnitAnalysis ToEntity(this Model.IdentificationUnitAnalysis iua,Model.UserCredentials profile)
         {
+            if (iua.DiversityCollectionUnitID == null)
+                throw new KeyNotFoundException();
             DB.IdentificationUnitAnalysis export = new DB.IdentificationUnitAnalysis();
             export.AnalysisID = iua.AnalysisID;
-            export.IdentificationUnitID = iua.IdentificationUnitID;
+            export.IdentificationUnitID =(int) iua.DiversityCollectionUnitID;
             export.CollectionSpecimenID = 0;//Model Mismatch-Adjustment Later
             export.AnalysisNumber = iua.IdentificationUnitAnalysisID.ToString();
             export.AnalysisResult = iua.AnalysisResult;

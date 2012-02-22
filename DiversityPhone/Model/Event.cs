@@ -19,6 +19,7 @@
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
             this.DiversityCollectionEventID = null;
+            this.DiversityCollectionSeriesID = null;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -29,6 +30,9 @@
 
         [Column(CanBeNull = true)]
         public int? SeriesID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionSeriesID { get; set; }
 
         [Column]
         public DateTime CollectionDate { get; set; }
@@ -89,6 +93,7 @@
         {
             Svc.Event export = new Svc.Event();
             export.DiversityCollectionEventID = ev.DiversityCollectionEventID;
+            export.DiversityCollectionEventID = ev.DiversityCollectionSeriesID;
             export.Altitude = ev.Altitude;
             export.CollectionDate = ev.CollectionDate;
             export.EventID = ev.EventID;

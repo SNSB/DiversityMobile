@@ -30,6 +30,10 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public int PropertyID { get; set; }
 
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionEventID { get; set; }
+
         [Column]
         public String DisplayText { get; set; }
 
@@ -82,6 +86,7 @@ namespace DiversityPhone.Model
             export.LogUpdatedWhen = cep.LogUpdatedWhen;
             export.PropertyID = cep.PropertyID;
             export.PropertyUri = cep.PropertyUri;
+            export.DiversityCollectionEventID = cep.DiversityCollectionEventID;
             return export;
         }
     }

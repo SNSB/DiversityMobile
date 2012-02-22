@@ -505,9 +505,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

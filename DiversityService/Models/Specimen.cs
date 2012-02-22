@@ -7,6 +7,7 @@ namespace DiversityService.Model
         public int CollectionSpecimenID{get; set;}
         public int? DiversityCollectionSpecimenID { get; set; }
         public int CollectionEventID { get; set; }
+        public int? DiversityCollectionEventID { get; set; }
         public string AccesionNumber { get; set; }
 
 

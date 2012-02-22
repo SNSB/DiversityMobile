@@ -176,7 +176,7 @@ namespace DiversityService
         #endregion
 
 
-        public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series)
+        public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series)//TODO: Update for new Procedure
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
@@ -204,8 +204,7 @@ namespace DiversityService
 
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred)
         {
-            KeyProjection result = new KeyProjectin(); //TODO: Synchronisation auf neues Verfahren überarbeiten. Immer nach dem DiversityCollectionKey gucken und den Originalschlüssel unverändert lassen
-            //Es werden auch die Keys fon nicht zu synchronisierenden Objekten benötigt
+            KeyProjection result = new KeyProjection(); 
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
             {
                 //Adjust Event
@@ -224,12 +223,12 @@ namespace DiversityService
                     ctx.SaveChanges();
                     //update keys for Event
                     result.eventKey = new KeyValuePair<int?, int?>(hierarchy.Event.EventID, newEventEntity.CollectionEventID);
-                    hierarchy.Event.EventID = newEventEntity.CollectionEventID;
-                    foreach (CollectionEventProperty cep in hierarchy.Properties)
-                        cep.EventID = newEventEntity.CollectionEventID;
-                    foreach (Specimen spec in hierarchy.Specimen)
-                        spec.CollectionEventID = newEventEntity.CollectionEventID;
 
+                    hierarchy.Event.DiversityCollectionEventID = newEventEntity.CollectionEventID; 
+                    foreach (CollectionEventProperty cep in hierarchy.Properties)
+                        cep.DiversityCollectionEventID = newEventEntity.CollectionEventID;
+                    foreach (Specimen spec in hierarchy.Specimen)
+                        spec.DiversityCollectionSpecimenID = newEventEntity.CollectionEventID;
 
                     //Adjust directly from event depending entities with new key
                     var newLocalisations = hierarchy.Event.ToLocalisations(cred, newEventEntity.CollectionEventID);
@@ -270,6 +269,7 @@ namespace DiversityService
 
                 foreach (KeyValuePair<Specimen, DiversityCollection.CollectionSpecimen> syncPair in newSpecimen)
                 {
+                    
                     //Sync Projects
                     ctx.CollectionProjects.AddObject(ModelProjection.ToProject(syncPair.Value.CollectionSpecimenID, cred.ProjectID));
                     //Sync Agents
@@ -279,7 +279,7 @@ namespace DiversityService
                     foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
                     {
                         if (iu.SpecimenID == syncPair.Key.CollectionSpecimenID)
-                            iu.SpecimenID = syncPair.Value.CollectionSpecimenID;
+                            iu.DiversityCollectionSpecimenID = syncPair.Value.CollectionSpecimenID;
                     }
                 }
                 ctx.SaveChanges();
@@ -287,7 +287,6 @@ namespace DiversityService
 
                 #region IU
                 IList<IdentificationUnit> nextLevelIU = new List<IdentificationUnit>();
-                Dictionary<IdentificationUnit, DiversityCollection.IdentificationUnit> synchronizedIU = new Dictionary<IdentificationUnit, DiversityCollection.IdentificationUnit>();
                 foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
                     if (iu.RelatedUnitID == null)
                         nextLevelIU.Add(iu);
@@ -298,27 +297,28 @@ namespace DiversityService
                 //Start with top Level IU´s
                 foreach (KeyValuePair<IdentificationUnit, DiversityCollection.IdentificationUnit> kvp in nextIU)
                 {
-                    if (kvp.Key.RelatedUnitID == null)
-                    {
-                        ctx.IdentificationUnit.AddObject(kvp.Value);
-                    }
+                     ctx.IdentificationUnit.AddObject(kvp.Value);
                 }
                 ctx.SaveChanges(); //Save for new keys
 
                 //adjust keys, get directly depending iu´s
                 foreach (KeyValuePair<IdentificationUnit, DiversityCollection.IdentificationUnit> kvp in nextIU)
                 {
+
                     foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
+                    {
+                        if (iu.UnitID == kvp.Key.UnitID)
+                            iu.DiversityCollectionUnitID = kvp.Value.IdentificationUnitID;
                         if (iu.RelatedUnitID == kvp.Key.UnitID)
                         {
-                            iu.RelatedUnitID = kvp.Value.IdentificationUnitID;
+                            iu.DiversityCollectionRelatedUnitID = kvp.Value.IdentificationUnitID;
                             nextLevelIU.Add(iu);
                         }
-                    synchronizedIU.Add(kvp.Key, kvp.Value);
+                    }
                     result.iuKeys.Add(kvp.Key.UnitID, kvp.Value.IdentificationUnitID);
                 }
 
-                //iterate trhoug units until no changes have to be made
+                //iterate trough units until no changes have to be made
                 while (nextLevelIU.Count > 0)
                 {
                     nextIU = nextLevelIU.ToEntity();
@@ -333,12 +333,15 @@ namespace DiversityService
                     foreach (KeyValuePair<IdentificationUnit, DiversityCollection.IdentificationUnit> kvp in nextIU)
                     {
                         foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
+                        {
+                            if (iu.UnitID == kvp.Key.UnitID)
+                                iu.DiversityCollectionUnitID = kvp.Value.IdentificationUnitID;
                             if (iu.RelatedUnitID == kvp.Key.UnitID)
                             {
-                                iu.RelatedUnitID = kvp.Value.IdentificationUnitID;
-                                nextLevelIU.Add(kvp.Key);
+                                iu.DiversityCollectionRelatedUnitID = kvp.Value.IdentificationUnitID;
+                                nextLevelIU.Add(iu);
                             }
-                        synchronizedIU.Add(kvp.Key, kvp.Value);
+                        }
                         result.iuKeys.Add(kvp.Key.UnitID, kvp.Value.IdentificationUnitID);
                     }
                 }
@@ -358,23 +361,16 @@ namespace DiversityService
                 foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
                 {
                     String geoString = null;
-                    if (iu.Latitude != null && iu.Longitude != null)
+                    if (iu.Latitude != null && iu.Longitude != null && iu.DiversityCollectionUnitID!=null)
                     {
                         geoString = GlobalUtility.GeographySerialzier.SerializeGeography((int)iu.Latitude, (int)iu.Longitude, iu.Altitude);
-                        this.InsertGeographyIntoIdentifactionUnitGeoAnalysis(newEventEntity.CollectionEventID, 8, geoString);
+                        this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 8, geoString);
                         if (iu.Altitude != null)
-                            this.InsertGeographyIntoIdentifactionUnitGeoAnalysis(newEventEntity.CollectionEventID, 4, geoString);
+                            this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 4, geoString);
                     }
                 }
                 ctx.SaveChanges();
-                foreach (KeyValuePair<IdentificationUnit, DiversityCollection.IdentificationUnit> syncPair in synchronizedIU)
-                {
-                    foreach (IdentificationUnitAnalysis iua in hierarchy.IdentificationUnitAnalyses)
-                    {
-                        if (iua.IdentificationUnitID == syncPair.Key.UnitID)
-                            iua.IdentificationUnitID = syncPair.Value.IdentificationUnitID;
-                    }
-                }
+
                 #endregion
 
                 #region IUA
@@ -385,8 +381,8 @@ namespace DiversityService
                 {
                     foreach (KeyValuePair<IdentificationUnitAnalysis, DiversityCollection.IdentificationUnitAnalysis> iuaPair in newAnalyses)
                     {
-                        if (iu.UnitID == iuaPair.Value.IdentificationUnitID)
-                            iuaPair.Value.SpecimenPartID = iu.SpecimenID;
+                        if (iu.DiversityCollectionUnitID == iuaPair.Value.IdentificationUnitID)
+                            iuaPair.Value.CollectionSpecimenID = (int) iu.DiversityCollectionSpecimenID;
                     }
                 }
                 foreach (KeyValuePair<IdentificationUnitAnalysis, DiversityCollection.IdentificationUnitAnalysis> syncPair in newAnalyses)

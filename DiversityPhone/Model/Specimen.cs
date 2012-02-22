@@ -18,6 +18,9 @@
         [Column]
         public int CollectionEventID { get; set; }
 
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionEventID { get; set; }
+
         [Column]
         public string AccessionNumber { get; set; }
 
@@ -68,6 +71,7 @@
         {
             Svc.Specimen export = new Svc.Specimen();
             export.DiversityCollectionSpecimenID = spec.DiversityCollectionSpecimenID;
+            export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
             export.AccesionNumber = spec.AccessionNumber;
             export.CollectionEventID = spec.CollectionEventID;
             export.CollectionSpecimenID = spec.CollectionSpecimenID;

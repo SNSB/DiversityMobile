@@ -8,10 +8,11 @@ namespace DiversityService.Model
     public class IdentificationUnit
     {
         public int SpecimenID { get; set; }
+        public int? DiversityCollectionSpecimenID { get; set; }
         public int UnitID { get; set; }
         public int? DiversityCollectionUnitID { get; set; }
         public int? RelatedUnitID { get; set; }
-
+        public int? DiversityCollectionRelatedUnitID { get; set; }
 
         public bool OnlyObserved { get; set; }
         public string TaxonomicGroup { get; set; }

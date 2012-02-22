@@ -19,10 +19,15 @@ namespace DiversityPhone.Model
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
             this.DiversityCollectionUnitID = null;
+            this.DiversityCollectionSpecimenID = null;
+            this.DiversityCollectionRelatedUnitID = null;
         }
 
         [Column]
         public int SpecimenID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionSpecimenID { get; set; }
 
         [Column(IsPrimaryKey = true)]
         public int UnitID { get; set; }
@@ -32,6 +37,9 @@ namespace DiversityPhone.Model
 
         [Column]
         public int? RelatedUnitID { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionRelatedUnitID { get; set; }
 
         /// <summary>
         /// No part of the IU collected in physical Form. Always true for Observations
@@ -116,6 +124,8 @@ namespace DiversityPhone.Model
         {
             Svc.IdentificationUnit export = new Svc.IdentificationUnit();
             export.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
+            export.DiversityCollectionSpecimenID = iu.DiversityCollectionSpecimenID;
+            export.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
             export.Altitude = iu.Altitude;
             export.AnalysisDate = iu.AnalysisDate;
             export.ColonisedSubstratePart = iu.ColonisedSubstratePart;

@@ -97,30 +97,7 @@
             deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
         }
 
-        public void adjustSeriesAfterUpload(int oldSeriesKey, int newSeriesKey)
-        {
-            using (DiversityDataContext ctx = new DiversityDataContext())
-            {
-                var savedSeries =
-                    from es in ctx.EventSeries
-                    where es.SeriesID == oldSeriesKey
-                    select es;
-                EventSeries oldSeries = savedSeries.First();
-                ctx.EventSeries.DeleteOnSubmit(oldSeries);
-                EventSeries newSeries = EventSeries.Clone(oldSeries);
 
-                newSeries.SeriesID = newSeriesKey;
-                newSeries.ModificationState = false;
-                ctx.EventSeries.InsertOnSubmit(newSeries);
-                var savedEvents =
-                    from ev in ctx.Events
-                    where ev.SeriesID == oldSeriesKey
-                    select ev;
-                foreach (Event eve in savedEvents)
-                    eve.SeriesID = newSeriesKey;
-                ctx.SubmitChanges();
-            }
-        }
 
 
         #endregion
@@ -1035,135 +1012,122 @@
 
         #region KeyUpdate
 
-        public void updateSeriesKey(int oldSeriesKey, int newSeriesKey)
+        public void updateSeriesKey(int clientSeriesKey, int serverSeriesKey)
         {
             using (DiversityDataContext ctx = new DiversityDataContext())
             {
                 var savedSeries =
                     from es in ctx.EventSeries
-                    where es.SeriesID == oldSeriesKey
+                    where es.SeriesID == clientSeriesKey
                     select es;
-                EventSeries oldSeries = savedSeries.First(); //TODO: Check if there is a key valuation
-                ctx.EventSeries.DeleteOnSubmit(oldSeries);
-                EventSeries newSeries = EventSeries.Clone(oldSeries);
-                newSeries.SeriesID = newSeriesKey;
-                newSeries.ModificationState = false;
-                ctx.EventSeries.InsertOnSubmit(newSeries);
+                EventSeries clientSeries = savedSeries.First(); //TODO: Check if there is a key valuation
+                clientSeries.DiversityCollectionEventSeriesID = serverSeriesKey;
+                clientSeries.ModificationState = false;
                 var savedEvents =
                     from ev in ctx.Events
-                    where ev.SeriesID == oldSeriesKey
+                    where ev.SeriesID == clientSeriesKey
                     select ev;
                 foreach (Event eve in savedEvents)
-                    eve.SeriesID = newSeriesKey;
+                    eve.SeriesID = serverSeriesKey;
                 var seriesMMO =
                     from mmo in ctx.MultimediaObjects
-                    where mmo.RelatedId == oldSeriesKey && mmo.OwnerType == ReferrerType.EventSeries
+                    where mmo.RelatedId == clientSeriesKey && mmo.OwnerType == ReferrerType.EventSeries
                     select mmo;
                 foreach (MultimediaObject mmo in seriesMMO)
-                    mmo.RelatedId = newSeriesKey;
+                    mmo.DiversityCollectionRelatedID = serverSeriesKey;
                 ctx.SubmitChanges();
             }
         }
 
-        public void updateEventKey(int oldKey, int newKey)
+        public void updateEventKey(int clientKey, int serverKey)
         {
             using (DiversityDataContext ctx = new DiversityDataContext())
             {
                 var savedEvents =
                     from ev in ctx.Events
-                    where ev.EventID == oldKey
+                    where ev.EventID == clientKey
                     select ev;
-                Event manipulatedEvent = savedEvents.First();//TODO: Check if there is a key valuation
-                manipulatedEvent.DiversityCollectionEventID = newKey;
-                //KeyUpdates-Below nicht nötig weil der Schlüssel gleich bleibt
-                newEvent.EventID = newKey;
-                newEvent.ModificationState = false;
-                ctx.Events.InsertOnSubmit(newEvent);
+                Event clientEvent = savedEvents.First();//TODO: Check if there is a key valuation
+                clientEvent.DiversityCollectionEventID = serverKey;
+                clientEvent.ModificationState = false;
                 var savedSpecimen =
                     from spec in ctx.Specimen
-                    where spec.CollectionEventID == oldKey
+                    where spec.CollectionEventID == clientKey
                     select spec;
                 foreach (Specimen spec in savedSpecimen)
-                    spec.CollectionEventID = newKey;
+                    spec.DiversityCollectionEventID = serverKey;
                 var evMMO =
                     from mmo in ctx.MultimediaObjects
-                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.Event
+                    where mmo.RelatedId == clientKey && mmo.OwnerType == ReferrerType.Event
                     select mmo;
                 foreach (MultimediaObject mmo in evMMO)
-                    mmo.RelatedId = newKey;
+                    mmo.DiversityCollectionRelatedID = serverKey;
                 var ceProperties =
                     from cep in ctx.CollectionEventProperties
-                    where cep.EventID == oldKey
+                    where cep.EventID == clientKey
                     select cep;
                 foreach (CollectionEventProperty cep in ceProperties)
-                    cep.EventID = newKey;
+                    cep.DiversityCollectionEventID = serverKey;
                 ctx.SubmitChanges();
             }
         }
 
-        public void updateSpecimenKey(int oldKey, int newKey)
+        public void updateSpecimenKey(int clientKey, int serverKey)
         {
             using (DiversityDataContext ctx = new DiversityDataContext())
             {
                 var savedSpecimens =
                     from spec in ctx.Specimen
-                    where spec.CollectionSpecimenID == oldKey
+                    where spec.CollectionSpecimenID == clientKey
                     select spec;
-                Specimen oldSpecimen = savedSpecimens.First();//TODO: Check if there is a key valuation
-                ctx.Specimen.DeleteOnSubmit(oldSpecimen); //Guid evtl. kleineres Übel
-                Specimen newSpecimen = Specimen.Clone(oldSpecimen);
-                newSpecimen.CollectionSpecimenID = newKey;
-                newSpecimen.ModificationState = false;
-                ctx.Specimen.InsertOnSubmit(newSpecimen);
+                Specimen clientSpecimen = savedSpecimens.First();//TODO: Check if there is a key valuation
+                clientSpecimen.DiversityCollectionSpecimenID = serverKey;
+                clientSpecimen.ModificationState = false;
                 var savedIU =
                     from iu in ctx.IdentificationUnits
-                    where iu.SpecimenID == oldKey
+                    where iu.SpecimenID == clientKey
                     select iu;
                 foreach (IdentificationUnit iu in savedIU)
-                    iu.SpecimenID = newKey;
+                    iu.DiversityCollectionSpecimenID = serverKey;
                 var specMMO =
                     from mmo in ctx.MultimediaObjects
-                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.Specimen
+                    where mmo.RelatedId == clientKey && mmo.OwnerType == ReferrerType.Specimen
                     select mmo;
                 foreach (MultimediaObject mmo in specMMO)
-                    mmo.RelatedId = newKey;
-
+                    mmo.DiversityCollectionRelatedID = serverKey;
                 ctx.SubmitChanges();
             }
         }
 
-        public void updateIUKey(int oldKey, int newKey) //Mit delete sehr heikel-evtl. paralleler zugriff möglich
+        public void updateIUKey(int clientKey, int serverKey) 
         {
             using (DiversityDataContext ctx = new DiversityDataContext())
             {
                 var savedIUs =
                     from iu in ctx.IdentificationUnits
-                    where iu.UnitID == oldKey
+                    where iu.UnitID == clientKey
                     select iu;
-                IdentificationUnit oldIU = savedIUs.First();//TODO: Check if there is a key valuation
-                ctx.IdentificationUnits.DeleteOnSubmit(oldIU); //Guid evtl. kleineres Übel
-                IdentificationUnit newIU = IdentificationUnit.Clone(oldIU);
-                newIU.UnitID = newKey;
-                newIU.ModificationState = false;
-                ctx.IdentificationUnits.InsertOnSubmit(newIU);
+                IdentificationUnit clientIU = savedIUs.First();//TODO: Check if there is a key valuation
+                clientIU.DiversityCollectionUnitID= serverKey;
+                clientIU.ModificationState = false;
                 var relatedIU =
                     from iu in ctx.IdentificationUnits
-                    where iu.RelatedUnitID == oldKey
+                    where iu.RelatedUnitID == clientKey
                     select iu;
                 foreach (IdentificationUnit iu in relatedIU)
-                    iu.RelatedUnitID = newKey;
+                    iu.DiversityCollectionRelatedUnitID = serverKey;
                 var iuaList =
                     from iua in ctx.IdentificationUnitAnalyses
-                    where iua.IdentificationUnitID == oldKey
+                    where iua.IdentificationUnitID == clientKey
                     select iua;
                 foreach (IdentificationUnitAnalysis iua in iuaList)
-                    iua.IdentificationUnitID = newKey;
+                    iua.DiversityCollectionUnitID = serverKey;
                 var iuMMO =
                     from mmo in ctx.MultimediaObjects
-                    where mmo.RelatedId == oldKey && mmo.OwnerType == ReferrerType.IdentificationUnit
+                    where mmo.RelatedId == clientKey && mmo.OwnerType == ReferrerType.IdentificationUnit
                     select mmo;
                 foreach (MultimediaObject mmo in iuMMO)
-                    mmo.RelatedId = newKey;
+                    mmo.DiversityCollectionRelatedID = serverKey;
                 ctx.SubmitChanges();
             }
         }
@@ -1171,11 +1135,6 @@
         #endregion
 
         #endregion
-
-
-
-
-
 
 
 

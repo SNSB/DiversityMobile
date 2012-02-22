@@ -1125,6 +1125,8 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<int> DiversityCollectionEventIDField;
         
+        private System.Nullable<int> DiversityCollectionSeriesIDField;
+        
         private int EventIDField;
         
         private string HabitatDescriptionField;
@@ -1187,6 +1189,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
                     this.DiversityCollectionEventIDField = value;
                     this.RaisePropertyChanged("DiversityCollectionEventID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSeriesID {
+            get {
+                return this.DiversityCollectionSeriesIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSeriesIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSeriesIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSeriesID");
                 }
             }
         }
@@ -1303,6 +1318,8 @@ namespace DiversityPhone.DiversityService {
         
         private string AnalysisResultField;
         
+        private System.Nullable<int> DiversityCollectionUnitIDField;
+        
         private int IdentificationUnitAnalysisIDField;
         
         private int IdentificationUnitIDField;
@@ -1342,6 +1359,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.AnalysisResultField, value) != true)) {
                     this.AnalysisResultField = value;
                     this.RaisePropertyChanged("AnalysisResult");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionUnitID {
+            get {
+                return this.DiversityCollectionUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionUnitID");
                 }
             }
         }
@@ -1392,6 +1422,10 @@ namespace DiversityPhone.DiversityService {
         private System.DateTime AnalysisDateField;
         
         private string ColonisedSubstratePartField;
+        
+        private System.Nullable<int> DiversityCollectionRelatedUnitIDField;
+        
+        private System.Nullable<int> DiversityCollectionSpecimenIDField;
         
         private System.Nullable<int> DiversityCollectionUnitIDField;
         
@@ -1460,6 +1494,32 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.ColonisedSubstratePartField, value) != true)) {
                     this.ColonisedSubstratePartField = value;
                     this.RaisePropertyChanged("ColonisedSubstratePart");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionRelatedUnitID {
+            get {
+                return this.DiversityCollectionRelatedUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionRelatedUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionRelatedUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionRelatedUnitID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSpecimenID {
+            get {
+                return this.DiversityCollectionSpecimenIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSpecimenIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSpecimenID");
                 }
             }
         }
@@ -1689,6 +1749,8 @@ namespace DiversityPhone.DiversityService {
         
         private string DisplayTextField;
         
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
         private int EventIDField;
         
         private System.DateTime LogUpdatedWhenField;
@@ -1706,6 +1768,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
                     this.DisplayTextField = value;
                     this.RaisePropertyChanged("DisplayText");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
                 }
             }
         }
@@ -1783,6 +1858,8 @@ namespace DiversityPhone.DiversityService {
         
         private int CollectionSpecimenIDField;
         
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
         private System.Nullable<int> DiversityCollectionSpecimenIDField;
         
         private System.DateTime LogUpdatedWhenField;
@@ -1822,6 +1899,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
                     this.CollectionSpecimenIDField = value;
                     this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
                 }
             }
         }
@@ -1995,7 +2085,7 @@ namespace DiversityPhone.DiversityService {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertEventSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertEventSeriesResponse")]
         System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result);
+        System.Collections.Generic.Dictionary<int, int> EndInsertEventSeries(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse")]
         System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, string geostring, System.AsyncCallback callback, object asyncState);
@@ -2275,10 +2365,10 @@ namespace DiversityPhone.DiversityService {
             this.results = results;
         }
         
-        public System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> Result {
+        public System.Collections.Generic.Dictionary<int, int> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries>)(this.results[0]));
+                return ((System.Collections.Generic.Dictionary<int, int>)(this.results[0]));
             }
         }
     }
@@ -3118,7 +3208,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeries(System.IAsyncResult result) {
+        System.Collections.Generic.Dictionary<int, int> DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeries(System.IAsyncResult result) {
             return base.Channel.EndInsertEventSeries(result);
         }
         
@@ -3128,7 +3218,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         private object[] OnEndInsertEventSeries(System.IAsyncResult result) {
-            System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeries(result);
+            System.Collections.Generic.Dictionary<int, int> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeries(result);
             return new object[] {
                     retVal};
         }
@@ -3547,9 +3637,9 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> EndInsertEventSeries(System.IAsyncResult result) {
+            public System.Collections.Generic.Dictionary<int, int> EndInsertEventSeries(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries> _result = ((System.Collections.Generic.Dictionary<DiversityPhone.DiversityService.EventSeries, DiversityPhone.DiversityService.EventSeries>)(base.EndInvoke("InsertEventSeries", _args, result)));
+                System.Collections.Generic.Dictionary<int, int> _result = ((System.Collections.Generic.Dictionary<int, int>)(base.EndInvoke("InsertEventSeries", _args, result)));
                 return _result;
             }
             

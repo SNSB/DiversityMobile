@@ -28,6 +28,9 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public int IdentificationUnitAnalysisID { get; set; }
 
+        [Column(CanBeNull = true)]
+        public int? DiversityCollectionUnitID { get; set; }
+
         [Column]
         public string AnalysisResult { get; set; }
 
@@ -70,6 +73,7 @@ namespace DiversityPhone.Model
         public static Svc.IdentificationUnitAnalysis ConvertToServiceObject(IdentificationUnitAnalysis iua)
         {
             Svc.IdentificationUnitAnalysis export = new Svc.IdentificationUnitAnalysis();
+            export.DiversityCollectionUnitID = iua.DiversityCollectionUnitID;
             export.AnalysisDate = iua.AnalysisDate;
             export.AnalysisID = iua.AnalysisID;
             export.AnalysisResult = iua.AnalysisResult;
