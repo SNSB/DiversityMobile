@@ -148,17 +148,19 @@
 
         private void uploadPlain()
         {
-
-            IList<Svc.EventSeries> series = _storage.getUploadServiceEventSeries();
-            if (series != null && series.Count > 0)
-            {
-                System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
-                _repository.InsertEventSeries(es);
-            }
-            else
-            {
-                syncHierarchies();
-            }
+            //IList<EventSeries> clientSeries = _storage.getUploadServiceEventSeries();
+            //IList<Svc.EventSeries> series = new List<Svc.EventSeries>();
+            //foreach (EventSeries cs in clientSeries)
+            //    series.Add(EventSeries.ConvertToServiceObject(cs));
+            //if (series != null && series.Count > 0)
+            //{
+            //    System.Collections.ObjectModel.ObservableCollection<Svc.EventSeries> es = GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(series);
+            //    _repository.InsertEventSeries(es);
+            //}
+            //else
+            //{
+            //    syncHierarchies();
+            //}
         }
 
         private void syncHierarchies()
