@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralUtility", "GeneralUt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Phone.Controls.Toolkit", "Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj", "{0754458A-7AFC-463A-B27D-2F6980522119}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.ConsoleHost", "DiversityService.ConsoleHost\DiversityService.ConsoleHost.csproj", "{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = PhoneDiversity.vsmdi
@@ -154,6 +156,16 @@ Global
 		{0754458A-7AFC-463A-B27D-2F6980522119}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0754458A-7AFC-463A-B27D-2F6980522119}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0754458A-7AFC-463A-B27D-2F6980522119}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|x86.ActiveCfg = Debug|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|x86.Build.0 = Debug|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Release|Any CPU.ActiveCfg = Release|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Release|Mixed Platforms.Build.0 = Release|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Release|x86.ActiveCfg = Release|x86
+		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
