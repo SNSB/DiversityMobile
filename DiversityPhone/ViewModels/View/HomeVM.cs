@@ -22,6 +22,7 @@
         #region Services        
         private IOfflineStorage _storage;
         private IDiversityServiceClient _repository;
+        private ISettingsService _settings;
         //private DiversityService.DiversityServiceClient _plainUploadClient;
         private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
@@ -60,14 +61,15 @@
         }
         #endregion
 
-        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo)
+        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo, ISettingsService settings)
             : base(messenger)
         {            
             _storage = storage;
             _repository = repo;
+            _settings = settings;
             
 
-            //Initialize MultimediaTranfsfer
+            //Initialize MultimediaTransfer
            
             _msc=new MediaService4.MediaService4Client();
             _msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
@@ -99,8 +101,7 @@
                     .Subscribe(_ =>loadMapPage()),                
             };
 
-
-
+            
         }
 
         private void registerUpload()
@@ -126,39 +127,22 @@
 
         private void getVoc()
         {
-            //var vocFunc = Observable.FromAsyncPattern<IList<DiversityPhone.DiversityService.Term>>(_repository.BeginGetStandardVocabulary, _repository.EndGetStandardVocabulary);
-
-            //vocFunc.Invoke().Subscribe(voc => _storage.addTerms(voc.Select(
-            //    wcf => new DiversityPhone.Model.Term()
-            //    {
-            //        Code = wcf.Code,
-            //        Description = wcf.Description,
-            //        DisplayText = wcf.DisplayText,
-            //        ParentCode = wcf.ParentCode,
-            //        SourceID = wcf.Source
-            //    })
-            //    ));
+            _repository
+                .GetStandardVocabulary()                
+                .Subscribe(vocabulary => _storage.addTerms(vocabulary));
 
 
-            //var taxonFunc = Observable.FromAsyncPattern<Svc.TaxonList,int, IEnumerable<Svc.TaxonName>>(_repository.BeginDownloadTaxonList, _repository.EndDownloadTaxonList);
-            //var sampleTaxonList = new Svc.TaxonList() 
-            //{ 
-            //    Table = "TaxRef_BfN_VPlants",
-            //    TaxonomicGroup = "plant",
-            //    DisplayText = "Plants"
-            //};
-            
-            ////TODO Page
-            //taxonFunc.Invoke(sampleTaxonList,1).Subscribe(taxa => _storage.addTaxonNames(taxa.Select(
-            //    t => new Model.TaxonName()
-            //    {
-            //        URI = t.URI,
-            //        TaxonNameSinAuth = t.TaxonNameSinAuth,
-            //        TaxonNameCache = t.TaxonNameCache,
-            //        SpeciesEpithet = t.SpeciesEpithet,
-            //        InfraspecificEpithet = t.InfraspecificEpithet,
-            //        GenusOrSupragenic = t.GenusOrSupragenic
-            //    }), sampleTaxonList));
+
+            var sampleTaxonList = new Svc.TaxonList()
+            {
+                Table = "TaxRef_BfN_VPlants",
+                TaxonomicGroup = "plant",
+                DisplayText = "Plants"
+            };
+
+            //TODO Page
+            _repository.DownloadTaxonListChunked(sampleTaxonList)
+                .Subscribe(taxa => _storage.addTaxonNames(taxa, sampleTaxonList));
             
         }
 
@@ -191,27 +175,27 @@
             }
         }
 
-        //private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
-        //{
-        //    Dictionary<Svc.EventSeries, Svc.EventSeries> series = args.Result;
-        //    foreach (KeyValuePair<Svc.EventSeries, Svc.EventSeries> kvp in series)
-        //    {
-        //        _storage.updateSeriesKey(kvp.Key.SeriesID, kvp.Value.SeriesID);
-        //    }
-        //    syncHierarchies();
-        //}
+        private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
+        {
+            Dictionary<int, int> series = args.Result;
+            foreach (var kvp in series)
+            {
+                _storage.updateSeriesKey(kvp.Key, kvp.Value);
+            }
+            syncHierarchies();
+        }
 
 
-        //private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
-        //{
-        //    Svc.KeyProjection keysToUpdate = args.Result;
-        //    if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
-        //        _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
-        //    foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
-        //        _storage.updateSpecimenKey(specPair.Key, specPair.Value);
-        //    foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
-        //        _storage.updateIUKey(iuPair.Key, iuPair.Value);
-        //}
+        private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
+        {
+            Svc.KeyProjection keysToUpdate = args.Result;
+            if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
+                _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
+            foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
+                _storage.updateSpecimenKey(specPair.Key, specPair.Value);
+            foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
+                _storage.updateIUKey(iuPair.Key, iuPair.Value);
+        }
 
 
 

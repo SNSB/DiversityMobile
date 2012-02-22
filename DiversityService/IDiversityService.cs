@@ -25,7 +25,7 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
         [OperationContract]
-        IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page);
+        IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
 
 
         [OperationContract]

@@ -46,6 +46,15 @@ namespace DiversityPhone
             }
         }
 
+        private static ISettingsService _settings;
+        public static ISettingsService Settings
+        {
+            get
+            {
+                return _settings ?? (_settings = new SettingsService(MessageBus.Current));
+            }
+        }
+
         public static GeoCoordinateWatcher Watcher;
 
         public static void startWatcher()
@@ -86,8 +95,7 @@ namespace DiversityPhone
 
             // Phone-specific initialization
             InitializePhoneApplication();
-
-            NavSvc.AttachToNavigation(RootFrame);
+            
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -189,6 +197,9 @@ namespace DiversityPhone
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
             RootFrame = new PhoneApplicationFrame();
+
+            NavSvc.AttachToNavigation(RootFrame);
+
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures
@@ -204,6 +215,8 @@ namespace DiversityPhone
             // Set the root visual to allow the application to render
             if (RootVisual != RootFrame)
                 RootVisual = RootFrame;
+
+            
 
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;

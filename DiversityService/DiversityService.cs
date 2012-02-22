@@ -35,7 +35,7 @@ namespace DiversityService
             }
             catch
             {
-                return null;
+                return Enumerable.Empty<Project>();
             }
         }
 
@@ -70,10 +70,10 @@ namespace DiversityService
 
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
-
+            login.Repository = CATALOG_DIVERSITYMOBILE;
             using (var db = new Diversity.Diversity(login))
             {
-                return db.Query<TaxonList>("FROM [dbo].[TaxonListsForUser](@0) AS [TaxonList]", login.LoginName).ToList();
+                return db.Query<TaxonList>("FROM [TaxonListsForUser](@0) AS [TaxonList]", login.LoginName).ToList();
             }
         }
 
@@ -96,25 +96,26 @@ namespace DiversityService
                                         {
                                             Source = TermList.RelationshipTypes, //TODO
                                             Code = t.Code,
-                                            DisplayText = t.DisplayText
+                                            DisplayText = t.DisplayText,                                            
                                         };
-                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
+                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()                                    
                                     select new Term()
                                     {
                                         Source = TermList.EventImageTypes,//TODO
                                         Code = eit.Code,
                                         DisplayText = eit.DisplayText
-                                    };
+                                    };               
   
-                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).Concat(eventImgTypes).ToList();
+                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
             }
             return linqTerms;
 
         }
 
-        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page)
+        public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
         {
-            using (var db = new Diversity.Diversity())
+            login.Repository = CATALOG_DIVERSITYMOBILE;
+            using (var db = new Diversity.Diversity(login))
             {
                 //TODO Improve SQL Sanitation
                 if (list.Table.Contains(';') ||
@@ -123,11 +124,12 @@ namespace DiversityService
                     return Enumerable.Empty<TaxonName>();  //SQL Injection ?
 
                 var sql = PetaPoco.Sql.Builder
-                    .From(String.Format("[{0}] AS [TaxonName]",list.Table))                    
+                    .From(String.Format("[dbo].[{0}] AS [TaxonName]",list.Table))                    
                     .SQL;
 
 
-                return db.Page<TaxonName>(page, 1000, sql).Items;               
+                var res = db.Page<TaxonName>(page, 1000, sql).Items;
+                return res;
             }         
         }
 

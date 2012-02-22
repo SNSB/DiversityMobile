@@ -84,7 +84,7 @@
 
         }
 
-        public void addOrUpdateEventSeries(global::DiversityPhone.Model.EventSeries newSeries)
+        public void addOrUpdateEventSeries(EventSeries newSeries)
         {
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
@@ -450,7 +450,8 @@
         public void addTerms(IEnumerable<Term> terms)
         {
             using (var ctx = new DiversityDataContext())
-            {
+            {          
+                
                 ctx.Terms.InsertAllOnSubmit(terms);
                 try
                 {
@@ -458,8 +459,10 @@
                 }
                 catch (Exception ex)
                 {
+                    System.Diagnostics.Debugger.Break();
                     //TODO Log
                 }
+                 
             }
             sampleData();
         }
@@ -990,19 +993,17 @@
             return result;
         }
 
-        public IList<Svc.EventSeries> getUploadServiceEventSeries()
+        public IList<EventSeries> getUploadServiceEventSeries()
         {
-            IList<Svc.EventSeries> seriesSVC = new List<Svc.EventSeries>();
+            IList<EventSeries> res = null;
             withDataContext(ctx =>
             {
-                IQueryable<EventSeries> seriesPhone =
-                    from es in ctx.EventSeries
-                    where es.ModificationState == true
-                    select es;
-                foreach (EventSeries es in seriesPhone)
-                    seriesSVC.Add(EventSeries.ConvertToServiceObject(es));
+               var query = from es in ctx.EventSeries
+                           where es.ModificationState == true
+                           select es;
+               res = query.ToList();               
             });
-            return seriesSVC;
+            return res;
         }
 
         public void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to)

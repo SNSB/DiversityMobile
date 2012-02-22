@@ -505,10 +505,37 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.HierarchySection.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonList.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonName.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Term.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
@@ -520,7 +547,9 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -681,6 +710,10 @@
     <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
       <Name>GeneralUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
+      <Project>{0754458A-7AFC-463A-B27D-2F6980522119}</Project>
+      <Name>Microsoft.Phone.Controls.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />

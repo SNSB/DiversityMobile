@@ -32,7 +32,8 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
                 container.Resolve<IOfflineStorage>(),
-                container.Resolve<IDiversityServiceClient>()
+                container.Resolve<IDiversityServiceClient>(),
+                container.Resolve<ISettingsService>()
                 ));
             
             _ioc.Register<EditESVM>(c => new EditESVM());

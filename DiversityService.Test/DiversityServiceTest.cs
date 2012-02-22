@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using Xunit;
-using DiversityService.Model;
+using DiversityService.Test.ServiceReference;
 
 namespace DiversityService.Test
 {
     public class DiversityServiceTest
     {
-        private IDiversityService _target;
+        private UserCredentials testCredentials = new UserCredentials()
+        {
+            LoginName = "Rollinger",
+            Password = "Rolli#2-AI4@UBT",
+            Repository = "DiversityCollection_Test"
+        };
+
+        private DiversityServiceClient _target;
         public DiversityServiceTest()
         {
-            _target = new DiversityService();
+            _target = new DiversityServiceClient();
         }
 
         //[Fact]
@@ -67,7 +74,7 @@ namespace DiversityService.Test
             
 
             //Execute
-            var taxa = _target.DownloadTaxonList(tl,0);
+            var taxa = _target.DownloadTaxonList(tl,1,testCredentials);
 
 
             //Assert
@@ -78,9 +85,10 @@ namespace DiversityService.Test
         public void taxonNamesForUser_should_work()
         {
             //Prepare
-            var profile = new UserProfile()
+            var profile = new UserCredentials()
             {
-                LoginName = "rollinger",
+                LoginName = "Rollinger",
+                Password = "Rolli#2-AI4@UBT"
             };
 
             //Execute
@@ -141,6 +149,35 @@ namespace DiversityService.Test
             //Assert
             Assert.NotEmpty(ar);
             Assert.True(ar.Distinct().Count() == ar.Count());
+        }
+
+        [Fact]
+        public void Terms_in_Vocabulary_should_be_unique()
+        {
+            //Prepare
+            
+
+            //Execute
+            var ar = _target.GetStandardVocabulary();
+
+
+            //Assert
+            Assert.NotEmpty(ar);
+            Assert.Equal(ar.Distinct(new TermComparer()).Count(),ar.Count());
+        }
+
+        private class TermComparer : IEqualityComparer<Term>
+        {
+
+            public bool Equals(Term x, Term y)
+            {
+                return x.Code == y.Code && x.Source == y.Source;
+            }
+
+            public int GetHashCode(Term obj)
+            {
+                return (obj.Code.GetHashCode() ^ obj.Source.GetHashCode());
+            }
         }
 
     }
