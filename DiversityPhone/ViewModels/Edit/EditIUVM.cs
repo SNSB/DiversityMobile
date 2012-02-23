@@ -302,7 +302,7 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             Current.Model.TaxonomicGroup = SelectedTaxGroup.Code;
-            Current.Model.WorkingName = (CurrentIdentification.Synonymy == Synonymy.WorkingName) ? CurrentIdentification.TaxonNameCache : null;
+            Current.Model.WorkingName = CurrentIdentification.TaxonNameCache;
             Current.Model.OnlyObserved = this.OnlyObserved;
             Current.Model.IdentificationUri = CurrentIdentification.URI;
             Current.Model.RelationType = (SelectedRelationshipType != null) ? SelectedRelationshipType.Code : null;
