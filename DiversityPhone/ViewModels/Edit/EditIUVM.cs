@@ -184,7 +184,7 @@ namespace DiversityPhone.ViewModels
                 .Select(query =>
                     {
                         //Don't allow short queries
-                        if (query.Species.Length + query.Genus.Length > 3)
+                        if (query.Species.Length + query.Genus.Length > 5)
                             return Storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
                         else
                             return Enumerable.Empty<TaxonName>();
@@ -210,7 +210,7 @@ namespace DiversityPhone.ViewModels
                 .ToProperty(this, vm => vm.TaxonomicGroups);
 
             _RelationshipTypes = _IsToplevel
-                .Where(isToplevel => isToplevel)
+                .Where(isToplevel => !isToplevel)
                 .Select(isToplevel => Storage.getTerms(Svc.TermList.RelationshipTypes))                
                 .ToProperty(this, vm => vm.RelationshipTypes);
             #endregion

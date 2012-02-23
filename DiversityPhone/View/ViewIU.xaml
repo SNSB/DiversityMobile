@@ -24,7 +24,7 @@
         <ContentControl Content="{Binding Parent}"
                         ContentTemplate="{StaticResource FieldDataItemTemplate}"/>
         <ContentControl Content="{Binding Current}"
-                        ContentTemplate="{StaticResource FieldDataItemTemplate}"/>
+                        ContentTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"/>
         <!--Pivot Control-->
         <controls:Pivot VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
