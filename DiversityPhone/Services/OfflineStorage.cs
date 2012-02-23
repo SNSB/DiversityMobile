@@ -1084,7 +1084,7 @@
                     where ev.SeriesID == clientSeriesKey
                     select ev;
                 foreach (Event eve in savedEvents)
-                    eve.SeriesID = serverSeriesKey;
+                    eve.DiversityCollectionSeriesID = serverSeriesKey;
                 var seriesMMO =
                     from mmo in ctx.MultimediaObjects
                     where mmo.RelatedId == clientSeriesKey && mmo.OwnerType == ReferrerType.EventSeries
