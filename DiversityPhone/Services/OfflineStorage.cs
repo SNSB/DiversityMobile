@@ -10,6 +10,7 @@
     using System.Data.Linq;
     using System.Linq.Expressions;
     using Svc = DiversityPhone.DiversityService;
+    using System.IO.IsolatedStorage;
 
     public class OfflineStorage : IOfflineStorage
     {
@@ -30,14 +31,26 @@
                     .Subscribe(es => deleteEventSeries(es)),
                 _messenger.Listen<Event>(MessageContracts.SAVE)
                     .Subscribe(ev => addOrUpdateEvent(ev)),
-
+                _messenger.Listen<Event>(MessageContracts.DELETE)
+                    .Subscribe(ev=>deleteEvent(ev)),
+                _messenger.Listen<CollectionEventProperty>(MessageContracts.SAVE)
+                    .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
                 _messenger.Listen<Specimen>(MessageContracts.SAVE)
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
-
+                _messenger.Listen<Specimen>(MessageContracts.DELETE)
+                    .Subscribe(spec=>deleteSpecimen(spec)),
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
+                _messenger.Listen<IdentificationUnit>(MessageContracts.DELETE)
+                    .Subscribe(iu=>deleteIU(iu)),
+                _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.SAVE)
+                    .Subscribe(iua=>addOrUpdateIUA(iua)),
+                 _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.DELETE)
+                    .Subscribe(iua=>deleteIUA(iua)),
                 _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
                     .Subscribe(mmo => addMultimediaObject(mmo)),
+                _messenger.Listen<MultimediaObject>(MessageContracts.DELETE)
+                    .Subscribe(mmo=>deleteMMO(mmo)),
 
                 _messenger.Listen<Term>(MessageContracts.USE)
                     .Subscribe(term => updateLastUsed(term)),
@@ -164,6 +177,13 @@
                 addOrUpdateSpecimen(observation);
             }
         }
+
+        public void deleteEvent(Event toDeleteEv)
+        {
+            deleteRow(Event.Operations, ctx => ctx.Events, toDeleteEv);
+        }
+
+
         #endregion
 
         #region CollectionEventProperties
@@ -199,6 +219,12 @@
                 where p.PropertyID == id
                 select p);
         }
+
+        public void deleteEventProperty(CollectionEventProperty toDeleteCep)
+        {
+            deleteRow(CollectionEventProperty.Operations, ctx => ctx.CollectionEventProperties, toDeleteCep);
+        }
+
         #endregion
 
 
@@ -254,6 +280,13 @@
             );
         }
 
+        public void deleteSpecimen(Specimen toDeleteSpec)
+        {
+            deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
+        }
+
+
+
         #endregion
 
         #region IdentificationUnit
@@ -295,6 +328,12 @@
         {
             addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);           
         }
+
+        public void deleteIU(IdentificationUnit toDeleteIU)
+        {
+            deleteRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, toDeleteIU);
+        }
+
 
         #endregion
 
@@ -390,6 +429,10 @@
             }
         }
 
+        public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA)
+        {
+            deleteRow(IdentificationUnitAnalysis.Operations, ctx => ctx.IdentificationUnitAnalyses, toDeleteIUA);
+        }
 
 
         #endregion
@@ -432,6 +475,18 @@
                 ctx.SubmitChanges();
             }
         }
+
+        public void deleteMMO(MultimediaObject toDeleteMMO)
+        {
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(toDeleteMMO.Uri))
+            {
+                myStore.DeleteFile(toDeleteMMO.Uri);
+            }
+            deleteRow(MultimediaObject.Operations, ctx => ctx.MultimediaObjects, toDeleteMMO);
+        }
+
+
         #endregion
 
         #region Terms

@@ -113,11 +113,7 @@ namespace DiversityPhone.ViewModels
         protected override void OnDelete()
         {            
             Messenger.SendMessage<MultimediaObject>(Current.Model, MessageContracts.DELETE);
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(Current.Model.Uri))
-            {
-                myStore.DeleteFile(Current.Model.Uri);
-            }
+           
             Messenger.SendMessage<Message>(Message.NavigateBack);
         }
 
