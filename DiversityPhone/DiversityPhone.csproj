@@ -541,7 +541,6 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Service11.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -550,6 +549,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Service15.xsd">
       <SubType>Designer</SubType>
     </None>

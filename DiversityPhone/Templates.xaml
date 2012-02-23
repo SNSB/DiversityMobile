@@ -31,7 +31,7 @@
     </DataTemplate>
     <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
         <StackPanel Orientation="Horizontal">
-            <Image />
+            <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}"/>
             <Button Style="{StaticResource ItemButtonStyle}"
                     Content="{Binding Description}"
                     Command="{Binding Select}"/>
@@ -50,7 +50,7 @@
             
             <StackPanel Grid.Column="0" Grid.Row="0"
 						Grid.ColumnSpan="2" Orientation="Horizontal">
-	            <Image />
+                <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}"/>
 	            <Button Style="{StaticResource ItemButtonStyle}"
 	                    Content="{Binding Description}"
 	                    Command="{Binding Select}"/>
