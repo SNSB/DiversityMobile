@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class DiversityServiceObservableClient : IDiversityServiceClient
+    public partial class DiversityServiceObservableClient : IDiversityServiceClient
     {
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         ISettingsService _settings;
@@ -121,20 +121,54 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<KeyProjection> InsertHierarchy(HierarchySection section)
+        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(Project p)
         {
-            var res = Observable.FromEvent<EventHandler<InsertHierarchyCompletedEventArgs>, InsertHierarchyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertHierarchyCompleted += d, d => _svc.InsertHierarchyCompleted -= d)
-                .Select(args => args.Result)
-                .Take(1);
-            _svc.InsertHierarchyAsync(section, this.GetCreds());
+            var res = Observable.FromEvent<EventHandler<GetAnalysesForProjectCompletedEventArgs>, GetAnalysesForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d)
+               .Select(args => args.Result)
+               .Select(analyses => analyses
+                   .Select(an => new Client.Analysis()
+                   {
+                      AnalysisID = an.AnalysisID,
+                      Description = an.Description,
+                      DisplayText = an.DisplayText,
+                      MeasurementUnit = an.MeasurementUnit
+                   }))
+               .Take(1);
+            _svc.GetAnalysesForProjectAsync(p, GetCreds());
             return res;
         }
 
-
-
-        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<Client.EventSeries> seriesList)
+        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(Project p)
         {
-            throw new NotImplementedException();
+            var res = Observable.FromEvent<EventHandler<GetAnalysisResultsForProjectCompletedEventArgs>, GetAnalysisResultsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d)
+               .Select(args => args.Result)
+               .Select(ars => ars
+                   .Select(ar => new Client.AnalysisResult()
+                   {
+                        AnalysisID = ar.AnalysisID,
+                        Description = ar.Description,
+                        DisplayText = ar.DisplayText,
+                        Notes = ar.Notes,
+                        Result = ar.Result
+                   }))
+               .Take(1);
+            _svc.GetAnalysisResultsForProjectAsync(p, GetCreds());
+            return res;
+        }
+
+        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGrousForProject(Project p)
+        {
+            var res = Observable.FromEvent<EventHandler<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>, GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d)
+               .Select(args => args.Result)
+               .Select(atgs => atgs
+                   .Select(atg => new Client.AnalysisTaxonomicGroup()
+                   {
+                        AnalysisID = atg.AnalysisID,
+                        TaxonomicGroup = atg.TaxonomicGroup
+                   }))
+               .Take(1);
+            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(p, GetCreds());
+            return res;
         }
     }
 }

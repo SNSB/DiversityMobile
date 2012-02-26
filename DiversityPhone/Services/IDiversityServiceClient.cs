@@ -18,6 +18,12 @@ namespace DiversityPhone.Services
        
         IObservable<IEnumerable<Term>> GetStandardVocabulary();
 
+        IObservable<IEnumerable<Analysis>> GetAnalysesForProject(Svc.Project p);
+
+        IObservable<IEnumerable<AnalysisResult>> GetAnalysisResultsForProject(Svc.Project p);
+
+        IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGrousForProject(Svc.Project p);
+
         IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
 
         IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<EventSeries> seriesList);

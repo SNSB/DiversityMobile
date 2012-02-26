@@ -65,6 +65,7 @@
       <DependentUpon>DiversityMobile.edmx</DependentUpon>
     </Compile>
     <Compile Include="DiversityService.cs" />
+    <Compile Include="DiversityService.Queries.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="ModelProjection.cs" />
     <Compile Include="Models\Analysis.cs" />

@@ -4,16 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
-using Diversity;
+using DiversityORM;
 using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.ServiceModel;
 
 
+
 namespace DiversityService
 {
-    public class DiversityService : IDiversityService
+    public partial class DiversityService : IDiversityService
     {
         private const string CATALOG_DIVERSITYMOBILE = "DiversityMobile";
 
@@ -22,7 +23,7 @@ namespace DiversityService
         {
             try
             {
-                using (var db = new Diversity.Diversity(login))
+                using (var db = new DiversityORM.Diversity(login))
                 {
                     return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
                         .Select(p =>
@@ -44,13 +45,13 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
-        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p)
+        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login)
         {
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity(login))
             {
-                var flattenQueue = new Queue<AnalysisTaxonomicGroup>(db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", p.ProjectID));                    
+                var flattenQueue = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(p.ProjectID,db));                    
                 var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
-                var analyses = GetAnalysesForProject(p);
+                var analyses = analysesForProject(p.ProjectID,db);
 
                 while(flattenQueue.Count > 0)
                 {
@@ -71,9 +72,9 @@ namespace DiversityService
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
             login.Repository = CATALOG_DIVERSITYMOBILE;
-            using (var db = new Diversity.Diversity(login))
+            using (var db = new DiversityORM.Diversity(login))
             {
-                return db.Query<TaxonList>("FROM [TaxonListsForUser](@0) AS [TaxonList]", login.LoginName).ToList();
+                return taxonListsForUser(login.LoginName,db).ToList();
             }
         }
 
@@ -115,7 +116,7 @@ namespace DiversityService
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
         {
             login.Repository = CATALOG_DIVERSITYMOBILE;
-            using (var db = new Diversity.Diversity(login))
+            using (var db = new DiversityORM.Diversity(login))
             {
                 //TODO Improve SQL Sanitation
                 if (list.Table.Contains(';') ||
@@ -143,20 +144,18 @@ namespace DiversityService
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p)
+        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p, UserCredentials login)
         {
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity(login))
             {
-                return db.Query<Analysis>("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis]", p.ProjectID).ToList();
+                return analysesForProject(p.ProjectID,db).ToList();
             }
         }
-        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p)
+        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login)
         {
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity(login))
             {
-                return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", p.ProjectID).ToList();
-                                      
-                
+                return analysisResultsForProject(p.ProjectID,db).ToList();         
             }
         }     
 
@@ -164,7 +163,7 @@ namespace DiversityService
         {
             try
             {
-                using (var db = new Diversity.Diversity())
+                using (var db = new DiversityORM.Diversity())
                 {
                     return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
                 }
@@ -405,7 +404,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity())
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
                 db.Execute(sql);
@@ -417,7 +416,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity())
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where CollectionEventID=" + eventID + " AND LocalisationSystemID=" + localisationSystemID;
                 db.Execute(sql);
@@ -429,7 +428,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new Diversity.Diversity())
+            using (var db = new DiversityORM.Diversity())
             {
                 String sql = "Update [dbo].[IdentificationUnitGeoAnalysis] Set Geography=" + geoString + " Where IdentificationUnitID=" + unitID + " AND LocalisationSystemID=" + localisationSystemID;
                 db.Execute(sql);

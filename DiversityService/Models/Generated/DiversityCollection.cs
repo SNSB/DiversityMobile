@@ -16,7 +16,7 @@ using System.Linq;
 using System.Web;
 using PetaPoco;
 
-namespace Diversity
+namespace DiversityORM
 {
 	public partial class Diversity : Database
 	{
