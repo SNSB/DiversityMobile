@@ -54,7 +54,7 @@ namespace DiversityPhone.Model
             this.LogUpdatedWhen = DateTime.Now;
             this.AnalysisDate = DateTime.Now;
             this.DiversityCollectionUnitID = null;
-            _Unit = default(EntityRef<IdentificationUnit>);
+            //_Unit = default(EntityRef<IdentificationUnit>);
         }
 
         public static IQueryOperations<IdentificationUnitAnalysis> Operations
@@ -91,43 +91,43 @@ namespace DiversityPhone.Model
             return export;
         }
 
-        #region Associations
+        //#region Associations
 
-        private EntityRef<IdentificationUnit> _Unit;
-        [Association(Name = "FK_IUA_Unit",
-                Storage = "_Unit",
-                ThisKey = "IdentificationUnitID",
-                OtherKey = "UnitID",
-                IsForeignKey = true)]
-        public IdentificationUnit Unit
-        {
-            get { return _Unit.Entity; }
-            set
-            {
-                IdentificationUnit previousValue = this._Unit.Entity;
-                if (((previousValue != value) ||
-                    (this._Unit.HasLoadedOrAssignedValue
-                     == false)))
-                {
-                    if ((previousValue != null))
-                    {
-                        this._Unit.Entity = null;
-                        previousValue.IUAnalyses.Remove(this);
-                    }
-                    this._Unit.Entity = value;
-                    if ((value != null))
-                    {
-                        value.IUAnalyses.Add(this);
-                        this.IdentificationUnitID = value.UnitID;
-                    }
-                    else
-                    {
-                        this.IdentificationUnitID = default(int);
-                    }
-                }
-            }
-        }
+        //private EntityRef<IdentificationUnit> _Unit;
+        //[Association(Name = "FK_IUA_Unit",
+        //        Storage = "_Unit",
+        //        ThisKey = "IdentificationUnitID",
+        //        OtherKey = "UnitID",
+        //        IsForeignKey = true)]
+        //public IdentificationUnit Unit
+        //{
+        //    get { return _Unit.Entity; }
+        //    set
+        //    {
+        //        IdentificationUnit previousValue = this._Unit.Entity;
+        //        if (((previousValue != value) ||
+        //            (this._Unit.HasLoadedOrAssignedValue
+        //             == false)))
+        //        {
+        //            if ((previousValue != null))
+        //            {
+        //                this._Unit.Entity = null;
+        //                previousValue.IUAnalyses.Remove(this);
+        //            }
+        //            this._Unit.Entity = value;
+        //            if ((value != null))
+        //            {
+        //                value.IUAnalyses.Add(this);
+        //                this.IdentificationUnitID = value.UnitID;
+        //            }
+        //            else
+        //            {
+        //                this.IdentificationUnitID = default(int);
+        //            }
+        //        }
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }
