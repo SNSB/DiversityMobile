@@ -96,13 +96,14 @@
         //    get { return _Units; }
         //    set { _Units.Assign(value); }
         //}
-
+        
         //private EntityRef<Event> _Event;
         //[Association(Name = "FK_Specimen_Event",
         //        Storage = "_Event",
         //        ThisKey = "CollectionEventID",
         //        OtherKey = "EventID",
-        //        IsForeignKey = true)]
+        //        IsForeignKey=true,
+        //        DeleteOnNull=true)]
         //public Event Event
         //{
         //    get { return _Event.Entity; }

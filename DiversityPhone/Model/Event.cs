@@ -115,9 +115,7 @@
         //[Association(Name = "FK_Event_Specimen",
         //             Storage = "_Specimen",
         //             ThisKey = "EventID",
-        //             OtherKey = "CollectionEventID",
-        //             IsForeignKey = true,
-        //             DeleteRule = "CASCADE")]
+        //             OtherKey = "CollectionEventID")]
         //public EntitySet<Specimen> Specimen
         //{
         //    get { return _Specimen; }

@@ -59,7 +59,10 @@
             using (var context = new DiversityDataContext())
             {
                 if (!context.DatabaseExists())
-                    context.CreateDatabase();
+                {
+                   context.CreateDatabase();
+                   
+                }
             }
         }
 
@@ -182,15 +185,41 @@
 
             if (wasNewEvent)
             {
-                //Now EventID is set even for new Events
                 Specimen observation = new Specimen().MakeObservation();
                 observation.CollectionEventID = ev.EventID;
                 addOrUpdateSpecimen(observation);
+
+                //withDataContext((ctx) =>{
+                ////Now EventID is set even for new Events
+                //Specimen observation = new Specimen().MakeObservation();
+                //observation.CollectionEventID = ev.EventID;
+                //ev.Specimen.Add(observation);
+                //ctx.SubmitChanges();
+                //});
             }
         }
 
         public void deleteEvent(Event toDeleteEv)
         {
+            //withDataContext((ctx) =>
+            //     {
+            //         IList<Specimen> attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
+                     
+            //         foreach (Specimen spec in attachedSpecimen)
+            //         {
+            //             toDeleteEv.Specimen.Add(spec);
+            //         }
+            //         ctx.Events.DeleteOnSubmit(toDeleteEv);
+            //         ctx.SubmitChanges();
+            //     });
+            IList<Specimen> attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
+            foreach (Specimen spec in attachedSpecimen)
+            {
+                this.deleteSpecimen(spec);
+            }
+            IList<CollectionEventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv);
+            foreach (CollectionEventProperty cep in attachedProperties)
+                this.deleteEventProperty(cep);
             IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Event, toDeleteEv.EventID);
             foreach (MultimediaObject mmo in attachedMMO)
             {
@@ -259,7 +288,6 @@
 
         public IList<Specimen> getSpecimenForEvent(Event ev)
         {
-            
             IList<Specimen> specList= cachedQuery(Specimen.Operations,
             ctx =>
                 from spec in ctx.Specimen                 
@@ -304,6 +332,9 @@
             {
                 this.deleteMMO(mmo);
             }
+            IList<IdentificationUnit> attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec);
+            foreach (IdentificationUnit topIU in attachedTopLevelIU)
+                this.deleteIU(topIU);
             deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
         }
 
@@ -358,6 +389,12 @@
             {
                 this.deleteMMO(mmo);
             }
+            IList<IdentificationUnit> attachedUnits = this.getSubUnits(toDeleteIU);
+            foreach (IdentificationUnit iu in attachedUnits)
+                this.deleteIU(iu);
+            IList<IdentificationUnitAnalysis> attachedAnalyses = this.getIUANForIU(toDeleteIU);
+            foreach (IdentificationUnitAnalysis iua in attachedAnalyses)
+                this.deleteIUA(iua);
             deleteRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, toDeleteIU);
         }
 
@@ -876,6 +913,7 @@
                             
                             //Object not new
                             //TODO update?
+                            
                         }
                     }
                     else
