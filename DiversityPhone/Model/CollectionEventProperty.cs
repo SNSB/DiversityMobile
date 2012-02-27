@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
 using Svc = DiversityPhone.DiversityService;
+using System.Data.Linq;
 
 namespace DiversityPhone.Model
 {
@@ -89,5 +90,43 @@ namespace DiversityPhone.Model
             export.DiversityCollectionEventID = cep.DiversityCollectionEventID;
             return export;
         }
+
+        #region Associations
+        private EntityRef<Event> _Event;
+        [Association(Name = "FK_EventProperty_Event",
+                Storage = "_Event",
+                ThisKey = "EventID",
+                OtherKey = "EventID",
+                IsForeignKey = true)]
+        public Event Event 
+        {
+            get { return _Event.Entity; }
+            set
+            {
+                Event previousValue = this._Event.Entity;
+                if (((previousValue != value) ||
+                    (this._Event.HasLoadedOrAssignedValue
+                     == false)))
+                {
+                    if ((previousValue != null))
+                    {
+                        this._Event.Entity = null;
+                        previousValue.Properties.Remove(this);
+                    }
+                    this._Event.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Properties.Add(this);
+                        this.EventID = value.EventID;
+                    }
+                    else
+                    {
+                        this.EventID = default(int);
+                    }
+                }
+            }
+        }
+        #endregion
+
     }
 }

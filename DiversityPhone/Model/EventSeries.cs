@@ -23,9 +23,9 @@
             this.ModificationState = null;
             this.DiversityCollectionEventSeriesID = null;
             this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
-            _Events=new EntitySet<Event>(
-                new Action<Event>(Attach_Event),
-                new Action<Event>(Detach_Event));
+            //_Events = new EntitySet<Event>(
+            //    new Action<Event>(Attach_Event),
+            //    new Action<Event>(Detach_Event));
 
         }
 
@@ -64,18 +64,7 @@
         [Column(CanBeNull = true)]
         public DateTime? SeriesEnd { get; set; }
 
-        private EntitySet<Event> _Events;
-        [Association(Name = "FK_Series_Event",
-                     Storage = "_Events",
-                     ThisKey = "SeriesID",
-                     OtherKey = "SeriesID",
-                     IsForeignKey = true,
-                     DeleteOnNull=true)]
-        public EntitySet<Event> Events
-        {
-            get { return _Events; }
-            set { _Events.Assign(value); } 
-        }
+       
 
         /// <summary>
         /// Tracks modifications to this Object.
@@ -156,15 +145,29 @@
             throw new NotImplementedException();
         }
 
-        private void Attach_Event(Event entity)
-        {
-            entity.EventSeries = this;
-        }
+        #region Associations
+        //private EntitySet<Event> _Events;
+        //[Association(Name = "FK_Series_Event",
+        //             Storage = "_Events",
+        //             ThisKey = "SeriesID",
+        //             OtherKey = "SeriesID",
+        //             IsForeignKey = true)]
+        //public EntitySet<Event> Events
+        //{
+        //    get { return _Events; }
+        //    set { _Events.Assign(value); }
+        //}
 
-        private void Detach_Event(Event entity)
-        {
-            entity.EventSeries = null;
-        }
+        //private void Attach_Event(Event entity)
+        //{
+        //    entity.EventSeries = this;
+        //}
+
+        //private void Detach_Event(Event entity)
+        //{
+        //    entity.EventSeries = null;
+        //}
+        #endregion
 
     }
 }

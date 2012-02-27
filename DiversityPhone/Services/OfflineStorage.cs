@@ -101,12 +101,21 @@
         {
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
-
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);            
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
         {
+            IList<Event> attachedEvents = this.getEventsForSeries(toDeleteEs);
+            foreach (Event ev in attachedEvents)
+            {
+                this.deleteEvent(ev);
+            }
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.EventSeries, toDeleteEs.SeriesID);
+            foreach(MultimediaObject mmo in attachedMMO)
+            {
+                this.deleteMMO(mmo);
+            }
             deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
         }
 
@@ -164,6 +173,8 @@
         {
             var wasNewEvent = ev.IsNew();
 
+
+
             addOrUpdateRow(Event.Operations,
                   ctx => ctx.Events,
                   ev
@@ -180,6 +191,11 @@
 
         public void deleteEvent(Event toDeleteEv)
         {
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Event, toDeleteEv.EventID);
+            foreach (MultimediaObject mmo in attachedMMO)
+            {
+                this.deleteMMO(mmo);
+            }
             deleteRow(Event.Operations, ctx => ctx.Events, toDeleteEv);
         }
 
@@ -244,13 +260,14 @@
         public IList<Specimen> getSpecimenForEvent(Event ev)
         {
             
-            return cachedQuery(Specimen.Operations,
+            IList<Specimen> specList= cachedQuery(Specimen.Operations,
             ctx =>
                 from spec in ctx.Specimen                 
                 where spec.CollectionEventID == ev.EventID
                 select spec
                 );
-        
+           
+            return specList;
         }
       
 
@@ -282,6 +299,11 @@
 
         public void deleteSpecimen(Specimen toDeleteSpec)
         {
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Specimen, toDeleteSpec.CollectionSpecimenID);
+            foreach (MultimediaObject mmo in attachedMMO)
+            {
+                this.deleteMMO(mmo);
+            }
             deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
         }
 
@@ -331,6 +353,11 @@
 
         public void deleteIU(IdentificationUnit toDeleteIU)
         {
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.IdentificationUnit, toDeleteIU.UnitID);
+            foreach (MultimediaObject mmo in attachedMMO)
+            {
+                this.deleteMMO(mmo);
+            }
             deleteRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, toDeleteIU);
         }
 

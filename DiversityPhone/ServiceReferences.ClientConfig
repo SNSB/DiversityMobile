@@ -32,8 +32,8 @@
             <endpoint address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
                 binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
                 contract="MediaService4.IMediaService4" name="WSHttpBinding_IMediaService4" />
-            <endpoint address="http://192.168.2.6:1111/Service1.svc" binding="basicHttpBinding"
-                bindingConfiguration="BasicHttpBinding_IDiversityService"
+            <endpoint address="http://bsm5.snsb.info:1111/DiversityService/Service1.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>

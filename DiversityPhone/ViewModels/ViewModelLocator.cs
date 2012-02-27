@@ -49,7 +49,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewLMVM>(c => new ViewLMVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM());
             _ioc.Register<ViewIUVM>(c => new ViewIUVM());
-
+            _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM());
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));            
