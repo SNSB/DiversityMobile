@@ -18,7 +18,7 @@ namespace DiversityPhone.Model
     {
         public AnalysisTaxonomicGroup()
         {
-            LogUpdatedWhen = DateTime.Now;
+            //LogUpdatedWhen = DateTime.Now;
         }
 
         //Read-Only
@@ -28,8 +28,8 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public string TaxonomicGroup { get; set; }
 
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
+        //[Column]
+        //public DateTime LogUpdatedWhen { get; set; }
 
     }
 }

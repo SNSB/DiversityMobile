@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityService.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
-  <xs:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://192.168.2.6:1111/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
+  <xs:import schemaLocation="http://192.168.2.6:1111/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="UserCredentials">
     <xs:sequence>
       <xs:element minOccurs="0" name="AgentName" nillable="true" type="xs:string" />
@@ -105,22 +105,6 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="TermList" nillable="true" type="tns:TermList" />
-  <xs:complexType name="ArrayOfAnalysisResult">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAnalysisResult" nillable="true" type="tns:ArrayOfAnalysisResult" />
-  <xs:complexType name="AnalysisResult">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
-      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
   <xs:complexType name="ArrayOfAnalysisTaxonomicGroup">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
@@ -149,6 +133,22 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Analysis" nillable="true" type="tns:Analysis" />
+  <xs:complexType name="ArrayOfAnalysisResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysisResult" nillable="true" type="tns:ArrayOfAnalysisResult" />
+  <xs:complexType name="AnalysisResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
   <xs:complexType name="ArrayOfPropertyName">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyName" nillable="true" type="tns:PropertyName" />

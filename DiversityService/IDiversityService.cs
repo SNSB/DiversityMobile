@@ -32,16 +32,14 @@ namespace DiversityService
         IEnumerable<Term> GetStandardVocabulary();
 
         [OperationContract]
-        String GetXMLStandardVocabulary();
-        [OperationContract]
-        IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys);
-        [OperationContract]
-        IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p);
+        String GetXMLStandardVocabulary();        
 
         [OperationContract]
-        IEnumerable<Model.Analysis> GetAnalysesForProject(Project p);
+        IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login);
         [OperationContract]
-        IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p);
+        IEnumerable<Analysis> GetAnalysesForProject(Project p, UserCredentials login);
+        [OperationContract]
+        IEnumerable<AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login);
 
 
         [OperationContract]

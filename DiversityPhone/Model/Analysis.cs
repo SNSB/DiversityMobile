@@ -23,7 +23,7 @@ namespace DiversityPhone.Model
 
         public Analysis()
         {
-            LogUpdatedWhen = DateTime.Now;
+            //LogUpdatedWhen = DateTime.Now;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -38,8 +38,9 @@ namespace DiversityPhone.Model
         [Column]
         public String MeasurementUnit { get; set; }
 
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
+        //Necessary?
+        //[Column]
+        //public DateTime LogUpdatedWhen { get; set; }
 
 
         public static IQueryOperations<Analysis> Operations

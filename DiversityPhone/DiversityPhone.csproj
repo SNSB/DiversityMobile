@@ -156,12 +156,13 @@
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DiversityDataContext.cs" />
-    <Compile Include="Services\DiversityServiceClient.cs" />
+    <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\IApplicationState.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
+    <Compile Include="Services\DiversityServiceClient.Upload.cs" />
     <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\IOfflineFieldData.cs" />
     <Compile Include="Services\IOfflineStorage.cs" />
@@ -541,6 +542,7 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
@@ -548,6 +550,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\DiversityService\Service11.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -569,6 +572,21 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service151.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service152.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service153.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service154.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />

@@ -21,7 +21,7 @@ namespace DiversityPhone.Model
 
         public AnalysisResult()
         {
-            LogUpdatedWhen = DateTime.Now;
+            //LogUpdatedWhen = DateTime.Now;
         }
 
         //Read-Only
@@ -40,8 +40,8 @@ namespace DiversityPhone.Model
         [Column]
         public string DisplayText { get; set; }
 
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
+        //[Column]
+        //public DateTime LogUpdatedWhen { get; set; }
 
 
 

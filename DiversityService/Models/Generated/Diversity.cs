@@ -5,7 +5,7 @@ using System.Text;
 using DiversityService.Model;
 using System.Configuration;
 
-namespace Diversity
+namespace DiversityORM
 {
     public partial class Diversity
     {

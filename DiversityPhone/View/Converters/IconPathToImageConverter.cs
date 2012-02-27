@@ -21,8 +21,10 @@ namespace DiversityPhone.View
 
                 if (value is string)
                     return value;
+#if DEBUG
                 else
                     throw new NotSupportedException(value.GetType().ToString());
+#endif
                                   
         }
 
