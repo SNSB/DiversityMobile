@@ -7,6 +7,7 @@
     using System.Text;
     using Microsoft.Phone.Data.Linq.Mapping;
     using DiversityPhone.Services;
+    using System.Data.Linq;
     using Svc = DiversityPhone.DiversityService;
 
     [Table]
@@ -66,6 +67,41 @@
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
+        private EntityRef<EventSeries> _EventSeries;
+        [Association(Name = "FK_Event_EventSeries",
+                Storage = "_EventSeries",
+                ThisKey = "SeriesID",
+                OtherKey = "SeriesID",
+                IsForeignKey = true,
+                DeleteOnNull=true)]
+        public EventSeries EventSeries //Directly applied example
+        {
+            get { return _EventSeries.Entity; }
+            set
+            {
+                EventSeries previousValue = this._EventSeries.Entity;
+                if (((previousValue != value) ||
+                    (this._EventSeries.HasLoadedOrAssignedValue
+                     == false)))
+                {
+                    if ((previousValue != null))
+                    {
+                        this._EventSeries.Entity = null;
+                        previousValue.Events.Remove(this);
+                    }
+                    this._EventSeries.Entity = value;
+                    if ((value != null))
+                    {
+                        value.Events.Add(this);
+                        this.SeriesID = value.SeriesID;
+                    }
+                    else
+                    {
+                        this.SeriesID = default(int);
+                    }
+                }
+            }
+        }
 
         public static IQueryOperations<Event> Operations
         {

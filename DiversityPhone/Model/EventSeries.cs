@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+    using System.Data.Linq;
     using System.Data.Linq.Mapping;
     using DiversityPhone.Services;
     using Svc = DiversityPhone.DiversityService;
@@ -22,6 +23,10 @@
             this.ModificationState = null;
             this.DiversityCollectionEventSeriesID = null;
             this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
+            _Events=new EntitySet<Event>(
+                new Action<Event>(Attach_Event),
+                new Action<Event>(Detach_Event));
+
         }
 
 
@@ -59,6 +64,18 @@
         [Column(CanBeNull = true)]
         public DateTime? SeriesEnd { get; set; }
 
+        private EntitySet<Event> _Events;
+        [Association(Name = "FK_Series_Event",
+                     Storage = "_Events",
+                     ThisKey = "SeriesID",
+                     OtherKey = "SeriesID",
+                     IsForeignKey = true,
+                     DeleteOnNull=true)]
+        public EntitySet<Event> Events
+        {
+            get { return _Events; }
+            set { _Events.Assign(value); } 
+        }
 
         /// <summary>
         /// Tracks modifications to this Object.
@@ -138,5 +155,16 @@
         {
             throw new NotImplementedException();
         }
+
+        private void Attach_Event(Event entity)
+        {
+            entity.EventSeries = this;
+        }
+
+        private void Detach_Event(Event entity)
+        {
+            entity.EventSeries = null;
+        }
+
     }
 }
