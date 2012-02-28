@@ -4,7 +4,9 @@ using Client = DiversityPhone.Model;
 using System;
 using System.Reactive.Linq;
 using DiversityPhone.DiversityService;
+using System.Collections.ObjectModel;
 using System.Linq;
+using GlobalUtility;
 
 namespace DiversityPhone.Services
 {
@@ -21,9 +23,14 @@ namespace DiversityPhone.Services
 
 
 
-        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<Client.EventSeries> seriesList)
+        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<EventSeries> seriesList)
         {
-            throw new NotImplementedException();
+            var res = Observable.FromEvent<EventHandler<InsertEventSeriesCompletedEventArgs>, InsertEventSeriesCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertEventSeriesCompleted += d, d => _svc.InsertEventSeriesCompleted -= d)
+                .Select(args => args.Result)
+                .Take(1);
+            ObservableCollection<EventSeries> seriesConv = ObservableConverter.ToObservableCollection<EventSeries>(seriesList);
+            _svc.InsertEventSeriesAsync(seriesConv);
+            return res;
         }
     }
 }

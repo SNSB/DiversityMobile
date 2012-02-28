@@ -16,7 +16,7 @@ namespace GlobalUtility
     public static class ObservableConverter
     {
 
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> coll)
+        public static ObservableCollection<T> ToObservableCollection<T>(IEnumerable<T> coll)
         {
             var c = new ObservableCollection<T>();
             foreach (var e in coll) c.Add(e);

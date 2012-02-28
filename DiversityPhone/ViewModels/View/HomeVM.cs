@@ -23,7 +23,7 @@
         private IOfflineStorage _storage;
         private IDiversityServiceClient _repository;
         private ISettingsService _settings;
-        //private DiversityService.DiversityServiceClient _plainUploadClient;
+        private DiversityService.DiversityServiceClient _plainUploadClient;
         private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
         #endregion
@@ -78,9 +78,9 @@
                 .ToProperty(this, x => x.SeriesList);
 
             //Initialize PlainUpload
-            //_plainUploadClient = new Svc.DiversityServiceClient();
-            //_plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
-            //_plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
+            _plainUploadClient = new Svc.DiversityServiceClient();
+            _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
+            _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
             registerUpload();
 
@@ -150,11 +150,14 @@
 
         private void uploadPlain()
         {
-
+            
             IList<EventSeries> series = _storage.getUploadServiceEventSeries();
             if (series != null && series.Count > 0)
             {
-                _repository.InsertEventSeries(series);
+               IList<Svc.EventSeries> convertSeries = new List<Svc.EventSeries>();
+               foreach (EventSeries es in series)
+                   convertSeries.Add(EventSeries.ConvertToServiceObject(es));
+               _plainUploadClient.InsertEventSeriesAsync(GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(convertSeries));
             }
             else
             {
@@ -164,16 +167,12 @@
 
         private void syncHierarchies()
         {
-            IList<EventSeries> seriesList = _storage.getAllEventSeries();
-            foreach (EventSeries es in seriesList)
+            IList<Event> eventList = _storage.getAllEvents();
+            foreach (Event ev in eventList)
             {
-                IList<Event> eventList = _storage.getEventsForSeries(es);
-                foreach (Event ev in eventList)
-                {
-                    Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
-                    _repository.InsertHierarchy(section);
-                }
-            }
+                Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
+                _repository.InsertHierarchy(section);
+            }  
         }
 
         private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)

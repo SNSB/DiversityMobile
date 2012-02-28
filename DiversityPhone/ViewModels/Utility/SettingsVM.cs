@@ -307,10 +307,7 @@ namespace DiversityPhone.ViewModels.Utility
             creds
                 .SelectMany(login => _DivSvc.GetUserInfo(login)) 
                 .StartWith(new UserProfile[]{null})
-                .Subscribe(_Profile);               
-
-          
-                
+                .Subscribe(_Profile);                
         }
 
         private AppSettings updateModel(AppSettings m)

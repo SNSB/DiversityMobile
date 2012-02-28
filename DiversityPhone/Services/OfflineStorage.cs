@@ -1051,8 +1051,6 @@
         /// </summary>
         public Svc.HierarchySection getNewHierarchyToSyncBelow(Event ev) 
         {
-
-
             Svc.HierarchySection result = new Svc.HierarchySection();
             result.Properties = new System.Collections.ObjectModel.ObservableCollection<Svc.CollectionEventProperty>();
             result.Specimen = new System.Collections.ObjectModel.ObservableCollection<Svc.Specimen>();
@@ -1060,7 +1058,6 @@
             result.IdentificationUnitAnalyses = new System.Collections.ObjectModel.ObservableCollection<Svc.IdentificationUnitAnalysis>();
             if (ev.IsModified())
                 result.Event = Event.ConvertToServiceObject(ev);
-
 
             withDataContext(ctx =>
             {
