@@ -220,8 +220,7 @@ namespace DiversityPhone.ViewModels
             this.ObservableForProperty(x => x.AvailableIdentifications)
                 .Select(change => change.Value)
                 .Where(x => x != null)
-                .Select(ids => ((Current != null) ? ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) : null))
-                .Where(x => x != null)
+                .Select(ids => ((Current != null && Current.Model.IdentificationUri != null) ? ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) : null))                
                 .BindTo(this, vm => vm.CurrentIdentification);
             
             

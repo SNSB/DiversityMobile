@@ -85,11 +85,12 @@ namespace DiversityPhone.ViewModels
                         var analyses = Storage.getPossibleAnalyses(parent.TaxonomicGroup);
                         var selectedAN = (from an in analyses
                                           where an.AnalysisID == iuan.AnalysisID
-                                          select an).FirstOrDefault() ?? analyses.First();
-                        var results = Storage.getPossibleAnalysisResults(selectedAN.AnalysisID);                        
-                        var selectedResult = (from res in results
-                                              where res.Result == iuan.AnalysisResult
-                                              select res).FirstOrDefault() ?? results.FirstOrDefault();
+                                          select an).FirstOrDefault() ?? analyses.FirstOrDefault();
+                        var results = (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null;
+                        var selectedResult = (results != null) ? (from res in results
+                                                                  where res.Result == iuan.AnalysisResult
+                                                                  select res).FirstOrDefault() ?? results.FirstOrDefault()
+                                                                  : null;
 
                         return new {
                             Parent = parent,

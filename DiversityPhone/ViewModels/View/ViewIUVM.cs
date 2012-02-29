@@ -60,7 +60,7 @@ namespace DiversityPhone.ViewModels
 
             _Parent = ValidModel
                 .Select(iu => Storage.getSpecimenByID(iu.SpecimenID))
-                .Select(spec => new SpecimenVM(Messenger, spec, Page.Current))
+                .Select(spec => new SpecimenVM(Messenger, spec, Page.Current, _ => false))
                 .ToProperty(this, x => x.Parent);
 
 
