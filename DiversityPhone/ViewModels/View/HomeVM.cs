@@ -31,7 +31,7 @@
         #region Commands
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }
-        public ReactiveCommand GetVocabulary { get; private set; }
+        public ReactiveCommand GetSampleTaxa { get; private set; }
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand UploadMMO { get; private set; }
         public ReactiveCommand UploadPlain { get; private set; }
@@ -93,8 +93,8 @@
                     .Subscribe(_ => addSeries()),
                 (UploadMMO = new ReactiveCommand())
                     .Subscribe(_ => uploadMMos()),
-                (GetVocabulary = new ReactiveCommand())
-                    .Subscribe(_ => getVoc()), 
+                (GetSampleTaxa = new ReactiveCommand())
+                    .Subscribe(_ => getTaxa()), 
                 (UploadPlain=new ReactiveCommand())
                     .Subscribe(_ =>uploadPlain()),
                 (Maps=new ReactiveCommand())
@@ -125,14 +125,9 @@
             }
         }
 
-        private void getVoc()
+        private void getTaxa()
         {
-            _repository
-                .GetStandardVocabulary()                
-                .Subscribe(vocabulary => _storage.addTerms(vocabulary));
-
-
-
+            
             var sampleTaxonList = new Svc.TaxonList()
             {
                 Table = "TaxRef_BfN_VPlants",
