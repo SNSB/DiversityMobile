@@ -18,7 +18,7 @@ namespace DiversityPhone.Services
             _settings = settings;
         }
 
-        private UserCredentials GetCreds()
+        public UserCredentials GetCreds()
         {
             var settings = _settings.getSettings();
             return new UserCredentials()

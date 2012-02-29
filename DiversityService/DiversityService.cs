@@ -219,7 +219,7 @@ namespace DiversityService
                     //Save Event
                     ctx.SaveChanges();
                     //update keys for Event
-                    result.eventKey = new KeyValuePair<int?, int?>(hierarchy.Event.EventID, newEventEntity.CollectionEventID);
+                    result.eventKey.Add(hierarchy.Event.EventID, newEventEntity.CollectionEventID);
 
                     hierarchy.Event.DiversityCollectionEventID = newEventEntity.CollectionEventID; 
                     foreach (CollectionEventProperty cep in hierarchy.Properties)

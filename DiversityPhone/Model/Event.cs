@@ -182,7 +182,7 @@
         {
             Svc.Event export = new Svc.Event();
             export.DiversityCollectionEventID = ev.DiversityCollectionEventID;
-            export.DiversityCollectionEventID = ev.DiversityCollectionSeriesID;
+            export.DiversityCollectionSeriesID = ev.DiversityCollectionSeriesID;
             export.Altitude = ev.Altitude;
             export.CollectionDate = ev.CollectionDate;
             export.EventID = ev.EventID;

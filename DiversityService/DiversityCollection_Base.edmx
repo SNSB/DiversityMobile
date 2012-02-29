@@ -24,10 +24,6 @@
           <EntitySet Name="CollSpecimenImageType_Enum" EntityType="DiversityCollection.Store.CollSpecimenImageType_Enum" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CollTaxonomicGroup_Enum" EntityType="DiversityCollection.Store.CollTaxonomicGroup_Enum" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="CollUnitRelationType_Enum" EntityType="DiversityCollection.Store.CollUnitRelationType_Enum" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Entity" EntityType="DiversityCollection.Store.Entity" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EntityContext_Enum" EntityType="DiversityCollection.Store.EntityContext_Enum" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EntityRepresentation" EntityType="DiversityCollection.Store.EntityRepresentation" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EntityUsage" EntityType="DiversityCollection.Store.EntityUsage" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Identification" EntityType="DiversityCollection.Store.Identification" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="IdentificationUnit" EntityType="DiversityCollection.Store.IdentificationUnit" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="IdentificationUnitAnalysis" EntityType="DiversityCollection.Store.IdentificationUnitAnalysis" store:Type="Tables" Schema="dbo" />
@@ -101,22 +97,6 @@
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
             <End Role="CollectionSpecimenImage" EntitySet="CollectionSpecimenImage" />
           </AssociationSet>
-          <AssociationSet Name="FK_CollEventImageType_Enum_CollEventImageType_Enum" Association="DiversityCollection.Store.FK_CollEventImageType_Enum_CollEventImageType_Enum">
-            <End Role="CollEventImageType_Enum" EntitySet="CollEventImageType_Enum" />
-            <End Role="CollEventImageType_Enum1" EntitySet="CollEventImageType_Enum" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollEventSeriesImageType_Enum_CollEventSeriesImageType_Enum" Association="DiversityCollection.Store.FK_CollEventSeriesImageType_Enum_CollEventSeriesImageType_Enum">
-            <End Role="CollEventSeriesImageType_Enum" EntitySet="CollEventSeriesImageType_Enum" />
-            <End Role="CollEventSeriesImageType_Enum1" EntitySet="CollEventSeriesImageType_Enum" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollSpecimenImageType_Enum_CollSpecimenImageType_Enum" Association="DiversityCollection.Store.FK_CollSpecimenImageType_Enum_CollSpecimenImageType_Enum">
-            <End Role="CollSpecimenImageType_Enum" EntitySet="CollSpecimenImageType_Enum" />
-            <End Role="CollSpecimenImageType_Enum1" EntitySet="CollSpecimenImageType_Enum" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollTaxonomicGroup_Enum_CollTaxonomicGroup_Enum" Association="DiversityCollection.Store.FK_CollTaxonomicGroup_Enum_CollTaxonomicGroup_Enum">
-            <End Role="CollTaxonomicGroup_Enum" EntitySet="CollTaxonomicGroup_Enum" />
-            <End Role="CollTaxonomicGroup_Enum1" EntitySet="CollTaxonomicGroup_Enum" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum" Association="DiversityCollection.Store.FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
             <End Role="CollUnitRelationType_Enum" EntitySet="CollUnitRelationType_Enum" />
             <End Role="CollUnitRelationType_Enum1" EntitySet="CollUnitRelationType_Enum" />
@@ -124,26 +104,6 @@
           <AssociationSet Name="FK_Descriptor_Descriptor" Association="DiversityCollection.Store.FK_Descriptor_Descriptor">
             <End Role="Property" EntitySet="Property" />
             <End Role="Property1" EntitySet="Property" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Entity_Entity" Association="DiversityCollection.Store.FK_Entity_Entity">
-            <End Role="Entity" EntitySet="Entity" />
-            <End Role="Entity1" EntitySet="Entity" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityRepresentation_Entity" Association="DiversityCollection.Store.FK_EntityRepresentation_Entity">
-            <End Role="Entity" EntitySet="Entity" />
-            <End Role="EntityRepresentation" EntitySet="EntityRepresentation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityRepresentation_EntityContext_Enum" Association="DiversityCollection.Store.FK_EntityRepresentation_EntityContext_Enum">
-            <End Role="EntityContext_Enum" EntitySet="EntityContext_Enum" />
-            <End Role="EntityRepresentation" EntitySet="EntityRepresentation" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityUsage_Entity" Association="DiversityCollection.Store.FK_EntityUsage_Entity">
-            <End Role="Entity" EntitySet="Entity" />
-            <End Role="EntityUsage" EntitySet="EntityUsage" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityUsage_EntityContext_Enum" Association="DiversityCollection.Store.FK_EntityUsage_EntityContext_Enum">
-            <End Role="EntityContext_Enum" EntitySet="EntityContext_Enum" />
-            <End Role="EntityUsage" EntitySet="EntityUsage" />
           </AssociationSet>
           <AssociationSet Name="FK_Identification_IdentificationUnit" Association="DiversityCollection.Store.FK_Identification_IdentificationUnit">
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
@@ -189,12 +149,12 @@
           <Property Name="MeasurementUnit" Type="nvarchar" MaxLength="50" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="AnalysisURI" Type="varchar" MaxLength="255" />
+          <Property Name="OnlyHierarchy" Type="bit" />
           <Property Name="LogCreatedWhen" Type="datetime" />
           <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="OnlyHierarchy" Type="bit" />
         </EntityType>
         <EntityType Name="AnalysisResult">
           <Key>
@@ -262,6 +222,7 @@
           <Property Name="HabitatDescription" Type="nvarchar(max)" />
           <Property Name="ReferenceTitle" Type="nvarchar" MaxLength="255" />
           <Property Name="ReferenceURI" Type="varchar" MaxLength="255" />
+          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
           <Property Name="CollectingMethod" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CountryCache" Type="nvarchar" MaxLength="50" />
@@ -273,7 +234,6 @@
           <Property Name="xx_IsAvailable" Type="bit" Nullable="false" />
           <Property Name="xx_ExpeditionID" Type="int" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CollectionEventImage">
           <Key>
@@ -284,6 +244,7 @@
           <Property Name="URI" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="ResourceURI" Type="varchar" MaxLength="255" />
           <Property Name="ImageType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="xml" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
           <Property Name="LogCreatedWhen" Type="datetime" />
@@ -291,10 +252,9 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Description" Type="xml" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_BaseTest.dbo.CollectionEventLocalisation' was excluded.
+      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_Test.dbo.CollectionEventLocalisation' was excluded.
       -->
         <EntityType Name="CollectionEventLocalisation">
           <Key>
@@ -312,6 +272,7 @@
           <Property Name="DirectionToLocation" Type="varchar" MaxLength="50" />
           <Property Name="ResponsibleName" Type="nvarchar" MaxLength="255" />
           <Property Name="ResponsibleAgentURI" Type="varchar" MaxLength="255" />
+          <Property Name="RecordingMethod" Type="nvarchar" MaxLength="500" />
           <Property Name="AverageAltitudeCache" Type="float" />
           <Property Name="AverageLatitudeCache" Type="float" />
           <Property Name="AverageLongitudeCache" Type="float" />
@@ -320,7 +281,6 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="RecordingMethod" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="CollectionEventProperty">
           <Key>
@@ -344,7 +304,7 @@
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_BaseTest.dbo.CollectionEventSeries' was excluded.
+      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_Test.dbo.CollectionEventSeries' was excluded.
       -->
         <EntityType Name="CollectionEventSeries">
           <Key>
@@ -355,14 +315,13 @@
           <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SeriesCode" Type="nvarchar" MaxLength="50" />
           <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="DateCache" Type="datetime" />
+          <Property Name="DateStart" Type="datetime" />
+          <Property Name="DateEnd" Type="datetime" />
           <Property Name="LogCreatedWhen" Type="datetime" />
           <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="DateStart" Type="datetime" />
-          <Property Name="DateEnd" Type="datetime" />
         </EntityType>
         <EntityType Name="CollectionEventSeriesImage">
           <Key>
@@ -373,6 +332,7 @@
           <Property Name="URI" Type="varchar" Nullable="false" MaxLength="255" />
           <Property Name="ResourceURI" Type="varchar" MaxLength="255" />
           <Property Name="ImageType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="xml" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
           <Property Name="LogCreatedWhen" Type="datetime" />
@@ -380,7 +340,6 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Description" Type="xml" />
         </EntityType>
         <EntityType Name="CollectionProject">
           <Key>
@@ -423,18 +382,18 @@
           <Property Name="AdditionalNotes" Type="nvarchar(max)" />
           <Property Name="ReferenceTitle" Type="nvarchar" MaxLength="255" />
           <Property Name="ReferenceURI" Type="varchar" MaxLength="255" />
+          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
           <Property Name="Problems" Type="nvarchar" MaxLength="255" />
           <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
+          <Property Name="InternalNotes" Type="nvarchar(max)" />
+          <Property Name="ExternalDatasourceID" Type="int" />
+          <Property Name="ExternalIdentifier" Type="nvarchar" MaxLength="100" />
           <Property Name="LogCreatedWhen" Type="datetime" />
           <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="xx_IsAvailable" Type="bit" Nullable="false" />
-          <Property Name="InternalNotes" Type="nvarchar(max)" />
-          <Property Name="ExternalDatasourceID" Type="int" />
-          <Property Name="ExternalIdentifier" Type="nvarchar" MaxLength="100" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="ReferenceDetails" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CollectionSpecimenImage">
           <Key>
@@ -447,6 +406,7 @@
           <Property Name="SpecimenPartID" Type="int" />
           <Property Name="IdentificationUnitID" Type="int" />
           <Property Name="ImageType" Type="nvarchar" MaxLength="50" />
+          <Property Name="Description" Type="xml" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="DataWithholdingReason" Type="nvarchar" MaxLength="255" />
           <Property Name="LogCreatedWhen" Type="datetime" />
@@ -454,7 +414,6 @@
           <Property Name="LogUpdatedWhen" Type="datetime" />
           <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Description" Type="xml" />
         </EntityType>
         <EntityType Name="CollEventImageType_Enum">
           <Key>
@@ -520,71 +479,6 @@
           <Property Name="InternalNotes" Type="nvarchar" MaxLength="500" />
           <Property Name="ParentCode" Type="nvarchar" MaxLength="50" />
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="Entity">
-          <Key>
-            <PropertyRef Name="Entity" />
-          </Key>
-          <Property Name="Entity" Type="varchar" Nullable="false" MaxLength="500" />
-          <Property Name="DisplayGroup" Type="varchar" MaxLength="500" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="Obsolete" Type="bit" />
-          <Property Name="LogCreatedWhen" Type="datetime" />
-          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="LogUpdatedWhen" Type="datetime" />
-          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EntityContext_Enum">
-          <Key>
-            <PropertyRef Name="Code" />
-          </Key>
-          <Property Name="Code" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="Description" Type="nvarchar" MaxLength="500" />
-          <Property Name="DisplayText" Type="nvarchar" MaxLength="50" />
-          <Property Name="DisplayOrder" Type="smallint" />
-          <Property Name="DisplayEnable" Type="bit" />
-          <Property Name="InternalNotes" Type="nvarchar" MaxLength="500" />
-          <Property Name="ParentCode" Type="nvarchar" MaxLength="50" />
-          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EntityRepresentation">
-          <Key>
-            <PropertyRef Name="Entity" />
-            <PropertyRef Name="LanguageCode" />
-            <PropertyRef Name="EntityContext" />
-          </Key>
-          <Property Name="Entity" Type="varchar" Nullable="false" MaxLength="500" />
-          <Property Name="LanguageCode" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="EntityContext" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="DisplayText" Type="nvarchar" MaxLength="50" />
-          <Property Name="Abbreviation" Type="nvarchar" MaxLength="20" />
-          <Property Name="Description" Type="nvarchar(max)" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="LogCreatedWhen" Type="datetime" />
-          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="LogUpdatedWhen" Type="datetime" />
-          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-        </EntityType>
-        <EntityType Name="EntityUsage">
-          <Key>
-            <PropertyRef Name="Entity" />
-            <PropertyRef Name="EntityContext" />
-          </Key>
-          <Property Name="Entity" Type="varchar" Nullable="false" MaxLength="500" />
-          <Property Name="EntityContext" Type="nvarchar" Nullable="false" MaxLength="50" />
-          <Property Name="EntityUsage" Type="nvarchar" MaxLength="50" />
-          <Property Name="PresetValue" Type="nvarchar" MaxLength="500" />
-          <Property Name="Notes" Type="nvarchar(max)" />
-          <Property Name="LogCreatedWhen" Type="datetime" />
-          <Property Name="LogCreatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="LogUpdatedWhen" Type="datetime" />
-          <Property Name="LogUpdatedBy" Type="nvarchar" MaxLength="50" />
-          <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Accessibility" Type="nvarchar" MaxLength="50" />
-          <Property Name="Determination" Type="nvarchar" MaxLength="50" />
-          <Property Name="Visibility" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Identification">
           <Key>
@@ -681,8 +575,8 @@
           <Property Name="RowGUID" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <!--Errors Found During Generation:
-      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_BaseTest.dbo.IdentificationUnitGeoAnalysis' was excluded.
-      warning 6005: The data type 'geometry' is not supported; the column 'Geometry' in table 'DiversityCollection_BaseTest.dbo.IdentificationUnitGeoAnalysis' was excluded.
+      warning 6005: The data type 'geography' is not supported; the column 'Geography' in table 'DiversityCollection_Test.dbo.IdentificationUnitGeoAnalysis' was excluded.
+      warning 6005: The data type 'geometry' is not supported; the column 'Geometry' in table 'DiversityCollection_Test.dbo.IdentificationUnitGeoAnalysis' was excluded.
       -->
         <EntityType Name="IdentificationUnitGeoAnalysis">
           <Key>
@@ -934,54 +828,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollEventImageType_Enum_CollEventImageType_Enum">
-          <End Role="CollEventImageType_Enum" Type="DiversityCollection.Store.CollEventImageType_Enum" Multiplicity="0..1" />
-          <End Role="CollEventImageType_Enum1" Type="DiversityCollection.Store.CollEventImageType_Enum" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollEventImageType_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="CollEventImageType_Enum1">
-              <PropertyRef Name="ParentCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollEventSeriesImageType_Enum_CollEventSeriesImageType_Enum">
-          <End Role="CollEventSeriesImageType_Enum" Type="DiversityCollection.Store.CollEventSeriesImageType_Enum" Multiplicity="0..1" />
-          <End Role="CollEventSeriesImageType_Enum1" Type="DiversityCollection.Store.CollEventSeriesImageType_Enum" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollEventSeriesImageType_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="CollEventSeriesImageType_Enum1">
-              <PropertyRef Name="ParentCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollSpecimenImageType_Enum_CollSpecimenImageType_Enum">
-          <End Role="CollSpecimenImageType_Enum" Type="DiversityCollection.Store.CollSpecimenImageType_Enum" Multiplicity="0..1" />
-          <End Role="CollSpecimenImageType_Enum1" Type="DiversityCollection.Store.CollSpecimenImageType_Enum" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollSpecimenImageType_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="CollSpecimenImageType_Enum1">
-              <PropertyRef Name="ParentCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollTaxonomicGroup_Enum_CollTaxonomicGroup_Enum">
-          <End Role="CollTaxonomicGroup_Enum" Type="DiversityCollection.Store.CollTaxonomicGroup_Enum" Multiplicity="0..1" />
-          <End Role="CollTaxonomicGroup_Enum1" Type="DiversityCollection.Store.CollTaxonomicGroup_Enum" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollTaxonomicGroup_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="CollTaxonomicGroup_Enum1">
-              <PropertyRef Name="ParentCode" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollUnitRelationType_Enum_CollUnitRelationType_Enum">
           <End Role="CollUnitRelationType_Enum" Type="DiversityCollection.Store.CollUnitRelationType_Enum" Multiplicity="0..1" />
           <End Role="CollUnitRelationType_Enum1" Type="DiversityCollection.Store.CollUnitRelationType_Enum" Multiplicity="*" />
@@ -1003,70 +849,6 @@
             </Principal>
             <Dependent Role="Property1">
               <PropertyRef Name="PropertyParentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Entity_Entity">
-          <End Role="Entity" Type="DiversityCollection.Store.Entity" Multiplicity="0..1" />
-          <End Role="Entity1" Type="DiversityCollection.Store.Entity" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity" />
-            </Principal>
-            <Dependent Role="Entity1">
-              <PropertyRef Name="DisplayGroup" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityRepresentation_Entity">
-          <End Role="Entity" Type="DiversityCollection.Store.Entity" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="EntityRepresentation" Type="DiversityCollection.Store.EntityRepresentation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity" />
-            </Principal>
-            <Dependent Role="EntityRepresentation">
-              <PropertyRef Name="Entity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityRepresentation_EntityContext_Enum">
-          <End Role="EntityContext_Enum" Type="DiversityCollection.Store.EntityContext_Enum" Multiplicity="1" />
-          <End Role="EntityRepresentation" Type="DiversityCollection.Store.EntityRepresentation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EntityContext_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="EntityRepresentation">
-              <PropertyRef Name="EntityContext" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityUsage_Entity">
-          <End Role="Entity" Type="DiversityCollection.Store.Entity" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="EntityUsage" Type="DiversityCollection.Store.EntityUsage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity" />
-            </Principal>
-            <Dependent Role="EntityUsage">
-              <PropertyRef Name="Entity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityUsage_EntityContext_Enum">
-          <End Role="EntityContext_Enum" Type="DiversityCollection.Store.EntityContext_Enum" Multiplicity="1" />
-          <End Role="EntityUsage" Type="DiversityCollection.Store.EntityUsage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EntityContext_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="EntityUsage">
-              <PropertyRef Name="EntityContext" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1186,14 +968,9 @@
           <EntitySet Name="AnalysisTaxonomicGroup" EntityType="DiversityCollection.AnalysisTaxonomicGroup" />
           <EntitySet Name="CollectionEvent" EntityType="DiversityCollection.CollectionEvent" />
           <EntitySet Name="CollectionEventLocalisation" EntityType="DiversityCollection.CollectionEventLocalisation" />
-          <EntitySet Name="CollectionEventSeries" EntityType="DiversityCollection.CollectionEventSeries" />
           <EntitySet Name="CollectionSpecimen" EntityType="DiversityCollection.CollectionSpecimen" />
           <EntitySet Name="IdentificationUnit" EntityType="DiversityCollection.IdentificationUnit" />
           <EntitySet Name="IdentificationUnitAnalysis" EntityType="DiversityCollection.IdentificationUnitAnalysis" />
-          <AssociationSet Name="FK_CollectionEvent_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries">
-            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
-            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionLocalisation_CollectionEvent" Association="DiversityCollection.FK_CollectionLocalisation_CollectionEvent">
             <End Role="CollectionEvent" EntitySet="CollectionEvent" />
             <End Role="CollectionEventLocalisation" EntitySet="CollectionEventLocalisation" />
@@ -1201,10 +978,6 @@
           <AssociationSet Name="FK_CollectionSpecimen_CollectionEvent" Association="DiversityCollection.FK_CollectionSpecimen_CollectionEvent">
             <End Role="CollectionEvent" EntitySet="CollectionEvent" />
             <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CollectionEventSeries_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries">
-            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
-            <End Role="CollectionEventSeries1" EntitySet="CollectionEventSeries" />
           </AssociationSet>
           <AssociationSet Name="FK_IdentificationUnit_CollectionSpecimen" Association="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen">
             <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
@@ -1273,10 +1046,6 @@
             <End Role="Property" EntitySet="Properties" />
             <End Role="CollectionEventProperty" EntitySet="CollectionEventProperties" />
           </AssociationSet>
-          <AssociationSet Name="FK_CollectionEventSeriesImage_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries">
-            <End Role="CollectionEventSeries" EntitySet="CollectionEventSeries" />
-            <End Role="CollectionEventSeriesImage" EntitySet="CollectionEventSeriesImages" />
-          </AssociationSet>
           <AssociationSet Name="FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum" Association="DiversityCollection.FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum">
             <End Role="CollEventSeriesImageType_Enum" EntitySet="CollEventSeriesImageType_Enum" />
             <End Role="CollectionEventSeriesImage" EntitySet="CollectionEventSeriesImages" />
@@ -1303,10 +1072,6 @@
           </AssociationSet>
           <EntitySet Name="CollectionAgents" EntityType="DiversityCollection.CollectionAgent" />
           <EntitySet Name="CollectionProjects" EntityType="DiversityCollection.CollectionProject" />
-          <EntitySet Name="Entities" EntityType="DiversityCollection.Entity" />
-          <EntitySet Name="EntityContext_Enum" EntityType="DiversityCollection.EntityContext_Enum" />
-          <EntitySet Name="EntityRepresentations" EntityType="DiversityCollection.EntityRepresentation" />
-          <EntitySet Name="EntityUsages" EntityType="DiversityCollection.EntityUsage" />
           <EntitySet Name="Identifications" EntityType="DiversityCollection.Identification" />
           <EntitySet Name="IdentificationUnitGeoAnalysis" EntityType="DiversityCollection.IdentificationUnitGeoAnalysi" />
           <AssociationSet Name="FK_CollectionAgent_CollectionSpecimen" Association="DiversityCollection.FK_CollectionAgent_CollectionSpecimen">
@@ -1316,26 +1081,6 @@
           <AssociationSet Name="FK_CollectionProject_CollectionSpecimen" Association="DiversityCollection.FK_CollectionProject_CollectionSpecimen">
             <End Role="CollectionSpecimen" EntitySet="CollectionSpecimen" />
             <End Role="CollectionProject" EntitySet="CollectionProjects" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Entity_Entity" Association="DiversityCollection.FK_Entity_Entity">
-            <End Role="Entity" EntitySet="Entities" />
-            <End Role="Entity1" EntitySet="Entities" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityRepresentation_Entity" Association="DiversityCollection.FK_EntityRepresentation_Entity">
-            <End Role="Entity" EntitySet="Entities" />
-            <End Role="EntityRepresentation" EntitySet="EntityRepresentations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityUsage_Entity" Association="DiversityCollection.FK_EntityUsage_Entity">
-            <End Role="Entity" EntitySet="Entities" />
-            <End Role="EntityUsage" EntitySet="EntityUsages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityRepresentation_EntityContext_Enum" Association="DiversityCollection.FK_EntityRepresentation_EntityContext_Enum">
-            <End Role="EntityContext_Enum" EntitySet="EntityContext_Enum" />
-            <End Role="EntityRepresentation" EntitySet="EntityRepresentations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_EntityUsage_EntityContext_Enum" Association="DiversityCollection.FK_EntityUsage_EntityContext_Enum">
-            <End Role="EntityContext_Enum" EntitySet="EntityContext_Enum" />
-            <End Role="EntityUsage" EntitySet="EntityUsages" />
           </AssociationSet>
           <AssociationSet Name="FK_Identification_IdentificationUnit" Association="DiversityCollection.FK_Identification_IdentificationUnit">
             <End Role="IdentificationUnit" EntitySet="IdentificationUnit" />
@@ -1353,6 +1098,19 @@
           <AssociationSet Name="FK_CollSpecimenImageType_Enum_CollSpecimenImageType_Enum" Association="DiversityCollection.FK_CollSpecimenImageType_Enum_CollSpecimenImageType_Enum">
             <End Role="CollSpecimenImageType_Enum" EntitySet="CollSpecimenImageType_Enum" />
             <End Role="CollSpecimenImageType_Enum1" EntitySet="CollSpecimenImageType_Enum" />
+          </AssociationSet>
+          <EntitySet Name="CollectionEventSeries" EntityType="DiversityCollection.CollectionEventSery" />
+          <AssociationSet Name="FK_CollectionEvent_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries">
+            <End Role="CollectionEventSery" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEvent" EntitySet="CollectionEvent" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEventSeries_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries">
+            <End Role="CollectionEventSery" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEventSery1" EntitySet="CollectionEventSeries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CollectionEventSeriesImage_CollectionEventSeries" Association="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries">
+            <End Role="CollectionEventSery" EntitySet="CollectionEventSeries" />
+            <End Role="CollectionEventSeriesImage" EntitySet="CollectionEventSeriesImages" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AnalysisTaxonomicGroup">
@@ -1399,11 +1157,11 @@
           <Property Name="xx_ExpeditionID" Type="Int32" />
           <Property Name="RowGUID" Type="Guid" Nullable="false" />
           <Property Name="ReferenceDetails" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <NavigationProperty Name="CollectionEventSeries" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEvent" ToRole="CollectionEventSeries" />
           <NavigationProperty Name="CollectionEventLocalisation" Relationship="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionEventLocalisation" />
           <NavigationProperty Name="CollectionSpecimen" Relationship="DiversityCollection.FK_CollectionSpecimen_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionSpecimen" />
           <NavigationProperty Name="CollectionEventImages" Relationship="DiversityCollection.FK_CollectionEventImage_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionEventImage" />
           <NavigationProperty Name="CollectionEventProperties" Relationship="DiversityCollection.FK_CollectionEventProperty_CollectionEvent" FromRole="CollectionEvent" ToRole="CollectionEventProperty" />
+          <NavigationProperty Name="CollectionEventSery" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEvent" ToRole="CollectionEventSery" />
         </EntityType>
         <EntityType Name="CollectionEventLocalisation">
           <Key>
@@ -1431,28 +1189,6 @@
           <Property Name="RowGUID" Type="Guid" Nullable="false" />
           <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" FromRole="CollectionEventLocalisation" ToRole="CollectionEvent" />
           <Property Type="String" Name="RecordingMethod" MaxLength="500" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="CollectionEventSeries">
-          <Key>
-            <PropertyRef Name="SeriesID" />
-          </Key>
-          <Property Name="SeriesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SeriesParentID" Type="Int32" />
-          <Property Name="Description" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="SeriesCode" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="Notes" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Name="DateCache" Type="DateTime" />
-          <Property Name="LogCreatedWhen" Type="DateTime" />
-          <Property Name="LogCreatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="LogUpdatedWhen" Type="DateTime" />
-          <Property Name="LogUpdatedBy" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
-          <Property Name="RowGUID" Type="Guid" Nullable="false" />
-          <Property Name="DateStart" Type="DateTime" />
-          <Property Name="DateEnd" Type="DateTime" />
-          <NavigationProperty Name="CollectionEvent" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEventSeries" ToRole="CollectionEvent" />
-          <NavigationProperty Name="CollectionEventSeries1" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSeries" ToRole="CollectionEventSeries1" />
-          <NavigationProperty Name="CollectionEventSeries2" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSeries1" ToRole="CollectionEventSeries" />
-          <NavigationProperty Name="CollectionEventSeriesImages" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" FromRole="CollectionEventSeries" ToRole="CollectionEventSeriesImage" />
         </EntityType>
         <EntityType Name="CollectionSpecimen">
           <Key>
@@ -1569,18 +1305,6 @@
           <NavigationProperty Name="IdentificationUnit" Relationship="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationUnit" FromRole="IdentificationUnitAnalysis" ToRole="IdentificationUnit" />
           <NavigationProperty Name="Analysis" Relationship="DiversityCollection.FK_IdentificationUnitAnalysis_IdentificationAnalysis" FromRole="IdentificationUnitAnalysis" ToRole="Analysis" />
         </EntityType>
-        <Association Name="FK_CollectionEvent_CollectionEventSeries">
-          <End Role="CollectionEventSeries" Type="DiversityCollection.CollectionEventSeries" Multiplicity="0..1" />
-          <End Role="CollectionEvent" Type="DiversityCollection.CollectionEvent" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionEventSeries">
-              <PropertyRef Name="SeriesID" />
-            </Principal>
-            <Dependent Role="CollectionEvent">
-              <PropertyRef Name="SeriesID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionLocalisation_CollectionEvent">
           <End Role="CollectionEvent" Type="DiversityCollection.CollectionEvent" Multiplicity="1" />
           <End Role="CollectionEventLocalisation" Type="DiversityCollection.CollectionEventLocalisation" Multiplicity="*" />
@@ -1602,18 +1326,6 @@
             </Principal>
             <Dependent Role="CollectionSpecimen">
               <PropertyRef Name="CollectionEventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CollectionEventSeries_CollectionEventSeries">
-          <End Role="CollectionEventSeries" Type="DiversityCollection.CollectionEventSeries" Multiplicity="0..1" />
-          <End Role="CollectionEventSeries1" Type="DiversityCollection.CollectionEventSeries" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionEventSeries">
-              <PropertyRef Name="SeriesID" />
-            </Principal>
-            <Dependent Role="CollectionEventSeries1">
-              <PropertyRef Name="SeriesParentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1826,9 +1538,9 @@
           <Property Type="DateTime" Name="LogUpdatedWhen" />
           <Property Type="String" Name="LogUpdatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="Guid" Name="RowGUID" Nullable="false" />
-          <NavigationProperty Name="CollectionEventSery" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" FromRole="CollectionEventSeriesImage" ToRole="CollectionEventSeries" />
           <NavigationProperty Name="CollEventSeriesImageType_Enum" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum" FromRole="CollectionEventSeriesImage" ToRole="CollEventSeriesImageType_Enum" />
           <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CollectionEventSery" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" FromRole="CollectionEventSeriesImage" ToRole="CollectionEventSery" />
         </EntityType>
         <EntityType Name="CollectionSpecimenImage">
           <Key>
@@ -2000,18 +1712,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CollectionEventSeriesImage_CollectionEventSeries">
-          <End Type="DiversityCollection.CollectionEventSeries" Role="CollectionEventSeries" Multiplicity="1" />
-          <End Type="DiversityCollection.CollectionEventSeriesImage" Role="CollectionEventSeriesImage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CollectionEventSeries">
-              <PropertyRef Name="SeriesID" />
-            </Principal>
-            <Dependent Role="CollectionEventSeriesImage">
-              <PropertyRef Name="SeriesID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum">
           <End Type="DiversityCollection.CollEventSeriesImageType_Enum" Role="CollEventSeriesImageType_Enum" Multiplicity="0..1" />
           <End Type="DiversityCollection.CollectionEventSeriesImage" Role="CollectionEventSeriesImage" Multiplicity="*" />
@@ -2120,81 +1820,6 @@
           <Property Type="Guid" Name="RowGUID" Nullable="false" />
           <NavigationProperty Name="CollectionSpeciman" Relationship="DiversityCollection.FK_CollectionProject_CollectionSpecimen" FromRole="CollectionProject" ToRole="CollectionSpecimen" />
         </EntityType>
-        <EntityType Name="Entity">
-          <Key>
-            <PropertyRef Name="Entity1" />
-          </Key>
-          <Property Type="String" Name="Entity1" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="DisplayGroup" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="Boolean" Name="Obsolete" />
-          <Property Type="DateTime" Name="LogCreatedWhen" />
-          <Property Type="String" Name="LogCreatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LogUpdatedWhen" />
-          <Property Type="String" Name="LogUpdatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="RowGUID" Nullable="false" />
-          <NavigationProperty Name="Entity11" Relationship="DiversityCollection.FK_Entity_Entity" FromRole="Entity" ToRole="Entity1" />
-          <NavigationProperty Name="Entity2" Relationship="DiversityCollection.FK_Entity_Entity" FromRole="Entity1" ToRole="Entity" />
-          <NavigationProperty Name="EntityRepresentations" Relationship="DiversityCollection.FK_EntityRepresentation_Entity" FromRole="Entity" ToRole="EntityRepresentation" />
-          <NavigationProperty Name="EntityUsages" Relationship="DiversityCollection.FK_EntityUsage_Entity" FromRole="Entity" ToRole="EntityUsage" />
-        </EntityType>
-        <EntityType Name="EntityContext_Enum">
-          <Key>
-            <PropertyRef Name="Code" />
-          </Key>
-          <Property Type="String" Name="Code" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Description" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="DisplayText" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Int16" Name="DisplayOrder" />
-          <Property Type="Boolean" Name="DisplayEnable" />
-          <Property Type="String" Name="InternalNotes" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="ParentCode" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="RowGUID" Nullable="false" />
-          <NavigationProperty Name="EntityRepresentations" Relationship="DiversityCollection.FK_EntityRepresentation_EntityContext_Enum" FromRole="EntityContext_Enum" ToRole="EntityRepresentation" />
-          <NavigationProperty Name="EntityUsages" Relationship="DiversityCollection.FK_EntityUsage_EntityContext_Enum" FromRole="EntityContext_Enum" ToRole="EntityUsage" />
-        </EntityType>
-        <EntityType Name="EntityRepresentation">
-          <Key>
-            <PropertyRef Name="Entity" />
-            <PropertyRef Name="LanguageCode" />
-            <PropertyRef Name="EntityContext" />
-          </Key>
-          <Property Type="String" Name="Entity" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="LanguageCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="EntityContext" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="DisplayText" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Abbreviation" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LogCreatedWhen" />
-          <Property Type="String" Name="LogCreatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LogUpdatedWhen" />
-          <Property Type="String" Name="LogUpdatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="RowGUID" Nullable="false" />
-          <NavigationProperty Name="Entity1" Relationship="DiversityCollection.FK_EntityRepresentation_Entity" FromRole="EntityRepresentation" ToRole="Entity" />
-          <NavigationProperty Name="EntityContext_Enum" Relationship="DiversityCollection.FK_EntityRepresentation_EntityContext_Enum" FromRole="EntityRepresentation" ToRole="EntityContext_Enum" />
-        </EntityType>
-        <EntityType Name="EntityUsage">
-          <Key>
-            <PropertyRef Name="Entity" />
-            <PropertyRef Name="EntityContext" />
-          </Key>
-          <Property Type="String" Name="Entity" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Type="String" Name="EntityContext" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="EntityUsage1" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="PresetValue" MaxLength="500" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LogCreatedWhen" />
-          <Property Type="String" Name="LogCreatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="LogUpdatedWhen" />
-          <Property Type="String" Name="LogUpdatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="Guid" Name="RowGUID" Nullable="false" />
-          <Property Type="String" Name="Accessibility" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Determination" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Type="String" Name="Visibility" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Entity1" Relationship="DiversityCollection.FK_EntityUsage_Entity" FromRole="EntityUsage" ToRole="Entity" />
-          <NavigationProperty Name="EntityContext_Enum" Relationship="DiversityCollection.FK_EntityUsage_EntityContext_Enum" FromRole="EntityUsage" ToRole="EntityContext_Enum" />
-        </EntityType>
         <EntityType Name="Identification">
           <Key>
             <PropertyRef Name="CollectionSpecimenID" />
@@ -2273,66 +1898,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Entity_Entity">
-          <End Type="DiversityCollection.Entity" Role="Entity" Multiplicity="0..1" />
-          <End Type="DiversityCollection.Entity" Role="Entity1" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity1" />
-            </Principal>
-            <Dependent Role="Entity1">
-              <PropertyRef Name="DisplayGroup" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityRepresentation_Entity">
-          <End Type="DiversityCollection.Entity" Role="Entity" Multiplicity="1" />
-          <End Type="DiversityCollection.EntityRepresentation" Role="EntityRepresentation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity1" />
-            </Principal>
-            <Dependent Role="EntityRepresentation">
-              <PropertyRef Name="Entity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityUsage_Entity">
-          <End Type="DiversityCollection.Entity" Role="Entity" Multiplicity="1" />
-          <End Type="DiversityCollection.EntityUsage" Role="EntityUsage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Entity">
-              <PropertyRef Name="Entity1" />
-            </Principal>
-            <Dependent Role="EntityUsage">
-              <PropertyRef Name="Entity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityRepresentation_EntityContext_Enum">
-          <End Type="DiversityCollection.EntityContext_Enum" Role="EntityContext_Enum" Multiplicity="1" />
-          <End Type="DiversityCollection.EntityRepresentation" Role="EntityRepresentation" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EntityContext_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="EntityRepresentation">
-              <PropertyRef Name="EntityContext" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_EntityUsage_EntityContext_Enum">
-          <End Type="DiversityCollection.EntityContext_Enum" Role="EntityContext_Enum" Multiplicity="1" />
-          <End Type="DiversityCollection.EntityUsage" Role="EntityUsage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="EntityContext_Enum">
-              <PropertyRef Name="Code" />
-            </Principal>
-            <Dependent Role="EntityUsage">
-              <PropertyRef Name="EntityContext" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Identification_IdentificationUnit">
           <End Type="DiversityCollection.IdentificationUnit" Role="IdentificationUnit" Multiplicity="1" />
           <End Type="DiversityCollection.Identification" Role="Identification" Multiplicity="*" />
@@ -2401,6 +1966,63 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="CollectionEventSery">
+          <Key>
+            <PropertyRef Name="SeriesID" />
+          </Key>
+          <Property Type="Int32" Name="SeriesID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="SeriesParentID" />
+          <Property Type="String" Name="Description" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="SeriesCode" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="DateStart" />
+          <Property Type="DateTime" Name="DateEnd" />
+          <Property Type="DateTime" Name="LogCreatedWhen" />
+          <Property Type="String" Name="LogCreatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="LogUpdatedWhen" />
+          <Property Type="String" Name="LogUpdatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Guid" Name="RowGUID" Nullable="false" />
+          <NavigationProperty Name="CollectionEvents" Relationship="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" FromRole="CollectionEventSery" ToRole="CollectionEvent" />
+          <NavigationProperty Name="CollectionEventSeries1" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSery" ToRole="CollectionEventSery1" />
+          <NavigationProperty Name="CollectionEventSery1" Relationship="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" FromRole="CollectionEventSery1" ToRole="CollectionEventSery" />
+          <NavigationProperty Name="CollectionEventSeriesImages" Relationship="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" FromRole="CollectionEventSery" ToRole="CollectionEventSeriesImage" />
+        </EntityType>
+        <Association Name="FK_CollectionEvent_CollectionEventSeries">
+          <End Type="DiversityCollection.CollectionEventSery" Role="CollectionEventSery" Multiplicity="0..1" />
+          <End Type="DiversityCollection.CollectionEvent" Role="CollectionEvent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSery">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEvent">
+              <PropertyRef Name="SeriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEventSeries_CollectionEventSeries">
+          <End Type="DiversityCollection.CollectionEventSery" Role="CollectionEventSery" Multiplicity="0..1" />
+          <End Type="DiversityCollection.CollectionEventSery" Role="CollectionEventSery1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSery">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEventSery1">
+              <PropertyRef Name="SeriesParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CollectionEventSeriesImage_CollectionEventSeries">
+          <End Type="DiversityCollection.CollectionEventSery" Role="CollectionEventSery" Multiplicity="1" />
+          <End Type="DiversityCollection.CollectionEventSeriesImage" Role="CollectionEventSeriesImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CollectionEventSery">
+              <PropertyRef Name="SeriesID" />
+            </Principal>
+            <Dependent Role="CollectionEventSeriesImage">
+              <PropertyRef Name="SeriesID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2465,21 +2087,6 @@
             <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
             <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
             <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-          <EntitySetMapping Name="CollectionEventSeries"><EntityTypeMapping TypeName="DiversityCollection.CollectionEventSeries"><MappingFragment StoreEntitySet="CollectionEventSeries">
-            <ScalarProperty Name="SeriesID" ColumnName="SeriesID" />
-            <ScalarProperty Name="SeriesParentID" ColumnName="SeriesParentID" />
-            <ScalarProperty Name="Description" ColumnName="Description" />
-            <ScalarProperty Name="SeriesCode" ColumnName="SeriesCode" />
-            <ScalarProperty Name="Notes" ColumnName="Notes" />
-            <ScalarProperty Name="DateCache" ColumnName="DateCache" />
-            <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
-            <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
-            <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
-            <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
-            <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-            <ScalarProperty Name="DateStart" ColumnName="DateStart" />
-            <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
           </MappingFragment></EntityTypeMapping></EntitySetMapping>
           <EntitySetMapping Name="CollectionSpecimen"><EntityTypeMapping TypeName="DiversityCollection.CollectionSpecimen"><MappingFragment StoreEntitySet="CollectionSpecimen">
             <ScalarProperty Name="CollectionSpecimenID" ColumnName="CollectionSpecimenID" />
@@ -2786,72 +2393,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Entities">
-            <EntityTypeMapping TypeName="DiversityCollection.Entity">
-              <MappingFragment StoreEntitySet="Entity">
-                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-                <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
-                <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
-                <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
-                <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
-                <ScalarProperty Name="Obsolete" ColumnName="Obsolete" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="DisplayGroup" ColumnName="DisplayGroup" />
-                <ScalarProperty Name="Entity1" ColumnName="Entity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EntityContext_Enum">
-            <EntityTypeMapping TypeName="DiversityCollection.EntityContext_Enum">
-              <MappingFragment StoreEntitySet="EntityContext_Enum">
-                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-                <ScalarProperty Name="ParentCode" ColumnName="ParentCode" />
-                <ScalarProperty Name="InternalNotes" ColumnName="InternalNotes" />
-                <ScalarProperty Name="DisplayEnable" ColumnName="DisplayEnable" />
-                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
-                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EntityRepresentations">
-            <EntityTypeMapping TypeName="DiversityCollection.EntityRepresentation">
-              <MappingFragment StoreEntitySet="EntityRepresentation">
-                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-                <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
-                <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
-                <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
-                <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
-                <ScalarProperty Name="DisplayText" ColumnName="DisplayText" />
-                <ScalarProperty Name="EntityContext" ColumnName="EntityContext" />
-                <ScalarProperty Name="LanguageCode" ColumnName="LanguageCode" />
-                <ScalarProperty Name="Entity" ColumnName="Entity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="EntityUsages">
-            <EntityTypeMapping TypeName="DiversityCollection.EntityUsage">
-              <MappingFragment StoreEntitySet="EntityUsage">
-                <ScalarProperty Name="Visibility" ColumnName="Visibility" />
-                <ScalarProperty Name="Determination" ColumnName="Determination" />
-                <ScalarProperty Name="Accessibility" ColumnName="Accessibility" />
-                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
-                <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
-                <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
-                <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
-                <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
-                <ScalarProperty Name="Notes" ColumnName="Notes" />
-                <ScalarProperty Name="PresetValue" ColumnName="PresetValue" />
-                <ScalarProperty Name="EntityUsage1" ColumnName="EntityUsage" />
-                <ScalarProperty Name="EntityContext" ColumnName="EntityContext" />
-                <ScalarProperty Name="Entity" ColumnName="Entity" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Identifications">
             <EntityTypeMapping TypeName="DiversityCollection.Identification">
               <MappingFragment StoreEntitySet="Identification">
@@ -2916,6 +2457,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CollectionEventSeries">
+            <EntityTypeMapping TypeName="DiversityCollection.CollectionEventSery">
+              <MappingFragment StoreEntitySet="CollectionEventSeries">
+                <ScalarProperty Name="RowGUID" ColumnName="RowGUID" />
+                <ScalarProperty Name="LogUpdatedBy" ColumnName="LogUpdatedBy" />
+                <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
+                <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
+                <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="Notes" ColumnName="Notes" />
+                <ScalarProperty Name="SeriesCode" ColumnName="SeriesCode" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="SeriesParentID" ColumnName="SeriesParentID" />
+                <ScalarProperty Name="SeriesID" ColumnName="SeriesID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -2940,29 +2499,23 @@
         <EntityTypeShape EntityType="DiversityCollection.AnalysisTaxonomicGroup" Width="1.625" PointX="12.375" PointY="2.875" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionEvent" Width="1.875" PointX="3.5" PointY="0.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionEventLocalisation" Width="2.125" PointX="3.5" PointY="3.25" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.CollectionEventSeries" Width="1.75" PointX="0.75" PointY="0.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionSpecimen" Width="2" PointX="6.25" PointY="0.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.IdentificationUnit" Width="1.875" PointX="9.375" PointY="0.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitAnalysis" Width="2" PointX="12.25" PointY="0.5" Height="0.4" IsExpanded="false" />
-        <AssociationConnector Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.5" PointY="0.6655167307692299" />
-          <ConnectorPoint PointX="3.5" PointY="0.6655167307692299" />
-        </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionLocalisation_CollectionEvent" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.5196913076923075" PointY="0.9" />
-          <ConnectorPoint PointX="3.28125" PointY="1.1384413076923075" />
-          <ConnectorPoint PointX="3.28125" PointY="3.03125" />
-          <ConnectorPoint PointX="3.5" PointY="3.25" />
+          <ConnectorPoint PointX="3.9580470769230769" PointY="0.9" />
+          <ConnectorPoint PointX="3.9580470769230769" PointY="1.1250000000000009" />
+          <ConnectorPoint PointX="4.39526482051282" PointY="1.1250000000000002" />
+          <ConnectorPoint PointX="4.5619314871794865" PointY="1.1250000000000009" />
+          <ConnectorPoint PointX="4.874717743589744" PointY="1.1250000000000002" />
+          <ConnectorPoint PointX="5.04138441025641" PointY="1.1250000000000009" />
+          <ConnectorPoint PointX="6" PointY="1.1250000000000009" />
+          <ConnectorPoint PointX="6" PointY="3.45" />
+          <ConnectorPoint PointX="5.625" PointY="3.45" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionSpecimen_CollectionEvent" ManuallyRouted="false">
           <ConnectorPoint PointX="5.375" PointY="0.7" />
           <ConnectorPoint PointX="6.25" PointY="0.7" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.3487692307692307" PointY="0.5" />
-          <ConnectorPoint PointX="1.3487692307692307" PointY="0.25" />
-          <ConnectorPoint PointX="1.9143846153846154" PointY="0.25" />
-          <ConnectorPoint PointX="1.9143846153846154" PointY="0.5" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_IdentificationUnit_CollectionSpecimen" ManuallyRouted="false">
           <ConnectorPoint PointX="8.25" PointY="0.9" />
@@ -3006,7 +2559,7 @@
         <EntityTypeShape EntityType="DiversityCollection.CollectionEventSeriesImage" Width="1.875" PointX="0.75" PointY="1.5" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionSpecimenImage" Width="2" PointX="7.5" PointY="4.375" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollEventImageType_Enum" Width="1.875" PointX="3.625" PointY="5.375" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.CollEventSeriesImageType_Enum" Width="1.875" PointX="0.75" PointY="2.5" Height="0.4" IsExpanded="false" />
+        <EntityTypeShape EntityType="DiversityCollection.CollEventSeriesImageType_Enum" Width="1.875" PointX="0.875" PointY="2.375" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.Property" Width="1.5" PointX="3.75" PointY="2.25" Height="0.4" IsExpanded="false" />
         <AssociationConnector Association="DiversityCollection.FK_AnalysisResult_Analysis" >
           <ConnectorPoint PointX="13.125" PointY="1.65" />
@@ -3030,10 +2583,13 @@
           <ConnectorPoint PointX="12.569576923076923" PointY="0.9" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionEventImage_CollectionEvent" >
-          <ConnectorPoint PointX="3.5067682307692305" PointY="0.9" />
-          <ConnectorPoint PointX="3.125" PointY="1.2817682307692309" />
-          <ConnectorPoint PointX="3.125" PointY="3.9996933076923091" />
-          <ConnectorPoint PointX="3.5003066923076909" PointY="4.375" />
+          <ConnectorPoint PointX="4.958051076923077" PointY="0.9" />
+          <ConnectorPoint PointX="4.958051076923077" PointY="1.2500000000000009" />
+          <ConnectorPoint PointX="5.916666666666667" PointY="1.2500000000000002" />
+          <ConnectorPoint PointX="6.083333333333333" PointY="1.2500000000000009" />
+          <ConnectorPoint PointX="6.125" PointY="1.2500000000000009" />
+          <ConnectorPoint PointX="6.125" PointY="4.575" />
+          <ConnectorPoint PointX="5.5" PointY="4.575" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionEventProperty_CollectionEvent" >
           <ConnectorPoint PointX="4.4785981538461535" PointY="0.9" />
@@ -3047,13 +2603,9 @@
           <ConnectorPoint PointX="4.5" PointY="2.25" />
           <ConnectorPoint PointX="4.5" PointY="1.775" />
         </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" >
-          <ConnectorPoint PointX="1.625" PointY="0.9" />
-          <ConnectorPoint PointX="1.625" PointY="1.5" />
-        </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeriesImage_CollEventSeriesImageType_Enum" >
-          <ConnectorPoint PointX="1.6875" PointY="2.5" />
-          <ConnectorPoint PointX="1.6875" PointY="1.9" />
+          <ConnectorPoint PointX="1.75" PointY="2.375" />
+          <ConnectorPoint PointX="1.75" PointY="1.9" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollectionSpecimenImage_CollectionSpecimen" >
           <ConnectorPoint PointX="8.00781375" PointY="0.9" />
@@ -3071,10 +2623,10 @@
           <ConnectorPoint PointX="4.8730384615384619" PointY="5.775" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_CollEventSeriesImageType_Enum_CollEventSeriesImageType_Enum" >
-          <ConnectorPoint PointX="1.3910769230769231" PointY="2.9" />
-          <ConnectorPoint PointX="1.3910769230769231" PointY="3.1500000000000004" />
-          <ConnectorPoint PointX="1.9980384615384614" PointY="3.1500000000000004" />
-          <ConnectorPoint PointX="1.9980384615384614" PointY="2.9" />
+          <ConnectorPoint PointX="1.5160769230769231" PointY="2.775" />
+          <ConnectorPoint PointX="1.5160769230769231" PointY="3.0250000000000004" />
+          <ConnectorPoint PointX="2.1230384615384614" PointY="3.0250000000000004" />
+          <ConnectorPoint PointX="2.1230384615384614" PointY="2.775" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_Descriptor_Descriptor" >
           <ConnectorPoint PointX="4.264153846153846" PointY="2.65" />
@@ -3084,10 +2636,6 @@
         </AssociationConnector>
         <EntityTypeShape EntityType="DiversityCollection.CollectionAgent" Width="1.5" PointX="6.375" PointY="1.375" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.CollectionProject" Width="1.5" PointX="6.375" PointY="2.25" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.Entity" Width="1.5" PointX="15" PointY="0.5" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.EntityContext_Enum" Width="1.625" PointX="15" PointY="3.125" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.EntityRepresentation" Width="1.5" PointX="15" PointY="1.25" Height="0.4" IsExpanded="false" />
-        <EntityTypeShape EntityType="DiversityCollection.EntityUsage" Width="1.5" PointX="15" PointY="2.125" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.Identification" Width="1.5" PointX="9.5" PointY="1.375" Height="0.4" IsExpanded="false" />
         <EntityTypeShape EntityType="DiversityCollection.IdentificationUnitGeoAnalysi" Width="2.5" PointX="12.375" PointY="4.25" Height="3.3263964843749996" IsExpanded="true" />
         <AssociationConnector Association="DiversityCollection.FK_CollectionAgent_CollectionSpecimen" >
@@ -3100,32 +2648,6 @@
           <ConnectorPoint PointX="8.0911470833333343" PointY="2.4499999999999997" />
           <ConnectorPoint PointX="7.9244804166666674" PointY="2.45" />
           <ConnectorPoint PointX="7.875" PointY="2.45" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_Entity_Entity" >
-          <ConnectorPoint PointX="15.514153846153846" PointY="0.9" />
-          <ConnectorPoint PointX="15.514153846153846" PointY="1.15" />
-          <ConnectorPoint PointX="15.997076923076923" PointY="1.15" />
-          <ConnectorPoint PointX="15.997076923076923" PointY="0.9" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_EntityRepresentation_Entity" >
-          <ConnectorPoint PointX="15.194576923076923" PointY="0.9" />
-          <ConnectorPoint PointX="15.194576923076923" PointY="1.25" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_EntityUsage_Entity" >
-          <ConnectorPoint PointX="16.5" PointY="0.89969130769230743" />
-          <ConnectorPoint PointX="16.875" PointY="1.2746913076923079" />
-          <ConnectorPoint PointX="16.875" PointY="1.75" />
-          <ConnectorPoint PointX="16.5" PointY="2.125" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_EntityRepresentation_EntityContext_Enum" >
-          <ConnectorPoint PointX="15" PointY="3.125" />
-          <ConnectorPoint PointX="14.625" PointY="2.75" />
-          <ConnectorPoint PointX="14.625" PointY="2.0249999999999986" />
-          <ConnectorPoint PointX="15" PointY="1.65" />
-        </AssociationConnector>
-        <AssociationConnector Association="DiversityCollection.FK_EntityUsage_EntityContext_Enum" >
-          <ConnectorPoint PointX="15.7812525" PointY="3.125" />
-          <ConnectorPoint PointX="15.7812525" PointY="2.525" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection.FK_Identification_IdentificationUnit" >
           <ConnectorPoint PointX="10.25" PointY="0.9" />
@@ -3148,6 +2670,21 @@
           <ConnectorPoint PointX="8.264153846153846" PointY="5.9" />
           <ConnectorPoint PointX="8.7470769230769232" PointY="5.9" />
           <ConnectorPoint PointX="8.7470769230769232" PointY="5.65" />
+        </AssociationConnector>
+        <EntityTypeShape EntityType="DiversityCollection.CollectionEventSery" Width="1.75" PointX="0.75" PointY="0.5" Height="0.4" IsExpanded="false" />
+        <AssociationConnector Association="DiversityCollection.FK_CollectionEvent_CollectionEventSeries" >
+          <ConnectorPoint PointX="2.5" PointY="0.7" />
+          <ConnectorPoint PointX="3.5" PointY="0.7" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeries_CollectionEventSeries" >
+          <ConnectorPoint PointX="1.3487692307692307" PointY="0.5" />
+          <ConnectorPoint PointX="1.3487692307692307" PointY="0.25" />
+          <ConnectorPoint PointX="1.9143846153846154" PointY="0.25" />
+          <ConnectorPoint PointX="1.9143846153846154" PointY="0.5" />
+        </AssociationConnector>
+        <AssociationConnector Association="DiversityCollection.FK_CollectionEventSeriesImage_CollectionEventSeries" >
+          <ConnectorPoint PointX="1.625" PointY="0.9" />
+          <ConnectorPoint PointX="1.625" PointY="1.5" />
         </AssociationConnector>
       </Diagram>
     </Diagrams>

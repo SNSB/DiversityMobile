@@ -543,12 +543,19 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.disco" />
-    <None Include="Service References\DiversityService\configuration91.svcinfo" />
-    <None Include="Service References\DiversityService\configuration.svcinfo" />
+    <None Include="Service References\DiversityService\Service1.disco">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\configuration91.svcinfo">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\configuration.svcinfo">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -567,9 +574,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
