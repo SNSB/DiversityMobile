@@ -15,61 +15,64 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Settings, Source={StaticResource Locator}}">
+    DataContext="{Binding Settings, Source={StaticResource Locator}}"
+    IsTabStop="True">
     <phone:PhoneApplicationPage.Resources>
         <vw:SettingsPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="3"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0"
-                     IsIndeterminate="True" Visibility="{Binding InProgress, Converter={StaticResource BoolToVis}}"/>
-        
+    <Grid x:Name="LayoutRoot" Background="Transparent">                
         <!--Pivot Control-->
-        <controls:Pivot Grid.Row="1" 
-                        Title="SETUP" Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}}"
-                        SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
-            <!--Pivot item one-->
-            <controls:PivotItem Header="Login">
-                <StackPanel>
-                    <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
-                    <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <TextBox Text="{Binding Password, Mode=TwoWay}"/>
-                </StackPanel>
-            </controls:PivotItem>
+        <Grid Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}}">
+            <controls:Pivot Title="SETUP" 
+                            DataContext="{Binding Setup}"
+                            SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
+                <!--Pivot item one-->
+                <controls:PivotItem Header="Login">
+                    <StackPanel>
+                        <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
+                        <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox Text="{Binding Password, Mode=TwoWay}"/>
+                    </StackPanel>
+                </controls:PivotItem>
 
-            <!--Pivot item two-->
-            <controls:PivotItem Header="Repository">
-                <StackPanel>
-                    <toolkit:ListPicker ItemsSource="{Binding Databases}"
-                                        SelectedItem="{Binding CurrentDB, Mode=TwoWay}">
-                        <toolkit:ListPicker.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DisplayName}"/>
-                            </DataTemplate>
-                        </toolkit:ListPicker.ItemTemplate>
-                    </toolkit:ListPicker>
-                </StackPanel>
-            </controls:PivotItem>
+            
+                <controls:PivotItem Header="Repository">
+                    <StackPanel>
+                        <toolkit:ListPicker ItemsSource="{Binding Databases}"
+                                            SelectedItem="{Binding CurrentDB, Mode=TwoWay}">
+                            <toolkit:ListPicker.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </DataTemplate>
+                            </toolkit:ListPicker.ItemTemplate>
+                        </toolkit:ListPicker>
 
-            <controls:PivotItem Header="Project">
-                <StackPanel>
-                    <toolkit:ListPicker ItemsSource="{Binding Projects}"
-                                        SelectedItem="{Binding CurrentProject, Mode=TwoWay}">
-                        <toolkit:ListPicker.ItemTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding DisplayText}"/>
-                            </DataTemplate>
-                        </toolkit:ListPicker.ItemTemplate>
-                    </toolkit:ListPicker>
-                </StackPanel>
-            </controls:PivotItem>
-        </controls:Pivot>
+                        <!--Busy Overlay-->                    
+                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                     Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>                    
+                    </StackPanel>
+                </controls:PivotItem>
+
+                <controls:PivotItem Header="Project">
+                    <StackPanel>
+                        <toolkit:ListPicker ItemsSource="{Binding Projects}"
+                                            SelectedItem="{Binding CurrentProject, Mode=TwoWay}">
+                            <toolkit:ListPicker.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding DisplayText}"/>
+                                </DataTemplate>
+                            </toolkit:ListPicker.ItemTemplate>
+                        </toolkit:ListPicker>
+
+                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                     Visibility="{Binding GettingProjects, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </controls:PivotItem>       
+            </controls:Pivot>
+        </Grid>
 
         <ScrollViewer Grid.Row="1" Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
             <StackPanel>
@@ -87,6 +90,12 @@
                 <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
             </StackPanel>
         </ScrollViewer>
+
+        <Grid x:Name="BusyOverlay" Background="Black" Visibility="Collapsed">
+            <TextBlock Text="{Binding Setup.BusyMessage}"/>
+            <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                 Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>

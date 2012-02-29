@@ -14,6 +14,7 @@ using DiversityPhone.ViewModels.Utility;
 using Microsoft.Phone.Shell;
 using System.Reactive.Linq;
 using ReactiveUI;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.View
 {
@@ -22,6 +23,8 @@ namespace DiversityPhone.View
         private SettingsVM VM { get { return DataContext as SettingsVM; } }
 
         private ApplicationBarIconButton saveBtn,clearBtn;
+
+        private SerialDisposable setup_isbusy_subyscription = new SerialDisposable(); 
 
         public Settings()
         {
@@ -49,7 +52,25 @@ namespace DiversityPhone.View
                             else
                                 ApplicationBar.Buttons.Remove(clearBtn);
                         });
-                    
+
+                VM.ObservableForProperty(x => x.Setup)
+                    .Select(change => change.Value)
+                    .Where(setup => setup != null)
+                    .Select(setup => setup.ObservableForProperty(x => x.IsBusy))
+                    .Subscribe(isBusyObs =>
+                        {
+                            //Hide Menu Bar and Overlay, when setup is busy
+                            setup_isbusy_subyscription.Disposable =
+                                isBusyObs
+                                .Select(x => x.Value)
+                                .Subscribe(isBusy =>
+                                    {
+                                        ApplicationBar.IsVisible = !isBusy;
+                                        BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
+                                        this.Focus();
+                                    });
+                        });
+
             }
         }
 

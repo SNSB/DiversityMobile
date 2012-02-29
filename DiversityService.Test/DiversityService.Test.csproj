@@ -80,9 +80,6 @@
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.HierarchySection.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -118,9 +115,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ServiceReference\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

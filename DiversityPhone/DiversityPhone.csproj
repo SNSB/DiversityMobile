@@ -59,9 +59,6 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,6 +125,7 @@
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyName.cs" />
     <Compile Include="Model\QueryOperations.cs" />
+    <Compile Include="Model\Service\Credentials.cs" />
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
@@ -194,6 +192,7 @@
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SelectMapsVM.cs" />
+    <Compile Include="ViewModels\Utility\SettingsVM.Setup.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
@@ -687,6 +686,10 @@
     <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
       <Name>GeneralUtility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
+      <Project>{0754458A-7AFC-463A-B27D-2F6980522119}</Project>
+      <Name>Microsoft.Phone.Controls.Toolkit</Name>
     </ProjectReference>
     <ProjectReference Include="..\Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
       <Project>{0754458A-7AFC-463A-B27D-2F6980522119}</Project>

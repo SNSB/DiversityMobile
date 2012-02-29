@@ -699,115 +699,6 @@ namespace DiversityService.Test.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisResult", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
-    [System.SerializableAttribute()]
-    public partial class AnalysisResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int AnalysisIDField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DescriptionField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string DisplayTextField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string NotesField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ResultField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int AnalysisID {
-            get {
-                return this.AnalysisIDField;
-            }
-            set {
-                if ((this.AnalysisIDField.Equals(value) != true)) {
-                    this.AnalysisIDField = value;
-                    this.RaisePropertyChanged("AnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Result {
-            get {
-                return this.ResultField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResultField, value) != true)) {
-                    this.ResultField = value;
-                    this.RaisePropertyChanged("Result");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisTaxonomicGroup", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     [System.SerializableAttribute()]
     public partial class AnalysisTaxonomicGroup : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -962,6 +853,115 @@ namespace DiversityService.Test.ServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisResult", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    [System.SerializableAttribute()]
+    public partial class AnalysisResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int AnalysisIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DescriptionField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string DisplayTextField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NotesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ResultField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AnalysisID {
+            get {
+                return this.AnalysisIDField;
+            }
+            set {
+                if ((this.AnalysisIDField.Equals(value) != true)) {
+                    this.AnalysisIDField = value;
+                    this.RaisePropertyChanged("AnalysisID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description {
+            get {
+                return this.DescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DisplayText {
+            get {
+                return this.DisplayTextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
+                    this.DisplayTextField = value;
+                    this.RaisePropertyChanged("DisplayText");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Notes {
+            get {
+                return this.NotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Result {
+            get {
+                return this.ResultField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResultField, value) != true)) {
+                    this.ResultField = value;
+                    this.RaisePropertyChanged("Result");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="PropertyName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     [System.SerializableAttribute()]
     public partial class PropertyName : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -1098,6 +1098,9 @@ namespace DiversityService.Test.ServiceReference {
         private string DescriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionEventSeriesIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string GeographyField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1134,6 +1137,19 @@ namespace DiversityService.Test.ServiceReference {
                 if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
                     this.DescriptionField = value;
                     this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventSeriesID {
+            get {
+                return this.DiversityCollectionEventSeriesIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventSeriesIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventSeriesIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventSeriesID");
                 }
             }
         }
@@ -1354,6 +1370,12 @@ namespace DiversityService.Test.ServiceReference {
         private System.Nullable<System.DateTime> DeterminationDateField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionSeriesIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int EventIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1419,6 +1441,32 @@ namespace DiversityService.Test.ServiceReference {
                 if ((this.DeterminationDateField.Equals(value) != true)) {
                     this.DeterminationDateField = value;
                     this.RaisePropertyChanged("DeterminationDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSeriesID {
+            get {
+                return this.DiversityCollectionSeriesIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSeriesIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSeriesIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSeriesID");
                 }
             }
         }
@@ -1543,6 +1591,9 @@ namespace DiversityService.Test.ServiceReference {
         private string AnalysisResultField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionUnitIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int IdentificationUnitAnalysisIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1593,6 +1644,19 @@ namespace DiversityService.Test.ServiceReference {
                 if ((object.ReferenceEquals(this.AnalysisResultField, value) != true)) {
                     this.AnalysisResultField = value;
                     this.RaisePropertyChanged("AnalysisResult");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionUnitID {
+            get {
+                return this.DiversityCollectionUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionUnitID");
                 }
             }
         }
@@ -1650,6 +1714,15 @@ namespace DiversityService.Test.ServiceReference {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ColonisedSubstratePartField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionRelatedUnitIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionSpecimenIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionUnitIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string FamilyCacheField;
@@ -1741,6 +1814,45 @@ namespace DiversityService.Test.ServiceReference {
                 if ((object.ReferenceEquals(this.ColonisedSubstratePartField, value) != true)) {
                     this.ColonisedSubstratePartField = value;
                     this.RaisePropertyChanged("ColonisedSubstratePart");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionRelatedUnitID {
+            get {
+                return this.DiversityCollectionRelatedUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionRelatedUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionRelatedUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionRelatedUnitID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSpecimenID {
+            get {
+                return this.DiversityCollectionSpecimenIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSpecimenIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionUnitID {
+            get {
+                return this.DiversityCollectionUnitIDField;
+            }
+            set {
+                if ((this.DiversityCollectionUnitIDField.Equals(value) != true)) {
+                    this.DiversityCollectionUnitIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionUnitID");
                 }
             }
         }
@@ -1963,6 +2075,9 @@ namespace DiversityService.Test.ServiceReference {
         private string DisplayTextField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int EventIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1993,6 +2108,19 @@ namespace DiversityService.Test.ServiceReference {
                 if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
                     this.DisplayTextField = value;
                     this.RaisePropertyChanged("DisplayText");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
                 }
             }
         }
@@ -2078,6 +2206,12 @@ namespace DiversityService.Test.ServiceReference {
         private int CollectionSpecimenIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionEventIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.Nullable<int> DiversityCollectionSpecimenIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime LogUpdatedWhenField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
@@ -2130,6 +2264,32 @@ namespace DiversityService.Test.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionEventID {
+            get {
+                return this.DiversityCollectionEventIDField;
+            }
+            set {
+                if ((this.DiversityCollectionEventIDField.Equals(value) != true)) {
+                    this.DiversityCollectionEventIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionEventID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> DiversityCollectionSpecimenID {
+            get {
+                return this.DiversityCollectionSpecimenIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSpecimenIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime LogUpdatedWhen {
             get {
                 return this.LogUpdatedWhenField;
@@ -2162,7 +2322,7 @@ namespace DiversityService.Test.ServiceReference {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private System.Collections.Generic.KeyValuePair<System.Nullable<int>, System.Nullable<int>> eventKeyField;
+        private System.Collections.Generic.Dictionary<int, int> eventKeyField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Collections.Generic.Dictionary<int, int> iuKeysField;
@@ -2181,12 +2341,12 @@ namespace DiversityService.Test.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.KeyValuePair<System.Nullable<int>, System.Nullable<int>> eventKey {
+        public System.Collections.Generic.Dictionary<int, int> eventKey {
             get {
                 return this.eventKeyField;
             }
             set {
-                if ((this.eventKeyField.Equals(value) != true)) {
+                if ((object.ReferenceEquals(this.eventKeyField, value) != true)) {
                     this.eventKeyField = value;
                     this.RaisePropertyChanged("eventKey");
                 }
@@ -2254,18 +2414,15 @@ namespace DiversityService.Test.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse")]
         string GetXMLStandardVocabulary();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetAnalysisResults", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisResultsResponse")]
-        DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResults(int[] analysisKeys);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProjectResponse" +
             "")]
-        DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup[] GetAnalysisTaxonomicGroupsForProject(DiversityService.Test.ServiceReference.Project p);
+        DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup[] GetAnalysisTaxonomicGroupsForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetAnalysesForProject", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysesForProjectResponse")]
-        DiversityService.Test.ServiceReference.Analysis[] GetAnalysesForProject(DiversityService.Test.ServiceReference.Project p);
+        DiversityService.Test.ServiceReference.Analysis[] GetAnalysesForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject", ReplyAction="http://tempuri.org/IDiversityService/GetAnalysisResultsForProjectResponse")]
-        DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResultsForProject(DiversityService.Test.ServiceReference.Project p);
+        DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResultsForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/GetAvailablePropertyLists", ReplyAction="http://tempuri.org/IDiversityService/GetAvailablePropertyListsResponse")]
         string[] GetAvailablePropertyLists();
@@ -2281,9 +2438,6 @@ namespace DiversityService.Test.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/InsertHierarchy", ReplyAction="http://tempuri.org/IDiversityService/InsertHierarchyResponse")]
         DiversityService.Test.ServiceReference.KeyProjection InsertHierarchy(DiversityService.Test.ServiceReference.HierarchySection hierarchy, DiversityService.Test.ServiceReference.UserCredentials cred);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IDiversityService/CreateNewHierarchy", ReplyAction="http://tempuri.org/IDiversityService/CreateNewHierarchyResponse")]
-        DiversityService.Test.ServiceReference.HierarchySection CreateNewHierarchy();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -2341,20 +2495,16 @@ namespace DiversityService.Test.ServiceReference {
             return base.Channel.GetXMLStandardVocabulary();
         }
         
-        public DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResults(int[] analysisKeys) {
-            return base.Channel.GetAnalysisResults(analysisKeys);
+        public DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup[] GetAnalysisTaxonomicGroupsForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login) {
+            return base.Channel.GetAnalysisTaxonomicGroupsForProject(p, login);
         }
         
-        public DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup[] GetAnalysisTaxonomicGroupsForProject(DiversityService.Test.ServiceReference.Project p) {
-            return base.Channel.GetAnalysisTaxonomicGroupsForProject(p);
+        public DiversityService.Test.ServiceReference.Analysis[] GetAnalysesForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login) {
+            return base.Channel.GetAnalysesForProject(p, login);
         }
         
-        public DiversityService.Test.ServiceReference.Analysis[] GetAnalysesForProject(DiversityService.Test.ServiceReference.Project p) {
-            return base.Channel.GetAnalysesForProject(p);
-        }
-        
-        public DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResultsForProject(DiversityService.Test.ServiceReference.Project p) {
-            return base.Channel.GetAnalysisResultsForProject(p);
+        public DiversityService.Test.ServiceReference.AnalysisResult[] GetAnalysisResultsForProject(DiversityService.Test.ServiceReference.Project p, DiversityService.Test.ServiceReference.UserCredentials login) {
+            return base.Channel.GetAnalysisResultsForProject(p, login);
         }
         
         public string[] GetAvailablePropertyLists() {
@@ -2375,10 +2525,6 @@ namespace DiversityService.Test.ServiceReference {
         
         public DiversityService.Test.ServiceReference.KeyProjection InsertHierarchy(DiversityService.Test.ServiceReference.HierarchySection hierarchy, DiversityService.Test.ServiceReference.UserCredentials cred) {
             return base.Channel.InsertHierarchy(hierarchy, cred);
-        }
-        
-        public DiversityService.Test.ServiceReference.HierarchySection CreateNewHierarchy() {
-            return base.Channel.CreateNewHierarchy();
         }
     }
 }

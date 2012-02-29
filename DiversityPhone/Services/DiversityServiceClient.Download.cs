@@ -21,15 +21,7 @@ namespace DiversityPhone.Services
         public UserCredentials GetCreds()
         {
             var settings = _settings.getSettings();
-            return new UserCredentials()
-            {
-                LoginName = settings.UserName,
-                AgentName=settings.AgentName,
-                AgentURI=settings.AgentURI,
-                ProjectID=settings.CurrentProject,
-                Password = settings.Password,
-                Repository = settings.HomeDB
-            };
+            return new UserCredentials(settings);            
         }
 
 
@@ -121,7 +113,7 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(Project p)
+        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(Project p, UserCredentials login)
         {
             var res = Observable.FromEvent<EventHandler<GetAnalysesForProjectCompletedEventArgs>, GetAnalysesForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d)
                .Select(args => args.Result)
@@ -134,11 +126,11 @@ namespace DiversityPhone.Services
                       MeasurementUnit = an.MeasurementUnit
                    }))
                .Take(1);
-            _svc.GetAnalysesForProjectAsync(p, GetCreds());
+            _svc.GetAnalysesForProjectAsync(p, login);
             return res;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(Project p)
+        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(Project p, UserCredentials login)
         {
             var res = Observable.FromEvent<EventHandler<GetAnalysisResultsForProjectCompletedEventArgs>, GetAnalysisResultsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d)
                .Select(args => args.Result)
@@ -152,22 +144,22 @@ namespace DiversityPhone.Services
                         Result = ar.Result
                    }))
                .Take(1);
-            _svc.GetAnalysisResultsForProjectAsync(p, GetCreds());
+            _svc.GetAnalysisResultsForProjectAsync(p, login);
             return res;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGrousForProject(Project p)
+        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login)
         {
             var res = Observable.FromEvent<EventHandler<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>, GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d)
                .Select(args => args.Result)
-               .Select(atgs => atgs
+               .Select(atgs => atgs                   
                    .Select(atg => new Client.AnalysisTaxonomicGroup()
                    {
                         AnalysisID = atg.AnalysisID,
                         TaxonomicGroup = atg.TaxonomicGroup
                    }))
                .Take(1);
-            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(p, GetCreds());
+            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(p, login);
             return res;
         }
     }

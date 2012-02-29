@@ -6,7 +6,6 @@
       <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
       <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/System.Collections.Generic" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDiversityService_GetUserInfo_InputMessage">
@@ -50,12 +49,6 @@
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetXMLStandardVocabularyResponse" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_GetAnalysisResults_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetAnalysisResults" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_GetAnalysisResults_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetAnalysisResultsResponse" />
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage">
     <wsdl:part name="parameters" element="tns:GetAnalysisTaxonomicGroupsForProject" />
@@ -105,12 +98,6 @@
   <wsdl:message name="IDiversityService_InsertHierarchy_OutputMessage">
     <wsdl:part name="parameters" element="tns:InsertHierarchyResponse" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_CreateNewHierarchy_InputMessage">
-    <wsdl:part name="parameters" element="tns:CreateNewHierarchy" />
-  </wsdl:message>
-  <wsdl:message name="IDiversityService_CreateNewHierarchy_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CreateNewHierarchyResponse" />
-  </wsdl:message>
   <wsdl:portType name="IDiversityService">
     <wsdl:operation name="GetUserInfo">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfo" message="tns:IDiversityService_GetUserInfo_InputMessage" />
@@ -139,10 +126,6 @@
     <wsdl:operation name="GetXMLStandardVocabulary">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse" message="tns:IDiversityService_GetXMLStandardVocabulary_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetAnalysisResults">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResults" message="tns:IDiversityService_GetAnalysisResults_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsResponse" message="tns:IDiversityService_GetAnalysisResults_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage" />
@@ -175,10 +158,6 @@
     <wsdl:operation name="InsertHierarchy">
       <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchyResponse" message="tns:IDiversityService_InsertHierarchy_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="CreateNewHierarchy">
-      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/CreateNewHierarchy" message="tns:IDiversityService_CreateNewHierarchy_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/CreateNewHierarchyResponse" message="tns:IDiversityService_CreateNewHierarchy_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDiversityService" type="tns:IDiversityService">
@@ -239,15 +218,6 @@
     </wsdl:operation>
     <wsdl:operation name="GetXMLStandardVocabulary">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetAnalysisResults">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetAnalysisResults" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -320,15 +290,6 @@
     </wsdl:operation>
     <wsdl:operation name="InsertHierarchy">
       <soap:operation soapAction="http://tempuri.org/IDiversityService/InsertHierarchy" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="CreateNewHierarchy">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/CreateNewHierarchy" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

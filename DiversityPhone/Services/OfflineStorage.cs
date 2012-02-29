@@ -517,7 +517,15 @@
             using (var ctx = new DiversityDataContext())
             {
                 ctx.AnalysisTaxonomicGroups.InsertAllOnSubmit(groups);
-                ctx.SubmitChanges();
+                try
+                {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+                
             }
         }
 

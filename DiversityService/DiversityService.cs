@@ -38,31 +38,29 @@ namespace DiversityService
             {
                 return Enumerable.Empty<Project>();
             }
-        }
-
-        public IEnumerable<AnalysisResult> GetAnalysisResults(IList<int> analysisKeys)
-        {
-            throw new NotImplementedException();
-        }
+        }        
 
         public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login)
         {
             using (var db = new DiversityORM.Diversity(login))
             {
-                var flattenQueue = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(p.ProjectID,db));                    
-                var flattened = new List<AnalysisTaxonomicGroup>(flattenQueue.Count);
-                var analyses = analysesForProject(p.ProjectID,db);
+                var atgs = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(p.ProjectID,db));                    
+                var flattened = new HashSet<AnalysisTaxonomicGroup>();
+                var analyses = analysesForProject(p.ProjectID,db).ToLookup(an => an.AnalysisParentID);
 
-                while(flattenQueue.Count > 0)
+                while (atgs.Any())
                 {
-                    var atg = flattenQueue.Dequeue();
-                    flattened.Add(atg);
-                    var childANs = from an in analyses
-                                   where an.AnalysisParentID == atg.AnalysisID
-                                   select an;
-                    foreach (var an in childANs)
+                    var atg = atgs.Dequeue();                    
+                    if (flattened.Add(atg)) //added just now -> queue children
                     {
-                        flattenQueue.Enqueue(new AnalysisTaxonomicGroup() { AnalysisID = an.AnalysisID, TaxonomicGroup = atg.TaxonomicGroup });
+                        if (analyses.Contains(atg.AnalysisID))
+                            foreach (var child in analyses[atg.AnalysisID])
+                                atgs.Enqueue(
+                                    new AnalysisTaxonomicGroup()
+                                    {
+                                        AnalysisID = child.AnalysisID,
+                                        TaxonomicGroup = atg.TaxonomicGroup
+                                    });
                     }
                 }
                 return flattened;
@@ -392,10 +390,7 @@ namespace DiversityService
             return result;
         }
 
-        public HierarchySection CreateNewHierarchy()
-        {
-            return new HierarchySection();
-        }
+        
 
 
         #region GeoData
