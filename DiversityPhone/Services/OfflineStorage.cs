@@ -176,6 +176,12 @@
         {
             var wasNewEvent = ev.IsNew();
 
+            if (ev.SeriesID != null)
+            {
+                EventSeries es = this.getEventSeriesByID((int)ev.SeriesID);
+                if (es.DiversityCollectionEventSeriesID != null)
+                    ev.DiversityCollectionSeriesID = es.DiversityCollectionEventSeriesID;
+            }
 
 
             addOrUpdateRow(Event.Operations,
@@ -228,6 +234,7 @@
             deleteRow(Event.Operations, ctx => ctx.Events, toDeleteEv);
         }
 
+        
 
         #endregion
 
@@ -245,6 +252,10 @@
 
         public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
         {
+            Event ev = this.getEventByID(cep.EventID);
+            if (ev.DiversityCollectionEventID != null)
+                cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
+
             addOrUpdateRow(CollectionEventProperty.Operations,
                   ctx => ctx.CollectionEventProperties,
                   cep
@@ -319,6 +330,9 @@
 
         public void addOrUpdateSpecimen(Specimen spec)
         {
+            Event ev = this.getEventByID(spec.CollectionEventID);
+            if (ev.DiversityCollectionEventID != null)
+                spec.DiversityCollectionEventID = ev.DiversityCollectionEventID;
             addOrUpdateRow(Specimen.Operations,
                 ctx => ctx.Specimen,
                 spec
@@ -379,6 +393,17 @@
 
         public void addOrUpdateIUnit(IdentificationUnit iu)
         {
+            Specimen spec = this.getSpecimenByID(iu.SpecimenID);
+            if (spec.DiversityCollectionSpecimenID != null)
+                iu.DiversityCollectionSpecimenID = spec.DiversityCollectionSpecimenID;
+
+            if (iu.RelatedUnitID != null)
+            {
+                IdentificationUnit relatedIU = this.getIdentificationUnitByID((int) iu.RelatedUnitID);
+                if (relatedIU.DiversityCollectionUnitID != null)
+                    iu.DiversityCollectionRelatedUnitID = relatedIU.DiversityCollectionUnitID;
+
+            }
             addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);           
         }
 
@@ -424,6 +449,9 @@
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
         {
+            IdentificationUnit iu = this.getIdentificationUnitByID(iua.IdentificationUnitID);
+            if (iu.DiversityCollectionUnitID != null)
+                iua.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
             addOrUpdateRow(IdentificationUnitAnalysis.Operations,
                 ctx => ctx.IdentificationUnitAnalyses,
                 iua
@@ -533,6 +561,31 @@
 
         public void addMultimediaObject(MultimediaObject mmo)
         {
+            switch (mmo.OwnerType)
+            {
+                case ReferrerType.EventSeries:
+                    EventSeries es = this.getEventSeriesByID(mmo.RelatedId);
+                    if (es.DiversityCollectionEventSeriesID != null)
+                        mmo.DiversityCollectionRelatedID = es.DiversityCollectionEventSeriesID;
+                    break;
+                case ReferrerType.Event:
+                    Event ev = this.getEventByID(mmo.RelatedId);
+                    if (ev.DiversityCollectionEventID != null)
+                        mmo.DiversityCollectionRelatedID = ev.DiversityCollectionEventID;
+                    break;
+                case ReferrerType.Specimen:
+                    Specimen spec = this.getSpecimenByID(mmo.RelatedId);
+                    if (spec.DiversityCollectionSpecimenID != null)
+                        mmo.DiversityCollectionRelatedID = spec.DiversityCollectionSpecimenID;
+                    break;
+                case ReferrerType.IdentificationUnit:
+                    IdentificationUnit iu = this.getIdentificationUnitByID(mmo.RelatedId);
+                    if (iu.DiversityCollectionUnitID != null)
+                        mmo.DiversityCollectionRelatedID = iu.DiversityCollectionUnitID;
+                    break;
+                default:
+                    break;
+            }
             using (var ctx = new DiversityDataContext())
             {
                 ctx.MultimediaObjects.InsertOnSubmit(mmo);

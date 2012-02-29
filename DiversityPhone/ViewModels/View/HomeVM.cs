@@ -171,7 +171,8 @@
             foreach (Event ev in eventList)
             {
                 Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
-                _repository.InsertHierarchy(section);
+                Svc.UserCredentials cred = _repository.GetCreds();
+                _plainUploadClient.InsertHierarchyAsync(section, cred);
             }  
         }
 
@@ -189,8 +190,8 @@
         private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
         {
             Svc.KeyProjection keysToUpdate = args.Result;
-            if (keysToUpdate.eventKey.Key != null && keysToUpdate.eventKey.Value!=null)
-                _storage.updateEventKey((int) keysToUpdate.eventKey.Key, (int) keysToUpdate.eventKey.Value);
+            foreach (KeyValuePair<int, int> evPair in keysToUpdate.eventKey)
+                _storage.updateEventKey(evPair.Key, evPair.Value);
             foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
                 _storage.updateSpecimenKey(specPair.Key, specPair.Value);
             foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
