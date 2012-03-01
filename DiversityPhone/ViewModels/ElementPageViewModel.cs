@@ -79,7 +79,7 @@ namespace DiversityPhone.ViewModels
             var currentObs = model
                 .Where(m => m != null)
                 .Select(m => ViewModelFromModel(m))
-                .Replay(1);                
+                .Publish();                
             CurrentObservable = currentObs;
             currentObs.Connect();
 
