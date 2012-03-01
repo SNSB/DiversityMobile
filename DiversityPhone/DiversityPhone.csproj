@@ -190,6 +190,7 @@
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
+    <Compile Include="ViewModels\ListSelectionHelper.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SelectMapsVM.cs" />

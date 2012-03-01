@@ -20,42 +20,15 @@ namespace DiversityPhone.ViewModels
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
         private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
-        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }        
+        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
 
-        private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
-        public IList<Analysis> Analyses
-        {
-            get
-            {
-                return (_Analyses != null) ? _Analyses.Value : null;
-            }
-        }
+        public ListSelectionHelper<Analysis> Analyses { get; private set; }
 
-        private Analysis _SelectedAnalysis;
-        public Analysis SelectedAnalysis
-        {
-            get { return _SelectedAnalysis; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysis, ref _SelectedAnalysis, value); }
-        }
-
-        private ObservableAsPropertyHelper<IList<AnalysisResult>> _AnalysisResults = null;
-        public IList<AnalysisResult> AnalysisResults
-        {
-            get
-            {
-                return _AnalysisResults.Value;
-            }
-        }
+        private ListSelectionHelper<AnalysisResult> _Results = new ListSelectionHelper<AnalysisResult>();
+        public ListSelectionHelper<AnalysisResult> Results { get { return _Results; } }
 
         private ObservableAsPropertyHelper<bool> _IsCustomResult;
-        public bool IsCustomResult { get { return _IsCustomResult.Value; } }
-
-        public AnalysisResult _SelectedAnalysisResult;
-        public AnalysisResult SelectedAnalysisResult
-        {
-            get { return _SelectedAnalysisResult; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysisResult, ref _SelectedAnalysisResult, value); }
-        }
+        public bool IsCustomResult { get { return _IsCustomResult.Value; } }        
 
         private string _CustomResult;
         public string CustomResult
@@ -98,33 +71,18 @@ namespace DiversityPhone.ViewModels
 
             _Model = ValidModel.ToProperty(this, x => x.Model);
 
-            _Analyses = _Parent
+            Analyses = new ListSelectionHelper<Analysis>();
+            _Parent
                 .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
-                .ToProperty(this, vm => vm.Analyses);
-
-            this.ObservableForProperty(x => x.Analyses)
-                .Value()                
-                .Where(analyses => analyses != null)                                
-                .Select(analyses => (from an in analyses                                          
-                                    where an.AnalysisID == Model.AnalysisID
-                                    select an).FirstOrDefault() ?? analyses.FirstOrDefault())
-                .BindTo(this, x => x.SelectedAnalysis);
-
-            _AnalysisResults = this.ObservableForProperty(x => x.SelectedAnalysis)
-                .Select(change => change.Value)
-                .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)                
-                .ToProperty(this, vm => vm.AnalysisResults);
-            _IsCustomResult = _AnalysisResults
+                .Subscribe(Analyses.ItemsSubject);
+                        
+            Analyses.SelectedItemObservable
+                .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
+                .Subscribe(Results.ItemsSubject);
+            _IsCustomResult = Results.ItemsSubject
                 .Where(res => res != null)
                 .Select(results => results.Count == 0)
-                .ToProperty(this, vm => vm.IsCustomResult);
-            this.ObservableForProperty(x => x.AnalysisResults) 
-                .Select(change => change.Value)
-                .Where(ars => ars != null)
-                .Select(results => (from res in results
-                                    where res.Result == Model.AnalysisResult
-                                    select res).FirstOrDefault() ?? results.FirstOrDefault())
-                .BindTo(this, x => x.SelectedAnalysisResult);
+                .ToProperty(this, vm => vm.IsCustomResult);          
             _IsCustomResult
                 .Where(custom => custom)
                 .Select(_ => String.Empty)
@@ -133,8 +91,8 @@ namespace DiversityPhone.ViewModels
 
         protected override IObservable<bool> CanSave()
         {
-            var vocabularyResultValid = this.ObservableForProperty(x => x.SelectedAnalysisResult)
-                .Select(change => change.Value != null);
+            var vocabularyResultValid = Results.SelectedItemObservable
+                .Select(result => result != null);
 
             var customResultValid = this.ObservableForProperty(x => x.CustomResult)
                 .Select(change => !string.IsNullOrWhiteSpace(change.Value));
@@ -148,8 +106,8 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            Current.Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
-            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
+            Current.Model.AnalysisID = Analyses.SelectedItem.AnalysisID;
+            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : Results.SelectedItem.Result;
             //Current.Model.AnalysisDate = this.AnalysisDate;
         }
         
