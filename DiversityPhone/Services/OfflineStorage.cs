@@ -495,8 +495,7 @@
 
         public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
-            return cachedQuery(AnalysisResult.Operations,
-            ctx =>
+            return uncachedQuery(ctx =>
                 from ar in ctx.AnalysisResults
                 where ar.AnalysisID == analysisID 
                 select ar

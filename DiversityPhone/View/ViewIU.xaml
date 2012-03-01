@@ -36,6 +36,9 @@
 
             <!--Pivot item two-->
             <controls:PivotItem Header="analyses">
+                <ListBox Grid.Row="1" 
+                 ItemsSource="{Binding Analyses}"
+                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
                 
                 
             </controls:PivotItem>

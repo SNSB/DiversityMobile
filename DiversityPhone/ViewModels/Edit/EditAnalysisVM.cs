@@ -19,8 +19,8 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
-
-        public IdentificationUnitAnalysis Model { get { return ValidModel.First(); } }        
+        private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
+        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }        
 
         private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
         public IList<Analysis> Analyses
@@ -96,6 +96,8 @@ namespace DiversityPhone.ViewModels
                 .Select(parent => new IdentificationUnitVM(Messenger,parent, Services.Page.Current))
                 .ToProperty(this, vm => vm.Parent);
 
+            _Model = ValidModel.ToProperty(this, x => x.Model);
+
             _Analyses = _Parent
                 .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
                 .ToProperty(this, vm => vm.Analyses);
@@ -148,9 +150,9 @@ namespace DiversityPhone.ViewModels
         {
             Current.Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
             Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
-            Current.Model.AnalysisDate = this.AnalysisDate;
-        }       
-
+            //Current.Model.AnalysisDate = this.AnalysisDate;
+        }
+        
         protected override IdentificationUnitAnalysis ModelFromState(PageState s)
         {
             //Existing IUAN

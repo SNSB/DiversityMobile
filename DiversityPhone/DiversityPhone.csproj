@@ -177,6 +177,7 @@
     <Compile Include="Utility\GeographySerialization.cs" />
     <Compile Include="Utility\ObservableConverter.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
+    <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />

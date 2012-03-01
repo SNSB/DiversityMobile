@@ -24,14 +24,12 @@ namespace DiversityPhone.ViewModels
         /// <summary>
         /// Provides the viewmodel retrieved from the PageState 
         /// if it is valid (i.e. non-null)
-        /// Replays the last ViewModel
         /// </summary>
         protected IObservable<ElementVMBase<T>> CurrentObservable { get; private set; }
 
         /// <summary>
         /// Provides the model retrieved from the PageState 
-        /// if it is valid (i.e. non-null)
-        /// Replays the last Model
+        /// if it is valid (i.e. non-null)        
         /// </summary>
         protected IObservable<T> ValidModel { get; private set; }
 

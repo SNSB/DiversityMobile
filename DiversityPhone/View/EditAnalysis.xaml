@@ -35,11 +35,11 @@
 
             <toolkit:ListPicker Header="Result" ItemsSource="{Binding AnalysisResults}" 
                                 SelectedItem="{Binding SelectedAnalysisResult, Mode=TwoWay}" 
-                                Visibility="{Binding IsCustomResult, ConverterParameter=false, Converter={StaticResource BoolToVis}}"
+                                Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                                 FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>                
                     
-            <StackPanel Orientation="Vertical" Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}">
+            <StackPanel Orientation="Vertical" Visibility="{Binding IsCustomResult, ConverterParameter=false, Converter={StaticResource BoolToVis}}">
         		<TextBlock TextWrapping="Wrap" Text="Result"/>
         		<TextBox TextWrapping="Wrap" Text="{Binding CustomResult, Mode=TwoWay}"/>
         	</StackPanel>
