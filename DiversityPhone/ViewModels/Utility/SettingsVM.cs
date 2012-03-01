@@ -133,6 +133,7 @@ namespace DiversityPhone.ViewModels.Utility
 
         private void OnSettings()
         {
+            _SetupSubscription.Disposable = null;
             Messenger.RegisterMessageSource(
                 Reset
                 .Take(1)

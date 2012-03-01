@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using DiversityPhone.Model;
 using System.Collections.Generic;
 using DiversityPhone.Services;
+using ReactiveUI.Xaml;
 
 
 
@@ -13,15 +14,20 @@ namespace DiversityPhone.ViewModels
     public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
     { 
         #region Properties
+
+
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
+
+
+        public IdentificationUnitAnalysis Model { get { return ValidModel.First(); } }        
 
         private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
         public IList<Analysis> Analyses
         {
             get
             {
-                return _Analyses.Value;
+                return (_Analyses != null) ? _Analyses.Value : null;
             }
         }
 
@@ -75,53 +81,50 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
+        ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
+
 
         public EditAnalysisVM()
-        {            
-            var viewUpdate = ValidModel
-                .Select(iuan => 
-                    {
-                        var parent = Storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
-                        var analyses = Storage.getPossibleAnalyses(parent.TaxonomicGroup);
-                        var selectedAN = (from an in analyses
-                                          where an.AnalysisID == iuan.AnalysisID
-                                          select an).FirstOrDefault() ?? analyses.FirstOrDefault();
-                        var results = (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null;
-                        var selectedResult = (results != null) ? (from res in results
-                                                                  where res.Result == iuan.AnalysisResult
-                                                                  select res).FirstOrDefault() ?? results.FirstOrDefault()
-                                                                  : null;
+            : base(false)
+        {
+            
+                
 
-                        return new {
-                            Parent = parent,
-                            Analyses = analyses,
-                            SelectedAN = selectedAN,
-                            Results = results,
-                            SelectedResult = selectedResult
-                        };
-                    })                
-                .Publish();
-            viewUpdate.Connect();
 
-            _Parent = viewUpdate
-                .Select(u => new IdentificationUnitVM(Messenger,u.Parent, Services.Page.Current))
+            _Parent = ValidModel
+                .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
+                .Select(parent => new IdentificationUnitVM(Messenger,parent, Services.Page.Current))
                 .ToProperty(this, vm => vm.Parent);
-            _Analyses = viewUpdate
-                .Select(u => u.Analyses)
+
+            _Analyses = _Parent
+                .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
                 .ToProperty(this, vm => vm.Analyses);
-            viewUpdate
-                .Select(u => u.SelectedAN)
+
+            this.ObservableForProperty(x => x.Analyses)
+                .Value()                
+                .Where(analyses => analyses != null)                                
+                .Select(analyses => (from an in analyses                                          
+                                    where an.AnalysisID == Model.AnalysisID
+                                    select an).FirstOrDefault() ?? analyses.FirstOrDefault())
                 .BindTo(this, x => x.SelectedAnalysis);
-            _AnalysisResults = viewUpdate
-                .Select(u => u.Results)
+
+            _AnalysisResults = this.ObservableForProperty(x => x.SelectedAnalysis)
+                .Select(change => change.Value)
+                .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)                
                 .ToProperty(this, vm => vm.AnalysisResults);
-            _IsCustomResult = viewUpdate
-                .Select(u => u.Results.Count == 0)
+            _IsCustomResult = _AnalysisResults
+                .Where(res => res != null)
+                .Select(results => results.Count == 0)
                 .ToProperty(this, vm => vm.IsCustomResult);
-            viewUpdate
-                .Select(u => u.SelectedResult)
+            this.ObservableForProperty(x => x.AnalysisResults) 
+                .Select(change => change.Value)
+                .Where(ars => ars != null)
+                .Select(results => (from res in results
+                                    where res.Result == Model.AnalysisResult
+                                    select res).FirstOrDefault() ?? results.FirstOrDefault())
                 .BindTo(this, x => x.SelectedAnalysisResult);
-            viewUpdate
+            _IsCustomResult
+                .Where(custom => custom)
                 .Select(_ => String.Empty)
                 .BindTo(this, x => x.CustomResult);
         }

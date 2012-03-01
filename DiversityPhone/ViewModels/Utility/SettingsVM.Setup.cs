@@ -25,6 +25,7 @@ namespace DiversityPhone.ViewModels.Utility
         public class SetupVM : ReactiveObject
         {
             SettingsVM _owner;
+            IDisposable _saveDisposable;
 
             #region Setup Properties
             public enum Pivots
@@ -135,12 +136,6 @@ namespace DiversityPhone.ViewModels.Utility
             public bool GettingRepositories { get { return _GettingRepositories.Value; } }
             private ObservableAsPropertyHelper<bool> _GettingRepositories;
             #endregion
-
-            
-            
-        
-        
-        
            
             public IObservable<bool> CanSave { get { return canSave(); } }
 
@@ -263,9 +258,9 @@ namespace DiversityPhone.ViewModels.Utility
                      finishSetup
                     .ItemsInflight
                     .Select(items => items > 0)
-                    .ToProperty(this, x => x.IsBusy);   
+                    .ToProperty(this, x => x.IsBusy);
 
-                _owner.Save
+                _saveDisposable = _owner.Save
                     .Subscribe(_ => finishSetup.Execute(null));
                 
 
@@ -274,6 +269,8 @@ namespace DiversityPhone.ViewModels.Utility
 
             private void finishSetupImpl()
             {
+                _saveDisposable.Dispose();
+
                 var settings = createSettings();
                 var credentials = new UserCredentials(settings);               
                     

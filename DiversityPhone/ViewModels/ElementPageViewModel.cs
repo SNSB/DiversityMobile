@@ -24,12 +24,14 @@ namespace DiversityPhone.ViewModels
         /// <summary>
         /// Provides the viewmodel retrieved from the PageState 
         /// if it is valid (i.e. non-null)
+        /// Replays the last ViewModel
         /// </summary>
         protected IObservable<ElementVMBase<T>> CurrentObservable { get; private set; }
 
         /// <summary>
         /// Provides the model retrieved from the PageState 
         /// if it is valid (i.e. non-null)
+        /// Replays the last Model
         /// </summary>
         protected IObservable<T> ValidModel { get; private set; }
 
@@ -77,7 +79,7 @@ namespace DiversityPhone.ViewModels
             var currentObs = model
                 .Where(m => m != null)
                 .Select(m => ViewModelFromModel(m))
-                .Publish();
+                .Replay(1);                
             CurrentObservable = currentObs;
             currentObs.Connect();
 
