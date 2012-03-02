@@ -208,7 +208,7 @@ namespace DiversityService
                     int newSeriesKey = (int) db.Insert(es);             
                     result.Add(es.SeriesID,newSeriesKey);
                     if(!string.IsNullOrEmpty(es.Geography))
-                        InsertGeographyIntoSeries(newSeriesKey,es.Geography);
+                        InsertGeographyIntoSeries(newSeriesKey,es.Geography,login);
                 }  
             }
           
@@ -414,12 +414,12 @@ namespace DiversityService
 
 
         #region GeoData
-        public void InsertGeographyIntoSeries(int seriesID, String geoString)
+        public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)
         {
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new DiversityORM.Diversity())
+            using (var db = new DiversityORM.Diversity(login))
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
                 db.Execute(sql);
