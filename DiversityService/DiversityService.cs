@@ -19,6 +19,42 @@ namespace DiversityService
         private const string CATALOG_DIVERSITYMOBILE = "DiversityMobile";
 
         #region Get
+
+        public IEnumerable<Term> GetStandardVocabulary()
+        {
+
+            IEnumerable<Term> linqTerms;
+            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            {
+                var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
+                                      select new Term()
+                                      {
+                                          Source = TermList.TaxonomicGroups, //TODO
+                                          Code = g.Code,
+                                          DisplayText = g.DisplayText
+                                      };
+
+                var unitRelationTypes = from t in ctx.DiversityMobile_UnitRelationTypes()
+                                        select new Term()
+                                        {
+                                            Source = TermList.RelationshipTypes, //TODO
+                                            Code = t.Code,
+                                            DisplayText = t.DisplayText,
+                                        };
+                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
+                                    select new Term()
+                                    {
+                                        Source = TermList.EventImageTypes,//TODO
+                                        Code = eit.Code,
+                                        DisplayText = eit.DisplayText
+                                    };
+
+                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
+            }
+            return linqTerms;
+
+        }
+
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
         {
             try
@@ -67,6 +103,37 @@ namespace DiversityService
             }
         }
 
+        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p, UserCredentials login)
+        {
+            using (var db = new DiversityORM.Diversity(login))
+            {
+                return analysesForProject(p.ProjectID, db).ToList();
+            }
+        }
+        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login)
+        {
+            using (var db = new DiversityORM.Diversity(login))
+            {
+                return analysisResultsForProject(p.ProjectID, db).ToList();
+            }
+        }
+
+        public UserProfile GetUserInfo(UserCredentials login)
+        {
+            try
+            {
+                using (var db = new DiversityORM.Diversity())
+                {
+                    return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+
+        }
+
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
             login.Repository = CATALOG_DIVERSITYMOBILE;
@@ -75,42 +142,7 @@ namespace DiversityService
                 return taxonListsForUser(login.LoginName,db).ToList();
             }
         }
-
-        public IEnumerable<Term> GetStandardVocabulary()
-        {
-
-            IEnumerable<Term> linqTerms;
-            using (var ctx = new DiversityCollectionFunctionsDataContext())
-            {
-                var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
-                                      select new Term()
-                                      {
-                                          Source = TermList.TaxonomicGroups, //TODO
-                                          Code = g.Code,
-                                          DisplayText = g.DisplayText
-                                      };
-
-                var unitRelationTypes = from t in ctx.DiversityMobile_UnitRelationTypes()
-                                        select new Term()
-                                        {
-                                            Source = TermList.RelationshipTypes, //TODO
-                                            Code = t.Code,
-                                            DisplayText = t.DisplayText,                                            
-                                        };
-                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()                                    
-                                    select new Term()
-                                    {
-                                        Source = TermList.EventImageTypes,//TODO
-                                        Code = eit.Code,
-                                        DisplayText = eit.DisplayText
-                                    };               
-  
-                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
-            }
-            return linqTerms;
-
-        }
-
+      
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
         {
             login.Repository = CATALOG_DIVERSITYMOBILE;
@@ -132,46 +164,35 @@ namespace DiversityService
             }         
         }
 
-        public IEnumerable<string> GetAvailablePropertyLists()
+        public IEnumerable<Model.PropertyList> GetPropertyListsForUser(UserCredentials login)
         {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Model.PropertyName> DownloadPropertyList(string list)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p, UserCredentials login)
-        {
+            login.Repository = CATALOG_DIVERSITYMOBILE;
             using (var db = new DiversityORM.Diversity(login))
             {
-                return analysesForProject(p.ProjectID,db).ToList();
+                return propertyListsForUser(login.LoginName, db).ToList();
             }
         }
-        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login)
+
+        public IEnumerable<Model.PropertyName> DownloadPropertyList(PropertyList list, int page, UserCredentials login)
         {
+            login.Repository = CATALOG_DIVERSITYMOBILE;
             using (var db = new DiversityORM.Diversity(login))
             {
-                return analysisResultsForProject(p.ProjectID,db).ToList();         
-            }
-        }     
+                //TODO Improve SQL Sanitation
+                if (list.Table.Contains(';') ||
+                    list.Table.Contains('\'') ||
+                    list.Table.Contains('"'))
+                    return Enumerable.Empty<PropertyName>();  //SQL Injection ?
 
-        public UserProfile GetUserInfo(UserCredentials login)
-        {
-            try
-            {
-                using (var db = new DiversityORM.Diversity())
-                {
-                    return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
-                }
-            }
-            catch
-            {
-                return null;
-            }
-
+                var sql = PetaPoco.Sql.Builder
+                    .From(String.Format("[dbo].[{0}] AS [PropertyName]", list.Table))
+                    .SQL;
+                var res = db.Page<PropertyName>(page, 1000, sql).Items;
+                return res;
+            }      
         }
+
+       
         #endregion
 
 
@@ -441,16 +462,16 @@ namespace DiversityService
                     DisplayName = "Test",
                     Database = "DiversityCollection_Test"
                 },
-                //new Repository() // In München funktionen noch nicht implementiert
-                //{
-                //    DisplayName="DiversityCollection",
-                //    Database="DiversityCollection",
-                //},
-                 //new Repository() // In München funktionen noch nicht implementiert
-                //{
-                //    DisplayName="DiversityCollection Monitoring",
-                //    Database="DiversityCollection_Monitoring",
-                //},
+                new Repository() // In München funktionen noch nicht implementiert
+                {
+                    DisplayName="DiversityCollection",
+                    Database="DiversityCollection",
+                },
+                 new Repository() // In München funktionen noch nicht implementiert
+                {
+                    DisplayName="DiversityCollection Monitoring",
+                    Database="DiversityCollection_Monitoring",
+                },
             };
         }
         #endregion
@@ -478,6 +499,23 @@ namespace DiversityService
             UTF8Encoding encoding = new UTF8Encoding();
             String constructedString = encoding.GetString(characters);
             return (constructedString);
+        }
+
+        public int InsertEventSeriesForAndroid(int SeriesID, String Description)
+        {
+            EventSeries es = new EventSeries();
+            es.SeriesID = SeriesID;
+            es.Description = Description;
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                {
+                    var newSeries = es.ToEntity();
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    return newSeries.SeriesID;
+                }
+
+            }
         }
         #endregion
 

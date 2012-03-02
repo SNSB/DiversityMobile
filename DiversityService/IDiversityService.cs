@@ -11,6 +11,10 @@ namespace DiversityService
     [ServiceContract]    
     public interface IDiversityService
     {
+        #region Repository
+        #region Download
+        [OperationContract]
+        IEnumerable<Term> GetStandardVocabulary();
 
         [OperationContract]
         UserProfile GetUserInfo(UserCredentials login);
@@ -21,38 +25,51 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserCredentials login);
         
-
-        [OperationContract]
-        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
-        [OperationContract]
-        IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
-
-
-        [OperationContract]
-        IEnumerable<Term> GetStandardVocabulary();
-
-        [OperationContract]
-        String GetXMLStandardVocabulary();        
-
         [OperationContract]
         IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login);
         [OperationContract]
         IEnumerable<Analysis> GetAnalysesForProject(Project p, UserCredentials login);
         [OperationContract]
         IEnumerable<AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login);
+        #endregion
 
-
-        [OperationContract]
-        IEnumerable<string> GetAvailablePropertyLists();
-        [OperationContract]
-        IEnumerable<PropertyName> DownloadPropertyList(string list);
+        #region Upload
 
         [OperationContract]
-        Dictionary<int,int> InsertEventSeries(IList<EventSeries> series);
+        Dictionary<int, int> InsertEventSeries(IList<EventSeries> series);
         [OperationContract]
         void InsertGeographyIntoSeries(int seriesID, string geostring);
 
         [OperationContract]
         KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred);
+
+        #endregion
+        #endregion
+
+        #region DB "DiversityMobile" Attribute SNSB
+
+        [OperationContract]
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
+        [OperationContract]
+        IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
+        [OperationContract]
+        IEnumerable<PropertyList> GetPropertyListsForUser(UserCredentials login);
+        [OperationContract]
+        IEnumerable<PropertyName> DownloadPropertyList(PropertyList list, int page, UserCredentials login);
+
+        #endregion
+
+
+       
+
+        #region Android
+        
+        [OperationContract]
+        String GetXMLStandardVocabulary();
+
+        [OperationContract]
+        int InsertEventSeriesForAndroid(int SeriesID, String Description);
+
+        #endregion;
     }   
 }

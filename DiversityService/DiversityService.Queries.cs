@@ -27,5 +27,10 @@ namespace DiversityService
             return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", projectID);
         }
 
+        private static IEnumerable<PropertyList> propertyListsForUser(string loginName, Diversity db)
+        {
+            return db.Query<PropertyList>("FROM [PropertyListsForUser](@0) AS [PropertyList]", loginName);
+        }
+
     }
 }

@@ -95,6 +95,49 @@ namespace DiversityPhone.Services
             return res;
         }
 
+        public IObservable<IEnumerable<PropertyList>> GetPropertyLists()
+        {
+            var res = Observable.FromEvent<EventHandler<GetPropertyListsForUserCompletedEventArgs>, GetPropertyListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetPropertyListsForUserCompleted += d, d => _svc.GetPropertyListsForUserCompleted -= d)
+                .Select(args => args.Result as IEnumerable<PropertyList>)
+                .Take(1);
+            _svc.GetPropertyListsForUserAsync(GetCreds());
+            return res;
+        }
+
+
+        public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyListChunked(PropertyList list)
+        {
+            var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
+            int chunk = 1; //First Chunk is 1, not 0!
+
+            var res = Observable.FromEvent<EventHandler<DownloadPropertyListCompletedEventArgs>, DownloadPropertyListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyListCompleted += d, d => localclient.DownloadPropertyListCompleted -= d)
+                .Select(args => args.Result ?? Enumerable.Empty<PropertyName>())
+                .Select(taxa => taxa.Select(
+                    property => new Client.PropertyName
+                    {
+                        PropertyUri=property.PropertyUri,
+                        PropertyID=property.PropertyID,
+                        TermID=property.TermID,
+                        BroaderTermID = property.BroaderTermID,
+                        DisplayText = property.DisplayText,
+
+                    }))
+                .TakeWhile(taxonChunk =>
+                {
+                    if (taxonChunk.Any())
+                    {
+                        //There might still be more Taxa -> request next chunk
+                        localclient.DownloadPropertyListAsync(list, ++chunk, GetCreds());
+                        return true;
+                    }
+                    else //Transfer finished
+                        return false;
+                });
+            //Request first chunk
+            localclient.DownloadPropertyListAsync(list, chunk, GetCreds());
+            return res;
+        }
+
         public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
         {
             var res = Observable.FromEvent<EventHandler<GetStandardVocabularyCompletedEventArgs>, GetStandardVocabularyCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetStandardVocabularyCompleted += d, d => _svc.GetStandardVocabularyCompleted -= d)
