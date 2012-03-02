@@ -47,6 +47,11 @@ namespace DiversityPhone.ViewModels
 
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _Subunits;
         public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
+
+
+        public IEnumerable<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<IdentificationUnitAnalysisVM>> _Analyses;
+        
         
         #endregion
 
@@ -58,9 +63,13 @@ namespace DiversityPhone.ViewModels
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, vm => vm.Subunits);
 
+            _Analyses = ValidModel
+                .Select(iu => getAnalyses(iu))
+                .ToProperty(this, x => x.Analyses);
+
             _Parent = ValidModel
                 .Select(iu => Storage.getSpecimenByID(iu.SpecimenID))
-                .Select(spec => new SpecimenVM(Messenger, spec, Page.Current))
+                .Select(spec => new SpecimenVM(Messenger, spec, Page.Current, _ => false))
                 .ToProperty(this, x => x.Parent);
 
 
@@ -85,6 +94,11 @@ namespace DiversityPhone.ViewModels
                     })
                 .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
             Messenger.RegisterMessageSource(addMessageSource);         
+        }
+
+        private IEnumerable<IdentificationUnitAnalysisVM> getAnalyses(IdentificationUnit iu)
+        {
+            return Storage.getIUANForIU(iu).Select(iuan => new IdentificationUnitAnalysisVM(Messenger, iuan));
         }
 
         protected override IdentificationUnit ModelFromState(PageState s)

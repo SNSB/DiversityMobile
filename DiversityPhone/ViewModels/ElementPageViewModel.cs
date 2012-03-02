@@ -29,7 +29,7 @@ namespace DiversityPhone.ViewModels
 
         /// <summary>
         /// Provides the model retrieved from the PageState 
-        /// if it is valid (i.e. non-null)
+        /// if it is valid (i.e. non-null)        
         /// </summary>
         protected IObservable<T> ValidModel { get; private set; }
 
@@ -77,7 +77,7 @@ namespace DiversityPhone.ViewModels
             var currentObs = model
                 .Where(m => m != null)
                 .Select(m => ViewModelFromModel(m))
-                .Publish();
+                .Publish();                
             CurrentObservable = currentObs;
             currentObs.Connect();
 

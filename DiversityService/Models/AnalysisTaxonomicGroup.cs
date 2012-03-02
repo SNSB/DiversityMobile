@@ -19,5 +19,10 @@ namespace DiversityService.Model
                 return base.Equals(obj);
         }
 
+        public override int GetHashCode()
+        {
+            return AnalysisID ^ TaxonomicGroup.GetHashCode();
+        }
+
     }
 }

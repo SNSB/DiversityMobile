@@ -2,9 +2,9 @@
 	<DiversityPhone_ViewModels:HomeVM.Add>
 		<ReactiveUI_Xaml:ReactiveCommand/>
 	</DiversityPhone_ViewModels:HomeVM.Add>
-	<DiversityPhone_ViewModels:HomeVM.GetVocabulary>
+	<DiversityPhone_ViewModels:HomeVM.GetSampleTaxa>
 		<ReactiveUI_Xaml:ReactiveCommand/>
-	</DiversityPhone_ViewModels:HomeVM.GetVocabulary>
+	</DiversityPhone_ViewModels:HomeVM.GetSampleTaxa>
 	<DiversityPhone_ViewModels:HomeVM.SeriesList>
 		<DiversityPhone_ViewModels:EventSeriesVM Description="Vestibulum aliquam class curae adipiscing" Icon="Observation">
 			<DiversityPhone_ViewModels:EventSeriesVM.Edit>

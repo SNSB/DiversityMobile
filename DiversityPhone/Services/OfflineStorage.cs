@@ -469,8 +469,8 @@
 
         public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
-            return cachedQuery(Analysis.Operations,
-                ctx =>
+        //This query can't be (unordered join) and doesn't have to be (very small) cached 
+            return uncachedQuery(ctx =>
                 from an in ctx.Analyses
                 join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
                 where atg.TaxonomicGroup == taxonomicGroup
@@ -495,8 +495,7 @@
 
         public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
-            return cachedQuery(AnalysisResult.Operations,
-            ctx =>
+            return uncachedQuery(ctx =>
                 from ar in ctx.AnalysisResults
                 where ar.AnalysisID == analysisID 
                 select ar
@@ -517,7 +516,15 @@
             using (var ctx = new DiversityDataContext())
             {
                 ctx.AnalysisTaxonomicGroups.InsertAllOnSubmit(groups);
-                ctx.SubmitChanges();
+                try
+                {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+                
             }
         }
 
@@ -1058,7 +1065,7 @@
             {
                 using (var ctx = new DiversityDataContext())
                 {
-                    return queryProvider(ctx)
+                    return queryProvider(ctx)                        
                         .Skip(offset)
                         .Take(count)
                         .ToList();

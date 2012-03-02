@@ -33,6 +33,9 @@ namespace DiversityPhone.Model
         public AppSettings Clone()
         {
             return (AppSettings)this.MemberwiseClone();
-        }
+        }       
+            
     }
+
+    
 }

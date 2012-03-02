@@ -54,8 +54,5 @@ namespace DiversityService
 
         [OperationContract]
         KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred);
-
-        [OperationContract]
-        HierarchySection CreateNewHierarchy();
     }   
 }

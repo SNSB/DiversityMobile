@@ -35,7 +35,7 @@ namespace DiversityPhone
         private void GetVoc_Click(object sender, EventArgs e)
         {
             if (VM != null)
-                VM.GetVocabulary.Execute(null);
+                VM.GetSampleTaxa.Execute(null);
         }
 
         private void UploadMMO_Click(object sender, EventArgs e)

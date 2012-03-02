@@ -81,4 +81,8 @@
     <DataTemplate x:Key="GeoRefItemTemplate">
         <TextBlock><Run Text="GEOREF"/></TextBlock>
     </DataTemplate>
+    
+    <DataTemplate x:Key="DisplayTextItemTemplate">
+        <TextBlock Text="{Binding DisplayText}"/>
+    </DataTemplate>
 </ResourceDictionary>

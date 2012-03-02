@@ -16,6 +16,11 @@ namespace DiversityService.Test
             Repository = "DiversityCollection_Test"
         };
 
+        private Project testProject = new Project()
+        {
+            ProjectID = 1100,            
+        };
+
         private DiversityServiceClient _target;
         public DiversityServiceTest()
         {
@@ -103,13 +108,10 @@ namespace DiversityService.Test
         public void AnalysesForProject_should_work()
         {
             //Prepare
-            var project = new Project()
-            {
-                ProjectID = 1100,
-            };
+            
 
             //Execute
-            var analyses = _target.GetAnalysesForProject(project);
+            var analyses = _target.GetAnalysesForProject(testProject, testCredentials);
 
 
             //Assert
@@ -119,14 +121,10 @@ namespace DiversityService.Test
         [Fact]
         public void AnalysisResultsForProject_should_work()
         {
-            //Prepare
-            var project = new Project()
-            {
-                ProjectID = 1100,
-            };
+            //Prepare            
 
             //Execute
-            var ar = _target.GetAnalysisResultsForProject(project);
+            var ar = _target.GetAnalysisResultsForProject(testProject, testCredentials);
 
 
             //Assert
@@ -137,13 +135,10 @@ namespace DiversityService.Test
         public void GetAnalysisTaxonomicGroupsForProject_should_work()
         {
             //Prepare
-            var project = new Project()
-            {
-                ProjectID = 1100,
-            };
+           
 
             //Execute
-            var ar = _target.GetAnalysisTaxonomicGroupsForProject(project);
+            var ar = _target.GetAnalysisTaxonomicGroupsForProject(testProject, testCredentials);
 
 
             //Assert
@@ -166,6 +161,20 @@ namespace DiversityService.Test
             Assert.Equal(ar.Distinct(new TermComparer()).Count(),ar.Count());
         }
 
+        [Fact]
+        public void ATGs_should_be_unique()
+        {
+            //Prepare          
+
+            //Execute
+            var ar = _target.GetAnalysisTaxonomicGroupsForProject(testProject, testCredentials);
+
+
+            //Assert
+            Assert.NotEmpty(ar);
+            Assert.Equal(ar.Distinct(new ATGComparer()).Count(), ar.Count());
+        }
+
         private class TermComparer : IEqualityComparer<Term>
         {
 
@@ -177,6 +186,20 @@ namespace DiversityService.Test
             public int GetHashCode(Term obj)
             {
                 return (obj.Code.GetHashCode() ^ obj.Source.GetHashCode());
+            }
+        }
+
+        private class ATGComparer : IEqualityComparer<AnalysisTaxonomicGroup>
+        {
+
+            public bool Equals(AnalysisTaxonomicGroup x, AnalysisTaxonomicGroup y)
+            {
+                return x.AnalysisID == y.AnalysisID && x.TaxonomicGroup == y.TaxonomicGroup;
+            }
+
+            public int GetHashCode(AnalysisTaxonomicGroup obj)
+            {
+                return (obj.AnalysisID.GetHashCode() ^ obj.TaxonomicGroup.GetHashCode());
             }
         }
 

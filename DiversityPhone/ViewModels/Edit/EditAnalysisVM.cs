@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using DiversityPhone.Model;
 using System.Collections.Generic;
 using DiversityPhone.Services;
+using ReactiveUI.Xaml;
 
 
 
@@ -13,43 +14,21 @@ namespace DiversityPhone.ViewModels
     public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
     { 
         #region Properties
+
+
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
 
-        private ObservableAsPropertyHelper<IList<Analysis>> _Analyses;
-        public IList<Analysis> Analyses
-        {
-            get
-            {
-                return _Analyses.Value;
-            }
-        }
+        private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
+        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
 
-        private Analysis _SelectedAnalysis;
-        public Analysis SelectedAnalysis
-        {
-            get { return _SelectedAnalysis; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysis, ref _SelectedAnalysis, value); }
-        }
+        public ListSelectionHelper<Analysis> Analyses { get; private set; }
 
-        private ObservableAsPropertyHelper<IList<AnalysisResult>> _AnalysisResults = null;
-        public IList<AnalysisResult> AnalysisResults
-        {
-            get
-            {
-                return _AnalysisResults.Value;
-            }
-        }
+        private ListSelectionHelper<AnalysisResult> _Results = new ListSelectionHelper<AnalysisResult>();
+        public ListSelectionHelper<AnalysisResult> Results { get { return _Results; } }
 
         private ObservableAsPropertyHelper<bool> _IsCustomResult;
-        public bool IsCustomResult { get { return _IsCustomResult.Value; } }
-
-        public AnalysisResult _SelectedAnalysisResult;
-        public AnalysisResult SelectedAnalysisResult
-        {
-            get { return _SelectedAnalysisResult; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedAnalysisResult, ref _SelectedAnalysisResult, value); }
-        }
+        public bool IsCustomResult { get { return _IsCustomResult.Value; } }        
 
         private string _CustomResult;
         public string CustomResult
@@ -75,60 +54,45 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
+        ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
+
 
         public EditAnalysisVM()
-        {            
-            var viewUpdate = ValidModel
-                .Select(iuan => 
-                    {
-                        var parent = Storage.getIdentificationUnitByID(iuan.IdentificationUnitID);
-                        var analyses = Storage.getPossibleAnalyses(parent.TaxonomicGroup);
-                        var selectedAN = (from an in analyses
-                                          where an.AnalysisID == iuan.AnalysisID
-                                          select an).FirstOrDefault() ?? analyses.First();
-                        var results = Storage.getPossibleAnalysisResults(selectedAN.AnalysisID);                        
-                        var selectedResult = (from res in results
-                                              where res.Result == iuan.AnalysisResult
-                                              select res).FirstOrDefault() ?? results.FirstOrDefault();
+            : base(false)
+        {
+            
+                
 
-                        return new {
-                            Parent = parent,
-                            Analyses = analyses,
-                            SelectedAN = selectedAN,
-                            Results = results,
-                            SelectedResult = selectedResult
-                        };
-                    })                
-                .Publish();
-            viewUpdate.Connect();
 
-            _Parent = viewUpdate
-                .Select(u => new IdentificationUnitVM(Messenger,u.Parent, Services.Page.Current))
+            _Parent = ValidModel
+                .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
+                .Select(parent => new IdentificationUnitVM(Messenger,parent, Services.Page.Current))
                 .ToProperty(this, vm => vm.Parent);
-            _Analyses = viewUpdate
-                .Select(u => u.Analyses)
-                .ToProperty(this, vm => vm.Analyses);
-            viewUpdate
-                .Select(u => u.SelectedAN)
-                .BindTo(this, x => x.SelectedAnalysis);
-            _AnalysisResults = viewUpdate
-                .Select(u => u.Results)
-                .ToProperty(this, vm => vm.AnalysisResults);
-            _IsCustomResult = viewUpdate
-                .Select(u => u.Results.Count == 0)
-                .ToProperty(this, vm => vm.IsCustomResult);
-            viewUpdate
-                .Select(u => u.SelectedResult)
-                .BindTo(this, x => x.SelectedAnalysisResult);
-            viewUpdate
+
+            _Model = ValidModel.ToProperty(this, x => x.Model);
+
+            Analyses = new ListSelectionHelper<Analysis>();
+            _Parent
+                .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
+                .Subscribe(Analyses.ItemsSubject);
+                        
+            Analyses.SelectedItemObservable
+                .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
+                .Subscribe(Results.ItemsSubject);
+            _IsCustomResult = Results.ItemsSubject
+                .Where(res => res != null)
+                .Select(results => results.Count == 0)
+                .ToProperty(this, vm => vm.IsCustomResult);          
+            _IsCustomResult
+                .Where(custom => custom)
                 .Select(_ => String.Empty)
                 .BindTo(this, x => x.CustomResult);
         }
 
         protected override IObservable<bool> CanSave()
         {
-            var vocabularyResultValid = this.ObservableForProperty(x => x.SelectedAnalysisResult)
-                .Select(change => change.Value != null);
+            var vocabularyResultValid = Results.SelectedItemObservable
+                .Select(result => result != null);
 
             var customResultValid = this.ObservableForProperty(x => x.CustomResult)
                 .Select(change => !string.IsNullOrWhiteSpace(change.Value));
@@ -142,11 +106,11 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            Current.Model.AnalysisID = this.SelectedAnalysis.AnalysisID;
-            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : SelectedAnalysisResult.Result;
-            Current.Model.AnalysisDate = this.AnalysisDate;
-        }       
-
+            Current.Model.AnalysisID = Analyses.SelectedItem.AnalysisID;
+            Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : Results.SelectedItem.Result;
+            //Current.Model.AnalysisDate = this.AnalysisDate;
+        }
+        
         protected override IdentificationUnitAnalysis ModelFromState(PageState s)
         {
             //Existing IUAN

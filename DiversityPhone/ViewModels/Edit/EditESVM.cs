@@ -101,7 +101,8 @@
             var endsAfterItBegins =
                 this.ObservableForProperty(x => x.SeriesEnd)
                 .CombineLatest(ValidModel, (end, model) => new { SeriesEnd = end, Model = model })
-                .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart);
+                .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart)
+                .StartWith(true);
             
             return descriptionNonEmpty.BooleanAnd(endsAfterItBegins);
         }
