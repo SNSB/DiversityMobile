@@ -36,9 +36,9 @@ namespace DiversityService
         #region Upload
 
         [OperationContract]
-        Dictionary<int, int> InsertEventSeries(IList<EventSeries> series);
+        Dictionary<int, int> InsertEventSeries(IList<EventSeries> series, UserCredentials login);
         [OperationContract]
-        void InsertGeographyIntoSeries(int seriesID, string geostring);
+        void InsertGeographyIntoSeries(int seriesID, string geostring, UserCredentials login);
 
         [OperationContract]
         KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred);

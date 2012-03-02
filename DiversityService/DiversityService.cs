@@ -196,20 +196,19 @@ namespace DiversityService
         #endregion
 
 
-        public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series)
+        public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var db=new DiversityORM.Diversity(login))
             {
 
                 foreach (EventSeries es in series)
                 {
                     var newSeries = es.ToEntity();
-                    ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();                
-                    result.Add(es.SeriesID,newSeries.SeriesID);
+                    int newSeriesKey = (int) db.Insert(es);             
+                    result.Add(es.SeriesID,newSeriesKey);
                     if(!string.IsNullOrEmpty(es.Geography))
-                        InsertGeographyIntoSeries(es.SeriesID,es.Geography);
+                        InsertGeographyIntoSeries(newSeriesKey,es.Geography);
                 }  
             }
           
