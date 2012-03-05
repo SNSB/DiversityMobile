@@ -68,8 +68,15 @@
     <Reference Include="WindowsPhoneEssentials.Testing">
       <HintPath>..\packages\WindowsPhoneEssentials.Testing.0.7.2.88\lib\SL4-WindowsPhone\WindowsPhoneEssentials.Testing.dll</HintPath>
     </Reference>
-    <Reference Include="xunit-silverlight-wp7, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="xunit.extensions-silverlight-wp7, Version=1.6.1.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.0.1566\lib\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit-silverlight-wp7">
+      <HintPath>..\Lib\xunitcontrib-silverlight.0.2\WindowsPhone7\xunit-silverlight-wp7.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions-silverlight-wp7">
+      <HintPath>..\Lib\xunitcontrib-silverlight.0.2\WindowsPhone7\xunit.extensions-silverlight-wp7.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
