@@ -51,8 +51,9 @@ namespace DiversityPhone.ViewModels
 
         public IEnumerable<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<IdentificationUnitAnalysisVM>> _Analyses;
-        
-        
+
+        public IEnumerable<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _MMOList;
         #endregion
 
         
@@ -71,6 +72,11 @@ namespace DiversityPhone.ViewModels
                 .Select(iu => Storage.getSpecimenByID(iu.SpecimenID))
                 .Select(spec => new SpecimenVM(Messenger, spec, Page.Current, _ => false))
                 .ToProperty(this, x => x.Parent);
+
+            _MMOList = ValidModel
+               .Select(iu => Storage.getMultimediaForObject(ReferrerType.IdentificationUnit, iu.UnitID))
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+               .ToProperty(this, x => x.MMOList);
 
 
             Add = new ReactiveCommand();

@@ -1,13 +1,15 @@
-﻿namespace DiversityPhone.ViewModels
+﻿using System;
+using ReactiveUI;
+using System.Reactive.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using DiversityPhone.Messages;
+using DiversityPhone.Services;
+using ReactiveUI.Xaml;
+using System.Linq;
+namespace DiversityPhone.ViewModels
 {
-    using System;
-    using ReactiveUI;
-    using System.Reactive.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using DiversityPhone.Messages;
-    using DiversityPhone.Services;
-    using ReactiveUI.Xaml;
+   
 
     public class ViewCSVM : ElementPageViewModel<Specimen>
     {
@@ -37,6 +39,10 @@
         
         public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
+
+        public IEnumerable<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _MMOList;
+
         #endregion
 
 
@@ -48,6 +54,12 @@
             _UnitList = ValidModel
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
+
+            _MMOList = ValidModel
+                .Select(cs => Storage.getMultimediaForObject(ReferrerType.Specimen, cs.CollectionSpecimenID))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.MMOList);
+                    
 
             Messenger.RegisterMessageSource(
                 Add
