@@ -140,9 +140,9 @@ namespace DiversityPhone.ViewModels.Utility
             public IObservable<bool> CanSave { get { return canSave(); } }
 
             #region Async Operations
-            ReactiveAsyncCommand getRepositories = new ReactiveAsyncCommand();
-            ReactiveAsyncCommand getProjects = new ReactiveAsyncCommand();
-            ReactiveAsyncCommand getUserInfo = new ReactiveAsyncCommand();
+            ReactiveAsyncCommand getRepositories = new ReactiveAsyncCommand(null,0);
+            ReactiveAsyncCommand getProjects = new ReactiveAsyncCommand(null, 0);
+            ReactiveAsyncCommand getUserInfo = new ReactiveAsyncCommand(null, 0);
             ReactiveAsyncCommand finishSetup = new ReactiveAsyncCommand();
             #endregion
 
@@ -201,7 +201,8 @@ namespace DiversityPhone.ViewModels.Utility
                         this.ObservableForProperty(x => x.UserName),
                         this.ObservableForProperty(x => x.Password),
                         (user, pass) => new UserCredentials() { LoginName = user.Value, Password = pass.Value }
-                    ).DistinctUntilChanged();
+                    )                    
+                    .DistinctUntilChanged();
 
                 var credsWithRepo =
                     Observable.CombineLatest(
@@ -221,7 +222,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingRepositories);
                 _Databases = 
                     getRepositories
-                    .RegisterAsyncFunction(login => _owner._DivSvc.GetRepositories(login as UserCredentials).First())
+                    .RegisterAsyncFunction(login => _owner._DivSvc.GetRepositories(login as UserCredentials).Timeout(TimeSpan.FromSeconds(30),Observable.Return<IList<Repository>>(null)).First())
                     .ToProperty(this, x => x.Databases);
                 _Databases
                     .Where(dbs => dbs.Any())

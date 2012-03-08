@@ -19,7 +19,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class TaxonManagementVM : PageViewModel
+    public partial class TaxonManagementVM : PageViewModel
     {
         #region Services
         private IOfflineStorage Storage { get; set; }
@@ -28,17 +28,19 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
 
-        public bool IsRefreshing { get { return _IsRefreshing.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsRefreshing;
+        public bool IsBusy { get { return _IsBusy.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsBusy;       
 
-        public bool IsDownloading { get { return _IsDownloading.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsDownloading;
+        private IList<TaxonSelection> _TaxonSelections;
+        public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
+        public ReactiveCollection<TaxonListVM> RepoLists { get; private set; } 
+     
+        private ReactiveAsyncCommand getRepoLists = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand downloadTaxonList = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
 
-        public IEnumerable<TaxonSelectionVM> TaxonLists { get { return _TaxonLists.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<TaxonSelectionVM>> _TaxonLists;
-        
-
-
+        public ReactiveCommand SelectOrDownload { get; private set; }
+        public ReactiveCommand Delete { get; private set; }
         
 
         #endregion
@@ -47,77 +49,100 @@ namespace DiversityPhone.ViewModels
             : base(messenger)
         {
             Storage = storage;
-            Service = service;            
+            Service = service;
 
-            _TaxonLists = DistinctStateObservable
-                .SelectMany(_ => Service.GetTaxonLists())                
-                .Select(taxlists =>
+            _IsBusy = Observable.Merge(
+                deleteTaxonList.ItemsInflight.Select(count => count > 0),
+                downloadTaxonList.ItemsInflight.Select(count => count > 0)
+                ).ToProperty(this, x => x.IsBusy, false);
+
+            SelectOrDownload = new ReactiveCommand(_IsBusy.Select(x => !x));
+            SelectOrDownload
+                .Where(argument => argument is TaxonListVM)
+                .Select(argument => argument as TaxonListVM)
+                .Subscribe(taxonlist =>
                     {
-                        var selections =
-                            Storage.getTaxonSelections()
-                                .OrderBy(tls => tls.TableName);
-                        var availableLists =
-                            taxlists
-                                .OrderBy(tl => tl.Table);
+                        if (taxonlist.IsDownloaded) //Local list
+                        {
+                            if (!taxonlist.IsSelected)
+                            {
+                                Storage.selectTaxonList(taxonlist.Model);
+                                taxonlist.IsSelected = true;
+                            }
+                        }
+                        else //Repo list
+                        {
+                            if (Storage.getTaxonTableFreeCount() > 0)
+                            {
+                                if(downloadTaxonList.CanExecute(taxonlist))
+                                    downloadTaxonList.Execute(taxonlist);
+                            }
+                            else
+                                Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, "Error", "Can't download more than 10 Taxon tables."));
+                        }
+                    });
+            Delete = new ReactiveCommand(_IsBusy.Select(x => !x));
+            Delete
+                .Where(argument => argument is TaxonListVM)
+                .Select(argument => argument as TaxonListVM)
+                .Subscribe(taxonlist =>
+                    {
+                        if (taxonlist.IsDownloaded && deleteTaxonList.CanExecute(taxonlist.Model))
+                        {
+                            deleteTaxonList.Execute(taxonlist.Model);                            
+                            taxonlist.IsDownloaded = false;
+                            taxonlist.IsSelected = false;
+                            LocalLists.Remove(taxonlist);
+                            RepoLists.Add(taxonlist);
+                        }
+                    });
 
-                        return from tl in availableLists
-                               join sel in selections on tl.Table equals sel.TableName into outer
-                               from sel in outer.DefaultIfEmpty()
-                               orderby tl.DisplayText
-                               select new TaxonSelectionVM(this, tl, sel);
-                    })
-                .ToProperty(this, vm => vm.TaxonLists);
-                             
-                
-                
-                
+
+            var taxonSelections = DistinctStateObservable
+                .Take(1)
+                .Select(_ => Storage.getTaxonSelections())
+                .Publish();
+            taxonSelections.Connect();
+
+
+            LocalLists =            
+                taxonSelections
+                .SelectMany(selections => selections)
+                .Select(selection => 
+                { 
+                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup }, SelectOrDownload)
+                    { 
+                        IsDownloaded = true, 
+                        IsSelected = selection.IsSelected
+                    };
+                })
+                .CreateCollection();
+
+            RepoLists = 
+                getRepoLists
+                    .RegisterAsyncFunction(_ => getRepoListsImpl())
+                    .CombineLatest(taxonSelections, (repolists, localselections) =>
+                        repolists.Where(repolist => !localselections.Any(selection => selection.TableName == repolist.Table)) //Filter Lists that have already been downloaded
+                        )
+                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list, SelectOrDownload) { IsDownloaded = false, IsSelected = false }))
+                    .CreateCollection();
+
+            deleteTaxonList
+                .RegisterAsyncAction(arg => deleteListImpl(arg as TaxonList));
+
+            getRepoLists.Execute(null);                       
         }
 
-        public class TaxonSelectionVM
+        private IEnumerable<TaxonList> getRepoListsImpl()
         {
-            TaxonManagementVM _parent;
+            return Service.GetTaxonLists().First();
+        }
 
-            TaxonList _list;
-            TaxonSelection _selection;
-            public TaxonSelectionVM(TaxonManagementVM parent, TaxonList list, TaxonSelection selection)
-            {
-                _parent = parent;
-                _list = list;
-                _selection = selection;   
-             
+        private void deleteListImpl(TaxonList list)
+        {
+            Storage.deleteTaxonList(list);
+        }
 
-            }
-
-            public string Name { get { return _list.DisplayText; } }
-
-            public Icon Icon
-            {
-                get
-                {
-                    try
-                    {
-                        return (Icon)Enum.Parse(typeof(Icon), _list.TaxonomicGroup, true);
-                    }
-                    catch
-                    {
-                        return Icon.None;
-                    }
-                }
-            }
-
-            public ReactiveCommand Download { get; private set; }
-            public ReactiveCommand Select { get; private set; }
-
-
-            public bool IsDownloaded { get { return _IsDownloaded.Value; } }
-            private ObservableAsPropertyHelper<bool> _IsDownloaded;
-
-
-            public bool IsSelected { get { return _IsSelected.Value; } }
-            private ObservableAsPropertyHelper<bool> _IsSelected;
         
-        
-
-        }        
     }
 }

@@ -1,6 +1,7 @@
 ﻿<Application 
     x:Class="DiversityPhone.App"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"   
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
@@ -14,6 +15,8 @@
     			<ResourceDictionary Source="Templates.xaml"/>
                 <ResourceDictionary Source="Styles.xaml"/>
     		</ResourceDictionary.MergedDictionaries>
+            <sys:String x:Key="AppTitle">DiversityPhone</sys:String>
+            
     		<local:ViewModelLocator x:Key="Locator" />
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>

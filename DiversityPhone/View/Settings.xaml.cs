@@ -22,6 +22,8 @@ namespace DiversityPhone.View
     {
         private SettingsVM VM { get { return DataContext as SettingsVM; } }
 
+        static ProgressIndicator Progress { get { return SystemTray.ProgressIndicator; } }
+
         private ApplicationBarIconButton saveBtn,clearBtn;
 
         private SerialDisposable setup_isbusy_subyscription = new SerialDisposable(); 
@@ -30,6 +32,29 @@ namespace DiversityPhone.View
         {
             InitializeComponent();
 
+            
+        }
+
+        private void Save_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Save.Execute(null);
+        }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            if (VM != null && VM.Reset.CanExecute(null))
+                VM.Reset.Execute(null);
+        }
+
+        private void ManageTaxa_Click(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+                VM.ManageTaxa.Execute(null);
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
             saveBtn = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
 
             clearBtn = new ApplicationBarIconButton()
@@ -46,50 +71,35 @@ namespace DiversityPhone.View
 
                 VM.Reset.CanExecuteObservable
                     .Subscribe(canreset =>
-                        {
-                            if (canreset)
-                                ApplicationBar.Buttons.Add(clearBtn);
-                            else
-                                ApplicationBar.Buttons.Remove(clearBtn);
-                        });
+                    {
+                        if (canreset)
+                            ApplicationBar.Buttons.Add(clearBtn);
+                        else
+                            ApplicationBar.Buttons.Remove(clearBtn);
+                    });
 
                 VM.ObservableForProperty(x => x.Setup)
                     .Select(change => change.Value)
                     .Where(setup => setup != null)
                     .Select(setup => setup.ObservableForProperty(x => x.IsBusy))
                     .Subscribe(isBusyObs =>
-                        {
-                            //Hide Menu Bar and Overlay, when setup is busy
-                            setup_isbusy_subyscription.Disposable =
-                                isBusyObs
-                                .Select(x => x.Value)
-                                .Subscribe(isBusy =>
-                                    {
-                                        ApplicationBar.IsVisible = !isBusy;
-                                        BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
-                                        this.Focus();
-                                    });
-                        });
+                    {
+                        //Hide Menu Bar and Overlay, when setup is busy
+                        setup_isbusy_subyscription.Disposable =
+                            isBusyObs
+                            .Select(x => x.Value)
+                            .Subscribe(isBusy =>
+                            {
+                                ApplicationBar.IsVisible = !isBusy;
+                                BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
+                                Progress.IsIndeterminate = Progress.IsVisible = isBusy;
+                                this.Focus();
+                            });
+                    });
 
             }
-        }
 
-        private void Save_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Save.Execute(null);
-        }
-
-        private void Reset_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Reset.Execute(null);
-        }
-
-        private void ManageTaxa_Click(object sender, RoutedEventArgs e)
-        {
-            if (VM != null)
-                VM.ManageTaxa.Execute(null);
+            var p = Microsoft.Phone.Shell.SystemTray.ProgressIndicator;
         }
     }
 }

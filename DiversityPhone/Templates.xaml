@@ -85,4 +85,17 @@
     <DataTemplate x:Key="DisplayTextItemTemplate">
         <TextBlock Text="{Binding DisplayText}"/>
     </DataTemplate>
+
+    <DataTemplate x:Key="TaxonListItemTemplate">
+        <Button Command="{Binding Execute}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="80" Width="80" HorizontalAlignment="Left"/>
+                <TextBlock Text="{Binding DisplayText}" HorizontalAlignment="Left"/>
+                <Image Source="/Images/appbar.check.rest.png"
+                                           HorizontalAlignment="Right" Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}"/>
+                <Image Source="/Images/appbar.download.rest.png" 
+                                           HorizontalAlignment="Right" Visibility="{Binding IsDownloaded, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
+            </StackPanel>
+        </Button>
+    </DataTemplate>
 </ResourceDictionary>

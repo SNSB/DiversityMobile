@@ -16,7 +16,8 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Settings, Source={StaticResource Locator}}"
-    IsTabStop="True">
+    IsTabStop="True"
+    Loaded="PhoneApplicationPage_Loaded">
     <phone:PhoneApplicationPage.Resources>
         <vw:SettingsPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
@@ -92,9 +93,7 @@
         </ScrollViewer>
 
         <Grid x:Name="BusyOverlay" Background="Black" Visibility="Collapsed">
-            <TextBlock Text="{Binding Setup.BusyMessage}"/>
-            <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                 Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>
+            <TextBlock Text="{Binding Setup.BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>            
         </Grid>
     </Grid>
     
