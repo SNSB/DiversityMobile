@@ -5,6 +5,7 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
@@ -20,12 +21,31 @@
         <controls:Pivot Title="Taxon Lists">           
             <!--Pivotelement eins-->
             <controls:PivotItem Header="local">
-                <ListBox ItemsSource="{Binding LocalLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}"/>
+                <StackPanel>
+                    <TextBlock Text="Tap to select, long press to delete" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ListBox ItemsSource="{Binding LocalLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}"/>
+                </StackPanel>
             </controls:PivotItem>
 
             <!--Pivotelement zwei-->
             <controls:PivotItem Header="repository">
-                <ListBox ItemsSource="{Binding RepoLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}"/>
+                <StackPanel>
+                    <TextBlock Text="Tap to download" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ListBox x:Name="RepoListBox" ItemsSource="{Binding RepoLists}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" DataContext="{Binding}"/>
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Header="delete" Click="Delete_Click"/>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>
