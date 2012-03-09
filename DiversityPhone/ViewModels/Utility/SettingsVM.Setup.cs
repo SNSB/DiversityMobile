@@ -277,24 +277,24 @@ namespace DiversityPhone.ViewModels.Utility
                 var storageService = _owner._storage;
                 var diversityService = _owner._DivSvc;
 
-                _BusyMessageSubject.OnNext("Downloading Vocabulary");                
-                var voc = diversityService.GetStandardVocabulary().First();
-                var analysesObservable = diversityService.GetAnalysesForProject(CurrentProject, credentials);
-                storageService.addTerms(voc);
+                ////_BusyMessageSubject.OnNext("Downloading Vocabulary");
+                ////var voc = diversityService.GetStandardVocabulary().First();
+                //var analysesObservable = diversityService.GetAnalysesForProject(CurrentProject, credentials);
+                ////storageService.addTerms(voc);
 
-                _BusyMessageSubject.OnNext("Downloading Analyses");
-                var analyses = analysesObservable.First();
-                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
-                storageService.addAnalyses(analyses);
+                //_BusyMessageSubject.OnNext("Downloading Analyses");
+                //var analyses = analysesObservable.First();
+                //var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
+                //storageService.addAnalyses(analyses);
 
-                _BusyMessageSubject.OnNext("Downloading Analysis Results");
-                var results = resultObservable.First();
-                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
+                //_BusyMessageSubject.OnNext("Downloading Analysis Results");
+                //var results = resultObservable.First();
+                //var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
 
-                storageService.addAnalysisResults(results);
-                var atgs = atgObservable.First();
+                //storageService.addAnalysisResults(results);
+                //var atgs = atgObservable.First();
 
-                storageService.addAnalysisTaxonomicGroups(atgs);
+                //storageService.addAnalysisTaxonomicGroups(atgs);
 
                 _owner._settings.saveSettings(settings);
                 _owner._ModelSubject.OnNext(settings);

@@ -70,6 +70,12 @@ namespace DiversityService
         [OperationContract]
         int InsertEventSeriesForAndroid(int SeriesID, String Description);
 
+        [OperationContract]
+        int InsertEventSeriesForAndroidVIntES(EventSeries es);
+
+        [OperationContract]
+        DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es);
+
         #endregion;
     }   
 }
