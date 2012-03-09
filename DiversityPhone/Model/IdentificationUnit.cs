@@ -10,7 +10,7 @@ namespace DiversityPhone.Model
 {
 
     [Table]
-    public class IdentificationUnit : IModifyable
+    public class IdentificationUnit : IModifyable, ILocalizable
     {
         public IdentificationUnit()
         {
@@ -22,14 +22,7 @@ namespace DiversityPhone.Model
             this.DiversityCollectionUnitID = null;
             this.DiversityCollectionSpecimenID = null;
             this.DiversityCollectionRelatedUnitID = null;
-            //_RelatedUnits = new EntitySet<IdentificationUnit>(
-            //  new Action<IdentificationUnit>(Attach_RelatedUnit),
-            //  new Action<IdentificationUnit>(Detach_RelatedUnit));
-            //_IUAnalyses = new EntitySet<IdentificationUnitAnalysis>(
-            //  new Action<IdentificationUnitAnalysis>(Attach_Analysis),
-            //  new Action<IdentificationUnitAnalysis>(Detach_Analysis));
-            //_Specimen = default(EntityRef<Specimen>);
-            //_RelatedUnit = default(EntityRef<IdentificationUnit>);
+            App.fillGeoCoordinates(this);
         }
 
         [Column]
