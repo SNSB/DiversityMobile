@@ -61,6 +61,8 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand Reset { get; private set; }
 
         public ReactiveCommand ManageTaxa { get; private set; }
+
+        private ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
         
 
         public AppSettings Model { get { return _Model.Value; } }
@@ -92,6 +94,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Where(x => x)
                 .Select(_ => new SetupVM(this))
                 .Do(setup => _SetupSubscription.Disposable = setup.CanSave.Subscribe(_CanSaveSubject))
+                .Do(_ => clearDatabase.Execute(null))
                 .ToProperty(this, x => x.Setup);
                 
                 
@@ -103,8 +106,8 @@ namespace DiversityPhone.ViewModels.Utility
             _IsBusy = _IsBusySubject
                 .ToProperty(this, x => x.IsBusy);
 
-            
 
+            clearDatabase.RegisterAsyncAction(_ => _storage.clearDatabase());
             
                                    
             Messenger.RegisterMessageSource(
@@ -151,8 +154,7 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
         private void OnReset()
-        {
-            _storage.clearDatabase();
+        {            
             _settings.saveSettings(new AppSettings());
             _ModelSubject.OnNext(new AppSettings());
         }

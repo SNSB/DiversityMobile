@@ -82,7 +82,7 @@ namespace DiversityPhone
         /// Constructor for the Application object.
         /// </summary>
         public App()
-        {
+        {            
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;            
             

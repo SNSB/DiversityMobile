@@ -694,7 +694,7 @@
                                 TableID = unusedIDs.First(),
                                 TableName = list.Table,
                                 TaxonomicGroup = list.TaxonomicGroup,
-                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable)
+                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable) //If this is the first table for this group, select it.
                             };
                             ctx.TaxonSelection.InsertOnSubmit(selection);
 
@@ -720,21 +720,21 @@
             return result;
         }
 
-        public void updateTaxonSelection(TaxonSelection sel)
+        public void selectTaxonList(Svc.TaxonList list)
         {
             withDataContext(ctx =>
                 {
-                    var existingSelection = from s in ctx.TaxonSelection
-                                            where s.TableID == sel.TableID
+                    var tables = from s in ctx.TaxonSelection
+                                            where s.TaxonomicGroup == list.TaxonomicGroup                                            
                                             select s;
-                    if (existingSelection.Any())
+                    var oldSelection = tables.FirstOrDefault(s => s.IsSelected);
+                    var newSelection = tables.FirstOrDefault(s => s.TableName == list.Table);
+                    if (newSelection != null)
                     {
-                        var selToUdate = existingSelection.First();
+                        newSelection.IsSelected = true;
 
-                        selToUdate.IsSelected = sel.IsSelected;
-                        selToUdate.TableDisplayName = sel.TableDisplayName;
-                        selToUdate.TableName = sel.TableName;
-                        selToUdate.TaxonomicGroup = sel.TaxonomicGroup;
+                        if (oldSelection != null)
+                            oldSelection.IsSelected = false;
 
                         ctx.SubmitChanges();
                     }
@@ -746,17 +746,27 @@
             );
         }
 
-        public void clearTaxonTable(TaxonSelection selection)
+        public void deleteTaxonList(Svc.TaxonList list)
         {
             withDataContext(ctx =>
                 {
-                    var targetTable = getTaxonTable(ctx, selection.TableID);
-                    targetTable.DeleteAllOnSubmit(targetTable);
+                    var selection = (from sel in ctx.TaxonSelection
+                                     where sel.TableName == list.Table && sel.TaxonomicGroup == list.TaxonomicGroup
+                                     select sel).FirstOrDefault();
 
-                    ctx.TaxonSelection.Attach(selection);
-                    ctx.TaxonSelection.DeleteOnSubmit(selection);
+                    if (selection != null)
+                    {
+                        var targetTable = getTaxonTable(ctx, selection.TableID);
+                        targetTable.DeleteAllOnSubmit(targetTable);
+                        
+                        ctx.TaxonSelection.DeleteOnSubmit(selection);
 
-                    ctx.SubmitChanges();
+                        ctx.SubmitChanges();
+                    }
+                    else
+                    {
+                        //TODO Log
+                    }
                 });
         }
 

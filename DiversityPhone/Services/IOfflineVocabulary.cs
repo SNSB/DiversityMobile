@@ -37,7 +37,7 @@ namespace DiversityPhone.Services
         /// Updates a Taxon Selection
         /// </summary>
         /// <param name="sel"></param>
-        void updateTaxonSelection(TaxonSelection sel);
+        void selectTaxonList(Svc.TaxonList list);
         /// <summary>
         /// Gets all defined Taxon Selections
         /// </summary>
@@ -47,7 +47,7 @@ namespace DiversityPhone.Services
         /// Removes a Taxon Selection and empties its Taxon Table
         /// </summary>
         /// <param name="selection"></param>
-        void clearTaxonTable(TaxonSelection selection);
+        void deleteTaxonList(Svc.TaxonList list);
         IList<TaxonName> getTaxonNames(Term taxGroup);
         IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
 
