@@ -92,14 +92,18 @@ namespace DiversityPhone.View
                             {
                                 ApplicationBar.IsVisible = !isBusy;
                                 BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
-                                Progress.IsIndeterminate = Progress.IsVisible = isBusy;
+                                var p = Progress;
+                                if(p != null)
+                                {
+                                    p.IsIndeterminate = p.IsVisible = isBusy;
+                                }
                                 this.Focus();
                             });
                     });
 
             }
 
-            var p = Microsoft.Phone.Shell.SystemTray.ProgressIndicator;
+            
         }
     }
 }

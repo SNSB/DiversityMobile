@@ -16,7 +16,7 @@
                 <ResourceDictionary Source="Styles.xaml"/>
     		</ResourceDictionary.MergedDictionaries>
             <sys:String x:Key="AppTitle">DiversityPhone</sys:String>
-            
+            <shell:ProgressIndicator x:Key="Progress"/>
     		<local:ViewModelLocator x:Key="Locator" />
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>
