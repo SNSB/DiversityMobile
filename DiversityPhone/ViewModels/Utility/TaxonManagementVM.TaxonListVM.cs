@@ -17,11 +17,11 @@ namespace DiversityPhone.ViewModels
     {
         public class TaxonListVM : ReactiveObject
         {
-            public Icon Icon 
+            public string TaxonomicGroup 
             {
                 get
                 {
-                    return (Icon)Enum.Parse(typeof(Icon), _model.TaxonomicGroup, true);
+                    return _model.TaxonomicGroup;
                 }
             }
 

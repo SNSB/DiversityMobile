@@ -13,7 +13,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -31,19 +32,19 @@
             <controls:PivotItem Header="repository">
                 <StackPanel>
                     <TextBlock Text="Tap to download" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <ListBox x:Name="RepoListBox" ItemsSource="{Binding RepoLists}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" DataContext="{Binding}"/>
-                                    <toolkit:ContextMenuService.ContextMenu>
+                    <ListBox x:Name="RepoListBox" ItemsSource="{Binding RepoLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}">
+                        
+                            
+                                
+                                    
+                                    <!--toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="delete" Click="Delete_Click"/>
                                         </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>
-                                </Grid>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+                                    </toolkit:ContextMenuService.ContextMenu-->
+                                
+                            
+                        
                     </ListBox>
                 </StackPanel>
             </controls:PivotItem>

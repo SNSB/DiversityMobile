@@ -87,9 +87,9 @@
     </DataTemplate>
 
     <DataTemplate x:Key="TaxonListItemTemplate">
-        <Button Command="{Binding Execute}">
+        <Button Command="{Binding Execute}" CommandParameter="{Binding}" Style="{StaticResource ItemButtonStyle}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="80" Width="80" HorizontalAlignment="Left"/>
+                <Image Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="80" Width="80" HorizontalAlignment="Left"/>
                 <TextBlock Text="{Binding DisplayText}" HorizontalAlignment="Left"/>
                 <Image Source="/Images/appbar.check.rest.png"
                                            HorizontalAlignment="Right" Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}"/>

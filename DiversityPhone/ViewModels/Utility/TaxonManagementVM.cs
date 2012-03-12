@@ -13,7 +13,7 @@ using System.Reactive.Linq;
 using System.Linq;
 using DiversityPhone.Services;
 using System.Collections.Generic;
-using DiversityPhone.Model;
+using Client = DiversityPhone.Model;
 using DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
 
@@ -31,7 +31,7 @@ namespace DiversityPhone.ViewModels
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;       
 
-        private IList<TaxonSelection> _TaxonSelections;
+        private IList<Client.TaxonSelection> _TaxonSelections;
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
         public ReactiveCollection<TaxonListVM> RepoLists { get; private set; } 
      
@@ -74,6 +74,9 @@ namespace DiversityPhone.ViewModels
                         {
                             if (Storage.getTaxonTableFreeCount() > 0)
                             {
+                                RepoLists.Remove(taxonlist);
+                                LocalLists.Add(taxonlist);
+
                                 if(downloadTaxonList.CanExecute(taxonlist))
                                     downloadTaxonList.Execute(taxonlist);
                             }
@@ -127,10 +130,29 @@ namespace DiversityPhone.ViewModels
                     .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list, SelectOrDownload) { IsDownloaded = false, IsSelected = false }))
                     .CreateCollection();
 
+            downloadTaxonList
+                .RegisterAsyncFunction(arg => downloadTaxonListImpl(arg as TaxonListVM));
+            downloadTaxonList
+                .Select(downloadedList => downloadedList as TaxonListVM)
+                .Subscribe(downloadedList => downloadedList.IsDownloaded = true);
+
             deleteTaxonList
                 .RegisterAsyncAction(arg => deleteListImpl(arg as TaxonList));
 
             getRepoLists.Execute(null);                       
+        }
+
+        private TaxonListVM downloadTaxonListImpl(TaxonListVM taxonList)
+        {            
+            Service.DownloadTaxonListChunked(taxonList.Model)
+                .ForEach(chunk => Storage.addTaxonNames(chunk, taxonList.Model));
+            var alreadySelected = Storage.getTaxonSelections()
+                .Where(sel => sel.TableName == taxonList.Model.Table && sel.TaxonomicGroup == taxonList.Model.TaxonomicGroup)
+                .Select(sel => sel.IsSelected)
+                .FirstOrDefault();
+            taxonList.IsSelected = alreadySelected;
+            
+            return taxonList;        
         }
 
         private IEnumerable<TaxonList> getRepoListsImpl()
