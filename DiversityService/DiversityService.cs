@@ -200,13 +200,17 @@ namespace DiversityService
         public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
-            using (var db=new DiversityORM.Diversity(login))
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
             {
+           
+
 
                 foreach (EventSeries es in series)
                 {
                     var newSeries = es.ToEntity();
-                    int newSeriesKey = (int) db.Insert(es);             
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    int newSeriesKey = (int)newSeries.SeriesID;            
                     result.Add(es.SeriesID,newSeriesKey);
                     if(!string.IsNullOrEmpty(es.Geography))
                         InsertGeographyIntoSeries(newSeriesKey,es.Geography,login);
@@ -221,7 +225,7 @@ namespace DiversityService
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred)
         {
             KeyProjection result = new KeyProjection(); 
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(cred)))
             {
                 //Adjust Event
                 DiversityCollection.CollectionEvent newEventEntity = null;
@@ -414,7 +418,8 @@ namespace DiversityService
         
 
 
-        #region GeoData
+        #region GeoData 
+        //Eliminate PetaPoco here
         public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)
         {
             if (geoString == null)
@@ -517,6 +522,38 @@ namespace DiversityService
 
             }
         }
+
+        public int InsertEventSeriesForAndroidVIntES(EventSeries es)
+        {
+
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                {
+                    var newSeries = es.ToEntity();
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    return newSeries.SeriesID;
+                }
+
+            }
+        }
+
+        public DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es)
+        {
+
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                {
+                    var newSeries = es.ToEntity();
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    return newSeries;
+                }
+
+            }
+        }
+
+
         #endregion
 
     }

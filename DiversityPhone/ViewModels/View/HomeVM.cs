@@ -152,7 +152,12 @@
                IList<Svc.EventSeries> convertSeries = new List<Svc.EventSeries>();
                foreach (EventSeries es in series)
                    convertSeries.Add(EventSeries.ConvertToServiceObject(es));
-               _plainUploadClient.InsertEventSeriesAsync(GlobalUtility.ObservableConverter.ToObservableCollection<Svc.EventSeries>(convertSeries));
+               Dictionary<int, int> result = _repository.InsertEventSeries(convertSeries).First();
+               foreach (var kvp in result)
+               {
+                   _storage.updateSeriesKey(kvp.Key, kvp.Value);
+               }
+               syncHierarchies();
             }
             else
             {

@@ -122,6 +122,7 @@
     <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
+    <Compile Include="Model\ILocalizable.cs" />
     <Compile Include="Model\IModifyable.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
@@ -177,8 +178,6 @@
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Utility\GeographySerialization.cs" />
-    <Compile Include="Utility\ObservableConverter.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />

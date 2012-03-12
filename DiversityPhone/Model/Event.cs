@@ -11,7 +11,7 @@
     using Svc = DiversityPhone.DiversityService;
 
     [Table]
-    public class Event : IModifyable
+    public class Event : IModifyable, ILocalizable
     {
         public Event()
         {
@@ -21,13 +21,7 @@
             this.ModificationState = null;
             this.DiversityCollectionEventID = null;
             this.DiversityCollectionSeriesID = null;
-            //_Specimen = new EntitySet<Specimen>(
-            //  new Action<Specimen>(Attach_Specimen),
-            //  new Action<Specimen>(Detach_Specimen));
-            //_Properties = new EntitySet<CollectionEventProperty>(
-            //  new Action<CollectionEventProperty>(Attach_Property),
-            //  new Action<CollectionEventProperty>(Detach_Property));
-            //_EventSeries = default(EntityRef<EventSeries>);
+            App.fillGeoCoordinates(this);
 
         }
 

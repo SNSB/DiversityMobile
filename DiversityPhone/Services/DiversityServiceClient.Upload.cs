@@ -29,7 +29,7 @@ namespace DiversityPhone.Services
                 .Select(args => args.Result)
                 .Take(1);
             ObservableCollection<EventSeries> seriesConv = ObservableConverter.ToObservableCollection<EventSeries>(seriesList);
-            _svc.InsertEventSeriesAsync(seriesConv);
+            _svc.InsertEventSeriesAsync(seriesConv, this.GetCreds());
             return res;
         }
     }

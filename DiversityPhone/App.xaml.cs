@@ -25,9 +25,9 @@ namespace DiversityPhone
 {
     public partial class App : Application
     {
-        public static IOfflineStorage OfflineDB { get; private set; }       
-           
+        public static IOfflineStorage OfflineDB { get; private set; }
 
+        private IList<GeoCoordinate> coordinates;
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -55,7 +55,7 @@ namespace DiversityPhone
             }
         }
 
-        public static GeoCoordinateWatcher Watcher;
+        public static GeoCoordinateWatcher Watcher=new GeoCoordinateWatcher();
 
         public static void startWatcher()
         {
@@ -95,7 +95,8 @@ namespace DiversityPhone
 
             // Phone-specific initialization
             InitializePhoneApplication();
-            
+            if (Settings.getSettings().UseGPS == true)
+                Watcher.Start();
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -223,5 +224,22 @@ namespace DiversityPhone
         }
 
         #endregion
+
+        internal static void fillGeoCoordinates(Model.ILocalizable loc)
+        {
+            if (Watcher.Status==GeoPositionStatus.Ready)
+            {
+                var geoPos= Watcher.Position;
+                loc.Altitude = geoPos.Location.Altitude;
+                loc.Latitude = geoPos.Location.Latitude;
+                loc.Longitude = geoPos.Location.Longitude;
+            }
+            else
+            {
+                loc.Altitude = null;
+                loc.Latitude = null;
+                loc.Longitude = null;
+            }
+        }
     }
 }

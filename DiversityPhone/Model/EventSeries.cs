@@ -23,10 +23,7 @@
             this.ModificationState = null;
             this.DiversityCollectionEventSeriesID = null;
             this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
-            //_Events = new EntitySet<Event>(
-            //    new Action<Event>(Attach_Event),
-            //    new Action<Event>(Detach_Event));
-
+    
         }
 
 

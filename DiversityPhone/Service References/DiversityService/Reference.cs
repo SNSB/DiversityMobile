@@ -2113,12 +2113,12 @@ namespace DiversityPhone.DiversityService {
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult> EndGetAnalysisResultsForProject(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertEventSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertEventSeriesResponse")]
-        System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         System.Collections.Generic.Dictionary<int, int> EndInsertEventSeries(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries", ReplyAction="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse")]
-        System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, string geostring, System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, string geostring, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         void EndInsertGeographyIntoSeries(System.IAsyncResult result);
         
@@ -2963,8 +2963,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginInsertEventSeries(series, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginInsertEventSeries(series, login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2974,7 +2974,8 @@ namespace DiversityPhone.DiversityService {
         
         private System.IAsyncResult OnBeginInsertEventSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
             System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries>)(inValues[0]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertEventSeries(series, callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertEventSeries(series, login, callback, asyncState);
         }
         
         private object[] OnEndInsertEventSeries(System.IAsyncResult result) {
@@ -2990,11 +2991,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void InsertEventSeriesAsync(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series) {
-            this.InsertEventSeriesAsync(series, null);
+        public void InsertEventSeriesAsync(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, DiversityPhone.DiversityService.UserCredentials login) {
+            this.InsertEventSeriesAsync(series, login, null);
         }
         
-        public void InsertEventSeriesAsync(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, object userState) {
+        public void InsertEventSeriesAsync(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginInsertEventSeriesDelegate == null)) {
                 this.onBeginInsertEventSeriesDelegate = new BeginOperationDelegate(this.OnBeginInsertEventSeries);
             }
@@ -3005,12 +3006,13 @@ namespace DiversityPhone.DiversityService {
                 this.onInsertEventSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnInsertEventSeriesCompleted);
             }
             base.InvokeAsync(this.onBeginInsertEventSeriesDelegate, new object[] {
-                        series}, this.onEndInsertEventSeriesDelegate, this.onInsertEventSeriesCompletedDelegate, userState);
+                        series,
+                        login}, this.onEndInsertEventSeriesDelegate, this.onInsertEventSeriesCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertGeographyIntoSeries(int seriesID, string geostring, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginInsertGeographyIntoSeries(seriesID, geostring, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertGeographyIntoSeries(int seriesID, string geostring, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginInsertGeographyIntoSeries(seriesID, geostring, login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3021,7 +3023,8 @@ namespace DiversityPhone.DiversityService {
         private System.IAsyncResult OnBeginInsertGeographyIntoSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
             int seriesID = ((int)(inValues[0]));
             string geostring = ((string)(inValues[1]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertGeographyIntoSeries(seriesID, geostring, callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[2]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertGeographyIntoSeries(seriesID, geostring, login, callback, asyncState);
         }
         
         private object[] OnEndInsertGeographyIntoSeries(System.IAsyncResult result) {
@@ -3036,11 +3039,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void InsertGeographyIntoSeriesAsync(int seriesID, string geostring) {
-            this.InsertGeographyIntoSeriesAsync(seriesID, geostring, null);
+        public void InsertGeographyIntoSeriesAsync(int seriesID, string geostring, DiversityPhone.DiversityService.UserCredentials login) {
+            this.InsertGeographyIntoSeriesAsync(seriesID, geostring, login, null);
         }
         
-        public void InsertGeographyIntoSeriesAsync(int seriesID, string geostring, object userState) {
+        public void InsertGeographyIntoSeriesAsync(int seriesID, string geostring, DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginInsertGeographyIntoSeriesDelegate == null)) {
                 this.onBeginInsertGeographyIntoSeriesDelegate = new BeginOperationDelegate(this.OnBeginInsertGeographyIntoSeries);
             }
@@ -3052,7 +3055,8 @@ namespace DiversityPhone.DiversityService {
             }
             base.InvokeAsync(this.onBeginInsertGeographyIntoSeriesDelegate, new object[] {
                         seriesID,
-                        geostring}, this.onEndInsertGeographyIntoSeriesDelegate, this.onInsertGeographyIntoSeriesCompletedDelegate, userState);
+                        geostring,
+                        login}, this.onEndInsertGeographyIntoSeriesDelegate, this.onInsertGeographyIntoSeriesCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3556,9 +3560,10 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[1];
+            public System.IAsyncResult BeginInsertEventSeries(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries> series, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
                 _args[0] = series;
+                _args[1] = login;
                 System.IAsyncResult _result = base.BeginInvoke("InsertEventSeries", _args, callback, asyncState);
                 return _result;
             }
@@ -3569,10 +3574,11 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, string geostring, System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[2];
+            public System.IAsyncResult BeginInsertGeographyIntoSeries(int seriesID, string geostring, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[3];
                 _args[0] = seriesID;
                 _args[1] = geostring;
+                _args[2] = login;
                 System.IAsyncResult _result = base.BeginInvoke("InsertGeographyIntoSeries", _args, callback, asyncState);
                 return _result;
             }

@@ -12,7 +12,7 @@ namespace DiversityORM
         private const string CONNECTION_TEMPLATE_KEY = "ConnectionStringTemplate";
 
 
-        private static string GetConnectionString(UserCredentials connection)
+        public static string GetConnectionString(UserCredentials connection)
         {
             var cs = ConfigurationManager.ConnectionStrings[CONNECTION_TEMPLATE_KEY];
             if (cs != null)
