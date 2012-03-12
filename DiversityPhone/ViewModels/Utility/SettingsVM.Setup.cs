@@ -276,16 +276,17 @@ namespace DiversityPhone.ViewModels.Utility
 
                 _BusyMessageSubject.OnNext("Downloading Analyses");
                 var analyses = analysesObservable.First();
+                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
                 
                 storageService.addAnalyses(analyses);
 
                 _BusyMessageSubject.OnNext("Downloading Analysis Results");
-                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
-                var results = resultObservable.First();
                 
+                var results = resultObservable.First();
+                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
 
                 storageService.addAnalysisResults(results);
-                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
+                
                 var atgs = atgObservable.First();
 
                 storageService.addAnalysisTaxonomicGroups(atgs);
