@@ -1,21 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using ReactiveUI;
+﻿using ReactiveUI;
 using System.Reactive.Subjects;
-using DiversityPhone.DiversityService;
+using Svc = DiversityPhone.DiversityService;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using System.Linq;
+using System;
 
 
 namespace DiversityPhone.ViewModels.Utility
@@ -86,12 +77,12 @@ namespace DiversityPhone.ViewModels.Utility
                 }
             }
 
-            public IList<Repository> Databases { get { return (_Databases != null) ? _Databases.Value : null; } }
-            private ObservableAsPropertyHelper<IList<Repository>> _Databases;
+            public IList<Svc.Repository> Databases { get { return (_Databases != null) ? _Databases.Value : null; } }
+            private ObservableAsPropertyHelper<IList<Svc.Repository>> _Databases;
 
 
-            private Repository _CurrentDB;
-            public Repository CurrentDB
+            private Svc.Repository _CurrentDB;
+            public Svc.Repository CurrentDB
             {
                 get
                 {
@@ -104,12 +95,12 @@ namespace DiversityPhone.ViewModels.Utility
             }
 
 
-            public IList<Project> Projects { get { return (_Projects != null) ? _Projects.Value : null; } }
-            private ObservableAsPropertyHelper<IList<Project>> _Projects;
+            public IList<Svc.Project> Projects { get { return (_Projects != null) ? _Projects.Value : null; } }
+            private ObservableAsPropertyHelper<IList<Svc.Project>> _Projects;
 
 
-            private Project _CurrentProject;
-            public Project CurrentProject
+            private Svc.Project _CurrentProject;
+            public Svc.Project CurrentProject
             {
                 get
                 {
@@ -121,7 +112,7 @@ namespace DiversityPhone.ViewModels.Utility
                 }
             }
 
-            private IObservable<UserProfile> _Profile;
+            private IObservable<Svc.UserProfile> _Profile;
 
             public bool IsBusy { get { return _IsBusy.Value; } }
             private ObservableAsPropertyHelper<bool> _IsBusy;
@@ -200,7 +191,7 @@ namespace DiversityPhone.ViewModels.Utility
                     Observable.CombineLatest(
                         this.ObservableForProperty(x => x.UserName),
                         this.ObservableForProperty(x => x.Password),
-                        (user, pass) => new UserCredentials() { LoginName = user.Value, Password = pass.Value }
+                        (user, pass) => new Svc.UserCredentials() { LoginName = user.Value, Password = pass.Value }
                     )                    
                     .DistinctUntilChanged();
 
@@ -222,7 +213,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingRepositories);
                 _Databases = 
                     getRepositories
-                    .RegisterAsyncFunction(login => _owner._DivSvc.GetRepositories(login as UserCredentials).Timeout(TimeSpan.FromSeconds(30),Observable.Return<IList<Repository>>(new List<Repository>())).First())
+                    .RegisterAsyncFunction(login => _owner._DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
                     .ToProperty(this, x => x.Databases);
                 _Databases
                     .Where(dbs => dbs.Any())
@@ -237,7 +228,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingProjects);
                 _Projects = 
                     getProjects
-                    .RegisterAsyncFunction(login => _owner._DivSvc.GetProjectsForUser(login as UserCredentials).First())
+                    .RegisterAsyncFunction(login => _owner._DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())
                     .ToProperty(this, x => x.Projects);
                 _Projects
                     .Where(projects => projects.Any())
@@ -247,8 +238,8 @@ namespace DiversityPhone.ViewModels.Utility
                 creds.Subscribe(login => getUserInfo.Execute(login));
                 var profile = 
                     getUserInfo
-                    .RegisterAsyncFunction(login => _owner._DivSvc.GetUserInfo(login as UserCredentials).First())                    
-                    .StartWith(new UserProfile[] { null })
+                    .RegisterAsyncFunction(login => _owner._DivSvc.GetUserInfo(login as Svc.UserCredentials).First())
+                    .StartWith(new Svc.UserProfile[] { null })
                     .Replay(1); // Keep the last User Profile around
                 profile.Connect();
                 _Profile = profile;
@@ -273,7 +264,7 @@ namespace DiversityPhone.ViewModels.Utility
                 _saveDisposable.Dispose();
 
                 var settings = createSettings();
-                var credentials = new UserCredentials(settings);               
+                var credentials = new Svc.UserCredentials(settings);               
                     
                 var storageService = _owner._storage;
                 var diversityService = _owner._DivSvc;
@@ -285,14 +276,16 @@ namespace DiversityPhone.ViewModels.Utility
 
                 _BusyMessageSubject.OnNext("Downloading Analyses");
                 var analyses = analysesObservable.First();
-                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
+                
                 storageService.addAnalyses(analyses);
 
                 _BusyMessageSubject.OnNext("Downloading Analysis Results");
+                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
                 var results = resultObservable.First();
-                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
+                
 
                 storageService.addAnalysisResults(results);
+                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
                 var atgs = atgObservable.First();
 
                 storageService.addAnalysisTaxonomicGroups(atgs);

@@ -107,7 +107,8 @@ namespace DiversityService
         {
             using (var db = new DiversityORM.Diversity(login))
             {
-                return analysesForProject(p.ProjectID, db).ToList();
+                var res = analysesForProject(p.ProjectID, db).ToList();
+                return res;
             }
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login)
