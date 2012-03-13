@@ -33,26 +33,11 @@
         public Table<AnalysisTaxonomicGroup> AnalysisTaxonomicGroups;
 
         public Table<MultimediaObject> MultimediaObjects;
-        public Table<Map> Maps;
-        
-        
+        public Table<Map> Maps;       
 
         public Table<Term> Terms;
-
-        // Es werden 10 Tabellen für TaxonNames angelegt
-        public Table<TaxonSelection> TaxonSelection;
-        public Table<TaxonName> TaxonNames0;
-        public Table<TaxonName> TaxonNames1;
-        public Table<TaxonName> TaxonNames2;
-        public Table<TaxonName> TaxonNames3;
-        public Table<TaxonName> TaxonNames4;
-        public Table<TaxonName> TaxonNames5;
-        public Table<TaxonName> TaxonNames6;
-        public Table<TaxonName> TaxonNames7;
-        public Table<TaxonName> TaxonNames8;
-        public Table<TaxonName> TaxonNames9;       
-
         
+        public Table<TaxonSelection> TaxonSelection;
 
         //Alle PropertyNames werden in derslben Tabelle gespeichert, da die Gesamtzahl in Vergleich zu TaxonNames gering ist.
         public Table<PropertyName> PropertyNames;

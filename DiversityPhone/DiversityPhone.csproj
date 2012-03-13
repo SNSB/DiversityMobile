@@ -178,6 +178,7 @@
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\TaxonDataContext.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
+    <Compile Include="View\Converters\InvertBooleanConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />

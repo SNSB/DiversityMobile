@@ -48,8 +48,14 @@ namespace DiversityPhone.Services
         /// </summary>
         /// <param name="selection"></param>
         void deleteTaxonList(Svc.TaxonList list);
-        IList<TaxonName> getTaxonNames(Term taxGroup);
-        IList<TaxonName> getTaxonNames(Term taxGroup, string genus, string species);
+        
+        /// <summary>
+        /// Retrieves Taxon Names that conform to the query string
+        /// </summary>
+        /// <param name="taxGroup"></param>
+        /// <param name="query">space separated list of keywords</param>
+        /// <returns></returns>
+        IList<TaxonName> getTaxonNames(Term taxGroup, string query);
 
         void addPropertyNames(IEnumerable<PropertyName> properties);
         IList<PropertyName> getPropertyNames(Property prop);

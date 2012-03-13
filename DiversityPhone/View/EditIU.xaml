@@ -39,11 +39,9 @@
                                 FullModeHeader="Taxonomic Group"
                                 IsEnabled="{Binding IsEditable}"/>
             
-            <TextBlock Text="Genus"/>
-            <TextBox Text="{Binding Genus, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
-
-            <TextBlock Text="Species"/>
-                <TextBox Text="{Binding Species, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+            <TextBlock Text="Name Query"/>
+            <TextBox Text="{Binding QueryString, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+            
             <ListBox BorderThickness="3"  
                      ItemsSource="{Binding AvailableIdentifications}"                     
                      SelectedItem="{Binding CurrentIdentification, Mode=TwoWay}"

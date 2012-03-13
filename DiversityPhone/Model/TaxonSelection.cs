@@ -37,7 +37,7 @@ namespace DiversityPhone.Model
         {
             get
             {
-                return Enumerable.Range(0, 10);
+                return Enumerable.Range(0, 100);
             }
         }
     }

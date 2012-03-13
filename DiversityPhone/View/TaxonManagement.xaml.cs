@@ -17,20 +17,16 @@ namespace DiversityPhone.View
     public partial class TaxonManagement : PhoneApplicationPage
     {
         private TaxonManagementVM VM { get { return DataContext as TaxonManagementVM; } }
+
+        private ProgressBinding<TaxonManagementVM> _progress;
         public TaxonManagement()
         {
             InitializeComponent();
+
+            if (VM != null)
+                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
-        {
-            if (VM != null && sender is ContextMenu)
-            {
-                var list = (sender as ContextMenu).DataContext as TaxonManagementVM.TaxonListVM;
-                if (VM.Delete.CanExecute(list))
-                    VM.Delete.Execute(list);
-            }
-
-        }
+        
     }
 }

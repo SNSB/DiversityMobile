@@ -97,31 +97,19 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private string _Genus;
-        public string Genus
+        private string _QueryString;
+        public string QueryString
         {
             get
             {
-                return _Genus;
+                return _QueryString;
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.Genus, ref _Genus, value);
+                this.RaiseAndSetIfChanged(x => x.QueryString, ref _QueryString, value);
             }
-        }
+        }        
         
-        private string _Species;
-        public string Species
-        {
-            get
-            {
-                return _Species;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Species, ref _Species, value);
-            }
-        }
 
         private ObservableAsPropertyHelper<IEnumerable<TaxonName>> _AvailableIdentifications;
         public IEnumerable<TaxonName> AvailableIdentifications
@@ -173,21 +161,13 @@ namespace DiversityPhone.ViewModels
             #endregion
 
             #region Vocabulary
-            _AvailableIdentifications = Observable.CombineLatest(
-                this.ObservableForProperty(vm => vm.Genus)
-                .Select(g => g.Value)
-                .StartWith(String.Empty),
-                this.ObservableForProperty(vm => vm.Species)
-                .Select(s => s.Value)
-                .StartWith(String.Empty),
-                (g, s) => new { Genus = g, Species = s })
+            _AvailableIdentifications = 
+                this.ObservableForProperty(vm => vm.QueryString)
+                .Value()
                 .Select(query =>
                     {
-                        //Don't allow short queries
-                        if (query.Species.Length + query.Genus.Length > 5)
-                            return Storage.getTaxonNames(SelectedTaxGroup, query.Genus, query.Species);
-                        else
-                            return Enumerable.Empty<TaxonName>();
+                        return Storage.getTaxonNames(SelectedTaxGroup, query);
+                        
                     })
                 .Select( candidates =>                     
                     //Append WorkingName as Identification
@@ -195,9 +175,9 @@ namespace DiversityPhone.ViewModels
                     new[] { 
                         new TaxonName() 
                         { 
-                            TaxonNameCache = Genus + " " + Species,
-                            GenusOrSupragenic = Genus, 
-                            SpeciesEpithet = Species, 
+                            TaxonNameCache = QueryString,
+                            GenusOrSupragenic = null, 
+                            SpeciesEpithet = null, 
                             Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
                             URI = null,
                         } 

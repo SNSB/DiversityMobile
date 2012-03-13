@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
     <DataTemplate x:Key="TermListItemTemplate">
     	<StackPanel Orientation="Horizontal">
     		<Image Source="{Binding Code, Converter={StaticResource TermToImage}}" VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="30" MaxHeight="30"/>
@@ -86,8 +89,7 @@
         <TextBlock Text="{Binding DisplayText}"/>
     </DataTemplate>
 
-    <DataTemplate x:Key="TaxonListItemTemplate">
-        <Button Command="{Binding Execute}" CommandParameter="{Binding}" Style="{StaticResource ItemButtonStyle}">
+    <DataTemplate x:Key="TaxonListItemTemplate">        
             <StackPanel Orientation="Horizontal">
                 <Image Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="80" Width="80" HorizontalAlignment="Left"/>
                 <TextBlock Text="{Binding DisplayText}" HorizontalAlignment="Left"/>
@@ -95,7 +97,6 @@
                                            HorizontalAlignment="Right" Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}"/>
                 <Image Source="/Images/appbar.download.rest.png" 
                                            HorizontalAlignment="Right" Visibility="{Binding IsDownloaded, Converter={StaticResource BoolToVis}, ConverterParameter=True}"/>
-            </StackPanel>
-        </Button>
+            </StackPanel>        
     </DataTemplate>
 </ResourceDictionary>

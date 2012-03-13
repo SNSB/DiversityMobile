@@ -1,7 +1,7 @@
 ﻿<DiversityPhone_ViewModels:EditIUVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" 
 Description="Nulla tempus nam vestibulum vestibulum" 
 Editable="True" 
-Genus="Sed lobortis nascetur pharetra placerat" 
+QueryString="Sed lobortis nascetur pharetra placerat" 
 IsObservation="False" 
 IsToplevel="False" 
 OnlyObserved="True" 

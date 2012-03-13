@@ -14,7 +14,10 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}">
+    DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}"
+    shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
+    
+    x:Name="taxonPage">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -23,29 +26,49 @@
             <!--Pivotelement eins-->
             <controls:PivotItem Header="local">
                 <StackPanel>
-                    <TextBlock Text="Tap to select, long press to delete" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <ListBox ItemsSource="{Binding LocalLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}"/>
+                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ItemsControl ItemsSource="{Binding LocalLists}" >
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Header="delete" Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsDownloaded}"/>
+                                            <toolkit:MenuItem Header="select" 
+                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Select}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsSelected, Converter={StaticResource InvertBoolean}}"/>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </controls:PivotItem>
 
             <!--Pivotelement zwei-->
             <controls:PivotItem Header="repository">
                 <StackPanel>
-                    <TextBlock Text="Tap to download" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <ListBox x:Name="RepoListBox" ItemsSource="{Binding RepoLists}" ItemTemplate="{StaticResource TaxonListItemTemplate}">
-                        
-                            
-                                
-                                    
-                                    <!--toolkit:ContextMenuService.ContextMenu>
+                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ItemsControl x:Name="RepoListBox" ItemsSource="{Binding RepoLists}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}">
+                                    <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
-                                            <toolkit:MenuItem Header="delete" Click="Delete_Click"/>
+                                            <toolkit:MenuItem Header="download" 
+                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Download}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsDownloaded, Converter={StaticResource InvertBoolean}}"/>                                            
                                         </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu-->
-                                
-                            
-                        
-                    </ListBox>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>

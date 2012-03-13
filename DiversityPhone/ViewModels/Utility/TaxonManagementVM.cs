@@ -39,7 +39,8 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand downloadTaxonList = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
 
-        public ReactiveCommand SelectOrDownload { get; private set; }
+        public ReactiveCommand Select { get; private set; }
+        public ReactiveCommand Download { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         
 
@@ -56,8 +57,8 @@ namespace DiversityPhone.ViewModels
                 downloadTaxonList.ItemsInflight.Select(count => count > 0)
                 ).ToProperty(this, x => x.IsBusy, false);
 
-            SelectOrDownload = new ReactiveCommand(_IsBusy.Select(x => !x));
-            SelectOrDownload
+            Select = new ReactiveCommand(_IsBusy.Select(x => !x));
+            Select
                 .Where(argument => argument is TaxonListVM)
                 .Select(argument => argument as TaxonListVM)
                 .Subscribe(taxonlist =>
@@ -69,30 +70,35 @@ namespace DiversityPhone.ViewModels
                                 Storage.selectTaxonList(taxonlist.Model);
                                 taxonlist.IsSelected = true;
                             }
-                        }
-                        else //Repo list
+                        }                        
+                    });
+            Download = new ReactiveCommand(_IsBusy.Select(x => !x));
+            Download
+                .Where(arg => arg is TaxonListVM)
+                .Select(arg => arg as TaxonListVM)
+                .Subscribe(taxonlist =>
                         {
                             if (Storage.getTaxonTableFreeCount() > 0)
                             {
                                 RepoLists.Remove(taxonlist);
                                 LocalLists.Add(taxonlist);
 
-                                if(downloadTaxonList.CanExecute(taxonlist))
+                                if (downloadTaxonList.CanExecute(taxonlist))
                                     downloadTaxonList.Execute(taxonlist);
                             }
                             else
                                 Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, "Error", "Can't download more than 10 Taxon tables."));
-                        }
-                    });
+                        });
+        
             Delete = new ReactiveCommand(_IsBusy.Select(x => !x));
             Delete
                 .Where(argument => argument is TaxonListVM)
                 .Select(argument => argument as TaxonListVM)
                 .Subscribe(taxonlist =>
                     {
-                        if (taxonlist.IsDownloaded && deleteTaxonList.CanExecute(taxonlist.Model))
+                        if (taxonlist.IsDownloaded && deleteTaxonList.CanExecute(taxonlist))
                         {
-                            deleteTaxonList.Execute(taxonlist.Model);                            
+                            deleteTaxonList.Execute(taxonlist);                            
                             taxonlist.IsDownloaded = false;
                             taxonlist.IsSelected = false;
                             LocalLists.Remove(taxonlist);
@@ -113,7 +119,7 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(selections => selections)
                 .Select(selection => 
                 { 
-                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup }, SelectOrDownload)
+                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup }, Select)
                     { 
                         IsDownloaded = true, 
                         IsSelected = selection.IsSelected
@@ -127,17 +133,23 @@ namespace DiversityPhone.ViewModels
                     .CombineLatest(taxonSelections, (repolists, localselections) =>
                         repolists.Where(repolist => !localselections.Any(selection => selection.TableName == repolist.Table)) //Filter Lists that have already been downloaded
                         )
-                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list, SelectOrDownload) { IsDownloaded = false, IsSelected = false }))
+                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list, Select) { IsDownloaded = false, IsSelected = false }))
                     .CreateCollection();
 
             downloadTaxonList
-                .RegisterAsyncFunction(arg => downloadTaxonListImpl(arg as TaxonListVM));
-            downloadTaxonList
-                .Select(downloadedList => downloadedList as TaxonListVM)
-                .Subscribe(downloadedList => downloadedList.IsDownloaded = true);
+                .RegisterAsyncFunction(arg => downloadTaxonListImpl(arg as TaxonListVM))           
+                .Subscribe(downloadedList => 
+                    {
+                        downloadedList.IsDownloaded = true;
+                        downloadedList.IsSelected = Storage.getTaxonSelections()
+                                                    .Where(sel => sel.TableName == downloadedList.Model.Table && sel.TaxonomicGroup == downloadedList.Model.TaxonomicGroup)
+                                                    .Select(sel => sel.IsSelected)
+                                                    .FirstOrDefault();                        
+                    });
 
             deleteTaxonList
-                .RegisterAsyncAction(arg => deleteListImpl(arg as TaxonList));
+                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM))
+                .Subscribe(deletedList => deletedList.IsDownloaded = false);
 
             getRepoLists.Execute(null);                       
         }
@@ -145,12 +157,7 @@ namespace DiversityPhone.ViewModels
         private TaxonListVM downloadTaxonListImpl(TaxonListVM taxonList)
         {            
             Service.DownloadTaxonListChunked(taxonList.Model)
-                .ForEach(chunk => Storage.addTaxonNames(chunk, taxonList.Model));
-            var alreadySelected = Storage.getTaxonSelections()
-                .Where(sel => sel.TableName == taxonList.Model.Table && sel.TaxonomicGroup == taxonList.Model.TaxonomicGroup)
-                .Select(sel => sel.IsSelected)
-                .FirstOrDefault();
-            taxonList.IsSelected = alreadySelected;
+                .ForEach(chunk => Storage.addTaxonNames(chunk, taxonList.Model));           
             
             return taxonList;        
         }
@@ -160,9 +167,10 @@ namespace DiversityPhone.ViewModels
             return Service.GetTaxonLists().First();
         }
 
-        private void deleteListImpl(TaxonList list)
+        private TaxonListVM deleteListImpl(TaxonListVM list)
         {
-            Storage.deleteTaxonList(list);
+            Storage.deleteTaxonList(list.Model);
+            return list;
         }
 
         
