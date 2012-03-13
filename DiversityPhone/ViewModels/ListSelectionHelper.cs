@@ -6,9 +6,10 @@ using System;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ListSelectionHelper<T> : ReactiveObject
+    public class ListSelectionHelper<T> : ReactiveObject, IObserver<IList<T>>, IObservable<T>
     {        
         public IList<T> Items { get { return _Items.Value; } }
+        public IObservable<IList<T>> ItemsObservable { get { return _ItemsSubject; } }
         private ObservableAsPropertyHelper<IList<T>> _Items;
 
         private int _SelectedIndex = -1;
@@ -24,9 +25,9 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public ISubject<IList<T>> ItemsSubject { get; private set; }
-        private ISubject<T> _SelectedItemSubject = new ReplaySubject<T>(1);
-        public IObservable<T> SelectedItemObservable { get { return _SelectedItemSubject; } }
+
+        private ISubject<IList<T>> _ItemsSubject = new Subject<IList<T>>();
+        private ISubject<T> _SelectedItemSubject = new ReplaySubject<T>(1);        
 
         private ObservableAsPropertyHelper<T> _SelectedItem;
         public T SelectedItem
@@ -43,7 +44,7 @@ namespace DiversityPhone.ViewModels
 
         public ListSelectionHelper()
         {
-            ItemsSubject = new Subject<IList<T>>();
+            _ItemsSubject = new Subject<IList<T>>();
             this.ObservableForProperty(x => x.SelectedIndex)
                 .Value()
                 .Select(idx => (idx > -1) ? Items[idx] : default(T))
@@ -51,11 +52,9 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_SelectedItemSubject);
 
             _SelectedItem = _SelectedItemSubject
-                .ToProperty(this, x => x.SelectedItem);
+                .ToProperty(this, x => x.SelectedItem, default(T));            
 
-            _SelectedItemSubject.OnNext(default(T));
-
-            _Items = ItemsSubject
+            _Items = _ItemsSubject
                 .Do(items => correctSelectedIndex(items, SelectedItem))
                 .ToProperty(this, x => x.Items);
         }
@@ -66,6 +65,26 @@ namespace DiversityPhone.ViewModels
             if (selectedIdx > -1)
                 SelectedIndex = selectedIdx;
 
+        }
+
+        public void OnCompleted()
+        {
+            _ItemsSubject.OnCompleted();
+        }
+
+        public void OnError(Exception exception)
+        {
+            _ItemsSubject.OnError(exception);
+        }
+
+        public void OnNext(IList<T> value)
+        {
+            _ItemsSubject.OnNext(value);
+        }
+
+        public IDisposable Subscribe(IObserver<T> observer)
+        {
+            return _SelectedItemSubject.Subscribe(observer);
         }
     }
 }

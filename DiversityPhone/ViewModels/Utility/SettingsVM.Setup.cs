@@ -77,40 +77,9 @@ namespace DiversityPhone.ViewModels.Utility
                 }
             }
 
-            public IList<Svc.Repository> Databases { get { return (_Databases != null) ? _Databases.Value : null; } }
-            private ObservableAsPropertyHelper<IList<Svc.Repository>> _Databases;
+            public ListSelectionHelper<Svc.Repository> Databases { get; private set; }            
 
-
-            private Svc.Repository _CurrentDB;
-            public Svc.Repository CurrentDB
-            {
-                get
-                {
-                    return _CurrentDB;
-                }
-                set
-                {
-                    this.RaiseAndSetIfChanged(x => x.CurrentDB, ref _CurrentDB, value);
-                }
-            }
-
-
-            public IList<Svc.Project> Projects { get { return (_Projects != null) ? _Projects.Value : null; } }
-            private ObservableAsPropertyHelper<IList<Svc.Project>> _Projects;
-
-
-            private Svc.Project _CurrentProject;
-            public Svc.Project CurrentProject
-            {
-                get
-                {
-                    return _CurrentProject;
-                }
-                set
-                {
-                    this.RaiseAndSetIfChanged(x => x.CurrentProject, ref _CurrentProject, value);
-                }
-            }
+            public ListSelectionHelper<Svc.Project> Projects { get; private set; }            
 
             private IObservable<Svc.UserProfile> _Profile;
 
@@ -144,10 +113,10 @@ namespace DiversityPhone.ViewModels.Utility
 
                 m.AgentName = profile.UserName;
                 m.AgentURI = profile.AgentUri;
-                m.CurrentProject = CurrentProject.ProjectID;
-                m.CurrentProjectName = CurrentProject.DisplayText;
-                m.HomeDB = CurrentDB.Database;
-                m.HomeDBName = CurrentDB.DisplayName;
+                m.CurrentProject = Projects.SelectedItem.ProjectID;
+                m.CurrentProjectName = Projects.SelectedItem.DisplayText;
+                m.HomeDB = Databases.SelectedItem.Database;
+                m.HomeDBName = Databases.SelectedItem.DisplayName;
                 m.Password = Password;
                 m.UserName = UserName;
 
@@ -162,11 +131,11 @@ namespace DiversityPhone.ViewModels.Utility
                 var password = this.ObservableForProperty(x => x.Password)
                                    .Select(change => !string.IsNullOrEmpty(change.Value))
                                    .StartWith(false);
-                var homeDB = this.ObservableForProperty(x => x.CurrentDB)
-                                 .Select(change => change.Value != null)
-                                 .StartWith(false);
-                var project = this.ObservableForProperty(x => x.CurrentProject)
-                                  .Select(change => change.Value != null)
+                var homeDB = Databases
+                                .Select(db => db.Database != null)
+                                .StartWith(false);
+                var project = Projects
+                                  .Select(p => p.DisplayText != null)
                                   .StartWith(false);
 
 
@@ -185,7 +154,8 @@ namespace DiversityPhone.ViewModels.Utility
                 _BusyMessage = _BusyMessageSubject
                     .ToProperty(this, x => x.BusyMessage);
 
-                
+                Databases = new ListSelectionHelper<Svc.Repository>();
+                Projects = new ListSelectionHelper<Svc.Project>();
 
                 var creds =
                     Observable.CombineLatest(
@@ -198,10 +168,11 @@ namespace DiversityPhone.ViewModels.Utility
                 var credsWithRepo =
                     Observable.CombineLatest(
                     creds,
-                    this.ObservableForProperty(x => x.CurrentDB).Where(repo => repo != null),
+                    Databases
+                    .Where(x => x != null),
                     (usercreds, repo) =>
                     {
-                        usercreds.Repository = repo.Value.Database;
+                        usercreds.Repository = repo.Database;
                         return usercreds;
                     }).DistinctUntilChanged();                
 
@@ -211,14 +182,10 @@ namespace DiversityPhone.ViewModels.Utility
                     .ItemsInflight
                     .Select(items => items > 0)
                     .ToProperty(this, x => x.GettingRepositories);
-                _Databases = 
-                    getRepositories
+
+                getRepositories
                     .RegisterAsyncFunction(login => _owner._DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
-                    .ToProperty(this, x => x.Databases);
-                _Databases
-                    .Where(dbs => dbs.Any())
-                    .Select(dbs => dbs.First())
-                    .BindTo(this, x => x.CurrentDB);
+                    .Subscribe(Databases);                
 
                 credsWithRepo.Subscribe(login => getProjects.Execute(login));
                 _GettingProjects =
@@ -226,14 +193,10 @@ namespace DiversityPhone.ViewModels.Utility
                     .ItemsInflight
                     .Select(items => items > 0)
                     .ToProperty(this, x => x.GettingProjects);
-                _Projects = 
-                    getProjects
+                
+                getProjects
                     .RegisterAsyncFunction(login => _owner._DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())
-                    .ToProperty(this, x => x.Projects);
-                _Projects
-                    .Where(projects => projects.Any())
-                    .Select(projects => projects.First())
-                    .BindTo(this, x => x.CurrentProject);
+                    .Subscribe(Projects);                
 
                 creds.Subscribe(login => getUserInfo.Execute(login));
                 var profile = 
@@ -271,19 +234,19 @@ namespace DiversityPhone.ViewModels.Utility
 
                 _BusyMessageSubject.OnNext("Downloading Vocabulary");                
                 var voc = diversityService.GetStandardVocabulary().First();
-                var analysesObservable = diversityService.GetAnalysesForProject(CurrentProject, credentials);
+                var analysesObservable = diversityService.GetAnalysesForProject(Projects.SelectedItem, credentials);
                 storageService.addTerms(voc);
 
                 _BusyMessageSubject.OnNext("Downloading Analyses");
                 var analyses = analysesObservable.First();
-                var resultObservable = diversityService.GetAnalysisResultsForProject(CurrentProject, credentials);
+                var resultObservable = diversityService.GetAnalysisResultsForProject(Projects.SelectedItem, credentials);
                 
                 storageService.addAnalyses(analyses);
 
                 _BusyMessageSubject.OnNext("Downloading Analysis Results");
                 
                 var results = resultObservable.First();
-                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(CurrentProject, credentials);
+                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(Projects.SelectedItem, credentials);
 
                 storageService.addAnalysisResults(results);
                 

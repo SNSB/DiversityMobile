@@ -44,8 +44,8 @@
             
                 <controls:PivotItem Header="Repository">
                     <StackPanel>
-                        <toolkit:ListPicker ItemsSource="{Binding Databases}"
-                                            SelectedItem="{Binding CurrentDB, Mode=TwoWay}">
+                        <toolkit:ListPicker ItemsSource="{Binding Databases.Items}"
+                                            SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}">
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding DisplayName}"/>
@@ -61,8 +61,8 @@
 
                 <controls:PivotItem Header="Project">
                     <StackPanel>
-                        <toolkit:ListPicker ItemsSource="{Binding Projects}"
-                                            SelectedItem="{Binding CurrentProject, Mode=TwoWay}">
+                        <toolkit:ListPicker ItemsSource="{Binding Projects.Items}"
+                                            SelectedIndex="{Binding Projects.SelectedIndex, Mode=TwoWay}">
                             <toolkit:ListPicker.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding DisplayText}"/>

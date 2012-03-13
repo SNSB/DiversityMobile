@@ -74,12 +74,12 @@ namespace DiversityPhone.ViewModels
             Analyses = new ListSelectionHelper<Analysis>();
             _Parent
                 .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
-                .Subscribe(Analyses.ItemsSubject);
+                .Subscribe(Analyses);
                         
-            Analyses.SelectedItemObservable
+            Analyses
                 .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
-                .Subscribe(Results.ItemsSubject);
-            _IsCustomResult = Results.ItemsSubject
+                .Subscribe(Results);
+            _IsCustomResult = Results.ItemsObservable
                 .Where(res => res != null)
                 .Select(results => results.Count == 0)
                 .ToProperty(this, vm => vm.IsCustomResult);          
@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels
 
         protected override IObservable<bool> CanSave()
         {
-            var vocabularyResultValid = Results.SelectedItemObservable
+            var vocabularyResultValid = Results
                 .Select(result => result != null);
 
             var customResultValid = this.ObservableForProperty(x => x.CustomResult)

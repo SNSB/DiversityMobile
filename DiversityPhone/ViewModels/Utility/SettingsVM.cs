@@ -93,7 +93,8 @@ namespace DiversityPhone.ViewModels.Utility
             _Setup = _IsFirstSetup
                 .Where(x => x)
                 .Select(_ => new SetupVM(this))
-                .Do(setup => _SetupSubscription.Disposable = setup.CanSave.Subscribe(_CanSaveSubject))
+                .DebugObservable("FirstSetup")
+                .Do(setup => _SetupSubscription.Disposable = setup.CanSave.Subscribe(_CanSaveSubject))                
                 .Do(_ => clearDatabase.Execute(null))
                 .ToProperty(this, x => x.Setup);
                 
