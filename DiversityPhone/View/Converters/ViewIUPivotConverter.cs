@@ -29,14 +29,11 @@ namespace DiversityPhone.View
                 case ViewIUVM.Pivots.Subunits:
                     return 0;
                     break;
-                case ViewIUVM.Pivots.Analyses:
-                    return 1;
-                    break;
                 case ViewIUVM.Pivots.Descriptions:
-                    return 2;
-                    break;
+                    return 1;
+                    break;                
                 case ViewIUVM.Pivots.Multimedia:
-                    return 3;
+                    return 2;
                     break;
                 default:
                     return 0;
@@ -58,10 +55,8 @@ namespace DiversityPhone.View
                 case 0:
                     return ViewIUVM.Pivots.Subunits;
                 case 1:
-                    return ViewIUVM.Pivots.Analyses;
-                case 2:
                     return ViewIUVM.Pivots.Descriptions;
-                case 3:
+                case 2:                    
                     return ViewIUVM.Pivots.Multimedia;
                 default:
                     System.Diagnostics.Debugger.Break();

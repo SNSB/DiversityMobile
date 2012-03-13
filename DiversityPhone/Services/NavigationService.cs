@@ -178,6 +178,9 @@ namespace DiversityPhone.Services
                 case Page.TaxonManagement:
                     destination = "/View/TaxonManagement.xaml";
                     break;
+                case Page.EditEventProperty:
+                    destination = "/View/EditEventProperty.xaml";
+                    break;
 
 #if DEBUG
                 default:

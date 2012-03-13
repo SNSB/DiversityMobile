@@ -16,8 +16,7 @@ namespace DiversityPhone.ViewModels
         public enum Pivots
         {
             Subunits,
-            Analyses,
-            Descriptions,
+            Descriptions,            
             Multimedia
         }     
 
@@ -86,12 +85,10 @@ namespace DiversityPhone.ViewModels
                     {
                         switch(SelectedPivot)
                         {
-                            case Pivots.Analyses:
+                            case Pivots.Descriptions:
                                 return Page.EditIUAN;
                             case Pivots.Multimedia:
-                                return Page.EditMMO;
-                            case Pivots.Descriptions:
-                                //TODO Description Page
+                                return Page.EditMMO;                            
                             case Pivots.Subunits:
                                 return Page.EditIU;
                             default:

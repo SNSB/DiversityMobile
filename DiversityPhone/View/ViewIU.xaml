@@ -29,23 +29,20 @@
         <controls:Pivot VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
             <controls:PivotItem Header="subunits">
-                <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding Subunits}"
+                <ListBox ItemsSource="{Binding Subunits}"
                  ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
             </controls:PivotItem>
 
             <!--Pivot item two-->
-            <controls:PivotItem Header="analyses">
-                <ListBox Grid.Row="1" 
-                 ItemsSource="{Binding Analyses}"
-                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
-                
-                
-            </controls:PivotItem>
-            <!--Pivot item three-->
             <controls:PivotItem Header="descriptions">
-
+                <StackPanel>
+                    <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
+                                    Content="{Binding Current.Model}"/>
+                    <ListBox ItemsSource="{Binding Analyses}"
+                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+                </StackPanel>                
             </controls:PivotItem>
+            
             <!--Pivot item three-->
             <controls:PivotItem Header="multimedia">
                 <ListBox ItemTemplate="{StaticResource MMOTemplate}"

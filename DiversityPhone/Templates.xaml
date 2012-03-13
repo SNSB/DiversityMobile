@@ -82,7 +82,14 @@
 
 
     <DataTemplate x:Key="GeoRefItemTemplate">
-        <TextBlock><Run Text="GEOREF"/></TextBlock>
+        <TextBlock>
+            <Run Text="{Binding Latitude}"/>
+            <Run Text="-"/>
+            <Run Text="{Binding Longitude}"/>
+            <Run Text="@"/>
+            <Run Text="{Binding Altitude}"/>
+            <Run Text="m"/>
+        </TextBlock>
     </DataTemplate>
     
     <DataTemplate x:Key="DisplayTextItemTemplate">
