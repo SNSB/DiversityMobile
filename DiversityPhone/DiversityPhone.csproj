@@ -109,6 +109,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CommandNotAvailableLabel.xaml.cs">
+      <DependentUpon>CommandNotAvailableLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SmallVocabularyValueControl.xaml.cs">
       <DependentUpon>SmallVocabularyValueControl.xaml</DependentUpon>
     </Compile>
@@ -309,6 +312,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Page Include="Controls\CommandNotAvailableLabel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\SmallVocabularyValueControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
