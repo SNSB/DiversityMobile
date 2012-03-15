@@ -61,7 +61,11 @@ namespace DiversityPhone.ViewModels
                 ValidModel
                 .Select(m => !m.IsNew())
                 );
-            ToggleEditable = new ReactiveCommand();
+
+            ToggleEditable = new ReactiveCommand(
+                ValidModel
+                .Select(m => !m.IsUnmodified()) //Can't edit data
+                );
 
             _IsEditable = DistinctStateObservable
                .Select(s => s.Context == null) //Newly created Units are immediately editable
