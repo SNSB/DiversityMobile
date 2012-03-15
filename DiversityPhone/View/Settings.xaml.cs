@@ -97,7 +97,6 @@ namespace DiversityPhone.View
                                 this.Focus();
                             });
                     });
-
                 showClearButton(VM.Reset.CanExecute(null));
             }
 
@@ -108,7 +107,7 @@ namespace DiversityPhone.View
         {
             if (canreset && !ApplicationBar.Buttons.Contains(clearBtn))
                 ApplicationBar.Buttons.Add(clearBtn);
-            else if(ApplicationBar.Buttons.Contains(clearBtn))
+            else if(!canreset && ApplicationBar.Buttons.Contains(clearBtn))
                 ApplicationBar.Buttons.Remove(clearBtn);
         }
     }

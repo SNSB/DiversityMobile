@@ -87,7 +87,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select( x => x.UserName == null)                
                 .ToProperty(this, x => x.IsFirstSetup);
 
-            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x));
+            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false)); //
             Save = new ReactiveCommand(_CanSaveSubject);
 
             _Setup = _IsFirstSetup

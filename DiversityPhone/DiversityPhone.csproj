@@ -249,9 +249,6 @@
     <Compile Include="View\EditPicture.xaml.cs">
       <DependentUpon>EditPicture.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditUserProfile.xaml.cs">
-      <DependentUpon>EditUserProfile.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Converters\IconToImageConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
     <Compile Include="View\ProgressBinding.cs" />
@@ -369,10 +366,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditUserProfile.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -427,6 +420,7 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <Resource Include="Images\MetroIcons\white\i.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
     <Content Include="Images\SNSBIcons\Event_80.png" />
@@ -708,10 +702,11 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DiversityResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

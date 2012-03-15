@@ -77,10 +77,10 @@ namespace DiversityPhone.Controls
 
             if(command != null && !command.CanExecute(null))
             {
-                textField.Visibility = Visibility.Visible;
+                contentPanel.Visibility = Visibility.Visible;
             }
             else
-                textField.Visibility = Visibility.Collapsed;
+                contentPanel.Visibility = Visibility.Collapsed;
         }
     }
 }

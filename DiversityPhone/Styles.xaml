@@ -87,6 +87,10 @@
 	<Style x:Key="ListBoxWhiteStyle" TargetType="ListBox">
         <Setter Property="ItemContainerStyle" Value="{StaticResource ListBoxItemStyle}" />
     </Style>
+    
+    <Style x:Key="InfoLabelTextStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSmallStyle}">
+        
+    </Style>
 
     <SolidColorBrush x:Key="SynonymyAcceptedColor">Green</SolidColorBrush>
     <SolidColorBrush x:Key="SynonymySynonymColor">Red</SolidColorBrush>

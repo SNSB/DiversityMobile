@@ -8,6 +8,8 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
-    
-    <TextBlock x:Name="textField" Style="{StaticResource PhoneTextSmallStyle}" Text="test"/>
+    <StackPanel x:Name="contentPanel" Orientation="Horizontal">
+        <Image Source="/Images/MetroIcons/white/i.png" Height="40" Width="40"/>
+        <TextBlock x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" TextWrapping="Wrap"/>
+    </StackPanel>
 </UserControl>

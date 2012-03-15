@@ -64,7 +64,7 @@ namespace DiversityPhone.ViewModels
 
             ToggleEditable = new ReactiveCommand(
                 ValidModel
-                .Select(m => !m.IsUnmodified()) //Can't edit data
+                .Select(m => !m.IsUnmodified()) //Can't edit uploaded Items               
                 );
 
             _IsEditable = DistinctStateObservable
