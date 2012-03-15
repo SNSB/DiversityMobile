@@ -17,7 +17,7 @@
     DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}"
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
     
-    x:Name="taxonPage">
+    x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -30,7 +30,7 @@
                     <ItemsControl ItemsSource="{Binding LocalLists}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}">
+                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="delete" Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}" 
@@ -56,7 +56,7 @@
                     <ItemsControl x:Name="RepoListBox" ItemsSource="{Binding RepoLists}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}">
+                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="download" 

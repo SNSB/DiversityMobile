@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using Client = DiversityPhone.Model;
 using DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
+using System.Collections.Specialized;
+using System.Collections.ObjectModel;
 
 namespace DiversityPhone.ViewModels
 {
@@ -32,8 +34,8 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<bool> _IsBusy;       
 
         private IList<Client.TaxonSelection> _TaxonSelections;
-        public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
-        public ReactiveCollection<TaxonListVM> RepoLists { get; private set; } 
+        public ObservableCollection<TaxonListVM> LocalLists { get; private set; }
+        public ObservableCollection<TaxonListVM> RepoLists { get; private set; } 
      
         private ReactiveAsyncCommand getRepoLists = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand downloadTaxonList = new ReactiveAsyncCommand();
@@ -63,7 +65,7 @@ namespace DiversityPhone.ViewModels
                 .Select(argument => argument as TaxonListVM)
                 .Subscribe(taxonlist =>
                     {
-                        if (taxonlist.IsDownloaded) //Local list
+                        if (!taxonlist.IsDownloading) //Local list
                         {
                             if (!taxonlist.IsSelected)
                             {
@@ -81,6 +83,7 @@ namespace DiversityPhone.ViewModels
                             if (Storage.getTaxonTableFreeCount() > 0)
                             {
                                 RepoLists.Remove(taxonlist);
+                                taxonlist.IsDownloading = true;
                                 LocalLists.Add(taxonlist);
 
                                 if (downloadTaxonList.CanExecute(taxonlist))
@@ -96,10 +99,9 @@ namespace DiversityPhone.ViewModels
                 .Select(argument => argument as TaxonListVM)
                 .Subscribe(taxonlist =>
                     {
-                        if (taxonlist.IsDownloaded && deleteTaxonList.CanExecute(taxonlist))
+                        if (!taxonlist.IsDownloading && deleteTaxonList.CanExecute(taxonlist))
                         {
-                            deleteTaxonList.Execute(taxonlist);                            
-                            taxonlist.IsDownloaded = false;
+                            deleteTaxonList.Execute(taxonlist);                                                        
                             taxonlist.IsSelected = false;
                             LocalLists.Remove(taxonlist);
                             RepoLists.Add(taxonlist);
@@ -119,9 +121,9 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(selections => selections)
                 .Select(selection => 
                 { 
-                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup }, Select)
+                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
                     { 
-                        IsDownloaded = true, 
+                        IsDownloading = false, 
                         IsSelected = selection.IsSelected
                     };
                 })
@@ -133,14 +135,14 @@ namespace DiversityPhone.ViewModels
                     .CombineLatest(taxonSelections, (repolists, localselections) =>
                         repolists.Where(repolist => !localselections.Any(selection => selection.TableName == repolist.Table)) //Filter Lists that have already been downloaded
                         )
-                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list, Select) { IsDownloaded = false, IsSelected = false }))
+                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
                     .CreateCollection();
 
             downloadTaxonList
                 .RegisterAsyncFunction(arg => downloadTaxonListImpl(arg as TaxonListVM))           
                 .Subscribe(downloadedList => 
                     {
-                        downloadedList.IsDownloaded = true;
+                        downloadedList.IsDownloading = false;
                         downloadedList.IsSelected = Storage.getTaxonSelections()
                                                     .Where(sel => sel.TableName == downloadedList.Model.Table && sel.TaxonomicGroup == downloadedList.Model.TaxonomicGroup)
                                                     .Select(sel => sel.IsSelected)
@@ -148,8 +150,7 @@ namespace DiversityPhone.ViewModels
                     });
 
             deleteTaxonList
-                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM))
-                .Subscribe(deletedList => deletedList.IsDownloaded = false);
+                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));               
 
             getRepoLists.Execute(null);                       
         }

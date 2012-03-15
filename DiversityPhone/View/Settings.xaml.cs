@@ -72,10 +72,7 @@ namespace DiversityPhone.View
                 VM.Reset.CanExecuteObservable
                     .Subscribe(canreset =>
                     {
-                        if (canreset)
-                            ApplicationBar.Buttons.Add(clearBtn);
-                        else
-                            ApplicationBar.Buttons.Remove(clearBtn);
+                        showClearButton(canreset);
                     });
 
                 VM.ObservableForProperty(x => x.Setup)
@@ -101,9 +98,18 @@ namespace DiversityPhone.View
                             });
                     });
 
+                showClearButton(VM.Reset.CanExecute(null));
             }
 
             
+        }
+
+        private void showClearButton(bool canreset)
+        {
+            if (canreset && !ApplicationBar.Buttons.Contains(clearBtn))
+                ApplicationBar.Buttons.Add(clearBtn);
+            else if(ApplicationBar.Buttons.Contains(clearBtn))
+                ApplicationBar.Buttons.Remove(clearBtn);
         }
     }
 }
