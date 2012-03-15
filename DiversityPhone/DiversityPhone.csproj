@@ -115,6 +115,12 @@
     <Compile Include="Controls\StringValueControl.xaml.cs">
       <DependentUpon>StringValueControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DiversityResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="LocalizedStrings.cs" />
     <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Model\Analysis.cs" />
     <Compile Include="Model\AnalysisResult.cs" />
@@ -692,6 +698,12 @@
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
       <Name>GeneralUtility</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DiversityResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
