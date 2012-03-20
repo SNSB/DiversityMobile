@@ -420,7 +420,7 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
-    <Resource Include="Images\MetroIcons\white\i.png" />
+    <Content Include="Images\MetroIcons\white\i.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
     <Content Include="Images\SNSBIcons\Event_80.png" />
@@ -529,6 +529,9 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSery.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -556,19 +559,14 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\configuration91.svcinfo">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\configuration.svcinfo">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\Service1.disco" />
+    <None Include="Service References\DiversityService\configuration91.svcinfo" />
+    <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -583,6 +581,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service15.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service16.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
