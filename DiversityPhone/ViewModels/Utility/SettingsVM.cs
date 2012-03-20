@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using DiversityPhone.Services;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
@@ -45,7 +36,7 @@ namespace DiversityPhone.ViewModels.Utility
         private ISubject<string> _BusyMessageSubject = new Subject<string>();
         private ObservableAsPropertyHelper<string> _BusyMessage;
 
-        ReactiveAsyncCommand refreshVocabulary = new ReactiveAsyncCommand();
+        public ReactiveAsyncCommand RefreshVocabulary{get; private set;}
 
 
         private bool _UseGPS;
@@ -65,6 +56,8 @@ namespace DiversityPhone.ViewModels.Utility
         private ISubject<bool> _CanSaveSubject = new Subject<bool>();
 
         public ReactiveCommand Reset { get; private set; }
+
+        
 
         public ReactiveCommand ManageTaxa { get; private set; }
 
@@ -86,15 +79,21 @@ namespace DiversityPhone.ViewModels.Utility
                 .ToProperty(this, x => x.Model);            
 
             _ModelSubject
+                .Where(x => x != null)
                 .Select(m => m.UseGPS)
                 .BindTo(this, x => x.UseGPS);
 
+            _ModelSubject
+                .Select(x => x != null)
+                .Subscribe(_CanSaveSubject);
+
             _IsFirstSetup =
                 _ModelSubject
-                .Select( x => x.UserName == null)                
+                .Select( x => x == null)  
+                .DistinctUntilChanged()
                 .ToProperty(this, x => x.IsFirstSetup);
 
-            Reset = ReactiveCommand.Create(_ => false); //_IsFirstSetup.Select(x => !x).StartWith(false)
+            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false)); 
             Save = new ReactiveCommand(_CanSaveSubject);
 
             _BusyMessage = _BusyMessageSubject
@@ -102,21 +101,25 @@ namespace DiversityPhone.ViewModels.Utility
 
             _Setup = _IsFirstSetup
                 .Where(x => x)
-                .Select(_ => new SetupVM(this))                                
+                .Select(_ => new SetupVM(_DivSvc))                                
                 .Do(_ => clearDatabase.Execute(null))
+                .Do(setup => setup
+                    .Result                    
+                    .Subscribe(_ModelSubject))
                 .ToProperty(this, x => x.Setup);
                 
                 
 
             _IsFirstSetup
                 .Where(x => !x)                
-                .Subscribe(_ => OnSettings());            
+                .Subscribe(_ => OnSettings());
 
-            refreshVocabulary                
+            RefreshVocabulary = new ReactiveAsyncCommand();
+            RefreshVocabulary                
                 .RegisterAsyncAction(_ => refreshVocabularyImpl(_settings.getSettings()));
 
             _IsBusy =
-                refreshVocabulary
+                RefreshVocabulary
                 .ItemsInflight
                 .Select(items => items > 0)
                 .ToProperty(this, x => x.IsBusy);  
@@ -125,12 +128,22 @@ namespace DiversityPhone.ViewModels.Utility
             clearDatabase.RegisterAsyncAction(_ => _storage.clearDatabase());
             
                                    
+            var onsave =
+            Save            
+            .Do(_ => saveModel())
+            .Publish();
+
+            onsave
+            .Where(_ => IsFirstSetup)
+            .Subscribe(RefreshVocabulary.Execute);
+
             Messenger.RegisterMessageSource(
-                Save
+                onsave
                 .Where(_ => !IsFirstSetup)
-                .Do(_ => saveModel())
-                .Select(_ => new NavigationMessage(Services.Page.Previous))
-                );
+                .Select(_ => Page.Previous));
+
+            onsave.Connect();
+               
 
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(

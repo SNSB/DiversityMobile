@@ -50,9 +50,8 @@ namespace DiversityPhone
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            var currentSettings = App.Settings.getSettings();
-            if (string.IsNullOrWhiteSpace(currentSettings.UserName))
+        {            
+            if (App.Settings.getSettings() == null)
                 MessageBus.Current.SendMessage<Page>(Page.Settings);
             else
             {

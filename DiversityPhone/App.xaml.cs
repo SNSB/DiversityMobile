@@ -95,7 +95,8 @@ namespace DiversityPhone
 
             // Phone-specific initialization
             InitializePhoneApplication();
-            if (Settings.getSettings().UseGPS == true)
+            var settings = Settings.getSettings();
+            if (settings != null && settings.UseGPS == true)
                 Watcher.Start();
 
             // Show graphics profiling information while debugging.
