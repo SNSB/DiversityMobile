@@ -33,13 +33,18 @@
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
-                                            <toolkit:MenuItem Header="delete" Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}" 
+                                            <toolkit:MenuItem Header="delete" 
+                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}" 
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded}"/>
                                             <toolkit:MenuItem Header="select" 
                                                               Command="{Binding ElementName=taxonPage, Path=DataContext.Select}" 
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsSelected, Converter={StaticResource InvertBoolean}}"/>
+                                            <toolkit:MenuItem Header="refresh" 
+                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Refresh}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsDownloaded}"/>
                                         </toolkit:ContextMenu>
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </ContentControl>
