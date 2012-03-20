@@ -44,6 +44,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Select { get; private set; }
         public ReactiveCommand Download { get; private set; }
         public ReactiveCommand Delete { get; private set; }
+        public ReactiveCommand Refresh { get; private set; }
         
 
         #endregion
@@ -107,6 +108,25 @@ namespace DiversityPhone.ViewModels
                             RepoLists.Add(taxonlist);
                         }
                     });
+
+            Refresh = new ReactiveCommand(_IsBusy.Select(x => !x));
+            Refresh
+                .Where(arg => arg is TaxonListVM)
+                .Select(arg => arg as TaxonListVM)
+                .Subscribe(taxonlist =>
+                {
+                    if (Delete.CanExecute(taxonlist))
+                    {
+                        deleteTaxonList.ItemsInflight
+                            .Where(items => items == 0)
+                            .Take(1)
+                            .Subscribe(_ => downloadTaxonList.Execute(taxonlist));
+                        Delete.Execute(taxonlist);
+                    }
+                });
+
+
+
 
 
             var taxonSelections = DistinctStateObservable
