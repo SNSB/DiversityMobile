@@ -73,7 +73,7 @@
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>
-        <TextBlock Height="26" HorizontalAlignment="Left" Margin="16,11,0,0" Name="textBlock0" Text="DIVERSITYPHONE" VerticalAlignment="Top" Width="204" />
+        <TextBlock Height="26" HorizontalAlignment="Left" Margin="16,11,0,0" Name="textBlock0" Text="DIVERSITYMOBILE" VerticalAlignment="Top" Width="204" />
         <TextBlock Height="68" HorizontalAlignment="Left" Margin="16,43,0,0" Name="textBlock00" Text="bruckhäusel nord" VerticalAlignment="Top" Width="380" FontSize="48" />
         <Image Height="67" HorizontalAlignment="Left" Margin="397,44,0,0" Name="image0" Stretch="Fill" VerticalAlignment="Top" Width="71" Source="/Images/Event_80.png" />
     </Grid>

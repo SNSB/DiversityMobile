@@ -195,29 +195,12 @@
                 observation.CollectionEventID = ev.EventID;
                 addOrUpdateSpecimen(observation);
 
-                //withDataContext((ctx) =>{
-                ////Now EventID is set even for new Events
-                //Specimen observation = new Specimen().MakeObservation();
-                //observation.CollectionEventID = ev.EventID;
-                //ev.Specimen.Add(observation);
-                //ctx.SubmitChanges();
-                //});
             }
         }
 
         public void deleteEvent(Event toDeleteEv)
         {
-            //withDataContext((ctx) =>
-            //     {
-            //         IList<Specimen> attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
-                     
-            //         foreach (Specimen spec in attachedSpecimen)
-            //         {
-            //             toDeleteEv.Specimen.Add(spec);
-            //         }
-            //         ctx.Events.DeleteOnSubmit(toDeleteEv);
-            //         ctx.SubmitChanges();
-            //     });
+
             IList<Specimen> attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
             foreach (Specimen spec in attachedSpecimen)
             {
