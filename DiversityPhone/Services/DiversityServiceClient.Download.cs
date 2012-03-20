@@ -167,7 +167,7 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(Project p, UserCredentials login)
+        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, UserCredentials login)
         {
             var source = Observable.FromEvent<EventHandler<GetAnalysesForProjectCompletedEventArgs>, GetAnalysesForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d)
                .Select(args => args.Result)
@@ -180,11 +180,11 @@ namespace DiversityPhone.Services
                        MeasurementUnit = an.MeasurementUnit
                    }));
             var res = singleResultObservable(source);            
-            _svc.GetAnalysesForProjectAsync(p, login);            
+            _svc.GetAnalysesForProjectAsync(projectID, login);            
             return res;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(Project p, UserCredentials login)
+        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login)
         {
             var source = Observable.FromEvent<EventHandler<GetAnalysisResultsForProjectCompletedEventArgs>, GetAnalysisResultsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d)
                .Select(args => args.Result)
@@ -198,11 +198,11 @@ namespace DiversityPhone.Services
                        Result = ar.Result
                    }));
             var res = singleResultObservable(source);
-            _svc.GetAnalysisResultsForProjectAsync(p, login);
+            _svc.GetAnalysisResultsForProjectAsync(projectID, login);
             return res;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login)
+        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
         {
             var source = Observable.FromEvent<EventHandler<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>, GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d)
                .Select(args => args.Result)
@@ -213,8 +213,8 @@ namespace DiversityPhone.Services
                        TaxonomicGroup = atg.TaxonomicGroup
                    }));
             var res = singleResultObservable(source);
-               
-            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(p, login);
+
+            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login);
             return res;
         }
     }

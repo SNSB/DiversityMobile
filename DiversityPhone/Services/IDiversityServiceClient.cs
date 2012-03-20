@@ -17,11 +17,11 @@ namespace DiversityPhone.Services
        
         IObservable<IEnumerable<Term>> GetStandardVocabulary();
 
-        IObservable<IEnumerable<Analysis>> GetAnalysesForProject(Svc.Project p, Svc.UserCredentials login);
+        IObservable<IEnumerable<Analysis>> GetAnalysesForProject(int projectID, Svc.UserCredentials login);
 
-        IObservable<IEnumerable<AnalysisResult>> GetAnalysisResultsForProject(Svc.Project p, Svc.UserCredentials login);
+        IObservable<IEnumerable<AnalysisResult>> GetAnalysisResultsForProject(int projectID, Svc.UserCredentials login);
 
-        IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(Svc.Project p, Svc.UserCredentials login);
+        IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, Svc.UserCredentials login);
 
         #endregion
         #region Upload

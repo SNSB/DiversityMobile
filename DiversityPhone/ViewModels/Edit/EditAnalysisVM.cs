@@ -14,7 +14,7 @@ namespace DiversityPhone.ViewModels
     public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
     { 
         #region Properties
-
+        public IVocabularyService Vocabulary { get; set; }
 
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
@@ -57,10 +57,10 @@ namespace DiversityPhone.ViewModels
         ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
 
 
-        public EditAnalysisVM()
+        public EditAnalysisVM(IVocabularyService voc)
             : base(false)
         {
-            
+            Vocabulary = voc;
                 
 
 
@@ -73,11 +73,11 @@ namespace DiversityPhone.ViewModels
 
             Analyses = new ListSelectionHelper<Analysis>();
             _Parent
-                .Select(parent => Storage.getPossibleAnalyses(parent.Model.TaxonomicGroup))
+                .Select(parent => Vocabulary.getPossibleAnalyses(parent.Model.TaxonomicGroup))
                 .Subscribe(Analyses);
                         
             Analyses
-                .Select(selectedAN => (selectedAN != null) ? Storage.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
+                .Select(selectedAN => (selectedAN != null) ? Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
                 .Subscribe(Results);
             _IsCustomResult = Results.ItemsObservable
                 .Where(res => res != null)

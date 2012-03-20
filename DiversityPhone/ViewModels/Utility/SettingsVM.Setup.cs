@@ -81,14 +81,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             public ListSelectionHelper<Svc.Project> Projects { get; private set; }            
 
-            private IObservable<Svc.UserProfile> _Profile;
-
-            public bool IsBusy { get { return _IsBusy.Value; } }
-            private ObservableAsPropertyHelper<bool> _IsBusy;
-
-            public string BusyMessage { get { return _BusyMessage.Value; } }
-            private ISubject<string> _BusyMessageSubject = new Subject<string>();
-            private ObservableAsPropertyHelper<string> _BusyMessage;
+            private IObservable<Svc.UserProfile> _Profile;           
 
             public bool GettingProjects { get { return _GettingProjects.Value; } }
             private ObservableAsPropertyHelper<bool> _GettingProjects;
@@ -96,14 +89,13 @@ namespace DiversityPhone.ViewModels.Utility
             public bool GettingRepositories { get { return _GettingRepositories.Value; } }
             private ObservableAsPropertyHelper<bool> _GettingRepositories;
             #endregion
-           
-            public IObservable<bool> CanSave { get { return canSave(); } }
+
+            public IObservable<AppSettings> Result { get; private set; }
 
             #region Async Operations
             ReactiveAsyncCommand getRepositories = new ReactiveAsyncCommand();
             ReactiveAsyncCommand getProjects = new ReactiveAsyncCommand();
-            ReactiveAsyncCommand getUserInfo = new ReactiveAsyncCommand();
-            ReactiveAsyncCommand finishSetup = new ReactiveAsyncCommand();
+            ReactiveAsyncCommand getUserInfo = new ReactiveAsyncCommand();            
             #endregion
 
             private AppSettings createSettings()
@@ -150,9 +142,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             public SetupVM(SettingsVM owner)
             {
-                _owner = owner;
-                _BusyMessage = _BusyMessageSubject
-                    .ToProperty(this, x => x.BusyMessage);
+                _owner = owner;               
 
                 Databases = new ListSelectionHelper<Svc.Repository>();
                 Projects = new ListSelectionHelper<Svc.Project>();
@@ -205,58 +195,8 @@ namespace DiversityPhone.ViewModels.Utility
                     .StartWith(new Svc.UserProfile[] { null })
                     .Replay(1); // Keep the last User Profile around
                 profile.Connect();
-                _Profile = profile;
-
-                finishSetup
-                    .RegisterAsyncAction(_ => finishSetupImpl());
-                _IsBusy = 
-                     finishSetup
-                    .ItemsInflight
-                    .Select(items => items > 0)
-                    .ToProperty(this, x => x.IsBusy);
-
-                _saveDisposable = _owner.Save
-                    .Subscribe(_ => finishSetup.Execute(null));
-                
-
-                
-            }
-
-            private void finishSetupImpl()
-            {
-                _saveDisposable.Dispose();
-
-                var settings = createSettings();
-                var credentials = new Svc.UserCredentials(settings);               
-                    
-                var storageService = _owner._storage;
-                var diversityService = _owner._DivSvc;
-
-                _BusyMessageSubject.OnNext("Downloading Vocabulary");                
-                var voc = diversityService.GetStandardVocabulary().First();
-                var analysesObservable = diversityService.GetAnalysesForProject(Projects.SelectedItem, credentials);
-                storageService.addTerms(voc);
-
-                _BusyMessageSubject.OnNext("Downloading Analyses");
-                var analyses = analysesObservable.First();
-                var resultObservable = diversityService.GetAnalysisResultsForProject(Projects.SelectedItem, credentials);
-                
-                storageService.addAnalyses(analyses);
-
-                _BusyMessageSubject.OnNext("Downloading Analysis Results");
-                
-                var results = resultObservable.First();
-                var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(Projects.SelectedItem, credentials);
-
-                storageService.addAnalysisResults(results);
-                
-                var atgs = atgObservable.First();
-
-                storageService.addAnalysisTaxonomicGroups(atgs);
-
-                _owner._settings.saveSettings(settings);
-                _owner._ModelSubject.OnNext(settings);
-            }
+                _Profile = profile;         
+            }           
         }
     }
 }

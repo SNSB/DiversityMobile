@@ -24,7 +24,7 @@ namespace DiversityPhone.ViewModels
     public partial class TaxonManagementVM : PageViewModel
     {
         #region Services
-        private IOfflineStorage Storage { get; set; }
+        private ITaxonService Taxa { get; set; }        
         private IDiversityServiceClient Service { get; set; }
         #endregion
 
@@ -49,10 +49,10 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public TaxonManagementVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient service)
+        public TaxonManagementVM(IMessageBus messenger, ITaxonService taxa, IDiversityServiceClient service)
             : base(messenger)
-        {
-            Storage = storage;
+        {            
+            Taxa = taxa;
             Service = service;
 
             _IsBusy = Observable.Merge(
@@ -70,7 +70,7 @@ namespace DiversityPhone.ViewModels
                         {
                             if (!taxonlist.IsSelected)
                             {
-                                Storage.selectTaxonList(taxonlist.Model);
+                                Taxa.selectTaxonList(taxonlist.Model);
                                 taxonlist.IsSelected = true;
                             }
                         }                        
@@ -81,7 +81,7 @@ namespace DiversityPhone.ViewModels
                 .Select(arg => arg as TaxonListVM)
                 .Subscribe(taxonlist =>
                         {
-                            if (Storage.getTaxonTableFreeCount() > 0)
+                            if (Taxa.getTaxonTableFreeCount() > 0)
                             {
                                 RepoLists.Remove(taxonlist);
                                 taxonlist.IsDownloading = true;
@@ -131,7 +131,7 @@ namespace DiversityPhone.ViewModels
 
             var taxonSelections = DistinctStateObservable
                 .Take(1)
-                .Select(_ => Storage.getTaxonSelections())
+                .Select(_ => Taxa.getTaxonSelections())
                 .Publish();
             taxonSelections.Connect();
 
@@ -163,7 +163,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(downloadedList => 
                     {
                         downloadedList.IsDownloading = false;
-                        downloadedList.IsSelected = Storage.getTaxonSelections()
+                        downloadedList.IsSelected = Taxa.getTaxonSelections()
                                                     .Where(sel => sel.TableName == downloadedList.Model.Table && sel.TaxonomicGroup == downloadedList.Model.TaxonomicGroup)
                                                     .Select(sel => sel.IsSelected)
                                                     .FirstOrDefault();                        
@@ -178,7 +178,7 @@ namespace DiversityPhone.ViewModels
         private TaxonListVM downloadTaxonListImpl(TaxonListVM taxonList)
         {            
             Service.DownloadTaxonListChunked(taxonList.Model)
-                .ForEach(chunk => Storage.addTaxonNames(chunk, taxonList.Model));           
+                .ForEach(chunk => Taxa.addTaxonNames(chunk, taxonList.Model));           
             
             return taxonList;        
         }
@@ -190,7 +190,7 @@ namespace DiversityPhone.ViewModels
 
         private TaxonListVM deleteListImpl(TaxonListVM list)
         {
-            Storage.deleteTaxonList(list.Model);
+            Taxa.deleteTaxonList(list.Model);
             return list;
         }
 

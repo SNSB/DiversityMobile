@@ -1,27 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using DiversityPhone.Model;
 using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
 {
-   
-
-    public interface IOfflineVocabulary
+    public interface ITaxonService
     {
-        void addTerms(IEnumerable<Term> terms);
-        IList<Term> getTerms(Svc.TermList source);
-
-        void addAnalyses(IEnumerable<Analysis> analyses);
-        IList<Analysis> getAllAnalyses();
-        IList<Analysis> getPossibleAnalyses(string taxonomicGroup);
-        Analysis getAnalysisByID(int analysisID);
-
-        void addAnalysisResults(IEnumerable<AnalysisResult> results);
-        IList<AnalysisResult> getPossibleAnalysisResults(int AnalysisID);
-
-        void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);
-        //IList<AnalysisTaxonomicGroup> getAnalysisTaxonomicGroups(string taxonomicGroup);
-
         /// <summary>
         /// Adds new TaxonNames to the database
         /// </summary>        
@@ -48,7 +35,7 @@ namespace DiversityPhone.Services
         /// </summary>
         /// <param name="selection"></param>
         void deleteTaxonList(Svc.TaxonList list);
-        
+
         /// <summary>
         /// Retrieves Taxon Names that conform to the query string
         /// </summary>
@@ -56,11 +43,5 @@ namespace DiversityPhone.Services
         /// <param name="query">space separated list of keywords</param>
         /// <returns></returns>
         IList<TaxonName> getTaxonNames(Term taxGroup, string query);
-
-        void addPropertyNames(IEnumerable<PropertyName> properties);
-        IList<PropertyName> getPropertyNames(Property prop);
-        PropertyName getPropertyNameByURI(string uri);
-        IList<Property> getAllProperties();
-        Property getPropertyByID(int id);
     }
 }

@@ -74,15 +74,15 @@ namespace DiversityService
             {
                 return Enumerable.Empty<Project>();
             }
-        }        
+        }
 
-        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login)
+        public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
         {
             using (var db = new DiversityORM.Diversity(login))
             {
-                var atgs = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(p.ProjectID,db));                    
+                var atgs = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(projectID,db));                    
                 var flattened = new HashSet<AnalysisTaxonomicGroup>();
-                var analyses = analysesForProject(p.ProjectID,db).ToLookup(an => an.AnalysisParentID);
+                var analyses = analysesForProject(projectID,db).ToLookup(an => an.AnalysisParentID);
 
                 while (atgs.Any())
                 {
@@ -103,19 +103,19 @@ namespace DiversityService
             }
         }
 
-        public IEnumerable<Model.Analysis> GetAnalysesForProject(Project p, UserCredentials login)
+        public IEnumerable<Model.Analysis> GetAnalysesForProject(int projectID, UserCredentials login)
         {
             using (var db = new DiversityORM.Diversity(login))
             {
-                var res = analysesForProject(p.ProjectID, db).ToList();
+                var res = analysesForProject(projectID, db).ToList();
                 return res;
             }
         }
-        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login)
+        public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(int projectID, UserCredentials login)
         {
             using (var db = new DiversityORM.Diversity(login))
             {
-                return analysisResultsForProject(p.ProjectID, db).ToList();
+                return analysisResultsForProject(projectID, db).ToList();
             }
         }
 

@@ -25,7 +25,7 @@ namespace DiversityPhone
 {
     public partial class App : Application
     {
-        public static IOfflineStorage OfflineDB { get; private set; }
+        public static IFieldDataService OfflineDB { get; private set; }
 
         private IList<GeoCoordinate> coordinates;
         /// <summary>

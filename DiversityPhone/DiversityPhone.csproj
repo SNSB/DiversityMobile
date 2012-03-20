@@ -64,35 +64,28 @@
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx_Experimental-Testing.1.1.11111\lib\SL3-WP\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="ReactiveUI.Blend_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Testing_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-testing.2.5.2.0\lib\SL3-WP\ReactiveUI.Testing_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Xaml_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Xaml_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI_WP7, Version=2.5.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-core.2.5.2.0\lib\SL3-WP\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx_Experimental-Main.1.1.11111\lib\SL3-WP\System.Reactive.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Rx_Experimental-Xaml.1.1.11111\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -174,10 +167,10 @@
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\DiversityServiceClient.Upload.cs" />
+    <Compile Include="Services\ITaxonService.cs" />
     <Compile Include="Services\MapParameter.cs" />
-    <Compile Include="Services\IOfflineFieldData.cs" />
-    <Compile Include="Services\IOfflineStorage.cs" />
-    <Compile Include="Services\IOfflineVocabulary.cs" />
+    <Compile Include="Services\IFieldDataService.cs" />
+    <Compile Include="Services\IVocabularyService.cs" />
     <Compile Include="Model\IQueryOperations.cs" />
     <Compile Include="Services\MediaType.cs" />
     <Compile Include="Services\ModelProjection.cs" />
@@ -188,6 +181,8 @@
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\TaxonDataContext.cs" />
+    <Compile Include="Services\TaxonService.cs" />
+    <Compile Include="Services\VocabularyService.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
@@ -529,6 +524,9 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSery.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -583,6 +581,15 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service14.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service141.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service142.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />

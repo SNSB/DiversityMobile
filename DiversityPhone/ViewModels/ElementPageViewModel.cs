@@ -9,7 +9,7 @@ namespace DiversityPhone.ViewModels
 {
     public abstract class ElementPageViewModel<T> : PageViewModel
     {
-        protected IOfflineStorage Storage { get; private set; }
+        protected IFieldDataService Storage { get; private set; }
 
 
         private ObservableAsPropertyHelper<ElementVMBase<T>> _Current;
@@ -64,7 +64,7 @@ namespace DiversityPhone.ViewModels
 
         /// <param name="messenger">Messenger</param>
         /// <param name="refreshModel">Determines whether or not the Model is updated, when the Page is refreshed</param>
-        public ElementPageViewModel(IMessageBus messenger, IOfflineStorage storage, bool refreshModel)
+        public ElementPageViewModel(IMessageBus messenger, IFieldDataService storage, bool refreshModel)
             : base(messenger)
         {
             Storage = storage;            

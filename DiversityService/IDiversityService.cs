@@ -26,11 +26,11 @@ namespace DiversityService
         IEnumerable<Project> GetProjectsForUser(UserCredentials login);
         
         [OperationContract]
-        IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(Project p, UserCredentials login);
+        IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login);
         [OperationContract]
-        IEnumerable<Analysis> GetAnalysesForProject(Project p, UserCredentials login);
+        IEnumerable<Analysis> GetAnalysesForProject(int projectID, UserCredentials login);
         [OperationContract]
-        IEnumerable<AnalysisResult> GetAnalysisResultsForProject(Project p, UserCredentials login);
+        IEnumerable<AnalysisResult> GetAnalysisResultsForProject(int projectID, UserCredentials login);
         #endregion
 
         #region Upload

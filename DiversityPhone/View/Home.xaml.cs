@@ -29,14 +29,7 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Add.Execute(null);
-        }
-       
-
-        private void GetVoc_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.GetSampleTaxa.Execute(null);
-        }
+        }     
 
         private void UploadMMO_Click(object sender, EventArgs e)
         {

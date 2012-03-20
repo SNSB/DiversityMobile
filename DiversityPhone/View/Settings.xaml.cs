@@ -75,27 +75,18 @@ namespace DiversityPhone.View
                         showClearButton(canreset);
                     });
 
-                VM.ObservableForProperty(x => x.Setup)
-                    .Select(change => change.Value)
-                    .Where(setup => setup != null)
-                    .Select(setup => setup.ObservableForProperty(x => x.IsBusy))
-                    .Subscribe(isBusyObs =>
+                VM.ObservableForProperty(x => x.IsBusy)
+                    .Value()
+                    .Subscribe(isBusy =>
                     {
-                        //Hide Menu Bar and Overlay, when setup is busy
-                        setup_isbusy_subyscription.Disposable =
-                            isBusyObs
-                            .Select(x => x.Value)
-                            .Subscribe(isBusy =>
-                            {
-                                ApplicationBar.IsVisible = !isBusy;
-                                BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
-                                var p = Progress;
-                                if(p != null)
-                                {
-                                    p.IsIndeterminate = p.IsVisible = isBusy;
-                                }
-                                this.Focus();
-                            });
+                        ApplicationBar.IsVisible = !isBusy;
+                        BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
+                        var p = Progress;
+                        if(p != null)
+                        {
+                            p.IsIndeterminate = p.IsVisible = isBusy;
+                        }
+                        this.Focus();                           
                     });
                 showClearButton(VM.Reset.CanExecute(null));
             }
