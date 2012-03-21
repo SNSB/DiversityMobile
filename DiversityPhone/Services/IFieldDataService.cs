@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DiversityPhone.Model;
 using Svc = DiversityPhone.DiversityService;
 
-    public interface IOfflineFieldData
+    public interface IFieldDataService
     {
         void clearDatabase();
 

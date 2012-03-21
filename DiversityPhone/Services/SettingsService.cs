@@ -18,12 +18,12 @@ namespace DiversityPhone.Services
                     .Subscribe(s => saveSettings(s));
             
             if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out _settings))
-                _settings = new AppSettings();
+                _settings = null;
 	    }
 
         public AppSettings getSettings()
         {
-            return _settings.Clone();
+            return (_settings != null) ? _settings.Clone() : null;
         }
 
         public void saveSettings(AppSettings settings)

@@ -31,7 +31,7 @@ namespace DiversityPhone.ViewModels
             #region ViewModel Factories
             _ioc.Register<HomeVM>(container => new HomeVM(                
                 container.Resolve<IMessageBus>(),
-                container.Resolve<IOfflineStorage>(),
+                container.Resolve<IFieldDataService>(),
                 container.Resolve<IDiversityServiceClient>(),
                 container.Resolve<ISettingsService>()
                 ));
@@ -47,21 +47,22 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewCSVM>(c => new ViewCSVM());
             _ioc.Register<EditCSVM>(c => new EditCSVM());
             _ioc.Register<ViewLMVM>(c => new ViewLMVM(c.Resolve<IMessageBus>()));
-            _ioc.Register<EditIUVM>(c => new EditIUVM());
+            _ioc.Register<EditIUVM>(c => new EditIUVM(c.Resolve<ITaxonService>(), c.Resolve<IVocabularyService>()));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM());
-            _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM());
+            _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c.Resolve<IVocabularyService>()));
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
-            _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IOfflineStorage>()));            
+            _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IFieldDataService>(), c.Resolve<IVocabularyService>()));            
 
             _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
-                                                                        c.Resolve<IOfflineStorage>(),
+                                                                        c.Resolve<ITaxonService>(),
                                                                         c.Resolve<IDiversityServiceClient>()));
 
             _ioc.Register<SettingsVM>(c => new SettingsVM(
                 c.Resolve<ISettingsService>(),
                 c.Resolve<IDiversityServiceClient>(),
-                c.Resolve<IOfflineStorage>()
+                c.Resolve<IFieldDataService>(),
+                c.Resolve<IVocabularyService>()
                 ));
 
             #endregion

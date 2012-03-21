@@ -12,7 +12,7 @@
     using Svc = DiversityPhone.DiversityService;
     using System.IO.IsolatedStorage;
 
-    public class OfflineStorage : IOfflineStorage
+    public class OfflineStorage : IFieldDataService
     {
         private IList<IDisposable> _subscriptions;
         private IMessageBus _messenger;
@@ -52,18 +52,8 @@
                 _messenger.Listen<MultimediaObject>(MessageContracts.DELETE)
                     .Subscribe(mmo=>deleteMMO(mmo)),
 
-                _messenger.Listen<Term>(MessageContracts.USE)
-                    .Subscribe(term => updateLastUsed(term)),
-            };
-
-            using (var context = new DiversityDataContext())
-            {
-                if (!context.DatabaseExists())
-                {
-                   context.CreateDatabase();
-                   
-                }
-            }
+                
+            };           
         }
 
         #region EventSeries
@@ -243,21 +233,7 @@
                   ctx => ctx.CollectionEventProperties,
                   cep
               );
-        }
-
-        public IList<Property> getAllProperties()
-        {
-            return uncachedQuery(ctx => from p in ctx.Properties
-                                        select p);
-        }
-
-        public Property getPropertyByID(int id)
-        {
-            return singletonQuery(ctx =>
-                from p in ctx.Properties
-                where p.PropertyID == id
-                select p);
-        }
+        }    
 
         public void deleteEventProperty(CollectionEventProperty toDeleteCep)
         {
@@ -409,19 +385,14 @@
 
         #endregion
 
-        #region Analyses 
-
-
         public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
-            return cachedQuery(IdentificationUnitAnalysis.Operations,
-            ctx =>
+            return uncachedQuery(ctx =>
                 from iuan in ctx.IdentificationUnitAnalyses
-                where iuan.IdentificationUnitID == iu.UnitID 
+                where iuan.IdentificationUnitID == iu.UnitID
                 select iuan
                 );
         }
-
 
         public IdentificationUnitAnalysis getIUANByID(int iuanalysisID)
         {
@@ -439,85 +410,12 @@
                 ctx => ctx.IdentificationUnitAnalyses,
                 iua
             );
-        }      
-
-        public IList<Analysis> getAllAnalyses()
-        {
-            return cachedQuery(Analysis.Operations,
-            ctx =>
-                from an in ctx.Analyses                
-                select an
-                );
-        }
-
-        public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
-        {
-        //This query can't be (unordered join) and doesn't have to be (very small) cached 
-            return uncachedQuery(ctx =>
-                from an in ctx.Analyses
-                join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
-                where atg.TaxonomicGroup == taxonomicGroup
-                select an);
-        }
-
-        public Analysis getAnalysisByID(int id)
-        {
-            return singletonQuery(ctx => from an in ctx.Analyses
-                                         where an.AnalysisID == id
-                                         select an);
-        }
-
-        public void addAnalyses(IEnumerable<Analysis> analyses)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.Analyses.InsertAllOnSubmit(analyses);
-                ctx.SubmitChanges();
-            }
-        }
-
-        public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
-        {
-            return uncachedQuery(ctx =>
-                from ar in ctx.AnalysisResults
-                where ar.AnalysisID == analysisID 
-                select ar
-            );
-        }
-        public void addAnalysisResults(IEnumerable<AnalysisResult> results)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.AnalysisResults.InsertAllOnSubmit(results);
-                ctx.SubmitChanges();
-            }
-        }
-
-
-        public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.AnalysisTaxonomicGroups.InsertAllOnSubmit(groups);
-                try
-                {
-                    ctx.SubmitChanges();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debugger.Break();
-                }
-                
-            }
         }
 
         public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA)
         {
             deleteRow(IdentificationUnitAnalysis.Operations, ctx => ctx.IdentificationUnitAnalyses, toDeleteIUA);
         }
-
-
-        #endregion
 
         #region Multimedia
 
@@ -596,275 +494,7 @@
 
         #endregion
 
-        #region Terms
-
-        public IList<Term> getTerms(Svc.TermList source)
-        {
-            return uncachedQuery(ctx => from t in ctx.Terms
-                                        where t.SourceID == source
-                                        orderby t.LastUsed descending
-                                        select t
-                                        );
-        }
-
-
-
-        public void addTerms(IEnumerable<Term> terms)
-        {
-            using (var ctx = new DiversityDataContext())
-            {          
-                
-                ctx.Terms.InsertAllOnSubmit(terms);
-                try
-                {
-                    ctx.SubmitChanges();
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debugger.Break();
-                    //TODO Log
-                }
-                 
-            }
-            sampleData();
-        }
-
-        public void updateLastUsed(Term term)
-        {
-            if (term == null)
-            {
-#if DEBUG
-                throw new ArgumentNullException("term");
-#else
-                return;
-#endif
-                //TODO Log
-            }
-
-            withDataContext(ctx =>
-            {
-                ctx.Terms.Attach(term);
-                term.LastUsed = DateTime.Now;
-                ctx.SubmitChanges();
-            });
-        }
-
-        #endregion
-
-        #region TaxonNames
-
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list)
-        {
-            int tableIdx = -1;
-            lock (this)
-            {                
-                withDataContext(ctx =>
-                {                       
-                    var existingSelection = (from ts in ctx.TaxonSelection
-                                                where ts.TableName == list.Table
-                                                select ts).FirstOrDefault();
-                    if (existingSelection != null)
-                    {
-                        tableIdx = existingSelection.TableID;
-                    }
-                    else
-                    {
-                        var unusedIDs = getUnusedTaxonTableIDs(ctx);
-                        if (unusedIDs.Count() > 0)
-                        {
-                            var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
-                            var selection = new TaxonSelection()
-                            {
-                                TableDisplayName = list.DisplayText,
-                                TableID = unusedIDs.First(),
-                                TableName = list.Table,
-                                TaxonomicGroup = list.TaxonomicGroup,
-                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable) //If this is the first table for this group, select it.
-                            };
-                            ctx.TaxonSelection.InsertOnSubmit(selection);
-                            ctx.SubmitChanges();
-                            tableIdx = selection.TableID;
-                        }
-                        else
-                            throw new InvalidOperationException("No Unused Taxon Table");
-                    }
-                });
-            }
-
-            using (var taxctx = new TaxonDataContext(tableIdx))
-            {
-                taxctx.TaxonNames.InsertAllOnSubmit(taxa);
-                try
-                {
-                    taxctx.SubmitChanges();                                
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debugger.Break();
-                    //TODO Log
-                }
-            }            
-        }
-
-        public IList<TaxonSelection> getTaxonSelections()
-        {
-            IList<TaxonSelection> result = null;
-            withDataContext(ctx =>
-                {
-                    result = (ctx.TaxonSelection.ToList());
-                });
-            return result;
-        }
-
-        public void selectTaxonList(Svc.TaxonList list)
-        {
-            withDataContext(ctx =>
-                {
-                    var tables = from s in ctx.TaxonSelection
-                                            where s.TaxonomicGroup == list.TaxonomicGroup                                            
-                                            select s;
-                    var oldSelection = tables.FirstOrDefault(s => s.IsSelected);
-                    var newSelection = tables.FirstOrDefault(s => s.TableName == list.Table);
-                    if (newSelection != null)
-                    {
-                        newSelection.IsSelected = true;
-
-                        if (oldSelection != null)
-                            oldSelection.IsSelected = false;
-
-                        ctx.SubmitChanges();
-                    }
-                    else
-                    {
-                        //TODO Log
-                    }
-                }
-            );
-        }
-
-        public void deleteTaxonList(Svc.TaxonList list)
-        {
-            withDataContext(ctx =>
-                {
-                    var selection = (from sel in ctx.TaxonSelection
-                                     where sel.TableName == list.Table && sel.TaxonomicGroup == list.TaxonomicGroup
-                                     select sel).FirstOrDefault();
-
-                    if (selection != null)
-                    {
-                        using (var taxa = new TaxonDataContext(selection.TableID))
-                        {
-                            taxa.DeleteDatabase();
-                        }
-                        ctx.TaxonSelection.DeleteOnSubmit(selection);
-                        ctx.SubmitChanges();
-                    }
-                    else
-                    {
-                        //TODO Log
-                    }
-                });
-        }
-
-        public int getTaxonTableFreeCount()
-        {
-            int result = 0;
-            withDataContext(ctx =>
-            {
-                result = getUnusedTaxonTableIDs(ctx).Count();
-            });
-            return result;
-        }       
-
-        public IList<TaxonName> getTaxonNames(Term taxonGroup, string query)
-        {
-            int tableID;
-            if (taxonGroup == null 
-                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == -1)
-            {
-                System.Diagnostics.Debugger.Break();
-                //TODO Logging
-                return new List<TaxonName>();
-            }            
-            
-            return getTaxonNames(tableID, query);
-        }
-
-        private IEnumerable<int> getUnusedTaxonTableIDs(DiversityDataContext ctx)
-        {
-            var usedTableIDs = from ts in ctx.TaxonSelection
-                               select ts.TableID;
-            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);           
-        }    
-
-        private IList<TaxonName> getTaxonNames(int tableID, string query)
-        {
-            var queryWords = query.Split(new[]{' '},StringSplitOptions.RemoveEmptyEntries);
-
-            var q = from tn in (new TaxonDataContext(tableID).TaxonNames)                        
-                    select tn;
-            foreach (var word in queryWords)
-	        {
-		        q = q.Where(tn => tn.TaxonNameCache.Contains(word));
-	        }
-
-            q = q.Take(10);
-
-            return q.ToList();
-        }
-
-        private int getTaxonTableIDForGroup(string taxonGroup)
-        {
-            int id = -1;
-            if(taxonGroup != null)
-                withDataContext(ctx =>
-                {
-                    var assignment = from a in ctx.TaxonSelection
-                                     where a.TaxonomicGroup == taxonGroup && a.IsSelected
-                                     select a.TableID;
-                    if (assignment.Any())
-                        id = assignment.First();
-                });
-            return id;
-        }
-
-        
-
-
-        #endregion
-
-        #region PropertyNames
-
-        public void addPropertyNames(IEnumerable<PropertyName> properties)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.PropertyNames.InsertAllOnSubmit(properties);
-                ctx.SubmitChanges();
-            }
-        }
-
-        public IList<PropertyName> getPropertyNames(Property prop)
-        {
-            return uncachedQuery(ctx => from pn in ctx.PropertyNames
-                                        where pn.PropertyID == prop.PropertyID
-                                        select pn);
-        }
-
-        public PropertyName getPropertyNameByURI(string uri)
-        {
-            PropertyName result = null;
-
-            withDataContext(ctx =>
-                {
-                    result = (from pn in ctx.PropertyNames
-                              where pn.PropertyUri == uri
-                              select pn).FirstOrDefault();
-                });
-            return result;
-        }
-
-        #endregion
+       
 
         #region Maps
 

@@ -29,14 +29,7 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Add.Execute(null);
-        }
-       
-
-        private void GetVoc_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.GetSampleTaxa.Execute(null);
-        }
+        }     
 
         private void UploadMMO_Click(object sender, EventArgs e)
         {
@@ -57,9 +50,8 @@ namespace DiversityPhone
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            var currentSettings = App.Settings.getSettings();
-            if (string.IsNullOrWhiteSpace(currentSettings.UserName))
+        {            
+            if (App.Settings.getSettings() == null)
                 MessageBus.Current.SendMessage<Page>(Page.Settings);
             else
             {

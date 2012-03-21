@@ -1,13 +1,4 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using DiversityPhone.Services;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
@@ -15,7 +6,7 @@ using ReactiveUI.Xaml;
 using ReactiveUI;
 using System.Linq;
 using System.Collections.Generic;
-using DiversityPhone.DiversityService;
+using Svc = DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using DiversityPhone.Messages;
 using System.Reactive.Disposables;
@@ -26,7 +17,8 @@ namespace DiversityPhone.ViewModels.Utility
     {
         ISettingsService _settings;
         IDiversityServiceClient _DivSvc;
-        IOfflineStorage _storage;
+        IVocabularyService _vocabulary;
+        IFieldDataService _storage;
 
 
         public SetupVM Setup { get { return _Setup.Value; } }
@@ -35,11 +27,16 @@ namespace DiversityPhone.ViewModels.Utility
         
 
         public bool IsFirstSetup { get { return _IsFirstSetup.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsFirstSetup;
+        private ObservableAsPropertyHelper<bool> _IsFirstSetup;        
 
-        public bool IsBusy { get { return _IsBusy.Value; } }        
-        private ISubject<bool> _IsBusySubject = new Subject<bool>();
-        private ObservableAsPropertyHelper<bool> _IsBusy;       
+        public bool IsBusy { get { return _IsBusy.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsBusy;
+
+        public string BusyMessage { get { return _BusyMessage.Value; } }
+        private ISubject<string> _BusyMessageSubject = new Subject<string>();
+        private ObservableAsPropertyHelper<string> _BusyMessage;
+
+        public ReactiveAsyncCommand RefreshVocabulary{get; private set;}
 
 
         private bool _UseGPS;
@@ -60,6 +57,8 @@ namespace DiversityPhone.ViewModels.Utility
 
         public ReactiveCommand Reset { get; private set; }
 
+        
+
         public ReactiveCommand ManageTaxa { get; private set; }
 
         private ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
@@ -69,33 +68,44 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<AppSettings> _Model;
         private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();       
         
-        public SettingsVM(ISettingsService set, IDiversityServiceClient divsvc, IOfflineStorage storage)            
+        public SettingsVM(ISettingsService set, IDiversityServiceClient divsvc, IFieldDataService storage, IVocabularyService voc)            
         {
             _settings = set;          
             _DivSvc = divsvc;
-            _storage = storage;     
+            _storage = storage;
+            _vocabulary = voc;
 
             _Model =_ModelSubject                
                 .ToProperty(this, x => x.Model);            
 
             _ModelSubject
+                .Where(x => x != null)
                 .Select(m => m.UseGPS)
                 .BindTo(this, x => x.UseGPS);
 
+            _ModelSubject
+                .Select(x => x != null)
+                .Subscribe(_CanSaveSubject);
+
             _IsFirstSetup =
                 _ModelSubject
-                .Select( x => x.UserName == null)                
+                .Select( x => x == null)  
+                .DistinctUntilChanged()
                 .ToProperty(this, x => x.IsFirstSetup);
 
-            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false)); //
+            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false)); 
             Save = new ReactiveCommand(_CanSaveSubject);
+
+            _BusyMessage = _BusyMessageSubject
+                    .ToProperty(this, x => x.BusyMessage);
 
             _Setup = _IsFirstSetup
                 .Where(x => x)
-                .Select(_ => new SetupVM(this))
-                .DebugObservable("FirstSetup")
-                .Do(setup => _SetupSubscription.Disposable = setup.CanSave.Subscribe(_CanSaveSubject))                
+                .Select(_ => new SetupVM(_DivSvc))                                
                 .Do(_ => clearDatabase.Execute(null))
+                .Do(setup => setup
+                    .Result                    
+                    .Subscribe(_ModelSubject))
                 .ToProperty(this, x => x.Setup);
                 
                 
@@ -104,19 +114,36 @@ namespace DiversityPhone.ViewModels.Utility
                 .Where(x => !x)                
                 .Subscribe(_ => OnSettings());
 
-            _IsBusy = _IsBusySubject
-                .ToProperty(this, x => x.IsBusy);
+            RefreshVocabulary = new ReactiveAsyncCommand();
+            RefreshVocabulary                
+                .RegisterAsyncAction(_ => refreshVocabularyImpl(_settings.getSettings()));
+
+            _IsBusy =
+                RefreshVocabulary
+                .ItemsInflight
+                .Select(items => items > 0)
+                .ToProperty(this, x => x.IsBusy);  
 
 
             clearDatabase.RegisterAsyncAction(_ => _storage.clearDatabase());
             
                                    
+            var onsave =
+            Save            
+            .Do(_ => saveModel())
+            .Publish();
+
+            onsave
+            .Where(_ => IsFirstSetup)
+            .Subscribe(RefreshVocabulary.Execute);
+
             Messenger.RegisterMessageSource(
-                Save
+                onsave
                 .Where(_ => !IsFirstSetup)
-                .Do(_ => saveModel())
-                .Select(_ => new NavigationMessage(Services.Page.Previous))
-                );
+                .Select(_ => Page.Previous));
+
+            onsave.Connect();
+               
 
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(
@@ -160,7 +187,37 @@ namespace DiversityPhone.ViewModels.Utility
             _ModelSubject.OnNext(new AppSettings());
         }
 
-       
+        private void refreshVocabularyImpl(AppSettings settings)
+        {            
+            var credentials = new Svc.UserCredentials(settings);
+
+            var vocabulary = _vocabulary;
+            var diversityService = _DivSvc;
+
+            vocabulary.clearVocabulary();
+
+            _BusyMessageSubject.OnNext("Downloading Vocabulary");
+            var voc = diversityService.GetStandardVocabulary().First();
+            var analysesObservable = diversityService.GetAnalysesForProject(settings.CurrentProject, credentials);
+            vocabulary.addTerms(voc);
+
+            _BusyMessageSubject.OnNext("Downloading Analyses");
+            var analyses = analysesObservable.First();
+            var resultObservable = diversityService.GetAnalysisResultsForProject(settings.CurrentProject, credentials);
+
+            vocabulary.addAnalyses(analyses);
+
+            _BusyMessageSubject.OnNext("Downloading Analysis Results");
+
+            var results = resultObservable.First();
+            var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(settings.CurrentProject, credentials);
+
+            vocabulary.addAnalysisResults(results);
+
+            var atgs = atgObservable.First();
+
+            vocabulary.addAnalysisTaxonomicGroups(atgs);           
+        }
 
         
     }

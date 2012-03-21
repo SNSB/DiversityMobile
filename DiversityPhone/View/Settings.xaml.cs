@@ -24,7 +24,7 @@ namespace DiversityPhone.View
 
         static ProgressIndicator Progress { get { return SystemTray.ProgressIndicator; } }
 
-        private ApplicationBarIconButton saveBtn,clearBtn;
+        private ApplicationBarIconButton saveBtn,clearBtn, refreshBtn;
 
         private SerialDisposable setup_isbusy_subyscription = new SerialDisposable(); 
 
@@ -64,6 +64,14 @@ namespace DiversityPhone.View
             };
             clearBtn.Click += Reset_Click;
 
+            refreshBtn = new ApplicationBarIconButton()
+            {
+                IconUri = new Uri("/Images/appbar.refresh.rest.png"),
+                Text = "refresh vocabulary"
+            };
+            refreshBtn.Click += new EventHandler(refreshBtn_Click);
+
+
             if (VM != null)
             {
                 VM.Save.CanExecuteObservable
@@ -72,43 +80,51 @@ namespace DiversityPhone.View
                 VM.Reset.CanExecuteObservable
                     .Subscribe(canreset =>
                     {
-                        showClearButton(canreset);
+                        showButtons(canreset);
                     });
 
-                VM.ObservableForProperty(x => x.Setup)
-                    .Select(change => change.Value)
-                    .Where(setup => setup != null)
-                    .Select(setup => setup.ObservableForProperty(x => x.IsBusy))
-                    .Subscribe(isBusyObs =>
+                VM.ObservableForProperty(x => x.IsBusy)
+                    .Value()
+                    .Subscribe(isBusy =>
                     {
-                        //Hide Menu Bar and Overlay, when setup is busy
-                        setup_isbusy_subyscription.Disposable =
-                            isBusyObs
-                            .Select(x => x.Value)
-                            .Subscribe(isBusy =>
-                            {
-                                ApplicationBar.IsVisible = !isBusy;
-                                BusyOverlay.Visibility = (isBusy) ? Visibility.Visible : Visibility.Collapsed;
-                                var p = Progress;
-                                if(p != null)
-                                {
-                                    p.IsIndeterminate = p.IsVisible = isBusy;
-                                }
-                                this.Focus();
-                            });
+                        ApplicationBar.IsVisible = !isBusy;                       
+                        var p = Progress;
+                        if(p != null)
+                        {
+                            p.IsIndeterminate = p.IsVisible = isBusy;
+                        }
+                        this.Focus();                           
                     });
-                showClearButton(VM.Reset.CanExecute(null));
+                showButtons(VM.Reset.CanExecute(null));
             }
 
             
         }
 
-        private void showClearButton(bool canreset)
+        void refreshBtn_Click(object sender, EventArgs e)
+        {
+            if (VM != null && VM.RefreshVocabulary.CanExecute(null))
+                VM.RefreshVocabulary.Execute(null);
+        }
+
+        private void showButtons(bool canreset)
         {
             if (canreset && !ApplicationBar.Buttons.Contains(clearBtn))
+            {
+                ApplicationBar.Buttons.Add(refreshBtn);
                 ApplicationBar.Buttons.Add(clearBtn);
-            else if(!canreset && ApplicationBar.Buttons.Contains(clearBtn))
+            }
+            else if (!canreset && ApplicationBar.Buttons.Contains(clearBtn))
+            {
+                ApplicationBar.Buttons.Remove(refreshBtn);
                 ApplicationBar.Buttons.Remove(clearBtn);
+            }
+        }
+
+        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (VM != null)
+                e.Cancel = VM.IsBusy;
         }
     }
 }

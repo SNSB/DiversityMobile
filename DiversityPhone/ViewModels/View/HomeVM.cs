@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels
+﻿
+namespace DiversityPhone.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -20,7 +21,7 @@
         private IList<IDisposable> _subscriptions;
 
         #region Services        
-        private IOfflineStorage _storage;
+        private IFieldDataService _storage;
         private IDiversityServiceClient _repository;
         private ISettingsService _settings;
         private DiversityService.DiversityServiceClient _plainUploadClient;
@@ -30,8 +31,7 @@
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
-        public ReactiveCommand Add { get; private set; }
-        public ReactiveCommand GetSampleTaxa { get; private set; }
+        public ReactiveCommand Add { get; private set; }       
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand UploadMMO { get; private set; }
         public ReactiveCommand UploadPlain { get; private set; }
@@ -61,7 +61,7 @@
         }
         #endregion
 
-        public HomeVM(IMessageBus messenger, IOfflineStorage storage, IDiversityServiceClient repo, ISettingsService settings)
+        public HomeVM(IMessageBus messenger, IFieldDataService storage, IDiversityServiceClient repo, ISettingsService settings)
             : base(messenger)
         {            
             _storage = storage;
@@ -92,9 +92,7 @@
                 (Add = new ReactiveCommand())
                     .Subscribe(_ => addSeries()),
                 (UploadMMO = new ReactiveCommand())
-                    .Subscribe(_ => uploadMMos()),
-                (GetSampleTaxa = new ReactiveCommand())
-                    .Subscribe(_ => getTaxa()), 
+                    .Subscribe(_ => uploadMMos()),               
                 (UploadPlain=new ReactiveCommand())
                     .Subscribe(_ =>uploadPlain()),
                 (Maps=new ReactiveCommand())
@@ -124,24 +122,7 @@
                 yield return _storage.getNewHierarchyToSyncBelow(ev);
             }
         }
-
-        private void getTaxa()
-        {
-            
-            var sampleTaxonList = new Svc.TaxonList()
-            {
-                Table = "TaxRef_BfN_VPlants",
-                TaxonomicGroup = "plant",
-                DisplayText = "Plants"
-            };
-
-            //TODO Page
-            _repository.DownloadTaxonListChunked(sampleTaxonList)
-                .Subscribe(taxa => _storage.addTaxonNames(taxa, sampleTaxonList));
-
-
-            
-        }
+       
 
         private void uploadPlain()
         {

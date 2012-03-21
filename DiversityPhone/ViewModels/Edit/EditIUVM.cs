@@ -14,6 +14,9 @@ namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : EditElementPageVMBase<IdentificationUnit>
     {
+        public ITaxonService Taxa { get; set; }
+        public IVocabularyService Vocabulary { get; set; }
+
         #region Properties
         private ObservableAsPropertyHelper<bool> _IsObservation;
         public bool IsObservation
@@ -140,9 +143,11 @@ namespace DiversityPhone.ViewModels
 
 
 
-        public EditIUVM()
+        public EditIUVM(ITaxonService taxa, IVocabularyService voc)
             : base(false)
         {
+            Taxa = taxa;
+            Vocabulary = voc;
             #region Update View
             _IsToplevel = ValidModel
                             .Select(m => m.RelatedUnitID == null)
@@ -166,7 +171,7 @@ namespace DiversityPhone.ViewModels
                 .Value()
                 .Select(query =>
                     {
-                        return Storage.getTaxonNames(SelectedTaxGroup, query);
+                        return Taxa.getTaxonNames(SelectedTaxGroup, query);
                         
                     })
                 .Select( candidates =>                     
@@ -186,12 +191,12 @@ namespace DiversityPhone.ViewModels
 
 
             _TaxonomicGroups = DistinctStateObservable
-                .Select(_ => Storage.getTerms(Svc.TermList.TaxonomicGroups))                
+                .Select(_ => Vocabulary.getTerms(Svc.TermList.TaxonomicGroups))                
                 .ToProperty(this, vm => vm.TaxonomicGroups);
 
             _RelationshipTypes = _IsToplevel
                 .Where(isToplevel => !isToplevel)
-                .Select(isToplevel => Storage.getTerms(Svc.TermList.RelationshipTypes))                
+                .Select(isToplevel => Vocabulary.getTerms(Svc.TermList.RelationshipTypes))                
                 .ToProperty(this, vm => vm.RelationshipTypes);
             #endregion
 

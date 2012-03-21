@@ -18,7 +18,8 @@
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
     DataContext="{Binding Settings, Source={StaticResource Locator}}"
     IsTabStop="True"
-    Loaded="PhoneApplicationPage_Loaded">
+    Loaded="PhoneApplicationPage_Loaded"
+    BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <phone:PhoneApplicationPage.Resources>
         <vw:SettingsPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
@@ -94,15 +95,15 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Grid x:Name="BusyOverlay" Background="Black" Visibility="Collapsed">
-            <TextBlock Text="{Binding Setup.BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>            
+        <Grid Background="Black" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
+            <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>            
         </Grid>
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton Text="save" IconUri="/Images/appbar.save.rest.png" Click="Save_Click"/>
+                <shell:ApplicationBarIconButton Text="save" IconUri="/Images/appbar.save.rest.png" Click="Save_Click"/>                
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

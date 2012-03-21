@@ -17,7 +17,9 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<DialogService>(new DialogService(_ioc.Resolve<IMessageBus>()));
 
-            _ioc.Register<IOfflineStorage>(App.OfflineDB);
+            _ioc.Register<IFieldDataService>(App.OfflineDB);
+            _ioc.Register<ITaxonService>(new TaxonService());
+            _ioc.Register<IVocabularyService>(new VocabularyService(_ioc.Resolve<IMessageBus>()));
 
             _ioc.Register<ISettingsService>(App.Settings);
 

@@ -14,33 +14,27 @@
         public DiversityDataContext()
             : base(connStr)
         {
-            
+            if (!this.DatabaseExists())
+                this.CreateDatabase();
         }
 
         public Table<EventSeries> EventSeries;
 
         public Table<Event> Events;
         public Table<CollectionEventProperty> CollectionEventProperties;
-        public Table<Property> Properties;
+        
         
         public Table<Specimen> Specimen;
 
         public Table<IdentificationUnit> IdentificationUnits;
-
-        public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;
-        public Table<Analysis> Analyses;
-        public Table<AnalysisResult> AnalysisResults;
-        public Table<AnalysisTaxonomicGroup> AnalysisTaxonomicGroups;
+        public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;        
 
         public Table<MultimediaObject> MultimediaObjects;
         public Table<Map> Maps;       
 
-        public Table<Term> Terms;
         
-        public Table<TaxonSelection> TaxonSelection;
 
-        //Alle PropertyNames werden in derslben Tabelle gespeichert, da die Gesamtzahl in Vergleich zu TaxonNames gering ist.
-        public Table<PropertyName> PropertyNames;
+        
 
         public IList<MemberInfo> getNotNullableColumns(Type t)
         {

@@ -23,7 +23,8 @@ namespace DiversityPhone.ViewModels
         
 
         #region Services        
-        IOfflineStorage _storage;
+        public IVocabularyService Vocabulary { get; set; }
+        IFieldDataService _storage;
         #endregion
 
         #region Commands
@@ -76,18 +77,18 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public EditPropertyVM(IMessageBus messenger, IOfflineStorage storage)
+        public EditPropertyVM(IMessageBus messenger, IFieldDataService storage, IVocabularyService voc)
             : base(messenger)
         {
 
-            
+            Vocabulary = voc;
             _storage = storage;
 
             _Properties = StateObservable
-                .Select(_ => _storage.getAllProperties())
+                .Select(_ => Vocabulary.getAllProperties())
                 .ToProperty(this, vm => vm.Properties);
             _PropertyNames = this.ObservableForProperty(vm => vm.SelectedProperty)
-                .Select(prop => _storage.getPropertyNames(prop.Value))
+                .Select(prop => Vocabulary.getPropertyNames(prop.Value))
                 .ToProperty(this, vm => vm.PropertyNames);
 
 
