@@ -203,8 +203,6 @@ namespace DiversityService
             using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
             {
            
-
-
                 foreach (EventSeries es in series)
                 {
                     var newSeries = es.ToEntity();
@@ -261,9 +259,9 @@ namespace DiversityService
                     if (latitude != null && longitude != null)
                     {
                         geoString = GlobalUtility.GeographySerialzier.SerializeGeography((int)latitude, (int)longitude, altitude);
-                        this.InsertGeographyIntoCollectionEventLocalisation(newEventEntity.CollectionEventID, 8, geoString);
+                        this.InsertGeographyIntoCollectionEventLocalisation(newEventEntity.CollectionEventID, 8, geoString,cred);
                         if (altitude != null)
-                            this.InsertGeographyIntoCollectionEventLocalisation(newEventEntity.CollectionEventID, 4, geoString);
+                            this.InsertGeographyIntoCollectionEventLocalisation(newEventEntity.CollectionEventID, 4, geoString,cred);
                     }
                 }
 
@@ -384,9 +382,9 @@ namespace DiversityService
                     if (iu.Latitude != null && iu.Longitude != null && iu.DiversityCollectionUnitID!=null)
                     {
                         geoString = GlobalUtility.GeographySerialzier.SerializeGeography((int)iu.Latitude, (int)iu.Longitude, iu.Altitude);
-                        this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 8, geoString);
+                        this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 8, geoString,cred);
                         if (iu.Altitude != null)
-                            this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 4, geoString);
+                            this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int) iu.DiversityCollectionUnitID, 4, geoString, cred);
                     }
                 }
                 ctx.SaveChanges();
@@ -419,40 +417,39 @@ namespace DiversityService
 
 
         #region GeoData 
-        //Eliminate PetaPoco here
         public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)
         {
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new DiversityORM.Diversity(login))
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
-                db.Execute(sql);
+                ctx.ExecuteStoreCommand(sql);
             }
         }
 
-        public void InsertGeographyIntoCollectionEventLocalisation(int eventID, int localisationSystemID, String geoString)
+        public void InsertGeographyIntoCollectionEventLocalisation(int eventID, int localisationSystemID, String geoString, UserCredentials login)
         {
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new DiversityORM.Diversity())
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where CollectionEventID=" + eventID + " AND LocalisationSystemID=" + localisationSystemID;
-                db.Execute(sql);
+                ctx.ExecuteStoreCommand(sql);
             }
         }
 
-        public void InsertGeographyIntoIdentifactionUnitGeoAnalysis(int unitID, int localisationSystemID, String geoString)
+        public void InsertGeographyIntoIdentifactionUnitGeoAnalysis(int unitID, int localisationSystemID, String geoString, UserCredentials login)
         {
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var db = new DiversityORM.Diversity())
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[IdentificationUnitGeoAnalysis] Set Geography=" + geoString + " Where IdentificationUnitID=" + unitID + " AND LocalisationSystemID=" + localisationSystemID;
-                db.Execute(sql);
+                ctx.ExecuteStoreCommand(sql);
             }
         }
         #endregion
