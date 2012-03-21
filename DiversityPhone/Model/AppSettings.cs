@@ -29,6 +29,7 @@ namespace DiversityPhone.Model
 
         public int CurrentProject { get; set; }
         public string CurrentProjectName { get; set; }
+        public int? CurrentSeries;
 
         public AppSettings Clone()
         {

@@ -94,7 +94,8 @@
         {
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
-            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);            
+            addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
+            App.CurrentSeriesID = newSeries.SeriesID;
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
@@ -109,11 +110,52 @@
             {
                 this.deleteMMO(mmo);
             }
+            IList<GeoPointForSeries> attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID);
+            foreach (GeoPointForSeries gp in attachedGeoPoints)
+            {
+                this.deleteGeoPoint(gp);
+            }
             deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
         }
 
 
 
+
+        #endregion
+
+        #region GeoPointForSeries
+
+        public IList<GeoPointForSeries> getAllGeoPoints()
+        {
+            return cachedQuery(GeoPointForSeries.Operations,
+            ctx =>
+                from gt in ctx.GeoTour
+                select gt
+                );
+        }
+
+        public IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
+        {
+            return cachedQuery(GeoPointForSeries.Operations,
+            ctx =>
+                from gt in ctx.GeoTour
+                where gt.SeriesID==SeriesID
+                select gt
+                );
+        }
+
+        public void addOrUpdateGeopPoint(GeoPointForSeries gp)
+        {
+            addOrUpdateRow(GeoPointForSeries.Operations,
+                ctx => ctx.GeoTour,
+                gp
+            );
+        }
+
+        public void deleteGeoPoint(GeoPointForSeries toDeleteGp)
+        {
+            deleteRow(GeoPointForSeries.Operations, ctx => ctx.GeoTour, toDeleteGp);
+        }
 
         #endregion
 

@@ -158,8 +158,15 @@ namespace DiversityPhone.ViewModels.Utility
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-
             _settings.saveSettings(Model);
+            if (UseGPS == true)
+            {
+                if (App.Watcher.Status != System.Device.Location.GeoPositionStatus.Ready)
+                    App.startWatcher();
+            }
+            else
+                if(App.Watcher.Status==System.Device.Location.GeoPositionStatus.Ready || App.Watcher.Status==System.Device.Location.GeoPositionStatus.Initializing)
+                    App.stopWatcher();
         }        
 
         private void OnSettings()
