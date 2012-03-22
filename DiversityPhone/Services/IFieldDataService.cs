@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using DiversityPhone.Model;
 using Svc = DiversityPhone.DiversityService;
+using System;
 
     public interface IFieldDataService
     {
@@ -24,6 +25,7 @@ using Svc = DiversityPhone.DiversityService;
         IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
         void addOrUpdateGeopPoint(GeoPointForSeries gp);
         void deleteGeoPoint(GeoPointForSeries gp);
+        String convertGeoPointsToString(int seriesID);
 
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);        
