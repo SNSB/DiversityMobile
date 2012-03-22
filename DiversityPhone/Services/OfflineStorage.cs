@@ -95,7 +95,7 @@
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            App.CurrentSeriesID = newSeries.SeriesID;
+            App.startTourWhenGPSUsed(newSeries.SeriesID);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)

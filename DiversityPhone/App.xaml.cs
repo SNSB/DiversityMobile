@@ -234,7 +234,34 @@ namespace DiversityPhone
             }
         }
 
-   
+        public static void startTourWhenGPSUsed(int SeriesID)
+        {
+            Model.AppSettings set = _settings.getSettings();
+            set.CurrentSeries = SeriesID;
+            _settings.saveSettings(set);
+            CurrentSeriesID = SeriesID;
+            coordinates = new List<Model.GeoPointForSeries>();
+            if (set.UseGPS == true)
+            {
+                Model.GeoPointForSeries gp = new Model.GeoPointForSeries();
+                gp.SeriesID = SeriesID;
+                gp.Latitude = Watcher.Position.Location.Latitude;
+                gp.Longitude = Watcher.Position.Location.Longitude;
+                gp.Altitude = Watcher.Position.Location.Altitude;
+                coordinates.Add(gp);
+            }
+        }
+
+        public static void stopTour()
+        {
+
+            Model.AppSettings set = _settings.getSettings();
+            set.CurrentSeries = null;
+            _settings.saveSettings(set);
+            CurrentSeriesID = null;
+            storeGeoPoints();
+        }
+
         static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
             if (CurrentSeriesID != null)
