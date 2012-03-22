@@ -21,7 +21,7 @@ namespace DiversityPhone.ViewModels.Utility
         IFieldDataService _storage;
 
         public SetupVM Setup { get { return _Setup.Value; } }
-        private ObservableAsPropertyHelper<SetupVM> _Setup;  
+        private ObservableAsPropertyHelper<SetupVM> _Setup;
 
         public bool IsFirstSetup { get { return _IsFirstSetupHelper.Value; } }
         private ObservableAsPropertyHelper<bool> _IsFirstSetupHelper;
@@ -168,9 +168,17 @@ namespace DiversityPhone.ViewModels.Utility
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-
             _settings.saveSettings(Model);
-        }  
+            if (UseGPS == true)
+            {
+                if (App.Watcher.Status != System.Device.Location.GeoPositionStatus.Ready)
+                    App.startWatcher();
+            }
+            else
+                if(App.Watcher.Status==System.Device.Location.GeoPositionStatus.Ready || App.Watcher.Status==System.Device.Location.GeoPositionStatus.Initializing)
+                    App.stopWatcher();
+        }        
+
         
         private void OnReset()
         {            

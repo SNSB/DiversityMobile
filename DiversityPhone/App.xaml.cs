@@ -27,7 +27,7 @@ namespace DiversityPhone
     {
         public static IFieldDataService OfflineDB { get; private set; }
 
-        private IList<GeoCoordinate> coordinates;
+        
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -55,28 +55,9 @@ namespace DiversityPhone
             }
         }
 
-        public static GeoCoordinateWatcher Watcher=new GeoCoordinateWatcher();
-
-        public static void startWatcher()
-        {
-            Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
-            Watcher.MovementThreshold = 20;
-
-            Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
-
-            Watcher.Start();
-        }
-
-        static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
-        {
-            MessageBox.Show(e.Position.Location.ToString());
-        }
 
 
-        public static void stopWatcher()
-        {
-            Watcher.Stop();
-        }
+      
         
         /// <summary>
         /// Constructor for the Application object.
@@ -97,7 +78,10 @@ namespace DiversityPhone
             InitializePhoneApplication();
             var settings = Settings.getSettings();
             if (settings != null && settings.UseGPS == true)
-                Watcher.Start();
+                startWatcher();
+
+            if (settings != null)
+                CurrentSeriesID = settings.CurrentSeries;
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -226,6 +210,54 @@ namespace DiversityPhone
 
         #endregion
 
+
+        #region Georeferencing
+
+        public static GeoCoordinateWatcher Watcher = new GeoCoordinateWatcher();
+        private static IList<Model.GeoPointForSeries> coordinates = new List<Model.GeoPointForSeries>();
+        public static int? CurrentSeriesID = null;
+
+        public static void startWatcher()
+        {
+            Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+            Watcher.MovementThreshold = 20;
+            Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
+            Watcher.Start();
+        }
+
+        public static void stopWatcher()
+        {
+            if (Watcher != null)
+            {
+                Watcher.Stop();
+                storeGeoPoints();
+            }
+        }
+
+   
+        static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            if (CurrentSeriesID != null)
+            {
+                Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
+                newGeoPoint.Latitude = e.Position.Location.Latitude;
+                newGeoPoint.Longitude = e.Position.Location.Longitude;
+                newGeoPoint.Altitude = e.Position.Location.Altitude;
+                coordinates.Add(newGeoPoint);
+                if (coordinates.Count >= 10)
+                {
+                    storeGeoPoints();
+                }
+            }
+        }
+
+        internal static void storeGeoPoints()
+        {
+            foreach (Model.GeoPointForSeries gp in coordinates)
+                OfflineDB.addOrUpdateGeopPoint(gp);
+            coordinates = new List<Model.GeoPointForSeries>();
+        }
+
         internal static void fillGeoCoordinates(Model.ILocalizable loc)
         {
             if (Watcher.Status==GeoPositionStatus.Ready)
@@ -242,5 +274,7 @@ namespace DiversityPhone
                 loc.Longitude = null;
             }
         }
+
+        #endregion
     }
 }

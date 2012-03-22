@@ -20,6 +20,11 @@ using Svc = DiversityPhone.DiversityService;
         void deleteEventSeries(EventSeries es);
         void updateSeriesKey(int oldSeriesKey, int newSeriesKey);
 
+        IList<GeoPointForSeries> getAllGeoPoints();
+        IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
+        void addOrUpdateGeopPoint(GeoPointForSeries gp);
+        void deleteGeoPoint(GeoPointForSeries gp);
+
         IList<Event> getAllEvents();        
         IList<Event> getEventsForSeries(EventSeries es);        
         Event getEventByID(int id);

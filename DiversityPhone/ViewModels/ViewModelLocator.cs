@@ -36,7 +36,7 @@ namespace DiversityPhone.ViewModels
                 container.Resolve<ISettingsService>()
                 ));
             
-            _ioc.Register<EditESVM>(c => new EditESVM());
+            _ioc.Register<EditESVM>(c => new EditESVM(c.Resolve<ISettingsService>()));
 
             _ioc.Register<ViewESVM>(container => new ViewESVM());
             _ioc.Register<EditEVVM>(c => new EditEVVM());

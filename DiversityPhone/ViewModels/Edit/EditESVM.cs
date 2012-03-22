@@ -16,6 +16,8 @@
 
     public class EditESVM : EditElementPageVMBase<EventSeries>
     {
+        private ISettingsService _settings;
+
         public ReactiveCommand FinishSeries { get; private set; }
 
         #region Properties
@@ -63,8 +65,10 @@
         #endregion
 
 
-        public EditESVM()
+        public EditESVM(ISettingsService settings)
         {
+            _settings = settings;
+
             ValidModel
                 .Select(es => es.Description ?? String.Empty)
                 .BindTo(this, x => x.Description);
@@ -82,8 +86,7 @@
                 .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString()))
                 .ToProperty(this, x => x.SeriesStart);
 
-            FinishSeries = new ReactiveCommand();
-
+            (FinishSeries = new ReactiveCommand()).Subscribe(_ =>finishSeries());
             FinishSeries
                 .Select(_ => DateTime.Now as DateTime?)
                 .BindTo(this, x => x.SeriesEnd);
@@ -112,6 +115,15 @@
             Current.Model.Description = Description;
             Current.Model.SeriesCode = SeriesCode;
             Current.Model.SeriesEnd = SeriesEnd ?? Current.Model.SeriesEnd;
+        }
+
+        protected void finishSeries()
+        {
+            AppSettings settings = _settings.getSettings();
+            App.storeGeoPoints();
+            App.CurrentSeriesID = null;
+            settings.CurrentSeries = null;
+            _settings.saveSettings(settings);
         }
 
         protected override EventSeries ModelFromState(PageState s)
