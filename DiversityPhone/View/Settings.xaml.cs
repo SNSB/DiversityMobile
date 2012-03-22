@@ -59,14 +59,14 @@ namespace DiversityPhone.View
 
             clearBtn = new ApplicationBarIconButton()
             {
-                IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.RelativeOrAbsolute),
+                IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
                 Text = "reset",
             };
             clearBtn.Click += Reset_Click;
 
             refreshBtn = new ApplicationBarIconButton()
             {
-                IconUri = new Uri("/Images/appbar.refresh.rest.png"),
+                IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
                 Text = "refresh vocabulary"
             };
             refreshBtn.Click += new EventHandler(refreshBtn_Click);

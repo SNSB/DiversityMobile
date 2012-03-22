@@ -20,14 +20,12 @@ namespace DiversityPhone.ViewModels.Utility
         IVocabularyService _vocabulary;
         IFieldDataService _storage;
 
-
         public SetupVM Setup { get { return _Setup.Value; } }
-        private ObservableAsPropertyHelper<SetupVM> _Setup;
-        private SerialDisposable _SetupSubscription = new SerialDisposable();
-        
+        private ObservableAsPropertyHelper<SetupVM> _Setup;  
 
-        public bool IsFirstSetup { get { return _IsFirstSetup.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsFirstSetup;        
+        public bool IsFirstSetup { get { return _IsFirstSetupHelper.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsFirstSetupHelper;
+        private ISubject<bool> _IsFirstSetup = new Subject<bool>();  
 
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;
@@ -75,7 +73,8 @@ namespace DiversityPhone.ViewModels.Utility
             _storage = storage;
             _vocabulary = voc;
 
-            _Model =_ModelSubject                
+            _Model =_ModelSubject   
+                .Where(x => true)
                 .ToProperty(this, x => x.Model);            
 
             _ModelSubject
@@ -85,16 +84,39 @@ namespace DiversityPhone.ViewModels.Utility
 
             _ModelSubject
                 .Select(x => x != null)
+                .StartWith(false)
                 .Subscribe(_CanSaveSubject);
 
-            _IsFirstSetup =
-                _ModelSubject
-                .Select( x => x == null)  
-                .DistinctUntilChanged()
+            _IsFirstSetupHelper =                
+                _IsFirstSetup
                 .ToProperty(this, x => x.IsFirstSetup);
 
-            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false)); 
+            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
+            Messenger.RegisterMessageSource(
+                Reset
+                .Take(1)
+                .Select(_ => new DialogMessage(
+                    Messages.DialogType.YesNo,
+                    "Are you sure?",
+                    "All diversity data you have not already uploaded will be lost!",
+                    res =>
+                    {
+                        if (res == DialogResult.OKYes)
+                            OnReset();
+                    }
+                    )));
+             
             Save = new ReactiveCommand(_CanSaveSubject);
+
+            RefreshVocabulary = new ReactiveAsyncCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
+            RefreshVocabulary
+                .RegisterAsyncAction(_ => refreshVocabularyImpl(_settings.getSettings()));
+
+            _IsBusy =
+                RefreshVocabulary
+                .ItemsInflight
+                .Select(items => items > 0)
+                .ToProperty(this, x => x.IsBusy);
 
             _BusyMessage = _BusyMessageSubject
                     .ToProperty(this, x => x.BusyMessage);
@@ -102,27 +124,12 @@ namespace DiversityPhone.ViewModels.Utility
             _Setup = _IsFirstSetup
                 .Where(x => x)
                 .Select(_ => new SetupVM(_DivSvc))                                
-                .Do(_ => clearDatabase.Execute(null))
-                .Do(setup => setup
-                    .Result                    
-                    .Subscribe(_ModelSubject))
+                .Do(_ => clearDatabase.Execute(null))                
                 .ToProperty(this, x => x.Setup);
-                
-                
-
-            _IsFirstSetup
-                .Where(x => !x)                
-                .Subscribe(_ => OnSettings());
-
-            RefreshVocabulary = new ReactiveAsyncCommand();
-            RefreshVocabulary                
-                .RegisterAsyncAction(_ => refreshVocabularyImpl(_settings.getSettings()));
-
-            _IsBusy =
-                RefreshVocabulary
-                .ItemsInflight
-                .Select(items => items > 0)
-                .ToProperty(this, x => x.IsBusy);  
+            _Setup
+                .SelectMany(s => s.Result)
+                .ObserveOnDispatcher()
+                .Subscribe(cfg => _ModelSubject.OnNext(cfg));
 
 
             clearDatabase.RegisterAsyncAction(_ => _storage.clearDatabase());
@@ -135,6 +142,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             onsave
             .Where(_ => IsFirstSetup)
+            .Do(_ => _IsFirstSetup.OnNext(false))
             .Subscribe(RefreshVocabulary.Execute);
 
             Messenger.RegisterMessageSource(
@@ -151,8 +159,10 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(_ => new NavigationMessage(Services.Page.TaxonManagement))
                 );
 
-
-            _ModelSubject.OnNext(_settings.getSettings());            
+            var storedConfig = Observable.Return(_settings.getSettings()).Concat(Observable.Never<AppSettings>());
+            storedConfig.Subscribe(_ModelSubject);
+            storedConfig.Select(x => x == null)
+                .Subscribe(_IsFirstSetup);            
         }
 
         private void saveModel()
@@ -160,31 +170,13 @@ namespace DiversityPhone.ViewModels.Utility
             Model.UseGPS = UseGPS;
 
             _settings.saveSettings(Model);
-        }        
-
-        private void OnSettings()
-        {
-            _SetupSubscription.Disposable = null;
-            Messenger.RegisterMessageSource(
-                Reset
-                .Take(1)
-                .Select(_ => new DialogMessage(
-                    Messages.DialogType.YesNo, 
-                    "Are you sure?", 
-                    "All diversity data you have not already uploaded will be lost!",
-                    res =>
-                    {
-                        if(res == DialogResult.OKYes)
-                            OnReset();
-                    }
-                    )));
-                
-        }
-
+        }  
+        
         private void OnReset()
         {            
-            _settings.saveSettings(new AppSettings());
-            _ModelSubject.OnNext(new AppSettings());
+            _settings.saveSettings(null);
+            _ModelSubject.OnNext(null);
+            _IsFirstSetup.OnNext(true);
         }
 
         private void refreshVocabularyImpl(AppSettings settings)

@@ -29,12 +29,12 @@ namespace DiversityPhone.ViewModels
         private ISubject<IList<T>> _ItemsSubject = new Subject<IList<T>>();
         private ISubject<T> _SelectedItemSubject = new ReplaySubject<T>(1);        
 
-        private ObservableAsPropertyHelper<T> _SelectedItem;
+        private T _SelectedItem;
         public T SelectedItem
         {
             get 
             {
-                return _SelectedItem.Value;
+                return _SelectedItem;
             }
             set
             {
@@ -49,10 +49,8 @@ namespace DiversityPhone.ViewModels
                 .Value()
                 .Select(idx => (idx > -1) ? Items[idx] : default(T))
                 .DistinctUntilChanged()
-                .Subscribe(_SelectedItemSubject);
-
-            _SelectedItem = _SelectedItemSubject
-                .ToProperty(this, x => x.SelectedItem, default(T));            
+                .Do(val => _SelectedItem = val)
+                .Subscribe(item => _SelectedItemSubject.OnNext(item));
 
             _Items = _ItemsSubject
                 .Do(items => correctSelectedIndex(items, SelectedItem))
