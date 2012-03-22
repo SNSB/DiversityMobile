@@ -128,7 +128,7 @@ namespace DiversityPhone.ViewModels.Utility
                                 .Select(db => db.Database != null)
                                 .StartWith(false);
                 var project = Projects
-                                  .Select(p => p.DisplayText != null)
+                                  .Select(p => p.ProjectID != int.MinValue)
                                   .StartWith(false);
 
 
@@ -176,6 +176,8 @@ namespace DiversityPhone.ViewModels.Utility
 
                 getRepositories
                     .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
+                    .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayName = DiversityResources.Setup_Item_PleaseChoose } ))
+                    .Do(_ => CurrentPivot = Pivots.Repository)
                     .Subscribe(Databases);                
 
                 credsWithRepo.Subscribe(login => getProjects.Execute(login));
@@ -187,6 +189,8 @@ namespace DiversityPhone.ViewModels.Utility
                 
                 getProjects
                     .RegisterAsyncFunction(login => _DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())
+                    .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
+                    .Do(_ => CurrentPivot = Pivots.Projects)
                     .Subscribe(Projects);                
 
                 creds.Subscribe(login => getUserInfo.Execute(login));

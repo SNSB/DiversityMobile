@@ -18,6 +18,7 @@ namespace DiversityPhone
 
         }
         private static DiversityResources resources = new DiversityResources();
+        
         public DiversityResources Resources { get { return resources; } }
     }
 }

@@ -93,8 +93,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
             Messenger.RegisterMessageSource(
-                Reset
-                .Take(1)
+                Reset                
                 .Select(_ => new DialogMessage(
                     Messages.DialogType.YesNo,
                     "Are you sure?",
@@ -121,14 +120,17 @@ namespace DiversityPhone.ViewModels.Utility
             _BusyMessage = _BusyMessageSubject
                     .ToProperty(this, x => x.BusyMessage);
 
-            _Setup = _IsFirstSetup
-                .Where(x => x)
-                .Select(_ => new SetupVM(_DivSvc))                                
-                .Do(_ => clearDatabase.Execute(null))                
+            _IsFirstSetup
+                .Where(setup => setup)
+                .Do(_ => clearDatabase.Execute(null));
+
+            _Setup = _IsFirstSetup 
+                .Where(setup => setup)
+                .Take(1)
+                .Select(setup => new SetupVM(_DivSvc))                        
                 .ToProperty(this, x => x.Setup);
             _Setup
-                .SelectMany(s => s.Result)
-                .ObserveOnDispatcher()
+                .SelectMany(s => (s != null) ? s.Result : Observable.Never<AppSettings>())                
                 .Subscribe(cfg => _ModelSubject.OnNext(cfg));
 
 
@@ -181,7 +183,8 @@ namespace DiversityPhone.ViewModels.Utility
 
         
         private void OnReset()
-        {            
+        {     
+            
             _settings.saveSettings(null);
             _ModelSubject.OnNext(null);
             _IsFirstSetup.OnNext(true);

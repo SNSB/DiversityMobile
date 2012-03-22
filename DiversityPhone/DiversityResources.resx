@@ -120,4 +120,7 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Setup_Item_PleaseChoose" xml:space="preserve">
+    <value>Please Choose</value>
+  </data>
 </root>

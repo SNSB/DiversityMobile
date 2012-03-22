@@ -75,9 +75,11 @@ namespace DiversityPhone.View
             if (VM != null)
             {
                 VM.Save.CanExecuteObservable
+                    .StartWith(VM.Save.CanExecute(null))
                     .Subscribe(cansave => saveBtn.IsEnabled = cansave);
 
                 VM.Reset.CanExecuteObservable
+                    .StartWith(VM.Reset.CanExecute(null))
                     .Subscribe(canreset =>
                     {
                         showButtons(canreset);
@@ -94,8 +96,7 @@ namespace DiversityPhone.View
                             p.IsIndeterminate = p.IsVisible = isBusy;
                         }
                         this.Focus();                           
-                    });
-                showButtons(VM.Reset.CanExecute(null));
+                    });                
             }
 
             
