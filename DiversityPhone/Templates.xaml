@@ -83,7 +83,7 @@
 
     <DataTemplate x:Key="GeoRefItemTemplate">
         <TextBlock>
-            <Run Text="{Binding Latitude}"/>
+            <Run Text="{Binding Path=Latitude, StringFormat='\{0:G\}°', Converter={StaticResource DivideBy}, ConverterParameter=60}"/>
             <Run Text="-"/>
             <Run Text="{Binding Longitude}"/>
             <Run Text="@"/>

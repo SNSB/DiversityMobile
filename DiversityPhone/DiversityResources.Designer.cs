@@ -68,5 +68,14 @@ namespace DiversityPhone {
                 return ResourceManager.GetString("Info_CantEditItem", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Please Choose ähnelt.
+        /// </summary>
+        public static string Setup_Item_PleaseChoose {
+            get {
+                return ResourceManager.GetString("Setup_Item_PleaseChoose", resourceCulture);
+            }
+        }
     }
 }

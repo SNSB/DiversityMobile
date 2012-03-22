@@ -60,8 +60,7 @@
 
         private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
         {
-            return cachedQuery(EventSeries.Operations,
-            ctx =>
+            return uncachedQuery(ctx =>
             {
                 var q = (from es in ctx.EventSeries
                          select es);

@@ -39,7 +39,7 @@
                     <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
                                     Content="{Binding Current.Model}"/>
                     <ListBox ItemsSource="{Binding Analyses}"
-                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+                     ItemTemplate="{StaticResource FieldDataItemTemplate}"/>
                 </StackPanel>                
             </controls:PivotItem>
             
