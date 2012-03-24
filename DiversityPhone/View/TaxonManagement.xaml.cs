@@ -27,6 +27,12 @@ namespace DiversityPhone.View
                 _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);
         }
 
+        private void taxonPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (VM != null)
+                e.Cancel = VM.IsBusy;
+        }
+
         
     }
 }

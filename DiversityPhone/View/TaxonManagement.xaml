@@ -16,7 +16,7 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}"
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
-    
+    BackKeyPress="taxonPage_BackKeyPress"
     x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
