@@ -117,10 +117,13 @@ namespace DiversityPhone.ViewModels
                 {
                     if (Delete.CanExecute(taxonlist))
                     {
-                        deleteTaxonList.ItemsInflight
-                            .Where(items => items == 0)
+                        Observable.Zip(
+                            deleteTaxonList.ItemsInflight.Skip(1), //most recent value
+                            deleteTaxonList.ItemsInflight,//value before that
+                            (last,before) => last == 0 && before == 1)
+                            .Where(x => x)
                             .Take(1)
-                            .Subscribe(_ => downloadTaxonList.Execute(taxonlist));
+                            .Subscribe(_ => Download.Execute(taxonlist));
                         Delete.Execute(taxonlist);
                     }
                 });
