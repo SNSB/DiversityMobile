@@ -26,7 +26,7 @@
             <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
             <vw:TermToImageConverter x:Key="TermToImage"/>
 			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
-            <vw:DivideByConverter x:Key="DivideBy"/>
+            <vw:GeoCoordinatesConverter x:Key="GeoCoordinates"/>
            
 
         </ResourceDictionary>        

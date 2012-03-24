@@ -14,7 +14,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"	
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}" d:DataContext="{d:DesignData /SampleData/ViewEVVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <vw:ViewEVPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>

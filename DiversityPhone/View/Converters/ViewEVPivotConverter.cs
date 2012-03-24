@@ -12,8 +12,8 @@ using System.Windows.Data;
 using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.View
-{
-    
+{   
+
     public class ViewEVPivotConverter :  IValueConverter
     {
 
@@ -46,7 +46,7 @@ namespace DiversityPhone.View
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is int) && targetType == typeof(ViewEVVM.Pivots)))
+            if (!(value is int))
                 throw new NotSupportedException();
 
 

@@ -209,7 +209,7 @@
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="View\Converters\DivideByConverter.cs" />
+    <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />

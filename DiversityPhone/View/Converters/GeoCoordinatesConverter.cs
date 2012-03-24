@@ -12,16 +12,28 @@ using System.Windows.Data;
 
 namespace DiversityPhone.View
 {
-    public class DivideByConverter : IValueConverter
+    public class GeoCoordinatesConverter : IValueConverter
     {      
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!(value is double && parameter is double) )
-                throw new NotSupportedException();
-          
+            
+            if (!(value is double))
+            {
+                System.Diagnostics.Debugger.Break();
+                return null;
+            }
+
             var dVal = (double)value;
-            var dSub = (double) parameter;
-            return dVal / dSub;
+
+            int deg = (int)Math.Floor(dVal);
+			dVal -= deg;
+            dVal *= 60;
+            int min = (int)Math.Floor(dVal);
+			dVal -= min;
+            dVal *= 60;
+            int sec = (int)Math.Floor(dVal);
+
+            return string.Format("{0}° {1}' {2}''",deg,min,sec);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

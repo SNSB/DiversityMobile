@@ -1,123 +1,173 @@
-<DiversityPhone_ViewModels:ViewEVVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model">
+﻿<DiversityPhone_ViewModels:ViewEVVM xmlns:DiversityPhone_ViewModels="clr-namespace:DiversityPhone.ViewModels" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" xmlns:DiversityPhone_Model="clr-namespace:DiversityPhone.Model" SelectedPivot="Specimen">
+	<DiversityPhone_ViewModels:ViewEVVM.Current>
+		<DiversityPhone_ViewModels:EventVM Description="ThisEvent" Icon="Event">
+			<DiversityPhone_ViewModels:EventVM.Model>
+				<DiversityPhone_Model:Event Altitude="60" Longitude="60" Latitude="60.123" ></DiversityPhone_Model:Event>
+			</DiversityPhone_ViewModels:EventVM.Model>
+		</DiversityPhone_ViewModels:EventVM>
+	</DiversityPhone_ViewModels:ViewEVVM.Current>
+	
 	<DiversityPhone_ViewModels:ViewEVVM.Add>
 		<ReactiveUI_Xaml:ReactiveCommand/>
 	</DiversityPhone_ViewModels:ViewEVVM.Add>
-	<DiversityPhone_ViewModels:ViewEVVM.Current>
-		<DiversityPhone_ViewModels:EventVM Description="Vestibulum class curabitur cras curae">
-			<DiversityPhone_ViewModels:EventVM.Model>
-				<DiversityPhone_Model:Event CollectionDate="10/16/2011 19:29:14" EventID="93" HabitatDescription="Aenean aliquam integer duis" LocalityDescription="Mauris donec adipiscing nunc maecenas" SeriesID="59"/>
-			</DiversityPhone_ViewModels:EventVM.Model>
-			<DiversityPhone_ViewModels:EventVM.Select>
+	<DiversityPhone_ViewModels:ViewEVVM.MMOList>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Nam cras" Icon="Video" IconPath="Sed maecenas">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Image" OwnerType="Specimen" RelatedId="20" Uri="Class vestibulum"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:EventVM.Select>
-		</DiversityPhone_ViewModels:EventVM>
-	</DiversityPhone_ViewModels:ViewEVVM.Current>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Aenean praesent aliquam adipiscing" Icon="Analysis" IconPath="Duis curabitur phasellus">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Audio" OwnerType="EventSeries" RelatedId="29" Uri="Parturient accumsan mauris nunc nullam"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Integer dis aptent" Icon="GPS" IconPath="Est quisque hac vestibulum">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Video" OwnerType="IdentificationUnit" RelatedId="11" Uri="Amet leo vestibulum curae"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Ante adipiscing vivamus bibendum mus" Icon="Home" IconPath="Dictumst parturient">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Image" OwnerType="Event" RelatedId="71" Uri="Donec vestibulum consequat etiam nec"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Arcu auctor diam congue eget" Icon="Map" IconPath="Fusce lorem elit aliquam eleifend">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Audio" OwnerType="None" RelatedId="38" Uri="Cursus non morbi dictum"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Per facilisi vestibulum" Icon="IdentificationUnit" IconPath="Convallis enim">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Audio" OwnerType="None" RelatedId="95" Uri="Dignissim aliquet nulla"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Proin adipiscing blandit erat" Icon="Analysis" IconPath="Elementum augue">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Audio" OwnerType="None" RelatedId="54" Uri="Facilisis sed dolor"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Commodo fames" Icon="Video" IconPath="Sem eros conubia felis">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Video" OwnerType="None" RelatedId="71" Uri="Faucibus fermentum"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Fringilla habitant inceptos habitasse cubilia" Icon="Analysis" IconPath="Dapibus lectus">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Video" OwnerType="None" RelatedId="58" Uri="Ipsum egestas"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+		<DiversityPhone_ViewModels:MultimediaObjectVM Description="Euismod nibh libero nisi interdum" Icon="UserProfile" IconPath="Feugiat ligula parturient">
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+				<DiversityPhone_Model:MultimediaObject LogUpdatedWhen="03/24/2012 16:06:32" MediaType="Image" OwnerType="IdentificationUnit" RelatedId="90" Uri="Nisl justo"/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Model>
+			<DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+				<ReactiveUI_Xaml:ReactiveCommand/>
+			</DiversityPhone_ViewModels:MultimediaObjectVM.Select>
+		</DiversityPhone_ViewModels:MultimediaObjectVM>
+	</DiversityPhone_ViewModels:ViewEVVM.MMOList>
 	<DiversityPhone_ViewModels:ViewEVVM.SpecList>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Praesent amet accumsan">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Hendrerit sit gravida vel litora" Icon="Observation">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Ante parturient" CollectionSpecimenID="43" CollectionEventID="78"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Luctus lacus vestibulum himenaeos" CollectionSpecimenID="78" CollectionEventID="27" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Nam quisque sed arcu bibendum">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Lorem magna magnis massa" Icon="Home">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Dictumst vivamus diam aliquam eleifend" CollectionSpecimenID="86" CollectionEventID="28"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Metus nam" CollectionSpecimenID="91" CollectionEventID="81" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Dis etiam aliquet">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Morbi nunc imperdiet mattis" Icon="Observation">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Vestibulum est vestibulum facilisi fusce" CollectionSpecimenID="50" CollectionEventID="88"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Lobortis mauris sed malesuada odio" CollectionSpecimenID="49" CollectionEventID="70" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Phasellus faucibus eget adipiscing">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Nascetur iaculis pharetra" Icon="None">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Lorem morbi consequat elit" CollectionSpecimenID="57" CollectionEventID="97"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Orci penatibus porttitor lacinia neque" CollectionSpecimenID="47" CollectionEventID="31" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Enim nullam erat hac parturient">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Mollis dis tincidunt placerat pede" Icon="Map">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Habitant eros" CollectionSpecimenID="91" CollectionEventID="61"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Pulvinar netus montes" CollectionSpecimenID="16" CollectionEventID="65" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Leo mus">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Nulla laoreet" Icon="NoEventSeries">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Blandit vestibulum nibh" CollectionSpecimenID="12" CollectionEventID="26"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Sagittis vestibulum" CollectionSpecimenID="13" CollectionEventID="47" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Nisi commodo convallis nisl nec">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Quam est tristique" Icon="Analysis">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Dignissim nunc odio elementum" CollectionSpecimenID="78" CollectionEventID="34"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Quis urna" CollectionSpecimenID="18" CollectionEventID="57" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Vestibulum orci inceptos">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Nostra porta senectus" Icon="None">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Adipiscing parturient facilisis aptent interdum" CollectionSpecimenID="43" CollectionEventID="59"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Ornare platea" CollectionSpecimenID="25" CollectionEventID="92" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Non pede">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Adipiscing ultricies cras" Icon="Photo">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Lobortis nulla auctor conubia" CollectionSpecimenID="17" CollectionEventID="79"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Primis rutrum venenatis" CollectionSpecimenID="94" CollectionEventID="18" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
 			</DiversityPhone_ViewModels:SpecimenVM.Select>
 		</DiversityPhone_ViewModels:SpecimenVM>
-		<DiversityPhone_ViewModels:SpecimenVM Description="Per sed">
-			<DiversityPhone_ViewModels:SpecimenVM.Edit>
-				<ReactiveUI_Xaml:ReactiveCommand/>
-			</DiversityPhone_ViewModels:SpecimenVM.Edit>
+		<DiversityPhone_ViewModels:SpecimenVM Description="Sociosqu duis" Icon="Video">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionDate="10/16/2011 19:29:14" AccessionNumber="Congue fermentum proin sem" CollectionSpecimenID="28" CollectionEventID="59"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Hac leo vulputate mus" CollectionSpecimenID="32" CollectionEventID="42" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
