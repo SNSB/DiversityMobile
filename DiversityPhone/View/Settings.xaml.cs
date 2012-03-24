@@ -110,15 +110,23 @@ namespace DiversityPhone.View
 
         private void showButtons(bool canreset)
         {
-            if (canreset && !ApplicationBar.Buttons.Contains(clearBtn))
+            if (canreset)
             {
-                ApplicationBar.Buttons.Add(refreshBtn);
-                ApplicationBar.Buttons.Add(clearBtn);
+                if (ApplicationBar.Buttons.Count != 3)
+                {
+                    ApplicationBar.Buttons.Clear();
+                    ApplicationBar.Buttons.Add(saveBtn);
+                    ApplicationBar.Buttons.Add(refreshBtn);
+                    ApplicationBar.Buttons.Add(clearBtn);
+                }
             }
-            else if (!canreset && ApplicationBar.Buttons.Contains(clearBtn))
+            else
             {
-                ApplicationBar.Buttons.Remove(refreshBtn);
-                ApplicationBar.Buttons.Remove(clearBtn);
+                if (ApplicationBar.Buttons.Count != 1)
+                {
+                    ApplicationBar.Buttons.Clear();
+                    ApplicationBar.Buttons.Add(saveBtn);
+                }
             }
         }
 
