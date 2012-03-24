@@ -8,6 +8,7 @@
     using DiversityPhone.Messages;
     using DiversityPhone.Common;
     using System.Data.Linq;
+    using System.Text;
     using System.Linq.Expressions;
     using Svc = DiversityPhone.DiversityService;
     using System.IO.IsolatedStorage;
@@ -94,7 +95,7 @@
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            App.CurrentSeriesID = newSeries.SeriesID;
+            App.startTourWhenGPSUsed(newSeries.SeriesID);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
@@ -133,7 +134,7 @@
                 );
         }
 
-        public IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
+        public IList<GeoPointForSeries>  getGeoPointsForSeries(int SeriesID)
         {
             return cachedQuery(GeoPointForSeries.Operations,
             ctx =>
@@ -155,6 +156,26 @@
         {
             deleteRow(GeoPointForSeries.Operations, ctx => ctx.GeoTour, toDeleteGp);
         }
+
+        public String convertGeoPointsToString(int seriesID)
+        {
+            IList<GeoPointForSeries> pointsForSeries = getGeoPointsForSeries(seriesID);
+            StringBuilder sb = new StringBuilder("geography::STGeomFromText('LINESTRING(");
+            for(int i=0;i<pointsForSeries.Count;i++)
+            {
+                GeoPointForSeries gp = pointsForSeries[i];
+                if (i + 1 < pointsForSeries.Count)
+                {
+                    sb.Append(gp.Latitude + " " + gp.Longitude + ", ");
+                }
+                else //Last GeoPoint
+                {
+                    sb.Append(")', 4326)");
+                }
+            }
+            return sb.ToString();
+        }
+
 
         #endregion
 

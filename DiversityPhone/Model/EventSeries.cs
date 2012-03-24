@@ -22,8 +22,6 @@
             this.LogUpdatedWhen = DateTime.Now;
             this.ModificationState = null;
             this.DiversityCollectionEventSeriesID = null;
-            this.GeoSource = null;//ToDo/Tabelle File für Geodaten anlegen
-    
         }
 
 
@@ -48,9 +46,6 @@
 
         [Column(CanBeNull = false)]
         public string Description { get; set; }
-
-        [Column]
-        public string GeoSource { get; set; }
 
         [Column]
         public string SeriesCode { get; set; }
@@ -123,7 +118,6 @@
 
         public static Svc.EventSeries ConvertToServiceObject(EventSeries es)
         {
-
             Svc.EventSeries export = new Svc.EventSeries();
             export.SeriesID = es.SeriesID;
             export.DiversityCollectionEventSeriesID = es.DiversityCollectionEventSeriesID;
@@ -132,39 +126,9 @@
             export.SeriesEnd = es.SeriesEnd;
             export.Description = es.Description;
             export.LogUpdatedWhen = es.LogUpdatedWhen;
-            //Todo: export.Geography = EventSeries.convertGeoSourceToString(es.GeoSource);
             return export;
 
         }
-
-        public static String convertGeoSourceToString(String path)
-        {
-            throw new NotImplementedException();
-        }
-
-        #region Associations
-        //private EntitySet<Event> _Events;
-        //[Association(Name = "FK_Series_Event",
-        //             Storage = "_Events",
-        //             ThisKey = "SeriesID",
-        //             OtherKey = "SeriesID",
-        //             IsForeignKey = true)]
-        //public EntitySet<Event> Events
-        //{
-        //    get { return _Events; }
-        //    set { _Events.Assign(value); }
-        //}
-
-        //private void Attach_Event(Event entity)
-        //{
-        //    entity.EventSeries = this;
-        //}
-
-        //private void Detach_Event(Event entity)
-        //{
-        //    entity.EventSeries = null;
-        //}
-        #endregion
 
     }
 }

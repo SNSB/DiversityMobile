@@ -114,8 +114,7 @@ namespace DiversityPhone.ViewModels
 
         private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries(EventSeries es)
         {
-            var events = _storage.getEventsForSeries(es)
-                        .Where(ev => ev.ModificationState == null); // Only New Events
+            var events = _storage.getEventsForSeries(es); // All Events because Specimen and Units may be added in existing events.
             
             foreach (var ev in events)
             {
@@ -132,7 +131,11 @@ namespace DiversityPhone.ViewModels
             {
                IList<Svc.EventSeries> convertSeries = new List<Svc.EventSeries>();
                foreach (EventSeries es in series)
-                   convertSeries.Add(EventSeries.ConvertToServiceObject(es));
+               {
+                   Svc.EventSeries sES=EventSeries.ConvertToServiceObject(es);
+                   sES.Geography = _storage.convertGeoPointsToString(es.SeriesID);
+                   convertSeries.Add(sES);
+               }
                Dictionary<int, int> result = _repository.InsertEventSeries(convertSeries).First();
                foreach (var kvp in result)
                {

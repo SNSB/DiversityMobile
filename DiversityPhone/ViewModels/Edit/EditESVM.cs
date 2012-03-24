@@ -119,11 +119,7 @@
 
         protected void finishSeries()
         {
-            AppSettings settings = _settings.getSettings();
-            App.storeGeoPoints();
-            App.CurrentSeriesID = null;
-            settings.CurrentSeries = null;
-            _settings.saveSettings(settings);
+            App.stopTour();
         }
 
         protected override EventSeries ModelFromState(PageState s)
