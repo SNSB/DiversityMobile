@@ -156,18 +156,25 @@ namespace DiversityPhone.Services
 
         private IList<TaxonName> getTaxonNames(int tableID, string query)
         {
-            var queryWords = query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var queryWords =     from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                                 orderby word.Length descending
+                                 select word;
 
-            var q = from tn in (new TaxonDataContext(tableID).TaxonNames)
+            var allTaxa = from tn in (new TaxonDataContext(tableID).TaxonNames)                    
                     select tn;
-            foreach (var word in queryWords)
+
+            if (queryWords.Any())
             {
-                q = q.Where(tn => tn.TaxonNameCache.Contains(word));
+                var q = from tn in allTaxa
+                    where tn.TaxonNameCache.Contains(queryWords.First())
+                    select tn;
+                var completeQ = from tn in q.AsEnumerable()
+                                where queryWords.Skip(1).All(word => tn.TaxonNameCache.Contains(word))
+                                select tn;
+                return completeQ.Take(10).ToList();
             }
-
-            q = q.Take(10);
-
-            return q.ToList();
+            else
+                return allTaxa.Take(10).ToList();         
         }
 
         private int getTaxonTableIDForGroup(string taxonGroup)
