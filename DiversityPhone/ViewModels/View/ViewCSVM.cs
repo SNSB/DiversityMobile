@@ -40,8 +40,15 @@ namespace DiversityPhone.ViewModels
         public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
         private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
 
-        public IEnumerable<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _MMOList;
+        public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
+
+        public IEnumerable<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _AudioList;
+
+        public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
+    
 
         #endregion
 
@@ -55,10 +62,21 @@ namespace DiversityPhone.ViewModels
                 .Select(cs => getIdentificationUnitList(cs))
                 .ToProperty(this, x => x.UnitList);
 
-            _MMOList = ValidModel
-                .Select(cs => Storage.getMultimediaForObject(ReferrerType.Specimen, cs.CollectionSpecimenID))
+            _ImageList = ValidModel
+               .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Image))
+               .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.EditMMO)))
+               .ToProperty(this, x => x.ImageList);
+
+
+            _AudioList = ValidModel
+                .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Audio))
                 .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
-                .ToProperty(this, x => x.MMOList);
+                .ToProperty(this, x => x.AudioList);
+
+            _VideoList = ValidModel
+                .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Video))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.VideoList);
                     
 
             Messenger.RegisterMessageSource(

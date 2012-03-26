@@ -2,12 +2,13 @@
 {
     using System;
     using ReactiveUI;
+    using System.Reactive.Linq;
     using System.Collections.Generic;
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
-    using System.Reactive.Linq;
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
+    using System.Linq;
 
     public class ViewEVVM : ElementPageViewModel<Event>
     {
@@ -39,15 +40,14 @@
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
 
-        public IList<ImageVM> ImageList { get { return _ImageList.Value; } }
-        private ObservableAsPropertyHelper<IList<ImageVM>> _ImageList;
+        public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
 
-        public IList<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
-        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _AudioList;
+        public IEnumerable<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _AudioList;
 
-
-        public IList<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
-        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _VideoList;
+        public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
 
         #endregion
 
@@ -61,16 +61,20 @@
                 .ToProperty(this, x => x.SpecList);
 
             _ImageList = ValidModel
-               .Select(ev => getImageList(ev))
-               .ToProperty(this, x => x.ImageList);
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))
+                .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.ImageList);
+
 
             _AudioList = ValidModel
-               .Select(ev => getMMOList(ev,MediaType.Audio))
-               .ToProperty(this, x => x.AudioList);
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Audio))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.AudioList);
 
             _VideoList = ValidModel
-              .Select(ev => getMMOList(ev, MediaType.Video))
-              .ToProperty(this, x => x.VideoList);
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Video))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -102,21 +106,21 @@
                 );
         }
 
-        private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
-        {
-            return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
-                Storage.getMultimediaForObjectAndType(ReferrerType.Event,ev.EventID, type),
-                (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
-                );
-        }
+        //private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
+        //{
+        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
+        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event,ev.EventID, type),
+        //        (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
+        //        );
+        //}
 
-        private IList<ImageVM> getImageList(Event ev)
-        {
-            return new VirtualizingReadonlyViewModelList<MultimediaObject, ImageVM>(
-                Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image),
-                (model) => new ImageVM(Messenger, model, Page.ViewMMO)
-                );
-        }
+        //private IList<ImageVM> getImageList(Event ev)
+        //{
+        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, ImageVM>(
+        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image),
+        //        (model) => new ImageVM(Messenger, model, Page.ViewMMO)
+        //        );
+        //}
 
         protected override Event ModelFromState(PageState s)
         {
