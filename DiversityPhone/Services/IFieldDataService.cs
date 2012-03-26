@@ -55,6 +55,7 @@ using System;
 
         IList<MultimediaObject> getAllMultimediaObjects();
         IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
+        IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType objectType, int id,MediaType type);
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
 

@@ -39,8 +39,15 @@
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
 
-        public IList<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
-        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _MMOList;
+        public IList<ImageVM> ImageList { get { return _ImageList.Value; } }
+        private ObservableAsPropertyHelper<IList<ImageVM>> _ImageList;
+
+        public IList<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
+        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _AudioList;
+
+
+        public IList<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
+        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _VideoList;
 
         #endregion
 
@@ -53,9 +60,17 @@
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
-            _MMOList = ValidModel
-               .Select(ev => getMMOList(ev))
-               .ToProperty(this, x => x.MMOList);
+            _ImageList = ValidModel
+               .Select(ev => getImageList(ev))
+               .ToProperty(this, x => x.ImageList);
+
+            _AudioList = ValidModel
+               .Select(ev => getMMOList(ev,MediaType.Audio))
+               .ToProperty(this, x => x.AudioList);
+
+            _VideoList = ValidModel
+              .Select(ev => getMMOList(ev, MediaType.Video))
+              .ToProperty(this, x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -87,11 +102,19 @@
                 );
         }
 
-        private IList<MultimediaObjectVM> getMMOList(Event ev)
+        private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
         {
             return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
-                Storage.getMultimediaForObject(ReferrerType.Event,ev.EventID),
+                Storage.getMultimediaForObjectAndType(ReferrerType.Event,ev.EventID, type),
                 (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
+                );
+        }
+
+        private IList<ImageVM> getImageList(Event ev)
+        {
+            return new VirtualizingReadonlyViewModelList<MultimediaObject, ImageVM>(
+                Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image),
+                (model) => new ImageVM(Messenger, model, Page.ViewMMO)
                 );
         }
 

@@ -496,6 +496,17 @@
 
         }
 
+        public IList<MultimediaObject> getMultimediaForObjectAndType(DiversityPhone.Services.ReferrerType refType, int key, DiversityPhone.Services.MediaType type)
+        {
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.OwnerType == refType
+                                                                           && mm.RelatedId == key
+                                                                           && mm.MediaType == type
+                                                                   select mm);
+            return objects;
+
+        }
+
         public MultimediaObject getMultimediaByURI(string uri)
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
@@ -683,14 +694,20 @@
 
             withDataContext(ctx =>
                 {
-                    var table = tableProvider(ctx);
-                    var attachedRow = operations.WhereKeyEquals(table, detachedRow)
-                        .FirstOrDefault();
-
-                    if (attachedRow != null)
+                    try
                     {
-                        table.DeleteOnSubmit(attachedRow);
-                        ctx.SubmitChanges();
+                        var table = tableProvider(ctx);
+                        var attachedRow = operations.WhereKeyEquals(table, detachedRow)
+                            .FirstOrDefault();
+
+                        if (attachedRow != null)
+                        {
+                            table.DeleteOnSubmit(attachedRow);
+                            ctx.SubmitChanges();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
                     }
                 });
         }

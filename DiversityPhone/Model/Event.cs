@@ -22,7 +22,6 @@
             this.DiversityCollectionEventID = null;
             this.DiversityCollectionSeriesID = null;
             App.fillGeoCoordinates(this);
-
         }
 
         [Column(IsPrimaryKey = true)]
