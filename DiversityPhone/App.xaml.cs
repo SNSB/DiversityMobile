@@ -23,7 +23,7 @@ using System.Runtime.Serialization;
 
 namespace DiversityPhone
 {
-    public partial class App : Application
+    public partial class App : Application, IGeoLocationService
     {
         public static IFieldDataService OfflineDB { get; private set; }
 
@@ -285,7 +285,7 @@ namespace DiversityPhone
             coordinates = new List<Model.GeoPointForSeries>();
         }
 
-        internal static void fillGeoCoordinates(Model.ILocalizable loc)
+        public void fillGeoCoordinates(Model.ILocalizable loc)
         {
             if (Watcher.Status==GeoPositionStatus.Ready)
             {

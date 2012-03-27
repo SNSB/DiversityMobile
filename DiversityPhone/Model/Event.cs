@@ -21,7 +21,7 @@
             this.ModificationState = null;
             this.DiversityCollectionEventID = null;
             this.DiversityCollectionSeriesID = null;
-            App.fillGeoCoordinates(this);
+            
 
         }
 
