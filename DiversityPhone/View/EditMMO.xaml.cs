@@ -90,20 +90,6 @@ namespace DiversityPhone.View
       
         #region Photo
 
-        private void NewPhoto_Click(object sender, EventArgs e)
-        {
-            this.PageTitle.Text = "photo";
-            VM.Current.Model.MediaType = MediaType.Image;
-            PhotoImage.Visibility = Visibility.Visible;
-           
-
-
-            textStatus.Text = "";
-
-            //Show the camera.
-            takePhoto.Show();
-
-        }
 
         private void takePhoto_Completed(object sender, PhotoResult e)
         {
@@ -122,7 +108,6 @@ namespace DiversityPhone.View
                 PhotoImage.Source = actualImage;
                 //Collapse visibility on the progress bar once writeable bitmap is visible.
                 progressBar1.Visibility = Visibility.Collapsed;
-                saveCapturedImage(); //TODO: Erst im iso speichern, wenn das Bild fertig ist
                 setPhotoBar();
                 setPhotoButtonStates(true, true, false, true);
                 
@@ -136,14 +121,21 @@ namespace DiversityPhone.View
             
         }
 
-        private void btnSaveImage_Click(object sender, EventArgs e)
+        #region ImageButtons
+
+
+        private void btnNewPhoto_Click(object sender, EventArgs e)
         {
-            if (this.actualImage == null)
-                return;
-            this.storedImage = this.actualImage;
-            saveCapturedImage();
-            VM.Save.Execute(null);
-            setPhotoButtonStates(false, false, false, false);
+            this.PageTitle.Text = "photo";
+            VM.Current.Model.MediaType = MediaType.Image;
+            PhotoImage.Visibility = Visibility.Visible;
+
+
+            textStatus.Text = "";
+
+            //Show the camera.
+            takePhoto.Show();
+
         }
 
         private void btnResetPhoto_Click(object sender, EventArgs e)
@@ -209,6 +201,17 @@ namespace DiversityPhone.View
             //Instructional text
             textStatus.Text = "Continue to crop image, accept, or reject.";
         }
+
+        private void btnSaveImage_Click(object sender, EventArgs e)
+        {
+            if (this.actualImage == null)
+                return;
+            this.storedImage = this.actualImage;
+            saveCapturedImage();
+            VM.Save.Execute(null);
+            setPhotoButtonStates(false, false, false, false);
+        }
+        #endregion
 
         #region cropping helper
 
@@ -286,18 +289,15 @@ namespace DiversityPhone.View
 
             //Create filename for JPEG in isolated storage as a Guid and filename for thumb
             String uri;
-            String thumbUri;
 
             if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
                 Guid g = Guid.NewGuid();
                 uri = g.ToString() + ".jpg";
-                thumbUri = "thumb" + uri;
             }
             else
             {
                 uri = VM.Current.Model.Uri;
-                thumbUri = "thumb" + uri;
             }
             //Create virtual store and file stream. Check for duplicate tempJPEG files.
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
@@ -305,17 +305,9 @@ namespace DiversityPhone.View
             {
                 myStore.DeleteFile(uri);
             }
-            if (myStore.FileExists(thumbUri))
-                myStore.DeleteFile(thumbUri);
             IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
             //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
             System.Windows.Media.Imaging.Extensions.SaveJpeg(this.storedImage, myFileStream, this.storedImage.PixelWidth, this.storedImage.PixelHeight, 0, 85);
-            //Save Thumb
-            myFileStream = myStore.CreateFile(thumbUri);
-            int width = Math.Min(this.storedImage.PixelWidth, 80);
-            double ratio = (double)this.storedImage.PixelHeight / (double)this.storedImage.PixelWidth;
-            int height = (int)(width * ratio);
-            System.Windows.Media.Imaging.Extensions.SaveJpeg(this.storedImage, myFileStream, width, height, 0, 70);
             myFileStream.Close();
             if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
             {
@@ -352,7 +344,7 @@ namespace DiversityPhone.View
 
             
             //This code will create event handlers for buttons.
-            btnCamera.Click += new EventHandler(NewPhoto_Click);
+            btnCamera.Click += new EventHandler(btnNewPhoto_Click);
             btnCrop.Click += new EventHandler(btnCrop_Click);
             btnReset.Click += new EventHandler(btnResetPhoto_Click);
             btnSave.Click += new EventHandler(btnSaveImage_Click);
@@ -380,6 +372,7 @@ namespace DiversityPhone.View
 
         #region Audio
 
+        #region ViewConstruction
 
         private void NewAudio_Click(object sender, EventArgs e)
         {
@@ -415,22 +408,26 @@ namespace DiversityPhone.View
             btnRecord = new ApplicationBarIconButton(new Uri("/Images/AudioIcons/record.png", UriKind.Relative));
             btnPlay= new ApplicationBarIconButton(new Uri("/Images/AudioIcons/play.png", UriKind.Relative));
             btnStop = new ApplicationBarIconButton(new Uri("/Images/AudioIcons/stop.png", UriKind.Relative));
+            btnSave = new ApplicationBarIconButton(new Uri("/Images/appbar.save.rest.png", UriKind.Relative));
 
             //Labels for the application bar buttons.
             btnRecord.Text = "record";
             btnPlay.Text = "play";
             btnStop.Text = "stop";
+            btnSave.Text = "save";
 
             //This code adds buttons to application bar.
             ApplicationBar.Buttons.Add(btnRecord);
             ApplicationBar.Buttons.Add(btnPlay);
             ApplicationBar.Buttons.Add(btnStop);
+            ApplicationBar.Buttons.Add(btnSave);
 
-            SetAudioButtonStates(true, false, false);
+            setAudioButtonStates(true, false, false, false);
             //This code will create event handlers for buttons.
             btnRecord.Click += new EventHandler(btnRecord_Click);
             btnPlay.Click += new EventHandler(btnPlay_Click);
             btnStop.Click += new EventHandler(btnStop_Click);
+            btnSave.Click += new EventHandler(btnSaveAudio_Click);
         }
 
         /// <summary>
@@ -439,39 +436,15 @@ namespace DiversityPhone.View
         /// <param name="recordEnabled">New state for the record button.</param>
         /// <param name="playEnabled">New state for the play button.</param>
         /// <param name="stopEnabled">New state for the stop button.</param>
-        private void SetAudioButtonStates(bool recordEnabled, bool playEnabled, bool stopEnabled)
+        private void setAudioButtonStates(bool recordEnabled, bool playEnabled, bool stopEnabled, bool saveEnabled)
         {
             (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = recordEnabled;
             (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = playEnabled;
             (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = stopEnabled;
+            (ApplicationBar.Buttons[3] as ApplicationBarIconButton).IsEnabled = saveEnabled;
         }
 
-        /// <summary>
-        /// Updates the XNA FrameworkDispatcher and checks to see if a sound is playing.
-        /// If sound has stopped playing, it updates the UI.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        void timer_Tick(object sender, EventArgs e)
-        {
-            try { FrameworkDispatcher.Update(); }
-            catch { }
-
-            if (true == soundIsPlaying)
-            {
-                if (soundInstance.State != SoundState.Playing)
-                {
-                    // Audio has finished playing
-                    soundIsPlaying = false;
-
-                    // Update the UI to reflect that the 
-                    // sound has stopped playing
-                    SetAudioButtonStates(true, true, false);
-                    AudioStatusImage.Source = blankImage;
-                    
-                }
-            }
-        }
+        #endregion
 
         #region audiohelper
 
@@ -555,7 +528,50 @@ namespace DiversityPhone.View
             stream.Seek(oldPos, SeekOrigin.Begin);
         }
 
+        /// <summary>
+        /// Updates the XNA FrameworkDispatcher and checks to see if a sound is playing.
+        /// If sound has stopped playing, it updates the UI.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void timer_Tick(object sender, EventArgs e)
+        {
+            try { FrameworkDispatcher.Update(); }
+            catch { }
+
+            if (true == soundIsPlaying)
+            {
+                if (soundInstance.State != SoundState.Playing)
+                {
+                    // Audio has finished playing
+                    soundIsPlaying = false;
+
+                    // Update the UI to reflect that the 
+                    // sound has stopped playing
+                    setAudioButtonStates(true, true, false, true);
+                    AudioStatusImage.Source = blankImage;
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Plays the audio using SoundEffectInstance 
+        /// so we can monitor the playback status.
+        /// </summary>
+        private void playSound()
+        {
+            // Play audio using SoundEffectInstance so we can monitor it's State 
+            // and update the UI in the dt_Tick handler when it is done playing.
+            SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
+            soundInstance = sound.CreateInstance();
+            soundIsPlaying = true;
+            soundInstance.Play();
+        }
+
         #endregion
+
+        #region AudioButtons
         /// <summary>
         /// Handles the Click event for the record button.
         /// Sets up the microphone and data buffers to collect audio data,
@@ -577,7 +593,7 @@ namespace DiversityPhone.View
             // Start recording
             microphone.Start();
             WriteWavHeader(audioStream, microphone.SampleRate);
-            SetAudioButtonStates(false, false, true);
+            setAudioButtonStates(false, false, true,false);
             AudioStatusImage.Source = microphoneImage;
         }
 
@@ -595,30 +611,6 @@ namespace DiversityPhone.View
                 // stop button to end recording
                 microphone.Stop();
 
-                //Save MemoryStream
-                progressBar1.Visibility = Visibility.Visible;
-                //Create filename for isolated storage TODO:Adjust URI-Setting Analog to Photo
-                if (VM.Current.Model.Uri == null)
-                {
-                    Guid g = Guid.NewGuid();
-                    String uri = g.ToString() + ".wav";
-                    VM.Current.Model.Uri = uri;
-                }
-                //TODO: Save after svaButton_Click, Integrate seve button
-                //Create virtual store and file stream. Check for duplicate tempJPEG files.
-                var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-                if (myStore.FileExists(VM.Current.Model.Uri))
-                {
-                    myStore.DeleteFile(VM.Current.Model.Uri);
-                }
-                UpdateWavHeader(audioStream);
-                IsolatedStorageFileStream myFileStream = myStore.CreateFile(VM.Current.Model.Uri);
-                audioStream.WriteTo(myFileStream);
-                myFileStream.Flush();
-                myFileStream.Close();
-                VM.Save.Execute(null);
-                progressBar1.Visibility = Visibility.Collapsed;
-
             }
             else if (soundInstance.State == SoundState.Playing)
             {
@@ -627,9 +619,12 @@ namespace DiversityPhone.View
                 soundInstance.Stop();
             }
 
-            SetAudioButtonStates(true, true, false);
+            setAudioButtonStates(true, true, false, true);
             AudioStatusImage.Source = blankImage;
         }
+
+
+       
 
         /// <summary>
         /// Handles the Click event for the play button.
@@ -643,7 +638,7 @@ namespace DiversityPhone.View
             {
                 // Update the UI to reflect that
                 // sound is playing
-                SetAudioButtonStates(false, false, true);
+                setAudioButtonStates(false, false, true, false);
                 AudioStatusImage.Source = speakerImage;
 
                 // Play the audio in a new thread so the UI can update.
@@ -652,18 +647,53 @@ namespace DiversityPhone.View
             }
         }
 
-        /// <summary>
-        /// Plays the audio using SoundEffectInstance 
-        /// so we can monitor the playback status.
-        /// </summary>
-        private void playSound()
+        private void btnSaveAudio_Click(object sender, EventArgs e)
         {
-            // Play audio using SoundEffectInstance so we can monitor it's State 
-            // and update the UI in the dt_Tick handler when it is done playing.
-            SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
-            soundInstance = sound.CreateInstance();
-            soundIsPlaying = true;
-            soundInstance.Play();
+            saveAudio();
+            VM.Save.Execute(null);
+            setAudioButtonStates(false, false, false, false);
+        }
+
+        #endregion
+
+        private void saveAudio()
+        {
+            //Save Audio
+            //
+
+            //Make progress bar visible for the event handler as there may be posible latency.
+            progressBar1.Visibility = Visibility.Visible;
+
+            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
+            String uri;
+
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
+            {
+                Guid g = Guid.NewGuid();
+                uri = g.ToString() + ".wav";
+            }
+            else
+            {
+                uri = VM.Current.Model.Uri;
+            }
+            //Create virtual store and file stream. Check for duplicate tempJPEG files.
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(uri))
+            {
+                myStore.DeleteFile(uri);
+            }
+            UpdateWavHeader(audioStream);
+            IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
+            audioStream.WriteTo(myFileStream);
+            myFileStream.Flush();
+
+            myFileStream.Close();
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
+            {
+                VM.Uri = uri;
+
+            }
+            progressBar1.Visibility = Visibility.Collapsed;
         }
 
         #endregion

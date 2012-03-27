@@ -49,6 +49,11 @@ namespace DiversityPhone
 
         }
 
+        private void Map_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
 

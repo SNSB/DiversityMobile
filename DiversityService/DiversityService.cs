@@ -9,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.ServiceModel;
+using System.Runtime.Serialization;
 
 
 
@@ -533,6 +534,31 @@ namespace DiversityService
                 }
 
             }
+        }
+
+
+        public int InsertEventSeriesForAndroidVIntES(String xmlSeries)
+        {
+            DataContractSerializer ds = new DataContractSerializer(typeof(EventSeries));
+
+            EventSeries es = new EventSeries();
+            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            {
+                {
+                    var newSeries = es.ToEntity();
+                    ctx.CollectionEventSeries.AddObject(newSeries);
+                    ctx.SaveChanges();
+                    return newSeries.SeriesID;
+                }
+
+            }
+        }
+
+        public EventSeries TestSeriesForAndroid()
+        {
+            EventSeries es = new EventSeries();
+            es.Description = "TestSeries";
+            return es;
         }
 
         public DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es)

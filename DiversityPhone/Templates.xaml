@@ -32,6 +32,14 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="ImageTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Source="{Binding Thumb}" Height="50" Width="50"/>
+            <Button Style="{StaticResource ItemButtonStyle}"
+                    Content="{Binding Description}"
+                    Command="{Binding Select}"/>
+        </StackPanel>
+    </DataTemplate>
     <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>

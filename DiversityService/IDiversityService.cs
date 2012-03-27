@@ -8,7 +8,8 @@ using DiversityService.Model;
 namespace DiversityService
 {
     // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Schnittstellennamen "IDivService" sowohl im Code als auch in der Konfigurationsdatei ändern.
-    [ServiceContract]    
+    [ServiceKnownType(typeof(EventSeries))]
+    [ServiceContract]
     public interface IDiversityService
     {
         #region Repository
@@ -75,6 +76,11 @@ namespace DiversityService
 
         [OperationContract]
         DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es);
+
+        [OperationContract]
+        EventSeries TestSeriesForAndroid();
+        
+        
 
         #endregion;
     }   

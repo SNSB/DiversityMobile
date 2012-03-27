@@ -2,12 +2,13 @@
 {
     using System;
     using ReactiveUI;
+    using System.Reactive.Linq;
     using System.Collections.Generic;
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
-    using System.Reactive.Linq;
     using DiversityPhone.Services;
     using ReactiveUI.Xaml;
+    using System.Linq;
 
     public class ViewEVVM : ElementPageViewModel<Event>
     {
@@ -39,8 +40,14 @@
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
 
-        public IList<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
-        private ObservableAsPropertyHelper<IList<MultimediaObjectVM>> _MMOList;
+        public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
+
+        public IEnumerable<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _AudioList;
+
+        public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
 
         #endregion
 
@@ -53,9 +60,21 @@
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
 
-            _MMOList = ValidModel
-               .Select(ev => getMMOList(ev))
-               .ToProperty(this, x => x.MMOList);
+            _ImageList = ValidModel
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))
+                .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.ImageList);
+
+
+            _AudioList = ValidModel
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Audio))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.AudioList);
+
+            _VideoList = ValidModel
+                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Video))
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+                .ToProperty(this, x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -87,13 +106,21 @@
                 );
         }
 
-        private IList<MultimediaObjectVM> getMMOList(Event ev)
-        {
-            return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
-                Storage.getMultimediaForObject(ReferrerType.Event,ev.EventID),
-                (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
-                );
-        }
+        //private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
+        //{
+        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
+        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event,ev.EventID, type),
+        //        (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
+        //        );
+        //}
+
+        //private IList<ImageVM> getImageList(Event ev)
+        //{
+        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, ImageVM>(
+        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image),
+        //        (model) => new ImageVM(Messenger, model, Page.ViewMMO)
+        //        );
+        //}
 
         protected override Event ModelFromState(PageState s)
         {

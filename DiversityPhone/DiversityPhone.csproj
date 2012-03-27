@@ -187,6 +187,7 @@
     <Compile Include="Services\VocabularyService.cs" />
     <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
+    <Compile Include="ViewModels\BasisModels\ImageVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
@@ -411,7 +412,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\appbar.feature.audio.rest.png" />
-    <Content Include="Images\appbar.feature.audio.rest80.png" />
     <Content Include="Images\AudioIcons\blank.png" />
     <Content Include="Images\AudioIcons\microphone.png" />
     <Content Include="Images\AudioIcons\play.png" />

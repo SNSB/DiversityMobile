@@ -51,8 +51,15 @@ namespace DiversityPhone.ViewModels
         public IEnumerable<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<IdentificationUnitAnalysisVM>> _Analyses;
 
-        public IEnumerable<MultimediaObjectVM> MMOList { get { return _MMOList.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _MMOList;
+        public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
+
+        public IEnumerable<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _AudioList;
+
+        public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
+        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
+
         #endregion
 
         
@@ -72,11 +79,20 @@ namespace DiversityPhone.ViewModels
                 .Select(spec => new SpecimenVM(Messenger, spec, Page.Current, _ => false))
                 .ToProperty(this, x => x.Parent);
 
-            _MMOList = ValidModel
-               .Select(iu => Storage.getMultimediaForObject(ReferrerType.IdentificationUnit, iu.UnitID))
-               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
-               .ToProperty(this, x => x.MMOList);
+            _ImageList = ValidModel
+                 .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Image))
+                 .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.EditMMO)))
+                 .ToProperty(this, x => x.ImageList);
 
+            _AudioList = ValidModel
+               .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Audio))
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+               .ToProperty(this, x => x.AudioList);
+
+            _VideoList = ValidModel
+               .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Video))
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.EditMMO)))
+               .ToProperty(this, x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource = 

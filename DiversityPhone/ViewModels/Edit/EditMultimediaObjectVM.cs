@@ -44,7 +44,7 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         private BitmapImage _savedImage;
-        //private ObservableAsPropertyHelper<BitmapImage> _bi; ?
+
         public BitmapImage SavedImage
         {
             get
@@ -98,7 +98,6 @@ namespace DiversityPhone.ViewModels
             bi.SetSource(ms);
             SavedImage = bi;
          
-
         }
       
 
@@ -121,6 +120,7 @@ namespace DiversityPhone.ViewModels
         {
             Current.Model.LogUpdatedWhen = DateTime.Now;
             Current.Model.Uri = Uri;
+            
         }
 
       
