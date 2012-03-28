@@ -458,6 +458,18 @@ namespace DiversityService
         #region utility
         public IEnumerable<Repository> GetRepositories(UserCredentials login)
         {
+            try
+            {
+                using (var ctx = new Diversity(login))
+                {
+                    ctx.OpenSharedConnection(); // validate Credentials
+                }
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<Repository>();                
+            }
+
             return new Repository[]
             {
                 new Repository()
