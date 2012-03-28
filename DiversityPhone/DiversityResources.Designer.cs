@@ -61,6 +61,42 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_Suffix_E {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_Suffix_E", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die N ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_Suffix_N {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_Suffix_N", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die S ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_Suffix_S {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_Suffix_S", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die W ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_Suffix_W {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_Suffix_W", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die This item can not be changed, it has already been uploaded. ähnelt.
         /// </summary>
         public static string Info_CantEditItem {
