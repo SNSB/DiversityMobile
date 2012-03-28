@@ -309,7 +309,7 @@ namespace DiversityPhone.DiversityService {
         
         private string DatabaseField;
         
-        private string DisplayNameField;
+        private string DisplayTextField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Database {
@@ -325,14 +325,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayName {
+        public string DisplayText {
             get {
-                return this.DisplayNameField;
+                return this.DisplayTextField;
             }
             set {
-                if ((object.ReferenceEquals(this.DisplayNameField, value) != true)) {
-                    this.DisplayNameField = value;
-                    this.RaisePropertyChanged("DisplayName");
+                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
+                    this.DisplayTextField = value;
+                    this.RaisePropertyChanged("DisplayText");
                 }
             }
         }

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Reactive.Subjects;
 using DiversityPhone.Messages;
 
+
 namespace DiversityPhone.ViewModels
 {
     public abstract class PageViewModel : ReactiveObject

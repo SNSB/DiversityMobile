@@ -52,6 +52,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c.Resolve<IVocabularyService>()));
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
+            _ioc.Register<ViewImageVM>(c => new ViewImageVM());
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c.Resolve<IMessageBus>(),c.Resolve<IFieldDataService>(), c.Resolve<IVocabularyService>()));            
 
             _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
@@ -93,6 +94,7 @@ namespace DiversityPhone.ViewModels
         public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }
         public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
+        public ViewImageVM ViewImage { get { return _ioc.Resolve<ViewImageVM>(); } }
         public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
 
         public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }

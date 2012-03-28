@@ -31,7 +31,7 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Canvas x:Name="canvas" Width="480">
                 <!--Image for the camera capture.-->
-                <Image x:Name="PhotoImage" Width="480" Height="600" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" MouseLeftButtonDown="PhotoImage_MouseLeftButtonDown" MouseLeftButtonUp="PhotoImage_MouseLeftButtonUp" MouseMove="PhotoImage_MouseMove" />
+                <Image x:Name="PhotoImage" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Collapsed" MouseLeftButtonDown="PhotoImage_MouseLeftButtonDown" MouseLeftButtonUp="PhotoImage_MouseLeftButtonUp" MouseMove="PhotoImage_MouseMove" />
                 <!--Rectangle defines cropping region.-->
                 <Rectangle x:Name="rect" Visibility="Collapsed" Stroke="Aqua"></Rectangle>
                 <!--Image for the camera capture.-->

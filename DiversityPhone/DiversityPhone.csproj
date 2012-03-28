@@ -201,6 +201,9 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
+    <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
+    <Compile Include="ViewModels\Multimedia\ViewVideoVM.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SelectMapsVM.cs" />
@@ -263,6 +266,9 @@
     <Compile Include="View\ViewDLM.xaml.cs">
       <DependentUpon>ViewDLM.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewImage.xaml.cs">
+      <DependentUpon>ViewImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewIU.xaml.cs">
       <DependentUpon>ViewIU.xaml</DependentUpon>
     </Compile>
@@ -298,9 +304,6 @@
     <Compile Include="ViewModels\VirtualizingViewModelList.cs" />
     <Compile Include="View\ViewLM.xaml.cs">
       <DependentUpon>ViewLM.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewMMO.xaml.cs">
-      <DependentUpon>ViewMMO.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +384,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="View\ViewImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ViewIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -402,10 +409,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ViewLM.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewMMO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -575,6 +578,9 @@
     <None Include="Service References\DiversityService\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\DiversityService\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Service12.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -588,12 +594,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service16.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service17.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service151.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />

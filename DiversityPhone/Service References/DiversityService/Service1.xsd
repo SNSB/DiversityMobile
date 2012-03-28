@@ -68,7 +68,7 @@
   <xs:complexType name="Repository">
     <xs:sequence>
       <xs:element minOccurs="0" name="Database" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DisplayName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Repository" nillable="true" type="tns:Repository" />
