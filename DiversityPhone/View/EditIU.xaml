@@ -41,9 +41,9 @@
                                 Header="Taxonomic Group"
                                 FullModeHeader="Taxonomic Group"
                                 IsEnabled="{Binding IsEditable}"/>
-            
-            <TextBlock Text="Name Query"/>
-            <TextBox Text="{Binding QueryString, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+
+                <TextBlock Text="Name Query" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+                <TextBox Text="{Binding QueryString, Mode=TwoWay}" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
             
             <ListBox BorderThickness="3"  
                      ItemsSource="{Binding AvailableIdentifications}"                     

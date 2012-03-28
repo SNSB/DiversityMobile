@@ -22,7 +22,7 @@ namespace DiversityService
                 DateStart = model.SeriesStart,
                 DateEnd = model.SeriesEnd,
                 Description = model.Description,
-                SeriesCode = model.SeriesCode,   
+                SeriesCode = model.SeriesCode,                
             };
         }
 

@@ -7,7 +7,7 @@ namespace DiversityService.Model
 {
     public class Repository
     {
-        public string DisplayName {get; set;}
+        public string DisplayText {get; set;}
         public string Database { get; set; }
     }
 }

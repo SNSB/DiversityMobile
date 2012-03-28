@@ -11,15 +11,19 @@ namespace DiversityService.Model
     {   
         [DataMember]
         public int SeriesID { get; set; }
+        [DataMember]
         public int? DiversityCollectionEventSeriesID { get; set; }
         [DataMember]
         public string Description { get; set; }
         [DataMember]
         public string SeriesCode { get; set; }
+        [DataMember]
         public String Geography { get; set; }//Geostring for setting the Geography
+        [DataMember]
         public DateTime? SeriesStart { get; set; }
+        [DataMember]
         public DateTime? SeriesEnd { get; set; }
-
+        [DataMember]
         public DateTime? LogUpdatedWhen { get; set; }
 
         

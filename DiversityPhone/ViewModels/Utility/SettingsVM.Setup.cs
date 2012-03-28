@@ -109,7 +109,7 @@ namespace DiversityPhone.ViewModels.Utility
                 m.CurrentProject = Projects.SelectedItem.ProjectID;
                 m.CurrentProjectName = Projects.SelectedItem.DisplayText;
                 m.HomeDB = Databases.SelectedItem.Database;
-                m.HomeDBName = Databases.SelectedItem.DisplayName;
+                m.HomeDBName = Databases.SelectedItem.DisplayText;
                 m.Password = Password;
                 m.UserName = UserName;
 
@@ -178,7 +178,7 @@ namespace DiversityPhone.ViewModels.Utility
                 getRepositories                    
                     .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
                     .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
-                    .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayName = DiversityResources.Setup_Item_PleaseChoose } ))
+                    .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
                     .Do(repos => 
                     {
                         if (repos.Count > 1) { CurrentPivot = Pivots.Repository; }
