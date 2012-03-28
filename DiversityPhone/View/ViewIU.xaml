@@ -20,9 +20,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <StackPanel x:Name="LayoutRoot" Background="Transparent">
-        <ContentControl Content="{Binding Parent}"
-                        ContentTemplate="{StaticResource FieldDataItemTemplate}"/>
+    <StackPanel x:Name="LayoutRoot" Background="Transparent">        
         <ContentControl Content="{Binding Current}"
                         ContentTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"/>
         <!--Pivot Control-->

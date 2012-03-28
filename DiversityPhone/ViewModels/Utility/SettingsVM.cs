@@ -145,6 +145,11 @@ namespace DiversityPhone.ViewModels.Utility
             onsave
             .Where(_ => IsFirstSetup)
             .Do(_ => _IsFirstSetup.OnNext(false))
+            .Do(_ => RefreshVocabulary //After Voc download, navigate to Taxon Page
+                .AsyncCompletedNotification
+                .Take(1)                
+                .Subscribe(__ => ManageTaxa.Execute(null))
+                )
             .Subscribe(RefreshVocabulary.Execute);
 
             Messenger.RegisterMessageSource(

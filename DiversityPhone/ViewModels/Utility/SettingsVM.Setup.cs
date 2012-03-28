@@ -109,7 +109,7 @@ namespace DiversityPhone.ViewModels.Utility
                 m.CurrentProject = Projects.SelectedItem.ProjectID;
                 m.CurrentProjectName = Projects.SelectedItem.DisplayText;
                 m.HomeDB = Databases.SelectedItem.Database;
-                m.HomeDBName = Databases.SelectedItem.DisplayName;
+                m.HomeDBName = Databases.SelectedItem.DisplayText;
                 m.Password = Password;
                 m.UserName = UserName;
 
@@ -167,17 +167,22 @@ namespace DiversityPhone.ViewModels.Utility
                         return usercreds;
                     }).DistinctUntilChanged();                
 
-                creds.Subscribe(login => getRepositories.Execute(login));
+                creds                    
+                    .Subscribe(login => getRepositories.Execute(login));
                 _GettingRepositories =
                     getRepositories
                     .ItemsInflight
                     .Select(items => items > 0)
                     .ToProperty(this, x => x.GettingRepositories);
 
-                getRepositories
+                getRepositories                    
                     .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
-                    .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayName = DiversityResources.Setup_Item_PleaseChoose } ))
-                    .Do(_ => CurrentPivot = Pivots.Repository)
+                    .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
+                    .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
+                    .Do(repos => 
+                    {
+                        if (repos.Count > 1) { CurrentPivot = Pivots.Repository; }
+                    })
                     .Subscribe(Databases);                
 
                 credsWithRepo.Subscribe(login => getProjects.Execute(login));
@@ -189,8 +194,12 @@ namespace DiversityPhone.ViewModels.Utility
                 
                 getProjects
                     .RegisterAsyncFunction(login => _DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())
+                    .Merge(creds.Select(_ => new List<Svc.Project>() as IList<Svc.Project>))
                     .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
-                    .Do(_ => CurrentPivot = Pivots.Projects)
+                    .Do(projects =>
+                    {
+                        if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
+                    })
                     .Subscribe(Projects);                
 
                 creds.Subscribe(login => getUserInfo.Execute(login));

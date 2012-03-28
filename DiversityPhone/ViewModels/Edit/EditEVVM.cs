@@ -6,11 +6,14 @@ using DiversityPhone.Messages;
 using System.Reactive.Linq;
 using DiversityPhone.Services;
 using System.Collections.Generic;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditEVVM : EditElementPageVMBase<Event>
-    {  
+    {
+        IGeoLocationService Geolocation;
+
         #region Properties
         private string _LocalityDescription;
         public string LocalityDescription
@@ -36,8 +39,10 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public EditEVVM()
-        {           
+        public EditEVVM(Container ioc)
+        {
+            Geolocation = ioc.Resolve<IGeoLocationService>();
+
             _CollectionDate = ValidModel
                 .Select(ev => ev.CollectionDate.ToString())
                 .ToProperty<EditEVVM,string>(this, vm => vm.CollectionDate);
@@ -78,20 +83,23 @@ namespace DiversityPhone.ViewModels
             else if(s.ReferrerType == ReferrerType.EventSeries)
             {
                 int parent;
+                Event res;
                 if (s.Referrer != null && int.TryParse(s.Referrer, out parent))
                 {
-                    return new Event()
+                    res = new Event()
                     {
                         SeriesID = parent
                     };
                 }
                 else
                 {
-                    return new Event()
+                    res = new Event()
                     {
                         SeriesID = null
                     };
                 }
+                Geolocation.fillGeoCoordinates(res);
+                return res;
             }
             return null;
         }

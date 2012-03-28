@@ -22,7 +22,7 @@ namespace DiversityPhone.Model
             this.DiversityCollectionUnitID = null;
             this.DiversityCollectionSpecimenID = null;
             this.DiversityCollectionRelatedUnitID = null;
-            App.fillGeoCoordinates(this);
+            
         }
 
         [Column]

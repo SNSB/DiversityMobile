@@ -97,7 +97,11 @@
         	</Grid.ColumnDefinitions>
     		<Image Margin="0" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Images/SNSBIcons/Nord_80.png"/>
         	<StackPanel Orientation="Vertical" d:LayoutOverrides="Width, Height" Grid.Column="1" VerticalAlignment="Center">
-        		<TextBlock HorizontalAlignment="Center"><Run Text="{Binding Latitude, Converter={StaticResource GeoCoordinates}}"/><Run Text=" "/><Run Text="-"/><Run Text=" "/><Run Text="{Binding Longitude, Converter={StaticResource GeoCoordinates}}"/></TextBlock>
+        		<TextBlock HorizontalAlignment="Center">
+                    <Run Text="{Binding Latitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=LAT}"/>
+                    <Run Text=" "/>
+                    <Run Text="{Binding Longitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=LON}"/>
+                </TextBlock>
         		<TextBlock HorizontalAlignment="Center"><Run Text="{Binding Altitude, StringFormat=\{0:G\}}"/><Run Text=" "/><Run Text="m"/></TextBlock>
         	</StackPanel>
     	</Grid>

@@ -9,6 +9,7 @@ using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
 using DiversityPhone.Model;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,6 +17,7 @@ namespace DiversityPhone.ViewModels
     {
         public ITaxonService Taxa { get; set; }
         public IVocabularyService Vocabulary { get; set; }
+        private IGeoLocationService Geolocation;
 
         #region Properties
         private ObservableAsPropertyHelper<bool> _IsObservation;
@@ -143,11 +145,12 @@ namespace DiversityPhone.ViewModels
 
 
 
-        public EditIUVM(ITaxonService taxa, IVocabularyService voc)
+        public EditIUVM(Container ioc)
             : base(false)
         {
-            Taxa = taxa;
-            Vocabulary = voc;
+            Taxa = ioc.Resolve<ITaxonService>();
+            Vocabulary = ioc.Resolve<IVocabularyService>();
+            Geolocation = ioc.Resolve<IGeoLocationService>();
             #region Update View
             _IsToplevel = ValidModel
                             .Select(m => m.RelatedUnitID == null)
@@ -264,6 +267,7 @@ namespace DiversityPhone.ViewModels
                         result.RelatedUnitID = parent.UnitID;
                     }
                 }
+                Geolocation.fillGeoCoordinates(result);
             }
 
             return result;

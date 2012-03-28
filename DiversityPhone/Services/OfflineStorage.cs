@@ -694,21 +694,24 @@
 
             withDataContext(ctx =>
                 {
-                    try
-                    {
                         var table = tableProvider(ctx);
                         var attachedRow = operations.WhereKeyEquals(table, detachedRow)
                             .FirstOrDefault();
 
                         if (attachedRow != null)
                         {
-                            table.DeleteOnSubmit(attachedRow);
-                            ctx.SubmitChanges();
+                            table.DeleteOnSubmit(attachedRow);                            
+                            try
+                            {
+                                ctx.SubmitChanges();
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debugger.Break();
+                                //TODO Log
+                            }
                         }
-                    }
-                    catch (Exception ex)
-                    {
-                    }
+                  
                 });
         }
 

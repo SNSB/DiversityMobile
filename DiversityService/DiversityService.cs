@@ -458,21 +458,33 @@ namespace DiversityService
         #region utility
         public IEnumerable<Repository> GetRepositories(UserCredentials login)
         {
+            try
+            {
+                using (var ctx = new Diversity(login))
+                {
+                    ctx.OpenSharedConnection(); // validate Credentials
+                }
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<Repository>();                
+            }
+
             return new Repository[]
             {
                 new Repository()
                 { 
-                    DisplayName = "Test",
+                    DisplayText = "Test",
                     Database = "DiversityCollection_Test"
                 },
                 new Repository() // In München funktionen noch nicht implementiert
                 {
-                    DisplayName="DiversityCollection",
+                    DisplayText="DiversityCollection",
                     Database="DiversityCollection",
                 },
                  new Repository() // In München funktionen noch nicht implementiert
                 {
-                    DisplayName="DiversityCollection Monitoring",
+                    DisplayText="DiversityCollection Monitoring",
                     Database="DiversityCollection_Monitoring",
                 },
             };
