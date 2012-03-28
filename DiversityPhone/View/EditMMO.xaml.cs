@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Navigation;
 using System.Windows.Controls;
+
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -43,6 +44,7 @@ namespace DiversityPhone.View
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
+        
         private DispatcherTimer timer;
         private byte[] audioBuffer;                             // Dynamic buffer to retrieve audio data from the microphone
         private MemoryStream audioStream = new MemoryStream();  // Stores the audio data for later playback
@@ -54,12 +56,21 @@ namespace DiversityPhone.View
         
 
         //VideoComponents
+        private VideoBrush videoRecorderBrush;
+        private MediaElement videoPlayer;
+        private CaptureSource captureSource;
+        // File details for storing the recording.        
+        private IsolatedStorageFileStream isoVideoFile;
+        private VideoCaptureDevice videoCaptureDevice;
+        private string isoVideoFileName = "tempVideoSave.mp4";
+        private FileSink fileSink;
+        private bool isVideoRecording = false;
 
         //ApplicationBarAdjustment
         ApplicationBarIconButton btnRecord;
         ApplicationBarIconButton btnPlay;
         ApplicationBarIconButton btnStop;
-        ApplicationBarIconButton btnPause;
+  
 
         ApplicationBarIconButton btnCamera;
         ApplicationBarIconButton btnCrop;
@@ -71,14 +82,7 @@ namespace DiversityPhone.View
         public EditMMO()
         {
             InitializeComponent();
-            //Create new instance of CameraCaptureClass
-            takePhoto = new CameraCaptureTask();
-
-            //Create new event handler for capturing a photo
-            takePhoto.Completed += new EventHandler<PhotoResult>(takePhoto_Completed);
-
-            //Used for rendering the cropping rectangle on the image.
-            CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
+           
            
         }
 
@@ -87,9 +91,43 @@ namespace DiversityPhone.View
             
         }
 
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // Dispose of camera and media objects.
+            DisposeVideoPlayer();
+            DisposeVideoRecorder();
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(isoVideoFileName))
+            {
+                myStore.DeleteFile(isoVideoFileName);
+            }
+            base.OnNavigatedFrom(e);
+        }
+
       
         #region Photo
 
+        private void btnNewPhoto_Click(object sender, EventArgs e)
+        {
+            //Create new instance of CameraCaptureClass
+            takePhoto = new CameraCaptureTask();
+
+            //Create new event handler for capturing a photo
+            takePhoto.Completed += new EventHandler<PhotoResult>(takePhoto_Completed);
+
+            //Used for rendering the cropping rectangle on the image.
+            CompositionTarget.Rendering += new EventHandler(CompositionTarget_Rendering);
+            this.PageTitle.Text = "photo";
+            VM.Current.Model.MediaType = MediaType.Image;
+            PhotoImage.Visibility = Visibility.Visible;
+
+
+            textStatus.Text = "";
+            setPhotoBar();
+            //Show the camera.
+            takePhoto.Show();
+
+        }
 
         private void takePhoto_Completed(object sender, PhotoResult e)
         {
@@ -108,7 +146,7 @@ namespace DiversityPhone.View
                 PhotoImage.Source = actualImage;
                 //Collapse visibility on the progress bar once writeable bitmap is visible.
                 progressBar1.Visibility = Visibility.Collapsed;
-                setPhotoBar();
+                
                 setPhotoButtonStates(true, true, false, true);
                 
             }
@@ -123,19 +161,9 @@ namespace DiversityPhone.View
 
         #region ImageButtons
 
-
-        private void btnNewPhoto_Click(object sender, EventArgs e)
+        private void btnCaptureImage_Click(object sender, EventArgs e)
         {
-            this.PageTitle.Text = "photo";
-            VM.Current.Model.MediaType = MediaType.Image;
-            PhotoImage.Visibility = Visibility.Visible;
-
-
-            textStatus.Text = "";
-
-            //Show the camera.
             takePhoto.Show();
-
         }
 
         private void btnResetPhoto_Click(object sender, EventArgs e)
@@ -344,7 +372,7 @@ namespace DiversityPhone.View
 
             
             //This code will create event handlers for buttons.
-            btnCamera.Click += new EventHandler(btnNewPhoto_Click);
+            btnCamera.Click += new EventHandler(btnCaptureImage_Click);
             btnCrop.Click += new EventHandler(btnCrop_Click);
             btnReset.Click += new EventHandler(btnResetPhoto_Click);
             btnSave.Click += new EventHandler(btnSaveImage_Click);
@@ -424,9 +452,9 @@ namespace DiversityPhone.View
 
             setAudioButtonStates(true, false, false, false);
             //This code will create event handlers for buttons.
-            btnRecord.Click += new EventHandler(btnRecord_Click);
-            btnPlay.Click += new EventHandler(btnPlay_Click);
-            btnStop.Click += new EventHandler(btnStop_Click);
+            btnRecord.Click += new EventHandler(btnRecordAudio_Click);
+            btnPlay.Click += new EventHandler(btnPlayAudio_Click);
+            btnStop.Click += new EventHandler(btnStopAudio_Click);
             btnSave.Click += new EventHandler(btnSaveAudio_Click);
         }
 
@@ -579,7 +607,7 @@ namespace DiversityPhone.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnRecord_Click(object sender, EventArgs e)
+        private void btnRecordAudio_Click(object sender, EventArgs e)
         {
             // Get audio data in 1/2 second chunks
             microphone.BufferDuration = TimeSpan.FromMilliseconds(500);
@@ -603,7 +631,7 @@ namespace DiversityPhone.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnStop_Click(object sender, EventArgs e)
+        private void btnStopAudio_Click(object sender, EventArgs e)
         {
             if (microphone.State == MicrophoneState.Started)
             {
@@ -632,7 +660,7 @@ namespace DiversityPhone.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnPlay_Click(object sender, EventArgs e)
+        private void btnPlayAudio_Click(object sender, EventArgs e)
         {
             if (audioStream.Length > 0)
             {
@@ -701,11 +729,374 @@ namespace DiversityPhone.View
 
         #region Video
 
+        #region ViewConstruction
+
         private void NewVideo_Click(object sender, EventArgs e)
         {
             this.PageTitle.Text = "video";
             VM.Current.Model.MediaType = MediaType.Video;
+            setVideoBar();
+            setVideoButtonStates(true, false, false, false);
+            VideoPlayer.Visibility = Visibility.Visible;
+            viewfinderRectangle.Visibility = Visibility.Visible;
+            // Initialize the video recorder.
+            InitializeVideoRecorder();
         }
+
+        private void setVideoBar()
+        {
+            ApplicationBar = new ApplicationBar();
+            ApplicationBar.IsVisible = true;
+
+            //This code creates the application bar icon buttons.
+            btnRecord = new ApplicationBarIconButton(new Uri("/Images/appbar.feature.video.rest.png", UriKind.Relative));
+            btnPlay = new ApplicationBarIconButton(new Uri("/Images/AudioIcons/play.png", UriKind.Relative));
+            btnStop = new ApplicationBarIconButton(new Uri("/Images/AudioIcons/stop.png", UriKind.Relative));
+            btnSave = new ApplicationBarIconButton(new Uri("/Images/appbar.save.rest.png", UriKind.Relative));
+
+            //Labels for the application bar buttons.
+            btnRecord.Text = "record";
+            btnPlay.Text = "play";
+            btnStop.Text = "stop";
+            btnSave.Text = "save";
+
+            //This code adds buttons to application bar.
+            ApplicationBar.Buttons.Add(btnRecord);
+            ApplicationBar.Buttons.Add(btnPlay);
+            ApplicationBar.Buttons.Add(btnStop);
+            ApplicationBar.Buttons.Add(btnSave);
+
+            setVideoButtonStates(true, false, false, false);
+            //This code will create event handlers for buttons.
+            btnRecord.Click += new EventHandler(btnRecordVideo_Click);
+            btnPlay.Click += new EventHandler(btnPlayVideo_Click);
+            btnStop.Click += new EventHandler(btnStopVideo_Click);
+            btnSave.Click += new EventHandler(btnSaveVideo_Click);
+        }
+
+        private void setVideoButtonStates(bool recordEnabled, bool playEnabled, bool stopEnabled, bool saveEnabled)
+        {
+            (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = recordEnabled;
+            (ApplicationBar.Buttons[1] as ApplicationBarIconButton).IsEnabled = playEnabled;
+            (ApplicationBar.Buttons[2] as ApplicationBarIconButton).IsEnabled = stopEnabled;
+            (ApplicationBar.Buttons[3] as ApplicationBarIconButton).IsEnabled = saveEnabled;
+        }
+
+        #endregion
+
+        #region Buttons
+
+        private void btnRecordVideo_Click(object sender, EventArgs e)
+        {
+            setVideoButtonStates(false, false, false, false);
+            StartVideoRecording();
+        }
+
+        private void btnPlayVideo_Click(object sender, EventArgs e)
+        {
+            // Avoid duplicate taps.
+            setVideoButtonStates(false, false, false, false);
+
+            // Start video playback when the file stream exists.
+            if (isoVideoFile != null)
+            {
+                VideoPlayer.Play();
+            }
+            // Start the video for the first time.
+            else
+            {
+                // Stop the capture source.
+                captureSource.Stop();
+
+                // Remove VideoBrush from the tree.
+                viewfinderRectangle.Fill = null;
+
+                // Create the file stream and attach it to the MediaElement.
+                isoVideoFile = new IsolatedStorageFileStream(isoVideoFileName,
+                                        FileMode.Open, FileAccess.Read,
+                                        IsolatedStorageFile.GetUserStoreForApplication());
+
+                VideoPlayer.SetSource(isoVideoFile);
+
+                // Add an event handler for the end of playback.
+                VideoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
+
+                // Start video playback.
+                VideoPlayer.Play();
+            }
+
+            // Set the button state and the message.
+            setVideoButtonStates(false, false, true, false);
+        }
+
+        private void btnStopVideo_Click(object sender, EventArgs e)
+        {
+            // Avoid duplicate taps.
+            setVideoButtonStates(false, false, false, false);
+
+            // Stop during video recording.
+            if (this.isVideoRecording == true)
+            {
+                StopVideoRecording();
+
+                // Set the button state and the message.
+                setVideoButtonStates(true, true, false, true);
+            }
+
+            // Stop during video playback.
+            else
+            {
+                // Remove playback objects.
+                DisposeVideoPlayer();
+
+                StartVideoPreview();
+
+                // Set the button state and the message.
+                setVideoButtonStates(true, true, false, true);
+            }
+        }
+
+        private void btnSaveVideo_Click(object sender, EventArgs e)
+        {
+            saveVideo();
+            VM.Save.Execute(null);
+            setAudioButtonStates(false, false, false, false);
+        }
+
+        #endregion
+
+
+
+        #region Dispose
+        private void DisposeVideoPlayer()
+        {
+            if (videoPlayer != null)
+            {
+                // Stop the VideoPlayer MediaElement.
+                videoPlayer.Stop();
+
+                // Remove playback objects.
+                videoPlayer.Source = null;
+
+                // Remove the event handler.
+                videoPlayer.MediaEnded -= VideoPlayerMediaEnded;
+            }
+        }
+
+        private void DisposeVideoRecorder()
+        {
+            if (captureSource != null)
+            {
+                // Stop captureSource if it is running.
+                if (captureSource.VideoCaptureDevice != null
+                    && captureSource.State == CaptureState.Started)
+                {
+                    captureSource.Stop();
+                }
+
+                // Remove the event handlers for capturesource and the shutter button.
+                captureSource.CaptureFailed -= OnCaptureFailed;
+
+                // Remove the video recording objects.
+                captureSource = null;
+                videoCaptureDevice = null;
+                fileSink = null;
+                videoRecorderBrush = null;
+            }
+        }
+        #endregion
+
+
+        private void saveVideo()
+        {
+            //Save Video
+            //
+
+            //Make progress bar visible for the event handler as there may be posible latency.
+            progressBar1.Visibility = Visibility.Visible;
+
+            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
+            String uri;
+
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
+            {
+                Guid g = Guid.NewGuid();
+                uri = g.ToString() + ".mp4";
+            }
+            else
+            {
+                uri = VM.Current.Model.Uri;
+            }
+            //Create virtual store and file stream. Check for duplicate tempJPEG files.
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(uri))
+            {
+                myStore.DeleteFile(uri);
+            }
+            if(myStore.FileExists(isoVideoFileName))
+            {
+                myStore.MoveFile(isoVideoFileName,uri);
+            }
+            if (VM.Current.Model.Uri == null || VM.Current.Model.Uri.Equals(String.Empty))
+            {
+                VM.Uri = uri;
+
+            }
+            progressBar1.Visibility = Visibility.Collapsed;
+        }
+
+
+
+        #region VideoMethods
+
+
+        public void InitializeVideoRecorder()
+        {
+            if (captureSource == null)
+            {
+                // Create the VideoRecorder objects.
+                captureSource = new CaptureSource();
+                fileSink = new FileSink();
+
+                videoCaptureDevice = CaptureDeviceConfiguration.GetDefaultVideoCaptureDevice();
+
+                // Add eventhandlers for captureSource.
+                captureSource.CaptureFailed += new EventHandler<ExceptionRoutedEventArgs>(OnCaptureFailed);
+
+                // Initialize the camera if it exists on the device.
+                if (videoCaptureDevice != null)
+                {
+                    // Create the VideoBrush for the viewfinder.
+                    videoRecorderBrush = new VideoBrush();
+                    videoRecorderBrush.SetSource(captureSource);
+
+                    // Display the viewfinder image on the rectangle.
+                    viewfinderRectangle.Fill = videoRecorderBrush;
+
+                    // Start video capture and display it on the viewfinder.
+                    captureSource.Start();
+                    setVideoButtonStates(true, false, false, false);
+                }
+                else
+                {
+                    // Disable buttons when the camera is not supported by the device.
+                    setVideoButtonStates(false, false, false, false);
+                }
+            }
+        }
+
+        // If recording fails, display an error message.
+        private void OnCaptureFailed(object sender, ExceptionRoutedEventArgs e)
+        {
+            this.Dispatcher.BeginInvoke(delegate()
+            {
+                textStatus.Text = "ERROR: " + e.ErrorException.Message.ToString();
+            });
+        }
+
+        // Display the viewfinder when playback ends.
+        public void VideoPlayerMediaEnded(object sender, RoutedEventArgs e)
+        {
+            // Remove the playback objects.
+            DisposeVideoPlayer();
+            setVideoButtonStates(true, true, false, true);
+            StartVideoPreview();
+        }
+
+          // Set the recording state: display the video on the viewfinder.
+        private void StartVideoPreview()
+        {
+            try
+            {
+                // Display the video on the viewfinder.
+                if (captureSource.VideoCaptureDevice != null
+                && captureSource.State == CaptureState.Stopped)
+                {
+                    // Add captureSource to videoBrush.
+                    videoRecorderBrush.SetSource(captureSource);
+
+                    // Add videoBrush to the visual tree.
+                    viewfinderRectangle.Fill = videoRecorderBrush;
+
+                    captureSource.Start();
+                }
+            }
+            // If preview fails, display an error.
+            catch (Exception e)
+            {
+                this.Dispatcher.BeginInvoke(delegate()
+                {
+                    textStatus.Text = "ERROR: " + e.Message.ToString();
+                });
+            }
+        }
+
+        // Set recording state: start recording.
+        private void StartVideoRecording()
+        {
+            try
+            {
+                // Connect fileSink to captureSource.
+                if (captureSource.VideoCaptureDevice != null
+                    && captureSource.State == CaptureState.Started)
+                {
+                    captureSource.Stop();
+
+                    // Connect the input and output of fileSink.
+                    fileSink.CaptureSource = captureSource;
+                    fileSink.IsolatedStorageFileName = isoVideoFileName;
+                }
+
+                // Begin recording.
+                if (captureSource.VideoCaptureDevice != null
+                    && captureSource.State == CaptureState.Stopped)
+                {
+                    captureSource.Start();
+                }
+                this.isVideoRecording = true;
+                setVideoButtonStates(false, false, true, false);
+            }
+
+            // If recording fails, display an error.
+            catch (Exception e)
+            {
+                this.Dispatcher.BeginInvoke(delegate()
+                {
+                    textStatus.Text = "ERROR: " + e.Message.ToString();
+                });
+            }
+        }
+
+        // Set the recording state: stop recording.
+        private void StopVideoRecording()
+        {
+            try
+            {
+                // Stop recording.
+                if (captureSource.VideoCaptureDevice != null
+                && captureSource.State == CaptureState.Started)
+                {
+                    captureSource.Stop();
+
+                    // Disconnect fileSink.
+                    fileSink.CaptureSource = null;
+                    fileSink.IsolatedStorageFileName = null;
+
+                }
+                this.isVideoRecording = false;
+                setVideoButtonStates(true, true, false, true);
+            }
+            // If stop fails, display an error.
+            catch (Exception e)
+            {
+                this.Dispatcher.BeginInvoke(delegate()
+                {
+                   textStatus.Text = "ERROR: " + e.Message.ToString();
+                });
+                this.isVideoRecording = false;
+            }
+        }
+        #endregion
 
         #endregion
     }

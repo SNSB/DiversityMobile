@@ -559,27 +559,19 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\configuration91.svcinfo">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\configuration.svcinfo">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\Service1.disco" />
+    <None Include="Service References\DiversityService\configuration91.svcinfo" />
+    <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service12.xsd">
@@ -591,10 +583,13 @@
     <None Include="Service References\DiversityService\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service141.xsd">
+    <None Include="Service References\DiversityService\Service15.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service142.xsd">
+    <None Include="Service References\DiversityService\Service16.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service17.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service151.xsd">

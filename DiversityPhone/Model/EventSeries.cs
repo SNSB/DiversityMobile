@@ -120,6 +120,7 @@
         {
             Svc.EventSeries export = new Svc.EventSeries();
             export.SeriesID = es.SeriesID;
+           
             export.DiversityCollectionEventSeriesID = es.DiversityCollectionEventSeriesID;
             export.SeriesCode = es.SeriesCode;
             export.SeriesStart = es.SeriesStart;
