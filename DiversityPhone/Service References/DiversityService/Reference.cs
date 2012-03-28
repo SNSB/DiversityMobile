@@ -8737,21 +8737,42 @@ namespace DiversityPhone.DiversityService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityObject))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.StructuralObject))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReference))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.RelatedEnd))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EventSeries))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Term>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Term))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TermList))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserCredentials))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserProfile))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Repository))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Project>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Project))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisTaxonomicGroup>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisTaxonomicGroup))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Analysis>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Analysis))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisResult))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.HierarchySection))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Event))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnit))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Specimen>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Specimen))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.KeyProjection))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonList>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonList))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonName))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyList))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyName))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSery))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSery>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage>))]
@@ -8798,45 +8819,24 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Identification))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<int, int>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Term>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Term))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TermList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserCredentials))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserProfile))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Repository))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Project>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Project))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisTaxonomicGroup>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisTaxonomicGroup))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Analysis>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Analysis))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisResult))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventSeries>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EventSeries))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.HierarchySection))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Event))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnit))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Specimen>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Specimen))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.KeyProjection))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonList>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonName))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyName))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EntityKeyMember>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<int, int>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.StructuralObject))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReference))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.RelatedEnd))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX))]
     public partial class EntityKeyMember : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string KeyField;
@@ -9092,6 +9092,11 @@ namespace DiversityPhone.DiversityService {
         System.IAsyncResult BeginInsertEventSeriesForAndroidVESES(DiversityPhone.DiversityService.EventSeries es, System.AsyncCallback callback, object asyncState);
         
         DiversityPhone.DiversityService.CollectionEventSery EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/TestSeriesForAndroid", ReplyAction="http://tempuri.org/IDiversityService/TestSeriesForAndroidResponse")]
+        System.IAsyncResult BeginTestSeriesForAndroid(System.AsyncCallback callback, object asyncState);
+        
+        DiversityPhone.DiversityService.EventSeries EndTestSeriesForAndroid(System.IAsyncResult result);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -9423,6 +9428,25 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class TestSeriesForAndroidCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public TestSeriesForAndroidCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public DiversityPhone.DiversityService.EventSeries Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((DiversityPhone.DiversityService.EventSeries)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class DiversityServiceClient : System.ServiceModel.ClientBase<DiversityPhone.DiversityService.IDiversityService>, DiversityPhone.DiversityService.IDiversityService {
         
         private BeginOperationDelegate onBeginGetStandardVocabularyDelegate;
@@ -9533,6 +9557,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onInsertEventSeriesForAndroidVESESCompletedDelegate;
         
+        private BeginOperationDelegate onBeginTestSeriesForAndroidDelegate;
+        
+        private EndOperationDelegate onEndTestSeriesForAndroidDelegate;
+        
+        private System.Threading.SendOrPostCallback onTestSeriesForAndroidCompletedDelegate;
+        
         private BeginOperationDelegate onBeginOpenDelegate;
         
         private EndOperationDelegate onEndOpenDelegate;
@@ -9621,6 +9651,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<InsertEventSeriesForAndroidVIntESCompletedEventArgs> InsertEventSeriesForAndroidVIntESCompleted;
         
         public event System.EventHandler<InsertEventSeriesForAndroidVESESCompletedEventArgs> InsertEventSeriesForAndroidVESESCompleted;
+        
+        public event System.EventHandler<TestSeriesForAndroidCompletedEventArgs> TestSeriesForAndroidCompleted;
         
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> OpenCompleted;
         
@@ -10473,6 +10505,50 @@ namespace DiversityPhone.DiversityService {
                         es}, this.onEndInsertEventSeriesForAndroidVESESDelegate, this.onInsertEventSeriesForAndroidVESESCompletedDelegate, userState);
         }
         
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginTestSeriesForAndroid(System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginTestSeriesForAndroid(callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        DiversityPhone.DiversityService.EventSeries DiversityPhone.DiversityService.IDiversityService.EndTestSeriesForAndroid(System.IAsyncResult result) {
+            return base.Channel.EndTestSeriesForAndroid(result);
+        }
+        
+        private System.IAsyncResult OnBeginTestSeriesForAndroid(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginTestSeriesForAndroid(callback, asyncState);
+        }
+        
+        private object[] OnEndTestSeriesForAndroid(System.IAsyncResult result) {
+            DiversityPhone.DiversityService.EventSeries retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndTestSeriesForAndroid(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnTestSeriesForAndroidCompleted(object state) {
+            if ((this.TestSeriesForAndroidCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.TestSeriesForAndroidCompleted(this, new TestSeriesForAndroidCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void TestSeriesForAndroidAsync() {
+            this.TestSeriesForAndroidAsync(null);
+        }
+        
+        public void TestSeriesForAndroidAsync(object userState) {
+            if ((this.onBeginTestSeriesForAndroidDelegate == null)) {
+                this.onBeginTestSeriesForAndroidDelegate = new BeginOperationDelegate(this.OnBeginTestSeriesForAndroid);
+            }
+            if ((this.onEndTestSeriesForAndroidDelegate == null)) {
+                this.onEndTestSeriesForAndroidDelegate = new EndOperationDelegate(this.OnEndTestSeriesForAndroid);
+            }
+            if ((this.onTestSeriesForAndroidCompletedDelegate == null)) {
+                this.onTestSeriesForAndroidCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnTestSeriesForAndroidCompleted);
+            }
+            base.InvokeAsync(this.onBeginTestSeriesForAndroidDelegate, null, this.onEndTestSeriesForAndroidDelegate, this.onTestSeriesForAndroidCompletedDelegate, userState);
+        }
+        
         private System.IAsyncResult OnBeginOpen(object[] inValues, System.AsyncCallback callback, object asyncState) {
             return ((System.ServiceModel.ICommunicationObject)(this)).BeginOpen(callback, asyncState);
         }
@@ -10789,6 +10865,18 @@ namespace DiversityPhone.DiversityService {
             public DiversityPhone.DiversityService.CollectionEventSery EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 DiversityPhone.DiversityService.CollectionEventSery _result = ((DiversityPhone.DiversityService.CollectionEventSery)(base.EndInvoke("InsertEventSeriesForAndroidVESES", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginTestSeriesForAndroid(System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[0];
+                System.IAsyncResult _result = base.BeginInvoke("TestSeriesForAndroid", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public DiversityPhone.DiversityService.EventSeries EndTestSeriesForAndroid(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                DiversityPhone.DiversityService.EventSeries _result = ((DiversityPhone.DiversityService.EventSeries)(base.EndInvoke("TestSeriesForAndroid", _args, result)));
                 return _result;
             }
         }

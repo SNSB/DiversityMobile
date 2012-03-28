@@ -1,775 +1,276 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityCollection" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityCollection" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
-  <xs:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:complexType name="CollectionEventSery">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q1:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectionEventSeries1" nillable="true" type="tns:ArrayOfCollectionEventSery" />
-          <xs:element minOccurs="0" name="CollectionEventSeriesImages" nillable="true" type="tns:ArrayOfCollectionEventSeriesImage" />
-          <xs:element minOccurs="0" name="CollectionEventSery1" nillable="true" type="tns:CollectionEventSery" />
-          <xs:element minOccurs="0" name="CollectionEventSery1Reference" nillable="true" type="q1:EntityReferenceOfCollectionEventSerykS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionEvents" nillable="true" type="tns:ArrayOfCollectionEvent" />
-          <xs:element minOccurs="0" name="DateEnd" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="DateStart" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
-          <xs:element minOccurs="0" name="SeriesParentID" nillable="true" type="xs:int" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEventSery" nillable="true" type="tns:CollectionEventSery" />
-  <xs:complexType name="ArrayOfCollectionEventSery">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEventSery" nillable="true" type="tns:CollectionEventSery" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEventSery" nillable="true" type="tns:ArrayOfCollectionEventSery" />
-  <xs:complexType name="ArrayOfCollectionEventSeriesImage">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEventSeriesImage" nillable="true" type="tns:CollectionEventSeriesImage" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEventSeriesImage" nillable="true" type="tns:ArrayOfCollectionEventSeriesImage" />
-  <xs:complexType name="CollectionEventSeriesImage">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q2:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollEventSeriesImageType_Enum" nillable="true" type="tns:CollEventSeriesImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventSeriesImageType_EnumReference" nillable="true" type="q2:EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionEventSery" nillable="true" type="tns:CollectionEventSery" />
-          <xs:element minOccurs="0" name="CollectionEventSeryReference" nillable="true" type="q2:EntityReferenceOfCollectionEventSerykS_PiNjVX" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ImageType" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResourceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
-          <xs:element minOccurs="0" name="URI" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEventSeriesImage" nillable="true" type="tns:CollectionEventSeriesImage" />
-  <xs:complexType name="CollEventSeriesImageType_Enum">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q3:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollEventSeriesImageType_Enum1" nillable="true" type="tns:ArrayOfCollEventSeriesImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventSeriesImageType_Enum2" nillable="true" type="tns:CollEventSeriesImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventSeriesImageType_Enum2Reference" nillable="true" type="q3:EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionEventSeriesImages" nillable="true" type="tns:ArrayOfCollectionEventSeriesImage" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnable" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollEventSeriesImageType_Enum" nillable="true" type="tns:CollEventSeriesImageType_Enum" />
-  <xs:complexType name="ArrayOfCollEventSeriesImageType_Enum">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollEventSeriesImageType_Enum" nillable="true" type="tns:CollEventSeriesImageType_Enum" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollEventSeriesImageType_Enum" nillable="true" type="tns:ArrayOfCollEventSeriesImageType_Enum" />
-  <xs:complexType name="ArrayOfCollectionEvent">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEvent" nillable="true" type="tns:ArrayOfCollectionEvent" />
-  <xs:complexType name="CollectionEvent">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q4:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectingMethod" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="CollectionDateCategory" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionDateSupplement" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionDay" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionEventImages" nillable="true" type="tns:ArrayOfCollectionEventImage" />
-          <xs:element minOccurs="0" name="CollectionEventLocalisation" nillable="true" type="tns:ArrayOfCollectionEventLocalisation" />
-          <xs:element minOccurs="0" name="CollectionEventProperties" nillable="true" type="tns:ArrayOfCollectionEventProperty" />
-          <xs:element minOccurs="0" name="CollectionEventSery" nillable="true" type="tns:CollectionEventSery" />
-          <xs:element minOccurs="0" name="CollectionEventSeryReference" nillable="true" type="q4:EntityReferenceOfCollectionEventSerykS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionMonth" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="CollectionSpecimen" nillable="true" type="tns:ArrayOfCollectionSpecimen" />
-          <xs:element minOccurs="0" name="CollectionTime" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionTimeSpan" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionYear" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="CollectorsEventNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CountryCache" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="SeriesID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="Version" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_ExpeditionID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-  <xs:complexType name="ArrayOfCollectionEventImage">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEventImage" nillable="true" type="tns:CollectionEventImage" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEventImage" nillable="true" type="tns:ArrayOfCollectionEventImage" />
-  <xs:complexType name="CollectionEventImage">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q5:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollEventImageType_Enum" nillable="true" type="tns:CollEventImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventImageType_EnumReference" nillable="true" type="q5:EntityReferenceOfCollEventImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-          <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionEventReference" nillable="true" type="q5:EntityReferenceOfCollectionEventkS_PiNjVX" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ImageType" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResourceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="URI" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEventImage" nillable="true" type="tns:CollectionEventImage" />
-  <xs:complexType name="CollEventImageType_Enum">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q6="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q6:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollEventImageType_Enum1" nillable="true" type="tns:ArrayOfCollEventImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventImageType_Enum2" nillable="true" type="tns:CollEventImageType_Enum" />
-          <xs:element minOccurs="0" name="CollEventImageType_Enum2Reference" nillable="true" type="q6:EntityReferenceOfCollEventImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionEventImages" nillable="true" type="tns:ArrayOfCollectionEventImage" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnable" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollEventImageType_Enum" nillable="true" type="tns:CollEventImageType_Enum" />
-  <xs:complexType name="ArrayOfCollEventImageType_Enum">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollEventImageType_Enum" nillable="true" type="tns:CollEventImageType_Enum" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollEventImageType_Enum" nillable="true" type="tns:ArrayOfCollEventImageType_Enum" />
-  <xs:complexType name="ArrayOfCollectionEventLocalisation">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEventLocalisation" nillable="true" type="tns:CollectionEventLocalisation" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEventLocalisation" nillable="true" type="tns:ArrayOfCollectionEventLocalisation" />
-  <xs:complexType name="CollectionEventLocalisation">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q7="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q7:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AverageAltitudeCache" nillable="true" type="xs:double" />
-          <xs:element minOccurs="0" name="AverageLatitudeCache" nillable="true" type="xs:double" />
-          <xs:element minOccurs="0" name="AverageLongitudeCache" nillable="true" type="xs:double" />
-          <xs:element minOccurs="0" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-          <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionEventReference" nillable="true" type="q7:EntityReferenceOfCollectionEventkS_PiNjVX" />
-          <xs:element minOccurs="0" name="DeterminationDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="DirectionToLocation" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DistanceToLocation" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LocalisationSystemID" type="xs:int" />
-          <xs:element minOccurs="0" name="Location1" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Location2" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LocationAccuracy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LocationNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="RecordingMethod" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEventLocalisation" nillable="true" type="tns:CollectionEventLocalisation" />
-  <xs:complexType name="ArrayOfCollectionEventProperty">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionEventProperty" nillable="true" type="tns:CollectionEventProperty" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionEventProperty" nillable="true" type="tns:ArrayOfCollectionEventProperty" />
-  <xs:complexType name="CollectionEventProperty">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q8="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q8:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AverageValueCache" nillable="true" type="xs:double" />
-          <xs:element minOccurs="0" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-          <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionEventReference" nillable="true" type="q8:EntityReferenceOfCollectionEventkS_PiNjVX" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Property" nillable="true" type="tns:Property" />
-          <xs:element minOccurs="0" name="PropertyHierarchyCache" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
-          <xs:element minOccurs="0" name="PropertyReference" nillable="true" type="q8:EntityReferenceOfPropertykS_PiNjVX" />
-          <xs:element minOccurs="0" name="PropertyURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="PropertyValue" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionEventProperty" nillable="true" type="tns:CollectionEventProperty" />
-  <xs:complexType name="Property">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q9="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q9:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectionEventProperties" nillable="true" type="tns:ArrayOfCollectionEventProperty" />
-          <xs:element minOccurs="0" name="DefaultAccuracyOfProperty" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DefaultMeasurementUnit" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnabled" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParsingMethodName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Property1" nillable="true" type="tns:ArrayOfProperty" />
-          <xs:element minOccurs="0" name="Property2" nillable="true" type="tns:Property" />
-          <xs:element minOccurs="0" name="Property2Reference" nillable="true" type="q9:EntityReferenceOfPropertykS_PiNjVX" />
-          <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
-          <xs:element minOccurs="0" name="PropertyName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="PropertyParentID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Property" nillable="true" type="tns:Property" />
-  <xs:complexType name="ArrayOfProperty">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" nillable="true" type="tns:Property" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfProperty" nillable="true" type="tns:ArrayOfProperty" />
-  <xs:complexType name="ArrayOfCollectionSpecimen">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionSpecimen" nillable="true" type="tns:CollectionSpecimen" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionSpecimen" nillable="true" type="tns:ArrayOfCollectionSpecimen" />
-  <xs:complexType name="CollectionSpecimen">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q10="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q10:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AccessionDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="AccessionDateCategory" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="AccessionDateSupplement" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="AccessionDay" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="AccessionMonth" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="AccessionNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="AccessionYear" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="AdditionalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionAgents" nillable="true" type="tns:ArrayOfCollectionAgent" />
-          <xs:element minOccurs="0" name="CollectionEvent" nillable="true" type="tns:CollectionEvent" />
-          <xs:element minOccurs="0" name="CollectionEventID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionEventReference" nillable="true" type="q10:EntityReferenceOfCollectionEventkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionProjects" nillable="true" type="tns:ArrayOfCollectionProject" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionSpecimenImages" nillable="true" type="tns:ArrayOfCollectionSpecimenImage" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DepositorsAccessionNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DepositorsAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DepositorsName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ExsiccataAbbreviation" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ExsiccataURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ExternalDatasourceID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="ExternalIdentifier" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnit" nillable="true" type="tns:ArrayOfIdentificationUnit" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LabelTitle" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LabelTranscriptionNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LabelTranscriptionState" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LabelType" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="OriginalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Problems" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="Version" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionSpecimen" nillable="true" type="tns:CollectionSpecimen" />
-  <xs:complexType name="ArrayOfCollectionAgent">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionAgent" nillable="true" type="tns:CollectionAgent" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionAgent" nillable="true" type="tns:ArrayOfCollectionAgent" />
-  <xs:complexType name="CollectionAgent">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q11="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q11:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectionSpeciman" nillable="true" type="tns:CollectionSpecimen" />
-          <xs:element minOccurs="0" name="CollectionSpecimanReference" nillable="true" type="q11:EntityReferenceOfCollectionSpecimenkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectorsAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectorsName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectorsNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectorsSequence" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="xx_IsAvailable" type="xs:boolean" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionAgent" nillable="true" type="tns:CollectionAgent" />
-  <xs:complexType name="ArrayOfCollectionProject">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionProject" nillable="true" type="tns:CollectionProject" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionProject" nillable="true" type="tns:ArrayOfCollectionProject" />
-  <xs:complexType name="CollectionProject">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q12="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q12:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectionSpeciman" nillable="true" type="tns:CollectionSpecimen" />
-          <xs:element minOccurs="0" name="CollectionSpecimanReference" nillable="true" type="q12:EntityReferenceOfCollectionSpecimenkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionProject" nillable="true" type="tns:CollectionProject" />
-  <xs:complexType name="ArrayOfCollectionSpecimenImage">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollectionSpecimenImage" nillable="true" type="tns:CollectionSpecimenImage" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollectionSpecimenImage" nillable="true" type="tns:ArrayOfCollectionSpecimenImage" />
-  <xs:complexType name="CollectionSpecimenImage">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q13="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q13:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollSpecimenImageType_Enum" nillable="true" type="tns:CollSpecimenImageType_Enum" />
-          <xs:element minOccurs="0" name="CollSpecimenImageType_EnumReference" nillable="true" type="q13:EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpeciman" nillable="true" type="tns:CollectionSpecimen" />
-          <xs:element minOccurs="0" name="CollectionSpecimanReference" nillable="true" type="q13:EntityReferenceOfCollectionSpecimenkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="DataWithholdingReason" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-          <xs:element minOccurs="0" name="IdentificationUnitID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationUnitReference" nillable="true" type="q13:EntityReferenceOfIdentificationUnitkS_PiNjVX" />
-          <xs:element minOccurs="0" name="ImageType" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResourceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="SpecimenPartID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="URI" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollectionSpecimenImage" nillable="true" type="tns:CollectionSpecimenImage" />
-  <xs:complexType name="CollSpecimenImageType_Enum">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q14="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q14:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollSpecimenImageType_Enum1" nillable="true" type="tns:ArrayOfCollSpecimenImageType_Enum" />
-          <xs:element minOccurs="0" name="CollSpecimenImageType_Enum2" nillable="true" type="tns:CollSpecimenImageType_Enum" />
-          <xs:element minOccurs="0" name="CollSpecimenImageType_Enum2Reference" nillable="true" type="q14:EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpecimenImages" nillable="true" type="tns:ArrayOfCollectionSpecimenImage" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnable" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollSpecimenImageType_Enum" nillable="true" type="tns:CollSpecimenImageType_Enum" />
-  <xs:complexType name="ArrayOfCollSpecimenImageType_Enum">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollSpecimenImageType_Enum" nillable="true" type="tns:CollSpecimenImageType_Enum" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollSpecimenImageType_Enum" nillable="true" type="tns:ArrayOfCollSpecimenImageType_Enum" />
-  <xs:complexType name="IdentificationUnit">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q15="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q15:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Circumstances" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollTaxonomicGroup_Enum" nillable="true" type="tns:CollTaxonomicGroup_Enum" />
-          <xs:element minOccurs="0" name="CollTaxonomicGroup_EnumReference" nillable="true" type="q15:EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollUnitRelationType_Enum" nillable="true" type="tns:CollUnitRelationType_Enum" />
-          <xs:element minOccurs="0" name="CollUnitRelationType_EnumReference" nillable="true" type="q15:EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="CollectionSpecimen" nillable="true" type="tns:CollectionSpecimen" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="CollectionSpecimenImages" nillable="true" type="tns:ArrayOfCollectionSpecimenImage" />
-          <xs:element minOccurs="0" name="CollectionSpecimenReference" nillable="true" type="q15:EntityReferenceOfCollectionSpecimenkS_PiNjVX" />
-          <xs:element minOccurs="0" name="ColonisedSubstratePart" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayOrder" type="xs:short" />
-          <xs:element minOccurs="0" name="ExsiccataIdentification" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="ExsiccataNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="FamilyCache" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Gender" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnitAnalysis" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
-          <xs:element minOccurs="0" name="IdentificationUnitGeoAnalysis" nillable="true" type="tns:ArrayOfIdentificationUnitGeoAnalysi" />
-          <xs:element minOccurs="0" name="IdentificationUnitID" type="xs:int" />
-          <xs:element minOccurs="0" name="Identifications" nillable="true" type="tns:ArrayOfIdentification" />
-          <xs:element minOccurs="0" name="LastIdentificationCache" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LifeStage" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="NumberOfUnits" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="OnlyObserved" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="OrderCache" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RelatedUnitID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="RelationType" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="UnitDescription" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="UnitIdentifier" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="xx_AlteUnitID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_NewUnitID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_SpecimenPartID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_SubstrateID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="xx_SubstrateRelationType" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-  <xs:complexType name="CollTaxonomicGroup_Enum">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q16="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q16:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollTaxonomicGroup_Enum1" nillable="true" type="tns:ArrayOfCollTaxonomicGroup_Enum" />
-          <xs:element minOccurs="0" name="CollTaxonomicGroup_Enum2" nillable="true" type="tns:CollTaxonomicGroup_Enum" />
-          <xs:element minOccurs="0" name="CollTaxonomicGroup_Enum2Reference" nillable="true" type="q16:EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnable" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnits" nillable="true" type="tns:ArrayOfIdentificationUnit" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollTaxonomicGroup_Enum" nillable="true" type="tns:CollTaxonomicGroup_Enum" />
-  <xs:complexType name="ArrayOfCollTaxonomicGroup_Enum">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollTaxonomicGroup_Enum" nillable="true" type="tns:CollTaxonomicGroup_Enum" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollTaxonomicGroup_Enum" nillable="true" type="tns:ArrayOfCollTaxonomicGroup_Enum" />
-  <xs:complexType name="ArrayOfIdentificationUnit">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfIdentificationUnit" nillable="true" type="tns:ArrayOfIdentificationUnit" />
-  <xs:complexType name="CollUnitRelationType_Enum">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q17="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q17:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollUnitRelationType_Enum1" nillable="true" type="tns:ArrayOfCollUnitRelationType_Enum" />
-          <xs:element minOccurs="0" name="CollUnitRelationType_Enum2" nillable="true" type="tns:CollUnitRelationType_Enum" />
-          <xs:element minOccurs="0" name="CollUnitRelationType_Enum2Reference" nillable="true" type="q17:EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayEnable" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnits" nillable="true" type="tns:ArrayOfIdentificationUnit" />
-          <xs:element minOccurs="0" name="InternalNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="CollUnitRelationType_Enum" nillable="true" type="tns:CollUnitRelationType_Enum" />
-  <xs:complexType name="ArrayOfCollUnitRelationType_Enum">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="CollUnitRelationType_Enum" nillable="true" type="tns:CollUnitRelationType_Enum" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfCollUnitRelationType_Enum" nillable="true" type="tns:ArrayOfCollUnitRelationType_Enum" />
-  <xs:complexType name="ArrayOfIdentificationUnitAnalysis">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfIdentificationUnitAnalysis" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
-  <xs:complexType name="IdentificationUnitAnalysis">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q18="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q18:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Analysis" nillable="true" type="tns:Analysis" />
-          <xs:element minOccurs="0" name="AnalysisDate" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
-          <xs:element minOccurs="0" name="AnalysisNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="AnalysisReference" nillable="true" type="q18:EntityReferenceOfAnalysiskS_PiNjVX" />
-          <xs:element minOccurs="0" name="AnalysisResult" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="ExternalAnalysisURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-          <xs:element minOccurs="0" name="IdentificationUnitID" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationUnitReference" nillable="true" type="q18:EntityReferenceOfIdentificationUnitkS_PiNjVX" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="SpecimenPartID" nillable="true" type="xs:int" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
-  <xs:complexType name="Analysis">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q19="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q19:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Analysis1" nillable="true" type="tns:ArrayOfAnalysis" />
-          <xs:element minOccurs="0" name="Analysis2" nillable="true" type="tns:Analysis" />
-          <xs:element minOccurs="0" name="Analysis2Reference" nillable="true" type="q19:EntityReferenceOfAnalysiskS_PiNjVX" />
-          <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
-          <xs:element minOccurs="0" name="AnalysisParentID" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="AnalysisResults" nillable="true" type="tns:ArrayOfAnalysisResult" />
-          <xs:element minOccurs="0" name="AnalysisTaxonomicGroups" nillable="true" type="tns:ArrayOfAnalysisTaxonomicGroup" />
-          <xs:element minOccurs="0" name="AnalysisURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationUnitAnalysis" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="MeasurementUnit" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="OnlyHierarchy" nillable="true" type="xs:boolean" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Analysis" nillable="true" type="tns:Analysis" />
-  <xs:complexType name="ArrayOfAnalysis">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Analysis" nillable="true" type="tns:Analysis" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAnalysis" nillable="true" type="tns:ArrayOfAnalysis" />
-  <xs:complexType name="ArrayOfAnalysisResult">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAnalysisResult" nillable="true" type="tns:ArrayOfAnalysisResult" />
-  <xs:complexType name="AnalysisResult">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q20="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q20:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Analysis" nillable="true" type="tns:Analysis" />
-          <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
-          <xs:element minOccurs="0" name="AnalysisReference" nillable="true" type="q20:EntityReferenceOfAnalysiskS_PiNjVX" />
-          <xs:element minOccurs="0" name="AnalysisResult1" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="DisplayOrder" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogInsertedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogInsertedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
-  <xs:complexType name="ArrayOfAnalysisTaxonomicGroup">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAnalysisTaxonomicGroup" nillable="true" type="tns:ArrayOfAnalysisTaxonomicGroup" />
-  <xs:complexType name="AnalysisTaxonomicGroup">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q21="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q21:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Analysis" nillable="true" type="tns:Analysis" />
-          <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
-          <xs:element minOccurs="0" name="AnalysisReference" nillable="true" type="q21:EntityReferenceOfAnalysiskS_PiNjVX" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
-  <xs:complexType name="ArrayOfIdentificationUnitGeoAnalysi">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnitGeoAnalysi" nillable="true" type="tns:IdentificationUnitGeoAnalysi" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfIdentificationUnitGeoAnalysi" nillable="true" type="tns:ArrayOfIdentificationUnitGeoAnalysi" />
-  <xs:complexType name="IdentificationUnitGeoAnalysi">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q22="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q22:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AnalysisDate" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-          <xs:element minOccurs="0" name="IdentificationUnitID" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationUnitReference" nillable="true" type="q22:EntityReferenceOfIdentificationUnitkS_PiNjVX" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="IdentificationUnitGeoAnalysi" nillable="true" type="tns:IdentificationUnitGeoAnalysi" />
-  <xs:complexType name="ArrayOfIdentification">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Identification" nillable="true" type="tns:Identification" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfIdentification" nillable="true" type="tns:ArrayOfIdentification" />
-  <xs:complexType name="Identification">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q23="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" base="q23:EntityObject">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationCategory" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationDate" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="IdentificationDateCategory" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationDateSupplement" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationDay" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="IdentificationMonth" nillable="true" type="xs:unsignedByte" />
-          <xs:element minOccurs="0" name="IdentificationQualifier" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IdentificationSequence" type="xs:short" />
-          <xs:element minOccurs="0" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
-          <xs:element minOccurs="0" name="IdentificationUnitID" type="xs:int" />
-          <xs:element minOccurs="0" name="IdentificationUnitReference" nillable="true" type="q23:EntityReferenceOfIdentificationUnitkS_PiNjVX" />
-          <xs:element minOccurs="0" name="IdentificationYear" nillable="true" type="xs:short" />
-          <xs:element minOccurs="0" name="LogCreatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogCreatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="LogUpdatedBy" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
-          <xs:element minOccurs="0" name="NameURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceDetails" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceTitle" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReferenceURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleAgentURI" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ResponsibleName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="RowGUID" type="ser:guid" />
-          <xs:element minOccurs="0" name="TaxonomicName" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="TypeNotes" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="TypeStatus" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="VernacularTerm" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Identification" nillable="true" type="tns:Identification" />
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
+  <xs:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:7091/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/DiversityCollection" />
+  <xs:element name="GetStandardVocabulary">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetStandardVocabularyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetStandardVocabularyResult" nillable="true" type="q1:ArrayOfTerm" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q2:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetUserInfoResult" nillable="true" type="q3:UserProfile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositories">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q4:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositoriesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetRepositoriesResult" nillable="true" type="q5:ArrayOfRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProjectsForUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q6:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetProjectsForUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetProjectsForUserResult" nillable="true" type="q7:ArrayOfProject" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysisTaxonomicGroupsForProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="projectID" type="xs:int" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q8:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysisTaxonomicGroupsForProjectResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetAnalysisTaxonomicGroupsForProjectResult" nillable="true" type="q9:ArrayOfAnalysisTaxonomicGroup" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysesForProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="projectID" type="xs:int" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q10:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysesForProjectResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetAnalysesForProjectResult" nillable="true" type="q11:ArrayOfAnalysis" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysisResultsForProject">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="projectID" type="xs:int" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q12:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAnalysisResultsForProjectResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetAnalysisResultsForProjectResult" nillable="true" type="q13:ArrayOfAnalysisResult" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="series" nillable="true" type="q14:ArrayOfEventSeries" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q15:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="InsertEventSeriesResult" nillable="true" type="q16:ArrayOfKeyValueOfintint" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertGeographyIntoSeries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="seriesID" type="xs:int" />
+        <xs:element minOccurs="0" name="geostring" nillable="true" type="xs:string" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q17:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertGeographyIntoSeriesResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertHierarchy">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="hierarchy" nillable="true" type="q18:HierarchySection" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="cred" nillable="true" type="q19:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertHierarchyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="InsertHierarchyResult" nillable="true" type="q20:KeyProjection" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTaxonListsForUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q21:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTaxonListsForUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetTaxonListsForUserResult" nillable="true" type="q22:ArrayOfTaxonList" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadTaxonList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="list" nillable="true" type="q23:TaxonList" />
+        <xs:element minOccurs="0" name="page" type="xs:int" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q24:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadTaxonListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="DownloadTaxonListResult" nillable="true" type="q25:ArrayOfTaxonName" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPropertyListsForUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q26:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPropertyListsForUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetPropertyListsForUserResult" nillable="true" type="q27:ArrayOfPropertyList" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadPropertyList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="list" nillable="true" type="q28:PropertyList" />
+        <xs:element minOccurs="0" name="page" type="xs:int" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q29:UserCredentials" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadPropertyListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="DownloadPropertyListResult" nillable="true" type="q30:ArrayOfPropertyName" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetXMLStandardVocabulary">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetXMLStandardVocabularyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetXMLStandardVocabularyResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroid">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SeriesID" type="xs:int" />
+        <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroidResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InsertEventSeriesForAndroidResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroidVIntES">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="es" nillable="true" type="q31:EventSeries" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroidVIntESResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="InsertEventSeriesForAndroidVIntESResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroidVESES">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="es" nillable="true" type="q32:EventSeries" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="InsertEventSeriesForAndroidVESESResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/DiversityCollection" minOccurs="0" name="InsertEventSeriesForAndroidVESESResult" nillable="true" type="q33:CollectionEventSery" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestSeriesForAndroid">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TestSeriesForAndroidResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="TestSeriesForAndroidResult" nillable="true" type="q34:EventSeries" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

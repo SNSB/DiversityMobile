@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a4b69ca9-15bf-4d52-af39-99323bab2df9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="161f0b2a-76a7-4146-acd4-decb36828c25" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
     <EnableDataBinding>true</EnableDataBinding>
@@ -23,15 +23,15 @@
     <MetadataSource Address="http://localhost:7091/Service1.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Service14.xsd" MetadataType="Schema" ID="ea93e743-4f68-40f3-8fdc-980277e6b332" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd5" />
-    <MetadataFile FileName="Service141.xsd" MetadataType="Schema" ID="5f1bf6bb-af82-4c31-9cd5-8ce2c6b9832f" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd4" />
-    <MetadataFile FileName="Service11.xsd" MetadataType="Schema" ID="4d794857-f31f-4b01-983b-f6f21ecf1e30" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd0" />
-    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="35fbc388-9f77-48e8-ba27-0409f3c3d017" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?disco" />
-    <MetadataFile FileName="Service12.xsd" MetadataType="Schema" ID="e8e46bca-045c-4b73-b375-adaf89592c7a" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd3" />
-    <MetadataFile FileName="Service13.xsd" MetadataType="Schema" ID="5a2708ef-227a-4657-b77f-62d30a3065c4" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd2" />
-    <MetadataFile FileName="DiversityService.wsdl" MetadataType="Wsdl" ID="2ab2cf34-5640-4db3-be54-a9008ef027b5" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?wsdl" />
-    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="a755252c-12c5-411f-9620-ebc3386202c0" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd1" />
-    <MetadataFile FileName="Service142.xsd" MetadataType="Schema" ID="052e4442-7903-4c9a-8828-4a5caacde8e5" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd6" />
+    <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="37a51187-89c4-46e5-a8b3-113e359861d5" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd1" />
+    <MetadataFile FileName="Service16.xsd" MetadataType="Schema" ID="ac7e6247-568e-4089-aadf-28f11307b855" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd4" />
+    <MetadataFile FileName="Service12.xsd" MetadataType="Schema" ID="2fea9b24-5e74-41af-8cba-4a3a472aea55" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd6" />
+    <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="f693d726-cd1d-468d-ace6-dc5c58f3bff1" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?disco" />
+    <MetadataFile FileName="Service13.xsd" MetadataType="Schema" ID="00241e8b-d866-4545-b4ab-2b18a8917091" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd3" />
+    <MetadataFile FileName="Service17.xsd" MetadataType="Schema" ID="8696ae4e-eeea-47b1-a157-ff32072acc32" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd0" />
+    <MetadataFile FileName="Service14.xsd" MetadataType="Schema" ID="ce1f34ef-17ca-4836-9809-0734617c190b" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd5" />
+    <MetadataFile FileName="Service15.xsd" MetadataType="Schema" ID="71f4e8e1-c1e2-4bd4-8f3e-b377c73fb930" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?xsd=xsd2" />
+    <MetadataFile FileName="DiversityService.wsdl" MetadataType="Wsdl" ID="ec04c507-ddb9-4e97-a09f-a753895d0ba3" SourceId="1" SourceUrl="http://localhost:7091/Service1.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
