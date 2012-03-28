@@ -7,15 +7,22 @@ namespace DiversityPhone.ViewModels
 {
     public class IdentificationUnitAnalysisVM : ElementVMBase<IdentificationUnitAnalysis>
     {
-        public IdentificationUnitAnalysisVM(IMessageBus msngr, IdentificationUnitAnalysis model)
-            : base(msngr, model, Page.EditIUAN)
+        public IdentificationUnitAnalysisVM(IMessageBus msngr, IdentificationUnitAnalysis model, Analysis an = null)
+            : this(msngr, model, Page.EditIUAN)
         {
-
+            if (an != null)
+                _Description = string.Format("{0} : {1} {2}", an.DisplayText, model.AnalysisResult, an.MeasurementUnit); 
+        }
+        public IdentificationUnitAnalysisVM(IMessageBus msngr, IdentificationUnitAnalysis model, Page page)
+            : base(msngr, model, page)
+        {
+            
         }
 
+        string _Description;
         public override string Description
         {
-            get { return string.Format("{0} : {1}", Model.AnalysisID, Model.AnalysisResult); } //TODO
+            get { return _Description; } 
         }
 
         public override Icon Icon
@@ -25,7 +32,7 @@ namespace DiversityPhone.ViewModels
 
         protected override Messages.NavigationMessage NavigationMessage
         {
-            get { return new Messages.NavigationMessage(TargetPage, Model.AnalysisID.ToString()); }
+            get { return new Messages.NavigationMessage(TargetPage, Model.IdentificationUnitAnalysisID.ToString()); }
         }
     }
 }

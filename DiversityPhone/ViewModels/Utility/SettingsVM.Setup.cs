@@ -176,7 +176,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingRepositories);
 
                 getRepositories                    
-                    .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(30), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
+                    .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(5), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
                     .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
                     .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
                     .Do(repos => 
