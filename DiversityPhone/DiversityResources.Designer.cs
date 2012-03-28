@@ -61,7 +61,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die  ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die E ähnelt.
         /// </summary>
         public static string GeoCoordinates_Suffix_E {
             get {
