@@ -185,7 +185,6 @@
     <Compile Include="Services\TaxonDataContext.cs" />
     <Compile Include="Services\TaxonService.cs" />
     <Compile Include="Services\VocabularyService.cs" />
-    <Compile Include="ViewModels\BasisModels\AnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\ImageVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />

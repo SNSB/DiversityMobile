@@ -57,10 +57,10 @@ namespace DiversityService
         }
 
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
-        {
-            try
+        {            
+            using (var db = new DiversityORM.Diversity(login))
             {
-                using (var db = new DiversityORM.Diversity(login))
+                try
                 {
                     return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
                         .Select(p =>
@@ -70,11 +70,11 @@ namespace DiversityService
                             })
                         .ToList(); //TODO Use credential DB
                 }
-            }
-            catch
-            {
-                return Enumerable.Empty<Project>();
-            }
+                catch
+                {
+                    return Enumerable.Empty<Project>();
+                }
+            }            
         }
 
         public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
@@ -458,17 +458,18 @@ namespace DiversityService
         #region utility
         public IEnumerable<Repository> GetRepositories(UserCredentials login)
         {
-            try
+            
+            using (var ctx = new Diversity(login))
             {
-                using (var ctx = new Diversity(login))
-                {
+                try
+                {                                        
                     ctx.OpenSharedConnection(); // validate Credentials
                 }
-            }
-            catch (Exception)
-            {
-                return Enumerable.Empty<Repository>();                
-            }
+                catch (Exception)
+                {
+                    return Enumerable.Empty<Repository>();
+                }
+            }          
 
             return new Repository[]
             {

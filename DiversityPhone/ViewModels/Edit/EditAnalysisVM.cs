@@ -14,7 +14,7 @@ namespace DiversityPhone.ViewModels
     public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
     { 
         #region Properties
-        public IVocabularyService Vocabulary { get; set; }
+        private IVocabularyService Vocabulary { get; set; }
 
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
         public IdentificationUnitVM Parent { get { return _Parent.Value; } }
@@ -61,9 +61,7 @@ namespace DiversityPhone.ViewModels
             : base(false)
         {
             Vocabulary = voc;
-                
-
-
+            
             _Parent = ValidModel
                 .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
                 .Select(parent => new IdentificationUnitVM(Messenger,parent, Services.Page.Current))
@@ -139,7 +137,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
         {
-            return new IUAnalysisVM(Messenger, model, Page.Current);
+            return new IdentificationUnitAnalysisVM(Messenger, model, Page.Current);
         }
     }
 }

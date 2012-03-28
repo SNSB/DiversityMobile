@@ -8,6 +8,8 @@ using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
 using System.Linq;
+using System.Collections.ObjectModel;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -18,10 +20,14 @@ namespace DiversityPhone.ViewModels
             Subunits,
             Descriptions,            
             Multimedia
-        }     
+        }   
+  
+        IVocabularyService Vocabulary;
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
+
+        private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
         #endregion
 
         #region Properties
@@ -43,8 +49,8 @@ namespace DiversityPhone.ViewModels
         public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
 
 
-        public IEnumerable<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<IdentificationUnitAnalysisVM>> _Analyses;
+        public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
+        private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitAnalysisVM>> _Analyses;
 
         public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
@@ -59,15 +65,32 @@ namespace DiversityPhone.ViewModels
 
         
 
-        public ViewIUVM()
+        public ViewIUVM(Container ioc)
         {            
+            Vocabulary = ioc.Resolve<IVocabularyService>();
+
             _Subunits = ValidModel
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, vm => vm.Subunits);
 
-            _Analyses = ValidModel
-                .Select(iu => getAnalyses(iu))
+            this.ObservableForProperty(x => x.SelectedPivot)
+                .Value()
+                .Where(x => x == Pivots.Descriptions)
+                .Select(_ => Current)
+                .DistinctUntilChanged()
+                .Select(_ => new Subject<IdentificationUnitAnalysisVM>())
+                .Select(subject =>
+                    {
+                        var coll = subject.CreateCollection();
+                        getAnalyses.Execute(subject);
+                        return coll;
+                    })
                 .ToProperty(this, x => x.Analyses);
+
+            getAnalyses
+                .RegisterAsyncAction(collectionSubject => getAnalysesImpl(Current, collectionSubject as ISubject<IdentificationUnitAnalysisVM>));
+                
+            
                         
             _ImageList = ValidModel
                  .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Image))
@@ -105,9 +128,14 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(addMessageSource);         
         }
 
-        private IEnumerable<IdentificationUnitAnalysisVM> getAnalyses(IdentificationUnit iu)
+        private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
         {
-            return Storage.getIUANForIU(iu).Select(iuan => new IdentificationUnitAnalysisVM(Messenger, iuan));
+            foreach (var iuanVM in Storage
+                                    .getIUANForIU(iuvm.Model)
+                                    .Select(iuan => new { IUAN = iuan, AN = Vocabulary.getAnalysisByID(iuan.AnalysisID) })
+                                    .Where(pair => pair.AN != null)
+                                    .Select(pair => new IdentificationUnitAnalysisVM(Messenger, pair.IUAN, pair.AN)))
+                collectionSubject.OnNext(iuanVM);
         }
 
         protected override IdentificationUnit ModelFromState(PageState s)
@@ -130,16 +158,17 @@ namespace DiversityPhone.ViewModels
                         var parent = Storage.getIdentificationUnitByID(parentID);
                         if (parent != null)
                             return new IdentificationUnit()
-                            {
+                            {                            
                                 RelatedUnitID = parentID,
-                                SpecimenID = parent.SpecimenID,
+                                SpecimenID = parent.SpecimenID,                            
                             };
                     }
                     else if (s.ReferrerType == ReferrerType.Specimen)
                         return new IdentificationUnit()
-                        {
+                        {                        
                             SpecimenID = parentID
                         };
+                    
                 }
             }                
             return null;
