@@ -70,6 +70,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Project ähnelt.
+        /// </summary>
+        public static string Setup_Header_Project {
+            get {
+                return ResourceManager.GetString("Setup_Header_Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Repository ähnelt.
+        /// </summary>
+        public static string Setup_Header_Repository {
+            get {
+                return ResourceManager.GetString("Setup_Header_Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Please Choose ähnelt.
         /// </summary>
         public static string Setup_Item_PleaseChoose {

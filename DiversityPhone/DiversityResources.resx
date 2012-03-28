@@ -120,6 +120,12 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Setup_Header_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Setup_Header_Repository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
   </data>

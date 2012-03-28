@@ -46,13 +46,12 @@
                 <controls:PivotItem Header="Repository">
                     <StackPanel>
                         <toolkit:ListPicker ItemsSource="{Binding Databases.Items}"
-                                            SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}">
-                            <toolkit:ListPicker.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DisplayName}"/>
-                                </DataTemplate>
-                            </toolkit:ListPicker.ItemTemplate>
-                        </toolkit:ListPicker>
+                                            SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}"
+                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                            FullModeHeader="{Binding Resources.Setup_Header_Repository, Source={StaticResource LocalizedStrings}}"
+                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
+                                            
+                        
 
                         <!--Busy Overlay-->                    
                         <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
@@ -63,13 +62,10 @@
                 <controls:PivotItem Header="Project">
                     <StackPanel>
                         <toolkit:ListPicker ItemsSource="{Binding Projects.Items}"
-                                            SelectedIndex="{Binding Projects.SelectedIndex, Mode=TwoWay}">
-                            <toolkit:ListPicker.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DisplayText}"/>
-                                </DataTemplate>
-                            </toolkit:ListPicker.ItemTemplate>
-                        </toolkit:ListPicker>
+                                            SelectedIndex="{Binding Projects.SelectedIndex, Mode=TwoWay}"
+                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                            FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
+                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>                       
 
                         <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                      Visibility="{Binding GettingProjects, Converter={StaticResource BoolToVis}}"/>
