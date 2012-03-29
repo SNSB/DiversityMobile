@@ -578,7 +578,6 @@ namespace DiversityPhone.View
                     // sound has stopped playing
                     setAudioButtonStates(true, true, false, true);
                     AudioStatusImage.Source = blankImage;
-
                 }
             }
         }

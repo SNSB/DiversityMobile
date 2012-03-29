@@ -21,9 +21,10 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewVideoVM : EditElementPageVMBase<MultimediaObject>
+    public class ViewVideoVM : ViewAudioVideoVM
     {
 
+        private bool videoIsPlaying;
 
         #region Properties
         private string _Uri;
@@ -46,13 +47,6 @@ namespace DiversityPhone.ViewModels
 
          
         }
-      
-
-        private void executeSave()
-        {
-            
-        }
-
 
 
         protected override void OnDelete()
@@ -67,7 +61,6 @@ namespace DiversityPhone.ViewModels
             
         }
 
-      
 
         protected override MultimediaObject ModelFromState(Services.PageState s)
         {
@@ -102,6 +95,24 @@ namespace DiversityPhone.ViewModels
         {
             return Observable.Return(false);
         }
+
+
+        protected override IObservable<bool> CanPlay()
+        {
+            IObservable<bool> NotSound = this.ObservableForProperty(x => x.videoIsPlaying)
+                 .Select(playing => playing.Value == false)
+                 .StartWith(false);
+            return NotSound;
+        }
+
+        protected override IObservable<bool> CanStop()
+        {
+            IObservable<bool> sound = this.ObservableForProperty(x => x.videoIsPlaying)
+                 .Select(playing => playing.Value == true)
+                 .StartWith(false);
+            return sound;
+        }
+
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {

@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewVideoVM.cs" />
@@ -259,6 +260,10 @@
     <Compile Include="View\TaxonManagement.xaml.cs">
       <DependentUpon>TaxonManagement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewAudio.xaml.cs">
+      <DependentUpon>ViewAudio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewAudioPageAppbar.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
@@ -372,6 +377,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\TaxonManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewAudio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -562,37 +571,37 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\DiversityService\Service11.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service1.xsd">
+    <None Include="Service References\DiversityService\Service17.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
+    <None Include="Service References\DiversityService\Service171.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service12.xsd">
+    <None Include="Service References\DiversityService\Service172.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service13.xsd">
+    <None Include="Service References\DiversityService\Service173.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service14.xsd">
+    <None Include="Service References\DiversityService\Service174.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service15.xsd">
+    <None Include="Service References\DiversityService\Service175.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service16.xsd">
+    <None Include="Service References\DiversityService\Service176.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
