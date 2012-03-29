@@ -30,12 +30,7 @@ namespace DiversityPhone.ViewModels
         
         #endregion
 
-        /// <summary>
-        /// Determines, whether Save can execute
-        /// </summary>
-        /// <returns>Observable that will be used to enable/disable Save</returns>
-        protected abstract IObservable<bool> CanPlay();
-        protected abstract IObservable<bool> CanStop();
+ 
 
 
         public ViewAudioVideoVM() :base()

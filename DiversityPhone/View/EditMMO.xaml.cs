@@ -1050,6 +1050,7 @@ namespace DiversityPhone.View
                 if (captureSource.VideoCaptureDevice != null
                     && captureSource.State == CaptureState.Stopped)
                 {
+          
                     captureSource.Start();
                 }
                 this.isVideoRecording = true;

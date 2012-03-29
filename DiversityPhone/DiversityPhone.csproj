@@ -309,6 +309,9 @@
     <Compile Include="View\ViewLM.xaml.cs">
       <DependentUpon>ViewLM.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\ViewVideo.xaml.cs">
+      <DependentUpon>ViewVideo.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -417,6 +420,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ViewLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewVideo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

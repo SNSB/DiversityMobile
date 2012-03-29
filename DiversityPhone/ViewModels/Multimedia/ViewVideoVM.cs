@@ -24,36 +24,42 @@ namespace DiversityPhone.ViewModels
     public class ViewVideoVM : ViewAudioVideoVM
     {
 
-        private bool videoIsPlaying;
+      
 
         #region Properties
+
+
         private string _Uri;
         public string Uri
         {
             get { return _Uri; }
             set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
         }
+
+
+        private bool _videoIsPlaying = false;
+        public bool VideoIsPlaying
+        {
+            get { return _videoIsPlaying; }
+            set { this.RaiseAndSetIfChanged(x => x.VideoIsPlaying, ref _videoIsPlaying, value); }
+        }
+
+
+
         #endregion
 
 
         public ViewVideoVM()            
         {
 
-
+            ValidModel
+              .Select(mmo => mmo.Uri)
+              .BindTo(this, x => x.Uri);
         }
-
-        private void PlayVideo(MultimediaObject mmo)
-        {
-
-         
-        }
-
 
         protected override void OnDelete()
         {            
-            Messenger.SendMessage<MultimediaObject>(Current.Model, MessageContracts.DELETE);
-           
-            Messenger.SendMessage<Message>(Message.NavigateBack);
+          
         }
 
         protected override void UpdateModel()
@@ -94,23 +100,6 @@ namespace DiversityPhone.ViewModels
         protected override IObservable<bool> CanSave()
         {
             return Observable.Return(false);
-        }
-
-
-        protected override IObservable<bool> CanPlay()
-        {
-            IObservable<bool> NotSound = this.ObservableForProperty(x => x.videoIsPlaying)
-                 .Select(playing => playing.Value == false)
-                 .StartWith(false);
-            return NotSound;
-        }
-
-        protected override IObservable<bool> CanStop()
-        {
-            IObservable<bool> sound = this.ObservableForProperty(x => x.videoIsPlaying)
-                 .Select(playing => playing.Value == true)
-                 .StartWith(false);
-            return sound;
         }
 
 

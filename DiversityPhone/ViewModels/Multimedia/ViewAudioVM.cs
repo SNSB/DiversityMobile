@@ -184,22 +184,6 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        protected override IObservable<bool> CanPlay()
-        {
-           IObservable<bool> NotSound = this.ObservableForProperty(x => x.SoundIsPlaying)
-                .Select(playing => playing.Value==false)
-                .StartWith(false);
-           return NotSound;  
-        }
-
-        protected override IObservable<bool> CanStop()
-        {
-            IObservable<bool> sound = this.ObservableForProperty(x => x.SoundIsPlaying)
-                 .Select(playing => playing.Value == true)
-                 .StartWith(false);
-            return sound;
-        }
-
         public override void SaveState()
         {
             base.SaveState();
