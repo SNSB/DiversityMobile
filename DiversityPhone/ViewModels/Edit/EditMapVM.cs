@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
+
 using ReactiveUI;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
@@ -71,7 +67,7 @@ namespace DiversityPhone.ViewModels
         {
             updateModel();
             _messenger.SendMessage<Map>(Model, MessageContracts.SAVE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            _messenger.SendMessage(Page.Previous);
         }
 
         private void setEdit()
@@ -86,7 +82,7 @@ namespace DiversityPhone.ViewModels
         private void delete()
         {
             _messenger.SendMessage<Map>(Model, MessageContracts.DELETE);
-            _messenger.SendMessage<Message>(Message.NavigateBack);
+            _messenger.SendMessage(Page.Previous);
         }
 
         private void updateModel()

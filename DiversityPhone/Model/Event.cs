@@ -47,13 +47,13 @@
         public string HabitatDescription { get; set; }
 
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Altitude { get; set; }
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Latitude { get; set; }
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Longitude { get; set; }
 
         [Column(CanBeNull = true)]
@@ -69,7 +69,7 @@
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
-      
+       
         public static IQueryOperations<Event> Operations
         {
             get;

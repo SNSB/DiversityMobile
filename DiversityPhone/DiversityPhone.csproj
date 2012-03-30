@@ -217,6 +217,7 @@
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
+    <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />

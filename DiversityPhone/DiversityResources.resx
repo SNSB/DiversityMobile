@@ -141,4 +141,10 @@
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
   </data>
+  <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
+    <value>Can't download another taxon list.</value>
+  </data>
+  <data name="TaxonManagement_Message_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
 </root>

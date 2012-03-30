@@ -37,7 +37,7 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public int? DiversityCollectionUnitID { get; set; }
 
-        [Column]
+        [Column(CanBeNull = true)]
         public int? RelatedUnitID { get; set; }
 
         [Column(CanBeNull = true)]
@@ -78,13 +78,13 @@ namespace DiversityPhone.Model
 
 
         //Georeferenzierung
-        [Column]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Altitude { get; set; }
 
-        [Column]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Latitude { get; set; }
 
-        [Column]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Longitude { get; set; }
 
         [Column]
