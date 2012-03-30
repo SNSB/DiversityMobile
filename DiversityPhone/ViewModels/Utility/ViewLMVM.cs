@@ -20,22 +20,32 @@ namespace DiversityPhone.ViewModels
     public class ViewLMVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
-        private  Dictionary<String, String> _savedMaps = null;
-        public Dictionary<String,String> SavedMaps
+
+
+        #region Services
+        private IFieldDataService _storage;
+        #endregion
+
+        #region Properties
+        private IList<Map> _savedMaps;
+        public IList<Map> SavedMaps
         {
             get { return _savedMaps; }
             set { this.RaiseAndSetIfChanged(x => x.SavedMaps, ref _savedMaps, value); }
         }
+
+        #endregion
 
         #region Commands
         public ReactiveCommand AddMaps { get; private set; }
         public ReactiveCommand LoadMaps { get; private set; }
         #endregion
 
-        public ViewLMVM(IMessageBus messenger)
+        public ViewLMVM(IMessageBus messenger, IFieldDataService storage)
             : base(messenger)
         {
-            
+
+            _storage = storage;
             _subscriptions = new List<IDisposable>()
             {
                 (AddMaps = new ReactiveCommand())
@@ -50,23 +60,13 @@ namespace DiversityPhone.ViewModels
 
         private void loadMaps()
         {
-            Dictionary<String,String> maps = new Dictionary<String, String>();
-            using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                IList<String> mapimages = isoStore.GetFileNames("Maps\\MapImages\\*");
-                foreach (String mapimage in mapimages)
-                {
-                    String name = mapimage.Substring(0, mapimage.LastIndexOf("."));
-                    String xmlname = name + ".xml";
-                    if (isoStore.FileExists("Maps\\XML\\" + xmlname))
-                    {
-                        MapParameter mp = MapParameter.loadMapParameterFromFile("Maps\\XML\\" + xmlname);
-                        maps.Add(name, name + " - " + mp.Description);
-                    }
-                    else maps.Add(name, name);
-                }
-                SavedMaps = maps;  
-            }
+            //Get Mapd From DB
+           
+        }
+
+        public void saveMap(Map map)
+        {
+            _storage.addorUpdateMap(map);
         }
 
         private void addMaps()

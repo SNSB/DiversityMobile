@@ -117,7 +117,6 @@ namespace DiversityPhone.View
                         {
                             string filename = transfer.Tag;
                             string path = transfer.DownloadLocation.OriginalString.Substring(0, transfer.DownloadLocation.OriginalString.LastIndexOf("\\"));
-                            Dictionary<String, String> maps = new Dictionary<string, string>();
                             //As XML-Files and correponding maps are downloaded via Backgroundservices it hast to be differntiated which type of file is being processed
                             if (path.Contains("MapImages"))
                             {
@@ -126,25 +125,19 @@ namespace DiversityPhone.View
                                 {
                                     isoStore.DeleteFile(fullFilename);
                                 }
-                                //Move file From Shred-Folder to root of isloated storage
+                                //Move file From Shred-Folder to according directory in isloated storage
                                 isoStore.MoveFile(transfer.DownloadLocation.OriginalString, fullFilename);
-                                //Add map to the savedMapsList
+
+                                //Check if matching xml-File is present
                                 String name = filename.Substring(0, filename.LastIndexOf("."));
                                 String xmlname = name + ".xml";
+                              
                                 if (isoStore.FileExists("Maps\\XML\\" + xmlname))
                                 {
-                                    MapParameter io = MapParameter.loadMapParameterFromFile("Maps\\XML\\" + xmlname);
-                                    string description = io.Description;
-                                    maps.Add(name, name + " - " + description);
-                                    foreach (KeyValuePair<String, String> kvp in VM.SavedMaps)
-                                    {
-                                        if (!maps.ContainsKey(kvp.Key))
-                                        {
-                                            maps.Add(kvp.Key, kvp.Value);
-                                        }
-                                    }
-                                    maps.OrderBy(map => maps.Keys);
-                                    VM.SavedMaps = maps;
+                                    //Save Map to Database
+                                    Map newMap = Map.loadMapParameterFromFile("Maps\\XML\\" + xmlname);
+                                    newMap.Uri = fullFilename;
+                                    VM.saveMap(newMap);
                                 }
                             }
                             else if (path.Contains("XML"))
@@ -162,18 +155,10 @@ namespace DiversityPhone.View
                                 {
                                     if (mapimage.Contains(name))
                                     {
-                                        MapParameter mp = MapParameter.loadMapParameterFromFile(fullFilename);
-                                        string description = mp.Description;
-                                        maps.Add(name, name + " - " + description);
-                                        foreach (KeyValuePair<String, String> kvp in VM.SavedMaps)
-                                        {
-                                            if (!maps.ContainsKey(kvp.Key))
-                                            {
-                                                maps.Add(kvp.Key,kvp.Value);
-                                            }
-                                        }
-                                        maps.OrderBy(map => maps.Keys);
-                                        VM.SavedMaps = maps;
+                                        Map newMap = Map.loadMapParameterFromFile(fullFilename);
+                                        newMap.Uri = "Maps\\XML\\" + mapimage;
+                                        VM.saveMap(newMap);
+                                        continue;
                                     }
                                 }   
                             }
