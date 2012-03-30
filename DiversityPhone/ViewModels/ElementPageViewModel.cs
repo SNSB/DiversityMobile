@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(
                 model
                 .Where(m => m == null)
-                .Select(_ => Message.NavigateBack)
+                .Select(_ => Page.Previous)
                 );
 
             

@@ -5,13 +5,7 @@ namespace DiversityPhone.Messages
     {
         OK,
         YesNo
-    }
-
-    public enum Message
-    {
-        NavigateBack,
-        ModelCreated,
-    }
+    }  
 
     public static class MessageContracts
     {

@@ -188,8 +188,7 @@ namespace DiversityPhone.ViewModels.Utility
 
         
         private void OnReset()
-        {     
-            
+        {       
             _settings.saveSettings(null);
             _ModelSubject.OnNext(null);
             _IsFirstSetup.OnNext(true);

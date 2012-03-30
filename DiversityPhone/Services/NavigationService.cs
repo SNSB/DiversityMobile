@@ -46,20 +46,6 @@ namespace DiversityPhone.Services
             {
                 _messenger.Listen<Page>()
                     .Subscribe(p => Navigate(new NavigationMessage(p,null))),
-                _messenger.Listen<Message>()
-                    .Subscribe(m =>
-                        {
-                            switch (m)
-                            {                            
-                                case Message.NavigateBack:
-                                    System.Diagnostics.Debugger.Break();
-                                    NavigateBack();
-                                    break;                          
-                                default:
-                                    break;
-                            }
-                        }),                
-
                 _messenger.Listen<NavigationMessage>()
                     .Subscribe(msg => Navigate(msg)),
             };            
