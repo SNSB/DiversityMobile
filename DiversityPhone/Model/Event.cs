@@ -47,13 +47,13 @@
         public string HabitatDescription { get; set; }
 
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Altitude { get; set; }
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Latitude { get; set; }
 
-        [Column(CanBeNull = true)]
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
         public double? Longitude { get; set; }
 
         [Column(CanBeNull = true)]
@@ -69,87 +69,7 @@
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
-        #region Associations
-        //private EntityRef<EventSeries> _EventSeries;
-        //[Association(Name = "FK_Event_EventSeries",
-        //        Storage = "_EventSeries",
-        //        ThisKey = "SeriesID",
-        //        OtherKey = "SeriesID",
-        //        IsForeignKey = true)]
-        //public EventSeries EventSeries //Directly applied example
-        //{
-        //    get { return _EventSeries.Entity; }
-        //    set
-        //    {
-        //        EventSeries previousValue = this._EventSeries.Entity;
-        //        if (((previousValue != value) ||
-        //            (this._EventSeries.HasLoadedOrAssignedValue
-        //             == false)))
-        //        {
-        //            if ((previousValue != null))
-        //            {
-        //                this._EventSeries.Entity = null;
-        //                previousValue.Events.Remove(this);
-        //            }
-        //            this._EventSeries.Entity = value;
-        //            if ((value != null))
-        //            {
-        //                value.Events.Add(this);
-        //                this.SeriesID = value.SeriesID;
-        //            }
-        //            else
-        //            {
-        //                this.SeriesID = default(int);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private EntitySet<Specimen> _Specimen;
-        //[Association(Name = "FK_Event_Specimen",
-        //             Storage = "_Specimen",
-        //             ThisKey = "EventID",
-        //             OtherKey = "CollectionEventID")]
-        //public EntitySet<Specimen> Specimen
-        //{
-        //    get { return _Specimen; }
-        //    set { _Specimen.Assign(value); }
-        //}
-
-        //private EntitySet<CollectionEventProperty> _Properties;
-        //[Association(Name = "FK_Event_Property",
-        //             Storage = "_Properties",
-        //             ThisKey = "EventID",
-        //             OtherKey = "EventID",
-        //             IsForeignKey = true,
-        //             DeleteRule = "CASCADE")]
-        //public EntitySet<CollectionEventProperty> Properties
-        //{
-        //    get { return _Properties; }
-        //    set { _Properties.Assign(value); }
-        //}
-
-        //private void Attach_Specimen(Specimen entity)
-        //{
-        //    entity.Event = this;
-        //}
-
-        //private void Detach_Specimen(Specimen entity)
-        //{
-        //    entity.Event = null;
-        //}
-
-        //private void Attach_Property(CollectionEventProperty entity)
-        //{
-        //    entity.Event = this;
-        //}
-
-        //private void Detach_Property(CollectionEventProperty entity)
-        //{
-        //    entity.Event = null;
-        //}
-
-        #endregion
+       
         public static IQueryOperations<Event> Operations
         {
             get;
