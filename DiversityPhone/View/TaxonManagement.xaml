@@ -8,6 +8,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -18,11 +19,14 @@
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
     BackKeyPress="taxonPage_BackKeyPress"
     x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
+    <phone:PhoneApplicationPage.Resources>
+        <vw:TaxonManagementPivotConverter x:Key="PivotConverter"/>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <!--Pivotsteuerelement-->
-        <controls:Pivot Title="Taxon Lists">           
+        <controls:Pivot Title="Taxon Lists" SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">           
             <!--Pivotelement eins-->
             <controls:PivotItem Header="local">
                 <StackPanel>

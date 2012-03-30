@@ -131,5 +131,23 @@ namespace DiversityPhone {
                 return ResourceManager.GetString("Setup_Item_PleaseChoose", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Can&apos;t download another taxon list. ähnelt.
+        /// </summary>
+        public static string TaxonManagement_Message_CantDownload {
+            get {
+                return ResourceManager.GetString("TaxonManagement_Message_CantDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Error ähnelt.
+        /// </summary>
+        public static string TaxonManagement_Message_Error {
+            get {
+                return ResourceManager.GetString("TaxonManagement_Message_Error", resourceCulture);
+            }
+        }
     }
 }

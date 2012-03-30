@@ -23,12 +23,31 @@ namespace DiversityPhone.ViewModels
 {
     public partial class TaxonManagementVM : PageViewModel
     {
+        public enum Pivot
+        {
+            Local,
+            Repository
+        }
+
         #region Services
         private ITaxonService Taxa { get; set; }        
         private IDiversityServiceClient Service { get; set; }
         #endregion
 
         #region Properties
+
+        private Pivot _CurrentPivot = Pivot.Local;
+        public Pivot CurrentPivot 
+        {
+            get
+            {
+                return _CurrentPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
+            }
+        }
 
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;       
@@ -83,15 +102,17 @@ namespace DiversityPhone.ViewModels
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
                             {
-                                RepoLists.Remove(taxonlist);
-                                taxonlist.IsDownloading = true;
-                                LocalLists.Add(taxonlist);
-
                                 if (downloadTaxonList.CanExecute(taxonlist))
+                                {
+                                    RepoLists.Remove(taxonlist);
+                                    taxonlist.IsDownloading = true;
+                                    LocalLists.Add(taxonlist);
                                     downloadTaxonList.Execute(taxonlist);
+                                    CurrentPivot = Pivot.Local;
+                                }
                             }
                             else
-                                Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, "Error", "Can't download more than 10 Taxon tables."));
+                                Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
                         });
         
             Delete = new ReactiveCommand(_IsBusy.Select(x => !x));
@@ -138,6 +159,9 @@ namespace DiversityPhone.ViewModels
                 .Publish();
             taxonSelections.Connect();
 
+            taxonSelections
+                .Where(selections => selections == null || selections.Count == 0)
+                .Subscribe(_ => CurrentPivot = Pivot.Repository);
 
             LocalLists =            
                 taxonSelections
@@ -149,7 +173,7 @@ namespace DiversityPhone.ViewModels
                         IsDownloading = false, 
                         IsSelected = selection.IsSelected
                     };
-                })
+                })               
                 .CreateCollection();
 
             RepoLists = 
