@@ -593,14 +593,6 @@
         }
 
 
-        public void addOrUpdateMap(Map map)
-        {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.Maps.InsertOnSubmit(map);
-                ctx.SubmitChanges();
-            }
-        }
 
         public void addOrUpdateMap(Map map)
         {

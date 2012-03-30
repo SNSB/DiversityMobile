@@ -10,9 +10,9 @@ namespace DiversityPhone.Model
     using Svc = DiversityPhone.DiversityService;
 
     [Table]
-    public class GeoPointForSeries :IModifyable
+    public class GeoPointForSeries :IModifyable,ILocalizable
     {
-        //Dtores Geocoordinates assiciated with an EventSeries. Only one tour per series are allowed. Sequence of points is given by the id.
+        //Stores Geocoordinates assiciated with an EventSeries. Only one tour per series are allowed. Sequence of points is given by the id.
 
 
         [Column]
@@ -21,14 +21,17 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public int PointID{get;set;}
 
-        [Column(CanBeNull = true)]
-        public double? Latitude;
 
-        [Column(CanBeNull = true)]
-        public double? Longitude;
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
+        public double? Latitude { get; set; }
 
-        [Column(CanBeNull = true)]
-        public double? Altitude;
+
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
+        public double? Longitude { get; set; }
+
+
+        [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]
+        public double? Altitude { get; set; }
 
         /// <summary>
         /// Tracks modifications to this Object.

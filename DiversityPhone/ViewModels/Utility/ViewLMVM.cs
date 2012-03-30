@@ -66,7 +66,7 @@ namespace DiversityPhone.ViewModels
 
         public void saveMap(Map map)
         {
-            _storage.addorUpdateMap(map);
+            _storage.addOrUpdateMap(map);
         }
 
         private void addMaps()
