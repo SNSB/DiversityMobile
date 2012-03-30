@@ -73,7 +73,7 @@ namespace DiversityPhone.ViewModels
                 .Select(iu => getSubUnits(iu))
                 .ToProperty(this, vm => vm.Subunits);
 
-            this.ObservableForProperty(x => x.SelectedPivot)
+            _Analyses = this.ObservableForProperty(x => x.SelectedPivot)
                 .Value()
                 .Where(x => x == Pivots.Descriptions)
                 .Select(_ => Current)
