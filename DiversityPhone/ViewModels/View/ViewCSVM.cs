@@ -7,12 +7,16 @@ using DiversityPhone.Messages;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Linq;
+using System.Reactive.Subjects;
+using Funq;
 namespace DiversityPhone.ViewModels
 {
    
 
     public class ViewCSVM : ElementPageViewModel<Specimen>
     {
+
+        private Container IOC;
         public enum Pivots
         {
             Units,
@@ -21,6 +25,8 @@ namespace DiversityPhone.ViewModels
      
         #region Commands
         public ReactiveCommand Add { get; private set; }
+
+        private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null);
         #endregion
 
         #region Properties
@@ -37,8 +43,8 @@ namespace DiversityPhone.ViewModels
             }
         }
         
-        public IList<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
-        private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _UnitList;
+        public ReactiveCollection<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
+        private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _UnitList;
 
         public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
@@ -48,19 +54,31 @@ namespace DiversityPhone.ViewModels
 
         public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
+       
     
 
         #endregion
 
 
 
-        public ViewCSVM()            
-        { 
-            Add = new ReactiveCommand();    
-            
-            _UnitList = ValidModel
-                .Select(cs => getIdentificationUnitList(cs))
+        public ViewCSVM(Container ioc)            
+        {
+            IOC = ioc;
+            Add = new ReactiveCommand();
+
+            _UnitList = this.CurrentObservable
+                .Select(_ => new Subject<IdentificationUnitVM>())
+                .Select(subject =>
+                    {
+                        var coll = subject.CreateCollection();
+                        fetchSubunits.Execute(subject);
+                        return coll;
+                    })
                 .ToProperty(this, x => x.UnitList);
+                
+            fetchSubunits
+                .RegisterAsyncAction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>)); 
+                
 
             _ImageList = ValidModel
                .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Image))
@@ -97,13 +115,11 @@ namespace DiversityPhone.ViewModels
             
         }
 
-        private IList<IdentificationUnitVM> getIdentificationUnitList(Specimen spec)
+        private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
         {
-            return IdentificationUnitVM.getTwoLevelVMFromModelList(
-                 Storage.getTopLevelIUForSpecimen(spec),
-                 iu => Storage.getSubUnits(iu),
-                 Messenger);
-        }
+            var toplevel = Storage.getTopLevelIUForSpecimen(Current.Model);
+            IdentificationUnitVM.FillIUVMObservable(subject, toplevel, IOC, Page.ViewIU, 2);
+        }       
 
         protected override Specimen ModelFromState(PageState s)
         {

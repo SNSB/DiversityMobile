@@ -44,12 +44,12 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<ViewEVVM>(c => new ViewEVVM());
 
-            _ioc.Register<ViewCSVM>(c => new ViewCSVM());
+            _ioc.Register<ViewCSVM>(c => new ViewCSVM(c));
             _ioc.Register<EditCSVM>(c => new EditCSVM());
             _ioc.Register<ViewLMVM>(c => new ViewLMVM(c.Resolve<IMessageBus>(), c.Resolve<IFieldDataService>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c));
-            _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c.Resolve<IVocabularyService>()));
+            _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));
             _ioc.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());
             _ioc.Register<ViewImageVM>(c => new ViewImageVM());

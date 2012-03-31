@@ -15,8 +15,9 @@ namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : EditElementPageVMBase<IdentificationUnit>
     {
-        public ITaxonService Taxa { get; set; }
-        public IVocabularyService Vocabulary { get; set; }
+        private Container IOC;
+        private ITaxonService Taxa { get; set; }
+        private IVocabularyService Vocabulary { get; set; }
         private IGeoLocationService Geolocation;
 
         #region Properties
@@ -141,6 +142,7 @@ namespace DiversityPhone.ViewModels
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
+        
         #endregion
 
 
@@ -148,6 +150,7 @@ namespace DiversityPhone.ViewModels
         public EditIUVM(Container ioc)
             : base(false)
         {
+            IOC = ioc;
             Taxa = ioc.Resolve<ITaxonService>();
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Geolocation = ioc.Resolve<IGeoLocationService>();
@@ -298,7 +301,7 @@ namespace DiversityPhone.ViewModels
         
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
-            return new IdentificationUnitVM(Messenger, model, Page.Current);
+            return new IdentificationUnitVM(IOC, model, Page.Current);
         }
     }
 }

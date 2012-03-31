@@ -69,7 +69,7 @@
             
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"
+                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </DataTemplate>

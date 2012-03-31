@@ -20,14 +20,16 @@ namespace DiversityPhone.ViewModels
             Subunits,
             Descriptions,            
             Multimedia
-        }   
-  
+        }
+
+        private Container IOC;
         IVocabularyService Vocabulary;
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
 
         private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null, 2);
         #endregion
 
         #region Properties
@@ -45,8 +47,8 @@ namespace DiversityPhone.ViewModels
             }
         }  
 
-        private ObservableAsPropertyHelper<IList<IdentificationUnitVM>> _Subunits;
-        public IList<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
+        private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _Subunits;
+        public ReactiveCollection<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
 
 
         public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
@@ -60,18 +62,28 @@ namespace DiversityPhone.ViewModels
 
         public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
+        
 
         #endregion
 
         
 
         public ViewIUVM(Container ioc)
-        {            
+        {
+            IOC = ioc;
             Vocabulary = ioc.Resolve<IVocabularyService>();
 
-            _Subunits = ValidModel
-                .Select(iu => getSubUnits(iu))
-                .ToProperty(this, vm => vm.Subunits);
+            _Subunits = this.CurrentObservable
+                .Select(_ => new Subject<IdentificationUnitVM>())
+                .Select(subject =>
+                {
+                    var coll = subject.CreateCollection();
+                    fetchSubunits.Execute(subject);
+                    return coll;
+                })
+                .ToProperty(this, x => x.Subunits);
+            fetchSubunits
+                .RegisterAsyncAction(subject => getSubUnitsImpl(subject as ISubject<IdentificationUnitVM>));
 
             _Analyses = this.ObservableForProperty(x => x.SelectedPivot)
                 .Value()
@@ -177,16 +189,15 @@ namespace DiversityPhone.ViewModels
             return null;
         } 
       
-        private IList<IdentificationUnitVM> getSubUnits(IdentificationUnit iu)
+        private void getSubUnitsImpl(ISubject<IdentificationUnitVM> subject)
         {
-            return IdentificationUnitVM.getTwoLevelVMFromModelList(Storage.getSubUnits(iu),
-                iu2 => Storage.getSubUnits(iu2),
-                Messenger);                
+            var toplevel = Storage.getSubUnits(Current.Model);
+            IdentificationUnitVM.FillIUVMObservable(subject, toplevel, IOC, Page.ViewIU, 2);                  
         }
 
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
-            return new IdentificationUnitVM(Messenger, model, Page.EditIU);
+            return new IdentificationUnitVM(IOC, model, Page.EditIU);
         }
     }
 }
