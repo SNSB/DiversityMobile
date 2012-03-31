@@ -73,10 +73,31 @@ namespace DiversityPhone.ViewModels
             _Parent
                 .Select(parent => Vocabulary.getPossibleAnalyses(parent.Model.TaxonomicGroup))
                 .Subscribe(Analyses);
+
+            Analyses.ItemsObservable
+                .Zip(ValidModel, (analyses, iuan) =>
+                            analyses
+                            .Where(an => an.AnalysisID == iuan.AnalysisID)
+                            .FirstOrDefault())
+                .Where(x => x != null)
+                .BindTo(Analyses, x => x.SelectedItem);
                         
             Analyses
                 .Select(selectedAN => (selectedAN != null) ? Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
                 .Subscribe(Results);
+
+            Results.ItemsObservable
+                .Zip(ValidModel, (results, iuan) =>
+                    results
+                    .Where(res => res.Result == iuan.AnalysisResult)
+                    .FirstOrDefault())
+                .Where(x => x != null)
+                .BindTo(Results, x => x.SelectedItem);
+
+            ValidModel
+                .Select(iuan => iuan.AnalysisResult)
+                .BindTo(this, x => x.CustomResult);
+
             _IsCustomResult = Results.ItemsObservable
                 .Where(res => res != null)
                 .Select(results => results.Count == 0)
