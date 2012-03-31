@@ -75,6 +75,9 @@ namespace DiversityPhone.ViewModels
 
             _Analyses = this.ObservableForProperty(x => x.SelectedPivot)
                 .Value()
+                .Merge(
+                    this.ObservableForProperty(x => x.Current) 
+                    .Select(_ => SelectedPivot)) //If the page is refreshed on the descriptions pivot
                 .Where(x => x == Pivots.Descriptions)
                 .Select(_ => Current)
                 .DistinctUntilChanged()
