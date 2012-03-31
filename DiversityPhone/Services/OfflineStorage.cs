@@ -24,36 +24,42 @@
 
             _subscriptions = new List<IDisposable>()
             {
-                
 
                 _messenger.Listen<EventSeries>(MessageContracts.SAVE)
                     .Subscribe(es => addOrUpdateEventSeries(es)),
                 _messenger.Listen<EventSeries>(MessageContracts.DELETE)
                     .Subscribe(es => deleteEventSeries(es)),
+
                 _messenger.Listen<Event>(MessageContracts.SAVE)
                     .Subscribe(ev => addOrUpdateEvent(ev)),
                 _messenger.Listen<Event>(MessageContracts.DELETE)
                     .Subscribe(ev=>deleteEvent(ev)),
+
                 _messenger.Listen<CollectionEventProperty>(MessageContracts.SAVE)
                     .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
+                _messenger.Listen<CollectionEventProperty>(MessageContracts.DELETE)
+                    .Subscribe(cep => deleteEventProperty(cep)),
+
                 _messenger.Listen<Specimen>(MessageContracts.SAVE)
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
                 _messenger.Listen<Specimen>(MessageContracts.DELETE)
                     .Subscribe(spec=>deleteSpecimen(spec)),
+
                 _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
                 _messenger.Listen<IdentificationUnit>(MessageContracts.DELETE)
                     .Subscribe(iu=>deleteIU(iu)),
+
                 _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.SAVE)
                     .Subscribe(iua=>addOrUpdateIUA(iua)),
                  _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.DELETE)
                     .Subscribe(iua=>deleteIUA(iua)),
+
                 _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
                     .Subscribe(mmo => addMultimediaObject(mmo)),
                 _messenger.Listen<MultimediaObject>(MessageContracts.DELETE)
                     .Subscribe(mmo=>deleteMMO(mmo)),
-
-                
+      
             };           
         }
 
@@ -576,19 +582,39 @@
             return uncachedQuery(ctx => from m in ctx.Maps
                                         select m);
         }
-        public IList<Map> getMapsForRectangle(double latitudeNorth, double latitudeSouth, double longitudeWest, double longitudeEast)
+        public IList<Map> getMapsForPoint(double latitude, double longitude) 
         {
-            throw new NotImplementedException();
+            return uncachedQuery(ctx => from m in ctx.Maps
+                                        where m.LatitudeNorth >= latitude
+                                            &&  m.LatitudeSouth <=latitude
+                                            &&  m.LongitudeEast >=longitude
+                                            &&  m.LongitudeWest <=longitude                                 
+                                        select m);
         }
 
-        public void addMap(Map map)
+
+
+        public void addOrUpdateMap(Map map)
         {
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.Maps.InsertOnSubmit(map);
-                ctx.SubmitChanges();
-            }
+           
+            addOrUpdateRow(Map.Operations,
+                ctx => ctx.Maps,
+                map
+            );
         }
+
+
+        public void deleteMap(Map map)
+        {
+            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+            if (myStore.FileExists(map.Uri))
+            {
+                myStore.DeleteFile(map.Uri);
+            }
+            deleteRow(Map.Operations, ctx => ctx.Maps, map);
+        }
+
+
         #endregion
 
 

@@ -61,7 +61,9 @@ using System;
 
 
         IList<Map> getAllMaps();
-        IList<Map> getMapsForRectangle(double latitudeNorth,double latitudeSouth, double longitudeWest, double longitudeEast);
-        void addMap(Map map);
+        IList<Map> getMapsForPoint(double latitude, double longitude);
+        void addOrUpdateMap(Map map);
+        void deleteMap(Map map);
+        
     }
 }

@@ -213,7 +213,7 @@ namespace DiversityPhone
 
         #region Georeferencing
 
-        public static GeoCoordinateWatcher Watcher = new GeoCoordinateWatcher();
+        public static GeoCoordinateWatcher Watcher;
         private static IList<Model.GeoPointForSeries> coordinates = new List<Model.GeoPointForSeries>();
         public static int? CurrentSeriesID = null;
 
@@ -229,8 +229,8 @@ namespace DiversityPhone
         {
             if (Watcher != null)
             {
-                Watcher.Stop();
                 storeGeoPoints();
+                Watcher = null;
             }
         }
 
@@ -254,7 +254,6 @@ namespace DiversityPhone
 
         public static void stopTour()
         {
-
             Model.AppSettings set = _settings.getSettings();
             set.CurrentSeries = null;
             _settings.saveSettings(set);
@@ -264,6 +263,8 @@ namespace DiversityPhone
 
         static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
+            if (Watcher == null)
+                return;
             if (CurrentSeriesID != null)
             {
                 Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
@@ -286,8 +287,8 @@ namespace DiversityPhone
         }
 
         public void fillGeoCoordinates(Model.ILocalizable loc)
-        {
-            if (Watcher.Status==GeoPositionStatus.Ready)
+        {   
+            if (Watcher!=null && Watcher.Status==GeoPositionStatus.Ready)
             {
                 var geoPos= Watcher.Position;
                 loc.Altitude = geoPos.Location.Altitude;

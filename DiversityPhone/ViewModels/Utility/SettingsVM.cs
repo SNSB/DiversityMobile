@@ -178,11 +178,11 @@ namespace DiversityPhone.ViewModels.Utility
             _settings.saveSettings(Model);
             if (UseGPS == true)
             {
-                if (App.Watcher.Status != System.Device.Location.GeoPositionStatus.Ready)
+                if (App.Watcher==null)
                     App.startWatcher();
             }
             else
-                if(App.Watcher.Status==System.Device.Location.GeoPositionStatus.Ready || App.Watcher.Status==System.Device.Location.GeoPositionStatus.Initializing)
+                if(App.Watcher!=null)
                     App.stopWatcher();
         }        
 

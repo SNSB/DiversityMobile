@@ -16,10 +16,6 @@ namespace DiversityPhone.ViewModels
     {
         private IList<IDisposable> _subscriptions;
 
-        #region Services
-        private IFieldDataService _storage;
-        #endregion
-
 
         #region Properties
 

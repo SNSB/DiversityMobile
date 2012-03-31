@@ -85,8 +85,8 @@ namespace DiversityPhone.Model
                                        SWLong = (double)query.Element("SWLong"),
                                        NELat = (double)query.Element("NELat"),
                                        NELong = (double)query.Element("NELong"),
-                                       //ZoomLevel=(int)query.Element("ZommLevel"),
-                                       //Transparency=(int)query.Element("TRansparency")
+                                       ZoomLevel=(int?)query.Element("ZommLevel"),
+                                       Transparency=(int?)query.Element("Transparency")
                                    };
                         if (data.Count<MapParameter>() == 0)
                             throw new Exception("File not found or not in ImageOptions.xml-Standars");
