@@ -133,6 +133,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Identification ähnelt.
+        /// </summary>
+        public static string IdentificationUnit_Header_Identification {
+            get {
+                return ResourceManager.GetString("IdentificationUnit_Header_Identification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die This item can not be changed, it has already been uploaded. ähnelt.
         /// </summary>
         public static string Info_CantEditItem {

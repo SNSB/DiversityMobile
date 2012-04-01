@@ -88,10 +88,18 @@ namespace DiversityPhone.ViewModels
 
         private void correctSelectedIndex(IList<T> items, T selectedItem)
         {
-            var selectedIdx = (items != null) ? items.IndexOf(selectedItem) : -1;
-            if (selectedIdx > -1)
-                SelectedIndex = selectedIdx;
-
+            if (items != null)
+            {                
+                if (items.Count == 0)
+                    SelectedIndex = -1;
+                else
+                {
+                    var selectedIdx = items.IndexOf(selectedItem);
+                    SelectedIndex = (selectedIdx != -1) ? selectedIdx : 0;
+                }
+            }
+            else
+                SelectedIndex = -1;
         }
 
         public void OnCompleted()

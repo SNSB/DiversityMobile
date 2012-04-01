@@ -141,6 +141,9 @@
   <data name="GeoCoordinates_Suffix_W" xml:space="preserve">
     <value>W</value>
   </data>
+  <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
+    <value>Identification</value>
+  </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
