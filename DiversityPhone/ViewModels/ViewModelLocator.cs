@@ -61,12 +61,7 @@ namespace DiversityPhone.ViewModels
                                                                         c.Resolve<ITaxonService>(),
                                                                         c.Resolve<IDiversityServiceClient>()));
 
-            _ioc.Register<SettingsVM>(c => new SettingsVM(
-                c.Resolve<ISettingsService>(),
-                c.Resolve<IDiversityServiceClient>(),
-                c.Resolve<IFieldDataService>(),
-                c.Resolve<IVocabularyService>()
-                ));
+            _ioc.Register<SettingsVM>(c => new SettingsVM(c));
 
             #endregion
 

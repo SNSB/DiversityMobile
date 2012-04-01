@@ -153,8 +153,7 @@ namespace DiversityPhone.ViewModels.Utility
                         this.ObservableForProperty(x => x.UserName),
                         this.ObservableForProperty(x => x.Password),
                         (user, pass) => new Svc.UserCredentials() { LoginName = user.Value, Password = pass.Value }
-                    )                    
-                    .DistinctUntilChanged();
+                    );
 
                 var credsWithRepo =
                     Observable.CombineLatest(
@@ -165,7 +164,7 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         usercreds.Repository = repo.Database;
                         return usercreds;
-                    }).DistinctUntilChanged();                
+                    });                
 
                 creds                    
                     .Subscribe(login => getRepositories.Execute(login));
@@ -193,8 +192,8 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingProjects);
                 
                 getProjects
-                    .RegisterAsyncFunction(login => _DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())
-                    .Merge(creds.Select(_ => new List<Svc.Project>() as IList<Svc.Project>))
+                    .RegisterAsyncFunction(login => _DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())                     
+                    .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
                     .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
                     .Do(projects =>
                     {

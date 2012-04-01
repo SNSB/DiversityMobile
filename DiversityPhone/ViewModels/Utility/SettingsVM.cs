@@ -10,16 +10,15 @@ using Svc = DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
 using DiversityPhone.Messages;
 using System.Reactive.Disposables;
+using Funq;
 
 namespace DiversityPhone.ViewModels.Utility
 {
     public partial class SettingsVM : PageViewModel
     {
-        ISettingsService _settings;
-        IDiversityServiceClient _DivSvc;
-        IVocabularyService _vocabulary;
-        IFieldDataService _storage;
-
+        Container IOC;
+        ISettingsService Settings;
+        
         public SetupVM Setup { get { return _Setup.Value; } }
         private ObservableAsPropertyHelper<SetupVM> _Setup;
 
@@ -53,9 +52,7 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand Save { get; private set; }
         private ISubject<bool> _CanSaveSubject = new Subject<bool>();
 
-        public ReactiveCommand Reset { get; private set; }
-
-        
+        public ReactiveCommand Reset { get; private set; }               
 
         public ReactiveCommand ManageTaxa { get; private set; }
 
@@ -66,12 +63,10 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<AppSettings> _Model;
         private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();       
         
-        public SettingsVM(ISettingsService set, IDiversityServiceClient divsvc, IFieldDataService storage, IVocabularyService voc)            
+        public SettingsVM(Container ioc)            
         {
-            _settings = set;          
-            _DivSvc = divsvc;
-            _storage = storage;
-            _vocabulary = voc;
+            IOC = ioc;
+            Settings = ioc.Resolve<ISettingsService>();
 
             _Model =_ModelSubject   
                 .Where(x => true)
@@ -109,7 +104,9 @@ namespace DiversityPhone.ViewModels.Utility
 
             RefreshVocabulary = new ReactiveAsyncCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
             RefreshVocabulary
-                .RegisterAsyncAction(_ => refreshVocabularyImpl(_settings.getSettings()));
+                .RegisterAsyncAction(_ => refreshVocabularyImpl(Settings.getSettings()));
+
+            
 
             _IsBusy =
                 RefreshVocabulary
@@ -122,19 +119,41 @@ namespace DiversityPhone.ViewModels.Utility
 
             _IsFirstSetup
                 .Where(setup => setup)
-                .Do(_ => clearDatabase.Execute(null));
+                .Subscribe(_ => clearDatabase.Execute(null));
 
             _Setup = _IsFirstSetup 
                 .Where(setup => setup)
                 .Take(1)
-                .Select(setup => new SetupVM(_DivSvc))                        
+                .Select(setup => new SetupVM(IOC.Resolve<IDiversityServiceClient>()))                        
                 .ToProperty(this, x => x.Setup);
+            _Setup
+                .CombineLatest(_IsFirstSetup, (setup, _) => setup)
+                .Subscribe(setup => setup.CurrentPivot = SetupVM.Pivots.Login);
+
             _Setup
                 .SelectMany(s => (s != null) ? s.Result : Observable.Never<AppSettings>())                
                 .Subscribe(cfg => _ModelSubject.OnNext(cfg));
 
 
-            clearDatabase.RegisterAsyncAction(_ => _storage.clearDatabase());
+            clearDatabase.RegisterAsyncAction(_ =>
+                {
+                    var taxa = IOC.Resolve<ITaxonService>();
+                    var vocabulary = IOC.Resolve<IVocabularyService>();
+                    var storage = IOC.Resolve<IFieldDataService>();
+
+                    if (taxa == null || vocabulary == null || storage == null)
+                    {
+#if DEBUG
+                        throw new ArgumentNullException("services");
+#else
+                        return;
+#endif
+                    }
+
+                    taxa.clearTaxonLists();
+                    vocabulary.clearVocabulary();
+                    storage.clearDatabase();
+                });
             
                                    
             var onsave =
@@ -166,7 +185,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(_ => new NavigationMessage(Services.Page.TaxonManagement))
                 );
 
-            var storedConfig = Observable.Return(_settings.getSettings()).Concat(Observable.Never<AppSettings>());
+            var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
             storedConfig.Subscribe(_ModelSubject);
             storedConfig.Select(x => x == null)
                 .Subscribe(_IsFirstSetup);            
@@ -175,7 +194,7 @@ namespace DiversityPhone.ViewModels.Utility
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-            _settings.saveSettings(Model);
+            Settings.saveSettings(Model);
             if (UseGPS == true)
             {
                 if (App.Watcher==null)
@@ -188,9 +207,8 @@ namespace DiversityPhone.ViewModels.Utility
 
         
         private void OnReset()
-        {       
-            _settings.saveSettings(null);
-            _ModelSubject.OnNext(null);
+        {
+            Settings.saveSettings(null);            
             _IsFirstSetup.OnNext(true);
         }
 
@@ -198,8 +216,17 @@ namespace DiversityPhone.ViewModels.Utility
         {            
             var credentials = new Svc.UserCredentials(settings);
 
-            var vocabulary = _vocabulary;
-            var diversityService = _DivSvc;
+            var vocabulary = IOC.Resolve<IVocabularyService>();
+            var diversityService = IOC.Resolve<IDiversityServiceClient>();
+
+            if (vocabulary == null || diversityService == null)
+            {
+#if DEBUG
+                throw new ArgumentNullException("services");
+#else
+                return;
+#endif
+            }
 
             vocabulary.clearVocabulary();
 
