@@ -480,12 +480,12 @@ namespace DiversityService
                     DisplayText = "Test",
                     Database = "DiversityCollection_Test"
                 },
-                new Repository() // In München funktionen noch nicht implementiert
+                /*new Repository() // In München funktionen noch nicht implementiert
                 {
                     DisplayText="DiversityCollection",
                     Database="DiversityCollection",
-                },
-                 new Repository() // In München funktionen noch nicht implementiert
+                },*/
+                 new Repository() 
                 {
                     DisplayText="DiversityCollection Monitoring",
                     Database="DiversityCollection_Monitoring",
