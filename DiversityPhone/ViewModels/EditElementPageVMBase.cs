@@ -38,7 +38,10 @@ namespace DiversityPhone.ViewModels
         /// Determines, whether Save can execute
         /// </summary>
         /// <returns>Observable that will be used to enable/disable Save</returns>
-        protected virtual IObservable<bool> CanSave() { return _CanSaveSubject; }
+        protected virtual IObservable<bool> CanSave() 
+        {
+            return Observable.Return(true);
+        }
 
         /// <summary>
         /// Updates the Model object with any unsaved changes.
@@ -63,13 +66,17 @@ namespace DiversityPhone.ViewModels
             : base(refreshModel)
         {
             _CanSaveSubject = new Subject<bool>();
-            Save = new ReactiveCommand(CanSave());
-
-            //Can't save by default
+            Save = new ReactiveCommand(
+                _CanSaveSubject
+                );
+                        
             Observable.Concat(
                 Observable.Return(false),
+                CanSave(),
                 Observable.Never<bool>()
-                ).Subscribe(_CanSaveSubject);
+            )            
+            .ObserveOnDispatcher() // Work around bug in ReactiveUI
+            .Subscribe(_CanSaveSubject);
 
 
             Delete = new ReactiveCommand(
