@@ -83,16 +83,8 @@
         </controls:Pivot>
     </Grid>
 
-    <!--Beispielcode für die Verwendung von ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="appbar_button1" IconUri="/Images/appbar_button1.png" Text="Schaltfläche 1"/>
-            <shell:ApplicationBarIconButton x:Name="appbar_button2" IconUri="/Images/appbar_button2.png" Text="Schaltfläche 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem x:Name="menuItem1" Text="Menüelement 1"/>
-                <shell:ApplicationBarMenuItem x:Name="menuItem2" Text="Menüelement 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False"/>
+    </phone:PhoneApplicationPage.ApplicationBar>
     
 </phone:PhoneApplicationPage>

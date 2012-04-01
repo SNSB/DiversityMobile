@@ -162,4 +162,7 @@
   <data name="TaxonManagement_Message_Error" xml:space="preserve">
     <value>Error</value>
   </data>
+  <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
+    <value>download all</value>
+  </data>
 </root>

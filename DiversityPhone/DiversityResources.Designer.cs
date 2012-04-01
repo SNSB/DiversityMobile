@@ -194,5 +194,14 @@ namespace DiversityPhone {
                 return ResourceManager.GetString("TaxonManagement_Message_Error", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die download all ähnelt.
+        /// </summary>
+        public static string TaxonManagement_Title_DownloadAll {
+            get {
+                return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
+            }
+        }
     }
 }
