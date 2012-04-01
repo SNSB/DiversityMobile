@@ -57,7 +57,9 @@ namespace DiversityService
         }
 
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
-        {            
+        {  
+            if(string.IsNullOrWhiteSpace(login.Repository))
+                return Enumerable.Empty<Project>();
             using (var db = new DiversityORM.Diversity(login))
             {
                 try
