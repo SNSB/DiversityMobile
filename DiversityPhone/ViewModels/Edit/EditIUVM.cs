@@ -108,7 +108,13 @@ namespace DiversityPhone.ViewModels
                 .Where(spec => spec != null)
                 .Select(spec => spec.IsObservation());
 
-            isObservation.BindTo(this, vm => vm.OnlyObserved);
+            isObservation
+                .CombineLatest(
+                    ValidModel
+                    .Select(m => m.OnlyObserved)
+                    .StartWith(false),
+                    (isobs, onlyobs) => isobs || onlyobs)
+                .BindTo(this, vm => vm.OnlyObserved);
 
             _IsObservation = isObservation
                 .ToProperty(this, vm => vm.IsObservation);

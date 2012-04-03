@@ -72,7 +72,7 @@
                         IsEnabled="{Binding IsEditable}" />
             </StackPanel>
 
-            <CheckBox IsChecked="{Binding OnlyObserved}" 
+            <CheckBox IsChecked="{Binding OnlyObserved, Mode=TwoWay}" 
 					  Content="Only Observed" 
 					  Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"
                       IsEnabled="{Binding IsEditable}"/>
