@@ -53,7 +53,7 @@ namespace DiversityPhone.ViewModels.Utility
         private ISubject<bool> _CanSaveSubject = new Subject<bool>();
 
         public ReactiveCommand Reset { get; private set; }               
-
+        private ISubject<bool> _CanResetSubject = new Subject<bool>();
         public ReactiveCommand ManageTaxa { get; private set; }
 
         private ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
@@ -86,7 +86,7 @@ namespace DiversityPhone.ViewModels.Utility
                 _IsFirstSetup
                 .ToProperty(this, x => x.IsFirstSetup);
 
-            Reset = new ReactiveCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
+            Reset = new ReactiveCommand(_CanResetSubject.StartWith(true));
             Messenger.RegisterMessageSource(
                 Reset                
                 .Select(_ => new DialogMessage(
@@ -99,6 +99,15 @@ namespace DiversityPhone.ViewModels.Utility
                             OnReset();
                     }
                     )));
+
+            Observable.Concat(
+                Observable.Return(false),
+                _IsFirstSetup.Select(x => !x),
+                Observable.Never<bool>()
+            )
+            .Delay(TimeSpan.FromMilliseconds(500))
+            .ObserveOnDispatcher() // Work around bug in ReactiveUI
+            .Subscribe(_CanResetSubject);
              
             Save = new ReactiveCommand(_CanSaveSubject);
 

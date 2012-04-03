@@ -82,7 +82,7 @@ namespace DiversityPhone.View
                         .Subscribe(cansave => saveBtn.IsEnabled = cansave);
 
                     VM.Reset.CanExecuteObservable
-                        .StartWith(VM.Reset.CanExecute(null))
+                        .StartWith(false)//VM.Reset.CanExecute(null))
                         .Subscribe(canreset =>
                         {
                             showButtons(canreset);
