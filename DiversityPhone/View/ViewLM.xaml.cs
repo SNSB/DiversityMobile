@@ -53,7 +53,7 @@ namespace DiversityPhone.View
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            VM.LoadMaps.Execute(null);
+
             // Reset all of the user action booleans on page load.
             WaitingForExternalPower = false;
             WaitingForExternalPowerDueToBatterySaverMode = false;
@@ -156,7 +156,7 @@ namespace DiversityPhone.View
                                     if (mapimage.Contains(name))
                                     {
                                         Map newMap = Map.loadMapParameterFromFile(fullFilename);
-                                        newMap.Uri = "Maps\\XML\\" + mapimage;
+                                        newMap.Uri = "Maps\\MapImages\\" + mapimage;
                                         VM.saveMap(newMap);
                                         continue;
                                     }

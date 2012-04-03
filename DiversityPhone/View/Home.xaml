@@ -50,7 +50,7 @@
         <shell:ApplicationBar IsVisible="False" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add series" Click="AddSeries_Click"/>            
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="userprofile" Click="Settings_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="userprofile" Click="LoadedMaps_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="maps" Click="LoadedMaps_Click"/>
             <shell:ApplicationBar.MenuItems>                
                 <shell:ApplicationBarMenuItem Text="upload changes" Click="Upload_Click"/>
                 <shell:ApplicationBarMenuItem Text="upload multimedia" Click="UploadMMO_Click" />

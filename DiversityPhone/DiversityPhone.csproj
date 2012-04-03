@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
@@ -210,7 +211,7 @@
     <Compile Include="ViewModels\Utility\SettingsVM.Setup.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
-    <Compile Include="ViewModels\Utility\ViewLMVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewLMVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
@@ -309,6 +310,9 @@
     <Compile Include="ViewModels\VirtualizingViewModelList.cs" />
     <Compile Include="View\ViewLM.xaml.cs">
       <DependentUpon>ViewLM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMap.xaml.cs">
+      <DependentUpon>ViewMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewVideo.xaml.cs">
       <DependentUpon>ViewVideo.xaml</DependentUpon>
@@ -421,6 +425,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\ViewLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,7 +5,6 @@
       <xsd:import schemaLocation="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/WcfMapService" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IMapService_GetMapList_InputMessage">
@@ -13,6 +12,18 @@
   </wsdl:message>
   <wsdl:message name="IMapService_GetMapList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetMapListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMapService_GetMapListFilter_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMapListFilter" />
+  </wsdl:message>
+  <wsdl:message name="IMapService_GetMapListFilter_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMapListFilterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMapService_GetMapListCoords_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetMapListCoords" />
+  </wsdl:message>
+  <wsdl:message name="IMapService_GetMapListCoords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetMapListCoordsResponse" />
   </wsdl:message>
   <wsdl:message name="IMapService_GetMapUrl_InputMessage">
     <wsdl:part name="parameters" element="tns:GetMapUrl" />
@@ -26,16 +37,18 @@
   <wsdl:message name="IMapService_GetXmlUrl_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetXmlUrlResponse" />
   </wsdl:message>
-  <wsdl:message name="IMapService_GetDataUsingDataContract_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataUsingDataContract" />
-  </wsdl:message>
-  <wsdl:message name="IMapService_GetDataUsingDataContract_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetDataUsingDataContractResponse" />
-  </wsdl:message>
   <wsdl:portType name="IMapService">
     <wsdl:operation name="GetMapList">
       <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetMapList" message="tns:IMapService_GetMapList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMapService/GetMapListResponse" message="tns:IMapService_GetMapList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMapListFilter">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetMapListFilter" message="tns:IMapService_GetMapListFilter_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMapService/GetMapListFilterResponse" message="tns:IMapService_GetMapListFilter_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMapListCoords">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetMapListCoords" message="tns:IMapService_GetMapListCoords_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMapService/GetMapListCoordsResponse" message="tns:IMapService_GetMapListCoords_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetMapUrl">
       <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetMapUrl" message="tns:IMapService_GetMapUrl_InputMessage" />
@@ -45,15 +58,29 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetXmlUrl" message="tns:IMapService_GetXmlUrl_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMapService/GetXmlUrlResponse" message="tns:IMapService_GetXmlUrl_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetDataUsingDataContract">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMapService/GetDataUsingDataContract" message="tns:IMapService_GetDataUsingDataContract_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMapService/GetDataUsingDataContractResponse" message="tns:IMapService_GetDataUsingDataContract_OutputMessage" />
-    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMapService" type="tns:IMapService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetMapList">
       <soap:operation soapAction="http://tempuri.org/IMapService/GetMapList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMapListFilter">
+      <soap:operation soapAction="http://tempuri.org/IMapService/GetMapListFilter" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMapListCoords">
+      <soap:operation soapAction="http://tempuri.org/IMapService/GetMapListCoords" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -72,15 +99,6 @@
     </wsdl:operation>
     <wsdl:operation name="GetXmlUrl">
       <soap:operation soapAction="http://tempuri.org/IMapService/GetXmlUrl" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetDataUsingDataContract">
-      <soap:operation soapAction="http://tempuri.org/IMapService/GetDataUsingDataContract" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

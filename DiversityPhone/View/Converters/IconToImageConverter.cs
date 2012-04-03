@@ -33,6 +33,8 @@ namespace DiversityPhone.View
                     return "/Images/SNSBIcons/Observation_80.png";
                 case Icon.Analysis:
                     return "/Images/SNSBIcons/Analysis_80.png";
+                case Icon.Map:
+                    return "/Images/appbar.globe.rest.png";
                 case Icon.Photo:
                     return "/Images/appbar.feature.camera.rest.png";
                 case Icon.Audio:

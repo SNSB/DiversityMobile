@@ -14,66 +14,75 @@ using DiversityPhone.Services;
 using DiversityPhone.Messages;
 using DiversityPhone.Model;
 using System.IO.IsolatedStorage;
+using System.Linq;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
     public class ViewLMVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
-
-
-        #region Services
         private IFieldDataService _storage;
-        #endregion
 
-        #region Properties
-        private IList<Map> _savedMaps;
-        public IList<Map> SavedMaps
+        #region Properties 
+
+        private ObservableAsPropertyHelper<IList<MapVM>> _SavedMaps;
+        public IList<MapVM> SavedMaps
         {
-            get { return _savedMaps; }
-            set { this.RaiseAndSetIfChanged(x => x.SavedMaps, ref _savedMaps, value); }
+            get { return _SavedMaps.Value; }
         }
 
         #endregion
 
         #region Commands
         public ReactiveCommand AddMaps { get; private set; }
-        public ReactiveCommand LoadMaps { get; private set; }
+
         #endregion
 
-        public ViewLMVM(IMessageBus messenger, IFieldDataService storage)
-            : base(messenger)
+        public ViewLMVM(IFieldDataService storage)  
         {
-
             _storage = storage;
+            IList<Map> maps=_storage.getAllMaps();
+            IList<MapVM> mapModels = new List<MapVM>();
+            foreach(Map map in maps)
+                mapModels.Add(new MapVM(Messenger,map,Page.ViewMap));
+
+            _SavedMaps = StateObservable
+                .Select(_ => updatedMapList())
+                .ToProperty(this, x => x.SavedMaps);
+
             _subscriptions = new List<IDisposable>()
             {
                 (AddMaps = new ReactiveCommand())
                     .Subscribe(_ => addMaps()),
-                      
-                (LoadMaps = new ReactiveCommand())
-                    .Subscribe(_ => loadMaps()),
-               
+                          
             };
 
         }
 
-        private void loadMaps()
-        {
-            //Get Mapd From DB
-           
-        }
 
         public void saveMap(Map map)
         {
             _storage.addOrUpdateMap(map);
+
+            _SavedMaps = StateObservable
+                .Select(_ => updatedMapList())
+                .ToProperty(this, x => x.SavedMaps);
+            
         }
 
-        private void addMaps()
+        private void addMaps()       
         {
             Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.DownLoadMaps, null));
         }
 
-
+        private IList<MapVM> updatedMapList()
+        {
+            return new VirtualizingReadonlyViewModelList<Map, MapVM>(
+                _storage.getAllMaps(),
+                (model) => new MapVM(Messenger, model, Page.ViewMap)
+                );
+        } 
+       
     }
 }

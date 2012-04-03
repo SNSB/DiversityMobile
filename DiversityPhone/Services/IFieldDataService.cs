@@ -62,6 +62,8 @@ using System;
 
         IList<Map> getAllMaps();
         IList<Map> getMapsForPoint(double latitude, double longitude);
+        Map getMapByURI(string uri);
+        Map getMapByID(int mapID);
         void addOrUpdateMap(Map map);
         void deleteMap(Map map);
         

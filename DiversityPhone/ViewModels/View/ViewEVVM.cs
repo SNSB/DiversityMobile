@@ -52,8 +52,6 @@
         #endregion
 
 
-
-
         public ViewEVVM()            
         {
             _SpecList = ValidModel               

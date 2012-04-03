@@ -592,7 +592,24 @@
                                         select m);
         }
 
+        public Map getMapByURI(string uri)
+        {
+            IList<Map> objects = uncachedQuery(ctx => from map in ctx.Maps
+                                                                   where map.Uri == uri
+                                                                   select map);
+            if (objects.Count == 0)
+                throw new KeyNotFoundException();
+            if (objects.Count > 1)
+                throw new DuplicateKeyException(objects);
+            return objects[0];
+        }
 
+        public Map getMapByID(int mapID)
+        {
+            return singletonQuery(ctx => from map in ctx.Maps
+                                         where map.MapID == mapID
+                                         select map);  
+        }
 
         public void addOrUpdateMap(Map map)
         {

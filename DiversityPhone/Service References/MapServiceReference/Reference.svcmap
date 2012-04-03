@@ -23,12 +23,11 @@
     <MetadataSource Address="http://bsm5.snsb.info:1111/MapService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MapService.disco" MetadataType="Disco" ID="0a948122-642a-41fa-a0b1-e10ac1b48440" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?disco" />
-    <MetadataFile FileName="MapService.wsdl" MetadataType="Wsdl" ID="005fe3cc-d795-4781-b353-c0625b0ef89a" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?wsdl" />
-    <MetadataFile FileName="MapService.xsd" MetadataType="Schema" ID="1c440508-055b-4648-a58c-447104b2523b" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd3" />
     <MetadataFile FileName="MapService1.xsd" MetadataType="Schema" ID="1da6bd23-64cf-48b0-9312-c744121e6c16" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd2" />
     <MetadataFile FileName="MapService2.xsd" MetadataType="Schema" ID="14f7020a-598d-4458-ac9e-2d4a7a21a159" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd1" />
+    <MetadataFile FileName="MapService.wsdl" MetadataType="Wsdl" ID="005fe3cc-d795-4781-b353-c0625b0ef89a" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?wsdl" />
     <MetadataFile FileName="MapService3.xsd" MetadataType="Schema" ID="e4b24795-c93b-4e65-929d-74c9332987e2" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MapService.disco" MetadataType="Disco" ID="0a948122-642a-41fa-a0b1-e10ac1b48440" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/MapService.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
