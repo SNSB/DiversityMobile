@@ -117,8 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="GeoCoordinates_NoAltitude" xml:space="preserve">
+    <value>No Altitude</value>
+  </data>
+  <data name="GeoCoordinates_NoLatitude" xml:space="preserve">
+    <value>No Latitude</value>
+  </data>
+  <data name="GeoCoordinates_NoLongitude" xml:space="preserve">
+    <value>No Longitude</value>
+  </data>
   <data name="GeoCoordinates_Suffix_E" xml:space="preserve">
     <value>E</value>
+  </data>
+  <data name="GeoCoordinates_Suffix_Meter" xml:space="preserve">
+    <value>m</value>
   </data>
   <data name="GeoCoordinates_Suffix_N" xml:space="preserve">
     <value>N</value>
@@ -128,6 +140,9 @@
   </data>
   <data name="GeoCoordinates_Suffix_W" xml:space="preserve">
     <value>W</value>
+  </data>
+  <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
+    <value>Identification</value>
   </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
@@ -146,5 +161,8 @@
   </data>
   <data name="TaxonManagement_Message_Error" xml:space="preserve">
     <value>Error</value>
+  </data>
+  <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
+    <value>download all</value>
   </data>
 </root>

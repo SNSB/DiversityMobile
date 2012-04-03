@@ -16,19 +16,31 @@ namespace DiversityPhone.View
     {
         public const string LATITUDE = "LAT";
         public const string LONGITUDE = "LON";
+        public const string ALTITUDE = "ALT";
+        
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             
-            if (!(value is double))
+            if (!(value is double && parameter != null))
             {
                 System.Diagnostics.Debugger.Break();
                 return null;
             }
 
-            var dVal = (double)value;
+            var dVal = (double)value;            
+            switch (parameter.ToString())
+            {
+                case LATITUDE:
+                case LONGITUDE:
+                    return LatLonString(dVal, parameter.ToString());
+                case ALTITUDE:
+                    return AltitudeString(dVal);
+                default:
+                    return null;
+            }
 
-            return string.Format("{0} {1}", DegMinSecString(dVal), GeoSuffix(dVal, parameter.ToString()));
+            
         }
 
         private string DegMinSecString(double value)
@@ -45,6 +57,25 @@ namespace DiversityPhone.View
             return string.Format("{0}° {1}' {2}''", deg, min, sec);
         }
 
+        private string AltitudeString(double value)
+        {
+            if (double.IsNaN(value) || double.IsInfinity(value))
+                return DiversityResources.GeoCoordinates_NoAltitude;
+            else
+                return string.Format("{0} {1}", (int)value, DiversityResources.GeoCoordinates_Suffix_Meter);
+        }
+
+        private string LatLonString(double value, string latlon)
+        {
+            bool isLatitude = latlon == LATITUDE;
+            if(double.IsNaN(value) || double.IsInfinity(value))
+                return (isLatitude) ? DiversityResources.GeoCoordinates_NoLatitude : DiversityResources.GeoCoordinates_NoLongitude;
+            else
+                return string.Format("{0} {1}", DegMinSecString(value), GeoSuffix(value, latlon));
+        }
+
+        
+
         private string GeoSuffix(double value, string latlon)
         {
             bool isLatitude = latlon == LATITUDE;
@@ -53,7 +84,7 @@ namespace DiversityPhone.View
             if (isLatitude)
                 return (positiveValue) ? DiversityResources.GeoCoordinates_Suffix_N : DiversityResources.GeoCoordinates_Suffix_S;
             else
-                return (positiveValue) ? DiversityResources.GeoCoordinates_Suffix_W : DiversityResources.GeoCoordinates_Suffix_E;
+                return (positiveValue) ? DiversityResources.GeoCoordinates_Suffix_E : DiversityResources.GeoCoordinates_Suffix_W;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

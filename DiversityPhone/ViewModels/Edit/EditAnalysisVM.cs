@@ -6,6 +6,7 @@ using DiversityPhone.Model;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
+using Funq;
 
 
 
@@ -14,6 +15,7 @@ namespace DiversityPhone.ViewModels
     public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
     { 
         #region Properties
+        private Container IOC;
         private IVocabularyService Vocabulary { get; set; }
 
         private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
@@ -57,14 +59,15 @@ namespace DiversityPhone.ViewModels
         ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
 
 
-        public EditAnalysisVM(IVocabularyService voc)
+        public EditAnalysisVM(Container ioc)
             : base(false)
         {
-            Vocabulary = voc;
+            IOC = ioc;
+            Vocabulary = ioc.Resolve<IVocabularyService>();
             
             _Parent = ValidModel
                 .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
-                .Select(parent => new IdentificationUnitVM(Messenger,parent, Services.Page.Current))
+                .Select(parent => new IdentificationUnitVM(IOC,parent, Services.Page.Current))
                 .ToProperty(this, vm => vm.Parent);
 
             _Model = ValidModel.ToProperty(this, x => x.Model);
@@ -73,10 +76,31 @@ namespace DiversityPhone.ViewModels
             _Parent
                 .Select(parent => Vocabulary.getPossibleAnalyses(parent.Model.TaxonomicGroup))
                 .Subscribe(Analyses);
+
+            Analyses.ItemsObservable
+                .Zip(ValidModel, (analyses, iuan) =>
+                            analyses
+                            .Where(an => an.AnalysisID == iuan.AnalysisID)
+                            .FirstOrDefault())
+                .Where(x => x != null)
+                .BindTo(Analyses, x => x.SelectedItem);
                         
             Analyses
                 .Select(selectedAN => (selectedAN != null) ? Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
                 .Subscribe(Results);
+
+            Results.ItemsObservable
+                .Zip(ValidModel, (results, iuan) =>
+                    results
+                    .Where(res => res.Result == iuan.AnalysisResult)
+                    .FirstOrDefault())
+                .Where(x => x != null)
+                .BindTo(Results, x => x.SelectedItem);
+
+            ValidModel
+                .Select(iuan => iuan.AnalysisResult)
+                .BindTo(this, x => x.CustomResult);
+
             _IsCustomResult = Results.ItemsObservable
                 .Where(res => res != null)
                 .Select(results => results.Count == 0)

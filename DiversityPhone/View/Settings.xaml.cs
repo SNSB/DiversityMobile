@@ -26,7 +26,7 @@ namespace DiversityPhone.View
 
         private ApplicationBarIconButton saveBtn,clearBtn, refreshBtn;
 
-        private SerialDisposable setup_isbusy_subyscription = new SerialDisposable(); 
+        private bool initialized = false;
 
         public Settings()
         {
@@ -55,48 +55,52 @@ namespace DiversityPhone.View
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            saveBtn = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-
-            clearBtn = new ApplicationBarIconButton()
+            if (!initialized)
             {
-                IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
-                Text = "reset",
-            };
-            clearBtn.Click += Reset_Click;
+                initialized = true;
+                saveBtn = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
 
-            refreshBtn = new ApplicationBarIconButton()
-            {
-                IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
-                Text = "refresh vocabulary"
-            };
-            refreshBtn.Click += new EventHandler(refreshBtn_Click);
+                clearBtn = new ApplicationBarIconButton()
+                {
+                    IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
+                    Text = "reset",
+                };
+                clearBtn.Click += Reset_Click;
+
+                refreshBtn = new ApplicationBarIconButton()
+                {
+                    IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
+                    Text = "refresh vocabulary"
+                };
+                refreshBtn.Click += new EventHandler(refreshBtn_Click);
 
 
-            if (VM != null)
-            {
-                VM.Save.CanExecuteObservable
-                    .StartWith(VM.Save.CanExecute(null))
-                    .Subscribe(cansave => saveBtn.IsEnabled = cansave);
+                if (VM != null)
+                {
+                    VM.Save.CanExecuteObservable
+                        .StartWith(VM.Save.CanExecute(null))                        
+                        .Subscribe(cansave => saveBtn.IsEnabled = cansave);
 
-                VM.Reset.CanExecuteObservable
-                    .StartWith(VM.Reset.CanExecute(null))
-                    .Subscribe(canreset =>
-                    {
-                        showButtons(canreset);
-                    });
-
-                VM.ObservableForProperty(x => x.IsBusy)
-                    .Value()
-                    .Subscribe(isBusy =>
-                    {
-                        ApplicationBar.IsVisible = !isBusy;                       
-                        var p = Progress;
-                        if(p != null)
+                    VM.Reset.CanExecuteObservable
+                        .StartWith(false)//VM.Reset.CanExecute(null))
+                        .Subscribe(canreset =>
                         {
-                            p.IsIndeterminate = p.IsVisible = isBusy;
-                        }
-                        this.Focus();                           
-                    });                
+                            showButtons(canreset);
+                        });
+
+                    VM.ObservableForProperty(x => x.IsBusy)
+                        .Value()
+                        .Subscribe(isBusy =>
+                        {
+                            ApplicationBar.IsVisible = !isBusy;
+                            var p = Progress;
+                            if (p != null)
+                            {
+                                p.IsIndeterminate = p.IsVisible = isBusy;
+                            }
+                            this.Focus();
+                        });
+                }
             }
 
             

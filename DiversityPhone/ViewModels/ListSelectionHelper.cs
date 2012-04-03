@@ -7,10 +7,40 @@ using System;
 namespace DiversityPhone.ViewModels
 {
     public class ListSelectionHelper<T> : ReactiveObject, IObserver<IList<T>>, IObservable<T>
-    {        
-        public IList<T> Items { get { return _Items.Value; } }
+    {
+        private int deferredIndex = -1;
+        private bool _UpdatingItems;
+        private bool UpdatingItems 
+        {
+            get
+            {
+                return _UpdatingItems;
+            }
+            set
+            {
+                _UpdatingItems = value;
+                if (!_UpdatingItems)
+                    if (SelectedIndex != deferredIndex)
+                        SelectedIndex = deferredIndex;
+                if (_UpdatingItems)
+                    deferredIndex = SelectedIndex;
+            }
+        }
+
+        private IList<T> _Items = null;
+        public IList<T> Items
+        {
+            get
+            {
+                return _Items;
+            }
+            private set
+            {                
+                this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value);
+            }
+        }
         public IObservable<IList<T>> ItemsObservable { get { return _ItemsSubject; } }
-        private ObservableAsPropertyHelper<IList<T>> _Items;
+        
 
         private int _SelectedIndex = -1;
         public int SelectedIndex
@@ -21,7 +51,10 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.SelectedIndex, ref _SelectedIndex, value);
+                if (UpdatingItems)
+                    deferredIndex = value;
+                else
+                    this.RaiseAndSetIfChanged(x => x.SelectedIndex, ref _SelectedIndex, value);
             }
         }
 
@@ -50,19 +83,23 @@ namespace DiversityPhone.ViewModels
                 .Select(idx => (idx > -1) ? Items[idx] : default(T))
                 .DistinctUntilChanged()
                 .Do(val => _SelectedItem = val)
-                .Subscribe(item => _SelectedItemSubject.OnNext(item));
-
-            _Items = _ItemsSubject
-                .Do(items => correctSelectedIndex(items, SelectedItem))
-                .ToProperty(this, x => x.Items);
+                .Subscribe(item => _SelectedItemSubject.OnNext(item));            
         }
 
         private void correctSelectedIndex(IList<T> items, T selectedItem)
         {
-            var selectedIdx = (items != null) ? items.IndexOf(selectedItem) : -1;
-            if (selectedIdx > -1)
-                SelectedIndex = selectedIdx;
-
+            if (items != null)
+            {                
+                if (items.Count == 0)
+                    SelectedIndex = -1;
+                else
+                {
+                    var selectedIdx = items.IndexOf(selectedItem);
+                    SelectedIndex = (selectedIdx != -1) ? selectedIdx : 0;
+                }
+            }
+            else
+                SelectedIndex = -1;
         }
 
         public void OnCompleted()
@@ -77,7 +114,11 @@ namespace DiversityPhone.ViewModels
 
         public void OnNext(IList<T> value)
         {
+            UpdatingItems = true;
+            Items = value;
+            correctSelectedIndex(value, SelectedItem);
             _ItemsSubject.OnNext(value);
+            UpdatingItems = false;
         }
 
         public IDisposable Subscribe(IObserver<T> observer)

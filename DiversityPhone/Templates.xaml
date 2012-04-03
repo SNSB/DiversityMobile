@@ -69,7 +69,7 @@
             
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"
+                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </DataTemplate>
@@ -102,7 +102,7 @@
                     <Run Text=" "/>
                     <Run Text="{Binding Longitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=LON}"/>
                 </TextBlock>
-        		<TextBlock HorizontalAlignment="Center"><Run Text="{Binding Altitude, StringFormat=\{0:G\}}"/><Run Text=" "/><Run Text="m"/></TextBlock>
+                <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Altitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=ALT}"/></TextBlock>
         	</StackPanel>
     	</Grid>
     </DataTemplate>

@@ -62,6 +62,7 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCommand Select { get; private set; }
         public ReactiveCommand Download { get; private set; }
+        public ReactiveCommand DownloadAll { get; private set; }
         public ReactiveCommand Delete { get; private set; }
         public ReactiveCommand Refresh { get; private set; }
         
@@ -149,8 +150,20 @@ namespace DiversityPhone.ViewModels
                     }
                 });
 
-
-
+            DownloadAll = new ReactiveCommand(_IsBusy.Select(x => !x));
+            DownloadAll
+                .Subscribe(_ =>
+                    {
+                        if (RepoLists.Any())
+                        {
+                            downloadTaxonList
+                                .AsyncCompletedNotification
+                                .TakeWhile(_2 => RepoLists.Any())
+                                .Select(_2 => RepoLists.First())
+                                .Subscribe(Download.Execute);
+                            Download.Execute(RepoLists.First());
+                        }
+                    });
 
 
             var taxonSelections = DistinctStateObservable

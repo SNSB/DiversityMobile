@@ -61,11 +61,47 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No Altitude ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_NoAltitude {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_NoAltitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No Latitude ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_NoLatitude {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_NoLatitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No Longitude ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_NoLongitude {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_NoLongitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die E ähnelt.
         /// </summary>
         public static string GeoCoordinates_Suffix_E {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_E", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die m ähnelt.
+        /// </summary>
+        public static string GeoCoordinates_Suffix_Meter {
+            get {
+                return ResourceManager.GetString("GeoCoordinates_Suffix_Meter", resourceCulture);
             }
         }
         
@@ -93,6 +129,15 @@ namespace DiversityPhone {
         public static string GeoCoordinates_Suffix_W {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_W", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Identification ähnelt.
+        /// </summary>
+        public static string IdentificationUnit_Header_Identification {
+            get {
+                return ResourceManager.GetString("IdentificationUnit_Header_Identification", resourceCulture);
             }
         }
         
@@ -147,6 +192,15 @@ namespace DiversityPhone {
         public static string TaxonManagement_Message_Error {
             get {
                 return ResourceManager.GetString("TaxonManagement_Message_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die download all ähnelt.
+        /// </summary>
+        public static string TaxonManagement_Title_DownloadAll {
+            get {
+                return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
             }
         }
     }

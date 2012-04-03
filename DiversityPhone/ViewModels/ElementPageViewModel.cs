@@ -12,13 +12,14 @@ namespace DiversityPhone.ViewModels
         protected IFieldDataService Storage { get; private set; }
 
 
-        private ObservableAsPropertyHelper<ElementVMBase<T>> _Current;
+        private ElementVMBase<T> _Current;
         /// <summary>
         /// Provides Access to the most recent Model Object
         /// </summary>
         public ElementVMBase<T> Current
         {
-            get { return _Current.Value; }
+            get { return _Current; }
+            private set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); }
         }
 
         /// <summary>
@@ -77,15 +78,13 @@ namespace DiversityPhone.ViewModels
             var currentObs = model
                 .Where(m => m != null)
                 .Select(m => ViewModelFromModel(m))
+                .Do(c => Current = c)
                 .Publish();                
             CurrentObservable = currentObs;
             currentObs.Connect();
 
             ValidModel = CurrentObservable
-                .Select(vm => vm.Model);
-
-            _Current = CurrentObservable                
-                .ToProperty(this, x => x.Current);            
+                .Select(vm => vm.Model);                      
 
             //Automatically navigate back, if there's no valid model.
             Messenger.RegisterMessageSource(

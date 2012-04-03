@@ -53,14 +53,13 @@ namespace DiversityPhone.View
             _delete.Click += (s,args) => _vm.Delete.Execute(null);
 
             _vm.ObservableForProperty(x => x.IsEditable)
-                .Select(change => change.Value)                
+                .Value()
+                .StartWith(_vm.IsEditable)
                 .Subscribe(iseditable => adjustApplicationBar(iseditable));
 
             _vm.Save.CanExecuteObservable
-                .Subscribe(canSave => _save.IsEnabled = canSave);
-
-            adjustApplicationBar(_vm.IsEditable);
-                
+                .StartWith(_vm.Save.CanExecute(null))
+                .Subscribe(canSave => _save.IsEnabled = canSave);               
         }
 
         private void adjustApplicationBar(bool editable)

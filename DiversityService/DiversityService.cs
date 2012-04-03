@@ -57,7 +57,9 @@ namespace DiversityService
         }
 
         public IEnumerable<Project> GetProjectsForUser(UserCredentials login)
-        {            
+        {  
+            if(string.IsNullOrWhiteSpace(login.Repository))
+                return Enumerable.Empty<Project>();
             using (var db = new DiversityORM.Diversity(login))
             {
                 try
@@ -478,12 +480,12 @@ namespace DiversityService
                     DisplayText = "Test",
                     Database = "DiversityCollection_Test"
                 },
-                new Repository() // In München funktionen noch nicht implementiert
+                /*new Repository() // In München funktionen noch nicht implementiert
                 {
                     DisplayText="DiversityCollection",
                     Database="DiversityCollection",
-                },
-                 new Repository() // In München funktionen noch nicht implementiert
+                },*/
+                 new Repository() 
                 {
                     DisplayText="DiversityCollection Monitoring",
                     Database="DiversityCollection_Monitoring",

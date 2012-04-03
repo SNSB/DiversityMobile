@@ -5,6 +5,7 @@ using System;
 using DiversityPhone.Messages;
 using DiversityPhone.Services;
 using DiversityPhone.Model;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,7 +17,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Delete { get; private set; }
         #endregion
 
-        public ObservableAsPropertyHelper<bool> _IsEditable;
+        private ObservableAsPropertyHelper<bool> _IsEditable;
         /// <summary>
         /// Shows, whether the current Object can be Edited
         /// </summary>
@@ -29,10 +30,18 @@ namespace DiversityPhone.ViewModels
         }
 
         /// <summary>
+        /// Subject used for the canSave values by default.
+        /// </summary>
+        protected ISubject<bool> _CanSaveSubject { get; private set; }  
+
+        /// <summary>
         /// Determines, whether Save can execute
         /// </summary>
         /// <returns>Observable that will be used to enable/disable Save</returns>
-        protected abstract IObservable<bool> CanSave();
+        protected virtual IObservable<bool> CanSave() 
+        {
+            return Observable.Return(true);
+        }
 
         /// <summary>
         /// Updates the Model object with any unsaved changes.
@@ -56,7 +65,20 @@ namespace DiversityPhone.ViewModels
         public EditElementPageVMBase(bool refreshModel)
             : base(refreshModel)
         {
-            Save = new ReactiveCommand(CanSave());
+            _CanSaveSubject = new Subject<bool>();
+            Save = new ReactiveCommand(
+                _CanSaveSubject
+                );
+                        
+            Observable.Concat(
+                Observable.Return(false),
+                CanSave(),
+                Observable.Never<bool>()
+            )            
+            .ObserveOnDispatcher() // Work around bug in ReactiveUI
+            .Subscribe(_CanSaveSubject);
+
+
             Delete = new ReactiveCommand(
                 ValidModel
                 .Select(m => !m.IsNew())

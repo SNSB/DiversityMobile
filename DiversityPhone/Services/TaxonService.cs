@@ -147,6 +147,19 @@ namespace DiversityPhone.Services
             return getTaxonNames(tableID, query);
         }
 
+        public void clearTaxonLists()
+        {
+            withSelections(sel => 
+                {
+                    foreach (var list in sel.TaxonSelection)
+                    {
+                        withTaxonTable(list.TableID, taxa => taxa.DeleteDatabase());
+                    }
+
+                    sel.DeleteDatabase();
+                });
+        }
+
         private IEnumerable<int> getUnusedTaxonTableIDs(TaxonSelectionDataContext ctx)
         {
             var usedTableIDs = from ts in ctx.TaxonSelection
@@ -236,5 +249,8 @@ namespace DiversityPhone.Services
             }
             public Table<TaxonName> TaxonNames;
         }
+
+
+       
     }
 }

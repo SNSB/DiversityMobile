@@ -43,5 +43,10 @@ namespace DiversityPhone.Services
         /// <param name="query">space separated list of keywords</param>
         /// <returns></returns>
         IList<TaxonName> getTaxonNames(Term taxGroup, string query);
+
+        /// <summary>
+        /// Deletes all Taxon list selections and Databases.
+        /// </summary>
+        void clearTaxonLists();
     }
 }
