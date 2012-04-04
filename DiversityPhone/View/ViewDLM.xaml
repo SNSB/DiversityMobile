@@ -31,7 +31,7 @@
             <StackPanel>
                 <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" Text="" VerticalAlignment="Top" Width="456" />
                 <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click" />
-                <Button Content="Show" Height="72" Name="btn_Show" Width="160" Click="btn_Show_Click" />
+               
                 <ScrollViewer Name="scrollViewer" Height="410" Width="440">
                     <StackPanel>
                         <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >

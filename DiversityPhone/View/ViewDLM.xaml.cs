@@ -53,11 +53,7 @@ namespace DiversityPhone.View
                 MessageBox.Show("Minimum lenght for search is 3");
         }
 
-        private void btn_Show_Click(object sender, RoutedEventArgs e)
-        {
-            VM.Load.Execute(null);
-        }
-
+ 
        
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {

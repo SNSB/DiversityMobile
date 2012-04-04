@@ -87,7 +87,7 @@ namespace DiversityPhone.ViewModels
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
         public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
         public ViewMapPickerVM ViewLM { get { return _ioc.Resolve<ViewMapPickerVM>(); } }
-        public ViewDownloadMapsVM ViewDownLoadMap { get { return _ioc.Resolve<ViewDownloadMapsVM>(); } }
+        public ViewDownloadMapsVM ViewDownloadMap { get { return _ioc.Resolve<ViewDownloadMapsVM>(); } }
          
         public EditAnalysisVM EditAnalysis{get{ return _ioc.Resolve<EditAnalysisVM>();}}
 

@@ -86,17 +86,17 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
 
 
-            Search = new ReactiveCommand(_IsBusy.Select(x => !x))
-                .Subscribe(searchText => searchMaps(searchText));
+            //Search = new ReactiveCommand(_IsBusy.Select(x => !x))
+            //    .Subscribe(searchText => searchMaps(searchText));
        
             
-            Add = new ReactiveCommand(_IsBusy.Select(x => !x))
-                    .Subscribe(mapID=> addMap(mapID));
+            //Add = new ReactiveCommand(_IsBusy.Select(x => !x))
+            //        .Subscribe(mapID=> addMap(mapID));
 
 
             _Keys = StateObservable
                 .Select(_ => getStorageList())
-                .ToProperty(this, x => Keys);
+                .ToProperty(this, x => x.Keys);
 
             _mapinfo = new PhoneMediaServiceClient();
             _mapinfo.GetMapListFilterCompleted += new EventHandler<GetMapListFilterCompletedEventArgs>(mapinfo_GetMapListCompleted);
