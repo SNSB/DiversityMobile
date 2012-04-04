@@ -11,7 +11,8 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True">
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewDownloadMap}" BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
@@ -28,34 +29,33 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" Text="" VerticalAlignment="Top" Width="460" TextChanged="textBox1_TextChanged" />
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox Name="wifiOnlyCheckbox" IsChecked="True" ></CheckBox>
-                    <TextBlock Text="only download when WiFi is available." VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}"></TextBlock>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox Name="externalPowerOnlyCheckbox" IsChecked="True" ></CheckBox>
-                    <TextBlock Text="only download when connected to external power." VerticalAlignment="Center" Foreground="{StaticResource PhoneAccentBrush}" TextWrapping="Wrap" Height="60" Width="374"></TextBlock>
-                </StackPanel>
-
-                <ListBox Name="URLListBox" >
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Background="Transparent" Margin="0,0,0,30">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="350"/>
-                                    <ColumnDefinition Width="80"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0">
-                                    <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
-                                </Grid>
-                                <Grid Grid.Column="1">
-                                    <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" Text="" VerticalAlignment="Top" Width="456" />
+                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click" />
+                <Button Content="Show" Height="72" Name="btn_Show" Width="160" Click="btn_Show_Click" />
+                <ScrollViewer Name="scrollViewer" Height="410" Width="440">
+                    <StackPanel>
+                        <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent" Margin="0,0,0,30">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="350"/>
+                                            <ColumnDefinition Width="80"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </StackPanel>
         </Grid>
     </Grid>

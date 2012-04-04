@@ -11,7 +11,7 @@ namespace DiversityPhone.ViewModels
     using DiversityPhone.Services;
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
-    using DiversityPhone.PhoneMediaService;
+    using DiversityPhone.PMService;
     using System.IO.IsolatedStorage;
     using System.IO;
 

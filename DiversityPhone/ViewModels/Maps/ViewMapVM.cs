@@ -19,9 +19,7 @@ namespace DiversityPhone.ViewModels
 {
     public class ViewMapVM : EditElementPageVMBase<Map>
     {
-          #region Properties
-
-
+      
         #region Properties
         private string _Uri;
         public string Uri
@@ -30,26 +28,41 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
         }
 
-        #endregion
+        private string _Description;
+        public string Description
+        {
+            get { return _Description; }
+            set { this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value); }
+        }
+       
 
-        private BitmapImage _savedImage;
+        private BitmapImage _mapImage;
 
-        public BitmapImage SavedImage
+        public BitmapImage MapImage
         {
             get
             {
-                return _savedImage;
+                return _mapImage;
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.SavedImage, ref _savedImage, value);
+                this.RaiseAndSetIfChanged(x => x.MapImage, ref _mapImage, value);
             }
+        }
+        
+        public int? Height
+        {
+            get { return _mapImage.PixelHeight; }
+        }
+
+        public int? Width
+        {
+            get { return _mapImage.PixelWidth; }
         }
         #endregion
 
         public ViewMapVM()            
         {
-
 
         }
 
@@ -73,8 +86,7 @@ namespace DiversityPhone.ViewModels
             MemoryStream ms = new MemoryStream(data);
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
-            SavedImage = bi;
-         
+            MapImage = bi;  
         }
       
 
@@ -91,14 +103,17 @@ namespace DiversityPhone.ViewModels
             if (s.Context != null)
             {
                 int id;
-                Map map = null;
+                Map map=null; //= Storage.getMapByURI(s.Context);
                 if (int.TryParse(s.Context, out id))
                 {
-                    map= Storage.getMapByID(id);
+                    map = Storage.getMapByID(id);
                 }
-               
+
                 if (map != null)
+                {
                     LoadImage(map);
+                    Description = map.Description;
+                }
                 return map;
             }
             return null;

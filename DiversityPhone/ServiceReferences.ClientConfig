@@ -14,6 +14,10 @@
                     maxReceivedMessageSize="2147483647">
                     <security mode="None" />
                 </binding>
+                <binding name="BasicHttpBinding_IPhoneMediaService1" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
             </basicHttpBinding>
             <customBinding>
                 <binding name="WSHttpBinding_IMediaService4">
@@ -35,6 +39,9 @@
             <endpoint address="http://132.180.195.58:1111/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
+            <endpoint address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
+                contract="PMService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
         </client>
     </system.serviceModel>
 </configuration>

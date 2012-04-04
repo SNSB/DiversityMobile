@@ -16,10 +16,11 @@ using DiversityPhone.Model;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Collections.ObjectModel;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewLMVM : PageViewModel
+    public class ViewMapPickerVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
         private IFieldDataService _storage;
@@ -39,13 +40,10 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public ViewLMVM(IFieldDataService storage)  
+        public ViewMapPickerVM(IFieldDataService storage)  
         {
             _storage = storage;
-            IList<Map> maps=_storage.getAllMaps();
-            IList<MapVM> mapModels = new List<MapVM>();
-            foreach(Map map in maps)
-                mapModels.Add(new MapVM(Messenger,map,Page.ViewMap));
+
 
             _SavedMaps = StateObservable
                 .Select(_ => updatedMapList())
@@ -54,21 +52,9 @@ namespace DiversityPhone.ViewModels
             _subscriptions = new List<IDisposable>()
             {
                 (AddMaps = new ReactiveCommand())
-                    .Subscribe(_ => addMaps()),
-                          
+                    .Subscribe(_ => addMaps()),                      
             };
 
-        }
-
-
-        public void saveMap(Map map)
-        {
-            _storage.addOrUpdateMap(map);
-
-            _SavedMaps = StateObservable
-                .Select(_ => updatedMapList())
-                .ToProperty(this, x => x.SavedMaps);
-            
         }
 
         private void addMaps()       
@@ -78,10 +64,10 @@ namespace DiversityPhone.ViewModels
 
         private IList<MapVM> updatedMapList()
         {
-            return new VirtualizingReadonlyViewModelList<Map, MapVM>(
-                _storage.getAllMaps(),
+            return new ObservableCollection<MapVM>(
+                _storage.getAllMaps().Select(
                 (model) => new MapVM(Messenger, model, Page.ViewMap)
-                );
+                ));
         } 
        
     }

@@ -151,7 +151,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\PhoneMediaService\Reference.cs">
+    <Compile Include="Service References\PMService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -200,6 +200,7 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
@@ -211,7 +212,7 @@
     <Compile Include="ViewModels\Utility\SettingsVM.Setup.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewLMVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
@@ -445,6 +446,16 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <None Include="Service References\PMService\PhoneMediaService.wsdl" />
+    <None Include="Service References\PMService\PhoneMediaService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PMService\PhoneMediaService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PMService\PhoneMediaService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <Resource Include="Images\MetroIcons\white\i.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
@@ -587,37 +598,44 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\DiversityService\Service11.disco" />
+    <None Include="Service References\PMService\PhoneMediaService.disco" />
+    <None Include="Service References\PMService\configuration91.svcinfo" />
+    <None Include="Service References\PMService\configuration.svcinfo" />
+    <None Include="Service References\PMService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service17.xsd">
+    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service171.xsd">
+    <None Include="Service References\DiversityService\Service11.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service172.xsd">
+    <None Include="Service References\DiversityService\Service12.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service173.xsd">
+    <None Include="Service References\DiversityService\Service13.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service174.xsd">
+    <None Include="Service References\DiversityService\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service175.xsd">
+    <None Include="Service References\DiversityService\Service15.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service176.xsd">
+    <None Include="Service References\DiversityService\Service16.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
@@ -694,7 +712,7 @@
     <WCFMetadataStorage Include="Service References\DiversityService\" />
     <WCFMetadataStorage Include="Service References\MapServiceReference\" />
     <WCFMetadataStorage Include="Service References\MediaService4\" />
-    <WCFMetadataStorage Include="Service References\PhoneMediaService\" />
+    <WCFMetadataStorage Include="Service References\PMService\" />
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">

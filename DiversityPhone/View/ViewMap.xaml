@@ -12,7 +12,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewImage}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}">
     
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -23,14 +23,16 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="map" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="Title" Text="map" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="MapDescription" Text="{Binding Description}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-
-            <!--Image for the camera capture.-->
-            <Image x:Name="MapImage"  Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Top" Visibility="Visible" Source="{Binding MapImage}" />
+            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
+                <!--Image for the camera capture.-->
+                <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
+            </ScrollViewer>
         </StackPanel>
     </Grid>
 
