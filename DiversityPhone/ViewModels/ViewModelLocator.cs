@@ -46,9 +46,10 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<ViewCSVM>(c => new ViewCSVM(c));
             _ioc.Register<EditCSVM>(c => new EditCSVM());
-            _ioc.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IFieldDataService>()));
-            _ioc.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IFieldDataService>()));
-            _ioc.Register<ViewMapVM>(c => new ViewMapVM());
+            _ioc.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
+            _ioc.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
+            _ioc.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
+            _ioc.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c));
             _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));
@@ -87,8 +88,9 @@ namespace DiversityPhone.ViewModels
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
         public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
         public ViewMapPickerVM ViewLM { get { return _ioc.Resolve<ViewMapPickerVM>(); } }
-        public ViewDownloadMapsVM ViewDownloadMap { get { return _ioc.Resolve<ViewDownloadMapsVM>(); } }
-         
+        public ViewDLMVM ViewDLM{ get { return _ioc.Resolve<ViewDLMVM>(); } }
+        public ViewDownloadMapsVM ViewDownloadMaps { get { return _ioc.Resolve<ViewDownloadMapsVM>(); } }
+ 
         public EditAnalysisVM EditAnalysis{get{ return _ioc.Resolve<EditAnalysisVM>();}}
 
         public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }

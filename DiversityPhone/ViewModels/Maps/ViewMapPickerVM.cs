@@ -23,7 +23,7 @@ namespace DiversityPhone.ViewModels
     public class ViewMapPickerVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
-        private IFieldDataService _storage;
+        private IMapStorageService _maps;
 
         #region Properties 
 
@@ -40,9 +40,9 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public ViewMapPickerVM(IFieldDataService storage)  
+        public ViewMapPickerVM(IMapStorageService maps)  
         {
-            _storage = storage;
+            _maps = maps;
 
 
             _SavedMaps = StateObservable
@@ -65,7 +65,7 @@ namespace DiversityPhone.ViewModels
         private IList<MapVM> updatedMapList()
         {
             return new ObservableCollection<MapVM>(
-                _storage.getAllMaps().Select(
+                _maps.getAllMaps().Select(
                 (model) => new MapVM(Messenger, model, Page.ViewMap)
                 ));
         } 

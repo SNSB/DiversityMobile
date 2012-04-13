@@ -44,7 +44,7 @@ namespace DiversityPhone.Model
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
-          public static IQueryOperations<MultimediaObject> Operations
+        public static IQueryOperations<MultimediaObject> Operations
         {
             get;
             private set;

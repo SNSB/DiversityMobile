@@ -14,12 +14,19 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reactive.Linq;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
     public class ViewMapVM : EditElementPageVMBase<Map>
     {
-      
+
+        #region Services
+
+        IMapStorageService Maps;
+
+        #endregion
+
         #region Properties
         private string _Uri;
         public string Uri
@@ -61,9 +68,9 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public ViewMapVM()            
+        public ViewMapVM(IMapStorageService maps)            
         {
-
+            Maps = maps;
         }
 
         private void LoadImage(Map map)
@@ -102,17 +109,21 @@ namespace DiversityPhone.ViewModels
         {
             if (s.Context != null)
             {
-                int id;
-                Map map=null; //= Storage.getMapByURI(s.Context);
-                if (int.TryParse(s.Context, out id))
+                Map map=null;
+                try
                 {
-                    map = Storage.getMapByID(id);
-                }
+                    map = Maps.getMapbyServerKey(s.Context);
 
-                if (map != null)
+                    if (map != null)
+                    {
+                        LoadImage(map);
+                        Description = map.Description;
+                    }
+                }
+                catch (Exception e)
                 {
-                    LoadImage(map);
-                    Description = map.Description;
+                    MessageBox.Show(e.Message);
+                    map = null;
                 }
                 return map;
             }

@@ -29,7 +29,7 @@ namespace DiversityPhone.ViewModels
     {
         #region Services
 
-        private IFieldDataService _storage;
+        private IMapStorageService _mapStorage;
         private PhoneMediaServiceClient _mapinfo;
         private HttpWebRequest _imageHttp;
 
@@ -38,7 +38,7 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
 
-        public ReactiveCommand Search { get; private set; }
+        public ReactiveAsyncCommand Search { get; private set; }
         public ReactiveCommand Add { get; private set; }
 
 
@@ -46,21 +46,36 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
 
-        private ObservableCollection<String> _AvailableMaps;
+        private String _mapName;
 
+        private ObservableCollection<String> _AvailableMaps;
         public IList<String> AvailableMaps
         {
             get { return _AvailableMaps; }
         }
 
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;
+        public bool IsBusy 
+        { 
+            get { return _IsBusy; }
+            set { this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value); }
+        }
+        private bool _IsBusy;   
 
-        
         private ObservableAsPropertyHelper<IList<String>> _Keys;
         public IList<String> Keys
         {
             get { return _Keys.Value; }
+        }
+
+
+        private String _SearchString;
+        public String SearchString
+        {
+            get { return _SearchString; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.SearchString, ref _SearchString, value);
+            }
         }
 
 
@@ -81,18 +96,16 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public ViewDownloadMapsVM(IFieldDataService storage)  
+        public ViewDownloadMapsVM(IMapStorageService mapStorage)  
         {
-            _storage = storage;
+            _mapStorage = mapStorage;
+            _AvailableMaps = new ObservableCollection<string>();
 
+            Search = new ReactiveAsyncCommand();
+            Search.Subscribe(_=>searchMaps());
 
-            //Search = new ReactiveCommand(_IsBusy.Select(x => !x))
-            //    .Subscribe(searchText => searchMaps(searchText));
-       
-            
-            //Add = new ReactiveCommand(_IsBusy.Select(x => !x))
-            //        .Subscribe(mapID=> addMap(mapID));
-
+            Add = new ReactiveCommand();
+            Add.Subscribe(mapName => addMap(mapName as String));
 
             _Keys = StateObservable
                 .Select(_ => getStorageList())
@@ -102,7 +115,6 @@ namespace DiversityPhone.ViewModels
             _mapinfo.GetMapListFilterCompleted += new EventHandler<GetMapListFilterCompletedEventArgs>(mapinfo_GetMapListCompleted);
             _mapinfo.GetMapUrlCompleted += new EventHandler<GetMapUrlCompletedEventArgs>(mapinfo_GetMapUrlCompleted);
             _mapinfo.GetXmlUrlCompleted += new EventHandler<GetXmlUrlCompletedEventArgs>(mapinfo_GetXmlUrlCompleted);
-
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (!isoStore.DirectoryExists("Maps"))
@@ -123,60 +135,44 @@ namespace DiversityPhone.ViewModels
         public void saveWhenKeysArePresent(string key)
         {
             Keys.Add(key);
-            string keyTrunk = key.Substring(0, key.LastIndexOf(".") - 1);
+            string keyTrunk = key.Substring(0, key.LastIndexOf("."));
             string keyPng=keyTrunk + ".png";
             string keyXML=keyTrunk+".xml";
             if (Keys.Contains(keyXML)&&Keys.Contains(keyPng))
             {
                 Map newMap = Map.loadMapParameterFromFile(keyXML);
                 newMap.Uri = keyPng;
+                newMap.ServerKey = _mapName;
                 saveMap(newMap);
                 Keys.Remove(keyXML);
                 Keys.Remove(keyPng);
-                loadMap(keyPng);
+                IsBusy = false; //Causes Thread Violation
             }
-                      
+                    
         }
 
         public void saveMap(Map map)
         {
-            _storage.addOrUpdateMap(map);
-        }
-
-        private void loadMap(String filename)
-        {
-
-            byte[] data;
-
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(filename, FileMode.Open, FileAccess.Read))
-                {
-                    data = new byte[isfs.Length];
-                    isfs.Read(data, 0, data.Length);
-                    isfs.Close();
-                }
-
-            }
-            MemoryStream ms = new MemoryStream(data);
-            BitmapImage bi = new BitmapImage();
-            bi.SetSource(ms);
-            MapImage = bi;
+            _mapStorage.addOrUpdateMap(map);
         }
 
         #endregion
 
-        #region Maplist Process
+        #region Load Available Maps
 
-        private void searchMaps(string substring)
+        private void searchMaps()
         {
-            _mapinfo.GetMapListAsync(substring);
+            IsBusy = true;
+            _mapinfo.GetMapListFilterAsync(SearchString);
         }
 
         public void mapinfo_GetMapListCompleted(object sender, GetMapListFilterCompletedEventArgs e)
         {
-            _AvailableMaps = e.Result;
+            AvailableMaps.Clear();
+            IsBusy = false;
+            foreach (String map in e.Result)
+                AvailableMaps.Add(map);
+          
         }
 
         #endregion
@@ -184,16 +180,31 @@ namespace DiversityPhone.ViewModels
         #region Download Process
 
         //1. Select Map and download corresponding url
-        private void addMap(String mapID)
+        private void addMap(String mapName)
         {
+            if (IsBusy == true)
+                return;
+            IsBusy = true;
+            if (_mapStorage.isPresent(mapName))
+            {
+                if (MessageBox.Show("Map is already present. Override?", "Map present", MessageBoxButton.OKCancel).Equals(MessageBoxResult.Cancel))
+                {
+                    IsBusy = false;
+                    return;
+                }
+            }
+
+
             //Get correponding URL for the map for the download from the SNSB IT-Center
-            _mapinfo.GetMapUrlAsync(mapID);
-            _mapinfo.GetXmlUrlAsync(mapID);
+            _mapinfo.GetMapUrlAsync(mapName);
+            _mapinfo.GetXmlUrlAsync(mapName);
+            _mapName = mapName;
         }
 
         //2. Initiate DownloadMap
         public void mapinfo_GetMapUrlCompleted(object sender, GetMapUrlCompletedEventArgs e)
         {
+         
             //The Result of the selection is passed in the Arguments of the event
             string transferFileName = e.Result;
             Uri transferUri = new Uri(Uri.EscapeUriString(transferFileName), UriKind.RelativeOrAbsolute);
@@ -202,7 +213,8 @@ namespace DiversityPhone.ViewModels
             string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
             _imageHttp.Headers["Authorization"] = "Basic " + credentials;
             _imageHttp.BeginGetResponse(DownloadCallback, _imageHttp);
-            //Todo put DownloadProcess on the UI
+           
+            
         }
 
 
@@ -242,7 +254,6 @@ namespace DiversityPhone.ViewModels
             }
             saveWhenKeysArePresent(fileName);
         }
-
         #endregion
 
     }

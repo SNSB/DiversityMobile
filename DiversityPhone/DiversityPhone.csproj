@@ -167,6 +167,8 @@
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
+    <Compile Include="Services\IMapStorageService.cs" />
+    <Compile Include="Services\IMapTransferService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\DiversityServiceClient.Upload.cs" />
     <Compile Include="Services\ITaxonService.cs" />
@@ -174,6 +176,8 @@
     <Compile Include="Services\IFieldDataService.cs" />
     <Compile Include="Services\IVocabularyService.cs" />
     <Compile Include="Model\IQueryOperations.cs" />
+    <Compile Include="Services\MapStorage.cs" />
+    <Compile Include="Services\MapTranferService.cs" />
     <Compile Include="Services\MediaType.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\NavigationService.cs" />
@@ -200,6 +204,11 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
+    <Compile Include="ViewModels\Maps\MapManagementVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewModels\Maps\ViewDLMVM.cs" />
     <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
@@ -272,6 +281,9 @@
     </Compile>
     <Compile Include="View\ViewDLM.xaml.cs">
       <DependentUpon>ViewDLM.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewDownloadMaps.xaml.cs">
+      <DependentUpon>ViewDownloadMaps.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
@@ -398,6 +410,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewDLM.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewDownloadMaps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

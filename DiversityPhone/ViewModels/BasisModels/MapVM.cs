@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
 
         protected override NavigationMessage NavigationMessage
         {
-            get { return new NavigationMessage(TargetPage, Model.MapID.ToString(), ReferrerType, Referrer); }
+            get { return new NavigationMessage(TargetPage, Model.ServerKey, ReferrerType, Referrer); }
         }
 
         public MapVM(IMessageBus _messenger, Map model, Page targetPage)

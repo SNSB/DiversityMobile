@@ -14,7 +14,7 @@ namespace DiversityPhone.Model
     {
 
         [Column(IsPrimaryKey = true)]
-        public int MapID { get; set; }
+        public String ServerKey { get; set; }
 
         [Column]
         public String Uri { get; set; }
@@ -24,7 +24,6 @@ namespace DiversityPhone.Model
 
         [Column]
         public String Description { get; set; }
-
 
         [Column]
         public double LatitudeNorth { get; set; }
@@ -54,31 +53,32 @@ namespace DiversityPhone.Model
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
 
-
         public static IQueryOperations<Map> Operations
         {
             get;
             private set;
         }
-
+    
         public Map()
-        {
-            
+        {            
             this.ModificationState= null;
             this.LogUpdatedWhen = DateTime.Now;
 
-             Operations = new QueryOperations<Map>(
+            Operations = new QueryOperations<Map>(
                 //Smallerthan
-                          (q, map) => q.Where(row => row.MapID < map.MapID),
+                        (q, map) => q.Where(row => row.LatitudeNorth < map.LatitudeNorth),
                 //Equals
-                          (q, map) => q.Where(row => row.MapID == map.MapID),
+                        (q, map) => q.Where(row => row.ServerKey == map.ServerKey),
                 //Orderby
-                          (q) => q.OrderBy(map => map.MapID),
+                        (q) => from map in q
+                               orderby map.LatitudeNorth, map.LongitudeWest
+                               select map,
                 //FreeKey
-                          (q, map) =>
-                          {
-                              map.MapID = QueryOperations<Map>.FindFreeIntKey(q, row => row.MapID);
-                          });
+                        (q, cep) =>
+                        {
+                            //Not Applicable
+                        });
+
         }
 
         public static bool isOnMap(Map map, double latitude, double longitude)

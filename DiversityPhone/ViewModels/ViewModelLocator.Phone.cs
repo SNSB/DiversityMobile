@@ -20,7 +20,8 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<IFieldDataService>(App.OfflineDB);
             _ioc.Register<ITaxonService>(new TaxonService());
             _ioc.Register<IVocabularyService>(new VocabularyService(_ioc.Resolve<IMessageBus>()));
-
+            _ioc.Register<IMapStorageService>(new MapStorageService(_ioc.Resolve<IMessageBus>()));
+            _ioc.Register<IMapTransferService>(new MapTranferService(_ioc.Resolve<IMessageBus>()));
             _ioc.Register<ISettingsService>(App.Settings);
 
             _ioc.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(_ioc.Resolve<ISettingsService>()));

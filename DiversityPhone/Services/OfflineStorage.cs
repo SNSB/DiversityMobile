@@ -575,65 +575,7 @@
 
        
 
-        #region Maps
-
-        public IList<Map> getAllMaps()
-        {
-            return uncachedQuery(ctx => from m in ctx.Maps
-                                        select m);
-        }
-        public IList<Map> getMapsForPoint(double latitude, double longitude) 
-        {
-            return uncachedQuery(ctx => from m in ctx.Maps
-                                        where m.LatitudeNorth >= latitude
-                                            &&  m.LatitudeSouth <=latitude
-                                            &&  m.LongitudeEast >=longitude
-                                            &&  m.LongitudeWest <=longitude                                 
-                                        select m);
-        }
-
-        public Map getMapByURI(string uri)
-        {
-            IList<Map> objects = uncachedQuery(ctx => from map in ctx.Maps
-                                                                   where map.Uri == uri
-                                                                   select map);
-            if (objects.Count == 0)
-                throw new KeyNotFoundException();
-            if (objects.Count > 1)
-                throw new DuplicateKeyException(objects);
-            return objects[0];
-        }
-
-        public Map getMapByID(int mapID)
-        {
-            return singletonQuery(ctx => from map in ctx.Maps
-                                         where map.MapID == mapID
-                                         select map);  
-        }
-
-        public void addOrUpdateMap(Map map)
-        {
-           
-            addOrUpdateRow(Map.Operations,
-                ctx => ctx.Maps,
-                map
-            );
-        }
-
-
-        public void deleteMap(Map map)
-        {
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(map.Uri))
-            {
-                myStore.DeleteFile(map.Uri);
-            }
-            deleteRow(Map.Operations, ctx => ctx.Maps, map);
-        }
-
-
-        #endregion
-
+      
 
         #region SampleData
         private void sampleData()

@@ -58,14 +58,6 @@ using System;
         IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType objectType, int id,MediaType type);
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
-
-
-        IList<Map> getAllMaps();
-        IList<Map> getMapsForPoint(double latitude, double longitude);
-        Map getMapByURI(string uri);
-        Map getMapByID(int mapID);
-        void addOrUpdateMap(Map map);
-        void deleteMap(Map map);
         
     }
 }
