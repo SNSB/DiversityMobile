@@ -30,8 +30,7 @@ namespace DiversityPhone.ViewModels
         #region Services
 
         private IMapStorageService _mapStorage;
-        private PhoneMediaServiceClient _mapinfo;
-        private HttpWebRequest _imageHttp;
+        private PhoneMediaServiceClient _mapinfo;     
 
         #endregion
 
@@ -57,7 +56,7 @@ namespace DiversityPhone.ViewModels
         public bool IsBusy 
         { 
             get { return _IsBusy; }
-            set { this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value); }
+            private set { this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value); }
         }
         private bool _IsBusy;   
 
@@ -146,7 +145,7 @@ namespace DiversityPhone.ViewModels
                 saveMap(newMap);
                 Keys.Remove(keyXML);
                 Keys.Remove(keyPng);
-                IsBusy = false; //Causes Thread Violation
+                IsBusy = false; //Causes Thread Violation                
             }
                     
         }
@@ -209,12 +208,13 @@ namespace DiversityPhone.ViewModels
             string transferFileName = e.Result;
             Uri transferUri = new Uri(Uri.EscapeUriString(transferFileName), UriKind.RelativeOrAbsolute);
 
-            _imageHttp = (HttpWebRequest)WebRequest.CreateHttp(transferUri);
+            var _imageHttp = (HttpWebRequest)WebRequest.CreateHttp(transferUri);
             string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
             _imageHttp.Headers["Authorization"] = "Basic " + credentials;
-            _imageHttp.BeginGetResponse(DownloadCallback, _imageHttp);
-           
-            
+            Observable.FromAsyncPattern<WebResponse>(_imageHttp.BeginGetResponse, _imageHttp.EndGetResponse)
+               .Invoke()
+               .SubscribeOnDispatcher() //This allows us to modify UI state in callback
+               .Subscribe(DownloadCallback);              
         }
 
 
@@ -224,19 +224,20 @@ namespace DiversityPhone.ViewModels
             string transferFileName = e.Result;
             Uri transferUri = new Uri(Uri.EscapeUriString(transferFileName), UriKind.RelativeOrAbsolute);
 
-            _imageHttp = (HttpWebRequest)WebRequest.CreateHttp(transferUri);
+            var _imageHttp = (HttpWebRequest)WebRequest.CreateHttp(transferUri);
             string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
             _imageHttp.Headers["Authorization"] = "Basic " + credentials;
-            _imageHttp.BeginGetResponse(DownloadCallback, _imageHttp);
+            Observable.FromAsyncPattern<WebResponse>(_imageHttp.BeginGetResponse, _imageHttp.EndGetResponse)
+                .Invoke()
+                .SubscribeOnDispatcher() //This allows us to modify UI state in callback
+                .Subscribe(DownloadCallback);            
         }
 
         //4. Save Files and Add to KeyList
-        private void DownloadCallback(IAsyncResult result)
-        {
-            HttpWebRequest req1 = (HttpWebRequest)result.AsyncState;
-            HttpWebResponse response = (HttpWebResponse)req1.EndGetResponse(result);
+        private void DownloadCallback(WebResponse response)
+        {            
             Stream receiveStream = response.GetResponseStream();
-            String uriName = req1.RequestUri.OriginalString;
+            String uriName = response.ResponseUri.OriginalString; //Not sure if this works
             int index = uriName.LastIndexOf("/") + 1;
             String fileName = "Maps\\" + uriName.Substring(index, uriName.Length - index);
             int lenght = (int)response.ContentLength;
