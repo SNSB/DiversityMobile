@@ -126,7 +126,7 @@ namespace DiversityService
         {
             try
             {
-                using (var db = new DiversityORM.Diversity())
+                using (var db = new DiversityORM.Diversity(login))
                 {
                     return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
                 }
@@ -148,12 +148,8 @@ namespace DiversityService
         }
       
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
-        {
-            login.Repository = CATALOG_DIVERSITYMOBILE;
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                return loadTablePaged<Model.TaxonName>(list.Table, page, db);
-            }         
+        {            
+            return loadTablePaged<Model.TaxonName>(list.Table, page, DiversityMobile(login));                   
         }
 
         public IEnumerable<Model.Property> GetPropertiesForUser(UserCredentials login)
@@ -171,11 +167,8 @@ namespace DiversityService
             var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
             PropertyList list;
             if (propsForUser.TryGetValue(p.PropertyID, out list))
-            {
-                using (var db = new DiversityORM.Diversity(login))
-                {
-                    return loadTablePaged<Model.PropertyName>(list.Table, page, db);
-                }
+            {                
+                return loadTablePaged<Model.PropertyName>(list.Table, page, DiversityMobile(login));                
             }
             else
                 return Enumerable.Empty<Model.PropertyName>();
