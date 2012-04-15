@@ -185,8 +185,14 @@ namespace DiversityPhone.Services
                 select p);
         }
 
-
-
+        public void addProperties(IEnumerable<Property> props)
+        {
+            withDataContext(ctx =>
+                {
+                    ctx.Properties.InsertAllOnSubmit(props);
+                    ctx.SubmitChanges();
+                });
+        }
         #endregion
 
         private void withDataContext(Action<VocabularyDataContext> operation)

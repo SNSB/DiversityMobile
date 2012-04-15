@@ -28,5 +28,6 @@ namespace DiversityPhone.Services
 
         IList<Property> getAllProperties();
         Property getPropertyByID(int id);
+        void addProperties(IEnumerable<Property> props);
     }
 }
