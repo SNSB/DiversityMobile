@@ -3,7 +3,6 @@ using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
 using System.Linq;
 using System.IO.IsolatedStorage;
-using System.Linq;
 using System.Xml.Linq;
 using System.IO;
 

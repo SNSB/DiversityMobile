@@ -1,30 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Windows;
-using System.Text;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using Microsoft.Phone.BackgroundTransfer;
 using System.IO.IsolatedStorage;
-
-
-using System.Windows.Resources;
 using System.Windows.Media.Imaging;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using System.IO;
-using System.IO.IsolatedStorage;
 using DiversityPhone.PMService;
 using DiversityPhone.Services;
 using System.Collections.ObjectModel;
-using ReactiveUI;
 
 namespace DiversityPhone.View
 {
