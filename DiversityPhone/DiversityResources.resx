@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EventProperty_Header_Property" xml:space="preserve">
+    <value>Property</value>
+  </data>
+  <data name="EventProperty_Header_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
   <data name="GeoCoordinates_NoAltitude" xml:space="preserve">
     <value>No Altitude</value>
   </data>
