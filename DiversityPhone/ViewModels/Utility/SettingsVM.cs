@@ -259,7 +259,22 @@ namespace DiversityPhone.ViewModels.Utility
 
             var atgs = atgObservable.First();
 
-            vocabulary.addAnalysisTaxonomicGroups(atgs);           
+            _BusyMessageSubject.OnNext("Downloading Event Properties");
+
+            var pObservable = diversityService.GetPropertiesForUser();
+
+            vocabulary.addAnalysisTaxonomicGroups(atgs);
+
+            var props = pObservable.First();
+
+            vocabulary.addProperties(props);
+
+            foreach (var p in props)
+            {                
+                diversityService.DownloadPropertyValuesChunked(p)
+                    .ForEach(chunk => vocabulary.addPropertyNames(chunk));
+            }
+            
         }
 
         
