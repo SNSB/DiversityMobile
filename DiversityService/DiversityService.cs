@@ -17,7 +17,7 @@ namespace DiversityService
 {
     public partial class DiversityService : IDiversityService
     {
-        private const string CATALOG_DIVERSITYMOBILE = "DiversityMobile";
+        
 
         #region Get
 
@@ -152,48 +152,33 @@ namespace DiversityService
             login.Repository = CATALOG_DIVERSITYMOBILE;
             using (var db = new DiversityORM.Diversity(login))
             {
-                //TODO Improve SQL Sanitation
-                if (list.Table.Contains(';') ||
-                    list.Table.Contains('\'') ||
-                    list.Table.Contains('"'))
-                    return Enumerable.Empty<TaxonName>();  //SQL Injection ?
-
-                var sql = PetaPoco.Sql.Builder
-                    .From(String.Format("[dbo].[{0}] AS [TaxonName]",list.Table))                    
-                    .SQL;
-
-
-                var res = db.Page<TaxonName>(page, 1000, sql).Items;
-                return res;
+                return loadTablePaged<Model.TaxonName>(list.Table, page, db);
             }         
         }
 
-        public IEnumerable<Model.PropertyList> GetPropertyListsForUser(UserCredentials login)
+        public IEnumerable<Model.Property> GetPropertiesForUser(UserCredentials login)
         {
-            login.Repository = CATALOG_DIVERSITYMOBILE;
+            var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
+            
             using (var db = new DiversityORM.Diversity(login))
             {
-                return propertyListsForUser(login.LoginName, db).ToList();
-            }
+                return getProperties(db).Where(p => propsForUser.ContainsKey(p.PropertyID)).ToList();
+            }            
         }
 
-        public IEnumerable<Model.PropertyName> DownloadPropertyList(PropertyList list, int page, UserCredentials login)
+        public IEnumerable<Model.PropertyName> DownloadPropertyNames(Property p, int page, UserCredentials login)
         {
-            login.Repository = CATALOG_DIVERSITYMOBILE;
-            using (var db = new DiversityORM.Diversity(login))
+            var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
+            PropertyList list;
+            if (propsForUser.TryGetValue(p.PropertyID, out list))
             {
-                //TODO Improve SQL Sanitation
-                if (list.Table.Contains(';') ||
-                    list.Table.Contains('\'') ||
-                    list.Table.Contains('"'))
-                    return Enumerable.Empty<PropertyName>();  //SQL Injection ?
-
-                var sql = PetaPoco.Sql.Builder
-                    .From(String.Format("[dbo].[{0}] AS [PropertyName]", list.Table))
-                    .SQL;
-                var res = db.Page<PropertyName>(page, 1000, sql).Items;
-                return res;
-            }      
+                using (var db = new DiversityORM.Diversity(login))
+                {
+                    return loadTablePaged<Model.PropertyName>(list.Table, page, db);
+                }
+            }
+            else
+                return Enumerable.Empty<Model.PropertyName>();
         }
 
        
@@ -592,7 +577,6 @@ namespace DiversityService
         }
 
 
-        #endregion
-
+        #endregion       
     }
 }

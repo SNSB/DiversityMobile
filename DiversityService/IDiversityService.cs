@@ -54,9 +54,9 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
         [OperationContract]
-        IEnumerable<PropertyList> GetPropertyListsForUser(UserCredentials login);
+        IEnumerable<Property> GetPropertiesForUser(UserCredentials login);
         [OperationContract]
-        IEnumerable<PropertyName> DownloadPropertyList(PropertyList list, int page, UserCredentials login);
+        IEnumerable<PropertyName> DownloadPropertyNames(Property p, int page, UserCredentials login);
 
         #endregion
 

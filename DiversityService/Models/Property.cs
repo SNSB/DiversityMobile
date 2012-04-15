@@ -10,8 +10,6 @@ namespace DiversityService.Model
         public int PropertyID { get; set; }
         public string PropertyName { get; set; }
         public string DisplayText { get; set; }
-        public string Description { get; set; }
-
-        public DateTime LogUpdatedWhen { get; set; }
+        public string Description { get; set; }        
     }
 }

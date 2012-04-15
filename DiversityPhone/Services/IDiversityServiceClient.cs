@@ -38,9 +38,9 @@ namespace DiversityPhone.Services
 
         IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(Svc.TaxonList list);
 
-        IObservable<IEnumerable<Svc.PropertyList>> GetPropertyLists();
+        IObservable<IEnumerable<Property>> GetPropertiesForUser();
 
-        IObservable<IEnumerable<PropertyName>> DownloadPropertyListChunked(Svc.PropertyList list);
+        IObservable<IEnumerable<PropertyName>> DownloadPropertyValuesChunked(Property p);
 
         #endregion
 

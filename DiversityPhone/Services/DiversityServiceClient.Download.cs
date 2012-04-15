@@ -105,22 +105,29 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<PropertyList>> GetPropertyLists()
+        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser()
         {
-            var source = Observable.FromEvent<EventHandler<GetPropertyListsForUserCompletedEventArgs>, GetPropertyListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetPropertyListsForUserCompleted += d, d => _svc.GetPropertyListsForUserCompleted -= d)
-                .Select(args => args.Result as IEnumerable<PropertyList>);
+            var source = Observable.FromEvent<EventHandler<GetPropertiesForUserCompletedEventArgs>, GetPropertiesForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetPropertiesForUserCompleted += d, d => _svc.GetPropertiesForUserCompleted -= d)
+                .Select(args => args.Result as IEnumerable<Client.Property>);
             var res = singleResultObservable(source);
-            _svc.GetPropertyListsForUserAsync(GetCreds());
+            _svc.GetPropertiesForUserAsync(GetCreds());
             return res;
         }
 
 
-        public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyListChunked(PropertyList list)
+        public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyValuesChunked(Client.Property p)
         {
             var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
+            var svcProperty = new Property()
+            {
+                PropertyID = p.PropertyID,
+                PropertyName = p.PropertyName,
+                Description = p.Description,
+                DisplayText = p.DisplayText
+            };
             int chunk = 1; //First Chunk is 1, not 0!
 
-            var res = Observable.FromEvent<EventHandler<DownloadPropertyListCompletedEventArgs>, DownloadPropertyListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyListCompleted += d, d => localclient.DownloadPropertyListCompleted -= d)
+            var res = Observable.FromEvent<EventHandler<DownloadPropertyNamesCompletedEventArgs>, DownloadPropertyNamesCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyNamesCompleted += d, d => localclient.DownloadPropertyNamesCompleted -= d)
                 .Select(args => args.Result ?? Enumerable.Empty<PropertyName>())
                 .Select(taxa => taxa.Select(
                     property => new Client.PropertyName
@@ -137,14 +144,14 @@ namespace DiversityPhone.Services
                     if (taxonChunk.Any())
                     {
                         //There might still be more Taxa -> request next chunk
-                        localclient.DownloadPropertyListAsync(list, ++chunk, GetCreds());
+                        localclient.DownloadPropertyNamesAsync(svcProperty, ++chunk, GetCreds());
                         return true;
                     }
                     else //Transfer finished
                         return false;
                 });
             //Request first chunk
-            localclient.DownloadPropertyListAsync(list, chunk, GetCreds());
+            localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds());
             return res;
         }
 

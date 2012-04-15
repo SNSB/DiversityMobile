@@ -1,12 +1,17 @@
 ﻿using DiversityService.Model;
 using DiversityORM;
 using System.Collections.Generic;
+using System.Text;
+using System.Linq;
+using System;
 
 
 namespace DiversityService
 {
     public partial class DiversityService
     {
+        private const string CATALOG_DIVERSITYMOBILE = "DiversityMobile";
+
         private static IEnumerable<AnalysisTaxonomicGroup> analysisTaxonomicGroupsForProject(int projectID, Diversity db)
         {
             return db.Query<AnalysisTaxonomicGroup>("FROM [DiversityMobile_AnalysisTaxonomicGroupsForProject](@0) AS [AnalysisTaxonomicGroup]", projectID);
@@ -27,9 +32,37 @@ namespace DiversityService
             return db.Query<AnalysisResult>("FROM [DiversityMobile_AnalysisResultForProject](@0) AS [AnalysisResult]", projectID);
         }
 
-        private static IEnumerable<PropertyList> propertyListsForUser(string loginName, Diversity db)
+        private static IEnumerable<PropertyList> propertyListsForUser(UserCredentials login)
         {
-            return db.Query<PropertyList>("FROM [PropertyListsForUser](@0) AS [PropertyList]", loginName);
+            return DiversityMobile(login).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
+        }
+
+        private static IEnumerable<Property> getProperties(Diversity db)
+        {
+            return db.Query<Property>("FROM [Property] AS [Property]");
+        }
+
+        private static IEnumerable<T> loadTablePaged<T>(string table, int page, Diversity db)
+        {
+            //TODO Improve SQL Sanitation
+            if (table.Contains(";") ||
+                table.Contains("'") ||
+                table.Contains("\""))
+                return Enumerable.Empty<T>();  //SQL Injection ?
+
+            var sql = PetaPoco.Sql.Builder
+                .From(String.Format("[dbo].[{0}] AS [{1}]", table, typeof(T).Name))
+                .SQL;
+            return db.Page<T>(page, 1000, sql).Items;
+        }
+
+        private static Diversity DiversityMobile(UserCredentials login)
+        {
+            var repo = login.Repository;
+            login.Repository = CATALOG_DIVERSITYMOBILE;
+            var db = new Diversity(login);
+            login.Repository = repo;
+            return db;
         }
 
     }

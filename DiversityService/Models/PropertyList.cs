@@ -10,7 +10,5 @@ namespace DiversityService.Model
         public string Table { get; set; }
         [Column("PropertyID")]
         public int PropertyID { get; set; }
-        [Column("DisplayText")]
-        public string DisplayText { get; set; }
     }
 }

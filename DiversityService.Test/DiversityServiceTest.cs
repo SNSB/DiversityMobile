@@ -16,10 +16,7 @@ namespace DiversityService.Test
             Repository = "DiversityCollection_Test"
         };
 
-        private Project testProject = new Project()
-        {
-            ProjectID = 1100,            
-        };
+        private int testProject = 1100;
 
         private DiversityServiceClient _target;
         public DiversityServiceTest()
@@ -111,7 +108,7 @@ namespace DiversityService.Test
             
 
             //Execute
-            var analyses = _target.GetAnalysesForProject(testProject, testCredentials);
+            var analyses = _target.GetAnalysisTaxonomicGroupsForProject(testProject, testCredentials);
 
 
             //Assert
@@ -173,6 +170,22 @@ namespace DiversityService.Test
             //Assert
             Assert.NotEmpty(ar);
             Assert.Equal(ar.Distinct(new ATGComparer()).Count(), ar.Count());
+        }
+
+        [Fact]
+        public void propertylistssForUser_should_work()
+        {
+            //Prepare
+            
+
+            //Execute
+            var lists = _target.GetPropertiesForUser(testCredentials);
+
+
+            //Assert
+            Assert.True(true);
+            //Don't have any TermLists
+            //Assert.NotEmpty(lists);
         }
 
         private class TermComparer : IEqualityComparer<Term>
