@@ -34,6 +34,7 @@ using System;
         void updateEventKey(int oldEventKey, int newEventKey);
 
         IList<CollectionEventProperty> getPropertiesForEvent(Event ev);
+        CollectionEventProperty getPropertyByID(int eventId, int propertyId);
         void addOrUpdateCollectionEventProperty(CollectionEventProperty cep);
 
         IList<Specimen> getAllSpecimen();

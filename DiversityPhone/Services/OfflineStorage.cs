@@ -283,12 +283,19 @@
 
         public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
         {
-            return cachedQuery(CollectionEventProperty.Operations,
-            ctx =>
+            return uncachedQuery(ctx =>
                 from cep in ctx.CollectionEventProperties
                 where cep.EventID == ev.EventID 
                 select cep
                 );
+        }
+
+        public CollectionEventProperty getPropertyByID(int eventId, int propertyId)
+        {
+            return singletonQuery(ctx => from cep in ctx.CollectionEventProperties
+                                         where cep.EventID == eventId &&
+                                                cep.PropertyID == propertyId
+                                         select cep);
         }
 
         public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
