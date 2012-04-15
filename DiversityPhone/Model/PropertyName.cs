@@ -20,19 +20,9 @@ namespace DiversityPhone.Model
         public string PropertyUri { get; set; }
 
         [Column]
-        public int PropertyID { get; set; }
+        public int PropertyID { get; set; }      
 
         [Column]
-        public int TermID { get; set; }
-
-        [Column]
-        public int BroaderTermID { get; set; }
-
-        [Column]
-        public string DisplayText { get; set; }
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
-
+        public string DisplayText { get; set; } 
     }
 }

@@ -18,23 +18,8 @@ namespace DiversityPhone.Model
         //Read-Only
         [Column(IsPrimaryKey=true)]
         public int PropertyID { get; set; }
-
+       
         [Column]
-        public string PropertyName { get; set; }
-
-        [Column]
-        public string DisplayText { get; set; }
-
-        [Column]
-        public string Description { get; set; }
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
-
-        public Property()
-        {
-            LogUpdatedWhen = DateTime.Now;
-        }
-
+        public string DisplayText { get; set; }        
     }
 }

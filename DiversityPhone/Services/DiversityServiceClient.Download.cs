@@ -108,7 +108,12 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser()
         {
             var source = Observable.FromEvent<EventHandler<GetPropertiesForUserCompletedEventArgs>, GetPropertiesForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetPropertiesForUserCompleted += d, d => _svc.GetPropertiesForUserCompleted -= d)
-                .Select(args => args.Result as IEnumerable<Client.Property>);
+                .Select(args => args.Result
+                    .Select(p => new Client.Property()
+                    { 
+                        PropertyID = p.PropertyID,                        
+                        DisplayText = p.DisplayText
+                    }));
             var res = singleResultObservable(source);
             _svc.GetPropertiesForUserAsync(GetCreds());
             return res;
@@ -120,9 +125,7 @@ namespace DiversityPhone.Services
             var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
             var svcProperty = new Property()
             {
-                PropertyID = p.PropertyID,
-                PropertyName = p.PropertyName,
-                Description = p.Description,
+                PropertyID = p.PropertyID,               
                 DisplayText = p.DisplayText
             };
             int chunk = 1; //First Chunk is 1, not 0!
@@ -133,11 +136,8 @@ namespace DiversityPhone.Services
                     property => new Client.PropertyName
                     {
                         PropertyUri=property.PropertyUri,
-                        PropertyID=property.PropertyID,
-                        TermID=property.TermID,
-                        BroaderTermID = property.BroaderTermID,
+                        PropertyID=property.PropertyID,                       
                         DisplayText = property.DisplayText,
-
                     }))
                 .TakeWhile(taxonChunk =>
                 {
