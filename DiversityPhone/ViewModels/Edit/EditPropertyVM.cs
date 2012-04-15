@@ -2,6 +2,7 @@
 using System.Net;
 using System.Reactive.Linq;
 using ReactiveUI;
+using System.Linq;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
@@ -10,124 +11,95 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditPropertyVM : PageViewModel
+    public class EditPropertyVM : EditElementPageVMBase<CollectionEventProperty>
     {
         
 
         #region Services        
-        public IVocabularyService Vocabulary { get; set; }
-        IFieldDataService _storage;
-        #endregion
+        private IVocabularyService Vocabulary { get; set; }        
+        #endregion        
 
-        #region Commands
-        public ReactiveCommand Save { get; private set; }        
-        public ReactiveCommand Delete { get; private set; }
-        #endregion
+        #region Properties       
 
-        #region Properties
-        private ObservableAsPropertyHelper<EventVM> _Event;
-        public EventVM Event 
-        { 
-            get
-            {
-                return _Event.Value;
-            } 
-        }
+        public ListSelectionHelper<Property> Properties { get; private set; }
 
-        private ObservableAsPropertyHelper<IList<Property>> _Properties;
-        public IList<Property> Properties
-        {
-            get
-            {
-                return _Properties.Value;
-            }
-        }
-
-        private Property _SelectedProperty;
-        public Property SelectedProperty
-        {
-            get { return _SelectedProperty; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedProperty, ref _SelectedProperty, value); }
-        }
-
-        private ObservableAsPropertyHelper<IList<PropertyName>> _PropertyNames; 
-        public IList<PropertyName> PropertyNames
-        {
-            get
-            {
-                return _PropertyNames.Value;
-            }
-        }
-
-        private PropertyName _SelectedPropertyName;
-        public PropertyName SelectedPropertyName
-        {
-            get { return _SelectedPropertyName; }
-            set { this.RaiseAndSetIfChanged(x => x.SelectedPropertyName, ref _SelectedPropertyName, value); }
-        }
-
+        public ListSelectionHelper<PropertyName> Values { get; private set; }
         #endregion
 
 
-        public EditPropertyVM(IMessageBus messenger, IFieldDataService storage, IVocabularyService voc)
-            : base(messenger)
+        public EditPropertyVM(IVocabularyService voc)            
         {
-
             Vocabulary = voc;
-            _storage = storage;
-
-            _Properties = StateObservable
-                .Select(_ => Vocabulary.getAllProperties())
-                .ToProperty(this, vm => vm.Properties);
-            _PropertyNames = this.ObservableForProperty(vm => vm.SelectedProperty)
-                .Select(prop => Vocabulary.getPropertyNames(prop.Value))
-                .ToProperty(this, vm => vm.PropertyNames);
-
-
-
-            Save = new ReactiveCommand(cansave());
-            var saveMessageSource = Save
-                .Select(_ => 
-                    new CollectionEventProperty()
-                        {
-                            EventID = Event.Model.EventID,
-                            PropertyID = SelectedProperty.PropertyID,
-                            PropertyUri = SelectedPropertyName.PropertyUri
-                        }
-                    );
-            Messenger.RegisterMessageSource(saveMessageSource,MessageContracts.SAVE);
-            Messenger.RegisterMessageSource(saveMessageSource.Select(_=>Page.Previous));
             
+
+            Properties = new ListSelectionHelper<Property>();
+            DistinctStateObservable
+                .Select(_ => Vocabulary.getAllProperties())
+                .Subscribe(Properties);
+
+            Values = new ListSelectionHelper<PropertyName>();
+            Properties
+                .Select(prop => Vocabulary.getPropertyNames(prop))
+                .Subscribe(Values);
+
+            ValidModel
+                .CombineLatest(Properties.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyID == m.PropertyID))
+                .BindTo(Properties, x => x.SelectedItem);
+
+            ValidModel
+                .CombineLatest(Values.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyUri == m.PropertyUri))
+                .BindTo(Values, x => x.SelectedItem);
+
+            CanSaveObs().Subscribe(_CanSaveSubject);
         }
 
-        IObservable<bool> cansave()
-        {
-            var canSave1 = this.ObservableForProperty(x => x.SelectedProperty)//1.Bedingung
-            .Select(change => change.Value != null)
-            .StartWith(false);
-
-
-            var canSave2 = this.ObservableForProperty(x => x.SelectedPropertyName)//2.Bedingung
-                .Select(change => change.Value != null)
+        private IObservable<bool> CanSaveObs()
+        {            
+            var canSave1 = Properties
+                .Select(x => x!=null)
                 .StartWith(false);
 
-            return Extensions.BooleanAnd(canSave1, canSave2);
-        }        
-                        
 
-        private Event EventFromState(PageState s)
+            var canSave2 = Values
+                 .Select(x => x != null)
+                 .StartWith(false);
+
+            return Extensions.BooleanAnd(canSave1, canSave2);
+        }         
+
+
+        protected override void UpdateModel()
+        {           
+            Current.Model.PropertyID = Properties.SelectedItem.PropertyID;
+            Current.Model.PropertyUri = Values.SelectedItem.PropertyUri;
+        }
+
+        protected override CollectionEventProperty ModelFromState(PageState s)
         {
-            if (s.Context != null)
+            if (s.Referrer != null)
             {
-                int id;
-                if (int.TryParse(s.Context, out id))
+                int evID;
+                if (int.TryParse(s.Referrer, out evID))
                 {
-                    return _storage.getEventByID(id);
-                }                
-            }    
+                    int propID;
+                    if (s.Context != null && int.TryParse(s.Context, out propID))
+                    {
+                        return Storage.getPropertyByID(evID, propID);
+                    }
+                    else
+                        return new CollectionEventProperty()
+                        {
+                            EventID = evID
+                        };
+                         
+                }
+            }
             return null;
         }
 
-
+        protected override ElementVMBase<CollectionEventProperty> ViewModelFromModel(CollectionEventProperty model)
+        {
+            return new PropertyVM(Messenger, model, Page.Current);
+        }
     }
 }
