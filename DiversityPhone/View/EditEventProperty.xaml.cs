@@ -10,14 +10,25 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
+using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.View
 {
     public partial class EditEventProperty : PhoneApplicationPage
     {
+        public EditPropertyVM VM { get { return DataContext as EditPropertyVM; } }
+
+        EditPageAppBarUpdater<CollectionEventProperty> _appb;
         public EditEventProperty()
         {
             InitializeComponent();
+        }
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+                _appb = new EditPageAppBarUpdater<CollectionEventProperty>(ApplicationBar, VM);
         }
     }
 }

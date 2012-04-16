@@ -33,7 +33,7 @@ namespace DiversityPhone
 
         private void UploadMMO_Click(object sender, EventArgs e)
         {
-            if (VM != null) ;
+            if (VM != null)
                 VM.UploadMMO.Execute(null);
         }
 
