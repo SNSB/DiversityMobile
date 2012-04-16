@@ -50,21 +50,25 @@ namespace DiversityPhone.ViewModels
                 .CombineLatest(Values.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyUri == m.PropertyUri))
                 .BindTo(Values, x => x.SelectedItem);
 
-            CanSaveObs().Subscribe(_CanSaveSubject);
+            CanSaveObs()
+                .SubscribeOnDispatcher()
+                .Subscribe(_CanSaveSubject);
         }
 
         private IObservable<bool> CanSaveObs()
         {            
-            var canSave1 = Properties
+            var propSelected = Properties
                 .Select(x => x!=null)
                 .StartWith(false);
 
 
-            var canSave2 = Values
+            var valueSelected = Values
                  .Select(x => x != null)
                  .StartWith(false);
 
-            return Extensions.BooleanAnd(canSave1, canSave2);
+            var isnew = ValidModel.Select(m => m.IsNew()).StartWith(false);
+
+            return Extensions.BooleanAnd(propSelected, valueSelected, isnew);
         }         
 
 
@@ -72,6 +76,7 @@ namespace DiversityPhone.ViewModels
         {           
             Current.Model.PropertyID = Properties.SelectedItem.PropertyID;
             Current.Model.PropertyUri = Values.SelectedItem.PropertyUri;
+            Current.Model.DisplayText = Values.SelectedItem.DisplayText;
         }
 
         protected override CollectionEventProperty ModelFromState(PageState s)

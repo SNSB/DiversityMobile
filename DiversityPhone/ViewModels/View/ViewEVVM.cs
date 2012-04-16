@@ -40,6 +40,9 @@
         public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
         private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
 
+        public IList<PropertyVM> Properties { get { return _Properties.Value; } }
+        private ObservableAsPropertyHelper<IList<PropertyVM>> _Properties;
+
         public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
 
@@ -57,6 +60,10 @@
             _SpecList = ValidModel               
                 .Select(ev => getSpecimenList(ev))
                 .ToProperty(this, x => x.SpecList);
+
+            _Properties = ValidModel
+                .Select(ev => Storage.getPropertiesForEvent(ev).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>)
+                .ToProperty(this, x => x.Properties);
 
             _ImageList = ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))

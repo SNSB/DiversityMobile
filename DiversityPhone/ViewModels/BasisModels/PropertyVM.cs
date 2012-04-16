@@ -10,7 +10,7 @@ namespace DiversityPhone.ViewModels
 {
     public class PropertyVM : ElementVMBase<CollectionEventProperty>
     {       
-        public override string Description { get { return Model.ToString(); } }
+        public override string Description { get { return Model.DisplayText; } }
         public override Icon Icon { get { return ViewModels.Icon.CollectionEventProperty; }  }
 
         protected override NavigationMessage NavigationMessage
