@@ -27,7 +27,8 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public EditPropertyVM(IVocabularyService voc)            
+        public EditPropertyVM(IVocabularyService voc)      
+            :  base(false)
         {
             Vocabulary = voc;
             
@@ -50,9 +51,10 @@ namespace DiversityPhone.ViewModels
                 .CombineLatest(Values.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyUri == m.PropertyUri))
                 .BindTo(Values, x => x.SelectedItem);
 
+
             CanSaveObs()
                 .SubscribeOnDispatcher()
-                .Subscribe(_CanSaveSubject);
+                .Subscribe(_CanSaveSubject.OnNext);
         }
 
         private IObservable<bool> CanSaveObs()
@@ -66,7 +68,7 @@ namespace DiversityPhone.ViewModels
                  .Select(x => x != null)
                  .StartWith(false);
 
-            var isnew = ValidModel.Select(m => m.IsNew()).StartWith(false);
+            var isnew = StateObservable.Select(s => s.Context == null).StartWith(false);
 
             return Extensions.BooleanAnd(propSelected, valueSelected, isnew);
         }         

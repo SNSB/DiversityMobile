@@ -31,7 +31,6 @@ namespace DiversityPhone.Model
         [Column(IsPrimaryKey = true)]
         public int PropertyID { get; set; }
 
-
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventID { get; set; }
 
