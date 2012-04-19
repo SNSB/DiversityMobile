@@ -63,7 +63,7 @@
                 .ToProperty(this, x => x.SpecList);
 
             _Properties = ValidModel
-                .Select(ev => Storage.getPropertiesForEvent(ev).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>)
+                .Select(ev => Storage.getPropertiesForEvent(ev.EventID).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>)
                 .ToProperty(this, x => x.Properties);
 
             _ImageList = ValidModel

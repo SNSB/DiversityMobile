@@ -159,7 +159,10 @@ namespace DiversityPhone.Services
 
         public IList<PropertyName> getPropertyNames(Property prop)
         {
-            return queryDataContext(ctx => from pn in ctx.PropertyNames
+            if (prop == null)
+                return new List<PropertyName>();
+            else                
+                return queryDataContext(ctx => from pn in ctx.PropertyNames
                                         where pn.PropertyID == prop.PropertyID
                                         select pn);
         }

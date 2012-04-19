@@ -264,7 +264,7 @@
             {
                 this.deleteSpecimen(spec);
             }
-            IList<CollectionEventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv);
+            IList<CollectionEventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
             foreach (CollectionEventProperty cep in attachedProperties)
                 this.deleteEventProperty(cep);
             IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Event, toDeleteEv.EventID);
@@ -281,11 +281,11 @@
 
         #region CollectionEventProperties
 
-        public IList<CollectionEventProperty> getPropertiesForEvent(Event ev)
+        public IList<CollectionEventProperty> getPropertiesForEvent(int eventID)
         {
             return uncachedQuery(ctx =>
                 from cep in ctx.CollectionEventProperties
-                where cep.EventID == ev.EventID 
+                where cep.EventID == eventID 
                 select cep
                 );
         }

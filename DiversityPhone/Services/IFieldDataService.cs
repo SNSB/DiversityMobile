@@ -33,7 +33,7 @@ using System;
         void addOrUpdateEvent(Event ev);
         void updateEventKey(int oldEventKey, int newEventKey);
 
-        IList<CollectionEventProperty> getPropertiesForEvent(Event ev);
+        IList<CollectionEventProperty> getPropertiesForEvent(int eventID);
         CollectionEventProperty getPropertyByID(int eventId, int propertyId);
         void addOrUpdateCollectionEventProperty(CollectionEventProperty cep);
 
