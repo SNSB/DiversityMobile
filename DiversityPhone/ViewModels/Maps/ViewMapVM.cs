@@ -35,16 +35,8 @@ namespace DiversityPhone.ViewModels
             get { return Map.Description; }
         }
 
-        private double _Zoom=1;
-        public double Zoom
-        {
-            get { return _Zoom; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
-            }
-        }
 
+     
         private Map _Map;
         public Map Map
         {
@@ -52,7 +44,8 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.Map, ref _Map, value); }
         }
 
-      
+       
+
         private BitmapImage _mapImage;
 
         public BitmapImage MapImage
@@ -64,6 +57,37 @@ namespace DiversityPhone.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(x => x.MapImage, ref _mapImage, value);
+            }
+        }
+
+        
+        private double _Zoom=1;
+        public double Zoom
+        {
+            get { return _Zoom; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
+            }
+        }
+
+        private double _BaseHeight;
+        public double BaseHeight
+        {
+            get { return _BaseHeight; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.BaseHeight, ref _BaseHeight, value);
+            }
+        }
+
+        private double _BaseWidth;
+        public double BaseWidth
+        {
+            get { return _BaseWidth; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.BaseWidth, ref _BaseWidth, value);
             }
         }
 
@@ -156,6 +180,8 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        
+
         #endregion
 
 
@@ -169,17 +195,17 @@ namespace DiversityPhone.ViewModels
             Geolocation.fillGeoCoordinates(ActualPos);
         }
 
-        private Point calculatePixelPoint(Map map,BitmapImage mapImage, double? lat, double? lon)
+        private Point calculatePixelPoint(double? lat, double? lon)
         {
             if (Map.isOnMap(Map, lat, lon))
             {
                 Point p = new Point();
-                int pixelWidth = mapImage.PixelWidth;
-                int pixelHeight = mapImage.PixelHeight;
-                double geoWidth = Math.Abs(map.LongitudeEast - map.LongitudeWest);
-                double geoHeight = Math.Abs(map.LatitudeNorth - map.LatitudeSouth);
-                p.X = ((double)lon - map.LongitudeWest) * pixelWidth / geoWidth / Zoom;
-                p.Y = (map.LatitudeNorth - (double)lat) * pixelHeight / geoHeight / Zoom;
+                int pixelWidth = MapImage.PixelWidth;
+                int pixelHeight = MapImage.PixelHeight;
+                double geoWidth = Math.Abs(Map.LongitudeEast - Map.LongitudeWest);
+                double geoHeight = Math.Abs(Map.LatitudeNorth - Map.LatitudeSouth);
+                p.X = ((double)lon - Map.LongitudeWest) * pixelWidth / geoWidth * Zoom;
+                p.Y = (Map.LatitudeNorth - (double)lat) * pixelHeight / geoHeight * Zoom;
                 return p;
             }
             else
@@ -191,7 +217,7 @@ namespace DiversityPhone.ViewModels
         {
             if (ActualPos != null)
             {
-                Point p = calculatePixelPoint(this.Map, this.MapImage, ActualPos.Latitude, ActualPos.Longitude);
+                Point p = calculatePixelPoint(ActualPos.Latitude, ActualPos.Longitude);
                 p.X = p.X - ActualPosIconSize.X / 2;
                 p.Y = p.Y - ActualPosIconSize.Y / 2;
                 ActualPosPoint = p;
@@ -203,7 +229,7 @@ namespace DiversityPhone.ViewModels
         {
             if (ItemPos != null)
             {
-                Point p = calculatePixelPoint(this.Map, this.MapImage, ItemPos.Latitude, ItemPos.Longitude);
+                Point p = calculatePixelPoint(ItemPos.Latitude, ItemPos.Longitude);
                 p.X = p.X - ItemPosIconSize.X / 2;
                 p.Y = p.Y - ItemPosIconSize.Y / 2;
                 ItemPosPoint = p;
@@ -252,6 +278,8 @@ namespace DiversityPhone.ViewModels
                     if (Map != null)
                     {
                         MapImage= LoadImage(Map.Uri);
+                        BaseHeight = MapImage.PixelHeight;
+                        BaseWidth = MapImage.PixelWidth;
                         if (ActualPos != null)
                             calculatePixelPointForActual();
                     }

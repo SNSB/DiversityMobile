@@ -19,35 +19,62 @@ namespace DiversityPhone.View
     {
 
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
+        private const double SCALEMIN = 0.2;
+        private const double SCALEMAX = 3;
+        
+
 
         public ViewMap()
         {
             InitializeComponent();
         }
 
-        private void focusOn(int x, int y)
+        private void focusOn(double x, double y)
         {
             scrollViewer.ScrollToHorizontalOffset(x);
             scrollViewer.ScrollToVerticalOffset(y);
         }
 
 
-        private void slider1_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
         {
-            if (this.Map != null && VM.MapImage!=null)
-            {
-                VM.Zoom = (slider1.Value * slider1.Value);
-                this.Map.Height = (VM.MapImage.PixelHeight) / VM.Zoom;
-                this.Map.Width = (VM.MapImage.PixelWidth) / VM.Zoom;
-                VM.calculatePixelPointForActual();
-                VM.calculatePixelPointForItem();
-            }
+            VM.Zoom = transform.ScaleX;
         }
 
-      
+        private void OnPinchDelta(object sender, PinchGestureEventArgs e)
+        {
+            double scale = VM.Zoom * Math.Sqrt(e.DistanceRatio);
+            if (scale < SCALEMIN)
+                scale = SCALEMIN;
+            if (scale > SCALEMAX)
+                scale = SCALEMAX;
+            VM.Zoom = scale;
+            transform.ScaleX = scale;
+            transform.ScaleY = scale;
+            VM.calculatePixelPointForActual();
+            VM.calculatePixelPointForItem();
+            MainCanvas.Height = VM.BaseHeight * VM.Zoom;
+            MainCanvas.Width  = VM.BaseWidth * VM.Zoom;
+        }
+
+        private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
+        {
+           
+        }
+
+
         private void scrollViewer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            focusOn(0, 0);
+            if (VM != null && VM.ItemPosPoint != null)
+                if(VM.ActualPosPoint.X>0 && VM.ActualPosPoint.Y>0)
+                     focusOn(VM.ActualPosPoint.X-scrollViewer.Width/2, VM.ActualPosPoint.Y-scrollViewer.Height/2);
+        }
+
+        private void scrollViewer_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            if(VM!= null && VM.ItemPosPoint!=null)
+                if (VM.ItemPosPoint.X > 0 && VM.ItemPosPoint.Y > 0)
+                    focusOn(VM.ItemPosPoint.X-scrollViewer.Width/2, VM.ItemPosPoint.Y-scrollViewer.Height/2);
         }
     }
 }

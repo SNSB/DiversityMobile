@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DiversityService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DiversityService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd2" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/DiversityCollection" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
-      <xsd:import schemaLocation="http://132.180.195.58:1111/Service1.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd2" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd1" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/DiversityCollection" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:1111/DiversityService/Service1.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System.Data" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IDiversityService_GetStandardVocabulary_InputMessage">
@@ -127,80 +127,80 @@
   </wsdl:message>
   <wsdl:portType name="IDiversityService">
     <wsdl:operation name="GetStandardVocabulary">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetStandardVocabulary" message="tns:IDiversityService_GetStandardVocabulary_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse" message="tns:IDiversityService_GetStandardVocabulary_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabulary" message="tns:IDiversityService_GetStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse" message="tns:IDiversityService_GetStandardVocabulary_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUserInfo">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetUserInfo" message="tns:IDiversityService_GetUserInfo_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetUserInfoResponse" message="tns:IDiversityService_GetUserInfo_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfo" message="tns:IDiversityService_GetUserInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetUserInfoResponse" message="tns:IDiversityService_GetUserInfo_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetRepositories">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetRepositories" message="tns:IDiversityService_GetRepositories_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetRepositoriesResponse" message="tns:IDiversityService_GetRepositories_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetRepositories" message="tns:IDiversityService_GetRepositories_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetRepositoriesResponse" message="tns:IDiversityService_GetRepositories_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetProjectsForUser">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetProjectsForUser" message="tns:IDiversityService_GetProjectsForUser_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetProjectsForUserResponse" message="tns:IDiversityService_GetProjectsForUser_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUser" message="tns:IDiversityService_GetProjectsForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetProjectsForUserResponse" message="tns:IDiversityService_GetProjectsForUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysisTaxonomicGroupsForProject">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProjectResponse" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProject" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisTaxonomicGroupsForProjectResponse" message="tns:IDiversityService_GetAnalysisTaxonomicGroupsForProject_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysesForProject">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetAnalysesForProject" message="tns:IDiversityService_GetAnalysesForProject_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetAnalysesForProjectResponse" message="tns:IDiversityService_GetAnalysesForProject_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysesForProject" message="tns:IDiversityService_GetAnalysesForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysesForProjectResponse" message="tns:IDiversityService_GetAnalysesForProject_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetAnalysisResultsForProject">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject" message="tns:IDiversityService_GetAnalysisResultsForProject_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProjectResponse" message="tns:IDiversityService_GetAnalysisResultsForProject_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProject" message="tns:IDiversityService_GetAnalysisResultsForProject_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetAnalysisResultsForProjectResponse" message="tns:IDiversityService_GetAnalysisResultsForProject_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertEventSeries">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeries" message="tns:IDiversityService_InsertEventSeries_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesResponse" message="tns:IDiversityService_InsertEventSeries_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeries" message="tns:IDiversityService_InsertEventSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesResponse" message="tns:IDiversityService_InsertEventSeries_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertGeographyIntoSeries">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries" message="tns:IDiversityService_InsertGeographyIntoSeries_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse" message="tns:IDiversityService_InsertGeographyIntoSeries_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeries" message="tns:IDiversityService_InsertGeographyIntoSeries_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertGeographyIntoSeriesResponse" message="tns:IDiversityService_InsertGeographyIntoSeries_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertHierarchy">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertHierarchyResponse" message="tns:IDiversityService_InsertHierarchy_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchy" message="tns:IDiversityService_InsertHierarchy_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertHierarchyResponse" message="tns:IDiversityService_InsertHierarchy_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetTaxonListsForUser">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser" message="tns:IDiversityService_GetTaxonListsForUser_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse" message="tns:IDiversityService_GetTaxonListsForUser_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser" message="tns:IDiversityService_GetTaxonListsForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse" message="tns:IDiversityService_GetTaxonListsForUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DownloadTaxonList">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetPropertiesForUser">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetPropertiesForUser" message="tns:IDiversityService_GetPropertiesForUser_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetPropertiesForUserResponse" message="tns:IDiversityService_GetPropertiesForUser_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetPropertiesForUser" message="tns:IDiversityService_GetPropertiesForUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetPropertiesForUserResponse" message="tns:IDiversityService_GetPropertiesForUser_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DownloadPropertyNames">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyNames" message="tns:IDiversityService_DownloadPropertyNames_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyNamesResponse" message="tns:IDiversityService_DownloadPropertyNames_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyNames" message="tns:IDiversityService_DownloadPropertyNames_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/DownloadPropertyNamesResponse" message="tns:IDiversityService_DownloadPropertyNames_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetXMLStandardVocabulary">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse" message="tns:IDiversityService_GetXMLStandardVocabulary_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse" message="tns:IDiversityService_GetXMLStandardVocabulary_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertEventSeriesForAndroid">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroid" message="tns:IDiversityService_InsertEventSeriesForAndroid_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidResponse" message="tns:IDiversityService_InsertEventSeriesForAndroid_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroid" message="tns:IDiversityService_InsertEventSeriesForAndroid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidResponse" message="tns:IDiversityService_InsertEventSeriesForAndroid_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertEventSeriesForAndroidVIntES">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVIntES" message="tns:IDiversityService_InsertEventSeriesForAndroidVIntES_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVIntESResponse" message="tns:IDiversityService_InsertEventSeriesForAndroidVIntES_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVIntES" message="tns:IDiversityService_InsertEventSeriesForAndroidVIntES_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVIntESResponse" message="tns:IDiversityService_InsertEventSeriesForAndroidVIntES_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="InsertEventSeriesForAndroidVESES">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESES" message="tns:IDiversityService_InsertEventSeriesForAndroidVESES_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESESResponse" message="tns:IDiversityService_InsertEventSeriesForAndroidVESES_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESES" message="tns:IDiversityService_InsertEventSeriesForAndroidVESES_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESESResponse" message="tns:IDiversityService_InsertEventSeriesForAndroidVESES_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="TestSeriesForAndroid">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/TestSeriesForAndroid" message="tns:IDiversityService_TestSeriesForAndroid_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/TestSeriesForAndroidResponse" message="tns:IDiversityService_TestSeriesForAndroid_OutputMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IDiversityService/TestSeriesForAndroid" message="tns:IDiversityService_TestSeriesForAndroid_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDiversityService/TestSeriesForAndroidResponse" message="tns:IDiversityService_TestSeriesForAndroid_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDiversityService" type="tns:IDiversityService">
@@ -379,7 +379,7 @@
   </wsdl:binding>
   <wsdl:service name="DiversityService">
     <wsdl:port name="BasicHttpBinding_IDiversityService" binding="tns:BasicHttpBinding_IDiversityService">
-      <soap:address location="http://132.180.195.58:1111/Service1.svc" />
+      <soap:address location="http://bsm5.snsb.info:1111/DiversityService/Service1.svc" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

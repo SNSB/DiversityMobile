@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -28,9 +29,16 @@
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="460" Height="550" Tap="scrollViewer_Tap">
-                <Canvas Height="{Binding MapImage.PixelHeight}" Width="{Binding MapImage.PixelWidth}">
-                    <Image x:Name="Map" Stretch="Uniform" Source="{Binding MapImage}" Width="Auto" Height="Auto" />
+            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="460" Height="620" Tap="scrollViewer_Tap" DoubleTap="scrollViewer_DoubleTap">
+                <Canvas Name="MainCanvas" Height="2200" Width="2200">
+                    <Image Source="{Binding MapImage}" RenderTransformOrigin="0.5, 0.5" CacheMode="BitmapCache">
+                        <Image.RenderTransform>
+                            <CompositeTransform x:Name="transform" />
+                        </Image.RenderTransform>
+                        <toolkit:GestureService.GestureListener>
+                            <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
+                        </toolkit:GestureService.GestureListener>
+                    </Image>
                     <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
                         <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
                     </Canvas>
@@ -39,7 +47,7 @@
                     </Canvas>
                 </Canvas>
             </ScrollViewer>
-            <Slider Height="84" Name="slider1" Width="460" Minimum="1" Value="1" ValueChanged="slider1_ValueChanged" IsDirectionReversed="True" Maximum="2" />
+            
         </StackPanel>
     </Grid>
 
