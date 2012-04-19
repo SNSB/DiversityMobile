@@ -8,6 +8,7 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,7 +17,8 @@ namespace DiversityPhone.ViewModels
         
 
         #region Services        
-        private IVocabularyService Vocabulary { get; set; }        
+        private IVocabularyService Vocabulary { get; set; }
+        private IFieldDataService Storage { get; set; }   
         #endregion        
 
         #region Properties       
@@ -26,22 +28,31 @@ namespace DiversityPhone.ViewModels
         public ListSelectionHelper<PropertyName> Values { get; private set; }
         #endregion
 
+        private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getValues = new ReactiveAsyncCommand();
 
-        public EditPropertyVM(IVocabularyService voc)      
+
+        public EditPropertyVM(Container ioc)      
             :  base(false)
         {
-            Vocabulary = voc;
-            
+            Vocabulary = ioc.Resolve<IVocabularyService>();
+            Storage = ioc.Resolve<IFieldDataService>();
 
             Properties = new ListSelectionHelper<Property>();
-            DistinctStateObservable
-                .Select(_ => Vocabulary.getAllProperties())
+            ValidModel                
+                .Subscribe(getProperties.Execute);
+            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as CollectionEventProperty))
+                .Merge(ValidModel.Select(_ => Enumerable.Empty<Property>() as IEnumerable<Property>))
+                .Select(props => props.ToList() as IList<Property>)
                 .Subscribe(Properties);
 
             Values = new ListSelectionHelper<PropertyName>();
-            Properties
-                .Select(prop => Vocabulary.getPropertyNames(prop))
+            Properties                
+                .Subscribe(getValues.Execute);
+            getValues.RegisterAsyncFunction(prop => getValuesImpl(prop as Property))
+                .Merge(Properties.Select(_ => new List<PropertyName>() as IList<PropertyName>))
                 .Subscribe(Values);
+
 
             ValidModel
                 .CombineLatest(Properties.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyID == m.PropertyID))
@@ -55,6 +66,21 @@ namespace DiversityPhone.ViewModels
             CanSaveObs()
                 .SubscribeOnDispatcher()
                 .Subscribe(_CanSaveSubject.OnNext);
+        }
+
+        private IEnumerable<Property> getPropertiesImpl(CollectionEventProperty cep)
+        {
+            var otherCEPs = Storage.getPropertiesForEvent(cep.EventID).ToDictionary(x => x.PropertyID);
+            otherCEPs.Remove(cep.PropertyID);
+
+            var props = Vocabulary.getAllProperties();
+
+            return props.Where(prop => !otherCEPs.ContainsKey(prop.PropertyID));
+        }
+
+        private IList<PropertyName> getValuesImpl(Property p)
+        {
+            return Vocabulary.getPropertyNames(p);
         }
 
         private IObservable<bool> CanSaveObs()
