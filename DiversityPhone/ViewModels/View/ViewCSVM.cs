@@ -25,6 +25,7 @@ namespace DiversityPhone.ViewModels
      
         #region Commands
         public ReactiveCommand Add { get; private set; }
+        public ReactiveCommand Maps { get; private set; }
 
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null);
         #endregion
@@ -112,7 +113,11 @@ namespace DiversityPhone.ViewModels
                 })
                 .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
                 );
-            
+            Maps = new ReactiveCommand();
+            var mapMessageSource =
+                Maps
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Specimen, Current.Model.DiversityCollectionSpecimenID.ToString()));
+            Messenger.RegisterMessageSource(mapMessageSource);
         }
 
         private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)

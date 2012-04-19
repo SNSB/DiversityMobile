@@ -285,20 +285,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="TaxonName" nillable="true" type="tns:TaxonName" />
-  <xs:complexType name="ArrayOfPropertyList">
+  <xs:complexType name="ArrayOfProperty">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyList" nillable="true" type="tns:PropertyList" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" nillable="true" type="tns:Property" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfPropertyList" nillable="true" type="tns:ArrayOfPropertyList" />
-  <xs:complexType name="PropertyList">
+  <xs:element name="ArrayOfProperty" nillable="true" type="tns:ArrayOfProperty" />
+  <xs:complexType name="Property">
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
-      <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="PropertyList" nillable="true" type="tns:PropertyList" />
+  <xs:element name="Property" nillable="true" type="tns:Property" />
   <xs:complexType name="ArrayOfPropertyName">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyName" nillable="true" type="tns:PropertyName" />
@@ -307,12 +306,9 @@
   <xs:element name="ArrayOfPropertyName" nillable="true" type="tns:ArrayOfPropertyName" />
   <xs:complexType name="PropertyName">
     <xs:sequence>
-      <xs:element minOccurs="0" name="BroaderTermID" type="xs:int" />
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="HierarchyCache" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
       <xs:element minOccurs="0" name="PropertyUri" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="TermID" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PropertyName" nillable="true" type="tns:PropertyName" />

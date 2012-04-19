@@ -28,21 +28,31 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
-        private string _Uri;
-        public string Uri
-        {
-            get { return _Uri; }
-            set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
-        }
 
-        private string _Description;
+
         public string Description
         {
-            get { return _Description; }
-            set { this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value); }
+            get { return Map.Description; }
         }
-       
 
+        private double _Zoom=1;
+        public double Zoom
+        {
+            get { return _Zoom; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
+            }
+        }
+
+        private Map _Map;
+        public Map Map
+        {
+            get { return _Map; }
+            set { this.RaiseAndSetIfChanged(x => x.Map, ref _Map, value); }
+        }
+
+      
         private BitmapImage _mapImage;
 
         public BitmapImage MapImage
@@ -56,33 +66,159 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.MapImage, ref _mapImage, value);
             }
         }
-        
-        public int? Height
+
+        #region Referrers
+
+        private EventSeries _EventSeries;
+        public EventSeries EventSeries
         {
-            get { return _mapImage.PixelHeight; }
+            get { return _EventSeries; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.EventSeries, ref _EventSeries, value);
+            }
         }
 
-        public int? Width
+        private Event _Event;
+        public Event Event
         {
-            get { return _mapImage.PixelWidth; }
+            get { return _Event; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Event, ref _Event, value);
+            }
         }
+
+        private IdentificationUnit _IU;
+        public IdentificationUnit IU
+        {
+            get { return _IU; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IU, value);
+            }
+        }
+
         #endregion
 
-        public ViewMapVM(IMapStorageService maps)            
+
+        #region Georef
+
+
+        public Point ActualPosIconSize = new Point(32, 32);
+        public Point ItemPosIconSize = new Point(32, 32);
+
+
+        private IGeoLocationService Geolocation;   
+        private ILocalizable _ActualPos=new Localizable();
+        public ILocalizable ActualPos
         {
-            Maps = maps;
+            get { return _ActualPos; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ActualPos, ref _ActualPos, value);
+            }
         }
 
-        private void LoadImage(Map map)
+        private ILocalizable _ItemPos;
+        public ILocalizable ItemPos
+        {
+            get { return _ItemPos; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ItemPos, ref _ItemPos, value);
+                calculatePixelPointForItem();
+            }
+        }
+
+
+        private Point _ActualPosPoint;
+        public Point ActualPosPoint
+        {
+            get
+            {
+                return _ActualPosPoint;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ActualPosPoint, ref _ActualPosPoint, value);
+            }
+        }
+
+        private Point _ItemPosPoint;
+        public Point ItemPosPoint
         {
 
+            get { return _ItemPosPoint; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ItemPosPoint, ref _ItemPosPoint, value);
+            }
+        }
 
+        #endregion
+
+
+        #endregion
+
+
+        public ViewMapVM(IMapStorageService maps,IGeoLocationService geoLoc)            
+        {
+            Maps = maps;
+            Geolocation = geoLoc;
+            Geolocation.fillGeoCoordinates(ActualPos);
+        }
+
+        private Point calculatePixelPoint(Map map,BitmapImage mapImage, double? lat, double? lon)
+        {
+            if (Map.isOnMap(Map, lat, lon))
+            {
+                Point p = new Point();
+                int pixelWidth = mapImage.PixelWidth;
+                int pixelHeight = mapImage.PixelHeight;
+                double geoWidth = Math.Abs(map.LongitudeEast - map.LongitudeWest);
+                double geoHeight = Math.Abs(map.LatitudeNorth - map.LatitudeSouth);
+                p.X = ((double)lon - map.LongitudeWest) * pixelWidth / geoWidth / Zoom;
+                p.Y = (map.LatitudeNorth - (double)lat) * pixelHeight / geoHeight / Zoom;
+                return p;
+            }
+            else
+                return new Point(-1, -1);
+        }
+
+
+        public void calculatePixelPointForActual()
+        {
+            if (ActualPos != null)
+            {
+                Point p = calculatePixelPoint(this.Map, this.MapImage, ActualPos.Latitude, ActualPos.Longitude);
+                p.X = p.X - ActualPosIconSize.X / 2;
+                p.Y = p.Y - ActualPosIconSize.Y / 2;
+                ActualPosPoint = p;
+            }
+            else ActualPosPoint = new Point(-1, -1);
+        }
+
+        public void calculatePixelPointForItem()
+        {
+            if (ItemPos != null)
+            {
+                Point p = calculatePixelPoint(this.Map, this.MapImage, ItemPos.Latitude, ItemPos.Longitude);
+                p.X = p.X - ItemPosIconSize.X / 2;
+                p.Y = p.Y - ItemPosIconSize.Y / 2;
+                ItemPosPoint = p;
+            }
+            else ItemPosPoint = new Point(-1, -1);
+        }
+
+        private BitmapImage LoadImage(String uri)
+        {
             byte[] data;
 
             using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
             {
 
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(map.Uri, FileMode.Open, FileAccess.Read))
+                using (IsolatedStorageFileStream isfs = isf.OpenFile(uri, FileMode.Open, FileAccess.Read))
                 {
                     data = new byte[isfs.Length];
                     isfs.Read(data, 0, data.Length);
@@ -93,10 +229,10 @@ namespace DiversityPhone.ViewModels
             MemoryStream ms = new MemoryStream(data);
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
-            MapImage = bi;  
+            return bi;
         }
-      
 
+ 
 
         protected override void UpdateModel()
         {
@@ -108,24 +244,55 @@ namespace DiversityPhone.ViewModels
         protected override Map ModelFromState(Services.PageState s)
         {
             if (s.Context != null)
-            {
-                Map map=null;
+            {       
                 try
                 {
-                    map = Maps.getMapbyServerKey(s.Context);
+                    Map = Maps.getMapbyServerKey(s.Context);
 
-                    if (map != null)
+                    if (Map != null)
                     {
-                        LoadImage(map);
-                        Description = map.Description;
+                        MapImage= LoadImage(Map.Uri);
+                        if (ActualPos != null)
+                            calculatePixelPointForActual();
                     }
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
-                    map = null;
+                    Map = null;
                 }
-                return map;
+
+                if (s.ReferrerType!= null)
+                {
+                    int parent;
+                    if (int.TryParse(s.Referrer, out parent))
+                    {
+                        switch (s.ReferrerType)
+                        {
+                            case ReferrerType.EventSeries:
+                                EventSeries = Storage.getEventSeriesByID(parent);
+                                ItemPos = new Localizable();
+                                break;
+                            case ReferrerType.Event:
+                                Event = Storage.getEventByID(parent);
+                                ItemPos = Event;
+                                break;
+                            case ReferrerType.IdentificationUnit:
+                                IU = Storage.getIdentificationUnitByID(parent);
+                                ItemPos = IU;
+                                break;
+                            case ReferrerType.Specimen:
+                            case ReferrerType.None:
+                            default:
+                                ItemPos = new Localizable();
+                                break;
+                        }
+                    }
+                    else
+                        ItemPos = new Localizable();
+                }
+
+                return Map;
             }
             return null;
         }
@@ -146,6 +313,9 @@ namespace DiversityPhone.ViewModels
         {
             return new MapVM(Messenger, model, DiversityPhone.Services.Page.Current);
         }
+
     }
+
+  
     
 }

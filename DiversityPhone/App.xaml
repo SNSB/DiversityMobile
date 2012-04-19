@@ -27,6 +27,7 @@
             <vw:TermToImageConverter x:Key="TermToImage"/>
 			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
             <vw:GeoCoordinatesConverter x:Key="GeoCoordinates"/>
+            <vw:PointToVisibilityConverter x:Key="PointToVis"/>
            
 
         </ResourceDictionary>        

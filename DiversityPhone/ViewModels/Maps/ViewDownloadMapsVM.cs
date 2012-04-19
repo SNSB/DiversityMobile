@@ -21,6 +21,7 @@ using DiversityPhone.PMService;
 using System.IO;
 using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;
+using System.Reactive.Subjects;
 
 
 namespace DiversityPhone.ViewModels
@@ -55,10 +56,10 @@ namespace DiversityPhone.ViewModels
 
         public bool IsBusy 
         { 
-            get { return _IsBusy; }
-            private set { this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value); }
+            get { return _IsBusy.Value; }    
         }
-        private bool _IsBusy;   
+        private ObservableAsPropertyHelper<bool> _IsBusy;
+        private ISubject<bool> _isBusySubject = new Subject<bool>();
 
         private ObservableAsPropertyHelper<IList<String>> _Keys;
         public IList<String> Keys
@@ -103,6 +104,8 @@ namespace DiversityPhone.ViewModels
             Search = new ReactiveAsyncCommand();
             Search.Subscribe(_=>searchMaps());
 
+            _IsBusy = _isBusySubject.ToProperty(this,x=> x.IsBusy);
+
             Add = new ReactiveCommand();
             Add.Subscribe(mapName => addMap(mapName as String));
 
@@ -145,7 +148,8 @@ namespace DiversityPhone.ViewModels
                 saveMap(newMap);
                 Keys.Remove(keyXML);
                 Keys.Remove(keyPng);
-                IsBusy = false; //Causes Thread Violation                
+                _isBusySubject.OnNext(false);
+                Messenger.SendMessage<DialogMessage>(new DialogMessage(DialogType.OK,"Ready","Ready"));
             }
                     
         }
@@ -161,14 +165,14 @@ namespace DiversityPhone.ViewModels
 
         private void searchMaps()
         {
-            IsBusy = true;
+            _isBusySubject.OnNext(true);
             _mapinfo.GetMapListFilterAsync(SearchString);
         }
 
         public void mapinfo_GetMapListCompleted(object sender, GetMapListFilterCompletedEventArgs e)
         {
             AvailableMaps.Clear();
-            IsBusy = false;
+            _isBusySubject.OnNext(false);
             foreach (String map in e.Result)
                 AvailableMaps.Add(map);
           
@@ -179,25 +183,25 @@ namespace DiversityPhone.ViewModels
         #region Download Process
 
         //1. Select Map and download corresponding url
-        private void addMap(String mapName)
+        private void addMap(String serverKey)
         {
             if (IsBusy == true)
                 return;
-            IsBusy = true;
-            if (_mapStorage.isPresent(mapName))
+            _isBusySubject.OnNext(true);
+            if (_mapStorage.isPresent(serverKey))
             {
                 if (MessageBox.Show("Map is already present. Override?", "Map present", MessageBoxButton.OKCancel).Equals(MessageBoxResult.Cancel))
                 {
-                    IsBusy = false;
+                    _isBusySubject.OnNext(false);
                     return;
                 }
             }
 
 
             //Get correponding URL for the map for the download from the SNSB IT-Center
-            _mapinfo.GetMapUrlAsync(mapName);
-            _mapinfo.GetXmlUrlAsync(mapName);
-            _mapName = mapName;
+            _mapinfo.GetMapUrlAsync(serverKey);
+            _mapinfo.GetXmlUrlAsync(serverKey);
+            _mapName = serverKey;
         }
 
         //2. Initiate DownloadMap

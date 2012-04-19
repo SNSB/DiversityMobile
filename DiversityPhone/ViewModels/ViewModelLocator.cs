@@ -49,7 +49,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
             _ioc.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
             _ioc.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
-            _ioc.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>()));
+            _ioc.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>(),c.Resolve<IGeoLocationService>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c));
             _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));

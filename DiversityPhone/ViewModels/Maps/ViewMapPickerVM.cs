@@ -33,6 +33,7 @@ namespace DiversityPhone.ViewModels
             get { return _SavedMaps.Value; }
         }
 
+
         #endregion
 
         #region Commands
@@ -44,9 +45,8 @@ namespace DiversityPhone.ViewModels
         {
             _maps = maps;
 
-
             _SavedMaps = StateObservable
-                .Select(_ => updatedMapList())
+                .Select(p => updatedMapList(p))
                 .ToProperty(this, x => x.SavedMaps);
 
             _subscriptions = new List<IDisposable>()
@@ -62,13 +62,19 @@ namespace DiversityPhone.ViewModels
             Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.DownLoadMaps, null));
         }
 
-        private IList<MapVM> updatedMapList()
+        private IList<MapVM> updatedMapList(PageState s)
         {
+            
             return new ObservableCollection<MapVM>(
                 _maps.getAllMaps().Select(
-                (model) => new MapVM(Messenger, model, Page.ViewMap)
+                (model) => new MapVM(Messenger, model, Page.ViewMap, s.ReferrerType,s.Referrer)
                 ));
-        } 
-       
+        }
+
+        private bool saveReferrer(PageState s)
+        {
+
+            return true;
+        }
     }
 }

@@ -127,6 +127,7 @@
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
     <Compile Include="Model\ILocalizable.cs" />
     <Compile Include="Model\IModifyable.cs" />
+    <Compile Include="Model\Localizable.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Property.cs" />
@@ -228,6 +229,7 @@
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
+    <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
     <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
@@ -462,6 +464,9 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\PMService\PhoneMediaService.wsdl" />
     <None Include="Service References\PMService\PhoneMediaService.xsd">
       <SubType>Designer</SubType>
@@ -473,6 +478,11 @@
       <SubType>Designer</SubType>
     </None>
     <Resource Include="Images\MetroIcons\white\i.png" />
+    <Content Include="Images\GPoint.png" />
+    <Content Include="Images\GpsPoint.png" />
+    <Content Include="Images\GpsPoint32.png" />
+    <Content Include="Images\GpsPosition.png" />
+    <Content Include="Images\ItemPoint.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Beleg_80.png" />
     <Content Include="Images\SNSBIcons\Event_80.png" />
@@ -591,9 +601,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyList.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">

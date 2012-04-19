@@ -18,21 +18,28 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="Title" Text="map" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
             <TextBlock x:Name="MapDescription" Text="{Binding Description}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible">
-                <!--Image for the camera capture.-->
-                <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
+            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="460" Height="550" Tap="scrollViewer_Tap">
+                <Canvas Height="{Binding MapImage.PixelHeight}" Width="{Binding MapImage.PixelWidth}">
+                    <Image x:Name="Map" Stretch="Uniform" Source="{Binding MapImage}" Width="Auto" Height="Auto" />
+                    <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
+                        <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
+                    </Canvas>
+                    <Canvas Top="{Binding ItemPosPoint.Y}" Left="{Binding ItemPosPoint.X}">
+                        <Image Name="ItemImage" Height="{Binding ItemIconSize.Y}" Width="{Binding ItemIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding ItemPosPoint,Converter={StaticResource PointToVis}}"/>
+                    </Canvas>
+                </Canvas>
             </ScrollViewer>
+            <Slider Height="84" Name="slider1" Width="460" Minimum="1" Value="1" ValueChanged="slider1_ValueChanged" IsDirectionReversed="True" Maximum="2" />
         </StackPanel>
     </Grid>
 

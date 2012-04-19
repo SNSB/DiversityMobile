@@ -51,7 +51,8 @@ namespace DiversityPhone
 
         private void Map_Click(object sender, EventArgs e)
         {
-
+            if (VM != null)
+                VM.Maps.Execute(null);
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)

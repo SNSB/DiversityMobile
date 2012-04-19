@@ -44,7 +44,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="Add" Click="Add_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="Map"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="Map" Click="Map_Click"/>
             
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

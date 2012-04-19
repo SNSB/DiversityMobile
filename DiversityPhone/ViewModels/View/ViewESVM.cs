@@ -14,6 +14,7 @@
         #region Commands
         public ReactiveCommand AddEvent { get; private set; }
         public ReactiveCommand FilterEvents { get; private set; }
+        public ReactiveCommand Maps { get; private set; }
         #endregion
 
         #region Properties
@@ -43,7 +44,11 @@
                               (EventSeries.isNoEventSeries(pair.Model)) ? null : pair.Model.SeriesID.ToString()
                     ));
             Messenger.RegisterMessageSource(newEventMessageSource);
-
+            Maps = new ReactiveCommand();
+            var mapMessageSource =
+                Maps
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.EventSeries, Current.Model.SeriesID.ToString()));
+            Messenger.RegisterMessageSource(mapMessageSource);
             FilterEvents = new ReactiveCommand();
         }
 

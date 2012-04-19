@@ -1909,14 +1909,12 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PropertyList", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
-    public partial class PropertyList : object, System.ComponentModel.INotifyPropertyChanged {
+    [System.Runtime.Serialization.DataContractAttribute(Name="Property", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class Property : object, System.ComponentModel.INotifyPropertyChanged {
         
         private string DisplayTextField;
         
         private int PropertyIDField;
-        
-        private string TableField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayText {
@@ -1944,19 +1942,6 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Table {
-            get {
-                return this.TableField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TableField, value) != true)) {
-                    this.TableField = value;
-                    this.RaisePropertyChanged("Table");
-                }
-            }
-        }
-        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -1972,30 +1957,11 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="PropertyName", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class PropertyName : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private int BroaderTermIDField;
-        
         private string DisplayTextField;
-        
-        private string HierarchyCacheField;
         
         private int PropertyIDField;
         
         private string PropertyUriField;
-        
-        private int TermIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int BroaderTermID {
-            get {
-                return this.BroaderTermIDField;
-            }
-            set {
-                if ((this.BroaderTermIDField.Equals(value) != true)) {
-                    this.BroaderTermIDField = value;
-                    this.RaisePropertyChanged("BroaderTermID");
-                }
-            }
-        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string DisplayText {
@@ -2006,19 +1972,6 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
                     this.DisplayTextField = value;
                     this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string HierarchyCache {
-            get {
-                return this.HierarchyCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.HierarchyCacheField, value) != true)) {
-                    this.HierarchyCacheField = value;
-                    this.RaisePropertyChanged("HierarchyCache");
                 }
             }
         }
@@ -2049,19 +2002,6 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int TermID {
-            get {
-                return this.TermIDField;
-            }
-            set {
-                if ((this.TermIDField.Equals(value) != true)) {
-                    this.TermIDField = value;
-                    this.RaisePropertyChanged("TermID");
-                }
-            }
-        }
-        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -2083,7 +2023,7 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionAgent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionProject))]
@@ -2121,7 +2061,7 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionAgent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionProject))]
@@ -3896,7 +3836,7 @@ namespace DiversityPhone.DiversityService {
         
         private string NotesField;
         
-        private DiversityPhone.DiversityService.Property PropertyField;
+        private DiversityPhone.DiversityService.Property1 PropertyField;
         
         private string PropertyHierarchyCacheField;
         
@@ -4045,7 +3985,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Property Property {
+        public DiversityPhone.DiversityService.Property1 Property {
             get {
                 return this.PropertyField;
             }
@@ -4165,7 +4105,7 @@ namespace DiversityPhone.DiversityService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Property", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class Property : DiversityPhone.DiversityService.EntityObject {
+    public partial class Property1 : DiversityPhone.DiversityService.EntityObject {
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventPropertiesField;
         
@@ -4183,9 +4123,9 @@ namespace DiversityPhone.DiversityService {
         
         private string ParsingMethodNameField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> Property1Field;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1> Property1MemberField;
         
-        private DiversityPhone.DiversityService.Property Property2Field;
+        private DiversityPhone.DiversityService.Property1 Property2Field;
         
         private DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX Property2ReferenceField;
         
@@ -4301,21 +4241,21 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> Property1 {
+        [System.Runtime.Serialization.DataMemberAttribute(Name="Property1")]
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1> Property1Member {
             get {
-                return this.Property1Field;
+                return this.Property1MemberField;
             }
             set {
-                if ((object.ReferenceEquals(this.Property1Field, value) != true)) {
-                    this.Property1Field = value;
-                    this.RaisePropertyChanged("Property1");
+                if ((object.ReferenceEquals(this.Property1MemberField, value) != true)) {
+                    this.Property1MemberField = value;
+                    this.RaisePropertyChanged("Property1Member");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Property Property2 {
+        public DiversityPhone.DiversityService.Property1 Property2 {
             get {
                 return this.Property2Field;
             }
@@ -8770,8 +8710,8 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimen>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent>))]
@@ -8833,8 +8773,8 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonList))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonName))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyList))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyName))]
     public partial class EntityKeyMember : object, System.ComponentModel.INotifyPropertyChanged {
@@ -9063,15 +9003,15 @@ namespace DiversityPhone.DiversityService {
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName> EndDownloadTaxonList(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetPropertyListsForUser", ReplyAction="http://tempuri.org/IDiversityService/GetPropertyListsForUserResponse")]
-        System.IAsyncResult BeginGetPropertyListsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetPropertiesForUser", ReplyAction="http://tempuri.org/IDiversityService/GetPropertiesForUserResponse")]
+        System.IAsyncResult BeginGetPropertiesForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> EndGetPropertyListsForUser(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> EndGetPropertiesForUser(System.IAsyncResult result);
         
-        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadPropertyList", ReplyAction="http://tempuri.org/IDiversityService/DownloadPropertyListResponse")]
-        System.IAsyncResult BeginDownloadPropertyList(DiversityPhone.DiversityService.PropertyList list, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/DownloadPropertyNames", ReplyAction="http://tempuri.org/IDiversityService/DownloadPropertyNamesResponse")]
+        System.IAsyncResult BeginDownloadPropertyNames(DiversityPhone.DiversityService.Property p, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> EndDownloadPropertyList(System.IAsyncResult result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> EndDownloadPropertyNames(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse")]
         System.IAsyncResult BeginGetXMLStandardVocabulary(System.AsyncCallback callback, object asyncState);
@@ -9314,30 +9254,30 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class GetPropertyListsForUserCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class GetPropertiesForUserCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public GetPropertyListsForUserCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public GetPropertiesForUserCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
         
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> Result {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList>)(this.results[0]));
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property>)(this.results[0]));
             }
         }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class DownloadPropertyListCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class DownloadPropertyNamesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        public DownloadPropertyListCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        public DownloadPropertyNamesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -9521,17 +9461,17 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onDownloadTaxonListCompletedDelegate;
         
-        private BeginOperationDelegate onBeginGetPropertyListsForUserDelegate;
+        private BeginOperationDelegate onBeginGetPropertiesForUserDelegate;
         
-        private EndOperationDelegate onEndGetPropertyListsForUserDelegate;
+        private EndOperationDelegate onEndGetPropertiesForUserDelegate;
         
-        private System.Threading.SendOrPostCallback onGetPropertyListsForUserCompletedDelegate;
+        private System.Threading.SendOrPostCallback onGetPropertiesForUserCompletedDelegate;
         
-        private BeginOperationDelegate onBeginDownloadPropertyListDelegate;
+        private BeginOperationDelegate onBeginDownloadPropertyNamesDelegate;
         
-        private EndOperationDelegate onEndDownloadPropertyListDelegate;
+        private EndOperationDelegate onEndDownloadPropertyNamesDelegate;
         
-        private System.Threading.SendOrPostCallback onDownloadPropertyListCompletedDelegate;
+        private System.Threading.SendOrPostCallback onDownloadPropertyNamesCompletedDelegate;
         
         private BeginOperationDelegate onBeginGetXMLStandardVocabularyDelegate;
         
@@ -9640,9 +9580,9 @@ namespace DiversityPhone.DiversityService {
         
         public event System.EventHandler<DownloadTaxonListCompletedEventArgs> DownloadTaxonListCompleted;
         
-        public event System.EventHandler<GetPropertyListsForUserCompletedEventArgs> GetPropertyListsForUserCompleted;
+        public event System.EventHandler<GetPropertiesForUserCompletedEventArgs> GetPropertiesForUserCompleted;
         
-        public event System.EventHandler<DownloadPropertyListCompletedEventArgs> DownloadPropertyListCompleted;
+        public event System.EventHandler<DownloadPropertyNamesCompletedEventArgs> DownloadPropertyNamesCompleted;
         
         public event System.EventHandler<GetXMLStandardVocabularyCompletedEventArgs> GetXMLStandardVocabularyCompleted;
         
@@ -10226,99 +10166,99 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetPropertyListsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetPropertyListsForUser(login, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetPropertiesForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetPropertiesForUser(login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> DiversityPhone.DiversityService.IDiversityService.EndGetPropertyListsForUser(System.IAsyncResult result) {
-            return base.Channel.EndGetPropertyListsForUser(result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> DiversityPhone.DiversityService.IDiversityService.EndGetPropertiesForUser(System.IAsyncResult result) {
+            return base.Channel.EndGetPropertiesForUser(result);
         }
         
-        private System.IAsyncResult OnBeginGetPropertyListsForUser(object[] inValues, System.AsyncCallback callback, object asyncState) {
+        private System.IAsyncResult OnBeginGetPropertiesForUser(object[] inValues, System.AsyncCallback callback, object asyncState) {
             DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetPropertyListsForUser(login, callback, asyncState);
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetPropertiesForUser(login, callback, asyncState);
         }
         
-        private object[] OnEndGetPropertyListsForUser(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndGetPropertyListsForUser(result);
+        private object[] OnEndGetPropertiesForUser(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndGetPropertiesForUser(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnGetPropertyListsForUserCompleted(object state) {
-            if ((this.GetPropertyListsForUserCompleted != null)) {
+        private void OnGetPropertiesForUserCompleted(object state) {
+            if ((this.GetPropertiesForUserCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.GetPropertyListsForUserCompleted(this, new GetPropertyListsForUserCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.GetPropertiesForUserCompleted(this, new GetPropertiesForUserCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void GetPropertyListsForUserAsync(DiversityPhone.DiversityService.UserCredentials login) {
-            this.GetPropertyListsForUserAsync(login, null);
+        public void GetPropertiesForUserAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetPropertiesForUserAsync(login, null);
         }
         
-        public void GetPropertyListsForUserAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
-            if ((this.onBeginGetPropertyListsForUserDelegate == null)) {
-                this.onBeginGetPropertyListsForUserDelegate = new BeginOperationDelegate(this.OnBeginGetPropertyListsForUser);
+        public void GetPropertiesForUserAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginGetPropertiesForUserDelegate == null)) {
+                this.onBeginGetPropertiesForUserDelegate = new BeginOperationDelegate(this.OnBeginGetPropertiesForUser);
             }
-            if ((this.onEndGetPropertyListsForUserDelegate == null)) {
-                this.onEndGetPropertyListsForUserDelegate = new EndOperationDelegate(this.OnEndGetPropertyListsForUser);
+            if ((this.onEndGetPropertiesForUserDelegate == null)) {
+                this.onEndGetPropertiesForUserDelegate = new EndOperationDelegate(this.OnEndGetPropertiesForUser);
             }
-            if ((this.onGetPropertyListsForUserCompletedDelegate == null)) {
-                this.onGetPropertyListsForUserCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetPropertyListsForUserCompleted);
+            if ((this.onGetPropertiesForUserCompletedDelegate == null)) {
+                this.onGetPropertiesForUserCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetPropertiesForUserCompleted);
             }
-            base.InvokeAsync(this.onBeginGetPropertyListsForUserDelegate, new object[] {
-                        login}, this.onEndGetPropertyListsForUserDelegate, this.onGetPropertyListsForUserCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetPropertiesForUserDelegate, new object[] {
+                        login}, this.onEndGetPropertiesForUserDelegate, this.onGetPropertiesForUserCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginDownloadPropertyList(DiversityPhone.DiversityService.PropertyList list, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginDownloadPropertyList(list, page, login, callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginDownloadPropertyNames(DiversityPhone.DiversityService.Property p, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginDownloadPropertyNames(p, page, login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> DiversityPhone.DiversityService.IDiversityService.EndDownloadPropertyList(System.IAsyncResult result) {
-            return base.Channel.EndDownloadPropertyList(result);
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> DiversityPhone.DiversityService.IDiversityService.EndDownloadPropertyNames(System.IAsyncResult result) {
+            return base.Channel.EndDownloadPropertyNames(result);
         }
         
-        private System.IAsyncResult OnBeginDownloadPropertyList(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            DiversityPhone.DiversityService.PropertyList list = ((DiversityPhone.DiversityService.PropertyList)(inValues[0]));
+        private System.IAsyncResult OnBeginDownloadPropertyNames(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            DiversityPhone.DiversityService.Property p = ((DiversityPhone.DiversityService.Property)(inValues[0]));
             int page = ((int)(inValues[1]));
             DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[2]));
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginDownloadPropertyList(list, page, login, callback, asyncState);
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginDownloadPropertyNames(p, page, login, callback, asyncState);
         }
         
-        private object[] OnEndDownloadPropertyList(System.IAsyncResult result) {
-            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndDownloadPropertyList(result);
+        private object[] OnEndDownloadPropertyNames(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndDownloadPropertyNames(result);
             return new object[] {
                     retVal};
         }
         
-        private void OnDownloadPropertyListCompleted(object state) {
-            if ((this.DownloadPropertyListCompleted != null)) {
+        private void OnDownloadPropertyNamesCompleted(object state) {
+            if ((this.DownloadPropertyNamesCompleted != null)) {
                 InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
-                this.DownloadPropertyListCompleted(this, new DownloadPropertyListCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+                this.DownloadPropertyNamesCompleted(this, new DownloadPropertyNamesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
             }
         }
         
-        public void DownloadPropertyListAsync(DiversityPhone.DiversityService.PropertyList list, int page, DiversityPhone.DiversityService.UserCredentials login) {
-            this.DownloadPropertyListAsync(list, page, login, null);
+        public void DownloadPropertyNamesAsync(DiversityPhone.DiversityService.Property p, int page, DiversityPhone.DiversityService.UserCredentials login) {
+            this.DownloadPropertyNamesAsync(p, page, login, null);
         }
         
-        public void DownloadPropertyListAsync(DiversityPhone.DiversityService.PropertyList list, int page, DiversityPhone.DiversityService.UserCredentials login, object userState) {
-            if ((this.onBeginDownloadPropertyListDelegate == null)) {
-                this.onBeginDownloadPropertyListDelegate = new BeginOperationDelegate(this.OnBeginDownloadPropertyList);
+        public void DownloadPropertyNamesAsync(DiversityPhone.DiversityService.Property p, int page, DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginDownloadPropertyNamesDelegate == null)) {
+                this.onBeginDownloadPropertyNamesDelegate = new BeginOperationDelegate(this.OnBeginDownloadPropertyNames);
             }
-            if ((this.onEndDownloadPropertyListDelegate == null)) {
-                this.onEndDownloadPropertyListDelegate = new EndOperationDelegate(this.OnEndDownloadPropertyList);
+            if ((this.onEndDownloadPropertyNamesDelegate == null)) {
+                this.onEndDownloadPropertyNamesDelegate = new EndOperationDelegate(this.OnEndDownloadPropertyNames);
             }
-            if ((this.onDownloadPropertyListCompletedDelegate == null)) {
-                this.onDownloadPropertyListCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadPropertyListCompleted);
+            if ((this.onDownloadPropertyNamesCompletedDelegate == null)) {
+                this.onDownloadPropertyNamesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnDownloadPropertyNamesCompleted);
             }
-            base.InvokeAsync(this.onBeginDownloadPropertyListDelegate, new object[] {
-                        list,
+            base.InvokeAsync(this.onBeginDownloadPropertyNamesDelegate, new object[] {
+                        p,
                         page,
-                        login}, this.onEndDownloadPropertyListDelegate, this.onDownloadPropertyListCompletedDelegate, userState);
+                        login}, this.onEndDownloadPropertyNamesDelegate, this.onDownloadPropertyNamesCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -10788,31 +10728,31 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginGetPropertyListsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginGetPropertiesForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[1];
                 _args[0] = login;
-                System.IAsyncResult _result = base.BeginInvoke("GetPropertyListsForUser", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("GetPropertiesForUser", _args, callback, asyncState);
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> EndGetPropertyListsForUser(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> EndGetPropertiesForUser(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyList>)(base.EndInvoke("GetPropertyListsForUser", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property>)(base.EndInvoke("GetPropertiesForUser", _args, result)));
                 return _result;
             }
             
-            public System.IAsyncResult BeginDownloadPropertyList(DiversityPhone.DiversityService.PropertyList list, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            public System.IAsyncResult BeginDownloadPropertyNames(DiversityPhone.DiversityService.Property p, int page, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[3];
-                _args[0] = list;
+                _args[0] = p;
                 _args[1] = page;
                 _args[2] = login;
-                System.IAsyncResult _result = base.BeginInvoke("DownloadPropertyList", _args, callback, asyncState);
+                System.IAsyncResult _result = base.BeginInvoke("DownloadPropertyNames", _args, callback, asyncState);
                 return _result;
             }
             
-            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> EndDownloadPropertyList(System.IAsyncResult result) {
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> EndDownloadPropertyNames(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>)(base.EndInvoke("DownloadPropertyList", _args, result)));
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>)(base.EndInvoke("DownloadPropertyNames", _args, result)));
                 return _result;
             }
             

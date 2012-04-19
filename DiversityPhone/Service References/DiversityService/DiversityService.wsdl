@@ -83,17 +83,17 @@
   <wsdl:message name="IDiversityService_DownloadTaxonList_OutputMessage">
     <wsdl:part name="parameters" element="tns:DownloadTaxonListResponse" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_GetPropertyListsForUser_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetPropertyListsForUser" />
+  <wsdl:message name="IDiversityService_GetPropertiesForUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPropertiesForUser" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_GetPropertyListsForUser_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetPropertyListsForUserResponse" />
+  <wsdl:message name="IDiversityService_GetPropertiesForUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPropertiesForUserResponse" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_DownloadPropertyList_InputMessage">
-    <wsdl:part name="parameters" element="tns:DownloadPropertyList" />
+  <wsdl:message name="IDiversityService_DownloadPropertyNames_InputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyNames" />
   </wsdl:message>
-  <wsdl:message name="IDiversityService_DownloadPropertyList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:DownloadPropertyListResponse" />
+  <wsdl:message name="IDiversityService_DownloadPropertyNames_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadPropertyNamesResponse" />
   </wsdl:message>
   <wsdl:message name="IDiversityService_GetXMLStandardVocabulary_InputMessage">
     <wsdl:part name="parameters" element="tns:GetXMLStandardVocabulary" />
@@ -174,13 +174,13 @@
       <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/DownloadTaxonList" message="tns:IDiversityService_DownloadTaxonList_InputMessage" />
       <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/DownloadTaxonListResponse" message="tns:IDiversityService_DownloadTaxonList_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetPropertyListsForUser">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetPropertyListsForUser" message="tns:IDiversityService_GetPropertyListsForUser_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetPropertyListsForUserResponse" message="tns:IDiversityService_GetPropertyListsForUser_OutputMessage" />
+    <wsdl:operation name="GetPropertiesForUser">
+      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetPropertiesForUser" message="tns:IDiversityService_GetPropertiesForUser_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/GetPropertiesForUserResponse" message="tns:IDiversityService_GetPropertiesForUser_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="DownloadPropertyList">
-      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyList" message="tns:IDiversityService_DownloadPropertyList_InputMessage" />
-      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyListResponse" message="tns:IDiversityService_DownloadPropertyList_OutputMessage" />
+    <wsdl:operation name="DownloadPropertyNames">
+      <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyNames" message="tns:IDiversityService_DownloadPropertyNames_InputMessage" />
+      <wsdl:output wsam:Action="http://tempuri.org/IDiversityService/DownloadPropertyNamesResponse" message="tns:IDiversityService_DownloadPropertyNames_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetXMLStandardVocabulary">
       <wsdl:input wsam:Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary" message="tns:IDiversityService_GetXMLStandardVocabulary_InputMessage" />
@@ -313,8 +313,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetPropertyListsForUser">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetPropertyListsForUser" style="document" />
+    <wsdl:operation name="GetPropertiesForUser">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/GetPropertiesForUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -322,8 +322,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="DownloadPropertyList">
-      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadPropertyList" style="document" />
+    <wsdl:operation name="DownloadPropertyNames">
+      <soap:operation soapAction="http://tempuri.org/IDiversityService/DownloadPropertyNames" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

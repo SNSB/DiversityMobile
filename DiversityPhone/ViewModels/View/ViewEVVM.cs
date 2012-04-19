@@ -21,6 +21,7 @@
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
+        public ReactiveCommand Maps { get; private set; }
         #endregion
 
         #region Properties
@@ -99,7 +100,11 @@
                     })
                 .Select(p => new NavigationMessage(p, null, ReferrerType.Event, Current.Model.EventID.ToString()));
             Messenger.RegisterMessageSource(addMessageSource);
-
+            Maps = new ReactiveCommand();
+            var mapMessageSource =
+                Maps
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Event, Current.Model.EventID.ToString()));
+            Messenger.RegisterMessageSource(mapMessageSource);
         }
 
         private IList<SpecimenVM> getSpecimenList(Event ev)

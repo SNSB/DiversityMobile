@@ -80,12 +80,14 @@ namespace DiversityPhone.Model
 
         }
 
-        public static bool isOnMap(Map map, double latitude, double longitude)
+        public static bool isOnMap(Map map, double? latitude, double? longitude)
         {
-      
-            if (map.LatitudeNorth > latitude || map.LatitudeSouth < latitude)
+
+            if (map == null || latitude == null || longitude == null)
                 return false;
-            if (map.LongitudeWest < longitude || map.LongitudeEast > longitude)
+            if (map.LatitudeNorth < latitude || map.LatitudeSouth > latitude)
+                return false;
+            if (map.LongitudeWest > longitude || map.LongitudeEast < longitude)
                 return false;
             return true;
         }

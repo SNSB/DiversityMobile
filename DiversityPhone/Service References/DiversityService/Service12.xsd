@@ -176,33 +176,33 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetPropertyListsForUser">
+  <xs:element name="GetPropertiesForUser">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q26:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetPropertyListsForUserResponse">
+  <xs:element name="GetPropertiesForUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetPropertyListsForUserResult" nillable="true" type="q27:ArrayOfPropertyList" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetPropertiesForUserResult" nillable="true" type="q27:ArrayOfProperty" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DownloadPropertyList">
+  <xs:element name="DownloadPropertyNames">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="list" nillable="true" type="q28:PropertyList" />
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="p" nillable="true" type="q28:Property" />
         <xs:element minOccurs="0" name="page" type="xs:int" />
         <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q29:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DownloadPropertyListResponse">
+  <xs:element name="DownloadPropertyNamesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="DownloadPropertyListResult" nillable="true" type="q30:ArrayOfPropertyName" />
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="DownloadPropertyNamesResult" nillable="true" type="q30:ArrayOfPropertyName" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

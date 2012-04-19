@@ -27,6 +27,7 @@ namespace DiversityPhone.ViewModels
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
+        public ReactiveCommand Maps { get; private set; }
 
         private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null, 2);
@@ -140,7 +141,12 @@ namespace DiversityPhone.ViewModels
                         }
                     })
                 .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
-            Messenger.RegisterMessageSource(addMessageSource);         
+            Messenger.RegisterMessageSource(addMessageSource);
+            Maps = new ReactiveCommand();
+            var mapMessageSource =
+                Maps
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
+            Messenger.RegisterMessageSource(mapMessageSource);
         }
 
         private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
