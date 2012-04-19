@@ -166,20 +166,24 @@
         public String convertGeoPointsToString(int seriesID)
         {
             IList<GeoPointForSeries> pointsForSeries = getGeoPointsForSeries(seriesID);
-            StringBuilder sb = new StringBuilder("geography::STGeomFromText('LINESTRING(");
-            for(int i=0;i<pointsForSeries.Count;i++)
+            if (pointsForSeries.Count > 0)
             {
-                GeoPointForSeries gp = pointsForSeries[i];
-                if (i + 1 < pointsForSeries.Count)
+                StringBuilder sb = new StringBuilder("geography::STGeomFromText('LINESTRING(");
+                for (int i = 0; i < pointsForSeries.Count; i++)
                 {
-                    sb.Append(gp.Latitude + " " + gp.Longitude + ", ");
+                    GeoPointForSeries gp = pointsForSeries[i];
+                    if (i + 1 < pointsForSeries.Count)
+                    {
+                        sb.Append(gp.Latitude + " " + gp.Longitude + ", ");
+                    }
+                    else //Last GeoPoint
+                    {
+                        sb.Append(")', 4326)");
+                    }
                 }
-                else //Last GeoPoint
-                {
-                    sb.Append(")', 4326)");
-                }
+                return sb.ToString();
             }
-            return sb.ToString();
+            else return String.Empty;
         }
 
 
