@@ -609,7 +609,7 @@ namespace DiversityPhone.DiversityService {
         
         private string DescriptionField;
         
-        private System.Nullable<int> DiversityCollectionEventSeriesIDField;
+        private int DiversityCollectionEventSeriesIDField;
         
         private string GeographyField;
         
@@ -637,7 +637,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> DiversityCollectionEventSeriesID {
+        public int DiversityCollectionEventSeriesID {
             get {
                 return this.DiversityCollectionEventSeriesIDField;
             }
@@ -838,7 +838,7 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<System.DateTime> DeterminationDateField;
         
-        private System.Nullable<int> DiversityCollectionEventIDField;
+        private int DiversityCollectionEventIDField;
         
         private System.Nullable<int> DiversityCollectionSeriesIDField;
         
@@ -896,7 +896,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> DiversityCollectionEventID {
+        public int DiversityCollectionEventID {
             get {
                 return this.DiversityCollectionEventIDField;
             }
@@ -1033,11 +1033,15 @@ namespace DiversityPhone.DiversityService {
         
         private string AnalysisResultField;
         
+        private int DiversityCollectionSpecimenIDField;
+        
         private System.Nullable<int> DiversityCollectionUnitIDField;
         
         private int IdentificationUnitAnalysisIDField;
         
         private int IdentificationUnitIDField;
+        
+        private int SpecimenIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public System.DateTime AnalysisDate {
@@ -1074,6 +1078,19 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.AnalysisResultField, value) != true)) {
                     this.AnalysisResultField = value;
                     this.RaisePropertyChanged("AnalysisResult");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int DiversityCollectionSpecimenID {
+            get {
+                return this.DiversityCollectionSpecimenIDField;
+            }
+            set {
+                if ((this.DiversityCollectionSpecimenIDField.Equals(value) != true)) {
+                    this.DiversityCollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("DiversityCollectionSpecimenID");
                 }
             }
         }
@@ -1117,6 +1134,19 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SpecimenID {
+            get {
+                return this.SpecimenIDField;
+            }
+            set {
+                if ((this.SpecimenIDField.Equals(value) != true)) {
+                    this.SpecimenIDField = value;
+                    this.RaisePropertyChanged("SpecimenID");
+                }
+            }
+        }
+        
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
@@ -1142,7 +1172,7 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<int> DiversityCollectionSpecimenIDField;
         
-        private System.Nullable<int> DiversityCollectionUnitIDField;
+        private int DiversityCollectionUnitIDField;
         
         private string FamilyCacheField;
         
@@ -1240,7 +1270,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> DiversityCollectionUnitID {
+        public int DiversityCollectionUnitID {
             get {
                 return this.DiversityCollectionUnitIDField;
             }
@@ -1575,7 +1605,7 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<int> DiversityCollectionEventIDField;
         
-        private System.Nullable<int> DiversityCollectionSpecimenIDField;
+        private int DiversityCollectionSpecimenIDField;
         
         private System.DateTime LogUpdatedWhenField;
         
@@ -1632,7 +1662,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> DiversityCollectionSpecimenID {
+        public int DiversityCollectionSpecimenID {
             get {
                 return this.DiversityCollectionSpecimenIDField;
             }
@@ -2016,29 +2046,20 @@ namespace DiversityPhone.DiversityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="StructuralObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityObject))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventSeriesImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEvent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionAgent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionProject))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimenImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollSpecimenImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnit1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollTaxonomicGroup_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollUnitRelationType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Analysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisResult1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisTaxonomicGroup1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Identification))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeries))]
     public partial class StructuralObject : object, System.ComponentModel.INotifyPropertyChanged {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -2054,29 +2075,20 @@ namespace DiversityPhone.DiversityService {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityObject", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses", IsReference=true)]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventSeriesImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEvent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionAgent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionProject))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimenImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollSpecimenImageType_Enum))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnit1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollTaxonomicGroup_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollUnitRelationType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Analysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisResult1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisTaxonomicGroup1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Identification))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSery))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeries))]
     public partial class EntityObject : DiversityPhone.DiversityService.StructuralObject {
         
         private DiversityPhone.DiversityService.EntityKey EntityKeyField;
@@ -2090,438 +2102,6 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.EntityKeyField, value) != true)) {
                     this.EntityKeyField = value;
                     this.RaisePropertyChanged("EntityKey");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEventSeriesImage", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollectionEventSeriesImage : DiversityPhone.DiversityService.EntityObject {
-        
-        private DiversityPhone.DiversityService.CollEventSeriesImageType_Enum CollEventSeriesImageType_EnumField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX CollEventSeriesImageType_EnumReferenceField;
-        
-        private DiversityPhone.DiversityService.CollectionEventSery CollectionEventSeryField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSeryReferenceField;
-        
-        private string DataWithholdingReasonField;
-        
-        private string DescriptionField;
-        
-        private string ImageTypeField;
-        
-        private string LogCreatedByField;
-        
-        private System.Nullable<System.DateTime> LogCreatedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string NotesField;
-        
-        private string ResourceURIField;
-        
-        private System.Guid RowGUIDField;
-        
-        private int SeriesIDField;
-        
-        private string URIField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollEventSeriesImageType_Enum CollEventSeriesImageType_Enum {
-            get {
-                return this.CollEventSeriesImageType_EnumField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventSeriesImageType_EnumField, value) != true)) {
-                    this.CollEventSeriesImageType_EnumField = value;
-                    this.RaisePropertyChanged("CollEventSeriesImageType_Enum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX CollEventSeriesImageType_EnumReference {
-            get {
-                return this.CollEventSeriesImageType_EnumReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventSeriesImageType_EnumReferenceField, value) != true)) {
-                    this.CollEventSeriesImageType_EnumReferenceField = value;
-                    this.RaisePropertyChanged("CollEventSeriesImageType_EnumReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionEventSery CollectionEventSery {
-            get {
-                return this.CollectionEventSeryField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventSeryField, value) != true)) {
-                    this.CollectionEventSeryField = value;
-                    this.RaisePropertyChanged("CollectionEventSery");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSeryReference {
-            get {
-                return this.CollectionEventSeryReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventSeryReferenceField, value) != true)) {
-                    this.CollectionEventSeryReferenceField = value;
-                    this.RaisePropertyChanged("CollectionEventSeryReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DataWithholdingReason {
-            get {
-                return this.DataWithholdingReasonField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DataWithholdingReasonField, value) != true)) {
-                    this.DataWithholdingReasonField = value;
-                    this.RaisePropertyChanged("DataWithholdingReason");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ImageType {
-            get {
-                return this.ImageTypeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ImageTypeField, value) != true)) {
-                    this.ImageTypeField = value;
-                    this.RaisePropertyChanged("ImageType");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogCreatedBy {
-            get {
-                return this.LogCreatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
-                    this.LogCreatedByField = value;
-                    this.RaisePropertyChanged("LogCreatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogCreatedWhen {
-            get {
-                return this.LogCreatedWhenField;
-            }
-            set {
-                if ((this.LogCreatedWhenField.Equals(value) != true)) {
-                    this.LogCreatedWhenField = value;
-                    this.RaisePropertyChanged("LogCreatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ResourceURI {
-            get {
-                return this.ResourceURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResourceURIField, value) != true)) {
-                    this.ResourceURIField = value;
-                    this.RaisePropertyChanged("ResourceURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int SeriesID {
-            get {
-                return this.SeriesIDField;
-            }
-            set {
-                if ((this.SeriesIDField.Equals(value) != true)) {
-                    this.SeriesIDField = value;
-                    this.RaisePropertyChanged("SeriesID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string URI {
-            get {
-                return this.URIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.URIField, value) != true)) {
-                    this.URIField = value;
-                    this.RaisePropertyChanged("URI");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollEventSeriesImageType_Enum", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollEventSeriesImageType_Enum : DiversityPhone.DiversityService.EntityObject {
-        
-        private string CodeField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventSeriesImageType_Enum> CollEventSeriesImageType_Enum1Field;
-        
-        private DiversityPhone.DiversityService.CollEventSeriesImageType_Enum CollEventSeriesImageType_Enum2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX CollEventSeriesImageType_Enum2ReferenceField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImagesField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnableField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private string InternalNotesField;
-        
-        private string ParentCodeField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventSeriesImageType_Enum> CollEventSeriesImageType_Enum1 {
-            get {
-                return this.CollEventSeriesImageType_Enum1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventSeriesImageType_Enum1Field, value) != true)) {
-                    this.CollEventSeriesImageType_Enum1Field = value;
-                    this.RaisePropertyChanged("CollEventSeriesImageType_Enum1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollEventSeriesImageType_Enum CollEventSeriesImageType_Enum2 {
-            get {
-                return this.CollEventSeriesImageType_Enum2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventSeriesImageType_Enum2Field, value) != true)) {
-                    this.CollEventSeriesImageType_Enum2Field = value;
-                    this.RaisePropertyChanged("CollEventSeriesImageType_Enum2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX CollEventSeriesImageType_Enum2Reference {
-            get {
-                return this.CollEventSeriesImageType_Enum2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventSeriesImageType_Enum2ReferenceField, value) != true)) {
-                    this.CollEventSeriesImageType_Enum2ReferenceField = value;
-                    this.RaisePropertyChanged("CollEventSeriesImageType_Enum2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImages {
-            get {
-                return this.CollectionEventSeriesImagesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventSeriesImagesField, value) != true)) {
-                    this.CollectionEventSeriesImagesField = value;
-                    this.RaisePropertyChanged("CollectionEventSeriesImages");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnable {
-            get {
-                return this.DisplayEnableField;
-            }
-            set {
-                if ((this.DisplayEnableField.Equals(value) != true)) {
-                    this.DisplayEnableField = value;
-                    this.RaisePropertyChanged("DisplayEnable");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InternalNotes {
-            get {
-                return this.InternalNotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
-                    this.InternalNotesField = value;
-                    this.RaisePropertyChanged("InternalNotes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentCode {
-            get {
-                return this.ParentCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentCodeField, value) != true)) {
-                    this.ParentCodeField = value;
-                    this.RaisePropertyChanged("ParentCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
                 }
             }
         }
@@ -2544,15 +2124,15 @@ namespace DiversityPhone.DiversityService {
         
         private int CollectionEventIDField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImagesField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImageField;
         
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventLocalisation> CollectionEventLocalisationField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventPropertiesField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventPropertyField;
         
-        private DiversityPhone.DiversityService.CollectionEventSery CollectionEventSeryField;
+        private DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeriesField;
         
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSeryReferenceField;
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeriesReferenceField;
         
         private System.Nullable<byte> CollectionMonthField;
         
@@ -2679,14 +2259,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImages {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImage {
             get {
-                return this.CollectionEventImagesField;
+                return this.CollectionEventImageField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventImagesField, value) != true)) {
-                    this.CollectionEventImagesField = value;
-                    this.RaisePropertyChanged("CollectionEventImages");
+                if ((object.ReferenceEquals(this.CollectionEventImageField, value) != true)) {
+                    this.CollectionEventImageField = value;
+                    this.RaisePropertyChanged("CollectionEventImage");
                 }
             }
         }
@@ -2705,40 +2285,40 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventProperties {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventProperty {
             get {
-                return this.CollectionEventPropertiesField;
+                return this.CollectionEventPropertyField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventPropertiesField, value) != true)) {
-                    this.CollectionEventPropertiesField = value;
-                    this.RaisePropertyChanged("CollectionEventProperties");
+                if ((object.ReferenceEquals(this.CollectionEventPropertyField, value) != true)) {
+                    this.CollectionEventPropertyField = value;
+                    this.RaisePropertyChanged("CollectionEventProperty");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionEventSery CollectionEventSery {
+        public DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeries {
             get {
-                return this.CollectionEventSeryField;
+                return this.CollectionEventSeriesField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventSeryField, value) != true)) {
-                    this.CollectionEventSeryField = value;
-                    this.RaisePropertyChanged("CollectionEventSery");
+                if ((object.ReferenceEquals(this.CollectionEventSeriesField, value) != true)) {
+                    this.CollectionEventSeriesField = value;
+                    this.RaisePropertyChanged("CollectionEventSeries");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSeryReference {
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeriesReference {
             get {
-                return this.CollectionEventSeryReferenceField;
+                return this.CollectionEventSeriesReferenceField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventSeryReferenceField, value) != true)) {
-                    this.CollectionEventSeryReferenceField = value;
-                    this.RaisePropertyChanged("CollectionEventSeryReference");
+                if ((object.ReferenceEquals(this.CollectionEventSeriesReferenceField, value) != true)) {
+                    this.CollectionEventSeriesReferenceField = value;
+                    this.RaisePropertyChanged("CollectionEventSeriesReference");
                 }
             }
         }
@@ -3048,10 +2628,6 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEventImage", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class CollectionEventImage : DiversityPhone.DiversityService.EntityObject {
         
-        private DiversityPhone.DiversityService.CollEventImageType_Enum CollEventImageType_EnumField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX CollEventImageType_EnumReferenceField;
-        
         private DiversityPhone.DiversityService.CollectionEvent CollectionEventField;
         
         private int CollectionEventIDField;
@@ -3079,32 +2655,6 @@ namespace DiversityPhone.DiversityService {
         private System.Guid RowGUIDField;
         
         private string URIField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollEventImageType_Enum CollEventImageType_Enum {
-            get {
-                return this.CollEventImageType_EnumField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventImageType_EnumField, value) != true)) {
-                    this.CollEventImageType_EnumField = value;
-                    this.RaisePropertyChanged("CollEventImageType_Enum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX CollEventImageType_EnumReference {
-            get {
-                return this.CollEventImageType_EnumReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventImageType_EnumReferenceField, value) != true)) {
-                    this.CollEventImageType_EnumReferenceField = value;
-                    this.RaisePropertyChanged("CollEventImageType_EnumReference");
-                }
-            }
-        }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public DiversityPhone.DiversityService.CollectionEvent CollectionEvent {
@@ -3284,192 +2834,6 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.URIField, value) != true)) {
                     this.URIField = value;
                     this.RaisePropertyChanged("URI");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollEventImageType_Enum", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollEventImageType_Enum : DiversityPhone.DiversityService.EntityObject {
-        
-        private string CodeField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventImageType_Enum> CollEventImageType_Enum1Field;
-        
-        private DiversityPhone.DiversityService.CollEventImageType_Enum CollEventImageType_Enum2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX CollEventImageType_Enum2ReferenceField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImagesField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnableField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private string InternalNotesField;
-        
-        private string ParentCodeField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventImageType_Enum> CollEventImageType_Enum1 {
-            get {
-                return this.CollEventImageType_Enum1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventImageType_Enum1Field, value) != true)) {
-                    this.CollEventImageType_Enum1Field = value;
-                    this.RaisePropertyChanged("CollEventImageType_Enum1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollEventImageType_Enum CollEventImageType_Enum2 {
-            get {
-                return this.CollEventImageType_Enum2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventImageType_Enum2Field, value) != true)) {
-                    this.CollEventImageType_Enum2Field = value;
-                    this.RaisePropertyChanged("CollEventImageType_Enum2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX CollEventImageType_Enum2Reference {
-            get {
-                return this.CollEventImageType_Enum2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollEventImageType_Enum2ReferenceField, value) != true)) {
-                    this.CollEventImageType_Enum2ReferenceField = value;
-                    this.RaisePropertyChanged("CollEventImageType_Enum2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage> CollectionEventImages {
-            get {
-                return this.CollectionEventImagesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventImagesField, value) != true)) {
-                    this.CollectionEventImagesField = value;
-                    this.RaisePropertyChanged("CollectionEventImages");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnable {
-            get {
-                return this.DisplayEnableField;
-            }
-            set {
-                if ((this.DisplayEnableField.Equals(value) != true)) {
-                    this.DisplayEnableField = value;
-                    this.RaisePropertyChanged("DisplayEnable");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InternalNotes {
-            get {
-                return this.InternalNotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
-                    this.InternalNotesField = value;
-                    this.RaisePropertyChanged("InternalNotes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentCode {
-            get {
-                return this.ParentCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentCodeField, value) != true)) {
-                    this.ParentCodeField = value;
-                    this.RaisePropertyChanged("ParentCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
                 }
             }
         }
@@ -3836,13 +3200,9 @@ namespace DiversityPhone.DiversityService {
         
         private string NotesField;
         
-        private DiversityPhone.DiversityService.Property1 PropertyField;
-        
         private string PropertyHierarchyCacheField;
         
         private int PropertyIDField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX PropertyReferenceField;
         
         private string PropertyURIField;
         
@@ -3985,19 +3345,6 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Property1 Property {
-            get {
-                return this.PropertyField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PropertyField, value) != true)) {
-                    this.PropertyField = value;
-                    this.RaisePropertyChanged("Property");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string PropertyHierarchyCache {
             get {
                 return this.PropertyHierarchyCacheField;
@@ -4019,19 +3366,6 @@ namespace DiversityPhone.DiversityService {
                 if ((this.PropertyIDField.Equals(value) != true)) {
                     this.PropertyIDField = value;
                     this.RaisePropertyChanged("PropertyID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX PropertyReference {
-            get {
-                return this.PropertyReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PropertyReferenceField, value) != true)) {
-                    this.PropertyReferenceField = value;
-                    this.RaisePropertyChanged("PropertyReference");
                 }
             }
         }
@@ -4104,237 +3438,6 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Property", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class Property1 : DiversityPhone.DiversityService.EntityObject {
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventPropertiesField;
-        
-        private string DefaultAccuracyOfPropertyField;
-        
-        private string DefaultMeasurementUnitField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnabledField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private string ParsingMethodNameField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1> Property1MemberField;
-        
-        private DiversityPhone.DiversityService.Property1 Property2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX Property2ReferenceField;
-        
-        private int PropertyIDField;
-        
-        private string PropertyNameField;
-        
-        private System.Nullable<int> PropertyParentIDField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1> CollectionEventProperties {
-            get {
-                return this.CollectionEventPropertiesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventPropertiesField, value) != true)) {
-                    this.CollectionEventPropertiesField = value;
-                    this.RaisePropertyChanged("CollectionEventProperties");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DefaultAccuracyOfProperty {
-            get {
-                return this.DefaultAccuracyOfPropertyField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DefaultAccuracyOfPropertyField, value) != true)) {
-                    this.DefaultAccuracyOfPropertyField = value;
-                    this.RaisePropertyChanged("DefaultAccuracyOfProperty");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DefaultMeasurementUnit {
-            get {
-                return this.DefaultMeasurementUnitField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DefaultMeasurementUnitField, value) != true)) {
-                    this.DefaultMeasurementUnitField = value;
-                    this.RaisePropertyChanged("DefaultMeasurementUnit");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnabled {
-            get {
-                return this.DisplayEnabledField;
-            }
-            set {
-                if ((this.DisplayEnabledField.Equals(value) != true)) {
-                    this.DisplayEnabledField = value;
-                    this.RaisePropertyChanged("DisplayEnabled");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParsingMethodName {
-            get {
-                return this.ParsingMethodNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParsingMethodNameField, value) != true)) {
-                    this.ParsingMethodNameField = value;
-                    this.RaisePropertyChanged("ParsingMethodName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Name="Property1")]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1> Property1Member {
-            get {
-                return this.Property1MemberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Property1MemberField, value) != true)) {
-                    this.Property1MemberField = value;
-                    this.RaisePropertyChanged("Property1Member");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Property1 Property2 {
-            get {
-                return this.Property2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Property2Field, value) != true)) {
-                    this.Property2Field = value;
-                    this.RaisePropertyChanged("Property2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX Property2Reference {
-            get {
-                return this.Property2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Property2ReferenceField, value) != true)) {
-                    this.Property2ReferenceField = value;
-                    this.RaisePropertyChanged("Property2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int PropertyID {
-            get {
-                return this.PropertyIDField;
-            }
-            set {
-                if ((this.PropertyIDField.Equals(value) != true)) {
-                    this.PropertyIDField = value;
-                    this.RaisePropertyChanged("PropertyID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string PropertyName {
-            get {
-                return this.PropertyNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PropertyNameField, value) != true)) {
-                    this.PropertyNameField = value;
-                    this.RaisePropertyChanged("PropertyName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> PropertyParentID {
-            get {
-                return this.PropertyParentIDField;
-            }
-            set {
-                if ((this.PropertyParentIDField.Equals(value) != true)) {
-                    this.PropertyParentIDField = value;
-                    this.RaisePropertyChanged("PropertyParentID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionSpecimen", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class CollectionSpecimen : DiversityPhone.DiversityService.EntityObject {
         
@@ -4354,7 +3457,7 @@ namespace DiversityPhone.DiversityService {
         
         private string AdditionalNotesField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent> CollectionAgentsField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent> CollectionAgentField;
         
         private DiversityPhone.DiversityService.CollectionEvent CollectionEventField;
         
@@ -4364,11 +3467,11 @@ namespace DiversityPhone.DiversityService {
         
         private System.Nullable<int> CollectionIDField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionProject> CollectionProjectsField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionProject> CollectionProjectField;
         
         private int CollectionSpecimenIDField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImagesField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImageField;
         
         private string DataWithholdingReasonField;
         
@@ -4527,14 +3630,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent> CollectionAgents {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent> CollectionAgent {
             get {
-                return this.CollectionAgentsField;
+                return this.CollectionAgentField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionAgentsField, value) != true)) {
-                    this.CollectionAgentsField = value;
-                    this.RaisePropertyChanged("CollectionAgents");
+                if ((object.ReferenceEquals(this.CollectionAgentField, value) != true)) {
+                    this.CollectionAgentField = value;
+                    this.RaisePropertyChanged("CollectionAgent");
                 }
             }
         }
@@ -4592,14 +3695,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionProject> CollectionProjects {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionProject> CollectionProject {
             get {
-                return this.CollectionProjectsField;
+                return this.CollectionProjectField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionProjectsField, value) != true)) {
-                    this.CollectionProjectsField = value;
-                    this.RaisePropertyChanged("CollectionProjects");
+                if ((object.ReferenceEquals(this.CollectionProjectField, value) != true)) {
+                    this.CollectionProjectField = value;
+                    this.RaisePropertyChanged("CollectionProject");
                 }
             }
         }
@@ -4618,14 +3721,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImages {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImage {
             get {
-                return this.CollectionSpecimenImagesField;
+                return this.CollectionSpecimenImageField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionSpecimenImagesField, value) != true)) {
-                    this.CollectionSpecimenImagesField = value;
-                    this.RaisePropertyChanged("CollectionSpecimenImages");
+                if ((object.ReferenceEquals(this.CollectionSpecimenImageField, value) != true)) {
+                    this.CollectionSpecimenImageField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenImage");
                 }
             }
         }
@@ -4974,11 +4077,11 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionAgent", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class CollectionAgent : DiversityPhone.DiversityService.EntityObject {
         
-        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimanField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReferenceField;
+        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimenField;
         
         private int CollectionSpecimenIDField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReferenceField;
         
         private string CollectorsAgentURIField;
         
@@ -5005,27 +4108,14 @@ namespace DiversityPhone.DiversityService {
         private bool xx_IsAvailableField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpeciman {
+        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimen {
             get {
-                return this.CollectionSpecimanField;
+                return this.CollectionSpecimenField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanField, value) != true)) {
-                    this.CollectionSpecimanField = value;
-                    this.RaisePropertyChanged("CollectionSpeciman");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReference {
-            get {
-                return this.CollectionSpecimanReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanReferenceField, value) != true)) {
-                    this.CollectionSpecimanReferenceField = value;
-                    this.RaisePropertyChanged("CollectionSpecimanReference");
+                if ((object.ReferenceEquals(this.CollectionSpecimenField, value) != true)) {
+                    this.CollectionSpecimenField = value;
+                    this.RaisePropertyChanged("CollectionSpecimen");
                 }
             }
         }
@@ -5039,6 +4129,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
                     this.CollectionSpecimenIDField = value;
                     this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReference {
+            get {
+                return this.CollectionSpecimenReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionSpecimenReferenceField, value) != true)) {
+                    this.CollectionSpecimenReferenceField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenReference");
                 }
             }
         }
@@ -5205,11 +4308,11 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionProject", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class CollectionProject : DiversityPhone.DiversityService.EntityObject {
         
-        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimanField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReferenceField;
+        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimenField;
         
         private int CollectionSpecimenIDField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReferenceField;
         
         private string LogCreatedByField;
         
@@ -5224,27 +4327,14 @@ namespace DiversityPhone.DiversityService {
         private System.Guid RowGUIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpeciman {
+        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimen {
             get {
-                return this.CollectionSpecimanField;
+                return this.CollectionSpecimenField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanField, value) != true)) {
-                    this.CollectionSpecimanField = value;
-                    this.RaisePropertyChanged("CollectionSpeciman");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReference {
-            get {
-                return this.CollectionSpecimanReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanReferenceField, value) != true)) {
-                    this.CollectionSpecimanReferenceField = value;
-                    this.RaisePropertyChanged("CollectionSpecimanReference");
+                if ((object.ReferenceEquals(this.CollectionSpecimenField, value) != true)) {
+                    this.CollectionSpecimenField = value;
+                    this.RaisePropertyChanged("CollectionSpecimen");
                 }
             }
         }
@@ -5258,6 +4348,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
                     this.CollectionSpecimenIDField = value;
                     this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReference {
+            get {
+                return this.CollectionSpecimenReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionSpecimenReferenceField, value) != true)) {
+                    this.CollectionSpecimenReferenceField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenReference");
                 }
             }
         }
@@ -5346,15 +4449,11 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="CollectionSpecimenImage", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class CollectionSpecimenImage : DiversityPhone.DiversityService.EntityObject {
         
-        private DiversityPhone.DiversityService.CollSpecimenImageType_Enum CollSpecimenImageType_EnumField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX CollSpecimenImageType_EnumReferenceField;
-        
-        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimanField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReferenceField;
+        private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimenField;
         
         private int CollectionSpecimenIDField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReferenceField;
         
         private string DataWithholdingReasonField;
         
@@ -5387,53 +4486,14 @@ namespace DiversityPhone.DiversityService {
         private string URIField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollSpecimenImageType_Enum CollSpecimenImageType_Enum {
+        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimen {
             get {
-                return this.CollSpecimenImageType_EnumField;
+                return this.CollectionSpecimenField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollSpecimenImageType_EnumField, value) != true)) {
-                    this.CollSpecimenImageType_EnumField = value;
-                    this.RaisePropertyChanged("CollSpecimenImageType_Enum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX CollSpecimenImageType_EnumReference {
-            get {
-                return this.CollSpecimenImageType_EnumReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollSpecimenImageType_EnumReferenceField, value) != true)) {
-                    this.CollSpecimenImageType_EnumReferenceField = value;
-                    this.RaisePropertyChanged("CollSpecimenImageType_EnumReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpeciman {
-            get {
-                return this.CollectionSpecimanField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanField, value) != true)) {
-                    this.CollectionSpecimanField = value;
-                    this.RaisePropertyChanged("CollectionSpeciman");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimanReference {
-            get {
-                return this.CollectionSpecimanReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionSpecimanReferenceField, value) != true)) {
-                    this.CollectionSpecimanReferenceField = value;
-                    this.RaisePropertyChanged("CollectionSpecimanReference");
+                if ((object.ReferenceEquals(this.CollectionSpecimenField, value) != true)) {
+                    this.CollectionSpecimenField = value;
+                    this.RaisePropertyChanged("CollectionSpecimen");
                 }
             }
         }
@@ -5447,6 +4507,19 @@ namespace DiversityPhone.DiversityService {
                 if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
                     this.CollectionSpecimenIDField = value;
                     this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReference {
+            get {
+                return this.CollectionSpecimenReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionSpecimenReferenceField, value) != true)) {
+                    this.CollectionSpecimenReferenceField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenReference");
                 }
             }
         }
@@ -5649,210 +4722,16 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollSpecimenImageType_Enum", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollSpecimenImageType_Enum : DiversityPhone.DiversityService.EntityObject {
-        
-        private string CodeField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollSpecimenImageType_Enum> CollSpecimenImageType_Enum1Field;
-        
-        private DiversityPhone.DiversityService.CollSpecimenImageType_Enum CollSpecimenImageType_Enum2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX CollSpecimenImageType_Enum2ReferenceField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImagesField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnableField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private string InternalNotesField;
-        
-        private string ParentCodeField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollSpecimenImageType_Enum> CollSpecimenImageType_Enum1 {
-            get {
-                return this.CollSpecimenImageType_Enum1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollSpecimenImageType_Enum1Field, value) != true)) {
-                    this.CollSpecimenImageType_Enum1Field = value;
-                    this.RaisePropertyChanged("CollSpecimenImageType_Enum1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollSpecimenImageType_Enum CollSpecimenImageType_Enum2 {
-            get {
-                return this.CollSpecimenImageType_Enum2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollSpecimenImageType_Enum2Field, value) != true)) {
-                    this.CollSpecimenImageType_Enum2Field = value;
-                    this.RaisePropertyChanged("CollSpecimenImageType_Enum2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX CollSpecimenImageType_Enum2Reference {
-            get {
-                return this.CollSpecimenImageType_Enum2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollSpecimenImageType_Enum2ReferenceField, value) != true)) {
-                    this.CollSpecimenImageType_Enum2ReferenceField = value;
-                    this.RaisePropertyChanged("CollSpecimenImageType_Enum2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImages {
-            get {
-                return this.CollectionSpecimenImagesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionSpecimenImagesField, value) != true)) {
-                    this.CollectionSpecimenImagesField = value;
-                    this.RaisePropertyChanged("CollectionSpecimenImages");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnable {
-            get {
-                return this.DisplayEnableField;
-            }
-            set {
-                if ((this.DisplayEnableField.Equals(value) != true)) {
-                    this.DisplayEnableField = value;
-                    this.RaisePropertyChanged("DisplayEnable");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InternalNotes {
-            get {
-                return this.InternalNotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
-                    this.InternalNotesField = value;
-                    this.RaisePropertyChanged("InternalNotes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentCode {
-            get {
-                return this.ParentCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentCodeField, value) != true)) {
-                    this.ParentCodeField = value;
-                    this.RaisePropertyChanged("ParentCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnit", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
     public partial class IdentificationUnit1 : DiversityPhone.DiversityService.EntityObject {
         
         private string CircumstancesField;
         
-        private DiversityPhone.DiversityService.CollTaxonomicGroup_Enum CollTaxonomicGroup_EnumField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX CollTaxonomicGroup_EnumReferenceField;
-        
-        private DiversityPhone.DiversityService.CollUnitRelationType_Enum CollUnitRelationType_EnumField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX CollUnitRelationType_EnumReferenceField;
-        
         private DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimenField;
         
         private int CollectionSpecimenIDField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImagesField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImageField;
         
         private DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX CollectionSpecimenReferenceField;
         
@@ -5868,13 +4747,21 @@ namespace DiversityPhone.DiversityService {
         
         private string GenderField;
         
+        private string HierarchyCacheField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification> IdentificationField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnit1MemberField;
+        
+        private DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit2Field;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnit2ReferenceField;
+        
         private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1> IdentificationUnitAnalysisField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi> IdentificationUnitGeoAnalysisField;
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis> IdentificationUnitGeoAnalysisField;
         
         private int IdentificationUnitIDField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification> IdentificationsField;
         
         private string LastIdentificationCacheField;
         
@@ -5932,58 +4819,6 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollTaxonomicGroup_Enum CollTaxonomicGroup_Enum {
-            get {
-                return this.CollTaxonomicGroup_EnumField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollTaxonomicGroup_EnumField, value) != true)) {
-                    this.CollTaxonomicGroup_EnumField = value;
-                    this.RaisePropertyChanged("CollTaxonomicGroup_Enum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX CollTaxonomicGroup_EnumReference {
-            get {
-                return this.CollTaxonomicGroup_EnumReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollTaxonomicGroup_EnumReferenceField, value) != true)) {
-                    this.CollTaxonomicGroup_EnumReferenceField = value;
-                    this.RaisePropertyChanged("CollTaxonomicGroup_EnumReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollUnitRelationType_Enum CollUnitRelationType_Enum {
-            get {
-                return this.CollUnitRelationType_EnumField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollUnitRelationType_EnumField, value) != true)) {
-                    this.CollUnitRelationType_EnumField = value;
-                    this.RaisePropertyChanged("CollUnitRelationType_Enum");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX CollUnitRelationType_EnumReference {
-            get {
-                return this.CollUnitRelationType_EnumReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollUnitRelationType_EnumReferenceField, value) != true)) {
-                    this.CollUnitRelationType_EnumReferenceField = value;
-                    this.RaisePropertyChanged("CollUnitRelationType_EnumReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public DiversityPhone.DiversityService.CollectionSpecimen CollectionSpecimen {
             get {
                 return this.CollectionSpecimenField;
@@ -6010,14 +4845,14 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImages {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage> CollectionSpecimenImage {
             get {
-                return this.CollectionSpecimenImagesField;
+                return this.CollectionSpecimenImageField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionSpecimenImagesField, value) != true)) {
-                    this.CollectionSpecimenImagesField = value;
-                    this.RaisePropertyChanged("CollectionSpecimenImages");
+                if ((object.ReferenceEquals(this.CollectionSpecimenImageField, value) != true)) {
+                    this.CollectionSpecimenImageField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenImage");
                 }
             }
         }
@@ -6114,6 +4949,71 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string HierarchyCache {
+            get {
+                return this.HierarchyCacheField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.HierarchyCacheField, value) != true)) {
+                    this.HierarchyCacheField = value;
+                    this.RaisePropertyChanged("HierarchyCache");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification> Identification {
+            get {
+                return this.IdentificationField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationField, value) != true)) {
+                    this.IdentificationField = value;
+                    this.RaisePropertyChanged("Identification");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Name="IdentificationUnit1")]
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnit1Member {
+            get {
+                return this.IdentificationUnit1MemberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnit1MemberField, value) != true)) {
+                    this.IdentificationUnit1MemberField = value;
+                    this.RaisePropertyChanged("IdentificationUnit1Member");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit2 {
+            get {
+                return this.IdentificationUnit2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnit2Field, value) != true)) {
+                    this.IdentificationUnit2Field = value;
+                    this.RaisePropertyChanged("IdentificationUnit2");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnit2Reference {
+            get {
+                return this.IdentificationUnit2ReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnit2ReferenceField, value) != true)) {
+                    this.IdentificationUnit2ReferenceField = value;
+                    this.RaisePropertyChanged("IdentificationUnit2Reference");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1> IdentificationUnitAnalysis {
             get {
                 return this.IdentificationUnitAnalysisField;
@@ -6127,7 +5027,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi> IdentificationUnitGeoAnalysis {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis> IdentificationUnitGeoAnalysis {
             get {
                 return this.IdentificationUnitGeoAnalysisField;
             }
@@ -6148,19 +5048,6 @@ namespace DiversityPhone.DiversityService {
                 if ((this.IdentificationUnitIDField.Equals(value) != true)) {
                     this.IdentificationUnitIDField = value;
                     this.RaisePropertyChanged("IdentificationUnitID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification> Identifications {
-            get {
-                return this.IdentificationsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationsField, value) != true)) {
-                    this.IdentificationsField = value;
-                    this.RaisePropertyChanged("Identifications");
                 }
             }
         }
@@ -6434,1473 +5321,6 @@ namespace DiversityPhone.DiversityService {
                 if ((object.ReferenceEquals(this.xx_SubstrateRelationTypeField, value) != true)) {
                     this.xx_SubstrateRelationTypeField = value;
                     this.RaisePropertyChanged("xx_SubstrateRelationType");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollTaxonomicGroup_Enum", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollTaxonomicGroup_Enum : DiversityPhone.DiversityService.EntityObject {
-        
-        private string CodeField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollTaxonomicGroup_Enum> CollTaxonomicGroup_Enum1Field;
-        
-        private DiversityPhone.DiversityService.CollTaxonomicGroup_Enum CollTaxonomicGroup_Enum2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX CollTaxonomicGroup_Enum2ReferenceField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnableField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnitsField;
-        
-        private string InternalNotesField;
-        
-        private string ParentCodeField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollTaxonomicGroup_Enum> CollTaxonomicGroup_Enum1 {
-            get {
-                return this.CollTaxonomicGroup_Enum1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollTaxonomicGroup_Enum1Field, value) != true)) {
-                    this.CollTaxonomicGroup_Enum1Field = value;
-                    this.RaisePropertyChanged("CollTaxonomicGroup_Enum1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollTaxonomicGroup_Enum CollTaxonomicGroup_Enum2 {
-            get {
-                return this.CollTaxonomicGroup_Enum2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollTaxonomicGroup_Enum2Field, value) != true)) {
-                    this.CollTaxonomicGroup_Enum2Field = value;
-                    this.RaisePropertyChanged("CollTaxonomicGroup_Enum2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX CollTaxonomicGroup_Enum2Reference {
-            get {
-                return this.CollTaxonomicGroup_Enum2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollTaxonomicGroup_Enum2ReferenceField, value) != true)) {
-                    this.CollTaxonomicGroup_Enum2ReferenceField = value;
-                    this.RaisePropertyChanged("CollTaxonomicGroup_Enum2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnable {
-            get {
-                return this.DisplayEnableField;
-            }
-            set {
-                if ((this.DisplayEnableField.Equals(value) != true)) {
-                    this.DisplayEnableField = value;
-                    this.RaisePropertyChanged("DisplayEnable");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnits {
-            get {
-                return this.IdentificationUnitsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitsField, value) != true)) {
-                    this.IdentificationUnitsField = value;
-                    this.RaisePropertyChanged("IdentificationUnits");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InternalNotes {
-            get {
-                return this.InternalNotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
-                    this.InternalNotesField = value;
-                    this.RaisePropertyChanged("InternalNotes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentCode {
-            get {
-                return this.ParentCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentCodeField, value) != true)) {
-                    this.ParentCodeField = value;
-                    this.RaisePropertyChanged("ParentCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollUnitRelationType_Enum", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollUnitRelationType_Enum : DiversityPhone.DiversityService.EntityObject {
-        
-        private string CodeField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollUnitRelationType_Enum> CollUnitRelationType_Enum1Field;
-        
-        private DiversityPhone.DiversityService.CollUnitRelationType_Enum CollUnitRelationType_Enum2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX CollUnitRelationType_Enum2ReferenceField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<bool> DisplayEnableField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnitsField;
-        
-        private string InternalNotesField;
-        
-        private string ParentCodeField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Code {
-            get {
-                return this.CodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CodeField, value) != true)) {
-                    this.CodeField = value;
-                    this.RaisePropertyChanged("Code");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollUnitRelationType_Enum> CollUnitRelationType_Enum1 {
-            get {
-                return this.CollUnitRelationType_Enum1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollUnitRelationType_Enum1Field, value) != true)) {
-                    this.CollUnitRelationType_Enum1Field = value;
-                    this.RaisePropertyChanged("CollUnitRelationType_Enum1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollUnitRelationType_Enum CollUnitRelationType_Enum2 {
-            get {
-                return this.CollUnitRelationType_Enum2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollUnitRelationType_Enum2Field, value) != true)) {
-                    this.CollUnitRelationType_Enum2Field = value;
-                    this.RaisePropertyChanged("CollUnitRelationType_Enum2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX CollUnitRelationType_Enum2Reference {
-            get {
-                return this.CollUnitRelationType_Enum2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollUnitRelationType_Enum2ReferenceField, value) != true)) {
-                    this.CollUnitRelationType_Enum2ReferenceField = value;
-                    this.RaisePropertyChanged("CollUnitRelationType_Enum2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> DisplayEnable {
-            get {
-                return this.DisplayEnableField;
-            }
-            set {
-                if ((this.DisplayEnableField.Equals(value) != true)) {
-                    this.DisplayEnableField = value;
-                    this.RaisePropertyChanged("DisplayEnable");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1> IdentificationUnits {
-            get {
-                return this.IdentificationUnitsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitsField, value) != true)) {
-                    this.IdentificationUnitsField = value;
-                    this.RaisePropertyChanged("IdentificationUnits");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string InternalNotes {
-            get {
-                return this.InternalNotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.InternalNotesField, value) != true)) {
-                    this.InternalNotesField = value;
-                    this.RaisePropertyChanged("InternalNotes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ParentCode {
-            get {
-                return this.ParentCodeField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ParentCodeField, value) != true)) {
-                    this.ParentCodeField = value;
-                    this.RaisePropertyChanged("ParentCode");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnitAnalysis", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class IdentificationUnitAnalysis1 : DiversityPhone.DiversityService.EntityObject {
-        
-        private DiversityPhone.DiversityService.Analysis1 AnalysisField;
-        
-        private string AnalysisDateField;
-        
-        private int AnalysisIDField;
-        
-        private string AnalysisNumberField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReferenceField;
-        
-        private string AnalysisResultField;
-        
-        private int CollectionSpecimenIDField;
-        
-        private string ExternalAnalysisURIField;
-        
-        private DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnitField;
-        
-        private int IdentificationUnitIDField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReferenceField;
-        
-        private string LogCreatedByField;
-        
-        private System.Nullable<System.DateTime> LogCreatedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string NotesField;
-        
-        private string ResponsibleAgentURIField;
-        
-        private string ResponsibleNameField;
-        
-        private System.Guid RowGUIDField;
-        
-        private System.Nullable<int> SpecimenPartIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Analysis1 Analysis {
-            get {
-                return this.AnalysisField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisField, value) != true)) {
-                    this.AnalysisField = value;
-                    this.RaisePropertyChanged("Analysis");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AnalysisDate {
-            get {
-                return this.AnalysisDateField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisDateField, value) != true)) {
-                    this.AnalysisDateField = value;
-                    this.RaisePropertyChanged("AnalysisDate");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int AnalysisID {
-            get {
-                return this.AnalysisIDField;
-            }
-            set {
-                if ((this.AnalysisIDField.Equals(value) != true)) {
-                    this.AnalysisIDField = value;
-                    this.RaisePropertyChanged("AnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AnalysisNumber {
-            get {
-                return this.AnalysisNumberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisNumberField, value) != true)) {
-                    this.AnalysisNumberField = value;
-                    this.RaisePropertyChanged("AnalysisNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReference {
-            get {
-                return this.AnalysisReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisReferenceField, value) != true)) {
-                    this.AnalysisReferenceField = value;
-                    this.RaisePropertyChanged("AnalysisReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AnalysisResult {
-            get {
-                return this.AnalysisResultField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisResultField, value) != true)) {
-                    this.AnalysisResultField = value;
-                    this.RaisePropertyChanged("AnalysisResult");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CollectionSpecimenID {
-            get {
-                return this.CollectionSpecimenIDField;
-            }
-            set {
-                if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
-                    this.CollectionSpecimenIDField = value;
-                    this.RaisePropertyChanged("CollectionSpecimenID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ExternalAnalysisURI {
-            get {
-                return this.ExternalAnalysisURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ExternalAnalysisURIField, value) != true)) {
-                    this.ExternalAnalysisURIField = value;
-                    this.RaisePropertyChanged("ExternalAnalysisURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit {
-            get {
-                return this.IdentificationUnitField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitField, value) != true)) {
-                    this.IdentificationUnitField = value;
-                    this.RaisePropertyChanged("IdentificationUnit");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdentificationUnitID {
-            get {
-                return this.IdentificationUnitIDField;
-            }
-            set {
-                if ((this.IdentificationUnitIDField.Equals(value) != true)) {
-                    this.IdentificationUnitIDField = value;
-                    this.RaisePropertyChanged("IdentificationUnitID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReference {
-            get {
-                return this.IdentificationUnitReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitReferenceField, value) != true)) {
-                    this.IdentificationUnitReferenceField = value;
-                    this.RaisePropertyChanged("IdentificationUnitReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogCreatedBy {
-            get {
-                return this.LogCreatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
-                    this.LogCreatedByField = value;
-                    this.RaisePropertyChanged("LogCreatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogCreatedWhen {
-            get {
-                return this.LogCreatedWhenField;
-            }
-            set {
-                if ((this.LogCreatedWhenField.Equals(value) != true)) {
-                    this.LogCreatedWhenField = value;
-                    this.RaisePropertyChanged("LogCreatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ResponsibleAgentURI {
-            get {
-                return this.ResponsibleAgentURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResponsibleAgentURIField, value) != true)) {
-                    this.ResponsibleAgentURIField = value;
-                    this.RaisePropertyChanged("ResponsibleAgentURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ResponsibleName {
-            get {
-                return this.ResponsibleNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResponsibleNameField, value) != true)) {
-                    this.ResponsibleNameField = value;
-                    this.RaisePropertyChanged("ResponsibleName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> SpecimenPartID {
-            get {
-                return this.SpecimenPartIDField;
-            }
-            set {
-                if ((this.SpecimenPartIDField.Equals(value) != true)) {
-                    this.SpecimenPartIDField = value;
-                    this.RaisePropertyChanged("SpecimenPartID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="Analysis", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class Analysis1 : DiversityPhone.DiversityService.EntityObject {
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Analysis1> Analysis1MemberField;
-        
-        private DiversityPhone.DiversityService.Analysis1 Analysis2Field;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX Analysis2ReferenceField;
-        
-        private int AnalysisIDField;
-        
-        private System.Nullable<int> AnalysisParentIDField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult1> AnalysisResultsField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisTaxonomicGroup1> AnalysisTaxonomicGroupsField;
-        
-        private string AnalysisURIField;
-        
-        private string DescriptionField;
-        
-        private string DisplayTextField;
-        
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1> IdentificationUnitAnalysisField;
-        
-        private string LogCreatedByField;
-        
-        private System.Nullable<System.DateTime> LogCreatedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string MeasurementUnitField;
-        
-        private string NotesField;
-        
-        private System.Nullable<bool> OnlyHierarchyField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Name="Analysis1")]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Analysis1> Analysis1Member {
-            get {
-                return this.Analysis1MemberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Analysis1MemberField, value) != true)) {
-                    this.Analysis1MemberField = value;
-                    this.RaisePropertyChanged("Analysis1Member");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Analysis1 Analysis2 {
-            get {
-                return this.Analysis2Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Analysis2Field, value) != true)) {
-                    this.Analysis2Field = value;
-                    this.RaisePropertyChanged("Analysis2");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX Analysis2Reference {
-            get {
-                return this.Analysis2ReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.Analysis2ReferenceField, value) != true)) {
-                    this.Analysis2ReferenceField = value;
-                    this.RaisePropertyChanged("Analysis2Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int AnalysisID {
-            get {
-                return this.AnalysisIDField;
-            }
-            set {
-                if ((this.AnalysisIDField.Equals(value) != true)) {
-                    this.AnalysisIDField = value;
-                    this.RaisePropertyChanged("AnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<int> AnalysisParentID {
-            get {
-                return this.AnalysisParentIDField;
-            }
-            set {
-                if ((this.AnalysisParentIDField.Equals(value) != true)) {
-                    this.AnalysisParentIDField = value;
-                    this.RaisePropertyChanged("AnalysisParentID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult1> AnalysisResults {
-            get {
-                return this.AnalysisResultsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisResultsField, value) != true)) {
-                    this.AnalysisResultsField = value;
-                    this.RaisePropertyChanged("AnalysisResults");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisTaxonomicGroup1> AnalysisTaxonomicGroups {
-            get {
-                return this.AnalysisTaxonomicGroupsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisTaxonomicGroupsField, value) != true)) {
-                    this.AnalysisTaxonomicGroupsField = value;
-                    this.RaisePropertyChanged("AnalysisTaxonomicGroups");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AnalysisURI {
-            get {
-                return this.AnalysisURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisURIField, value) != true)) {
-                    this.AnalysisURIField = value;
-                    this.RaisePropertyChanged("AnalysisURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1> IdentificationUnitAnalysis {
-            get {
-                return this.IdentificationUnitAnalysisField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitAnalysisField, value) != true)) {
-                    this.IdentificationUnitAnalysisField = value;
-                    this.RaisePropertyChanged("IdentificationUnitAnalysis");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogCreatedBy {
-            get {
-                return this.LogCreatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
-                    this.LogCreatedByField = value;
-                    this.RaisePropertyChanged("LogCreatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogCreatedWhen {
-            get {
-                return this.LogCreatedWhenField;
-            }
-            set {
-                if ((this.LogCreatedWhenField.Equals(value) != true)) {
-                    this.LogCreatedWhenField = value;
-                    this.RaisePropertyChanged("LogCreatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string MeasurementUnit {
-            get {
-                return this.MeasurementUnitField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.MeasurementUnitField, value) != true)) {
-                    this.MeasurementUnitField = value;
-                    this.RaisePropertyChanged("MeasurementUnit");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<bool> OnlyHierarchy {
-            get {
-                return this.OnlyHierarchyField;
-            }
-            set {
-                if ((this.OnlyHierarchyField.Equals(value) != true)) {
-                    this.OnlyHierarchyField = value;
-                    this.RaisePropertyChanged("OnlyHierarchy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisResult", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class AnalysisResult1 : DiversityPhone.DiversityService.EntityObject {
-        
-        private DiversityPhone.DiversityService.Analysis1 AnalysisField;
-        
-        private int AnalysisIDField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReferenceField;
-        
-        private string AnalysisResult1MemberField;
-        
-        private string DescriptionField;
-        
-        private System.Nullable<short> DisplayOrderField;
-        
-        private string DisplayTextField;
-        
-        private string LogInsertedByField;
-        
-        private System.Nullable<System.DateTime> LogInsertedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string NotesField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Analysis1 Analysis {
-            get {
-                return this.AnalysisField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisField, value) != true)) {
-                    this.AnalysisField = value;
-                    this.RaisePropertyChanged("Analysis");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int AnalysisID {
-            get {
-                return this.AnalysisIDField;
-            }
-            set {
-                if ((this.AnalysisIDField.Equals(value) != true)) {
-                    this.AnalysisIDField = value;
-                    this.RaisePropertyChanged("AnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReference {
-            get {
-                return this.AnalysisReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisReferenceField, value) != true)) {
-                    this.AnalysisReferenceField = value;
-                    this.RaisePropertyChanged("AnalysisReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute(Name="AnalysisResult1")]
-        public string AnalysisResult1Member {
-            get {
-                return this.AnalysisResult1MemberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisResult1MemberField, value) != true)) {
-                    this.AnalysisResult1MemberField = value;
-                    this.RaisePropertyChanged("AnalysisResult1Member");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Description {
-            get {
-                return this.DescriptionField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
-                    this.DescriptionField = value;
-                    this.RaisePropertyChanged("Description");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<short> DisplayOrder {
-            get {
-                return this.DisplayOrderField;
-            }
-            set {
-                if ((this.DisplayOrderField.Equals(value) != true)) {
-                    this.DisplayOrderField = value;
-                    this.RaisePropertyChanged("DisplayOrder");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string DisplayText {
-            get {
-                return this.DisplayTextField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.DisplayTextField, value) != true)) {
-                    this.DisplayTextField = value;
-                    this.RaisePropertyChanged("DisplayText");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogInsertedBy {
-            get {
-                return this.LogInsertedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogInsertedByField, value) != true)) {
-                    this.LogInsertedByField = value;
-                    this.RaisePropertyChanged("LogInsertedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogInsertedWhen {
-            get {
-                return this.LogInsertedWhenField;
-            }
-            set {
-                if ((this.LogInsertedWhenField.Equals(value) != true)) {
-                    this.LogInsertedWhenField = value;
-                    this.RaisePropertyChanged("LogInsertedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="AnalysisTaxonomicGroup", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class AnalysisTaxonomicGroup1 : DiversityPhone.DiversityService.EntityObject {
-        
-        private DiversityPhone.DiversityService.Analysis1 AnalysisField;
-        
-        private int AnalysisIDField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReferenceField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private System.Guid RowGUIDField;
-        
-        private string TaxonomicGroupField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.Analysis1 Analysis {
-            get {
-                return this.AnalysisField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisField, value) != true)) {
-                    this.AnalysisField = value;
-                    this.RaisePropertyChanged("Analysis");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int AnalysisID {
-            get {
-                return this.AnalysisIDField;
-            }
-            set {
-                if ((this.AnalysisIDField.Equals(value) != true)) {
-                    this.AnalysisIDField = value;
-                    this.RaisePropertyChanged("AnalysisID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX AnalysisReference {
-            get {
-                return this.AnalysisReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AnalysisReferenceField, value) != true)) {
-                    this.AnalysisReferenceField = value;
-                    this.RaisePropertyChanged("AnalysisReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string TaxonomicGroup {
-            get {
-                return this.TaxonomicGroupField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.TaxonomicGroupField, value) != true)) {
-                    this.TaxonomicGroupField = value;
-                    this.RaisePropertyChanged("TaxonomicGroup");
-                }
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnitGeoAnalysi", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class IdentificationUnitGeoAnalysi : DiversityPhone.DiversityService.EntityObject {
-        
-        private System.DateTime AnalysisDateField;
-        
-        private int CollectionSpecimenIDField;
-        
-        private DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnitField;
-        
-        private int IdentificationUnitIDField;
-        
-        private DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReferenceField;
-        
-        private string LogCreatedByField;
-        
-        private System.Nullable<System.DateTime> LogCreatedWhenField;
-        
-        private string LogUpdatedByField;
-        
-        private System.Nullable<System.DateTime> LogUpdatedWhenField;
-        
-        private string NotesField;
-        
-        private string ResponsibleAgentURIField;
-        
-        private string ResponsibleNameField;
-        
-        private System.Guid RowGUIDField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.DateTime AnalysisDate {
-            get {
-                return this.AnalysisDateField;
-            }
-            set {
-                if ((this.AnalysisDateField.Equals(value) != true)) {
-                    this.AnalysisDateField = value;
-                    this.RaisePropertyChanged("AnalysisDate");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int CollectionSpecimenID {
-            get {
-                return this.CollectionSpecimenIDField;
-            }
-            set {
-                if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
-                    this.CollectionSpecimenIDField = value;
-                    this.RaisePropertyChanged("CollectionSpecimenID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit {
-            get {
-                return this.IdentificationUnitField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitField, value) != true)) {
-                    this.IdentificationUnitField = value;
-                    this.RaisePropertyChanged("IdentificationUnit");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int IdentificationUnitID {
-            get {
-                return this.IdentificationUnitIDField;
-            }
-            set {
-                if ((this.IdentificationUnitIDField.Equals(value) != true)) {
-                    this.IdentificationUnitIDField = value;
-                    this.RaisePropertyChanged("IdentificationUnitID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReference {
-            get {
-                return this.IdentificationUnitReferenceField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.IdentificationUnitReferenceField, value) != true)) {
-                    this.IdentificationUnitReferenceField = value;
-                    this.RaisePropertyChanged("IdentificationUnitReference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogCreatedBy {
-            get {
-                return this.LogCreatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
-                    this.LogCreatedByField = value;
-                    this.RaisePropertyChanged("LogCreatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogCreatedWhen {
-            get {
-                return this.LogCreatedWhenField;
-            }
-            set {
-                if ((this.LogCreatedWhenField.Equals(value) != true)) {
-                    this.LogCreatedWhenField = value;
-                    this.RaisePropertyChanged("LogCreatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LogUpdatedBy {
-            get {
-                return this.LogUpdatedByField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
-                    this.LogUpdatedByField = value;
-                    this.RaisePropertyChanged("LogUpdatedBy");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Nullable<System.DateTime> LogUpdatedWhen {
-            get {
-                return this.LogUpdatedWhenField;
-            }
-            set {
-                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
-                    this.LogUpdatedWhenField = value;
-                    this.RaisePropertyChanged("LogUpdatedWhen");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Notes {
-            get {
-                return this.NotesField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
-                    this.NotesField = value;
-                    this.RaisePropertyChanged("Notes");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ResponsibleAgentURI {
-            get {
-                return this.ResponsibleAgentURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResponsibleAgentURIField, value) != true)) {
-                    this.ResponsibleAgentURIField = value;
-                    this.RaisePropertyChanged("ResponsibleAgentURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ResponsibleName {
-            get {
-                return this.ResponsibleNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ResponsibleNameField, value) != true)) {
-                    this.ResponsibleNameField = value;
-                    this.RaisePropertyChanged("ResponsibleName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Guid RowGUID {
-            get {
-                return this.RowGUIDField;
-            }
-            set {
-                if ((this.RowGUIDField.Equals(value) != true)) {
-                    this.RowGUIDField = value;
-                    this.RaisePropertyChanged("RowGUID");
                 }
             }
         }
@@ -8349,18 +5769,711 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEventSery", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
-    public partial class CollectionEventSery : DiversityPhone.DiversityService.EntityObject {
+    [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnitAnalysis", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
+    public partial class IdentificationUnitAnalysis1 : DiversityPhone.DiversityService.EntityObject {
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSery> CollectionEventSeries1Field;
+        private string AnalysisDateField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImagesField;
+        private int AnalysisIDField;
         
-        private DiversityPhone.DiversityService.CollectionEventSery CollectionEventSery1Field;
+        private string AnalysisNumberField;
         
-        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSery1ReferenceField;
+        private string AnalysisResultField;
         
-        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEvent> CollectionEventsField;
+        private int CollectionSpecimenIDField;
+        
+        private string ExternalAnalysisURIField;
+        
+        private DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnitField;
+        
+        private int IdentificationUnitIDField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReferenceField;
+        
+        private string LogCreatedByField;
+        
+        private System.Nullable<System.DateTime> LogCreatedWhenField;
+        
+        private string LogUpdatedByField;
+        
+        private System.Nullable<System.DateTime> LogUpdatedWhenField;
+        
+        private string NotesField;
+        
+        private string ResponsibleAgentURIField;
+        
+        private string ResponsibleNameField;
+        
+        private System.Guid RowGUIDField;
+        
+        private System.Nullable<int> SpecimenPartIDField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AnalysisDate {
+            get {
+                return this.AnalysisDateField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AnalysisDateField, value) != true)) {
+                    this.AnalysisDateField = value;
+                    this.RaisePropertyChanged("AnalysisDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int AnalysisID {
+            get {
+                return this.AnalysisIDField;
+            }
+            set {
+                if ((this.AnalysisIDField.Equals(value) != true)) {
+                    this.AnalysisIDField = value;
+                    this.RaisePropertyChanged("AnalysisID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AnalysisNumber {
+            get {
+                return this.AnalysisNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AnalysisNumberField, value) != true)) {
+                    this.AnalysisNumberField = value;
+                    this.RaisePropertyChanged("AnalysisNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AnalysisResult {
+            get {
+                return this.AnalysisResultField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AnalysisResultField, value) != true)) {
+                    this.AnalysisResultField = value;
+                    this.RaisePropertyChanged("AnalysisResult");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CollectionSpecimenID {
+            get {
+                return this.CollectionSpecimenIDField;
+            }
+            set {
+                if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
+                    this.CollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ExternalAnalysisURI {
+            get {
+                return this.ExternalAnalysisURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ExternalAnalysisURIField, value) != true)) {
+                    this.ExternalAnalysisURIField = value;
+                    this.RaisePropertyChanged("ExternalAnalysisURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit {
+            get {
+                return this.IdentificationUnitField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnitField, value) != true)) {
+                    this.IdentificationUnitField = value;
+                    this.RaisePropertyChanged("IdentificationUnit");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int IdentificationUnitID {
+            get {
+                return this.IdentificationUnitIDField;
+            }
+            set {
+                if ((this.IdentificationUnitIDField.Equals(value) != true)) {
+                    this.IdentificationUnitIDField = value;
+                    this.RaisePropertyChanged("IdentificationUnitID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReference {
+            get {
+                return this.IdentificationUnitReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnitReferenceField, value) != true)) {
+                    this.IdentificationUnitReferenceField = value;
+                    this.RaisePropertyChanged("IdentificationUnitReference");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogCreatedBy {
+            get {
+                return this.LogCreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
+                    this.LogCreatedByField = value;
+                    this.RaisePropertyChanged("LogCreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogCreatedWhen {
+            get {
+                return this.LogCreatedWhenField;
+            }
+            set {
+                if ((this.LogCreatedWhenField.Equals(value) != true)) {
+                    this.LogCreatedWhenField = value;
+                    this.RaisePropertyChanged("LogCreatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogUpdatedBy {
+            get {
+                return this.LogUpdatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
+                    this.LogUpdatedByField = value;
+                    this.RaisePropertyChanged("LogUpdatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Notes {
+            get {
+                return this.NotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResponsibleAgentURI {
+            get {
+                return this.ResponsibleAgentURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResponsibleAgentURIField, value) != true)) {
+                    this.ResponsibleAgentURIField = value;
+                    this.RaisePropertyChanged("ResponsibleAgentURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResponsibleName {
+            get {
+                return this.ResponsibleNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResponsibleNameField, value) != true)) {
+                    this.ResponsibleNameField = value;
+                    this.RaisePropertyChanged("ResponsibleName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid RowGUID {
+            get {
+                return this.RowGUIDField;
+            }
+            set {
+                if ((this.RowGUIDField.Equals(value) != true)) {
+                    this.RowGUIDField = value;
+                    this.RaisePropertyChanged("RowGUID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<int> SpecimenPartID {
+            get {
+                return this.SpecimenPartIDField;
+            }
+            set {
+                if ((this.SpecimenPartIDField.Equals(value) != true)) {
+                    this.SpecimenPartIDField = value;
+                    this.RaisePropertyChanged("SpecimenPartID");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="IdentificationUnitGeoAnalysis", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
+    public partial class IdentificationUnitGeoAnalysis : DiversityPhone.DiversityService.EntityObject {
+        
+        private System.DateTime AnalysisDateField;
+        
+        private int CollectionSpecimenIDField;
+        
+        private DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnitField;
+        
+        private int IdentificationUnitIDField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReferenceField;
+        
+        private string LogCreatedByField;
+        
+        private System.Nullable<System.DateTime> LogCreatedWhenField;
+        
+        private string LogUpdatedByField;
+        
+        private System.Nullable<System.DateTime> LogUpdatedWhenField;
+        
+        private string NotesField;
+        
+        private string ResponsibleAgentURIField;
+        
+        private string ResponsibleNameField;
+        
+        private System.Guid RowGUIDField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime AnalysisDate {
+            get {
+                return this.AnalysisDateField;
+            }
+            set {
+                if ((this.AnalysisDateField.Equals(value) != true)) {
+                    this.AnalysisDateField = value;
+                    this.RaisePropertyChanged("AnalysisDate");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int CollectionSpecimenID {
+            get {
+                return this.CollectionSpecimenIDField;
+            }
+            set {
+                if ((this.CollectionSpecimenIDField.Equals(value) != true)) {
+                    this.CollectionSpecimenIDField = value;
+                    this.RaisePropertyChanged("CollectionSpecimenID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.IdentificationUnit1 IdentificationUnit {
+            get {
+                return this.IdentificationUnitField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnitField, value) != true)) {
+                    this.IdentificationUnitField = value;
+                    this.RaisePropertyChanged("IdentificationUnit");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int IdentificationUnitID {
+            get {
+                return this.IdentificationUnitIDField;
+            }
+            set {
+                if ((this.IdentificationUnitIDField.Equals(value) != true)) {
+                    this.IdentificationUnitIDField = value;
+                    this.RaisePropertyChanged("IdentificationUnitID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX IdentificationUnitReference {
+            get {
+                return this.IdentificationUnitReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.IdentificationUnitReferenceField, value) != true)) {
+                    this.IdentificationUnitReferenceField = value;
+                    this.RaisePropertyChanged("IdentificationUnitReference");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogCreatedBy {
+            get {
+                return this.LogCreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
+                    this.LogCreatedByField = value;
+                    this.RaisePropertyChanged("LogCreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogCreatedWhen {
+            get {
+                return this.LogCreatedWhenField;
+            }
+            set {
+                if ((this.LogCreatedWhenField.Equals(value) != true)) {
+                    this.LogCreatedWhenField = value;
+                    this.RaisePropertyChanged("LogCreatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogUpdatedBy {
+            get {
+                return this.LogUpdatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
+                    this.LogUpdatedByField = value;
+                    this.RaisePropertyChanged("LogUpdatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Notes {
+            get {
+                return this.NotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResponsibleAgentURI {
+            get {
+                return this.ResponsibleAgentURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResponsibleAgentURIField, value) != true)) {
+                    this.ResponsibleAgentURIField = value;
+                    this.RaisePropertyChanged("ResponsibleAgentURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResponsibleName {
+            get {
+                return this.ResponsibleNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResponsibleNameField, value) != true)) {
+                    this.ResponsibleNameField = value;
+                    this.RaisePropertyChanged("ResponsibleName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid RowGUID {
+            get {
+                return this.RowGUIDField;
+            }
+            set {
+                if ((this.RowGUIDField.Equals(value) != true)) {
+                    this.RowGUIDField = value;
+                    this.RaisePropertyChanged("RowGUID");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEventSeriesImage", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
+    public partial class CollectionEventSeriesImage : DiversityPhone.DiversityService.EntityObject {
+        
+        private DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeriesField;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeriesReferenceField;
+        
+        private string DataWithholdingReasonField;
+        
+        private string DescriptionField;
+        
+        private string ImageTypeField;
+        
+        private string LogCreatedByField;
+        
+        private System.Nullable<System.DateTime> LogCreatedWhenField;
+        
+        private string LogUpdatedByField;
+        
+        private System.Nullable<System.DateTime> LogUpdatedWhenField;
+        
+        private string NotesField;
+        
+        private string ResourceURIField;
+        
+        private System.Guid RowGUIDField;
+        
+        private int SeriesIDField;
+        
+        private string URIField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeries {
+            get {
+                return this.CollectionEventSeriesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionEventSeriesField, value) != true)) {
+                    this.CollectionEventSeriesField = value;
+                    this.RaisePropertyChanged("CollectionEventSeries");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeriesReference {
+            get {
+                return this.CollectionEventSeriesReferenceField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionEventSeriesReferenceField, value) != true)) {
+                    this.CollectionEventSeriesReferenceField = value;
+                    this.RaisePropertyChanged("CollectionEventSeriesReference");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string DataWithholdingReason {
+            get {
+                return this.DataWithholdingReasonField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DataWithholdingReasonField, value) != true)) {
+                    this.DataWithholdingReasonField = value;
+                    this.RaisePropertyChanged("DataWithholdingReason");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description {
+            get {
+                return this.DescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ImageType {
+            get {
+                return this.ImageTypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ImageTypeField, value) != true)) {
+                    this.ImageTypeField = value;
+                    this.RaisePropertyChanged("ImageType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogCreatedBy {
+            get {
+                return this.LogCreatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogCreatedByField, value) != true)) {
+                    this.LogCreatedByField = value;
+                    this.RaisePropertyChanged("LogCreatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogCreatedWhen {
+            get {
+                return this.LogCreatedWhenField;
+            }
+            set {
+                if ((this.LogCreatedWhenField.Equals(value) != true)) {
+                    this.LogCreatedWhenField = value;
+                    this.RaisePropertyChanged("LogCreatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LogUpdatedBy {
+            get {
+                return this.LogUpdatedByField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LogUpdatedByField, value) != true)) {
+                    this.LogUpdatedByField = value;
+                    this.RaisePropertyChanged("LogUpdatedBy");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Nullable<System.DateTime> LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Notes {
+            get {
+                return this.NotesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NotesField, value) != true)) {
+                    this.NotesField = value;
+                    this.RaisePropertyChanged("Notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ResourceURI {
+            get {
+                return this.ResourceURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ResourceURIField, value) != true)) {
+                    this.ResourceURIField = value;
+                    this.RaisePropertyChanged("ResourceURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Guid RowGUID {
+            get {
+                return this.RowGUIDField;
+            }
+            set {
+                if ((this.RowGUIDField.Equals(value) != true)) {
+                    this.RowGUIDField = value;
+                    this.RaisePropertyChanged("RowGUID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int SeriesID {
+            get {
+                return this.SeriesIDField;
+            }
+            set {
+                if ((this.SeriesIDField.Equals(value) != true)) {
+                    this.SeriesIDField = value;
+                    this.RaisePropertyChanged("SeriesID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string URI {
+            get {
+                return this.URIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.URIField, value) != true)) {
+                    this.URIField = value;
+                    this.RaisePropertyChanged("URI");
+                }
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CollectionEventSeries", Namespace="http://schemas.datacontract.org/2004/07/DiversityCollection", IsReference=true)]
+    public partial class CollectionEventSeries : DiversityPhone.DiversityService.EntityObject {
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEvent> CollectionEventField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeries> CollectionEventSeries1Field;
+        
+        private DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeries2Field;
+        
+        private DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeries2ReferenceField;
+        
+        private System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImageField;
         
         private System.Nullable<System.DateTime> DateEndField;
         
@@ -8387,7 +6500,20 @@ namespace DiversityPhone.DiversityService {
         private System.Nullable<int> SeriesParentIDField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSery> CollectionEventSeries1 {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEvent> CollectionEvent {
+            get {
+                return this.CollectionEventField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CollectionEventField, value) != true)) {
+                    this.CollectionEventField = value;
+                    this.RaisePropertyChanged("CollectionEvent");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeries> CollectionEventSeries1 {
             get {
                 return this.CollectionEventSeries1Field;
             }
@@ -8400,53 +6526,40 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImages {
+        public DiversityPhone.DiversityService.CollectionEventSeries CollectionEventSeries2 {
             get {
-                return this.CollectionEventSeriesImagesField;
+                return this.CollectionEventSeries2Field;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventSeriesImagesField, value) != true)) {
-                    this.CollectionEventSeriesImagesField = value;
-                    this.RaisePropertyChanged("CollectionEventSeriesImages");
+                if ((object.ReferenceEquals(this.CollectionEventSeries2Field, value) != true)) {
+                    this.CollectionEventSeries2Field = value;
+                    this.RaisePropertyChanged("CollectionEventSeries2");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.CollectionEventSery CollectionEventSery1 {
+        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX CollectionEventSeries2Reference {
             get {
-                return this.CollectionEventSery1Field;
+                return this.CollectionEventSeries2ReferenceField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventSery1Field, value) != true)) {
-                    this.CollectionEventSery1Field = value;
-                    this.RaisePropertyChanged("CollectionEventSery1");
+                if ((object.ReferenceEquals(this.CollectionEventSeries2ReferenceField, value) != true)) {
+                    this.CollectionEventSeries2ReferenceField = value;
+                    this.RaisePropertyChanged("CollectionEventSeries2Reference");
                 }
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX CollectionEventSery1Reference {
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage> CollectionEventSeriesImage {
             get {
-                return this.CollectionEventSery1ReferenceField;
+                return this.CollectionEventSeriesImageField;
             }
             set {
-                if ((object.ReferenceEquals(this.CollectionEventSery1ReferenceField, value) != true)) {
-                    this.CollectionEventSery1ReferenceField = value;
-                    this.RaisePropertyChanged("CollectionEventSery1Reference");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEvent> CollectionEvents {
-            get {
-                return this.CollectionEventsField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CollectionEventsField, value) != true)) {
-                    this.CollectionEventsField = value;
-                    this.RaisePropertyChanged("CollectionEvents");
+                if ((object.ReferenceEquals(this.CollectionEventSeriesImageField, value) != true)) {
+                    this.CollectionEventSeriesImageField = value;
+                    this.RaisePropertyChanged("CollectionEventSeriesImage");
                 }
             }
         }
@@ -8670,8 +6783,8 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollectionEventSerykS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollectionEventSerykS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollectionEventSerieskS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
+    public partial class EntityReferenceOfCollectionEventSerieskS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -8713,24 +6826,15 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.PropertyName))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSery))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSery>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventSeriesImageType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventSeriesImageType_Enum>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeries))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEvent>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEvent))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventImage>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollEventImageType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollEventImageType_Enum>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventLocalisation>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventLocalisation))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventProperty1>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventProperty1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Property1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Property1>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimen>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionAgent>))]
@@ -8739,43 +6843,27 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionProject))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionSpecimenImage>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionSpecimenImage))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollSpecimenImageType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollSpecimenImageType_Enum>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnit1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollTaxonomicGroup_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollTaxonomicGroup_Enum>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollUnitRelationType_Enum))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollUnitRelationType_Enum>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Analysis1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Analysis1>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisResult1>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisResult1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.AnalysisTaxonomicGroup1>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.AnalysisTaxonomicGroup1))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysi))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Identification>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Identification))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit1>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis1>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitAnalysis1))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.IdentificationUnitGeoAnalysis))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeries>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.CollectionEventSeriesImage>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.CollectionEventSeriesImage))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityKey))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EntityKeyMember>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<int, int>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityObject))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.StructuralObject))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReference))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.RelatedEnd))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX))]
     public partial class EntityKeyMember : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -8821,24 +6909,17 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
+    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollectionEventkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
+    public partial class EntityReferenceOfCollectionEventkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityReference", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
     public partial class EntityReference : DiversityPhone.DiversityService.RelatedEnd {
         
         private DiversityPhone.DiversityService.EntityKey EntityKeyField;
@@ -8861,17 +6942,10 @@ namespace DiversityPhone.DiversityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RelatedEnd", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReference))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerykS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfPropertykS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventSerieskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionSpecimenkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfAnalysiskS_PiNjVX))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfIdentificationUnitkS_PiNjVX))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollEventSeriesImageType_EnumkS_PiNjVX))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EntityReferenceOfCollectionEventkS_PiNjVX))]
     public partial class RelatedEnd : object, System.ComponentModel.INotifyPropertyChanged {
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -8886,50 +6960,8 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollEventImageType_EnumkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollEventImageType_EnumkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollectionEventkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollectionEventkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfPropertykS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfPropertykS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollectionSpecimenkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
     public partial class EntityReferenceOfCollectionSpecimenkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollSpecimenImageType_EnumkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollTaxonomicGroup_EnumkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfCollUnitRelationType_EnumkS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="EntityReferenceOfAnalysiskS_PiNjVX", Namespace="http://schemas.datacontract.org/2004/07/System.Data.Objects.DataClasses")]
-    public partial class EntityReferenceOfAnalysiskS_PiNjVX : DiversityPhone.DiversityService.EntityReference {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -9031,7 +7063,7 @@ namespace DiversityPhone.DiversityService {
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESES", ReplyAction="http://tempuri.org/IDiversityService/InsertEventSeriesForAndroidVESESResponse")]
         System.IAsyncResult BeginInsertEventSeriesForAndroidVESES(DiversityPhone.DiversityService.EventSeries es, System.AsyncCallback callback, object asyncState);
         
-        DiversityPhone.DiversityService.CollectionEventSery EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result);
+        DiversityPhone.DiversityService.CollectionEventSeries EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/TestSeriesForAndroid", ReplyAction="http://tempuri.org/IDiversityService/TestSeriesForAndroidResponse")]
         System.IAsyncResult BeginTestSeriesForAndroid(System.AsyncCallback callback, object asyncState);
@@ -9358,10 +7390,10 @@ namespace DiversityPhone.DiversityService {
             this.results = results;
         }
         
-        public DiversityPhone.DiversityService.CollectionEventSery Result {
+        public DiversityPhone.DiversityService.CollectionEventSeries Result {
             get {
                 base.RaiseExceptionIfNecessary();
-                return ((DiversityPhone.DiversityService.CollectionEventSery)(this.results[0]));
+                return ((DiversityPhone.DiversityService.CollectionEventSeries)(this.results[0]));
             }
         }
     }
@@ -10405,7 +8437,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        DiversityPhone.DiversityService.CollectionEventSery DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
+        DiversityPhone.DiversityService.CollectionEventSeries DiversityPhone.DiversityService.IDiversityService.EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
             return base.Channel.EndInsertEventSeriesForAndroidVESES(result);
         }
         
@@ -10415,7 +8447,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         private object[] OnEndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
-            DiversityPhone.DiversityService.CollectionEventSery retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeriesForAndroidVESES(result);
+            DiversityPhone.DiversityService.CollectionEventSeries retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertEventSeriesForAndroidVESES(result);
             return new object[] {
                     retVal};
         }
@@ -10802,9 +8834,9 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public DiversityPhone.DiversityService.CollectionEventSery EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
+            public DiversityPhone.DiversityService.CollectionEventSeries EndInsertEventSeriesForAndroidVESES(System.IAsyncResult result) {
                 object[] _args = new object[0];
-                DiversityPhone.DiversityService.CollectionEventSery _result = ((DiversityPhone.DiversityService.CollectionEventSery)(base.EndInvoke("InsertEventSeriesForAndroidVESES", _args, result)));
+                DiversityPhone.DiversityService.CollectionEventSeries _result = ((DiversityPhone.DiversityService.CollectionEventSeries)(base.EndInvoke("InsertEventSeriesForAndroidVESES", _args, result)));
                 return _result;
             }
             

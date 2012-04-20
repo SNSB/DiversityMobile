@@ -257,7 +257,7 @@
   <xs:element name="InsertEventSeriesForAndroidVESESResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/DiversityCollection" minOccurs="0" name="InsertEventSeriesForAndroidVESESResult" nillable="true" type="q33:CollectionEventSery" />
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/DiversityCollection" minOccurs="0" name="InsertEventSeriesForAndroidVESESResult" nillable="true" type="q33:CollectionEventSeries" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -473,7 +473,7 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSery.datasource">
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSeries.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">

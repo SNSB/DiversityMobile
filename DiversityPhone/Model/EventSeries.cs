@@ -120,8 +120,10 @@
         {
             Svc.EventSeries export = new Svc.EventSeries();
             export.SeriesID = es.SeriesID;
-           
-            export.DiversityCollectionEventSeriesID = es.DiversityCollectionEventSeriesID;
+            if (es.DiversityCollectionEventSeriesID != null)
+                export.DiversityCollectionEventSeriesID = (int)es.DiversityCollectionEventSeriesID;
+            else
+                export.DiversityCollectionEventSeriesID = Int32.MinValue;
             export.SeriesCode = es.SeriesCode;
             export.SeriesStart = es.SeriesStart;
             export.SeriesEnd = es.SeriesEnd;

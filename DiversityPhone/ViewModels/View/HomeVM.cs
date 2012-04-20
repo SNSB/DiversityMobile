@@ -145,7 +145,7 @@ namespace DiversityPhone.ViewModels
                //{
                //    _storage.updateSeriesKey(kvp.Key, kvp.Value);
                //}
-               syncHierarchies();
+               //syncHierarchies();
             }
             else
             {

@@ -83,8 +83,8 @@ namespace DiversityService
                 wgs84.CollectionEventID = actualizedKey;
                 wgs84.DeterminationDate = model.DeterminationDate;
                 wgs84.LocalisationSystemID = 8;
-                wgs84.Location1 = model.Latitude.ToString();
-                wgs84.Location2 = model.Longitude.ToString();
+                wgs84.Location1 = model.Longitude.ToString();
+                wgs84.Location2 = model.Latitude.ToString();
                 wgs84.ResponsibleAgentURI = profile.AgentURI;
                 wgs84.ResponsibleName = profile.AgentName;
                 wgs84.RecordingMethod = "Generated via DiversityMobile";
@@ -119,31 +119,7 @@ namespace DiversityService
             return exportList;
         }
 
-        //public static Model.Event ToModel(this DB.CollectionEvent entity)
-        //{
-        //    return new Model.Event()
-        //    {
-        //        EventID = entity.CollectionEventID,
-        //        SeriesID = entity.SeriesID,
 
-        //        CollectionDate = 
-        //        (entity.CollectionYear != null && entity.CollectionMonth != null && entity.CollectionDay != null) ? 
-        //            new DateTime((int)entity.CollectionYear, (int)entity.CollectionMonth, (int)entity.CollectionDay) 
-        //            : DateTime.Now, //TODO bei fehlenden Werten differenzieren
-        //        LocalityDescription = entity.LocalityDescription,
-        //        HabitatDescription = entity.HabitatDescription,
-        //        //Todo zugehörige Localisations laden
-        //    };
-        //}
-
-        //public static Model.Event ToModel(this DB.CollectionEvent entity, double? altitude, double? latitude, double? longitude)
-        //{
-        //    Model.Event ev = entity.ToModel();
-        //    ev.Altitude = altitude;
-        //    ev.Latitude = latitude;
-        //    ev.Longitude = longitude;
-        //    return ev;
-        //}
        
         #endregion
 
@@ -288,7 +264,7 @@ namespace DiversityService
             foreach (Model.IdentificationUnit iu in unitList)
             {
                 if(iu.Latitude!=null && iu.Longitude!=null)
-                    exportList.Add(iu.ToGeoAnalysis(profile));
+                    exportList.Add(ModelProjection.ToGeoAnalysis(iu,profile));
             }
             return exportList;
         }

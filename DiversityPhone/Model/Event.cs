@@ -94,10 +94,14 @@
         public static Svc.Event ConvertToServiceObject(Event ev)
         {
             Svc.Event export = new Svc.Event();
-            export.DiversityCollectionEventID = ev.DiversityCollectionEventID;
+            if (ev.DiversityCollectionEventID != null)
+                export.DiversityCollectionEventID = (int) ev.DiversityCollectionEventID;
+            else
+                export.DiversityCollectionEventID = Int32.MinValue;
             export.DiversityCollectionSeriesID = ev.DiversityCollectionSeriesID;
             export.Altitude = ev.Altitude;
             export.CollectionDate = ev.CollectionDate;
+            export.DeterminationDate = ev.DeterminationDate;
             export.EventID = ev.EventID;
             export.HabitatDescription = ev.HabitatDescription;
             export.Latitude = ev.Latitude;

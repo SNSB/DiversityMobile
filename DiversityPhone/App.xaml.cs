@@ -294,6 +294,16 @@ namespace DiversityPhone
                 loc.Altitude = geoPos.Location.Altitude;
                 loc.Latitude = geoPos.Location.Latitude;
                 loc.Longitude = geoPos.Location.Longitude;
+                //if (Double.IsNaN((double)geoPos.Location.Altitude) == false)
+                //    loc.Altitude = geoPos.Location.Altitude;
+                //else
+                //    loc.Altitude = null;
+                //if (Double.IsNaN((double)geoPos.Location.Latitude) == false)
+                //    loc.Latitude = geoPos.Location.Latitude;
+                //else loc.Latitude = null;
+                //if (Double.IsNaN((double)geoPos.Location.Longitude) == false)
+                //    loc.Longitude = geoPos.Location.Longitude;
+                //else loc.Latitude = null;
             }
             else
             {

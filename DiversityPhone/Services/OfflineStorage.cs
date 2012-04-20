@@ -174,7 +174,7 @@
                     GeoPointForSeries gp = pointsForSeries[i];
                     if (i + 1 < pointsForSeries.Count)
                     {
-                        sb.Append(gp.Latitude + " " + gp.Longitude + ", ");
+                        sb.Append(gp.Longitude + " " + gp.Latitude + ", ");
                     }
                     else //Last GeoPoint
                     {
@@ -854,7 +854,7 @@
                             select iua;
                         foreach (IdentificationUnitAnalysis iua in clientIUAListForIU)
                         {
-                            Svc.IdentificationUnitAnalysis serverIUA = IdentificationUnitAnalysis.ConvertToServiceObject(iua);
+                            Svc.IdentificationUnitAnalysis serverIUA = IdentificationUnitAnalysis.ConvertToServiceObject(iua,iu);
                             result.IdentificationUnitAnalyses.Add(serverIUA);
                         }
                     }

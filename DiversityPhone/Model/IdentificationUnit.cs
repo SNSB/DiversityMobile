@@ -125,7 +125,10 @@ namespace DiversityPhone.Model
         public static Svc.IdentificationUnit ConvertToServiceObject(IdentificationUnit iu)
         {
             Svc.IdentificationUnit export = new Svc.IdentificationUnit();
-            export.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
+            if (iu.DiversityCollectionUnitID != null)
+                export.DiversityCollectionUnitID = (int)iu.DiversityCollectionUnitID;
+            else
+                export.DiversityCollectionUnitID = Int32.MinValue;
             export.DiversityCollectionSpecimenID = iu.DiversityCollectionSpecimenID;
             export.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
             export.Altitude = iu.Altitude;

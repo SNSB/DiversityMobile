@@ -16,16 +16,18 @@ namespace GlobalUtility
     {
         public static String SerializeGeography(double latitude, double longitude, double? altitude)
         {
+            if(Double.IsNaN(latitude)||Double.IsNaN(longitude))
+                return String.Empty;
             String longitudeStr = longitude.ToString();
             longitudeStr = longitudeStr.Replace(',', '.');
             String latStr = latitude.ToString();
             latStr = latStr.Replace(',', '.');
 
             StringBuilder builder = new StringBuilder("geography::STGeomFromText('POINT(");
-            builder.Append(latStr);
-            builder.Append(" ");
             builder.Append(longitudeStr);
-            if (altitude != null)
+            builder.Append(" ");
+            builder.Append(latStr);
+            if (altitude != null && Double.IsNaN((double) altitude)==false)
             {
                 String altStr = altitude.ToString();
                 altStr = altStr.Replace(',', '.');

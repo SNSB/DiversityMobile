@@ -4,7 +4,7 @@
   <xs:complexType name="EventSeries">
     <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DiversityCollectionEventSeriesID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="DiversityCollectionEventSeriesID" type="xs:int" />
       <xs:element minOccurs="0" name="Geography" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LogUpdatedWhen" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
@@ -150,7 +150,7 @@
       <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="CollectionDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="DeterminationDate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="DiversityCollectionEventID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="DiversityCollectionEventID" type="xs:int" />
       <xs:element minOccurs="0" name="DiversityCollectionSeriesID" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="EventID" type="xs:int" />
       <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
@@ -173,9 +173,11 @@
       <xs:element minOccurs="0" name="AnalysisDate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
       <xs:element minOccurs="0" name="AnalysisResult" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DiversityCollectionSpecimenID" type="xs:int" />
       <xs:element minOccurs="0" name="DiversityCollectionUnitID" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="IdentificationUnitAnalysisID" type="xs:int" />
       <xs:element minOccurs="0" name="IdentificationUnitID" type="xs:int" />
+      <xs:element minOccurs="0" name="SpecimenID" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
@@ -192,7 +194,7 @@
       <xs:element minOccurs="0" name="ColonisedSubstratePart" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="DiversityCollectionRelatedUnitID" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="DiversityCollectionSpecimenID" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="DiversityCollectionUnitID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="DiversityCollectionUnitID" type="xs:int" />
       <xs:element minOccurs="0" name="FamilyCache" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Gender" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IdentificationUri" nillable="true" type="xs:string" />
@@ -240,7 +242,7 @@
       <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
       <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
       <xs:element minOccurs="0" name="DiversityCollectionEventID" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="DiversityCollectionSpecimenID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="DiversityCollectionSpecimenID" type="xs:int" />
       <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>

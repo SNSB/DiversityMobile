@@ -66,12 +66,16 @@
     </Compile>
     <Compile Include="DiversityService.cs" />
     <Compile Include="DiversityService.Queries.cs" />
+    <Compile Include="Models\IdentificationUnitGeoAnalysis.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="ModelProjection.cs" />
     <Compile Include="Models\Analysis.cs" />
     <Compile Include="Models\AnalysisResult.cs" />
     <Compile Include="Models\AnalysisTaxonomicGroup.cs" />
+    <Compile Include="Models\CollectionAgent.cs" />
+    <Compile Include="Models\CollectionEventLocalisation.cs" />
     <Compile Include="Models\CollectionEventProperty.cs" />
+    <Compile Include="Models\CollectionProject.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventSeries.cs" />
     <Compile Include="Models\Generated\Diversity.cs" />
@@ -82,6 +86,7 @@
     </Compile>
     <Compile Include="Models\Generated\PetaPoco.cs" />
     <Compile Include="Models\HierarchySection.cs" />
+    <Compile Include="Models\Identification.cs" />
     <Compile Include="Models\IdentificationUnit.cs" />
     <Compile Include="Models\IdentificationUnitAnalysis.cs" />
     <Compile Include="Models\KeyProjection.cs" />
@@ -99,6 +104,7 @@
     <Compile Include="Models\TermLists.cs" />
     <Compile Include="Models\UserCredentials.cs" />
     <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="PetaPocoProjection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
