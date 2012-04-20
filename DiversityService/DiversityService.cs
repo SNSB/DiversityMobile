@@ -178,6 +178,34 @@ namespace DiversityService
        
         #endregion
 
+        //public Dictionary<int, int> InsertEventSeriesPoco(IList<EventSeries> series, UserCredentials login)
+        //{
+        //    Dictionary<int, int> result = new Dictionary<int, int>();
+        //    using (var db = new DiversityORM.Diversity(login))
+        //    {
+        //        try
+        //        {
+        //            foreach(EventSeries es in series)
+        //            {
+        //                db.Insert("CollectionEventSeries","SeriesID", true,es);
+        //                result.Add
+        //            }
+        //            return db.Query<Project>("FROM [dbo].[DiversityMobile_ProjectList] () AS [Project]")
+        //                .Select(p =>
+        //                {
+        //                    p.DisplayText = p.DisplayText ?? "No Description";
+        //                    return p;
+        //                })
+        //                .ToList(); //TODO Use credential DB
+        //        }
+        //        catch
+        //        {
+        //            return 
+        //        }
+        //    }     
+
+        //}
+
 
         public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
         {

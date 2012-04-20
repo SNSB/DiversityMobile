@@ -870,7 +870,6 @@
           <Property Type="String" Name="Description" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="SeriesCode" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="Notes" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Type="DateTime" Name="DateCache" />
           <Property Type="DateTime" Name="LogCreatedWhen" />
           <Property Type="String" Name="LogCreatedBy" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="LogUpdatedWhen" />
@@ -1443,7 +1442,6 @@
                 <ScalarProperty Name="LogUpdatedWhen" ColumnName="LogUpdatedWhen" />
                 <ScalarProperty Name="LogCreatedBy" ColumnName="LogCreatedBy" />
                 <ScalarProperty Name="LogCreatedWhen" ColumnName="LogCreatedWhen" />
-                <ScalarProperty Name="DateCache" ColumnName="DateCache" />
                 <ScalarProperty Name="Notes" ColumnName="Notes" />
                 <ScalarProperty Name="SeriesCode" ColumnName="SeriesCode" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
@@ -1680,7 +1678,7 @@
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventImage" Width="2.875" PointX="3" PointY="5.375" Height="3.5186979166666674" />
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventLocalisation" Width="2.75" PointX="3.5" PointY="9.75" Height="5.0571093750000031" />
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventProperty" Width="2.625" PointX="3" PointY="15.5" Height="4.0956022135416674" />
-        <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventSeries" Width="1.5" PointX="1.5" PointY="37.375" Height="4.2879036458333246" />
+        <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventSeries" Width="2.125" PointX="1.5" PointY="37.375" Height="4.0956022135416674" />
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionEventSeriesImage" Width="1.5" PointX="3.75" PointY="45.75" Height="3.5186979166666674" />
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionProject" Width="1.5" PointX="5.25" PointY="24.75" Height="2.5571907552083246" />
         <EntityTypeShape EntityType="DiversityCollection_MonitoringModel.CollectionSpecimen" Width="1.5" PointX="3" PointY="27.5" Height="8.9031380208333388" />
@@ -1720,14 +1718,14 @@
           <ConnectorPoint PointX="3" PointY="27.869863281249998" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection_MonitoringModel.FK_CollectionEventSeries_CollectionEventSeries" >
-          <ConnectorPoint PointX="2.0319230769230767" PointY="41.662903645833325" />
-          <ConnectorPoint PointX="2.0319230769230767" PointY="41.912903645833325" />
-          <ConnectorPoint PointX="2.4784615384615383" PointY="41.912903645833325" />
-          <ConnectorPoint PointX="2.4784615384615383" PointY="41.662903645833325" />
+          <ConnectorPoint PointX="1.5" PointY="38.795530749198718" />
+          <ConnectorPoint PointX="1.25" PointY="38.795530749198718" />
+          <ConnectorPoint PointX="1.25" PointY="40.079941481370192" />
+          <ConnectorPoint PointX="1.5" PointY="40.079941481370192" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection_MonitoringModel.FK_CollectionEventSeriesImage_CollectionEventSeries" >
-          <ConnectorPoint PointX="1.7347090384615385" PointY="41.662903645833325" />
-          <ConnectorPoint PointX="1.7347090384615385" PointY="47.509348958333334" />
+          <ConnectorPoint PointX="2.5625" PointY="41.470602213541667" />
+          <ConnectorPoint PointX="2.5625" PointY="47.509348958333334" />
           <ConnectorPoint PointX="3.75" PointY="47.509348958333334" />
         </AssociationConnector>
         <AssociationConnector Association="DiversityCollection_MonitoringModel.FK_CollectionProject_CollectionSpecimen" >

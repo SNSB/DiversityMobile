@@ -3184,30 +3184,6 @@ namespace DiversityCollection
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> DateCache
-        {
-            get
-            {
-                return _DateCache;
-            }
-            set
-            {
-                OnDateCacheChanging(value);
-                ReportPropertyChanging("DateCache");
-                _DateCache = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("DateCache");
-                OnDateCacheChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _DateCache;
-        partial void OnDateCacheChanging(Nullable<global::System.DateTime> value);
-        partial void OnDateCacheChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
         public Nullable<global::System.DateTime> LogCreatedWhen
         {
             get
