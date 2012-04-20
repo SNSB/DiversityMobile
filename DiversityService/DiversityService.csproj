@@ -49,15 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiversityCollectionEntities.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityCollectionEntities.edmx</DependentUpon>
+    </Compile>
     <Compile Include="DiversityCollectionFunctions.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityCollection_Base.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollection_Base.edmx</DependentUpon>
     </Compile>
     <Compile Include="DiversityMobile.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -107,19 +107,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="DiversityCollection_Base.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollection_Base.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
     <EntityDeploy Include="DiversityMobile.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="DiversityCollectionEntities.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DiversityCollectionEntities.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
     </EntityDeploy>
     <None Include="DiversityCollectionFunctions.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>

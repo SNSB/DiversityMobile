@@ -75,7 +75,7 @@ namespace DiversityService
         int InsertEventSeriesForAndroidVIntES(EventSeries es);
 
         [OperationContract]
-        DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es);
+        DiversityCollection.CollectionEventSeries InsertEventSeriesForAndroidVESES(EventSeries es);
 
         [OperationContract]
         EventSeries TestSeriesForAndroid();

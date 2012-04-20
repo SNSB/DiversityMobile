@@ -18,6 +18,8 @@ namespace GlobalUtility
 
         public static ObservableCollection<T> ToObservableCollection<T>(IEnumerable<T> coll)
         {
+            if (coll == null)
+                return null;
             var c = new ObservableCollection<T>();
             foreach (var e in coll) c.Add(e);
             return c;

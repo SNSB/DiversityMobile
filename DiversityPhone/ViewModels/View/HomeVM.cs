@@ -14,6 +14,8 @@ namespace DiversityPhone.ViewModels
     using DiversityPhone.PMService;
     using System.IO.IsolatedStorage;
     using System.IO;
+    using System.Collections.ObjectModel;
+    using GlobalUtility;
 
 
     public class HomeVM : PageViewModel
@@ -136,11 +138,13 @@ namespace DiversityPhone.ViewModels
                    sES.Geography = _storage.convertGeoPointsToString(es.SeriesID);
                    convertSeries.Add(sES);
                }
-               Dictionary<int, int> result = _repository.InsertEventSeries(convertSeries).First();
-               foreach (var kvp in result)
-               {
-                   _storage.updateSeriesKey(kvp.Key, kvp.Value);
-               }
+               ObservableCollection<Svc.EventSeries> seriesConv = ObservableConverter.ToObservableCollection<Svc.EventSeries>(convertSeries);
+               _plainUploadClient.InsertEventSeriesAsync(seriesConv, _repository.GetCreds());
+               //Dictionary<int, int> result = _repository.InsertEventSeries(null).First();
+               //foreach (var kvp in result)
+               //{
+               //    _storage.updateSeriesKey(kvp.Key, kvp.Value);
+               //}
                syncHierarchies();
             }
             else

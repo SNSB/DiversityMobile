@@ -10,6 +10,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using System.ServiceModel;
 using System.Runtime.Serialization;
+using System.Data.EntityClient;
 
 
 
@@ -17,7 +18,7 @@ namespace DiversityService
 {
     public partial class DiversityService : IDiversityService
     {
-        
+        const string entities_connstr_template = "metadata=res://*/DiversityCollectionEntities.csdl|res://*/DiversityCollectionEntities.ssdl|res://*/DiversityCollectionEntities.msl;provider=System.Data.SqlClient;provider connection string=\"{0}\"";
 
         #region Get
 
@@ -181,7 +182,7 @@ namespace DiversityService
         public Dictionary<int,int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(string.Format(entities_connstr_template, Diversity.GetConnectionString(login))))
             {
            
                 foreach (EventSeries es in series)
@@ -204,7 +205,7 @@ namespace DiversityService
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred)
         {
             KeyProjection result = new KeyProjection(); 
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(cred)))
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(cred)))
             {
                 //Adjust Event
                 DiversityCollection.CollectionEvent newEventEntity = null;
@@ -249,7 +250,7 @@ namespace DiversityService
                 var newProperties = hierarchy.Properties.ToEntity(cred);
                 foreach (DiversityCollection.CollectionEventProperty prop in newProperties)
                 {
-                    ctx.CollectionEventProperties.AddObject(prop);
+                    ctx.CollectionEventProperty.AddObject(prop);
                 }
                 ctx.SaveChanges();
                 #endregion
@@ -270,9 +271,9 @@ namespace DiversityService
                 {
                     
                     //Sync Projects
-                    ctx.CollectionProjects.AddObject(ModelProjection.ToProject(syncPair.Value.CollectionSpecimenID, cred.ProjectID));
+                    ctx.CollectionProject.AddObject(ModelProjection.ToProject(syncPair.Value.CollectionSpecimenID, cred.ProjectID));
                     //Sync Agents
-                    ctx.CollectionAgents.AddObject(ModelProjection.ToAgent(syncPair.Value.CollectionSpecimenID, cred));
+                    ctx.CollectionAgent.AddObject(ModelProjection.ToAgent(syncPair.Value.CollectionSpecimenID, cred));
                     //adjust keys
                     result.specimenKeys.Add(syncPair.Key.CollectionSpecimenID, syncPair.Value.CollectionSpecimenID);
                     foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
@@ -348,10 +349,10 @@ namespace DiversityService
                 var newIdentifications = hierarchy.IdentificationUnits.ToIdentifications(cred);
                 foreach (DiversityCollection.Identification ident in newIdentifications)
                 {
-                    ctx.Identifications.AddObject(ident);
+                    ctx.Identification.AddObject(ident);
                 }
                 var newGeoAnalyses = hierarchy.IdentificationUnits.ToGeoAnalyses(cred);
-                foreach (DiversityCollection.IdentificationUnitGeoAnalysi iuga in newGeoAnalyses)
+                foreach (DiversityCollection.IdentificationUnitGeoAnalysis iuga in newGeoAnalyses)
                 {
                     ctx.IdentificationUnitGeoAnalysis.AddObject(iuga);
                 }
@@ -403,7 +404,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
                 ctx.ExecuteStoreCommand(sql);
@@ -415,7 +416,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where CollectionEventID=" + eventID + " AND LocalisationSystemID=" + localisationSystemID;
                 ctx.ExecuteStoreCommand(sql);
@@ -427,7 +428,7 @@ namespace DiversityService
             if (geoString == null)
                 return;
             //Adjust GeoData
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities(Diversity.GetConnectionString(login)))
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
             {
                 String sql = "Update [dbo].[IdentificationUnitGeoAnalysis] Set Geography=" + geoString + " Where IdentificationUnitID=" + unitID + " AND LocalisationSystemID=" + localisationSystemID;
                 ctx.ExecuteStoreCommand(sql);
@@ -502,7 +503,7 @@ namespace DiversityService
             EventSeries es = new EventSeries();
             es.SeriesID = SeriesID;
             es.Description = Description;
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
             {
                 {
                     var newSeries = es.ToEntity();
@@ -517,7 +518,7 @@ namespace DiversityService
         public int InsertEventSeriesForAndroidVIntES(EventSeries es)
         {
 
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
             {
                 {
                     var newSeries = es.ToEntity();
@@ -535,7 +536,7 @@ namespace DiversityService
             DataContractSerializer ds = new DataContractSerializer(typeof(EventSeries));
 
             EventSeries es = new EventSeries();
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
             {
                 {
                     var newSeries = es.ToEntity();
@@ -554,10 +555,10 @@ namespace DiversityService
             return es;
         }
 
-        public DiversityCollection.CollectionEventSery InsertEventSeriesForAndroidVESES(EventSeries es)
+        public DiversityCollection.CollectionEventSeries InsertEventSeriesForAndroidVESES(EventSeries es)
         {
 
-            using (var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities())
+            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
             {
                 {
                     var newSeries = es.ToEntity();
