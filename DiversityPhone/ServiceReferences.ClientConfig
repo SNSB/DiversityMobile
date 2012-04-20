@@ -43,10 +43,9 @@
             <endpoint address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
                 contract="PMService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
-
-            <endpoint address="http://132.180.195.58:1111/Service1.svc" binding="basicHttpBinding"
+            <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService1"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService1" />
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>
 </configuration>
