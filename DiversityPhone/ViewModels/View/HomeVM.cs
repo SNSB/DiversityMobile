@@ -16,12 +16,14 @@ namespace DiversityPhone.ViewModels
     using System.IO;
     using System.Collections.ObjectModel;
     using GlobalUtility;
+    using System.Windows;
 
 
     public class HomeVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
 
+        int syncingHierarchies = 0;
         #region Services        
         private IFieldDataService _storage;
         private IDiversityServiceClient _repository;
@@ -84,7 +86,7 @@ namespace DiversityPhone.ViewModels
             _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
             _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
-            registerUpload();
+
 
             _subscriptions = new List<IDisposable>()
             {
@@ -104,16 +106,7 @@ namespace DiversityPhone.ViewModels
             
         }
 
-        private void registerUpload()
-        {
-            
-            //var uploadHierarchy = Observable.FromAsyncPattern<Svc.HierarchySection, Svc.HierarchySection>(_repository.BeginInsertHierarchy, _repository.EndInsertHierarchy);
-            //Upload = new ReactiveAsyncCommand();
-            //    .Select(_ => getUploadSectionsForSeries().ToObservable()).First()
-            //.Select(section => Tuple.Create(section, uploadHierarchy(section).First()))
-            //.ForEach(updateTuple => _storage.updateHierarchy(updateTuple.Item1, updateTuple.Item2));
-        }
-
+  
         private IEnumerable<Svc.HierarchySection> getUploadSectionsForSeries(EventSeries es)
         {
             var events = _storage.getEventsForSeries(es); // All Events because Specimen and Units may be added in existing events.
@@ -129,6 +122,7 @@ namespace DiversityPhone.ViewModels
         {
             
             IList<EventSeries> series = _storage.getUploadServiceEventSeries();
+
             if (series != null && series.Count > 0)
             {
                IList<Svc.EventSeries> convertSeries = new List<Svc.EventSeries>();
@@ -140,12 +134,7 @@ namespace DiversityPhone.ViewModels
                }
                ObservableCollection<Svc.EventSeries> seriesConv = ObservableConverter.ToObservableCollection<Svc.EventSeries>(convertSeries);
                _plainUploadClient.InsertEventSeriesAsync(seriesConv, _repository.GetCreds());
-               //Dictionary<int, int> result = _repository.InsertEventSeries(null).First();
-               //foreach (var kvp in result)
-               //{
-               //    _storage.updateSeriesKey(kvp.Key, kvp.Value);
-               //}
-               //syncHierarchies();
+              
             }
             else
             {
@@ -156,6 +145,7 @@ namespace DiversityPhone.ViewModels
         private void syncHierarchies()
         {
             IList<Event> eventList = _storage.getAllEvents();
+            syncingHierarchies = eventList.Count;
             foreach (Event ev in eventList)
             {
                 Svc.HierarchySection section = _storage.getNewHierarchyToSyncBelow(ev);
@@ -166,24 +156,46 @@ namespace DiversityPhone.ViewModels
 
         private void _plainUploadClient_InsertEventSeriesCompleted(object sender, DiversityService.InsertEventSeriesCompletedEventArgs args)
         {
-            Dictionary<int, int> series = args.Result;
-            foreach (var kvp in series)
+            try
             {
-                _storage.updateSeriesKey(kvp.Key, kvp.Value);
+                Dictionary<int, int> series = args.Result;
+                foreach (var kvp in series)
+                {
+                    _storage.updateSeriesKey(kvp.Key, kvp.Value);
+                }
+            } catch (Exception e)
+            {
+                MessageBox.Show("SyncError: " + e.Message);
             }
+  
+            MessageBox.Show("Syncing EventSeries Complete");
             syncHierarchies();
+           
         }
 
 
         private void _plainUploadClient_InsertHierarchyCompleted(object sender, DiversityService.InsertHierarchyCompletedEventArgs args)
         {
-            Svc.KeyProjection keysToUpdate = args.Result;
-            foreach (KeyValuePair<int, int> evPair in keysToUpdate.eventKey)
-                _storage.updateEventKey(evPair.Key, evPair.Value);
-            foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
-                _storage.updateSpecimenKey(specPair.Key, specPair.Value);
-            foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
-                _storage.updateIUKey(iuPair.Key, iuPair.Value);
+           
+            try
+            {
+                Svc.KeyProjection keysToUpdate = args.Result;
+                foreach (KeyValuePair<int, int> evPair in keysToUpdate.eventKey)
+                    _storage.updateEventKey(evPair.Key, evPair.Value);
+                foreach (KeyValuePair<int, int> specPair in keysToUpdate.specimenKeys)
+                    _storage.updateSpecimenKey(specPair.Key, specPair.Value);
+                foreach (KeyValuePair<int, int> iuPair in keysToUpdate.iuKeys)
+                    _storage.updateIUKey(iuPair.Key, iuPair.Value);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("SyncError: " + e.Message);
+            }
+            syncingHierarchies--;
+            if (syncingHierarchies == 0)
+            {
+                MessageBox.Show("Syncing Hierarchies Complete");
+            }
         }
 
 
