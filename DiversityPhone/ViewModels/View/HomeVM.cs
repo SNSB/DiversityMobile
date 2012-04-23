@@ -129,7 +129,7 @@ namespace DiversityPhone.ViewModels
                foreach (EventSeries es in series)
                {
                    Svc.EventSeries sES=EventSeries.ConvertToServiceObject(es);
-                   sES.Geography = _storage.convertGeoPointsToString(es.SeriesID);
+                   //sES.Geography = _storage.convertGeoPointsToString(es.SeriesID);
                    convertSeries.Add(sES);
                }
                ObservableCollection<Svc.EventSeries> seriesConv = ObservableConverter.ToObservableCollection<Svc.EventSeries>(convertSeries);

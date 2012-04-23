@@ -265,25 +265,25 @@ namespace DiversityPhone
         {
             if (Watcher == null)
                 return;
-            if (CurrentSeriesID != null)
-            {
-                Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
-                newGeoPoint.Latitude = e.Position.Location.Latitude;
-                newGeoPoint.Longitude = e.Position.Location.Longitude;
-                newGeoPoint.Altitude = e.Position.Location.Altitude;
-                coordinates.Add(newGeoPoint);
-                if (coordinates.Count >= 10)
-                {
-                    storeGeoPoints();
-                }
-            }
+            //if (CurrentSeriesID != null)
+            //{
+            //    Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
+            //    newGeoPoint.Latitude = e.Position.Location.Latitude;
+            //    newGeoPoint.Longitude = e.Position.Location.Longitude;
+            //    newGeoPoint.Altitude = e.Position.Location.Altitude;
+            //    coordinates.Add(newGeoPoint);
+            //    if (coordinates.Count >= 10)
+            //    {
+            //        storeGeoPoints();
+            //    }
+            //}
         }
 
         internal static void storeGeoPoints()
         {
-            foreach (Model.GeoPointForSeries gp in coordinates)
-                OfflineDB.addOrUpdateGeopPoint(gp);
-            coordinates = new List<Model.GeoPointForSeries>();
+            //foreach (Model.GeoPointForSeries gp in coordinates)
+            //    OfflineDB.addOrUpdateGeopPoint(gp);
+            //coordinates = new List<Model.GeoPointForSeries>();
         }
 
         public void fillGeoCoordinates(Model.ILocalizable loc)
@@ -294,16 +294,7 @@ namespace DiversityPhone
                 loc.Altitude = geoPos.Location.Altitude;
                 loc.Latitude = geoPos.Location.Latitude;
                 loc.Longitude = geoPos.Location.Longitude;
-                //if (Double.IsNaN((double)geoPos.Location.Altitude) == false)
-                //    loc.Altitude = geoPos.Location.Altitude;
-                //else
-                //    loc.Altitude = null;
-                //if (Double.IsNaN((double)geoPos.Location.Latitude) == false)
-                //    loc.Latitude = geoPos.Location.Latitude;
-                //else loc.Latitude = null;
-                //if (Double.IsNaN((double)geoPos.Location.Longitude) == false)
-                //    loc.Longitude = geoPos.Location.Longitude;
-                //else loc.Latitude = null;
+          
             }
             else
             {
