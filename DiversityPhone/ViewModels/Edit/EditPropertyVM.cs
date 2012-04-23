@@ -70,12 +70,16 @@ namespace DiversityPhone.ViewModels
 
         private IEnumerable<Property> getPropertiesImpl(CollectionEventProperty cep)
         {
-            var otherCEPs = Storage.getPropertiesForEvent(cep.EventID).ToDictionary(x => x.PropertyID);
-            otherCEPs.Remove(cep.PropertyID);
-
             var props = Vocabulary.getAllProperties();
-
-            return props.Where(prop => !otherCEPs.ContainsKey(prop.PropertyID));
+            if (cep.IsNew()) //All remaining Properties
+            {
+                var otherCEPs = Storage.getPropertiesForEvent(cep.EventID).ToDictionary(x => x.PropertyID);
+                return props.Where(prop => !otherCEPs.ContainsKey(prop.PropertyID));
+            }
+            else //Only this Property
+            {
+                return props.Where(prop => prop.PropertyID == cep.PropertyID);
+            }
         }
 
         private IList<PropertyName> getValuesImpl(Property p)
@@ -94,7 +98,7 @@ namespace DiversityPhone.ViewModels
                  .Select(x => x != null)
                  .StartWith(false);
 
-            var isnew = StateObservable.Select(s => s.Context == null).StartWith(false);
+            var isnew = ValidModel.Select(s => s.IsNew()).StartWith(true);
 
             return Extensions.BooleanAnd(propSelected, valueSelected, isnew);
         }         
