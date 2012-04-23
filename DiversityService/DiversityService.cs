@@ -178,6 +178,7 @@ namespace DiversityService
        
         #endregion
 
+
         public Dictionary<int, int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
         {
             Dictionary<int, int> result = new Dictionary<int, int>();
@@ -284,11 +285,12 @@ namespace DiversityService
                     //adjust keys, get directly depending iu´s
                     foreach (IdentificationUnit iUnit in hierarchy.IdentificationUnits)
                     {
-                        if (iUnit.RelatedUnitID == iu.UnitID)
-                        {
-                            iUnit.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
-                            nextLevelIU.Add(iu);
-                        }
+                        if(iUnit.RelatedUnitID!=null)
+                            if (iUnit.RelatedUnitID == iu.UnitID)
+                            {
+                                iUnit.DiversityCollectionRelatedUnitID = iu.DiversityCollectionUnitID;
+                                nextLevelIU.Add(iUnit);
+                            }
                     }
                 }
 

@@ -75,11 +75,11 @@
         public static Svc.Specimen ConvertToServiceObject(Specimen spec)
         {
             Svc.Specimen export = new Svc.Specimen();
-            if (spec.CollectionSpecimenID != null)
+            if (spec.DiversityCollectionSpecimenID != null)
                 export.DiversityCollectionSpecimenID = (int)spec.DiversityCollectionSpecimenID;
             else export.DiversityCollectionSpecimenID = Int32.MinValue;
             export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
-            export.AccesionNumber = spec.AccessionNumber;
+            export.AccessionNumber = spec.AccessionNumber;
             export.CollectionEventID = spec.CollectionEventID;
             export.CollectionSpecimenID = spec.CollectionSpecimenID;
             return export;

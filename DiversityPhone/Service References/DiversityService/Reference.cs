@@ -1597,7 +1597,7 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.DataContractAttribute(Name="Specimen", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Specimen : object, System.ComponentModel.INotifyPropertyChanged {
         
-        private string AccesionNumberField;
+        private string AccessionNumberField;
         
         private int CollectionEventIDField;
         
@@ -1610,14 +1610,14 @@ namespace DiversityPhone.DiversityService {
         private System.DateTime LogUpdatedWhenField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AccesionNumber {
+        public string AccessionNumber {
             get {
-                return this.AccesionNumberField;
+                return this.AccessionNumberField;
             }
             set {
-                if ((object.ReferenceEquals(this.AccesionNumberField, value) != true)) {
-                    this.AccesionNumberField = value;
-                    this.RaisePropertyChanged("AccesionNumber");
+                if ((object.ReferenceEquals(this.AccessionNumberField, value) != true)) {
+                    this.AccessionNumberField = value;
+                    this.RaisePropertyChanged("AccessionNumber");
                 }
             }
         }

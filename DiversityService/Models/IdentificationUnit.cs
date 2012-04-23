@@ -12,7 +12,7 @@ namespace DiversityService.Model
     {
         [Ignore]
         public int SpecimenID { get; set; }
-        [Column("CollectrionSpecimenID")]
+        [Column("CollectionSpecimenID")]
         public int? DiversityCollectionSpecimenID { get; set; }
         [Ignore]
         public int UnitID { get; set; }
@@ -32,7 +32,7 @@ namespace DiversityService.Model
 
 
         //Identification
-        [Ignore]
+
         public string LastIdentificationCache { get; set; }
         [Ignore]
         public string FamilyCache { get; set; }

@@ -86,7 +86,7 @@ namespace DiversityPhone.Model
                 export.DiversityCollectionSpecimenID = (int)iu.DiversityCollectionSpecimenID;
             else
                 export.DiversityCollectionSpecimenID = Int32.MinValue;
-
+            export.SpecimenID = iu.SpecimenID;
             export.DiversityCollectionUnitID = iua.DiversityCollectionUnitID;
             export.AnalysisDate = iua.AnalysisDate;
             export.AnalysisID = iua.AnalysisID;

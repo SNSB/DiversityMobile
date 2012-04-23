@@ -238,7 +238,7 @@
   <xs:element name="ArrayOfSpecimen" nillable="true" type="tns:ArrayOfSpecimen" />
   <xs:complexType name="Specimen">
     <xs:sequence>
-      <xs:element minOccurs="0" name="AccesionNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AccessionNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
       <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
       <xs:element minOccurs="0" name="DiversityCollectionEventID" nillable="true" type="xs:int" />
