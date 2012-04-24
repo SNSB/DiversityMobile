@@ -23,10 +23,10 @@ using System.Runtime.Serialization;
 
 namespace DiversityPhone
 {
-    public partial class App : Application, IGeoLocationService
+    public partial class App : Application
     {
         public static IFieldDataService OfflineDB { get; private set; }
-
+        public static IGeoLocationService GeoLocation { get; private set; }
         
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -56,7 +56,6 @@ namespace DiversityPhone
         }
 
 
-
       
         
         /// <summary>
@@ -68,7 +67,9 @@ namespace DiversityPhone
             UnhandledException += Application_UnhandledException;            
             
 
-            OfflineDB = new OfflineStorage(MessageBus.Current);                        
+            OfflineDB = new OfflineStorage(MessageBus.Current);
+            GeoLocation = new GeoLocationService(MessageBus.Current);
+
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -77,11 +78,9 @@ namespace DiversityPhone
             // Phone-specific initialization
             InitializePhoneApplication();
             var settings = Settings.getSettings();
+            
             if (settings != null && settings.UseGPS == true)
-                startWatcher();
-
-            if (settings != null)
-                CurrentSeriesID = settings.CurrentSeries;
+                GeoLocation.startWatcher();          
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -211,99 +210,99 @@ namespace DiversityPhone
         #endregion
 
 
-        #region Georeferencing
+        //#region Georeferencing
 
-        public static GeoCoordinateWatcher Watcher;
-        private static IList<Model.GeoPointForSeries> coordinates = new List<Model.GeoPointForSeries>();
-        public static int? CurrentSeriesID = null;
+        //public static GeoCoordinateWatcher Watcher;
+        //private static IList<Model.GeoPointForSeries> coordinates = new List<Model.GeoPointForSeries>();
+        //private static int? CurrentSeriesID = null;
 
-        public static void startWatcher()
-        {
-            Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
-            Watcher.MovementThreshold = 20;
-            Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
-            Watcher.Start();
-        }
+        //public static void startWatcher()
+        //{
+        //    Watcher = new GeoCoordinateWatcher(GeoPositionAccuracy.High);
+        //    Watcher.MovementThreshold = 20;
+        //    Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
+        //    Watcher.Start();
+        //}
 
-        public static void stopWatcher()
-        {
-            if (Watcher != null)
-            {
-                storeGeoPoints();
-                Watcher = null;
-            }
-        }
+        //public static void stopWatcher()
+        //{
+        //    if (Watcher != null)
+        //    {
+        //        storeGeoPoints();
+        //        Watcher = null;
+        //    }
+        //}
 
-        public static void startTourWhenGPSUsed(int SeriesID)
-        {
-            Model.AppSettings set = _settings.getSettings();
-            set.CurrentSeries = SeriesID;
-            _settings.saveSettings(set);
-            CurrentSeriesID = SeriesID;
-            coordinates = new List<Model.GeoPointForSeries>();
-            if (set.UseGPS == true)
-            {
-                Model.GeoPointForSeries gp = new Model.GeoPointForSeries();
-                gp.SeriesID = SeriesID;
-                gp.Latitude = Watcher.Position.Location.Latitude;
-                gp.Longitude = Watcher.Position.Location.Longitude;
-                gp.Altitude = Watcher.Position.Location.Altitude;
-                coordinates.Add(gp);
-            }
-        }
+        //public static void startTourWhenGPSUsed(int SeriesID)
+        //{
+        //    Model.AppSettings set = _settings.getSettings();
+        //    set.CurrentSeries = SeriesID;
+        //    _settings.saveSettings(set);
+        //    CurrentSeriesID = SeriesID;
+        //    coordinates = new List<Model.GeoPointForSeries>();
+        //    if (set.UseGPS == true)
+        //    {
+        //        Model.GeoPointForSeries gp = new Model.GeoPointForSeries();
+        //        gp.SeriesID = SeriesID;
+        //        gp.Latitude = Watcher.Position.Location.Latitude;
+        //        gp.Longitude = Watcher.Position.Location.Longitude;
+        //        gp.Altitude = Watcher.Position.Location.Altitude;
+        //        coordinates.Add(gp);
+        //    }
+        //}
 
-        public static void stopTour()
-        {
-            Model.AppSettings set = _settings.getSettings();
-            set.CurrentSeries = null;
-            _settings.saveSettings(set);
-            CurrentSeriesID = null;
-            storeGeoPoints();
-        }
+        //public static void stopTour()
+        //{
+        //    Model.AppSettings set = _settings.getSettings();
+        //    set.CurrentSeries = null;
+        //    _settings.saveSettings(set);
+        //    CurrentSeriesID = null;
+        //    storeGeoPoints();
+        //}
 
-        static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
-        {
-            if (Watcher == null)
-                return;
-            //if (CurrentSeriesID != null)
-            //{
-            //    Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
-            //    newGeoPoint.Latitude = e.Position.Location.Latitude;
-            //    newGeoPoint.Longitude = e.Position.Location.Longitude;
-            //    newGeoPoint.Altitude = e.Position.Location.Altitude;
-            //    coordinates.Add(newGeoPoint);
-            //    if (coordinates.Count >= 10)
-            //    {
-            //        storeGeoPoints();
-            //    }
-            //}
-        }
+        //static void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        //{
+        //    if (Watcher == null)
+        //        return;
+        //    if (CurrentSeriesID != null)
+        //    {
+        //        Model.GeoPointForSeries newGeoPoint = new Model.GeoPointForSeries();
+        //        newGeoPoint.Latitude = e.Position.Location.Latitude;
+        //        newGeoPoint.Longitude = e.Position.Location.Longitude;
+        //        newGeoPoint.Altitude = e.Position.Location.Altitude;
+        //        coordinates.Add(newGeoPoint);
+        //        if (coordinates.Count >= 10)
+        //        {
+        //            storeGeoPoints();
+        //        }
+        //    }
+        //}
 
-        internal static void storeGeoPoints()
-        {
-            //foreach (Model.GeoPointForSeries gp in coordinates)
-            //    OfflineDB.addOrUpdateGeopPoint(gp);
-            //coordinates = new List<Model.GeoPointForSeries>();
-        }
+        //internal static void storeGeoPoints()
+        //{
+        //    foreach (Model.GeoPointForSeries gp in coordinates)
+        //        OfflineDB.addOrUpdateGeopPoint(gp);
+        //    coordinates = new List<Model.GeoPointForSeries>();
+        //}
 
-        public void fillGeoCoordinates(Model.ILocalizable loc)
-        {   
-            if (Watcher!=null && Watcher.Status==GeoPositionStatus.Ready)
-            {
-                var geoPos= Watcher.Position;
-                loc.Altitude = geoPos.Location.Altitude;
-                loc.Latitude = geoPos.Location.Latitude;
-                loc.Longitude = geoPos.Location.Longitude;
+        //public void fillGeoCoordinates(Model.ILocalizable loc)
+        //{   
+        //    if (Watcher!=null && Watcher.Status==GeoPositionStatus.Ready)
+        //    {
+        //        var geoPos= Watcher.Position;
+        //        loc.Altitude = geoPos.Location.Altitude;
+        //        loc.Latitude = geoPos.Location.Latitude;
+        //        loc.Longitude = geoPos.Location.Longitude;
           
-            }
-            else
-            {
-                loc.Altitude = null;
-                loc.Latitude = null;
-                loc.Longitude = null;
-            }
-        }
+        //    }
+        //    else
+        //    {
+        //        loc.Altitude = null;
+        //        loc.Latitude = null;
+        //        loc.Longitude = null;
+        //    }
+        //}
 
-        #endregion
+        //#endregion
     }
 }

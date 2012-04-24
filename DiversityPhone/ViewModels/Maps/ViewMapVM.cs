@@ -15,6 +15,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Reactive.Linq;
 using DiversityPhone.Services;
+using System.Device.Location;
 
 namespace DiversityPhone.ViewModels
 {
@@ -24,6 +25,8 @@ namespace DiversityPhone.ViewModels
         #region Services
 
         IMapStorageService Maps;
+        private IGeoLocationService Geolocation;  
+
 
         #endregion
 
@@ -44,7 +47,6 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.Map, ref _Map, value); }
         }
 
-       
 
         private BitmapImage _mapImage;
 
@@ -133,7 +135,7 @@ namespace DiversityPhone.ViewModels
         public Point ItemPosIconSize = new Point(32, 32);
 
 
-        private IGeoLocationService Geolocation;   
+        
         private ILocalizable _ActualPos=new Localizable();
         public ILocalizable ActualPos
         {
@@ -141,6 +143,7 @@ namespace DiversityPhone.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(x => x.ActualPos, ref _ActualPos, value);
+                calculatePixelPointForActual();
             }
         }
 
@@ -192,7 +195,11 @@ namespace DiversityPhone.ViewModels
         {
             Maps = maps;
             Geolocation = geoLoc;
-            Geolocation.fillGeoCoordinates(ActualPos);
+            if(Geolocation.Watcher!=null)
+                Geolocation.Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
+            Localizable actual = new Localizable();
+            Geolocation.fillGeoCoordinates(actual);
+            ActualPos = actual;
         }
 
         private Point calculatePixelPoint(double? lat, double? lon)
@@ -236,6 +243,21 @@ namespace DiversityPhone.ViewModels
             }
             else ItemPosPoint = new Point(-1, -1);
         }
+
+        private void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        {
+            if (Geolocation.Watcher == null)
+                return;
+            if (e.Position != null && e.Position.Location != null)
+            {
+                Localizable loc = new Localizable();
+                loc.Altitude = e.Position.Location.Altitude;
+                loc.Latitude = e.Position.Location.Latitude;
+                loc.Longitude = e.Position.Location.Longitude;
+                ActualPos = loc;
+            }
+        }
+
 
         private BitmapImage LoadImage(String uri)
         {

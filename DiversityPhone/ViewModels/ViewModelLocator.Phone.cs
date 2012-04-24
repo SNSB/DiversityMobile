@@ -25,9 +25,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ISettingsService>(App.Settings);
 
             _ioc.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(_ioc.Resolve<ISettingsService>()));
-            
-
-            _ioc.Register<IGeoLocationService>(App.Current as App);
+            _ioc.Register<IGeoLocationService>(App.GeoLocation as GeoLocationService);
 
             
             #endregion            

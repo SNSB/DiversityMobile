@@ -54,12 +54,6 @@
             set
             {                
                 this.RaiseAndSetIfChanged(x => x.SeriesEnd,ref _SeriesEnd, value);
-                //    else
-                //    {
-                //        Messenger.SendMessage<DialogMessage>("The Series has to end after it begins!");
-                //        this.RaisePropertyChanged(x => x.SeriesEnd);
-                //    }
-                //}
             }
         }
         #endregion
@@ -68,6 +62,7 @@
         public EditESVM(ISettingsService settings)
         {
             _settings = settings;
+        
 
             ValidModel
                 .Select(es => es.Description ?? String.Empty)
@@ -119,7 +114,7 @@
 
         protected void finishSeries()
         {
-            App.stopTour();
+            Messenger.SendMessage<EventSeries>(Current.Model, MessageContracts.STOP);
         }
 
         protected override EventSeries ModelFromState(PageState s)

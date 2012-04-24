@@ -18,6 +18,7 @@ namespace DiversityPhone.ViewModels.Utility
     {
         Container IOC;
         ISettingsService Settings;
+        IGeoLocationService GeoLocation;
         
         public SetupVM Setup { get { return _Setup.Value; } }
         private ObservableAsPropertyHelper<SetupVM> _Setup;
@@ -67,6 +68,7 @@ namespace DiversityPhone.ViewModels.Utility
         {
             IOC = ioc;
             Settings = ioc.Resolve<ISettingsService>();
+            GeoLocation = ioc.Resolve<IGeoLocationService>();
 
             _Model =_ModelSubject   
                 .Where(x => true)
@@ -206,12 +208,12 @@ namespace DiversityPhone.ViewModels.Utility
             Settings.saveSettings(Model);
             if (UseGPS == true)
             {
-                if (App.Watcher==null)
-                    App.startWatcher();
+                if (GeoLocation.IsWatching() == false)
+                    GeoLocation.startWatcher();
             }
             else
-                if(App.Watcher!=null)
-                    App.stopWatcher();
+                if (GeoLocation.IsWatching() == true)
+                    GeoLocation.stopWatcher();
         }        
 
         

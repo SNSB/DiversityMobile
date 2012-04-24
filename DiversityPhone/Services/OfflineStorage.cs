@@ -17,6 +17,7 @@
     {
         private IList<IDisposable> _subscriptions;
         private IMessageBus _messenger;
+     
 
         public OfflineStorage(IMessageBus messenger)
         {
@@ -59,6 +60,12 @@
                     .Subscribe(mmo => addMultimediaObject(mmo)),
                 _messenger.Listen<MultimediaObject>(MessageContracts.DELETE)
                     .Subscribe(mmo=>deleteMMO(mmo)),
+
+                _messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE)
+                    .Subscribe(gp => addOrUpdateGeoPoint(gp)),
+                _messenger.Listen<GeoPointForSeries>(MessageContracts.DELETE)
+                    .Subscribe(gp => deleteGeoPoint(gp)),
+
       
             };           
         }
@@ -101,7 +108,7 @@
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            App.startTourWhenGPSUsed(newSeries.SeriesID);
+            _messenger.SendMessage<EventSeries>(newSeries, MessageContracts.START);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
@@ -150,7 +157,7 @@
                 );
         }
 
-        public void addOrUpdateGeopPoint(GeoPointForSeries gp)
+        public void addOrUpdateGeoPoint(GeoPointForSeries gp)
         {
             addOrUpdateRow(GeoPointForSeries.Operations,
                 ctx => ctx.GeoTour,

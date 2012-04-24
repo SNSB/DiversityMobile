@@ -23,7 +23,7 @@ using System;
 
         IList<GeoPointForSeries> getAllGeoPoints();
         IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
-        void addOrUpdateGeopPoint(GeoPointForSeries gp);
+        void addOrUpdateGeoPoint(GeoPointForSeries gp);
         void deleteGeoPoint(GeoPointForSeries gp);
         String convertGeoPointsToString(int seriesID);
 
