@@ -29,7 +29,7 @@ namespace DiversityPhone.Services
         /// <param name="es">
         /// EventSeries for which the tour is created
        /// </param>
-        void startTour(int seriesID);
+        void setTourEventSeriesID(int seriesID);
 
         /// <summary>
         /// Stops the actual tour. Hence, it is possible to start a new tour.

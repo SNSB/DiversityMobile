@@ -58,8 +58,8 @@ namespace DiversityPhone.Services
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationService"/> class.
         /// </summary>
-        public GeoLocationService(IMessageBus bus)
-            : this(GeoPositionAccuracy.Default, bus)
+        public GeoLocationService(IMessageBus bus, ISettingsService settings)
+            : this(GeoPositionAccuracy.Default, bus, settings)
         {
         }
 
@@ -72,15 +72,16 @@ namespace DiversityPhone.Services
         /// The logger used to capture diagnostics information.
         /// </param>
         /// </summary>
-        public GeoLocationService(GeoPositionAccuracy defaultAccuracy, IMessageBus bus)
+        public GeoLocationService(GeoPositionAccuracy defaultAccuracy, IMessageBus bus, ISettingsService settings)
         {
             MessageBus = bus;
+            SettingsService = settings;
             this.defaultAccuracy = defaultAccuracy;
             movementTreshhold = DefaultMovementTreshold;
             _subscriptions = new List<IDisposable>()
             {
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.START)
-                    .Subscribe(es => startTour(es.SeriesID)),
+                    .Subscribe(es => setTourEventSeriesID(es.SeriesID)),
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.STOP)
                     .Subscribe(es => stopTour()),
             };
@@ -114,10 +115,10 @@ namespace DiversityPhone.Services
 
         }
 
-        public void startTour(int SeriesID)
+        public void setTourEventSeriesID(int SeriesID)
         {
             Model.AppSettings set = SettingsService.getSettings();
-            set.CurrentSeries = SeriesID;
+            set.CurrentSeriesID = SeriesID;
             SettingsService.saveSettings(set);
             CurrentSeriesID = SeriesID;
             if (_Watcher!=null && _Watcher.Position!=null)
@@ -131,7 +132,7 @@ namespace DiversityPhone.Services
             if (_Watcher != null && _Watcher.Position != null)
                 storeGeoPoint(_Watcher.Position.Location);
             Model.AppSettings set = SettingsService.getSettings();
-            set.CurrentSeries = null;
+            set.CurrentSeriesID = null;
             SettingsService.saveSettings(set);
             CurrentSeriesID = null;  
         }

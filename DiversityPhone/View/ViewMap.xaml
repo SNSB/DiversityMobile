@@ -45,9 +45,25 @@
                     <Canvas Top="{Binding ItemPosPoint.Y}" Left="{Binding ItemPosPoint.X}">
                         <Image Name="ItemImage" Height="{Binding ItemIconSize.Y}" Width="{Binding ItemIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding ItemPosPoint,Converter={StaticResource PointToVis}}"/>
                     </Canvas>
+                    <!--<ItemsControl ItemsSource="{Binding SeriesPosPoints}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Canvas Background="White" Width="500" Height="500"  />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Canvas Canvas.Top="300" Canvas.Left="300">
+                                    <Image  Stretch="Uniform"  Source="/Images/BlackPoint.png"/>
+                                </Canvas>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+        
+                    </ItemsControl>-->
+
+
                 </Canvas>
             </ScrollViewer>
-            
         </StackPanel>
     </Grid>
 

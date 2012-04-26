@@ -68,7 +68,7 @@ namespace DiversityPhone
             
 
             OfflineDB = new OfflineStorage(MessageBus.Current);
-            GeoLocation = new GeoLocationService(MessageBus.Current);
+            GeoLocation = new GeoLocationService(MessageBus.Current, Settings);
 
 
             // Standard Silverlight initialization
@@ -78,9 +78,13 @@ namespace DiversityPhone
             // Phone-specific initialization
             InitializePhoneApplication();
             var settings = Settings.getSettings();
-            
+
             if (settings != null && settings.UseGPS == true)
-                GeoLocation.startWatcher();          
+            {
+                GeoLocation.startWatcher();
+                if (settings.CurrentSeriesID != null)
+                    GeoLocation.setTourEventSeriesID((int) settings.CurrentSeriesID);
+            }
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)

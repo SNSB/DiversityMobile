@@ -112,6 +112,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="TaxonListItemTemplate">
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"/>
