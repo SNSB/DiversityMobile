@@ -152,10 +152,8 @@ namespace DiversityPhone.ViewModels
         private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
         {
             foreach (var iuanVM in Storage
-                                    .getIUANForIU(iuvm.Model)
-                                    .Select(iuan => new { IUAN = iuan, AN = Vocabulary.getAnalysisByID(iuan.AnalysisID) })
-                                    .Where(pair => pair.AN != null)
-                                    .Select(pair => new IdentificationUnitAnalysisVM(Messenger, pair.IUAN, pair.AN)))
+                                    .getIUANForIU(iuvm.Model)                                    
+                                    .Select(iuan => new IdentificationUnitAnalysisVM(Messenger, iuan)))
                 collectionSubject.OnNext(iuanVM);
         }
 
