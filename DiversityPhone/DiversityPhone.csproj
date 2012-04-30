@@ -154,6 +154,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\BackgroundService.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\IApplicationState.cs" />
+    <Compile Include="Services\IBackgroundProcess.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
