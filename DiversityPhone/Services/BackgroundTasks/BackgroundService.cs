@@ -28,14 +28,13 @@ namespace DiversityPhone.Services
         BackgroundTaskArguments runningTask;
         IObservable<BackgroundTaskUpdate> runningTaskUpdates;
 
-        public BackgroundService(Container ioc, IEnumerable<BackgroundTaskArguments> backlog)
+        public BackgroundService(Container ioc)
         {
             Messenger = ioc.Resolve<IMessageBus>();
             TaskFactory = ioc.Resolve<IBackgroundTaskFactory>();
 
-            Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_START)
-                .StartWith(backlog.ToArray())
-                .Subscribe(proc => startProcess(proc));
+            Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_START)                
+                .Subscribe(proc => startTask(proc));
             Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_STOP)                
                 .Subscribe(proc => stopTask(proc));
         }
@@ -53,7 +52,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void startProcess(BackgroundTaskArguments args)
+        public void startTask(BackgroundTaskArguments args)
         {
             lock (this)
             {
@@ -91,7 +90,7 @@ namespace DiversityPhone.Services
             
         }
 
-        IEnumerable<BackgroundTaskArguments> shutdown()
+        public IEnumerable<BackgroundTaskArguments> shutdown()
         {
             lock (this)
             {
@@ -110,6 +109,14 @@ namespace DiversityPhone.Services
                 else
                     return waitingTasks
                        .Select(kvp => kvp.Key);
+            }
+        }
+
+        public void initialize(IEnumerable<BackgroundTaskArguments> backlog)
+        {
+            foreach (var task in backlog)
+            {
+                startTask(task);
             }
         }
 

@@ -13,7 +13,7 @@ namespace DiversityPhone.Services
 {
     public class BackgroundTaskUpdate
     {
-        public const BackgroundTaskUpdate Finished = new BackgroundTaskUpdate()
+        public static readonly BackgroundTaskUpdate Finished = new BackgroundTaskUpdate()
         {
             ProgressPercentage = 100,
             StatusMessage = null           

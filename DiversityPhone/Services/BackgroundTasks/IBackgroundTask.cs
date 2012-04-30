@@ -11,20 +11,20 @@ namespace DiversityPhone.Services
         /// Returns the Arguments that were used to create the Task, optionally containing progress in order to allow resuming the Task
         /// Will be called AFTER Cancel
         /// </summary>
-        public BackgroundTaskArguments Arguments { get; }
+        public BackgroundTaskArguments Arguments { get; protected set; }
         /// <summary>
         /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
         /// </summary>
         /// <returns></returns>
-        public IObservable<BackgroundTaskUpdate> Run();
+        public abstract IObservable<BackgroundTaskUpdate> Run();
 
         /// <summary>
         /// Cancels the Task
         /// When this method returns, the cancellation must have been processed
         /// </summary>
-        public void Cancel();
+        public abstract void Cancel();
 
-        public void Cleanup();
+        public abstract void Cleanup();
 
     }
 }

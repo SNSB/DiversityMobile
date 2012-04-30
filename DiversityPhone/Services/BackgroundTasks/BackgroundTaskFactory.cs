@@ -12,13 +12,14 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.Services
 {
-    public class BackgroundTaskFactory : Dictionary<string, Func<BackgroundTask>>, IBackgroundTaskFactory
+    public class BackgroundTaskFactory : Dictionary<string, Func<BackgroundTaskArguments,BackgroundTask>>, IBackgroundTaskFactory
     {
-        public BackgroundTask createTask(string ID)
+        public BackgroundTask createTask(BackgroundTaskArguments args)
         {
+            var ID = args.TaskName;
             if (this.ContainsKey(ID))
             {
-                return this[ID]();
+                return this[ID](args);
             }
             else
                 return null;

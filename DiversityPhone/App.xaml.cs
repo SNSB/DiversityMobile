@@ -1,62 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
-using System.Reactive.Subjects;
 using System.Windows.Navigation;
 using ReactiveUI;
-using System.Reactive.Concurrency;
-using DiversityPhone.ViewModels;
-using System.Device.Location;
-using System.Runtime.Serialization;
+using Funq;
 
 
 namespace DiversityPhone
 {
     public partial class App : Application
     {
-        public static IFieldDataService OfflineDB { get; private set; }
-        public static IGeoLocationService GeoLocation { get; private set; }
+        private const string STATE_KEY = "StateTracking";
+        private const string TASK_KEY = "BackgroundTasks";
+
+        public static Container IOC { get; private set; }
+
+        public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
+        public static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
+        public static Services.NavigationService NavSvc
+        {
+            get
+            {
+                return IOC.Resolve<Services.NavigationService>();
+            }
+        }
+        public static ISettingsService Settings
+        {
+            get
+            {
+                return IOC.Resolve<ISettingsService>();
+            }
+        }
+        public static BackgroundService BackgroundTasks
+        {
+            get
+            {
+                return IOC.Resolve<BackgroundService>();
+            }
+        }
         
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        public static PhoneApplicationFrame RootFrame { get; private set; }
-
-        private static DiversityPhone.Services.NavigationService _NavSvc = null;
-        public static DiversityPhone.Services.NavigationService NavSvc
-        {
-            get
-            {
-                if (_NavSvc != null)
-                    return _NavSvc;
-                else
-                    return _NavSvc = new Services.NavigationService(MessageBus.Current);
-            }
-        }
-
-        private static ISettingsService _settings;
-        public static ISettingsService Settings
-        {
-            get
-            {
-                return _settings ?? (_settings = new SettingsService(MessageBus.Current));
-            }
-        }
-
-
-      
+        public static PhoneApplicationFrame RootFrame { get; private set; }       
         
         /// <summary>
         /// Constructor for the Application object.
@@ -64,11 +54,36 @@ namespace DiversityPhone
         public App()
         {            
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;            
+            UnhandledException += Application_UnhandledException;
+
+            IOC = new Container();
+            IOC.DefaultReuse = ReuseScope.None;
+            
+            IOC.Register<IMessageBus>(RxApp.MessageBus);
+
+            IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
+
+            IOC.Register<IFieldDataService>( new OfflineStorage(IOC.Resolve<IMessageBus>()));            
+            IOC.Register<ITaxonService>(new TaxonService());
+            IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapStorageService>(new MapStorageService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<ISettingsService>(new SettingsService(IOC.Resolve<IMessageBus>()));
+
+            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
+            IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
+            IOC.Register<Services.NavigationService>(new Services.NavigationService(IOC.Resolve<IMessageBus>()));
             
 
-            OfflineDB = new OfflineStorage(MessageBus.Current);
-            GeoLocation = new GeoLocationService(MessageBus.Current, Settings);
+            var bgFactory = new BackgroundTaskFactory();
+
+
+            IOC.Register<IBackgroundTaskFactory>(bgFactory);
+
+
+
+
+            IOC.Register<BackgroundService>(new BackgroundService(IOC));           
 
 
             // Standard Silverlight initialization
@@ -124,12 +139,21 @@ namespace DiversityPhone
         {
             object savedStates = null;
 
-            if (PhoneApplicationService.Current.State.TryGetValue("StateTracking", out savedStates)
+            if (PhoneApplicationService.Current.State.TryGetValue(STATE_KEY, out savedStates)
                 && savedStates != null
                 && savedStates is IList<PageState>)
             {
                 var stack = new Stack<PageState>((savedStates as IList<PageState>).Reverse());
                 NavSvc.States = stack;
+            }
+
+
+            object savedTasks = null;
+            if (PhoneApplicationService.Current.State.TryGetValue(TASK_KEY, out savedTasks)
+                && savedTasks != null
+                && savedTasks is IEnumerable<BackgroundTaskArguments>)
+            {
+                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskArguments>);
             }
                 
             
@@ -142,7 +166,8 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./
-            PhoneApplicationService.Current.State["StateTracking"] = NavSvc.States.ToList();
+            PhoneApplicationService.Current.State[STATE_KEY] = NavSvc.States.ToList();
+            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.shutdown().ToList();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)

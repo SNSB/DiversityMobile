@@ -17,7 +17,7 @@ namespace DiversityPhone.Test
         {
             SystemTray.IsVisible = false;
 
-            Xunit.Sdk.ru.Silverlight.Toolkit.UnitTestProvider.Register();
+            
 
             var testPage = (IMobileTestPage)UnitTestSystem.CreateTestPage();
             BackKeyPress += (x, xe) => xe.Cancel = testPage.NavigateBack();
