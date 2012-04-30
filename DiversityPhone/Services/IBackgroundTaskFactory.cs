@@ -5,11 +5,8 @@ using System.Text;
 
 namespace DiversityPhone.Services
 {
-    public interface IBackgroundProcess
+    public interface IBackgroundTaskFactory
     {
-        string ProcessName { get; }
-        void Run();
-        void Cancel();
-
+        IBackgroundTask createTask(BackgroundTaskArguments args);
     }
 }

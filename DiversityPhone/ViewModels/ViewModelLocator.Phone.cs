@@ -27,7 +27,10 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(_ioc.Resolve<ISettingsService>()));
             _ioc.Register<IGeoLocationService>(App.GeoLocation as GeoLocationService);
 
-            
+            var bgFactory = new BackgroundTaskFactory();
+
+
+            _ioc.Register<IBackgroundTaskFactory>(bgFactory);            
             #endregion            
         }       
     }

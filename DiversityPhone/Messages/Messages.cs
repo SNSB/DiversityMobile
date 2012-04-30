@@ -14,6 +14,10 @@ namespace DiversityPhone.Messages
         public const string USE = "Use";
         public const string START = "Start";
         public const string STOP = "Stop";
+
+        public const string BACKGROUNDPROCESS_START = "Back_Start";
+        public const string BACKGROUNDPROCESS_STOP = "Back_Stop";
+        public const string BACKGROUNDPROCESS_UPDATE = "Back_Update";
     }
 
     public class NavigationMessage
