@@ -151,6 +151,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Can&apos;t open a new Series while there is still an unfinished one. ähnelt.
+        /// </summary>
+        public static string Home_Info_CantOpenNewSeries {
+            get {
+                return ResourceManager.GetString("Home_Info_CantOpenNewSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Identification ähnelt.
         /// </summary>
         public static string IdentificationUnit_Header_Identification {
