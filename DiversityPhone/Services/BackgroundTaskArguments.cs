@@ -7,8 +7,9 @@ namespace DiversityPhone.Services
 {
     public abstract class BackgroundTaskArguments : IComparable<BackgroundTaskArguments>
     {
-        string TaskName { get; private set; }
-        bool CanResume { get; private set; }
+        public string TaskName { get; private set; }
+        public bool HasStarted { get; set; }
+        public bool CanResume { get; private set; }
 
 
         public BackgroundTaskArguments(string name, bool canresume)

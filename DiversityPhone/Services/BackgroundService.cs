@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
         IBackgroundTaskFactory TaskFactory;
 
         bool shuttingDown = false;
-        Dictionary<BackgroundTaskArguments, IBackgroundTask> waitingTasks = new Dictionary<BackgroundTaskArguments, IBackgroundTask>();
+        Dictionary<BackgroundTaskArguments, BackgroundTask> waitingTasks = new Dictionary<BackgroundTaskArguments, BackgroundTask>();
         BackgroundTaskArguments runningTask;
         IObservable<BackgroundTaskUpdate> runningTaskUpdates;
 
@@ -36,7 +36,21 @@ namespace DiversityPhone.Services
             Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_START)
                 .StartWith(backlog.ToArray())
                 .Subscribe(proc => startProcess(proc));
+            Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_STOP)                
+                .Subscribe(proc => stopTask(proc));
+        }
 
+        private void stopTask(BackgroundTaskArguments proc)
+        {
+            lock (this)
+            {
+                if (runningTask == proc)
+                {
+                    var task = waitingTasks[runningTask];
+                    task.Cancel();
+                    task.Cleanup();
+                }               
+            }
         }
 
         public void startProcess(BackgroundTaskArguments args)
@@ -58,19 +72,20 @@ namespace DiversityPhone.Services
                 {
                     var first = waitingTasks.First();
                     runningTask = first.Key;
-                    runningTaskUpdates = first.Value.Run(); 
-                    runningTaskUpdates
-                        .Concat(Observable.Return(BackgroundTaskUpdate.Finished))
-                        .Do(update => Messenger.SendMessage<BackgroundTaskUpdate>(update))
-                        .Finally(() =>
-                                {
-                                    lock (this)
-                                    {
-                                        runningTask = null;
-                                        runningTaskUpdates = null;
-                                    }
-                                    if (!shuttingDown) nextTask();
-                                });
+                    if (!runningTask.HasStarted || runningTask.CanResume)
+                    {
+                        runningTask.HasStarted = true;
+                        runningTaskUpdates = first.Value.Run();
+                        runningTaskUpdates
+                            .Concat(Observable.Return(BackgroundTaskUpdate.Finished))
+                            .Do(update => Messenger.SendMessage<BackgroundTaskUpdate>(update))
+                            .Finally(finishTask);
+                    }
+                    else
+                    {
+                        first.Value.Cleanup();
+                        finishTask();
+                    }
                 }
             }
             
@@ -98,6 +113,17 @@ namespace DiversityPhone.Services
             }
         }
 
-        
+
+
+        void finishTask()
+        {
+            lock (this)
+            {
+                waitingTasks.Remove(runningTask);
+                runningTask = null;
+                runningTaskUpdates = null;
+            }
+            if (!shuttingDown) nextTask();
+        }
     }
 }

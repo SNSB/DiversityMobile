@@ -12,9 +12,9 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.Services
 {
-    public class BackgroundTaskFactory : Dictionary<string, Func<IBackgroundTask>>, IBackgroundTaskFactory
+    public class BackgroundTaskFactory : Dictionary<string, Func<BackgroundTask>>, IBackgroundTaskFactory
     {
-        public IBackgroundTask createTask(string ID)
+        public BackgroundTask createTask(string ID)
         {
             if (this.ContainsKey(ID))
             {

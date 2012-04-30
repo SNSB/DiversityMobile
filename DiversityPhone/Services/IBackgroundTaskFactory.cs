@@ -7,6 +7,6 @@ namespace DiversityPhone.Services
 {
     public interface IBackgroundTaskFactory
     {
-        IBackgroundTask createTask(BackgroundTaskArguments args);
+        BackgroundTask createTask(BackgroundTaskArguments args);
     }
 }

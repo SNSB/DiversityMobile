@@ -5,24 +5,26 @@ using System.Text;
 
 namespace DiversityPhone.Services
 {
-    public interface IBackgroundTask
+    public abstract class BackgroundTask
     {
         /// <summary>
         /// Returns the Arguments that were used to create the Task, optionally containing progress in order to allow resuming the Task
         /// Will be called AFTER Cancel
         /// </summary>
-        BackgroundTaskArguments Arguments { get; }
+        public BackgroundTaskArguments Arguments { get; }
         /// <summary>
         /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
         /// </summary>
         /// <returns></returns>
-        IObservable<BackgroundTaskUpdate> Run();
+        public IObservable<BackgroundTaskUpdate> Run();
 
         /// <summary>
         /// Cancels the Task
         /// When this method returns, the cancellation must have been processed
         /// </summary>
-        void Cancel();
+        public void Cancel();
+
+        public void Cleanup();
 
     }
 }
