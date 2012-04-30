@@ -7,6 +7,7 @@ using DiversityPhone.Services;
 using System.Windows.Navigation;
 using ReactiveUI;
 using Funq;
+using DiversityPhone.Services.BackgroundTasks;
 
 
 namespace DiversityPhone
@@ -73,17 +74,17 @@ namespace DiversityPhone
             IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
             IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
             IOC.Register<Services.NavigationService>(new Services.NavigationService(IOC.Resolve<IMessageBus>()));
-            
-
-            var bgFactory = new BackgroundTaskFactory();
-
-
-            IOC.Register<IBackgroundTaskFactory>(bgFactory);
 
 
 
 
-            IOC.Register<BackgroundService>(new BackgroundService(IOC));           
+
+
+            var backg = new BackgroundService(IOC);
+
+
+
+            IOC.Register<BackgroundService>(backg);           
 
 
             // Standard Silverlight initialization
@@ -151,9 +152,9 @@ namespace DiversityPhone
             object savedTasks = null;
             if (PhoneApplicationService.Current.State.TryGetValue(TASK_KEY, out savedTasks)
                 && savedTasks != null
-                && savedTasks is IEnumerable<BackgroundTaskArguments>)
+                && savedTasks is IEnumerable<BackgroundTaskInvocation>)
             {
-                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskArguments>);
+                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskInvocation>);
             }
                 
             

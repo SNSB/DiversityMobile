@@ -18,6 +18,7 @@ using DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using DiversityPhone.Services.BackgroundTasks;
 
 namespace DiversityPhone.ViewModels
 {
@@ -210,10 +211,12 @@ namespace DiversityPhone.ViewModels
                     });
 
             deleteTaxonList
-                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));               
+                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));          
 
             getRepoLists.Execute(null);                       
         }
+
+        
 
         private TaxonListVM downloadTaxonListImpl(TaxonListVM taxonList)
         {            

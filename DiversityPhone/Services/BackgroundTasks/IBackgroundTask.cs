@@ -2,29 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reactive.Subjects;
+using System.Reactive;
 
 namespace DiversityPhone.Services
 {
-    public abstract class BackgroundTask
+    public interface IBackgroundTask
     {
-        /// <summary>
-        /// Returns the Arguments that were used to create the Task, optionally containing progress in order to allow resuming the Task
-        /// Will be called AFTER Cancel
-        /// </summary>
-        public BackgroundTaskArguments Arguments { get; protected set; }
-        /// <summary>
-        /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
-        /// </summary>
-        /// <returns></returns>
-        public abstract IObservable<BackgroundTaskUpdate> Run();
-
-        /// <summary>
-        /// Cancels the Task
-        /// When this method returns, the cancellation must have been processed
-        /// </summary>
-        public abstract void Cancel();
-
-        public abstract void Cleanup();
-
+        IObservable<Unit> AsyncCompletedNotification { get; }
+        IObservable<Exception> AsyncErrorNotification { get; }
+        IObservable<Unit> AsyncStartedNotification { get; }
+        IObservable<bool> CanExecuteObservable { get;  }
+        IObservable<int> ItemsInflight { get; }
+        
     }
 }

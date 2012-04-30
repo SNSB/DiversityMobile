@@ -155,8 +155,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\BackgroundTasks\BackgroundService.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTaskFactory.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTaskUpdate.cs" />
+    <Compile Include="Services\BackgroundTasks\DownloadTaxonListTask.cs" />
+    <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
+    <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
@@ -164,9 +165,8 @@
     <Compile Include="Services\Database\DiversityDataContext.cs" />
     <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
-    <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTaskArguments.cs" />
-    <Compile Include="Services\BackgroundTasks\IBackgroundTaskFactory.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />

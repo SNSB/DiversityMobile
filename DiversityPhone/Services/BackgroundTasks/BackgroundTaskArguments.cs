@@ -5,22 +5,23 @@ using System.Text;
 
 namespace DiversityPhone.Services
 {
-    public abstract class BackgroundTaskArguments : IComparable<BackgroundTaskArguments>
+    public class BackgroundTaskInvocation : IComparable<BackgroundTaskInvocation>
     {
-        public string TaskName { get; private set; }
+        public Type Type { get; private set; }
         public bool HasStarted { get; set; }
-        public bool CanResume { get; private set; }
+        public object Argument { get; set; }
+        public Dictionary<string, object> State { get; set; }
 
 
-        public BackgroundTaskArguments(string name, bool canresume)
+        public BackgroundTaskInvocation(Type type)
         {
-            TaskName = name;
-            CanResume = canresume;
+            Type = type;
+            State = new Dictionary<string, object>();
         }
 
-        public int CompareTo(BackgroundTaskArguments other)
+        public int CompareTo(BackgroundTaskInvocation other)
         {
-            return TaskName.CompareTo(other.TaskName);
+            return Type.GetHashCode().CompareTo(other.Type.GetHashCode());
         }
     }
 }

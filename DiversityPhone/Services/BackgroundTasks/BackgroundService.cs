@@ -18,47 +18,24 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class BackgroundService
+    public class BackgroundService : Dictionary<Type, BackgroundTask>, IBackgroundService
     {
-        IMessageBus Messenger;
-        IBackgroundTaskFactory TaskFactory;
+        IMessageBus Messenger;        
 
         bool shuttingDown = false;
-        Dictionary<BackgroundTaskArguments, BackgroundTask> waitingTasks = new Dictionary<BackgroundTaskArguments, BackgroundTask>();
-        BackgroundTaskArguments runningTask;
-        IObservable<BackgroundTaskUpdate> runningTaskUpdates;
+        Queue<BackgroundTaskInvocation> waitingTasks = new Queue<BackgroundTaskInvocation>();
+        BackgroundTaskInvocation runningTask;        
 
         public BackgroundService(Container ioc)
         {
-            Messenger = ioc.Resolve<IMessageBus>();
-            TaskFactory = ioc.Resolve<IBackgroundTaskFactory>();
+            Messenger = ioc.Resolve<IMessageBus>();           
+        }     
 
-            Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_START)                
-                .Subscribe(proc => startTask(proc));
-            Messenger.Listen<BackgroundTaskArguments>(MessageContracts.BACKGROUNDPROCESS_STOP)                
-                .Subscribe(proc => stopTask(proc));
-        }
-
-        private void stopTask(BackgroundTaskArguments proc)
+        public void startTask<T>(object arg) where T : BackgroundTask
         {
             lock (this)
             {
-                if (runningTask == proc)
-                {
-                    var task = waitingTasks[runningTask];
-                    task.Cancel();
-                    task.Cleanup();
-                }               
-            }
-        }
-
-        public void startTask(BackgroundTaskArguments args)
-        {
-            lock (this)
-            {
-                var task = TaskFactory.createTask(args);
-                if (task != null)
-                    waitingTasks.Add(args, task);
+                waitingTasks.Enqueue(new BackgroundTaskInvocation(typeof(T)) { Argument = arg });
             }
             nextTask();
         }
@@ -69,68 +46,62 @@ namespace DiversityPhone.Services
             {
                 if (runningTask == null && waitingTasks.Count > 0)
                 {
-                    var first = waitingTasks.First();
-                    runningTask = first.Key;
-                    if (!runningTask.HasStarted || runningTask.CanResume)
+                    runningTask = waitingTasks.Dequeue();
+                    BackgroundTask task;
+                    if(this.TryGetValue(runningTask.Type, out task))
                     {
-                        runningTask.HasStarted = true;
-                        runningTaskUpdates = first.Value.Run();
-                        runningTaskUpdates
-                            .Concat(Observable.Return(BackgroundTaskUpdate.Finished))
-                            .Do(update => Messenger.SendMessage<BackgroundTaskUpdate>(update))
-                            .Finally(finishTask);
-                    }
-                    else
-                    {
-                        first.Value.Cleanup();
-                        finishTask();
-                    }
+                        if (!runningTask.HasStarted || task.CanResume)
+                        {
+                            runningTask.HasStarted = true;
+                            task.Invoke(runningTask);
+                        }
+                        else
+                        {
+                            task.Cleanup(runningTask);
+                            runningTask = null;
+                        }
+                    }                 
                 }
             }
-            
+            if (runningTask == null)
+                nextTask();            
         }
 
-        public IEnumerable<BackgroundTaskArguments> shutdown()
+
+
+        public IEnumerable<BackgroundTaskInvocation> shutdown()
         {
             lock (this)
             {
                 shuttingDown = true;
                 if (runningTask != null)
                 {
-                    var bgtask = waitingTasks[runningTask];
-                    bgtask.Cancel();
-                    var finalState = bgtask.Arguments;
-
-                    return waitingTasks
-                        .Select(kvp => kvp.Key)
-                        .Where(args => args != finalState)
-                        .Concat(Enumerable.Repeat(finalState,1));
-                }
-                else
-                    return waitingTasks
-                       .Select(kvp => kvp.Key);
+                    var bgtask = this[runningTask.Type];
+                    bgtask.Cancel();                                        
+                        
+                }        
+                return waitingTasks;                      
             }
         }
 
-        public void initialize(IEnumerable<BackgroundTaskArguments> backlog)
-        {
-            foreach (var task in backlog)
-            {
-                startTask(task);
-            }
-        }
-
-
-
-        void finishTask()
+        public void initialize(IEnumerable<BackgroundTaskInvocation> backlog)
         {
             lock (this)
             {
-                waitingTasks.Remove(runningTask);
-                runningTask = null;
-                runningTaskUpdates = null;
+                foreach (var task in backlog)
+	            {
+                    waitingTasks.Enqueue(task);		 
+	            }                
             }
-            if (!shuttingDown) nextTask();
+            nextTask();
+        }                    
+
+        public T getTaskObject<T>() where T : BackgroundTask
+        {
+            if (this.ContainsKey(typeof(T)))
+                return (T)this[typeof(T)];
+            else
+                return null;
         }
     }
 }
