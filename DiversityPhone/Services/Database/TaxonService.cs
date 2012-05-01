@@ -104,7 +104,7 @@ namespace DiversityPhone.Services
             withSelections(ctx =>
             {
                 var selection = (from sel in ctx.TaxonSelection
-                                 where sel.TableName == list.Table && sel.TaxonomicGroup == list.TaxonomicGroup
+                                 where sel.TableName == list.Table
                                  select sel).FirstOrDefault();
 
                 if (selection != null)

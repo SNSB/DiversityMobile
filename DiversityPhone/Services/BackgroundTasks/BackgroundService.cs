@@ -18,7 +18,7 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class BackgroundService : Dictionary<Type, BackgroundTask>, IBackgroundService
+    public class BackgroundService : Dictionary<string, BackgroundTask>, IBackgroundService
     {
         IMessageBus Messenger;        
 
@@ -63,7 +63,7 @@ namespace DiversityPhone.Services
                         }
                         else
                         {
-                            task.Cleanup(runningTask);
+                            task.CleanupAfter(runningTask);
                             runningTask = null;
                         }
                     }                 
@@ -89,8 +89,8 @@ namespace DiversityPhone.Services
                 if (runningTask != null)
                 {
                     var bgtask = this[runningTask.Type];
-                    bgtask.Cancel();                                        
-                        
+                    bgtask.Cancel();
+                    waitingTasks.Enqueue(runningTask);
                 }        
                 return waitingTasks;                      
             }
@@ -100,18 +100,20 @@ namespace DiversityPhone.Services
         {
             lock (this)
             {
+                waitingTasks.Clear();
                 foreach (var task in backlog)
 	            {
                     waitingTasks.Enqueue(task);		 
 	            }                
             }
+            shuttingDown = false;
             nextTask();
         }                    
 
         public T getTaskObject<T>() where T : BackgroundTask
         {
-            if (this.ContainsKey(typeof(T)))
-                return (T)this[typeof(T)];
+            if (this.ContainsKey(typeof(T).ToString()))
+                return (T)this[typeof(T).ToString()];
             else
                 return null;
         }

@@ -12,11 +12,17 @@ using DiversityPhone.DiversityService;
 using System.Reactive.Linq;
 using Funq;
 using DiversityPhone.ViewModels;
+using System.Collections.Generic;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
     public class DownloadTaxonListTask : BackgroundTask
-    {       
+    {
+        private const string TABLE = "T";
+        private const string NAME = "N";
+        private const string GROUP = "G";
+
+
 
         public override bool CanResume
         {
@@ -35,12 +41,44 @@ namespace DiversityPhone.Services.BackgroundTasks
         
         protected override void Run(object arg)
         {
-            var taxonlist = arg as TaxonList;
-            isCancelled = false;
+            var list = arg as TaxonList;            
 
-            Repo.DownloadTaxonListChunked(taxonlist)
-                .TakeWhile(_ => !isCancelled)
-                .ForEach(chunk => Taxa.addTaxonNames(chunk, taxonlist)); 
+            if (list != null)
+            {                
+                isCancelled = false;
+                try
+                {
+                    Repo.DownloadTaxonListChunked(list)
+                    .TakeWhile(_ => !isCancelled)
+                    .ForEach(chunk => Taxa.addTaxonNames(chunk, list));
+                }
+                catch (Exception ex)
+                {
+
+                    
+                }                
+            }
+        }
+
+        protected override void saveArgumentToState(object arg)
+        {      
+            var list = arg as TaxonList;
+            if(list != null)
+            {
+                State[NAME] = list.DisplayText;
+                State[TABLE] = list.Table;
+                State[GROUP] = list.TaxonomicGroup;
+            }
+        }
+
+        protected override object  getArgumentFromState()
+        {
+            return new TaxonList()
+            {
+                DisplayText = State[NAME],
+                Table = State[TABLE],
+                TaxonomicGroup = State[GROUP]
+            };            
         }
 
         public override void Cancel()
@@ -48,9 +86,13 @@ namespace DiversityPhone.Services.BackgroundTasks
             isCancelled = true;
         }
 
-        public override void Cleanup(BackgroundTaskInvocation inv)
+        protected override void Cleanup(object arg)
         {
-            Taxa.deleteTaxonList(inv.Argument as TaxonList);
+            var list = arg as TaxonList;
+            if (list != null)
+            {                
+                Taxa.deleteTaxonList(list);
+            }
         }
     }
 }

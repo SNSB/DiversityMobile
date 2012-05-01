@@ -108,12 +108,9 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(taxonlist =>
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
-                            {
-                                RepoLists.Remove(taxonlist);
-                                LocalLists.Add(taxonlist);
+                            {                                
                                 CurrentPivot = Pivot.Local;
-
-                                startDownload(taxonlist.Model, LocalLists);
+                                
                                 Background.startTask<DownloadTaxonListTask>(taxonlist.Model);
                             }
                             else
@@ -170,39 +167,60 @@ namespace DiversityPhone.ViewModels
                     });
 
 
-            var taxonSelections = DistinctStateObservable
+            var localLists = DistinctStateObservable
                 .Take(1)
-                .Select(_ => Taxa.getTaxonSelections())
-                .Publish();
-            taxonSelections.Connect();
+                .Select(_ => Taxa.getTaxonSelections())                
+                .Where(selections => selections != null)
+                .Select(selections =>
+                    {
+                        var currentDownload = downloadTaxonList.CurrentArguments as TaxonList;
+                        string downloadingTable = null;
+                        if (currentDownload != null)
+                            downloadingTable = currentDownload.Table;
 
-            taxonSelections
-                .Where(selections => selections == null || selections.Count == 0)
+
+                        return selections
+                            .Select(selection =>
+                            {
+                                return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
+                                {
+                                    IsDownloading = (selection.TableName == downloadingTable),
+                                    IsSelected = selection.IsSelected
+                                };
+                            });
+                    })
+                .Publish();
+            localLists.Connect();
+
+            localLists
+                .Where(selections => selections == null || !selections.Any())
                 .Subscribe(_ => CurrentPivot = Pivot.Repository);
 
             LocalLists =            
-                taxonSelections
-                .Select(selections => selections
-                    .Select(selection => 
-                    { 
-                        return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
-                        { 
-                            IsDownloading = false, 
-                            IsSelected = selection.IsSelected
-                        };
-                    }))
-                .Do(selections => startDownload(downloadTaxonList.CurrentArguments as TaxonList, selections))
+                localLists              
                 .SelectMany(selections => selections)    
                 .CreateCollection();
 
+            var repoLists =
+               getRepoLists
+                   .RegisterAsyncFunction(_ => getRepoListsImpl())
+                   .CombineLatest(localLists, (repolists, localselections) =>
+                       repolists.Where(repolist => !localselections.Any(selection => selection.Model.Table == repolist.Table)) //Filter Lists that have already been downloaded
+                       )
+                   .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
+                   .Publish();
+            repoLists.Connect();
+
             RepoLists = 
-                getRepoLists
-                    .RegisterAsyncFunction(_ => getRepoListsImpl())
-                    .CombineLatest(taxonSelections, (repolists, localselections) =>
-                        repolists.Where(repolist => !localselections.Any(selection => selection.TableName == repolist.Table)) //Filter Lists that have already been downloaded
-                        )
-                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
+                repoLists
                     .CreateCollection();
+
+            downloadTaxonList
+                .AsyncStartedNotification
+                .Subscribe(list => startDownload(list as TaxonList));
+            downloadTaxonList
+                .AsyncCleanupNotification
+                .Subscribe(list => abortDownload(list as TaxonList));
 
             downloadTaxonList
                 .AsyncCompletedNotification           
@@ -218,15 +236,36 @@ namespace DiversityPhone.ViewModels
             
         }
 
-        private void startDownload(TaxonList list, IEnumerable<TaxonListVM> localLists)
+        private void abortDownload(TaxonList taxonList)
+        {
+            if (taxonList != null)
+            {
+                var listVM = LocalLists.Where(vm => vm.Model.Table == taxonList.Table).FirstOrDefault();
+                if (listVM != null)
+                {
+                    LocalLists.Remove(listVM);
+                    RepoLists.Add(listVM);
+                    listVM.IsDownloading = false;
+                    listVM.IsSelected = false;
+                }
+            }
+        }
+
+        private void startDownload(TaxonList list)
         {
             if (list != null)
             {
-                var listVM = localLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                var listVM = RepoLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                if (listVM != null)
+                {
+                    RepoLists.Remove(listVM);
+                    LocalLists.Add(listVM);
+                }
+                else
+                	listVM = LocalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
                 if (listVM != null)
                 {                    
-                    listVM.IsDownloading = true;
-                    listVM.IsSelected = false;
+                    listVM.IsDownloading = true;                    
                 }
             }
         }

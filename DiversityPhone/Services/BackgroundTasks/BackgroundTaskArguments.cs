@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace DiversityPhone.Services
 {
+    [DataContract]
     public class BackgroundTaskInvocation : IComparable<BackgroundTaskInvocation>
     {
-        public Type Type { get; private set; }
+        [DataMember]
+        public string Type { get; set; }
+        [DataMember]
         public bool HasStarted { get; set; }
-        public object Argument { get; set; }
-        public Dictionary<string, object> State { get; set; }
+               
+        [DataMember]
+        public Dictionary<string, string> State { get; set; }
 
+        public object Argument { get; set; }
+    
 
         public BackgroundTaskInvocation(Type type)
         {
-            Type = type;
-            State = new Dictionary<string, object>();
+            Type = type.ToString();
+            State = new Dictionary<string, string>();
         }
 
         public int CompareTo(BackgroundTaskInvocation other)

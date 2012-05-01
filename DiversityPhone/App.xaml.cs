@@ -39,7 +39,7 @@ namespace DiversityPhone
         {
             get
             {
-                return IOC.Resolve<BackgroundService>();
+                return IOC.Resolve<IBackgroundService>() as BackgroundService;
             }
         }
         
@@ -81,7 +81,7 @@ namespace DiversityPhone
 
 
             var backg = new BackgroundService(IOC);
-            backg.Add(typeof(DownloadTaxonListTask), new DownloadTaxonListTask(IOC));
+            backg.Add(typeof(DownloadTaxonListTask).ToString(), new DownloadTaxonListTask(IOC));
 
 
             IOC.Register<IBackgroundService>(backg);           
