@@ -13,6 +13,8 @@ namespace DiversityPhone.Services
         public string Type { get; set; }
         [DataMember]
         public bool HasStarted { get; set; }
+        [DataMember]
+        public bool WasCancelled { get; set; }
                
         [DataMember]
         public Dictionary<string, string> State { get; set; }

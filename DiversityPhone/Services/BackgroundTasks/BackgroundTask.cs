@@ -13,10 +13,11 @@ namespace DiversityPhone.Services
     public abstract class BackgroundTask : IBackgroundTask
     {
         public BackgroundTaskInvocation Invocation {get; set;}
-
+       
         private ISubject<object> _cleanupSubject = new Subject<object>();
         protected ReactiveAsyncCommand Executor {get; private set;}
-        private ObservableAsPropertyHelper<int> _currentInflight;
+        private IObservable<int> _ItemsInFlightObs;
+        private int _ItemsInFlight = 0;
         protected Dictionary<string, string> State { get { return Invocation.State; }}
 
         public BackgroundTask()
@@ -24,19 +25,30 @@ namespace DiversityPhone.Services
             Executor = new ReactiveAsyncCommand();
             Executor.RegisterAsyncAction(arg => Run(arg));
 
-            _currentInflight = new ObservableAsPropertyHelper<int>(Executor.ItemsInflight, (i) => { }, 0);
+            var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Publish();
+            inflight.Connect();
+            _ItemsInFlightObs = inflight;
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
-        {            
-            Invocation = inv;
-            if (inv.Argument != null)
-                saveArgumentToState(inv.Argument);
-            else
-                inv.Argument = getArgumentFromState();
+        {
+            if (Executor.CanExecute(null))
+            {
+                Invocation = inv;
+                if (inv.Argument != null)
+                    saveArgumentToState(inv.Argument);
+                else
+                    inv.Argument = getArgumentFromState();
 
-            Executor.Execute(inv.Argument);            
+                Executor.Execute(inv.Argument);                
+            }            
         }
+
+        public void CancelInvocation()
+        {            
+            Cancel();
+        }
+
 
         public void CleanupAfter(BackgroundTaskInvocation inv)
         {
@@ -69,7 +81,7 @@ namespace DiversityPhone.Services
         /// Cancels the Task
         /// When this method returns, the cancellation must have been processed
         /// </summary>
-        public abstract void Cancel();
+        protected abstract void Cancel();
        
 
         protected abstract void Cleanup(object arg);
@@ -77,7 +89,7 @@ namespace DiversityPhone.Services
 
         public IObservable<object> AsyncCompletedNotification
         {
-            get { return Executor.AsyncCompletedNotification.Select(_ => Invocation.Argument); }
+            get { return Executor.AsyncCompletedNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
         }
 
         public IObservable<object> AsyncCleanupNotification
@@ -97,15 +109,16 @@ namespace DiversityPhone.Services
 
         public IObservable<int> ItemsInflight
         {
-            get { return Executor.ItemsInflight; }
+            get { return _ItemsInFlightObs; }
         }
 
+        public int CurrentItemsInFlight { get { return _ItemsInFlight; } }
 
         public object CurrentArguments
         {
             get 
             {
-                if (_currentInflight.Value > 0 && Invocation != null)
+                if (CurrentItemsInFlight > 0 && Invocation != null)
                     return Invocation.Argument;
                 else
                     return null;

@@ -22,6 +22,8 @@ namespace DiversityPhone.Services.BackgroundTasks
         private const string NAME = "N";
         private const string GROUP = "G";
 
+        private const string STARTED = "S";
+
 
 
         public override bool CanResume
@@ -31,7 +33,7 @@ namespace DiversityPhone.Services.BackgroundTasks
         
         private ITaxonService Taxa;
         private IDiversityServiceClient Repo;
-        private bool isCancelled;
+        
 
         public DownloadTaxonListTask(Container ioc) 
         {
@@ -44,18 +46,21 @@ namespace DiversityPhone.Services.BackgroundTasks
             var list = arg as TaxonList;            
 
             if (list != null)
-            {                
-                isCancelled = false;
+            {
+                if (State.ContainsKey(STARTED))
+                {
+                    Cleanup(list);
+                }
+                else
+                    State[STARTED] = "T";
+                
                 try
                 {
-                    Repo.DownloadTaxonListChunked(list)
-                    .TakeWhile(_ => !isCancelled)
+                    Repo.DownloadTaxonListChunked(list)                    
                     .ForEach(chunk => Taxa.addTaxonNames(chunk, list));
                 }
-                catch (Exception ex)
-                {
-
-                    
+                catch (WebException) // On app resume, catch webexception
+                {                   
                 }                
             }
         }
@@ -81,13 +86,13 @@ namespace DiversityPhone.Services.BackgroundTasks
             };            
         }
 
-        public override void Cancel()
+        protected override void Cancel()
         {
-            isCancelled = true;
+            
         }
 
         protected override void Cleanup(object arg)
-        {
+        {            
             var list = arg as TaxonList;
             if (list != null)
             {                

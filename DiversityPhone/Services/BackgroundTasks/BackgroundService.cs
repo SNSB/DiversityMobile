@@ -29,7 +29,8 @@ namespace DiversityPhone.Services
         public BackgroundService(Container ioc)
         {
             Messenger = ioc.Resolve<IMessageBus>();           
-        }     
+        }  
+        
 
         public void startTask<T>(object arg) where T : BackgroundTask
         {
@@ -47,35 +48,52 @@ namespace DiversityPhone.Services
 
             lock (this)
             {
-                if (runningTask == null && waitingTasks.Count > 0)
+                while (runningTask == null && waitingTasks.Count > 0)
                 {
                     runningTask = waitingTasks.Dequeue();
                     BackgroundTask task;
                     if(this.TryGetValue(runningTask.Type, out task))
                     {
-                        if (!runningTask.HasStarted || task.CanResume)
+                        if (task.CurrentItemsInFlight == 0)
                         {
-                            runningTask.HasStarted = true;
-                            task.AsyncCompletedNotification
-                                .Take(1)
-                                .Subscribe(_ => taskFinished());
-                            task.Invoke(runningTask);
+                            if (!runningTask.HasStarted || task.CanResume)
+                            {
+                                task.ItemsInflight.StartWith(0)
+                                    .Zip(task.ItemsInflight, (prev, now) => prev == 1 && now == 0)
+                                    .Where(free => free && !shuttingDown)
+                                    .Take(1)
+                                    .Subscribe(_ => taskFinished());
+
+                                runningTask.WasCancelled = false;
+                                runningTask.HasStarted = true;
+                                
+                                task.Invoke(runningTask);
+                            }
+                            else // Cleanup and restart
+                            {
+                                task.CleanupAfter(runningTask);
+
+                                runningTask.HasStarted = false;
+                                waitingTasks.Enqueue(runningTask);
+                                runningTask = null;
+                            }
                         }
                         else
                         {
-                            task.CleanupAfter(runningTask);
-                            runningTask = null;
+                            waitingTasks.Enqueue(runningTask);
+                            runningTask = task.Invocation;
                         }
                     }                 
                 }
-            }
-            if (runningTask == null && waitingTasks.Count > 0)
-                nextTask();            
+            }                      
         }
 
         private void taskFinished()
         {
-            runningTask = null;
+            lock (this)
+            {
+                runningTask = null;
+            }
             nextTask();
         }
 
@@ -88,9 +106,11 @@ namespace DiversityPhone.Services
                 shuttingDown = true;
                 if (runningTask != null)
                 {
+                    runningTask.WasCancelled = true;
                     var bgtask = this[runningTask.Type];
-                    bgtask.Cancel();
+                    bgtask.CancelInvocation();                    
                     waitingTasks.Enqueue(runningTask);
+                    runningTask = null;
                 }        
                 return waitingTasks;                      
             }
@@ -104,9 +124,9 @@ namespace DiversityPhone.Services
                 foreach (var task in backlog)
 	            {
                     waitingTasks.Enqueue(task);		 
-	            }                
-            }
-            shuttingDown = false;
+	            }
+                shuttingDown = false;
+            }            
             nextTask();
         }                    
 

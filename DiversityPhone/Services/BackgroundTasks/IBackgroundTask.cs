@@ -13,6 +13,7 @@ namespace DiversityPhone.Services
         IObservable<object> AsyncCleanupNotification { get; }
         IObservable<object> AsyncStartedNotification { get; }        
         IObservable<int> ItemsInflight { get; }
+        int CurrentItemsInFlight { get; }
         object CurrentArguments { get; }
     }
 }
