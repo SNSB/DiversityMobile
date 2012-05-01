@@ -11,9 +11,9 @@
     <Grid x:Name="contentPanel">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" MinWidth="280"/>
         </Grid.ColumnDefinitions>
-        <Image Source="/DiversityPhone;component/Images/MetroIcons/white/i.png" Stretch="Fill"/>
-        <TextBlock Grid.Column="1" x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" TextWrapping="Wrap" Width="Auto" Height="Auto"/>
+        <Image Source="/DiversityPhone;component/Images/MetroIcons/white/i.png" Grid.Column="0" Width="40" Height="40"/>
+        <TextBlock Grid.Column="1" x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" Width="422" Height="Auto" TextWrapping="Wrap" Margin="6,0,0,0"/>
     </Grid>
 </UserControl>
