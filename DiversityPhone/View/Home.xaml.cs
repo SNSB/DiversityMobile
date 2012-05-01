@@ -6,6 +6,7 @@ using System.Windows;
 using System;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Reactive.Linq;
 
 
 
@@ -15,9 +16,9 @@ namespace DiversityPhone
     {
         private HomeVM VM { get { return DataContext as HomeVM; } }
         public Home()
-        {
+        {               
             InitializeComponent();
-            
+               
         }       
 
         private void Settings_Click(object sender, EventArgs e)
@@ -66,6 +67,7 @@ namespace DiversityPhone
 
                 if (VM != null)
                     VM.Add.CanExecuteObservable
+                        .StartWith(VM.Add.CanExecute(null))
                         .Subscribe(canadd => (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = canadd);
             }
         }
