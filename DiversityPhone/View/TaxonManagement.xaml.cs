@@ -54,10 +54,11 @@ namespace DiversityPhone.View
                 VM.DownloadAll.Execute(null);
         }
 
+
         private void taxonPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (VM != null)
-                e.Cancel = VM.IsBusy;
+            //if (VM != null)
+            //    e.Cancel = VM.IsBusy;
         }
 
 

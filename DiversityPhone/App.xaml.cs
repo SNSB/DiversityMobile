@@ -81,10 +81,10 @@ namespace DiversityPhone
 
 
             var backg = new BackgroundService(IOC);
+            backg.Add(typeof(DownloadTaxonListTask), new DownloadTaxonListTask(IOC));
 
 
-
-            IOC.Register<BackgroundService>(backg);           
+            IOC.Register<IBackgroundService>(backg);           
 
 
             // Standard Silverlight initialization

@@ -41,7 +41,10 @@ namespace DiversityPhone.Services
         }
 
         private void nextTask()
-        {            
+        {
+            if (shuttingDown)
+                return;
+
             lock (this)
             {
                 if (runningTask == null && waitingTasks.Count > 0)
@@ -53,6 +56,9 @@ namespace DiversityPhone.Services
                         if (!runningTask.HasStarted || task.CanResume)
                         {
                             runningTask.HasStarted = true;
+                            task.AsyncCompletedNotification
+                                .Take(1)
+                                .Subscribe(_ => taskFinished());
                             task.Invoke(runningTask);
                         }
                         else
@@ -63,8 +69,14 @@ namespace DiversityPhone.Services
                     }                 
                 }
             }
-            if (runningTask == null)
+            if (runningTask == null && waitingTasks.Count > 0)
                 nextTask();            
+        }
+
+        private void taskFinished()
+        {
+            runningTask = null;
+            nextTask();
         }
 
 

@@ -5,6 +5,8 @@ using System.Text;
 using System.Reactive.Subjects;
 using Funq;
 using ReactiveUI.Xaml;
+using System.Reactive.Linq;
+using ReactiveUI;
 
 namespace DiversityPhone.Services
 {
@@ -13,12 +15,15 @@ namespace DiversityPhone.Services
         public BackgroundTaskInvocation Invocation {get; set;}
 
         protected ReactiveAsyncCommand Executor {get; private set;}
+        private ObservableAsPropertyHelper<int> _currentInflight;
         protected Dictionary<string, object> State { get { return Invocation.State; } }
 
         public BackgroundTask()
         {
             Executor = new ReactiveAsyncCommand();
             Executor.RegisterAsyncAction(arg => Run(arg));
+
+            _currentInflight = new ObservableAsPropertyHelper<int>(Executor.ItemsInflight, (i) => { }, 0);
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
@@ -54,9 +59,9 @@ namespace DiversityPhone.Services
 
 
 
-        public IObservable<System.Reactive.Unit> AsyncCompletedNotification
+        public IObservable<object> AsyncCompletedNotification
         {
-            get { return Executor.AsyncCompletedNotification; }
+            get { return Executor.AsyncCompletedNotification.Select(_ => Invocation.Argument); }
         }
 
         public IObservable<Exception> AsyncErrorNotification
@@ -64,9 +69,9 @@ namespace DiversityPhone.Services
             get { return Executor.AsyncErrorNotification; }
         }
 
-        public IObservable<System.Reactive.Unit> AsyncStartedNotification
+        public IObservable<object> AsyncStartedNotification
         {
-            get { return Executor.AsyncStartedNotification; }
+            get { return Executor.AsyncStartedNotification.Select(_ => Invocation.Argument); }
         }
 
         public IObservable<bool> CanExecuteObservable
@@ -77,6 +82,18 @@ namespace DiversityPhone.Services
         public IObservable<int> ItemsInflight
         {
             get { return Executor.ItemsInflight; }
+        }
+
+
+        public object CurrentArguments
+        {
+            get 
+            {
+                if (_currentInflight.Value > 0 && Invocation != null)
+                    return Invocation.Argument;
+                else
+                    return null;
+            }
         }
     }
 }

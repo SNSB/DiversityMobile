@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using DiversityPhone.DiversityService;
 using System.Reactive.Linq;
 using Funq;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
@@ -24,6 +25,7 @@ namespace DiversityPhone.Services.BackgroundTasks
         
         private ITaxonService Taxa;
         private IDiversityServiceClient Repo;
+        private bool isCancelled;
 
         public DownloadTaxonListTask(Container ioc) 
         {
@@ -33,17 +35,22 @@ namespace DiversityPhone.Services.BackgroundTasks
         
         protected override void Run(object arg)
         {
-            throw new NotImplementedException();
+            var taxonlist = arg as TaxonList;
+            isCancelled = false;
+
+            Repo.DownloadTaxonListChunked(taxonlist)
+                .TakeWhile(_ => !isCancelled)
+                .ForEach(chunk => Taxa.addTaxonNames(chunk, taxonlist)); 
         }
 
         public override void Cancel()
         {
-            throw new NotImplementedException();
+            isCancelled = true;
         }
 
         public override void Cleanup(BackgroundTaskInvocation inv)
         {
-            throw new NotImplementedException();
+            Taxa.deleteTaxonList(inv.Argument as TaxonList);
         }
     }
 }
