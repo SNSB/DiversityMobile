@@ -36,7 +36,7 @@
             <StackPanel Margin="12,0,0,0">
                 <ctrl:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
                 <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}" 
-                                Content="{Binding NoEventSeries}" />
+                                Content="{Binding NoEventSeries}" HorizontalAlignment="Left"/>
                 <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
             </StackPanel>
         </ScrollViewer>
