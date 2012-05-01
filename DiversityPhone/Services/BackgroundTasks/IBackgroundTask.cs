@@ -10,9 +10,8 @@ namespace DiversityPhone.Services
     public interface IBackgroundTask
     {
         IObservable<object> AsyncCompletedNotification { get; }
-        IObservable<Exception> AsyncErrorNotification { get; }
-        IObservable<object> AsyncStartedNotification { get; }
-        IObservable<bool> CanExecuteObservable { get;  }
+        IObservable<object> AsyncCleanupNotification { get; }
+        IObservable<object> AsyncStartedNotification { get; }        
         IObservable<int> ItemsInflight { get; }
         object CurrentArguments { get; }
     }

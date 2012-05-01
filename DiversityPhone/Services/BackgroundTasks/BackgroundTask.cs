@@ -14,9 +14,10 @@ namespace DiversityPhone.Services
     {
         public BackgroundTaskInvocation Invocation {get; set;}
 
+        private ISubject<object> _cleanupSubject = new Subject<object>();
         protected ReactiveAsyncCommand Executor {get; private set;}
         private ObservableAsPropertyHelper<int> _currentInflight;
-        protected Dictionary<string, object> State { get { return Invocation.State; } }
+        protected Dictionary<string, string> State { get { return Invocation.State; }}
 
         public BackgroundTask()
         {
@@ -27,18 +28,35 @@ namespace DiversityPhone.Services
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
+        {            
+            Invocation = inv;
+            if (inv.Argument != null)
+                saveArgumentToState(inv.Argument);
+            else
+                inv.Argument = getArgumentFromState();
+
+            Executor.Execute(inv.Argument);            
+        }
+
+        public void CleanupAfter(BackgroundTaskInvocation inv)
         {
-            if(Executor.CanExecute(null))
-            {
-                Invocation = inv;
-                Executor.Execute(inv.Argument);
-            }
+            Invocation = inv;
+            if (inv.Argument != null)
+                saveArgumentToState(inv.Argument);
+            else
+                inv.Argument = getArgumentFromState();
+            Cleanup(inv.Argument);
+            _cleanupSubject.OnNext(inv.Argument);
         }
 
         /// <summary>
         /// Indicates whether this type of Task can resume.
         /// </summary>
-        public abstract bool CanResume { get; }      
+        public abstract bool CanResume { get; }
+
+        protected abstract void saveArgumentToState(object arg);
+
+        protected abstract object getArgumentFromState();
         
        
         /// <summary>
@@ -52,11 +70,9 @@ namespace DiversityPhone.Services
         /// When this method returns, the cancellation must have been processed
         /// </summary>
         public abstract void Cancel();
+       
 
-
-        public abstract void Cleanup(BackgroundTaskInvocation inv);
-
-
+        protected abstract void Cleanup(object arg);
 
 
         public IObservable<object> AsyncCompletedNotification
@@ -64,9 +80,9 @@ namespace DiversityPhone.Services
             get { return Executor.AsyncCompletedNotification.Select(_ => Invocation.Argument); }
         }
 
-        public IObservable<Exception> AsyncErrorNotification
+        public IObservable<object> AsyncCleanupNotification
         {
-            get { return Executor.AsyncErrorNotification; }
+            get { return _cleanupSubject; }
         }
 
         public IObservable<object> AsyncStartedNotification
