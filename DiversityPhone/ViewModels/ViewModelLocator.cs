@@ -26,7 +26,8 @@ namespace DiversityPhone.ViewModels
         public ViewModelLocator()
         {
 
-            if (_ioc == null) return;
+            if (App.IOC == null) return;
+            _ioc = App.IOC;
 
             #region ViewModel Factories
             _ioc.Register<HomeVM>(container => new HomeVM(                
@@ -60,9 +61,7 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewVideoVM>(c => new ViewVideoVM());
             _ioc.Register<EditPropertyVM>(c => new EditPropertyVM(c));            
 
-            _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c.Resolve<IMessageBus>(), 
-                                                                        c.Resolve<ITaxonService>(),
-                                                                        c.Resolve<IDiversityServiceClient>()));
+            _ioc.Register<TaxonManagementVM>(c => new TaxonManagementVM(c));
 
             _ioc.Register<SettingsVM>(c => new SettingsVM(c));
 

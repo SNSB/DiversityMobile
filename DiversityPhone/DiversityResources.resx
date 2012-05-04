@@ -147,6 +147,9 @@
   <data name="GeoCoordinates_Suffix_W" xml:space="preserve">
     <value>W</value>
   </data>
+  <data name="Home_Info_CantOpenNewSeries" xml:space="preserve">
+    <value>Can't open a new Series while there is still an unfinished one.</value>
+  </data>
   <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
     <value>Identification</value>
   </data>

@@ -7,9 +7,13 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    d:DesignHeight="480" d:DesignWidth="480">
-    <StackPanel x:Name="contentPanel" Orientation="Horizontal">
-        <Image Source="/Images/MetroIcons/white/i.png" Height="40" Width="40"/>
-        <TextBlock x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" TextWrapping="Wrap"/>
-    </StackPanel>
+    d:DesignHeight="40" d:DesignWidth="320">
+    <Grid x:Name="contentPanel">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40"/>
+            <ColumnDefinition Width="Auto" MinWidth="280"/>
+        </Grid.ColumnDefinitions>
+        <Image Source="/DiversityPhone;component/Images/MetroIcons/white/i.png" Grid.Column="0" Width="40" Height="40"/>
+        <TextBlock Grid.Column="1" x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" Width="422" Height="Auto" TextWrapping="Wrap" Margin="6,0,0,0"/>
+    </Grid>
 </UserControl>

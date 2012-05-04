@@ -86,14 +86,17 @@ namespace DiversityPhone.ViewModels
             _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
             _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
-
+            var noOpenSeries = StateObservable
+                .Select(_ => _storage.getAllEventSeries())
+                .Select(series => series.Any(s => s.SeriesEnd == null))
+                .Select(openseries => !openseries);
 
             _subscriptions = new List<IDisposable>()
             {
                 (Settings = new ReactiveCommand())
                     .Subscribe(_ => Messenger.SendMessage<Page>(Page.Settings)),    
                 
-                (Add = new ReactiveCommand())
+                (Add = new ReactiveCommand(noOpenSeries))
                     .Subscribe(_ => addSeries()),
                 (UploadMMO = new ReactiveCommand())
                     .Subscribe(_ => uploadMMos()),               

@@ -18,6 +18,8 @@ using DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
+using DiversityPhone.Services.BackgroundTasks;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -32,6 +34,7 @@ namespace DiversityPhone.ViewModels
         #region Services
         private ITaxonService Taxa { get; set; }        
         private IDiversityServiceClient Service { get; set; }
+        private IBackgroundService Background { get; set; }
         #endregion
 
         #region Properties
@@ -57,7 +60,7 @@ namespace DiversityPhone.ViewModels
         public ObservableCollection<TaxonListVM> RepoLists { get; private set; } 
      
         private ReactiveAsyncCommand getRepoLists = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand downloadTaxonList = new ReactiveAsyncCommand();
+        private IBackgroundTask downloadTaxonList;
         private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
 
         public ReactiveCommand Select { get; private set; }
@@ -69,11 +72,14 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public TaxonManagementVM(IMessageBus messenger, ITaxonService taxa, IDiversityServiceClient service)
-            : base(messenger)
+        public TaxonManagementVM(Container ioc)
+            : base(ioc.Resolve<IMessageBus>())
         {            
-            Taxa = taxa;
-            Service = service;
+            Taxa = ioc.Resolve<ITaxonService>();
+            Service = ioc.Resolve<IDiversityServiceClient>();
+            Background = ioc.Resolve<IBackgroundService>();
+
+            downloadTaxonList = Background.getTaskObject<DownloadTaxonListTask>();
 
             _IsBusy = Observable.Merge(
                 deleteTaxonList.ItemsInflight.Select(count => count > 0),
@@ -102,15 +108,10 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(taxonlist =>
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
-                            {
-                                if (downloadTaxonList.CanExecute(taxonlist))
-                                {
-                                    RepoLists.Remove(taxonlist);
-                                    taxonlist.IsDownloading = true;
-                                    LocalLists.Add(taxonlist);
-                                    downloadTaxonList.Execute(taxonlist);
-                                    CurrentPivot = Pivot.Local;
-                                }
+                            {                                
+                                CurrentPivot = Pivot.Local;
+                                
+                                Background.startTask<DownloadTaxonListTask>(taxonlist.Model);
                             }
                             else
                                 Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
@@ -166,62 +167,126 @@ namespace DiversityPhone.ViewModels
                     });
 
 
-            var taxonSelections = DistinctStateObservable
+            var localLists = DistinctStateObservable
                 .Take(1)
-                .Select(_ => Taxa.getTaxonSelections())
-                .Publish();
-            taxonSelections.Connect();
+                .Select(_ => Taxa.getTaxonSelections())                
+                .Where(selections => selections != null)
+                .Select(selections =>
+                    {
+                        var currentDownload = downloadTaxonList.CurrentArguments as TaxonList;
+                        string downloadingTable = null;
+                        if (currentDownload != null)
+                            downloadingTable = currentDownload.Table;
 
-            taxonSelections
-                .Where(selections => selections == null || selections.Count == 0)
+
+                        return selections
+                            .Select(selection =>
+                            {
+                                return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
+                                {
+                                    IsDownloading = (selection.TableName == downloadingTable),
+                                    IsSelected = selection.IsSelected
+                                };
+                            });
+                    })
+                .Publish();
+            localLists.Connect();
+
+            localLists
+                .Where(selections => selections == null || !selections.Any())
                 .Subscribe(_ => CurrentPivot = Pivot.Repository);
 
             LocalLists =            
-                taxonSelections
-                .SelectMany(selections => selections)
-                .Select(selection => 
-                { 
-                    return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
-                    { 
-                        IsDownloading = false, 
-                        IsSelected = selection.IsSelected
-                    };
-                })               
+                localLists              
+                .SelectMany(selections => selections)    
                 .CreateCollection();
 
+            var repoLists =
+               getRepoLists
+                   .RegisterAsyncFunction(_ => getRepoListsImpl())
+                   .CombineLatest(localLists, (repolists, localselections) =>
+                       repolists.Where(repolist => !localselections.Any(selection => selection.Model.Table == repolist.Table)) //Filter Lists that have already been downloaded
+                       )
+                   .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
+                   .Publish();
+            repoLists.Connect();
+
             RepoLists = 
-                getRepoLists
-                    .RegisterAsyncFunction(_ => getRepoListsImpl())
-                    .CombineLatest(taxonSelections, (repolists, localselections) =>
-                        repolists.Where(repolist => !localselections.Any(selection => selection.TableName == repolist.Table)) //Filter Lists that have already been downloaded
-                        )
-                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
+                repoLists
                     .CreateCollection();
 
             downloadTaxonList
-                .RegisterAsyncFunction(arg => downloadTaxonListImpl(arg as TaxonListVM))           
+                .AsyncStartedNotification
+                .Subscribe(list => startDownload(list as TaxonList));
+            downloadTaxonList
+                .AsyncCleanupNotification
+                .Subscribe(list => abortDownload(list as TaxonList));
+
+            downloadTaxonList
+                .AsyncCompletedNotification           
                 .Subscribe(downloadedList => 
                     {
-                        downloadedList.IsDownloading = false;
-                        downloadedList.IsSelected = Taxa.getTaxonSelections()
-                                                    .Where(sel => sel.TableName == downloadedList.Model.Table && sel.TaxonomicGroup == downloadedList.Model.TaxonomicGroup)
-                                                    .Select(sel => sel.IsSelected)
-                                                    .FirstOrDefault();                        
+                        finishDownload(downloadedList as TaxonList);                       
                     });
 
             deleteTaxonList
-                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));               
+                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));          
 
-            getRepoLists.Execute(null);                       
-        }
-
-        private TaxonListVM downloadTaxonListImpl(TaxonListVM taxonList)
-        {            
-            Service.DownloadTaxonListChunked(taxonList.Model)
-                .ForEach(chunk => Taxa.addTaxonNames(chunk, taxonList.Model));           
+            getRepoLists.Execute(null);
             
-            return taxonList;        
         }
+
+        private void abortDownload(TaxonList taxonList)
+        {
+            if (taxonList != null)
+            {
+                var listVM = LocalLists.Where(vm => vm.Model.Table == taxonList.Table).FirstOrDefault();
+                if (listVM != null)
+                {
+                    LocalLists.Remove(listVM);
+                    RepoLists.Add(listVM);
+                    listVM.IsDownloading = false;
+                    listVM.IsSelected = false;
+                }
+            }
+        }
+
+        private void startDownload(TaxonList list)
+        {
+            if (list != null)
+            {
+                var listVM = RepoLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                if (listVM != null)
+                {
+                    RepoLists.Remove(listVM);
+                    LocalLists.Add(listVM);
+                }
+                else
+                	listVM = LocalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                if (listVM != null)
+                {                    
+                    listVM.IsDownloading = true;                    
+                }
+            }
+        }
+     
+        private void finishDownload(TaxonList list)
+        {
+            if (list != null)
+            {
+                var listVM = LocalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                if (listVM != null)
+                {
+                    listVM.IsDownloading = false;
+                    listVM.IsSelected = Taxa.getTaxonSelections()
+                                                .Where(sel => sel.TableName == listVM.Model.Table && sel.TaxonomicGroup == listVM.Model.TaxonomicGroup)
+                                                .Select(sel => sel.IsSelected)
+                                                .FirstOrDefault();
+                }
+            }
+        }
+
+       
 
         private IEnumerable<TaxonList> getRepoListsImpl()
         {

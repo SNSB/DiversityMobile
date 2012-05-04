@@ -156,14 +156,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Services\BackgroundTasks\BackgroundService.cs" />
+    <Compile Include="Services\BackgroundTasks\DownloadTaxonListTask.cs" />
+    <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
+    <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\DiversityDataContext.cs" />
+    <Compile Include="Services\Database\DiversityDataContext.cs" />
     <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
-    <Compile Include="Services\IApplicationState.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTaskArguments.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
@@ -171,24 +176,24 @@
     <Compile Include="Services\IMapTransferService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\DiversityServiceClient.Upload.cs" />
-    <Compile Include="Services\ITaxonService.cs" />
+    <Compile Include="Services\Database\ITaxonService.cs" />
     <Compile Include="Services\MapParameter.cs" />
-    <Compile Include="Services\IFieldDataService.cs" />
-    <Compile Include="Services\IVocabularyService.cs" />
+    <Compile Include="Services\Database\IFieldDataService.cs" />
+    <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Model\IQueryOperations.cs" />
     <Compile Include="Services\MapStorage.cs" />
     <Compile Include="Services\MapTranferService.cs" />
     <Compile Include="Services\MediaType.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\NavigationService.cs" />
-    <Compile Include="Services\OfflineStorage.cs" />
+    <Compile Include="Services\Database\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />
     <Compile Include="Services\PageState.cs" />
     <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
-    <Compile Include="Services\TaxonDataContext.cs" />
-    <Compile Include="Services\TaxonService.cs" />
-    <Compile Include="Services\VocabularyService.cs" />
+    <Compile Include="Services\Database\TaxonDataContext.cs" />
+    <Compile Include="Services\Database\TaxonService.cs" />
+    <Compile Include="Services\Database\VocabularyService.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
     <Compile Include="ViewModels\BasisModels\ImageVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />

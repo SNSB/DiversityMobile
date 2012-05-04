@@ -13,7 +13,7 @@ namespace DiversityPhone.Messages
         public const string DELETE = "Delete";
         public const string USE = "Use";
         public const string START = "Start";
-        public const string STOP = "Stop";
+        public const string STOP = "Stop";        
     }
 
     public class NavigationMessage

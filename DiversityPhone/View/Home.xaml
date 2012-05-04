@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ctrl="clr-namespace:DiversityPhone.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -14,7 +15,7 @@
     shell:SystemTray.IsVisible="True"	
 	d:DataContext="{d:DesignData /SampleData/HomeVMSampleData.xaml}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
-    Loaded="PhoneApplicationPage_Loaded">
+    Loaded="PhoneApplicationPage_Loaded" >
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -31,16 +32,16 @@
             <TextBlock x:Name="PageTitle" Text="home" Margin="55,29,193,0" Style="{StaticResource PhoneTextTitle1Style}" Width="220" Height="91" />            
         </Grid>
 
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">            
-            <StackPanel>
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">            
+            <StackPanel Margin="12,0,0,0">
+                <ctrl:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
                 <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}" 
-                                Content="{Binding NoEventSeries}" 
-                                HorizontalAlignment="Left" />
+                                Content="{Binding NoEventSeries}" HorizontalAlignment="Left"/>
                 <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
             </StackPanel>
         </ScrollViewer>
     </Grid>
-    <Grid x:Name="Splash" Background="Black" Visibility="Visible">
+    <Grid x:Name="Splash" Background="Black" Visibility="Visible" d:IsHidden="True">
         <Image Source="/Images/ApplicationIcon.png" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
     </Grid>

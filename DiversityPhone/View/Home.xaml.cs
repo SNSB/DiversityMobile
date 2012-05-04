@@ -5,6 +5,8 @@ using DiversityPhone.Services;
 using System.Windows;
 using System;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using System.Reactive.Linq;
 
 
 
@@ -14,9 +16,9 @@ namespace DiversityPhone
     {
         private HomeVM VM { get { return DataContext as HomeVM; } }
         public Home()
-        {
+        {               
             InitializeComponent();
-            
+               
         }       
 
         private void Settings_Click(object sender, EventArgs e)
@@ -48,7 +50,7 @@ namespace DiversityPhone
             if (VM != null)
                 VM.Maps.Execute(null);
         }
-
+        private bool initialized = false;
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {            
             if (App.Settings.getSettings() == null)
@@ -57,6 +59,16 @@ namespace DiversityPhone
             {
                 Splash.Visibility = Visibility.Collapsed;
                 ApplicationBar.IsVisible = true;
+            }
+
+            if (!initialized)
+            {
+                initialized = true;
+
+                if (VM != null)
+                    VM.Add.CanExecuteObservable
+                        .StartWith(VM.Add.CanExecute(null))
+                        .Subscribe(canadd => (ApplicationBar.Buttons[0] as ApplicationBarIconButton).IsEnabled = canadd);
             }
         }
     }
