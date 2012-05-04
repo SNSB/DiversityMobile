@@ -5,6 +5,7 @@ using System.Linq;
 using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 using System.IO;
+using System.Windows;
 
 namespace DiversityPhone.Model
 {
@@ -25,16 +26,29 @@ namespace DiversityPhone.Model
         public String Description { get; set; }
 
         [Column]
-        public double LatitudeNorth { get; set; }
+        public double NWLat { get; set; }
 
         [Column]
-        public double LatitudeSouth { get; set; }
+        public double NWLong { get; set; }
 
         [Column]
-        public double LongitudeWest { get; set; }
+        public double SELat { get; set; }
 
         [Column]
-        public double LongitudeEast { get; set; }
+        public double SELong { get; set; }
+
+        [Column]
+        public double SWLat { get; set; }
+
+        [Column]
+        public double SWLong { get; set; }
+        [Column]
+        public double NELat { get; set; }
+
+        [Column]
+        public double NELong { get; set; }
+       
+
 
         [Column(CanBeNull = true)]
         public int? Transparency{get;set;}
@@ -65,12 +79,12 @@ namespace DiversityPhone.Model
 
             Operations = new QueryOperations<Map>(
                 //Smallerthan
-                        (q, map) => q.Where(row => row.LatitudeNorth < map.LatitudeNorth),
+                        (q, map) => q.Where(row => row.NWLat < map.NWLat),
                 //Equals
                         (q, map) => q.Where(row => row.ServerKey == map.ServerKey),
                 //Orderby
                         (q) => from map in q
-                               orderby map.LatitudeNorth, map.LongitudeWest
+                               orderby map.NWLat, map.NWLong
                                select map,
                 //FreeKey
                         (q, cep) =>
@@ -80,15 +94,36 @@ namespace DiversityPhone.Model
 
         }
 
+        public static bool isParallelogramm(Map m)
+        {
+           
+            Point AD = new Point(m.SWLong - m.NWLong, m.SWLat - m.NWLat);
+            Point BC = new Point(m.SELong - m.NELong, m.SELat - m.NELat);
+            Point AB = new Point(m.NELong - m.NWLong, m.NELat - m.NWLat);
+            Point DC = new Point(m.SELong -m.SWLong, m.SELat - m.SWLat);
+
+            double delta1 = AD.X - BC.X;
+            double delta2 = AD.Y - BC.Y;
+            double delta3 = AB.X - DC.X;
+            double delta4 = AB.Y - DC.Y;
+
+            if (AD.X != BC.X || AD.Y != BC.Y)
+                return false;
+            if (AB.X != DC.X || AB.Y != DC.Y)
+                return false;
+            return true;
+
+        }
+
         public static bool isOnMap(Map map, double? latitude, double? longitude)
         {
 
-            if (map == null || latitude == null || longitude == null)
-                return false;
-            if (map.LatitudeNorth < latitude || map.LatitudeSouth > latitude)
-                return false;
-            if (map.LongitudeWest > longitude || map.LongitudeEast < longitude)
-                return false;
+            //if (map == null || latitude == null || longitude == null)
+            //    return false;
+            //if (map.NWLat < latitude || map.LatitudeSouth > latitude)
+            //    return false;
+            //if (map.LongitudeWest > longitude || map.LongitudeEast < longitude)
+            //    return false;
             return true;
         }
 
@@ -108,10 +143,14 @@ namespace DiversityPhone.Model
                                    {
                                        Name = (string)query.Element("Name"),
                                        Description = (string)query.Element("Description"),
-                                       LatitudeNorth = (double)query.Element("NWLat"),
-                                       LongitudeWest = (double)query.Element("NWLong"),
-                                       LatitudeSouth = (double)query.Element("SELat"),
-                                       LongitudeEast = (double)query.Element("SELong"),
+                                       NWLat = (double)query.Element("NWLat"),
+                                       NWLong=(double)query.Element("NWLong"),
+                                       SELat = (double)query.Element("SELat"),
+                                       SELong=(double)query.Element("SELong"),
+                                       SWLat = (double)query.Element("SWLat"),
+                                       SWLong = (double)query.Element("SWLong"),
+                                       NELat = (double)query.Element("NELat"),
+                                       NELong = (double)query.Element("NELong"),
                                        ZoomLevel = (int?)query.Element("ZommLevel"),
                                        Transparency = (int?)query.Element("Transparency")
                                    };

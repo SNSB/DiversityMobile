@@ -223,15 +223,16 @@ namespace DiversityPhone.ViewModels
 
         private Point calculatePixelPoint(double? lat, double? lon,double iconSizeX,double iconSizeY, double zoom)
         {
+            
             if (Map.isOnMap(Map, lat, lon))
             {
                 Point p = new Point();
-                int pixelWidth = MapImage.PixelWidth;
-                int pixelHeight = MapImage.PixelHeight;
-                double geoWidth = Math.Abs(Map.LongitudeEast - Map.LongitudeWest);
-                double geoHeight = Math.Abs(Map.LatitudeNorth - Map.LatitudeSouth);
-                p.X = ((double)lon - Map.LongitudeWest) * pixelWidth / geoWidth * zoom - iconSizeX / 2;
-                p.Y = (Map.LatitudeNorth - (double)lat) * pixelHeight / geoHeight * zoom - iconSizeY / 2;
+                //int pixelWidth = MapImage.PixelWidth;
+                //int pixelHeight = MapImage.PixelHeight;
+                //double geoWidth = Math.Abs(Map.LongitudeEast - Map.LongitudeWest);
+                //double geoHeight = Math.Abs(Map.NWLat - Map.LatitudeSouth);
+                //p.X = ((double)lon - Map.LongitudeWest) * pixelWidth / geoWidth * zoom - iconSizeX / 2;
+                //p.Y = (Map.NWLat - (double)lat) * pixelHeight / geoHeight * zoom - iconSizeY / 2;
                 return p;
             }
             else
@@ -333,7 +334,7 @@ namespace DiversityPhone.ViewModels
                 try
                 {
                     Map = Maps.getMapbyServerKey(s.Context);
-
+                    bool b = Map.isParallelogramm(Map);
                     if (Map != null)
                     {
                         MapImage= LoadImage(Map.Uri);
@@ -362,8 +363,7 @@ namespace DiversityPhone.ViewModels
                                 if (EventSeries.SeriesID == openID)
                                     _EventSeriesIsOpen = true;
                                 ItemPos = new Localizable();
-                                IList<GeoPointForSeries> geoPoints = Storage.getGeoPointsForSeries(parent);
-                                
+                                IList<GeoPointForSeries> geoPoints = Storage.getGeoPointsForSeries(parent); //Binden in AsyncCommand z.B. ViewIU. In AsnyCommand Packen und im Kosntruktor anstoßen+++++++++++++++++++++++                              
                                 foreach (GeoPointForSeries gp in geoPoints)
                                     SeriesPos.Add(gp);
                                 break;

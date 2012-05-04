@@ -120,6 +120,8 @@
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
     <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
+    <Compile Include="Model\Geometry\Line.cs" />
+    <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
     <Compile Include="Model\ILocalizable.cs" />

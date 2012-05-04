@@ -66,10 +66,10 @@ namespace DiversityPhone.Services
         public IList<Map> getMapsForPoint(double latitude, double longitude)
         {
             return uncachedQuery(ctx => from m in ctx.Maps
-                                        where m.LatitudeNorth >= latitude
-                                            && m.LatitudeSouth <= latitude
-                                            && m.LongitudeEast >= longitude
-                                            && m.LongitudeWest <= longitude
+                                        where Math.Max(m.NWLat,m.NELat) >= latitude
+                                            && Math.Min(m.SWLat,m.SELat) <= latitude
+                                            && Math.Max(m.NELong,m.SELong) >= longitude
+                                            && Math.Min(m.NWLong,m.SWLong) <= longitude
                                         select m);
         }
 

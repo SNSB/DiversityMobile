@@ -81,7 +81,7 @@ namespace DiversityPhone.View
             Point p = VM.calculatePixelPointForSeriesPoint(gp);
             if(p.X>0 && p.Y>0)
             {
-                im.Source = new BitmapImage(new Uri("/Images/BlackPoint.png", UriKind.RelativeOrAbsolute));
+                im.Source = new BitmapImage(new Uri("/Images/BlackPoint.png", UriKind.RelativeOrAbsolute));//Einmal als Souce setzen
                 MainCanvas.Children.Add(im);
                 Canvas.SetTop(im, p.Y);
                 Canvas.SetLeft(im, p.X);
