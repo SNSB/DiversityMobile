@@ -61,36 +61,38 @@ namespace DiversityPhone.View
                     MainCanvas.Children.Remove(im);
             }
             _seriesPointImages.Clear();
-            foreach(GeoPointForSeries gp in VM.SeriesPos)
+            foreach(Point p in VM.SeriesPerc)
             {
-                setSeriesPointImage(gp);
+                setSeriesPointImage(p);
             }
         }
 
-        private void addSeriesPointImage(GeoPointForSeries gp)
+        private void addSeriesPointImage(Point percentPoint)
         {
             if (_seriesPointImages == null)
                 _seriesPointImages = new List<Image>();
-            setSeriesPointImage(gp);
+            setSeriesPointImage(percentPoint);
         }
 
 
-        private void setSeriesPointImage(GeoPointForSeries gp)
+        private void setSeriesPointImage(Point p)
         {
             Image im = new Image();
-            Point p = VM.calculatePixelPointForSeriesPoint(gp);
-            if(p.X>0 && p.Y>0)
+            Point pixel = VM.calculatePixelPointForSeriesPercPoint(p);
+            if(pixel.X>0 && pixel.Y>0)
             {
                 im.Source = new BitmapImage(new Uri("/Images/BlackPoint.png", UriKind.RelativeOrAbsolute));//Einmal als Souce setzen
                 MainCanvas.Children.Add(im);
-                Canvas.SetTop(im, p.Y);
-                Canvas.SetLeft(im, p.X);
+                Canvas.SetTop(im, pixel.Y);
+                Canvas.SetLeft(im, pixel.X);
                 _seriesPointImages.Add(im);
             }
         }
 
         #endregion
 
+
+        //New GPS-Value is coming for an Eventseries
         private void setSeriesPointsEventTriggered(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
@@ -99,7 +101,12 @@ namespace DiversityPhone.View
                 try
                 {
                     GeoPointForSeries gp = (GeoPointForSeries)o;
-                    addSeriesPointImage(gp);
+                    Point? p = VM.calculateGPSToPercentagePoint(gp.Latitude,gp.Longitude);
+                    if (p != null)
+                    {
+                        VM.SeriesPerc.Add((Point)p);
+                        addSeriesPointImage((Point) p);
+                    }
                 }
                 catch (Exception ex) { };
             }
@@ -124,15 +131,13 @@ namespace DiversityPhone.View
             transform.ScaleY = scale;
             MainCanvas.Height = VM.BaseHeight * VM.Zoom;
             MainCanvas.Width  = VM.BaseWidth * VM.Zoom;
+            if (VM.EventSeries != null)
+                recalculateSeriesPoints();     
         }
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
         {
-            VM.calculatePixelPointForActual();
-            if (VM.Event != null || VM.IU != null)
-                VM.calculatePixelPointForItem();
-            if (VM.EventSeries != null)
-                recalculateSeriesPoints();          
+               
         }
 
         #endregion
@@ -158,11 +163,10 @@ namespace DiversityPhone.View
             transform.ScaleY = scale;
             MainCanvas.Height = VM.BaseHeight * VM.Zoom;
             MainCanvas.Width = VM.BaseWidth * VM.Zoom;
-            VM.calculatePixelPointForActual();
             recalculateSeriesPoints();
-            //if(VM!= null && VM.ItemPosPoint!=null)
+            //if (VM != null && VM.ItemPosPoint != null)
             //    if (VM.ItemPosPoint.X > 0 && VM.ItemPosPoint.Y > 0)
-            //        focusOn(VM.ItemPosPoint.X-scrollViewer.Width/2, VM.ItemPosPoint.Y-scrollViewer.Height/2);
+            //        focusOn(VM.ItemPosPoint.X - scrollViewer.Width / 2, VM.ItemPosPoint.Y - scrollViewer.Height / 2);
             
         }
     }

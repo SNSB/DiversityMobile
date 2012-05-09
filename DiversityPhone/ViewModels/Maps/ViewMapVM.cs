@@ -74,6 +74,8 @@ namespace DiversityPhone.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
+                ActualPosPoint = this.calculatePercentToPixelPoint(ActualPerc, ActualPosIconSize.X, ActualPosIconSize.Y, Zoom);
+                ItemPosPoint = this.calculatePercentToPixelPoint(ItemPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
             }
         }
 
@@ -150,27 +152,23 @@ namespace DiversityPhone.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(x => x.ActualPos, ref _ActualPos, value);
-                calculatePixelPointForActual();
+                if (ActualPos != null)
+                    ActualPerc = this.calculateGPSToPercentagePoint(ActualPos.Latitude, ActualPos.Longitude);
+                else
+                    ActualPerc = null;
             }
         }
 
-        private ILocalizable _ItemPos;
-        public ILocalizable ItemPos
+        private Point? _ActualPerc=null;
+        public Point? ActualPerc
         {
-            get { return _ItemPos; }
+            get {return _ActualPerc;}
             set
             {
-                this.RaiseAndSetIfChanged(x => x.ItemPos, ref _ItemPos, value);
-                calculatePixelPointForItem();
+                this.RaiseAndSetIfChanged(x=>x.ActualPerc,ref _ActualPerc,value);
+                ActualPosPoint = this.calculatePercentToPixelPoint(ActualPerc, ActualPosIconSize.X, ActualPosIconSize.Y, Zoom);
             }
         }
-
-        private ObservableCollection<GeoPointForSeries> _SeriesPos;
-        public ObservableCollection<GeoPointForSeries> SeriesPos
-        {
-            get { return _SeriesPos; }
-        }
-
 
         private Point _ActualPosPoint;
         public Point ActualPosPoint
@@ -185,6 +183,31 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        private ILocalizable _ItemPos=null;
+        public ILocalizable ItemPos
+        {
+            get { return _ItemPos; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ItemPos, ref _ItemPos, value);
+                if (ItemPos != null)
+                    ItemPerc = this.calculateGPSToPercentagePoint(ItemPos.Latitude, ItemPos.Longitude);
+                else
+                    ItemPerc = null;
+            }
+        }
+
+        private Point? _ItemPerc = null;
+        public Point? ItemPerc
+        {
+            get { return _ItemPerc; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.ItemPerc, ref _ItemPerc, value);
+                ItemPosPoint = this.calculatePercentToPixelPoint(ItemPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
+            }
+        }
+
         private Point _ItemPosPoint;
         public Point ItemPosPoint
         {
@@ -196,24 +219,34 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        //private ObservableCollection<Point> _SeriesPosPoints;
-        //public ObservableCollection<Point> SeriesPosPoints
-        //{
-        //    get { return _SeriesPosPoints; }
-        //}
+
+        private ObservableCollection<GeoPointForSeries> _SeriesPos;
+        public ObservableCollection<GeoPointForSeries> SeriesPos
+        {
+            get { return _SeriesPos; }
+        }
+
+
+        // Changes in Values need to be handled on Change-Events in the view
+        private ObservableCollection<Point> _SeriesPerc;
+        public ObservableCollection<Point> SeriesPerc
+        {
+            get { return _SeriesPerc; }
+        }
 
         #endregion
 
 
         #endregion
 
-
+        #region Constructor
         public ViewMapVM(IMapStorageService maps,IGeoLocationService geoLoc, ISettingsService settings)            
         {
             Maps = maps;
             Geolocation = geoLoc;
             Settings = settings;
             _SeriesPos = new ObservableCollection<GeoPointForSeries>();
+            _SeriesPerc = new ObservableCollection<Point>();
             if(Geolocation.Watcher!=null)
                 Geolocation.Watcher.PositionChanged += new EventHandler<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher_PositionChanged);
             Localizable actual = new Localizable();
@@ -221,54 +254,58 @@ namespace DiversityPhone.ViewModels
             ActualPos = actual;
         }
 
-        private Point calculatePixelPoint(double? lat, double? lon,double iconSizeX,double iconSizeY, double zoom)
+        #endregion
+
+        #region PointCalculations
+
+
+        public Point? calculateGPSToPercentagePoint(double? lat, double? lon)
         {
-            
-            if (Map.isOnMap(Map, lat, lon))
-            {
-                Point p = new Point();
-                //int pixelWidth = MapImage.PixelWidth;
-                //int pixelHeight = MapImage.PixelHeight;
-                //double geoWidth = Math.Abs(Map.LongitudeEast - Map.LongitudeWest);
-                //double geoHeight = Math.Abs(Map.NWLat - Map.LatitudeSouth);
-                //p.X = ((double)lon - Map.LongitudeWest) * pixelWidth / geoWidth * zoom - iconSizeX / 2;
-                //p.Y = (Map.NWLat - (double)lat) * pixelHeight / geoHeight * zoom - iconSizeY / 2;
-                return p;
-            }
-            else
+            if (lat == null || Double.IsNaN((double) lat) || lon == null || Double.IsNaN((double) lon)|| Map==null)
+                return null;
+            return Map.calculatePercentilePositionForMap((double)lat, (double)lon, Map);
+        }
+
+
+        private Point calculatePercentToPixelPoint(Point? percPoint,double iconSizeX,double iconSizeY, double zoom)
+        {
+            //Check if Point has a Representation on the current map
+            if(percPoint==null || percPoint.Value.X<0 || percPoint.Value.X>1 || percPoint.Value.Y<0 || percPoint.Value.Y>1)
                 return new Point(-1, -1);
-        }
-
-
-        public void calculatePixelPointForActual()
-        {
-            if (ActualPos != null)
+            else
             {
-                Point p = calculatePixelPoint(ActualPos.Latitude, ActualPos.Longitude,ActualPosIconSize.X,ActualPosIconSize.Y,Zoom);
-                ActualPosPoint = p;
+                try
+                {
+                    int pixelWidth = MapImage.PixelWidth;
+                    int pixelHeight = MapImage.PixelHeight;
+                    double x = percPoint.Value.X * pixelWidth * zoom - iconSizeX / 2;
+                    double y = percPoint.Value.Y * pixelHeight * zoom - iconSizeY / 2;
+                    return new Point(x, y);
+                }
+                catch (Exception e)
+                {
+                    return new Point(-1, -1);
+                }
             }
-            else ActualPosPoint = new Point(-1, -1);
         }
 
-        public void calculatePixelPointForItem()
+        public Point calculatePixelPointForSeriesPercPoint(Point? p)
         {
-            if (ItemPos != null)
-            {
-                Point p = calculatePixelPoint(ItemPos.Latitude, ItemPos.Longitude, ItemPosIconSize.X,ItemPosIconSize.Y,Zoom);
-                ItemPosPoint = p;
-            }
-            else ItemPosPoint = new Point(-1, -1);
+          
+           return calculatePercentToPixelPoint(p, SeriesPosIconSize.X, SeriesPosIconSize.Y, Zoom);
+           
         }
 
-
-        public Point calculatePixelPointForSeriesPoint(GeoPointForSeries gp)
+        private Point calculatePixelPointToGPS(Point pixelPoint)
         {
-            if (gp != null)
-            {
-                return calculatePixelPoint(gp.Latitude, gp.Longitude, SeriesPosIconSize.X, SeriesPosIconSize.Y, Zoom);
-            }
-            else return new Point(-1, -1);
+            throw new NotImplementedException();
         }
+
+
+
+     
+
+        #endregion
 
 
         private void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
@@ -334,14 +371,15 @@ namespace DiversityPhone.ViewModels
                 try
                 {
                     Map = Maps.getMapbyServerKey(s.Context);
-                    bool b = Map.isParallelogramm(Map);
                     if (Map != null)
                     {
                         MapImage= LoadImage(Map.Uri);
                         BaseHeight = MapImage.PixelHeight;
                         BaseWidth = MapImage.PixelWidth;
                         if (ActualPos != null)
-                            calculatePixelPointForActual();
+                            ActualPerc = calculateGPSToPercentagePoint(ActualPos.Latitude, ActualPos.Longitude);
+                        else
+                            ActualPerc = null;
                     }
                 }
                 catch (Exception e)
@@ -362,7 +400,6 @@ namespace DiversityPhone.ViewModels
                                 int? openID = Settings.getSettings().CurrentSeriesID;
                                 if (EventSeries.SeriesID == openID)
                                     _EventSeriesIsOpen = true;
-                                ItemPos = new Localizable();
                                 IList<GeoPointForSeries> geoPoints = Storage.getGeoPointsForSeries(parent); //Binden in AsyncCommand z.B. ViewIU. In AsnyCommand Packen und im Kosntruktor anstoßen+++++++++++++++++++++++                              
                                 foreach (GeoPointForSeries gp in geoPoints)
                                     SeriesPos.Add(gp);
@@ -383,7 +420,7 @@ namespace DiversityPhone.ViewModels
                         }
                     }
                     else
-                        ItemPos = new Localizable();
+                        ItemPos = null;
                 }
 
                 return Map;

@@ -48,13 +48,13 @@ namespace DiversityPhone.Model
         [Column]
         public double NELong { get; set; }
        
-
-
         [Column(CanBeNull = true)]
         public int? Transparency{get;set;}
 
         [Column(CanBeNull = true)]
         public int? ZoomLevel{ get; set; }
+
+      
 
         /// <summary>
         /// Tracks modifications to this Object.
@@ -71,12 +71,13 @@ namespace DiversityPhone.Model
             get;
             private set;
         }
-    
+        
+     
+
         public Map()
         {            
             this.ModificationState= null;
             this.LogUpdatedWhen = DateTime.Now;
-
             Operations = new QueryOperations<Map>(
                 //Smallerthan
                         (q, map) => q.Where(row => row.NWLat < map.NWLat),
@@ -118,14 +119,77 @@ namespace DiversityPhone.Model
         public static bool isOnMap(Map map, double? latitude, double? longitude)
         {
 
-            //if (map == null || latitude == null || longitude == null)
-            //    return false;
-            //if (map.NWLat < latitude || map.LatitudeSouth > latitude)
-            //    return false;
-            //if (map.LongitudeWest > longitude || map.LongitudeEast < longitude)
-            //    return false;
+            if (map == null || latitude == null || longitude == null)
+                return false;
+            Point? p = calculatePercentilePositionForMap((double) latitude,(double) longitude, map);
+            if (p == null || p.Value.X < 0 || p.Value.X > 1 || p.Value.Y < 0 || p.Value.Y > 1)
+                return false;
             return true;
         }
+
+
+
+        //The corner coordinates of the map dont define an exact rectangle in all cases. Generally, a convex quadrangle is defined.
+        //The represetation on the screen will be in an rectangle. Hence, the corresponding position is calculated. To perform this,
+        //2 lines are definend: One Going from the upper-left corner to the upper right corner of the map. The other one from the lower left corner to the lower right corner of the map.
+        //A cohort of lines is definend ny the connection between those lines parametrized by the percentual scale between the cornerpoint of the 2 lines definend in this way.
+        //Analogously 2 lines are definend in the y-Direction which also define a cohort of lines between them. The GPS-Value is at a specific intersection of these cohorts.
+        //These specific lines of the cohorts can be found by solving a quadratic equation. Theses lines define with their parameters the position of the GPS-Value on the map (On a percentual basis).
+        public static Point? calculatePercentilePositionForMap(double GPSLatitude, double GPSLongitude, Map map)
+        {
+            double a, b,c, d, e, f, g, h; //Map-specific values derived form the position of the cornerpoints. a and e are dependent on addtional values and calculated in the position calculation method
+            double div;//Map-specific values derived form the position of the cornerpoints to determine if there is a division byy zero in the calculation
+
+            a = -GPSLongitude + map.NWLong;
+            b = - map.NWLong + map.NELong;
+            c = - map.NWLong + map.SWLong;
+            d = map.NWLong - map.NELong + map.SELong - map.SWLong;
+
+            e = -GPSLatitude + map.NWLat;
+            f = - map.NWLat + map.NELat;
+            g = - map.NWLat + map.SWLat;
+            h = map.NWLat - map.NELat + map.SELat - map.SWLat;
+
+            //Check consisteny needed on calculation
+            if(c==0)
+                return null;
+            div=b+d*a/c;
+            if(div!=0)
+            {
+                double alpha, beta, gamma;//Coeffizients for the Mitternachts-Equation
+                double discrim;//Discriminant in the Mitternacts-Equation
+                double mu1,mu2,lambda1,lambda2;//Solution-Parameters. As the equation is quadratic two possible solutions exist.
+                alpha=g*d-h*c;
+                beta=e*d-c*f+g*b-a*h;
+                gamma=-a*f+e*b;
+
+                discrim=beta*beta-4*alpha*gamma;
+                if(discrim<0) //Equation unsovable
+                    return null;
+                mu1=(-beta+Math.Sqrt(discrim))/(2*alpha);
+                mu2=(-beta-Math.Sqrt(discrim))/(2*alpha);
+                lambda1=-(a+c*mu1)/(b+d*mu1);
+                lambda2=-(a+c*mu2)/(b+d*mu2);
+
+                Point p1=new Point(lambda1,mu1);
+                Point p2=new Point(lambda2,mu2);
+                if (p1.X > 0 && p1.X < 1 && p1.Y > 0 && p1.Y < 1)
+                    return p1;
+                if (p2.X > 0 && p2.X < 1 && p2.Y > 0 && p2.Y < 1)
+                    return p2;
+                return null;
+            }
+            else
+            {
+                double lambda, mu;
+                mu = -a / c;
+                lambda = -(e * c - a * g) / (f * c - a * h);
+                Point p = new Point(lambda, mu);
+                return p;
+            }
+        }
+
+ 
 
         public static Map loadMapParameterFromFile(string xmlFileName)
         {
@@ -144,9 +208,9 @@ namespace DiversityPhone.Model
                                        Name = (string)query.Element("Name"),
                                        Description = (string)query.Element("Description"),
                                        NWLat = (double)query.Element("NWLat"),
-                                       NWLong=(double)query.Element("NWLong"),
+                                       NWLong = (double)query.Element("NWLong"),
                                        SELat = (double)query.Element("SELat"),
-                                       SELong=(double)query.Element("SELong"),
+                                       SELong = (double)query.Element("SELong"),
                                        SWLat = (double)query.Element("SWLat"),
                                        SWLong = (double)query.Element("SWLong"),
                                        NELat = (double)query.Element("NELat"),
