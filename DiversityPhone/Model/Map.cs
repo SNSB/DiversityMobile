@@ -138,7 +138,7 @@ namespace DiversityPhone.Model
         public static Point? calculatePercentilePositionForMap(double GPSLatitude, double GPSLongitude, Map map)
         {
             double a, b,c, d, e, f, g, h; //Map-specific values derived form the position of the cornerpoints. a and e are dependent on addtional values and calculated in the position calculation method
-            double div;//Map-specific values derived form the position of the cornerpoints to determine if there is a division byy zero in the calculation
+            bool specialCase;//Criterion for the special case mu=-b/d (which leads to a division by zero in the lambda calculus)
 
             a = -GPSLongitude + map.NWLong;
             b = - map.NWLong + map.NELong;
@@ -150,45 +150,87 @@ namespace DiversityPhone.Model
             g = - map.NWLat + map.SWLat;
             h = map.NWLat - map.NELat + map.SELat - map.SWLat;
 
-            //Check consisteny needed on calculation
-            if(c==0)
+            if(b==0 || g==0)
+            {
+                //Map coordinates are corrupted
                 return null;
-            div=b+d*a/c;
-            if(div!=0)
+            }
+
+            //Check d==0
+            if (d != 0)
+            {
+                if (a - c * b / d == 0)
+                    specialCase = true;
+                else
+                    specialCase = false;
+            }
+            else
+                specialCase = false;
+            if(specialCase==false) //=>mu!=-b/d
             {
                 double alpha, beta, gamma;//Coeffizients for the Mitternachts-Equation
-                double discrim;//Discriminant in the Mitternacts-Equation
+                double discrim;//Discriminant in the Mitternachts-Equation
                 double mu1,mu2,lambda1,lambda2;//Solution-Parameters. As the equation is quadratic two possible solutions exist.
                 alpha=g*d-h*c;
                 beta=e*d-c*f+g*b-a*h;
                 gamma=-a*f+e*b;
+                if (alpha != null)
+                {
+                    discrim = beta * beta - 4 * alpha * gamma;
+                    if (discrim < 0) //Equation unsovable
+                        return null;
+                    mu1 = (-beta + Math.Sqrt(discrim)) / (2 * alpha);
+                    mu2 = (-beta - Math.Sqrt(discrim)) / (2 * alpha);
+                    lambda1 = -(a + c * mu1) / (b + d * mu1);
+                    lambda2 = -(a + c * mu2) / (b + d * mu2);
 
-                discrim=beta*beta-4*alpha*gamma;
-                if(discrim<0) //Equation unsovable
+                    Point p1 = new Point(lambda1, mu1);
+                    Point p2 = new Point(lambda2, mu2);
+                    if (p1.X > 0 && p1.X < 1 && p1.Y > 0 && p1.Y < 1)
+                        return p1;
+                    if (p2.X > 0 && p2.X < 1 && p2.Y > 0 && p2.Y < 1)
+                        return p2;
                     return null;
-                mu1=(-beta+Math.Sqrt(discrim))/(2*alpha);
-                mu2=(-beta-Math.Sqrt(discrim))/(2*alpha);
-                lambda1=-(a+c*mu1)/(b+d*mu1);
-                lambda2=-(a+c*mu2)/(b+d*mu2);
-
-                Point p1=new Point(lambda1,mu1);
-                Point p2=new Point(lambda2,mu2);
-                if (p1.X > 0 && p1.X < 1 && p1.Y > 0 && p1.Y < 1)
-                    return p1;
-                if (p2.X > 0 && p2.X < 1 && p2.Y > 0 && p2.Y < 1)
-                    return p2;
-                return null;
+                }
+                else
+                {
+                    if (beta != 0)
+                    {
+                        mu1 = -gamma / beta;
+                        lambda1 = -(a + c * mu1) / (b + d * mu1);
+                        Point p1 = new Point(lambda1, mu1);
+                        if (p1.X > 0 && p1.X < 1 && p1.Y > 0 && p1.Y < 1)
+                            return p1;
+                        return null;
+                    }
+                    else
+                    {
+                        //No mu-Percentile can be calculated as the equation is either unsovable or there are no restriction to mu.
+                        //In both cases no representation on the map can be given
+                        return null;
+                    }
+                }
             }
-            else
+            else //=> mu=-b/d
             {
                 double lambda, mu;
-                mu = -a / c;
-                lambda = -(e * c - a * g) / (f * c - a * h);
-                Point p = new Point(lambda, mu);
-                return p;
+                mu = -b / d;
+                if (b * h - f * c != 0)
+                {
+                    lambda = -(e * d - b * g) / (b * h - f * c);//Div by Zero
+                    Point p = new Point(lambda, mu);
+                    return p;
+                }
+                else
+                {
+                    //No mu-Percentile can be calculated as the equation is either unsovable or there are no restriction to mu.
+                    //In both cases no representation on the map can be given
+                    return null;
+                }
             }
         }
 
+    
  
 
         public static Map loadMapParameterFromFile(string xmlFileName)
