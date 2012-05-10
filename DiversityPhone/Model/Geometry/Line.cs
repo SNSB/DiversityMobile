@@ -28,6 +28,12 @@ namespace DiversityPhone.Model.Geometry
             direction = v;
         }
 
+        public Point MoveOnLineFromBaseForUnits(double length)
+        {
+            double x = BasePoint.X + Direction.X* length;
+            double y = BasePoint.Y + Direction.Y * length;
+            return new Point(x, y);
+        }
 
         public static Point? Intersection(Line l1, Line l2)
         {

@@ -18,6 +18,7 @@ using DiversityPhone.Services;
 using System.Device.Location;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using DiversityPhone.Model.Geometry;
 
 namespace DiversityPhone.ViewModels
 {
@@ -263,7 +264,7 @@ namespace DiversityPhone.ViewModels
         {
             if (lat == null || Double.IsNaN((double) lat) || lon == null || Double.IsNaN((double) lon)|| Map==null)
                 return null;
-            return Map.calculatePercentilePositionForMap((double)lat, (double)lon, Map);
+            return Map.calculatePercentilePositionForMap((double)lat, (double)lon);
         }
 
 
@@ -296,9 +297,14 @@ namespace DiversityPhone.ViewModels
            
         }
 
-        private Point calculatePixelPointToGPS(Point pixelPoint)
+        private ILocalizable calculatePixelPointToGPS(Point pixelPoint)
         {
-            throw new NotImplementedException();
+            double width=MapImage.PixelWidth*Zoom;
+            double height=MapImage.PixelHeight*Zoom;
+            double percX = pixelPoint.X / width;
+            double percY = pixelPoint.Y / height;
+            ILocalizable gpsPoint = Map.calculateGPSFromPerc(percX, percY);
+            return gpsPoint;
         }
 
 

@@ -6,6 +6,7 @@ using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 using System.IO;
 using System.Windows;
+using DiversityPhone.Model.Geometry;
 
 namespace DiversityPhone.Model
 {
@@ -116,12 +117,12 @@ namespace DiversityPhone.Model
 
         }
 
-        public static bool isOnMap(Map map, double? latitude, double? longitude)
+        public bool isOnMap(double? latitude, double? longitude)
         {
 
-            if (map == null || latitude == null || longitude == null)
+            if (this == null || latitude == null || longitude == null)
                 return false;
-            Point? p = calculatePercentilePositionForMap((double) latitude,(double) longitude, map);
+            Point? p = calculatePercentilePositionForMap((double) latitude,(double) longitude);
             if (p == null || p.Value.X < 0 || p.Value.X > 1 || p.Value.Y < 0 || p.Value.Y > 1)
                 return false;
             return true;
@@ -135,24 +136,24 @@ namespace DiversityPhone.Model
         //A cohort of lines is definend ny the connection between those lines parametrized by the percentual scale between the cornerpoint of the 2 lines definend in this way.
         //Analogously 2 lines are definend in the y-Direction which also define a cohort of lines between them. The GPS-Value is at a specific intersection of these cohorts.
         //These specific lines of the cohorts can be found by solving a quadratic equation. Theses lines define with their parameters the position of the GPS-Value on the map (On a percentual basis).
-        public static Point? calculatePercentilePositionForMap(double GPSLatitude, double GPSLongitude, Map map)
+        public Point? calculatePercentilePositionForMap(double GPSLatitude, double GPSLongitude)
         {
-            double a, b,c, d, e, f, g, h; //Map-specific values derived form the position of the cornerpoints. a and e are dependent on addtional values and calculated in the position calculation method
+            double a, b,c, d, e, f, g, h; //this-specific values derived form the position of the cornerpoints. a and e are dependent on addtional values and calculated in the position calculation method
             bool specialCase;//Criterion for the special case mu=-b/d (which leads to a division by zero in the lambda calculus)
 
-            a = -GPSLongitude + map.NWLong;
-            b = - map.NWLong + map.NELong;
-            c = - map.NWLong + map.SWLong;
-            d = map.NWLong - map.NELong + map.SELong - map.SWLong;
+            a = -GPSLongitude + this.NWLong;
+            b = - this.NWLong + this.NELong;
+            c = - this.NWLong + this.SWLong;
+            d = this.NWLong - this.NELong + this.SELong - this.SWLong;
 
-            e = -GPSLatitude + map.NWLat;
-            f = - map.NWLat + map.NELat;
-            g = - map.NWLat + map.SWLat;
-            h = map.NWLat - map.NELat + map.SELat - map.SWLat;
+            e = -GPSLatitude + this.NWLat;
+            f = - this.NWLat + this.NELat;
+            g = - this.NWLat + this.SWLat;
+            h = this.NWLat - this.NELat + this.SELat - this.SWLat;
 
             if(b==0 || g==0)
             {
-                //Map coordinates are corrupted
+                //this coordinates are corrupted
                 return null;
             }
 
@@ -174,7 +175,7 @@ namespace DiversityPhone.Model
                 alpha=g*d-h*c;
                 beta=e*d-c*f+g*b-a*h;
                 gamma=-a*f+e*b;
-                if (alpha != null)
+                if (alpha != 0)
                 {
                     discrim = beta * beta - 4 * alpha * gamma;
                     if (discrim < 0) //Equation unsovable
@@ -206,7 +207,7 @@ namespace DiversityPhone.Model
                     else
                     {
                         //No mu-Percentile can be calculated as the equation is either unsovable or there are no restriction to mu.
-                        //In both cases no representation on the map can be given
+                        //In both cases no representation on the this can be given
                         return null;
                     }
                 }
@@ -224,13 +225,47 @@ namespace DiversityPhone.Model
                 else
                 {
                     //No mu-Percentile can be calculated as the equation is either unsovable or there are no restriction to mu.
-                    //In both cases no representation on the map can be given
+                    //In both cases no representation on the this can be given
                     return null;
                 }
             }
         }
 
-    
+
+        public ILocalizable calculateGPSFromPerc(double percX, double percY)
+        {
+            Point A = new Point(this.NWLong, this.NWLat);
+            Point B = new Point(this.NELong, this.NELat);
+            Point C = new Point(this.SELong, this.SELat);
+            Point D = new Point(this.SWLong, this.SWLat);
+            Line AB=new Line(A,new Vector(A,B));
+            Line DC=new Line(D,new Vector(D,C));
+            Line AD=new Line(A,new Vector(A,D));
+            Line BC=new Line(B,new Vector(B,C));
+           
+            Point X0=AB.MoveOnLineFromBaseForUnits(percX);
+            Point X1=DC.MoveOnLineFromBaseForUnits(percX);
+            Point Y0=AD.MoveOnLineFromBaseForUnits(percY);
+            Point Y1=BC.MoveOnLineFromBaseForUnits(percY);
+
+            Line X0X1 = new Line(X0, new Vector(X0, X1));
+            Line Y0Y1 = new Line(Y0, new Vector(Y0, Y1));
+
+            Point? p = Line.Intersection(X0X1, Y0Y1);
+
+            if (p != null)
+            {
+                Localizable pos = new Localizable();
+                pos.Longitude = p.Value.X;
+                pos.Latitude = p.Value.Y;
+                pos.Altitude = Double.NaN;
+                return pos;
+            }
+            else
+            {
+                throw new ArithmeticException("Lines do not cross. Mapdata are corrupted");
+            }
+        }
  
 
         public static Map loadMapParameterFromFile(string xmlFileName)
