@@ -156,6 +156,21 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="RefreshVocabularyTask_State_Cleaning" xml:space="preserve">
+    <value>Cleaning the Database</value>
+  </data>
+  <data name="RefreshVocabularyTask_State_LoadingAnalyses" xml:space="preserve">
+    <value>Loading Analyses</value>
+  </data>
+  <data name="RefreshVocabularyTask_State_LoadingProperties" xml:space="preserve">
+    <value>Loading Event Properties</value>
+  </data>
+  <data name="RefreshVocabularyTask_State_LoadingResults" xml:space="preserve">
+    <value>Loading Analysis Results</value>
+  </data>
+  <data name="RefreshVocabularyTask_State_LoadingVocabulary" xml:space="preserve">
+    <value>Loading Vocabulary</value>
+  </data>
   <data name="Setup_Header_Project" xml:space="preserve">
     <value>Project</value>
   </data>

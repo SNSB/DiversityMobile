@@ -178,6 +178,51 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Cleaning the Database ähnelt.
+        /// </summary>
+        public static string RefreshVocabularyTask_State_Cleaning {
+            get {
+                return ResourceManager.GetString("RefreshVocabularyTask_State_Cleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading Analyses ähnelt.
+        /// </summary>
+        public static string RefreshVocabularyTask_State_LoadingAnalyses {
+            get {
+                return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingAnalyses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading Event Properties ähnelt.
+        /// </summary>
+        public static string RefreshVocabularyTask_State_LoadingProperties {
+            get {
+                return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading Analysis Results ähnelt.
+        /// </summary>
+        public static string RefreshVocabularyTask_State_LoadingResults {
+            get {
+                return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Loading Vocabulary ähnelt.
+        /// </summary>
+        public static string RefreshVocabularyTask_State_LoadingVocabulary {
+            get {
+                return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingVocabulary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Project ähnelt.
         /// </summary>
         public static string Setup_Header_Project {

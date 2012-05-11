@@ -105,7 +105,7 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser()
+        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)
         {
             var source = Observable.FromEvent<EventHandler<GetPropertiesForUserCompletedEventArgs>, GetPropertiesForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetPropertiesForUserCompleted += d, d => _svc.GetPropertiesForUserCompleted -= d)
                 .Select(args => args.Result
@@ -115,13 +115,13 @@ namespace DiversityPhone.Services
                         DisplayText = p.DisplayText
                     }));
             var res = singleResultObservable(source);
-            _svc.GetPropertiesForUserAsync(GetCreds());
+            _svc.GetPropertiesForUserAsync(login);
             return res;
         }
 
 
         public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyValuesChunked(Client.Property p)
-        {
+        {            
             var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
             var svcProperty = new Property()
             {
@@ -129,16 +129,30 @@ namespace DiversityPhone.Services
                 DisplayText = p.DisplayText
             };
             int chunk = 1; //First Chunk is 1, not 0!
+            Func<IObservable<IEnumerable<Client.PropertyName>>> factory = () =>
+                {
+                    var obs = Observable.FromEvent<EventHandler<DownloadPropertyNamesCompletedEventArgs>, DownloadPropertyNamesCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyNamesCompleted += d, d => localclient.DownloadPropertyNamesCompleted -= d)
+                        .Select(args => args.Result ?? Enumerable.Empty<PropertyName>())
+                        .Select(taxa => taxa.Select(
+                            property => new Client.PropertyName
+                            {
+                                PropertyUri=property.PropertyUri,
+                                PropertyID=property.PropertyID,                       
+                                DisplayText = property.DisplayText,
+                            }))
+                        .Publish();
+                    obs.Connect();
+                    return obs;
+                };
 
-            var res = Observable.FromEvent<EventHandler<DownloadPropertyNamesCompletedEventArgs>, DownloadPropertyNamesCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyNamesCompleted += d, d => localclient.DownloadPropertyNamesCompleted -= d)
-                .Select(args => args.Result ?? Enumerable.Empty<PropertyName>())
-                .Select(taxa => taxa.Select(
-                    property => new Client.PropertyName
+
+            var res = factory()
+                .Catch((Exception ex) => 
                     {
-                        PropertyUri=property.PropertyUri,
-                        PropertyID=property.PropertyID,                       
-                        DisplayText = property.DisplayText,
-                    }))
+                        var obs = factory();
+                        localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds()); // Re-Request last chunk
+                        return obs;
+                    })                
                 .TakeWhile(taxonChunk =>
                 {
                     if (taxonChunk.Any())
