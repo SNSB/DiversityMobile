@@ -263,7 +263,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             _BusyMessageSubject.OnNext("Downloading Event Properties");
 
-            var pObservable = diversityService.GetPropertiesForUser();
+            var pObservable = diversityService.GetPropertiesForUser(credentials);
 
             vocabulary.addAnalysisTaxonomicGroups(atgs);
 
