@@ -18,12 +18,31 @@ namespace DiversityPhone.Services.BackgroundTasks
 {
     public class DownloadTaxonListTask : BackgroundTask
     {
-        private const string TABLE = "T";
-        private const string NAME = "N";
-        private const string GROUP = "G";
+        private const string KEY_TABLE = "T";
+        private const string KEY_NAME = "N";
+        private const string KEY_GROUP = "G";
 
-        private const string STARTED = "S";
+        private const string KEY_PROGRESS = "S";
+        private const string STATE_INITIAL = "I";
+        private const string STATE_STARTED = "S";
+        private const string STATE_FINISHED = "F";
 
+        private string CurrentState
+        {
+            get
+            {
+                string res;
+                if (State.TryGetValue(KEY_PROGRESS, out res))
+                    return res;
+                else
+                    return STATE_INITIAL;
+            }
+            set
+            {
+                if (!Cancelled)
+                    State[KEY_PROGRESS] = value;
+            }
+        }
 
 
         public override bool CanResume
@@ -47,21 +66,25 @@ namespace DiversityPhone.Services.BackgroundTasks
 
             if (list != null)
             {
-                if (State.ContainsKey(STARTED))
+
+                while (CurrentState != STATE_FINISHED)
                 {
-                    Cleanup(list);
+                    if (CurrentState == STATE_STARTED)
+                        Cleanup(list);
+
+                    CurrentState = STATE_STARTED;
+
+                    try
+                    {
+                        Repo.DownloadTaxonListChunked(list)
+                        .ForEach(chunk => Taxa.addTaxonNames(chunk, list));
+
+                        CurrentState = STATE_FINISHED;
+                    }
+                    catch (WebException) // On app resume, catch webexception
+                    {
+                    }
                 }
-                else
-                    State[STARTED] = "T";
-                
-                try
-                {
-                    Repo.DownloadTaxonListChunked(list)                    
-                    .ForEach(chunk => Taxa.addTaxonNames(chunk, list));
-                }
-                catch (WebException) // On app resume, catch webexception
-                {                   
-                }                
             }
         }
 
@@ -70,9 +93,9 @@ namespace DiversityPhone.Services.BackgroundTasks
             var list = arg as TaxonList;
             if(list != null)
             {
-                State[NAME] = list.DisplayText;
-                State[TABLE] = list.Table;
-                State[GROUP] = list.TaxonomicGroup;
+                State[KEY_NAME] = list.DisplayText;
+                State[KEY_TABLE] = list.Table;
+                State[KEY_GROUP] = list.TaxonomicGroup;
             }
         }
 
@@ -80,9 +103,9 @@ namespace DiversityPhone.Services.BackgroundTasks
         {
             return new TaxonList()
             {
-                DisplayText = State[NAME],
-                Table = State[TABLE],
-                TaxonomicGroup = State[GROUP]
+                DisplayText = State[KEY_NAME],
+                Table = State[KEY_TABLE],
+                TaxonomicGroup = State[KEY_GROUP]
             };            
         }
 
