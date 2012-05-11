@@ -12,13 +12,50 @@ namespace DiversityPhone.Services
 {
     public abstract class BackgroundTask : IBackgroundTask
     {
-        public BackgroundTaskInvocation Invocation {get; set;}
-       
+        #region subclass Interface
+        /// <summary>
+        /// Indicates whether this type of Task can resume.
+        /// </summary>
+        public abstract bool CanResume { get; }
+
+        public bool Cancelled { get; private set; }
+
+        protected abstract void saveArgumentToState(object arg);
+
+        protected abstract object getArgumentFromState();
+
+
+        /// <summary>
+        /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
+        /// </summary>
+        /// <returns></returns>
+        protected abstract void Run(object arg);
+
+        /// <summary>
+        /// Cancels the Task
+        /// When this method returns, the cancellation must have been processed
+        /// </summary>
+        protected abstract void Cancel();
+
+
+        protected abstract void Cleanup(object arg);
+
+        public BackgroundTaskInvocation Invocation {get; private set;}
+
+        protected void reportProgress(string message)
+        {
+            _progressMessageSubject.OnNext(message);
+        }
+
+        #endregion
+
         private ISubject<object> _cleanupSubject = new Subject<object>();
         protected ReactiveAsyncCommand Executor {get; private set;}
         private IObservable<int> _ItemsInFlightObs;
         private int _ItemsInFlight = 0;
         protected Dictionary<string, string> State { get { return Invocation.State; }}
+
+        private ISubject<string> _progressMessageSubject = new Subject<string>();
 
         public BackgroundTask()
         {
@@ -28,12 +65,15 @@ namespace DiversityPhone.Services
             var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Publish();
             inflight.Connect();
             _ItemsInFlightObs = inflight;
+
+            Cancelled = false;
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
         {
             if (Executor.CanExecute(null))
             {
+                Cancelled = false;
                 Invocation = inv;
                 if (inv.Argument != null)
                     saveArgumentToState(inv.Argument);
@@ -47,6 +87,7 @@ namespace DiversityPhone.Services
         public void CancelInvocation()
         {            
             Cancel();
+            Cancelled = true;
         }
 
 
@@ -61,32 +102,9 @@ namespace DiversityPhone.Services
             _cleanupSubject.OnNext(inv.Argument);
         }
 
-        /// <summary>
-        /// Indicates whether this type of Task can resume.
-        /// </summary>
-        public abstract bool CanResume { get; }
-
-        protected abstract void saveArgumentToState(object arg);
-
-        protected abstract object getArgumentFromState();
         
-       
-        /// <summary>
-        /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
-        /// </summary>
-        /// <returns></returns>
-        protected abstract void Run(object arg);
 
-        /// <summary>
-        /// Cancels the Task
-        /// When this method returns, the cancellation must have been processed
-        /// </summary>
-        protected abstract void Cancel();
-       
-
-        protected abstract void Cleanup(object arg);
-
-
+        #region IBackgroundTask
         public IObservable<object> AsyncCompletedNotification
         {
             get { return Executor.AsyncCompletedNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
@@ -124,5 +142,12 @@ namespace DiversityPhone.Services
                     return null;
             }
         }
+
+
+        public IObservable<string> AsyncProgressMessages
+        {
+            get { return _progressMessageSubject; }
+        }
+        #endregion
     }
 }

@@ -11,7 +11,8 @@ namespace DiversityPhone.Services
     {
         IObservable<object> AsyncCompletedNotification { get; }
         IObservable<object> AsyncCleanupNotification { get; }
-        IObservable<object> AsyncStartedNotification { get; }        
+        IObservable<object> AsyncStartedNotification { get; }
+        IObservable<string> AsyncProgressMessages { get; }
         IObservable<int> ItemsInflight { get; }
         int CurrentItemsInFlight { get; }
         object CurrentArguments { get; }
