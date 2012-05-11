@@ -131,7 +131,13 @@ namespace DiversityPhone
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            
+            object savedTasks = null;
+            if (PhoneApplicationService.Current.State.TryGetValue(TASK_KEY, out savedTasks)
+                && savedTasks != null
+                && savedTasks is IEnumerable<BackgroundTaskInvocation>)
+            {
+                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskInvocation>);
+            }
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -149,13 +155,7 @@ namespace DiversityPhone
             }
 
 
-            object savedTasks = null;
-            if (PhoneApplicationService.Current.State.TryGetValue(TASK_KEY, out savedTasks)
-                && savedTasks != null
-                && savedTasks is IEnumerable<BackgroundTaskInvocation>)
-            {
-                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskInvocation>);
-            }
+            PhoneApplicationService.Current.State.Remove(TASK_KEY); // remove serialized tasks, they will resume automatically
                 
             
             // Ensure that application state is restored appropriately
@@ -175,7 +175,7 @@ namespace DiversityPhone
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            
+            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.shutdown().ToList();
         }
 
         // Code to execute if a navigation fails
