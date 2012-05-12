@@ -55,14 +55,14 @@ namespace DiversityPhone.Services
         private int _ItemsInFlight = 0;
         protected Dictionary<string, string> State { get { return Invocation.State; }}
 
-        private ISubject<string> _progressMessageSubject = new Subject<string>();
+        private ISubject<string> _progressMessageSubject = new ReplaySubject<string>(1);
 
         public BackgroundTask()
         {
             Executor = new ReactiveAsyncCommand();
             Executor.RegisterAsyncAction(arg => Run(arg));
 
-            var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Publish();
+            var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Replay(1);
             inflight.Connect();
             _ItemsInFlightObs = inflight;
 

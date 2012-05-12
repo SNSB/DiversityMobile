@@ -150,8 +150,12 @@ namespace DiversityPhone.Services.BackgroundTasks
         }
 
         protected override void Cleanup(object arg)
-        {
-            throw new NotImplementedException();
+        {            
+            if (CurrentStep != STATE_INITIAL)
+            {
+                Vocabulary.clearVocabulary();                
+            }
+                    
         }
 
         private static IEnumerable<T> retryOnException<T>(Func<IEnumerable<T>> call)

@@ -11,12 +11,14 @@ using System.Reactive.Subjects;
 using DiversityPhone.Messages;
 using System.Reactive.Disposables;
 using Funq;
+using DiversityPhone.Services.BackgroundTasks;
+using DiversityPhone.DiversityService;
 
 namespace DiversityPhone.ViewModels.Utility
 {
     public partial class SettingsVM : PageViewModel
     {
-        Container IOC;
+        
         ISettingsService Settings;
         IGeoLocationService GeoLocation;
         
@@ -31,10 +33,9 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<bool> _IsBusy;
 
         public string BusyMessage { get { return _BusyMessage.Value; } }
-        private ISubject<string> _BusyMessageSubject = new Subject<string>();
         private ObservableAsPropertyHelper<string> _BusyMessage;
 
-        public ReactiveAsyncCommand RefreshVocabulary{get; private set;}
+        public ReactiveCommand RefreshVocabulary{get; private set;}
 
 
         private bool _UseGPS;
@@ -65,10 +66,12 @@ namespace DiversityPhone.ViewModels.Utility
         private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();       
         
         public SettingsVM(Container ioc)            
-        {
-            IOC = ioc;
+        {            
             Settings = ioc.Resolve<ISettingsService>();
             GeoLocation = ioc.Resolve<IGeoLocationService>();
+            var background = ioc.Resolve<IBackgroundService>();
+            var refreshVocabularyTask = background.getTaskObject<RefreshVocabularyTask>();
+            
 
             _Model =_ModelSubject   
                 .Where(x => true)
@@ -113,19 +116,23 @@ namespace DiversityPhone.ViewModels.Utility
              
             Save = new ReactiveCommand(_CanSaveSubject);
 
-            RefreshVocabulary = new ReactiveAsyncCommand(_IsFirstSetup.Select(x => !x).StartWith(false));
+            RefreshVocabulary = new ReactiveCommand(
+                _IsFirstSetup.Select(x => !x)
+                .CombineLatest(refreshVocabularyTask.ItemsInflight.Select(items => items == 0),
+                    (notfirstsetup, noitemsinflight) => notfirstsetup && noitemsinflight)
+                .StartWith(false));
             RefreshVocabulary
-                .RegisterAsyncAction(_ => refreshVocabularyImpl(Settings.getSettings()));
+                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
 
             
 
             _IsBusy =
-                RefreshVocabulary
+                refreshVocabularyTask
                 .ItemsInflight
                 .Select(items => items > 0)
                 .ToProperty(this, x => x.IsBusy);
 
-            _BusyMessage = _BusyMessageSubject
+            _BusyMessage = refreshVocabularyTask.AsyncProgressMessages
                     .ToProperty(this, x => x.BusyMessage);
 
             _IsFirstSetup
@@ -135,7 +142,7 @@ namespace DiversityPhone.ViewModels.Utility
             _Setup = _IsFirstSetup 
                 .Where(setup => setup)
                 .Take(1)
-                .Select(setup => new SetupVM(IOC.Resolve<IDiversityServiceClient>()))                        
+                .Select(setup => new SetupVM(ioc.Resolve<IDiversityServiceClient>()))                        
                 .ToProperty(this, x => x.Setup);
             _Setup
                 .CombineLatest(_IsFirstSetup, (setup, _) => setup)
@@ -148,9 +155,9 @@ namespace DiversityPhone.ViewModels.Utility
 
             clearDatabase.RegisterAsyncAction(_ =>
                 {
-                    var taxa = IOC.Resolve<ITaxonService>();
-                    var vocabulary = IOC.Resolve<IVocabularyService>();
-                    var storage = IOC.Resolve<IFieldDataService>();
+                    var taxa = ioc.Resolve<ITaxonService>();
+                    var vocabulary = ioc.Resolve<IVocabularyService>();
+                    var storage = ioc.Resolve<IFieldDataService>();
 
                     if (taxa == null || vocabulary == null || storage == null)
                     {
@@ -175,7 +182,7 @@ namespace DiversityPhone.ViewModels.Utility
             onsave
             .Where(_ => IsFirstSetup)
             .Do(_ => _IsFirstSetup.OnNext(false))
-            .Do(_ => RefreshVocabulary //After Voc download, navigate to Taxon Page
+            .Do(_ => refreshVocabularyTask //After Voc download, navigate to Taxon Page
                 .AsyncCompletedNotification
                 .Take(1)                
                 .Subscribe(__ => ManageTaxa.Execute(null))
@@ -221,64 +228,6 @@ namespace DiversityPhone.ViewModels.Utility
         {
             Settings.saveSettings(null);            
             _IsFirstSetup.OnNext(true);
-        }
-
-        private void refreshVocabularyImpl(AppSettings settings)
-        {            
-            var credentials = new Svc.UserCredentials(settings);
-
-            var vocabulary = IOC.Resolve<IVocabularyService>();
-            var diversityService = IOC.Resolve<IDiversityServiceClient>();
-
-            if (vocabulary == null || diversityService == null)
-            {
-#if DEBUG
-                throw new ArgumentNullException("services");
-#else
-                return;
-#endif
-            }
-
-            vocabulary.clearVocabulary();
-
-            _BusyMessageSubject.OnNext("Downloading Vocabulary");
-            var voc = diversityService.GetStandardVocabulary().First();
-            var analysesObservable = diversityService.GetAnalysesForProject(settings.CurrentProject, credentials);
-            vocabulary.addTerms(voc);
-
-            _BusyMessageSubject.OnNext("Downloading Analyses");
-            var analyses = analysesObservable.First();
-            var resultObservable = diversityService.GetAnalysisResultsForProject(settings.CurrentProject, credentials);
-
-            vocabulary.addAnalyses(analyses);
-
-            _BusyMessageSubject.OnNext("Downloading Analysis Results");
-
-            var results = resultObservable.First();
-            var atgObservable = diversityService.GetAnalysisTaxonomicGroupsForProject(settings.CurrentProject, credentials);
-
-            vocabulary.addAnalysisResults(results);
-
-            var atgs = atgObservable.First();
-
-            _BusyMessageSubject.OnNext("Downloading Event Properties");
-
-            var pObservable = diversityService.GetPropertiesForUser(credentials);
-
-            vocabulary.addAnalysisTaxonomicGroups(atgs);
-
-            var props = pObservable.First();
-
-            vocabulary.addProperties(props);
-
-            foreach (var p in props)
-            {                
-                diversityService.DownloadPropertyValuesChunked(p)
-                    .ForEach(chunk => vocabulary.addPropertyNames(chunk));
-            }
-            
-        }
-
-        
+        }     
     }
 }

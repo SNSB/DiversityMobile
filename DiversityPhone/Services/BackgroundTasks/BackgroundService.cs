@@ -18,9 +18,11 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class BackgroundService : Dictionary<string, BackgroundTask>, IBackgroundService
+    public class BackgroundService :  IBackgroundService
     {
-        IMessageBus Messenger;        
+        IMessageBus Messenger;
+
+        Dictionary<string, BackgroundTask> registry;
 
         bool shuttingDown = false;
         Queue<BackgroundTaskInvocation> waitingTasks = new Queue<BackgroundTaskInvocation>();
@@ -28,8 +30,13 @@ namespace DiversityPhone.Services
 
         public BackgroundService(Container ioc)
         {
-            Messenger = ioc.Resolve<IMessageBus>();           
-        }  
+            Messenger = ioc.Resolve<IMessageBus>();
+            registry = new Dictionary<string, BackgroundTask>();
+        }
+        public void registerTask<T>(T task) where T : BackgroundTask
+        {
+            registry.Add(typeof(T).ToString(), task);
+        }
         
 
         public void startTask<T>(object arg) where T : BackgroundTask
@@ -52,7 +59,7 @@ namespace DiversityPhone.Services
                 {
                     runningTask = waitingTasks.Dequeue();
                     BackgroundTask task;
-                    if(this.TryGetValue(runningTask.Type, out task))
+                    if(registry.TryGetValue(runningTask.Type, out task))
                     {
                         if (task.CurrentItemsInFlight == 0)
                         {
@@ -107,7 +114,7 @@ namespace DiversityPhone.Services
                 if (runningTask != null)
                 {
                     runningTask.WasCancelled = true;
-                    var bgtask = this[runningTask.Type];
+                    var bgtask = registry[runningTask.Type];
                     bgtask.CancelInvocation();                    
                     waitingTasks.Enqueue(runningTask);
                     runningTask = null;
@@ -132,8 +139,8 @@ namespace DiversityPhone.Services
 
         public T getTaskObject<T>() where T : BackgroundTask
         {
-            if (this.ContainsKey(typeof(T).ToString()))
-                return (T)this[typeof(T).ToString()];
+            if (registry.ContainsKey(typeof(T).ToString()))
+                return (T)registry[typeof(T).ToString()];
             else
                 return null;
         }
