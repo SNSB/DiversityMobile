@@ -13,22 +13,52 @@ namespace DiversityPhone.Services
     public abstract class BackgroundTask : IBackgroundTask
     {
         #region subclass Interface
+
+        /// <summary>
+        /// The State Dictionary for this Invocation that can be used to store
+        /// - The Argument of this Invocation
+        /// - The partial results of this Invocation for the purpose of resuming it
+        /// - etc.
+        /// </summary>
+        protected Dictionary<string, string> State { get { return Invocation.State; } }        
+
+        /// <summary>
+        /// This Flag is set, after the Cancel Method has run.
+        /// The Task is expected to refrain from changing the state Dictionary after this flag is set.
+        /// </summary>
+        public bool Cancelled { get; private set; }
+
+        /// <summary>
+        /// Reports a given status string via the AsyncProgressMessages Property
+        /// </summary>
+        /// <param name="message">status string</param>
+        protected void reportProgress(string message)
+        {
+            _progressMessageSubject.OnNext(message);
+        }
+
         /// <summary>
         /// Indicates whether this type of Task can resume.
+        /// Tasks that cannot resume are cleaned up before reinvocation
+        /// those that can are expected to handle resuming on their own
         /// </summary>
         public abstract bool CanResume { get; }
 
-        public bool Cancelled { get; private set; }
-
+        /// <summary>
+        /// Saves the argument Object to the State Dictionary, so that it can be restored later.
+        /// </summary>
+        /// <param name="arg">Invocation Argument</param>
         protected abstract void saveArgumentToState(object arg);
 
+        /// <summary>
+        /// Restores the argument Object from the State Dictionary, after it has been stored there
+        /// </summary>
+        /// <returns>Invocation Argument</returns>
         protected abstract object getArgumentFromState();
 
-
         /// <summary>
-        /// Runs the Task on a background Thread, returing an Observable that is used to monitor Progress
-        /// </summary>
-        /// <returns></returns>
+        /// Task Entry Point for the executing background Thread
+        /// </summary>        
         protected abstract void Run(object arg);
 
         /// <summary>
@@ -37,23 +67,23 @@ namespace DiversityPhone.Services
         /// </summary>
         protected abstract void Cancel();
 
-
-        protected abstract void Cleanup(object arg);
-
-        public BackgroundTaskInvocation Invocation {get; private set;}
-
-        protected void reportProgress(string message)
-        {
-            _progressMessageSubject.OnNext(message);
-        }
+        /// <summary>
+        /// Cleans up the effects of partial invocation of the task
+        /// After this has run, it must be safe to restart the invocation.
+        /// </summary>
+        /// <param name="arg">Invocation Argument</param>
+        protected abstract void Cleanup(object arg); 
+        
 
         #endregion
+
+        public BackgroundTaskInvocation Invocation { get; private set; }
 
         private ISubject<object> _cleanupSubject = new Subject<object>();
         protected ReactiveAsyncCommand Executor {get; private set;}
         private IObservable<int> _ItemsInFlightObs;
         private int _ItemsInFlight = 0;
-        protected Dictionary<string, string> State { get { return Invocation.State; }}
+        
 
         private ISubject<string> _progressMessageSubject = new ReplaySubject<string>(1);
 

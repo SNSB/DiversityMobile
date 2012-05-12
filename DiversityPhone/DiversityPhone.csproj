@@ -169,7 +169,7 @@
     <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTaskArguments.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
