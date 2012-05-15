@@ -216,6 +216,9 @@
     </Compile>
     <Compile Include="ViewModels\Maps\ViewDLMVM.cs" />
     <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapESVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapIUVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
@@ -333,6 +336,15 @@
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapES.xaml.cs">
+      <DependentUpon>ViewMapES.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapEV.xaml.cs">
+      <DependentUpon>ViewMapEV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapIU.xaml.cs">
+      <DependentUpon>ViewMapIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewVideo.xaml.cs">
       <DependentUpon>ViewVideo.xaml</DependentUpon>
@@ -453,6 +465,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapEV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

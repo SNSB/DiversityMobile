@@ -21,14 +21,13 @@ namespace DiversityPhone.ViewModels
 
         //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.   
 
-        #region Properties
         private string _Uri;
         public string Uri
         {
             get { return _Uri; }
             set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
         }
-        #endregion
+      
 
         private BitmapImage _savedImage;
 

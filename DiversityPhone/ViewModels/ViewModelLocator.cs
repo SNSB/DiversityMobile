@@ -13,6 +13,7 @@ using DiversityPhone.Services;
 using ReactiveUI;
 using DiversityPhone.DiversityService;
 using DiversityPhone.ViewModels.Utility;
+using DiversityPhone.ViewModels.Maps;
 
 namespace DiversityPhone.ViewModels
 {
@@ -51,6 +52,9 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
             _ioc.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
             _ioc.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>(),c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            _ioc.Register<ViewMapESVM>(c => new ViewMapESVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            _ioc.Register<ViewMapEVVM>(c => new ViewMapEVVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            _ioc.Register<ViewMapIUVM>(c => new ViewMapIUVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             _ioc.Register<EditIUVM>(c => new EditIUVM(c));
             _ioc.Register<ViewIUVM>(c => new ViewIUVM(c));
             _ioc.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));
@@ -94,6 +98,9 @@ namespace DiversityPhone.ViewModels
 
         public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }
         public ViewMapVM ViewMap { get { return _ioc.Resolve<ViewMapVM>(); } }
+        public ViewMapESVM ViewMap { get { return _ioc.Resolve<ViewMapESVM>(); } }
+        public ViewMapEVVM ViewMap { get { return _ioc.Resolve<ViewMapEVVM>(); } }
+        public ViewMapIUVM ViewMap { get { return _ioc.Resolve<ViewMapIUVM>(); } }
         public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public ViewImageVM ViewImage { get { return _ioc.Resolve<ViewImageVM>(); } }
