@@ -19,6 +19,7 @@ namespace DiversityPhone.ViewModels.Maps
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
+        public ReactiveCommand Reset { get; private set; }
         #endregion
 
         #region Properties
@@ -100,6 +101,8 @@ namespace DiversityPhone.ViewModels.Maps
         {
             Save = new ReactiveCommand();
             Delete = new ReactiveCommand();
+            Reset = new ReactiveCommand();
+            Reset.Subscribe(_ => restoreGeoInformation());
             ToggleEditable = new ReactiveCommand();
 
             _IsEditable = DistinctStateObservable
@@ -117,17 +120,11 @@ namespace DiversityPhone.ViewModels.Maps
                .Select(_ => Event),
                MessageContracts.SAVE);
 
-            Messenger.RegisterMessageSource(
-               Delete
-               .Where(_ => Event != null)
-               .Select(_ => Event)
-               .Do(_ => OnDelete()),
-               MessageContracts.SAVE); //Deletes the geographic Information from the Event and saves the Event  after that. The Event itself must not get deleted.
+           
 
             //On Delete or Save, Navigate Back
             Messenger.RegisterMessageSource(
                Save
-               .Merge(Delete)
                .Select(_ => Page.Previous)
                );
         }
@@ -163,9 +160,10 @@ namespace DiversityPhone.ViewModels.Maps
                     if (int.TryParse(s.Referrer, out parent))
                     {
                         Event = Storage.getEventByID(parent);
-                        EVPos = Event;
+                        EVPos = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);
                         var unmodified = Observable.Return<bool>(Event.IsUnmodified());
                         ToggleEditable = new ReactiveCommand(unmodified);
+                        _IsEditable = ;
                     }
                     else
                         EVPos = null;
@@ -176,10 +174,35 @@ namespace DiversityPhone.ViewModels.Maps
             return null;
         }
 
+        private void deleteGeoInformation()
+        {
+            if (this.EVPos != null)
+            {
+                Localizable loc = new Localizable();
+                this.EVPos = loc;
+            }
+        }
+
+
+        private void restoreGeoInformation()
+        {
+            if (this.Event != null)
+            {
+                Localizable loc = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);
+                this.EVPos = loc;
+            }
+        }
+
         #region Inheritance
         private override void UpdateModel()
         {
 
+            if (this.Event != null && this.EVPos != null)
+            {
+                this.Event.Altitude = this.EVPos.Altitude;
+                this.Event.Latitude = this.EVPos.Latitude;
+                this.Event.Longitude = this.EVPos.Longitude;
+            }
         }
 
         private override void OnSave()

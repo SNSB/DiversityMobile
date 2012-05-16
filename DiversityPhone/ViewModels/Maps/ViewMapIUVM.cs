@@ -17,6 +17,7 @@ namespace DiversityPhone.ViewModels.Maps
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand ToggleEditable { get; private set; }
         public ReactiveCommand Delete { get; private set; }
+        public ReactiveCommand Reset { get; private set; }
         #endregion
 
         #region Properties
@@ -102,7 +103,8 @@ namespace DiversityPhone.ViewModels.Maps
             Save = new ReactiveCommand();
             Delete = new ReactiveCommand();
             Delete.Subscribe(_ => deleteGeoInformation());
-
+            Reset = new ReactiveCommand();
+            Reset.Subscribe(_ => restoreGeoInformation());
             ToggleEditable = new ReactiveCommand();
             var fals=Observable.Return<bool>(false);
             _IsEditable = new ObservableAsPropertyHelper<bool>(fals, null);
@@ -116,32 +118,31 @@ namespace DiversityPhone.ViewModels.Maps
                .Select(_ => IU),
                MessageContracts.SAVE);
 
-            Messenger.RegisterMessageSource( 
-               Delete
-               .Where(_ => IU!= null)
-               .Select(_ => IU)               
-               .Do(_ => OnDelete()),
-               MessageContracts.SAVE); //Deletes the geographic Information from the IU and saves the IU after that. The IU itself must not get deleted.
-
-            //On Delete or Save, Navigate Back
+            //On  Save, Navigate Back
             Messenger.RegisterMessageSource(
                Save
-               .Merge(Delete)
                .Select(_ => Page.Previous)
                );
         }
 
         private void deleteGeoInformation()
         {
-            if (this.IU != null)
+            if (this.IUPos != null)
             {
-                this.IU.Latitude = null;
-                this.IU.Longitude = null;
-                this.IU.Altitude = null;
-                this.IUPos = this.IU;
+                Localizable loc = new Localizable();
+                this.IUPos = loc;
             }
         }
 
+
+        private void restoreGeoInformation()
+        {
+            if (this.IU != null)
+            {
+                Localizable loc = new Localizable(IU.Altitude, IU.Latitude, IU.Longitude);
+                this.IUPos = loc;
+            }
+        }
 
         protected override Map ModelFromState(Services.PageState s)
         {
@@ -173,14 +174,14 @@ namespace DiversityPhone.ViewModels.Maps
                     if (int.TryParse(s.Referrer, out parent))
                     {
                         IU = Storage.getIdentificationUnitByID(parent);
-                        IUPos = IU;
+                        IUPos = new Localizable(IU.Altitude,IU.Latitude,IU.Longitude);
                         var unmodified = Observable.Return<bool>(IU.IsUnmodified());
                         ToggleEditable = new ReactiveCommand(unmodified);
                         _IsEditable = ;
                     }
                     else
                     {
-                        IUPos = null;
+                        IUPos = new Localizable();
                         IU = null;
                     }
                 }
@@ -197,14 +198,15 @@ namespace DiversityPhone.ViewModels.Maps
         #region Inheritance
         private override void UpdateModel()
         {
-
+            if (this.IU != null && this.IUPos!=null)
+            {
+                this.IU.Altitude = this.IUPos.Altitude;
+                this.IU.Latitude = this.IUPos.Latitude;
+                this.IU.Longitude = this.IUPos.Longitude;
+            }
         }
 
         private override void OnSave()
-        {
-        }
-
-        private override void OnDelete()
         {
         }
 
