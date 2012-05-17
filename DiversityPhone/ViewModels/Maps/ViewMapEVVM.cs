@@ -160,10 +160,7 @@ namespace DiversityPhone.ViewModels.Maps
                     if (int.TryParse(s.Referrer, out parent))
                     {
                         Event = Storage.getEventByID(parent);
-                        EVPos = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);
-                        var unmodified = Observable.Return<bool>(Event.IsUnmodified());
-                        ToggleEditable = new ReactiveCommand(unmodified);
-                        _IsEditable = ;
+                        EVPos = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);                
                     }
                     else
                         EVPos = null;
@@ -194,7 +191,7 @@ namespace DiversityPhone.ViewModels.Maps
         }
 
         #region Inheritance
-        private override void UpdateModel()
+        protected override void UpdateModel()
         {
 
             if (this.Event != null && this.EVPos != null)
@@ -205,11 +202,11 @@ namespace DiversityPhone.ViewModels.Maps
             }
         }
 
-        private override void OnSave()
+        protected override void OnSave()
         {
         }
 
-        private override void OnDelete()
+        protected override void OnDelete()
         {
         }
 

@@ -64,7 +64,7 @@ namespace DiversityPhone.ViewModels.Maps
         }
 
 
-        private override void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        protected override void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
             if (Geolocation.Watcher == null)
                 return;

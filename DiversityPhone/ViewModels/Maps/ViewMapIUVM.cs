@@ -105,9 +105,20 @@ namespace DiversityPhone.ViewModels.Maps
             Delete.Subscribe(_ => deleteGeoInformation());
             Reset = new ReactiveCommand();
             Reset.Subscribe(_ => restoreGeoInformation());
-            ToggleEditable = new ReactiveCommand();
-            var fals=Observable.Return<bool>(false);
-            _IsEditable = new ObservableAsPropertyHelper<bool>(fals, null);
+            //Only IUs that are not unmodified (havent been uploaded) can be made editable
+            ToggleEditable = new ReactiveCommand( 
+                ValidModel //At this point the UI has been loaded
+                .Select(_ => IU)
+                .Where(iu => iu != null) // Just to be safe
+                .Select(iu => !iu.IsUnmodified())
+                .StartWith(false)            
+                );
+            _IsEditable = ToggleEditable
+                .Select(_ => true) 
+                .StartWith(false)
+                .ToProperty(this, x => x.IsEditable);
+
+                
           
 
             Messenger.RegisterMessageSource(
@@ -174,10 +185,7 @@ namespace DiversityPhone.ViewModels.Maps
                     if (int.TryParse(s.Referrer, out parent))
                     {
                         IU = Storage.getIdentificationUnitByID(parent);
-                        IUPos = new Localizable(IU.Altitude,IU.Latitude,IU.Longitude);
-                        var unmodified = Observable.Return<bool>(IU.IsUnmodified());
-                        ToggleEditable = new ReactiveCommand(unmodified);
-                        _IsEditable = ;
+                        IUPos = new Localizable(IU.Altitude,IU.Latitude,IU.Longitude);                        
                     }
                     else
                     {
@@ -196,7 +204,7 @@ namespace DiversityPhone.ViewModels.Maps
         }
 
         #region Inheritance
-        private override void UpdateModel()
+        protected override void UpdateModel()
         {
             if (this.IU != null && this.IUPos!=null)
             {
@@ -206,7 +214,7 @@ namespace DiversityPhone.ViewModels.Maps
             }
         }
 
-        private override void OnSave()
+        protected override void OnSave()
         {
         }
 

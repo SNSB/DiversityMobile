@@ -20,7 +20,7 @@ using DiversityPhone.Messages;
 
 namespace DiversityPhone.Services
 {
-    public class GeoLocationService : IGeoLocationService
+    public class GeoLocationService : IGeoLocationService, IDisposable
     {
 
         private IList<IDisposable> _subscriptions;
@@ -435,5 +435,10 @@ namespace DiversityPhone.Services
 
         //#endregion
 
+
+        public void Dispose()
+        {
+            _Watcher.Dispose();
+        }
     }
 }

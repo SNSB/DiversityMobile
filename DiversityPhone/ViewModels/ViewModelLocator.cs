@@ -98,9 +98,9 @@ namespace DiversityPhone.ViewModels
 
         public EditMapVM EditMap { get { return _ioc.Resolve<EditMapVM>(); } }
         public ViewMapVM ViewMap { get { return _ioc.Resolve<ViewMapVM>(); } }
-        public ViewMapESVM ViewMap { get { return _ioc.Resolve<ViewMapESVM>(); } }
-        public ViewMapEVVM ViewMap { get { return _ioc.Resolve<ViewMapEVVM>(); } }
-        public ViewMapIUVM ViewMap { get { return _ioc.Resolve<ViewMapIUVM>(); } }
+        public ViewMapESVM ViewMapES { get { return _ioc.Resolve<ViewMapESVM>(); } }
+        public ViewMapEVVM ViewMapEV { get { return _ioc.Resolve<ViewMapEVVM>(); } }
+        public ViewMapIUVM ViewMapIU { get { return _ioc.Resolve<ViewMapIUVM>(); } }
         public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } }
         public ViewImageVM ViewImage { get { return _ioc.Resolve<ViewImageVM>(); } }

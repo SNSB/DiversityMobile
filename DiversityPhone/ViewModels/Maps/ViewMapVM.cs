@@ -22,7 +22,7 @@ using DiversityPhone.Model.Geometry;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewMapVM : ElementPageViewModel<Map>
+    public class ViewMapVM : EditElementPageVMBase<Map>
     {
 
         #region Services
@@ -212,7 +212,7 @@ namespace DiversityPhone.ViewModels
 
         # region Events
 
-        private virtual void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
+        protected virtual void watcher_PositionChanged(object sender, GeoPositionChangedEventArgs<GeoCoordinate> e)
         {
             if (Geolocation.Watcher == null)
                 return;
@@ -257,7 +257,7 @@ namespace DiversityPhone.ViewModels
 
  
 
-        protected virtual override Map ModelFromState(Services.PageState s)
+        protected override Map ModelFromState(Services.PageState s)
         {
             if (s.Context != null)
             {       
@@ -302,6 +302,11 @@ namespace DiversityPhone.ViewModels
             return new MapVM(Messenger, model, DiversityPhone.Services.Page.Current);
         }
 
+        protected override void UpdateModel()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region IDispose
@@ -329,6 +334,8 @@ namespace DiversityPhone.ViewModels
         }
 
         #endregion
+
+        
     }
 
 }
