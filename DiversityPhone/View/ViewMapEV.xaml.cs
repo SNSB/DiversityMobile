@@ -54,6 +54,9 @@ namespace DiversityPhone.View
             MainCanvas.Width = VM.BaseWidth * VM.Zoom;
         }
 
+        private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
+        {
+        }
 
         #endregion
 

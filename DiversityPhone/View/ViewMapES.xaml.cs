@@ -123,6 +123,10 @@ namespace DiversityPhone.View
             if (VM.EventSeries != null)
                 recalculateSeriesPoints();
         }
+
+        private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
+        {
+        }
         #endregion
 
         #region Scroll

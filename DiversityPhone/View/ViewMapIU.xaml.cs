@@ -54,6 +54,10 @@ namespace DiversityPhone.View
         }
 
 
+        private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
+        {
+        }
+
         #endregion
 
         #region Scroll
