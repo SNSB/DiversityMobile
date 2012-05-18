@@ -36,6 +36,7 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<string> _BusyMessage;
 
         public ReactiveCommand RefreshVocabulary{get; private set;}
+        public ReactiveCommand NavigateBack { get; private set; }
 
 
         private bool _UseGPS;
@@ -124,7 +125,19 @@ namespace DiversityPhone.ViewModels.Utility
             RefreshVocabulary
                 .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
 
-            
+            NavigateBack = new ReactiveCommand();
+            NavigateBack
+                .Subscribe(_ =>
+                {
+                    if (IsFirstSetup || IsBusy)
+                        Messenger.SendMessage<DialogMessage>(
+                            new DialogMessage(DialogType.OK,
+                                DiversityResources.Setup_Message_CantGoBack_Header,
+                                DiversityResources.Setup_Message_CantGoBack_Body));
+                    else
+                        Messenger.SendMessage(Page.Previous);
+                });
+                
 
             _IsBusy =
                 refreshVocabularyTask
@@ -208,6 +221,8 @@ namespace DiversityPhone.ViewModels.Utility
             storedConfig.Select(x => x == null)
                 .Subscribe(_IsFirstSetup);            
         }
+
+       
 
         private void saveModel()
         {

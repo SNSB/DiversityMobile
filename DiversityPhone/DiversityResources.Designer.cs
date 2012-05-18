@@ -250,6 +250,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can only use the application once it&apos;s been initialized ähnelt.
+        /// </summary>
+        public static string Setup_Message_CantGoBack_Body {
+            get {
+                return ResourceManager.GetString("Setup_Message_CantGoBack_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sorry ähnelt.
+        /// </summary>
+        public static string Setup_Message_CantGoBack_Header {
+            get {
+                return ResourceManager.GetString("Setup_Message_CantGoBack_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Can&apos;t download another taxon list. ähnelt.
         /// </summary>
         public static string TaxonManagement_Message_CantDownload {
