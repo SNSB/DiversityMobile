@@ -65,11 +65,20 @@ namespace DiversityPhone.Services
                         {
                             if (!runningTask.HasStarted || task.CanResume)
                             {
-                                task.ItemsInflight.StartWith(0)
-                                    .Zip(task.ItemsInflight, (prev, now) => prev == 1 && now == 0)
-                                    .Where(free => free && !shuttingDown)
-                                    .Take(1)
-                                    .Subscribe(_ => taskFinished());
+                                Observable.Amb(
+                                    task.AsyncCompletedNotification
+                                    .Select(_ => true),
+                                    task.AsyncErrorNotification
+                                    .Select(_ => false)
+                                    )
+                                    .Subscribe(
+                                        success =>
+                                        {
+                                            if (success)
+                                                taskFinished();
+                                            else
+                                                taskFailed();
+                                        });
 
                                 runningTask.WasCancelled = false;
                                 runningTask.HasStarted = true;
@@ -93,6 +102,12 @@ namespace DiversityPhone.Services
                     }                 
                 }
             }                      
+        }
+
+        private void taskFailed()
+        {
+            registry[runningTask.Type].CleanupAfter(runningTask);
+            taskFinished();
         }
 
         private void taskFinished()

@@ -14,9 +14,9 @@ namespace DiversityPhone.Services
         /// </summary>
         IObservable<object> AsyncCompletedNotification { get; }
         /// <summary>
-        /// Sends the argument object used to invoke the Task on cleanup
+        /// Sends the argument object used to invoke the Task on task failure
         /// </summary>
-        IObservable<object> AsyncCleanupNotification { get; }
+        IObservable<object> AsyncErrorNotification { get; }
         /// <summary>
         /// Sends the argument object used to invoke the Task on execution
         /// </summary>

@@ -13,6 +13,7 @@ using System.Reactive.Linq;
 using Funq;
 using DiversityPhone.ViewModels;
 using System.Collections.Generic;
+using System.ServiceModel;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
@@ -75,15 +76,17 @@ namespace DiversityPhone.Services.BackgroundTasks
                     CurrentState = STATE_STARTED;
 
                     try
-                    {
+                    {  
+                        //If the service is unavailable, the resulting exceptions abort the execution
                         Repo.DownloadTaxonListChunked(list)
-                        .ForEach(chunk => Taxa.addTaxonNames(chunk, list));
+                        .ForEach(chunk => Taxa.addTaxonNames(chunk, list));                                           
 
                         CurrentState = STATE_FINISHED;
                     }
-                    catch (WebException) // On app resume, catch webexception
+                    catch (WebException) // On app resume, catch webexception (and retry)
                     {
                     }
+                    
                 }
             }
         }

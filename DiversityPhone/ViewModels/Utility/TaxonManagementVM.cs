@@ -219,7 +219,7 @@ namespace DiversityPhone.ViewModels
                 .AsyncStartedNotification
                 .Subscribe(list => startDownload(list as TaxonList));
             downloadTaxonList
-                .AsyncCleanupNotification
+                .AsyncErrorNotification
                 .Subscribe(list => abortDownload(list as TaxonList));
 
             downloadTaxonList

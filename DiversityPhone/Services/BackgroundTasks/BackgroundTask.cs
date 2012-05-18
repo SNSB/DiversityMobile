@@ -96,7 +96,7 @@ namespace DiversityPhone.Services
             inflight.Connect();
             _ItemsInFlightObs = inflight;
 
-            Cancelled = false;
+            Cancelled = false;            
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
@@ -140,9 +140,9 @@ namespace DiversityPhone.Services
             get { return Executor.AsyncCompletedNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
         }
 
-        public IObservable<object> AsyncCleanupNotification
+        public IObservable<object> AsyncErrorNotification
         {
-            get { return _cleanupSubject; }
+            get { return Executor.AsyncErrorNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
         }
 
         public IObservable<object> AsyncStartedNotification
