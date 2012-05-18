@@ -1,11 +1,9 @@
 ﻿using ReactiveUI;
-using System.Reactive.Subjects;
 using Svc = DiversityPhone.DiversityService;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
-using System.Linq;
 using System;
 using DiversityPhone.Services;
 
@@ -209,7 +207,9 @@ namespace DiversityPhone.ViewModels.Utility
                 Result = settingsValid()
                     .Select(valid => (valid) ? createSettings() : null);
                     
-            }           
+            }
+
+            
         }
     }
 }

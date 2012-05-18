@@ -183,7 +183,10 @@
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>
   </data>
-  <data name="Setup_Message_CantGoBack_Header" xml:space="preserve">
+  <data name="Setup_Message_ServiceUnavailable_Body" xml:space="preserve">
+    <value>The service is currently unavailable, please try again later</value>
+  </data>
+  <data name="Setup_Message_SorryHeader" xml:space="preserve">
     <value>Sorry</value>
   </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">

@@ -259,11 +259,20 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The service is currently unavailable, please try again later ähnelt.
+        /// </summary>
+        public static string Setup_Message_ServiceUnavailable_Body {
+            get {
+                return ResourceManager.GetString("Setup_Message_ServiceUnavailable_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Sorry ähnelt.
         /// </summary>
-        public static string Setup_Message_CantGoBack_Header {
+        public static string Setup_Message_SorryHeader {
             get {
-                return ResourceManager.GetString("Setup_Message_CantGoBack_Header", resourceCulture);
+                return ResourceManager.GetString("Setup_Message_SorryHeader", resourceCulture);
             }
         }
         

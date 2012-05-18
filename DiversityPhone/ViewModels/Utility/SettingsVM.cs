@@ -132,7 +132,7 @@ namespace DiversityPhone.ViewModels.Utility
                     if (IsFirstSetup || IsBusy)
                         Messenger.SendMessage<DialogMessage>(
                             new DialogMessage(DialogType.OK,
-                                DiversityResources.Setup_Message_CantGoBack_Header,
+                                DiversityResources.Setup_Message_SorryHeader,
                                 DiversityResources.Setup_Message_CantGoBack_Body));
                     else
                         Messenger.SendMessage(Page.Previous);
