@@ -6,7 +6,7 @@ namespace DiversityPhone.Services
 {
     public static class DiversityServiceExtensions
     {
-        public static IObservable<T> handleServiceExceptions<T>(this IObservable<T> This, T def = default(T))
+        public static IObservable<T> OnServiceUnavailable<T>(this IObservable<T> This, Func<T> onException)
         {
             var messenger = App.IOC.Resolve<IMessageBus>();
 
@@ -14,12 +14,14 @@ namespace DiversityPhone.Services
                 .Catch((Exception ex) =>
                 {
                     if (ex is ServerTooBusyException || ex is EndpointNotFoundException)
-                        messenger.SendMessage(
-                            new DialogMessage(Messages.DialogType.OK,
-                                DiversityResources.Setup_Message_SorryHeader,
-                                DiversityResources.Setup_Message_ServiceUnavailable_Body));
-
-                    return Observable.Return<T>(def);
+                    {
+                        if (onException != null)
+                            return Observable.Return(onException());
+                        else
+                            return Observable.Return(default(T));
+                    }
+                    else
+                        throw (ex);                    
                 });
                 
         }

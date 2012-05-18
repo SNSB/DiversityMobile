@@ -155,7 +155,7 @@ namespace DiversityPhone.ViewModels.Utility
             _Setup = _IsFirstSetup 
                 .Where(setup => setup)
                 .Take(1)
-                .Select(setup => new SetupVM(ioc.Resolve<IDiversityServiceClient>()))                        
+                .Select(setup => new SetupVM(ioc))                        
                 .ToProperty(this, x => x.Setup);
             _Setup
                 .CombineLatest(_IsFirstSetup, (setup, _) => setup)

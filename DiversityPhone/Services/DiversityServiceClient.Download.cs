@@ -24,10 +24,9 @@ namespace DiversityPhone.Services
             return new UserCredentials(settings);            
         }
 
-        private static IObservable<T> guardedSingleResultObservable<T>(IObservable<T> source)
+        private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
         {
             var res = source
-                .handleServiceExceptions()
                 .FirstAsync()
                 .Replay(1);
 
@@ -40,7 +39,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetUserInfoCompletedEventArgs>, GetUserInfoCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetUserInfoCompleted += d, d => _svc.GetUserInfoCompleted -= d)
                 .Select(args => args.Result);
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetUserInfoAsync(login);
             return res;
         }
@@ -49,7 +48,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetRepositoriesCompletedEventArgs>, GetRepositoriesCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetRepositoriesCompleted += d, d => _svc.GetRepositoriesCompleted -= d)
                 .Select(args => args.Result as IList<Repository>);
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetRepositoriesAsync(login);
             return res;
         }
@@ -58,7 +57,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetProjectsForUserCompletedEventArgs>, GetProjectsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetProjectsForUserCompleted += d, d => _svc.GetProjectsForUserCompleted -= d)
                 .Select(args => args.Result as IList<Project>);
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetProjectsForUserAsync(login);
             return res;
         }
@@ -67,7 +66,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d)
                 .Select(args => args.Result as IEnumerable<TaxonList>);
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetTaxonListsForUserAsync(GetCreds());
             return res;
         }
@@ -115,7 +114,7 @@ namespace DiversityPhone.Services
                         PropertyID = p.PropertyID,                        
                         DisplayText = p.DisplayText
                     }));
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetPropertiesForUserAsync(login);
             return res;
         }
@@ -183,7 +182,7 @@ namespace DiversityPhone.Services
                        ParentCode = term.ParentCode,
                        SourceID = term.Source
                    }));
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
                
             _svc.GetStandardVocabularyAsync();
             return res;
@@ -201,7 +200,7 @@ namespace DiversityPhone.Services
                        DisplayText = an.DisplayText,
                        MeasurementUnit = an.MeasurementUnit
                    }));
-            var res = guardedSingleResultObservable(source);            
+            var res = singleResultObservable(source);            
             _svc.GetAnalysesForProjectAsync(projectID, login);            
             return res;
         }
@@ -219,7 +218,7 @@ namespace DiversityPhone.Services
                        Notes = ar.Notes,
                        Result = ar.Result
                    }));
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
             _svc.GetAnalysisResultsForProjectAsync(projectID, login);
             return res;
         }
@@ -234,7 +233,7 @@ namespace DiversityPhone.Services
                        AnalysisID = atg.AnalysisID,
                        TaxonomicGroup = atg.TaxonomicGroup
                    }));
-            var res = guardedSingleResultObservable(source);
+            var res = singleResultObservable(source);
 
             _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login);
             return res;

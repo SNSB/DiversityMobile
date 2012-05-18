@@ -6,6 +6,7 @@ using DiversityPhone.Model;
 using ReactiveUI.Xaml;
 using System;
 using DiversityPhone.Services;
+using Funq;
 
 
 namespace DiversityPhone.ViewModels.Utility
@@ -14,7 +15,8 @@ namespace DiversityPhone.ViewModels.Utility
     {
         public class SetupVM : ReactiveObject
         {
-            IDiversityServiceClient _DivSvc;
+            IDiversityServiceClient Repository;
+            IMessageBus Messenger;
 
 
             #region Setup Properties
@@ -139,9 +141,11 @@ namespace DiversityPhone.ViewModels.Utility
                 return settingsValid.DistinctUntilChanged();
             }       
 
-            public SetupVM(IDiversityServiceClient divsvc)
+            public SetupVM(Container ioc)
             {
-                _DivSvc = divsvc;
+                Repository = ioc.Resolve<IDiversityServiceClient>();
+                Messenger = ioc.Resolve<IMessageBus>();
+
 
                 Databases = new ListSelectionHelper<Svc.Repository>();
                 Projects = new ListSelectionHelper<Svc.Project>();
@@ -173,7 +177,12 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingRepositories);
 
                 getRepositories                    
-                    .RegisterAsyncFunction(login => _DivSvc.GetRepositories(login as Svc.UserCredentials).Timeout(TimeSpan.FromSeconds(5), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>())).First())
+                    .RegisterAsyncFunction(login => 
+                        Repository
+                        .GetRepositories(login as Svc.UserCredentials)
+                        .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})
+                        .Timeout(TimeSpan.FromSeconds(5), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
+                        .First())
                     .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
                     .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
                     .Do(repos => 
@@ -190,7 +199,11 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToProperty(this, x => x.GettingProjects);
                 
                 getProjects
-                    .RegisterAsyncFunction(login => _DivSvc.GetProjectsForUser(login as Svc.UserCredentials).First())                     
+                    .RegisterAsyncFunction(login => 
+                        Repository
+                        .GetProjectsForUser(login as Svc.UserCredentials)
+                        .OnServiceUnavailable(() => { notifySvcUnavailable(); return new List<Svc.Project>() as IList<Svc.Project>;} )
+                        .First())                     
                     .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
                     .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
                     .Do(projects =>
@@ -201,14 +214,27 @@ namespace DiversityPhone.ViewModels.Utility
 
                 creds.Subscribe(login => getUserInfo.Execute(login));
                 _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
-                    getUserInfo
-                    .RegisterAsyncFunction(login => _DivSvc.GetUserInfo(login as Svc.UserCredentials).First()), _ => { }, null);          
+                        getUserInfo
+                        .RegisterAsyncFunction(login => 
+                            Repository
+                            .GetUserInfo(login as Svc.UserCredentials)
+                            .OnServiceUnavailable(() => { notifySvcUnavailable(); return null;})
+                            .First()),
+                        _ => { }, null
+                    );          
 
                 Result = settingsValid()
                     .Select(valid => (valid) ? createSettings() : null);
                     
             }
 
+            private void notifySvcUnavailable()
+            {
+                Messenger.SendMessage(
+                    new DialogMessage( Messages.DialogType.OK,
+                        DiversityResources.Setup_Message_SorryHeader,
+                        DiversityResources.Setup_Message_ServiceUnavailable_Body));
+            }
             
         }
     }
