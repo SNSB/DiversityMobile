@@ -22,9 +22,12 @@ namespace DiversityPhone.View
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
 
+        private ViewMapEditableAppbar _appbar;
+
         public ViewMapEV()
         {
             InitializeComponent();
+            _appbar = new ViewMapEditableAppbar(this.ApplicationBar, VM);
         }
 
         private void focusOn(double x, double y)

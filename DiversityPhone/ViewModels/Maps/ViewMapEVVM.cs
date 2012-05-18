@@ -12,15 +12,10 @@ using System.Windows;
 
 namespace DiversityPhone.ViewModels.Maps
 {
-    public class ViewMapEVVM : ViewMapVM
+    public class ViewMapEVVM : ViewMapEditVM
     {
 
-        #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        public ReactiveCommand Reset { get; private set; }
-        #endregion
+      
 
         #region Properties
 
@@ -34,83 +29,26 @@ namespace DiversityPhone.ViewModels.Maps
             }
         }
 
-        public Point EVPosIconSize = new Point(32, 32);
-
-        private ILocalizable _EVPos = new Localizable();
-        public ILocalizable EVPos
-        {
-            get { return _EVPos; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.EVPos, ref _EVPos, value);
-                if (EVPos != null)
-                    EVPerc = this.calculateGPSToPercentagePoint(EVPos.Latitude, EVPos.Longitude);
-                else
-                    EVPerc = null;
-            }
-        }
-
-        private Point? _EVPerc = null;
-        public Point? EVPerc
-        {
-            get { return _EVPerc; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.EVPerc, ref _EVPerc, value);
-                EVPosPoint = base.calculatePercentToPixelPoint(EVPerc, EVPosIconSize.X, EVPosIconSize.Y, Zoom);
-            }
-        }
-
-        private Point _EVPosPoint;
-        public Point EVPosPoint
-        {
-
-            get { return _EVPosPoint; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.EVPosPoint, ref _EVPosPoint, value);
-            }
-        }
-
-        public override double Zoom
-        {
-            get { return _Zoom; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
-                ActualPosPoint = this.calculatePercentToPixelPoint(ActualPerc, ActualPosIconSize.X, ActualPosIconSize.Y, Zoom);
-                EVPosPoint = this.calculatePercentToPixelPoint(EVPerc, EVPosIconSize.X, EVPosIconSize.Y, Zoom);
-            }
-        }
-
-        private ObservableAsPropertyHelper<bool> _IsEditable;
-        /// <summary>
-        /// Shows, whether the current Object can be Edited
-        /// </summary>
-        public bool IsEditable
-        {
-            get
-            {
-                return _IsEditable.Value;
-            }
-        }
+       
 
         #endregion
 
         public ViewMapEVVM(IMapStorageService maps, IGeoLocationService geoLoc, ISettingsService settings):base(maps,geoLoc,settings)
         {
-            Save = new ReactiveCommand();
-            Delete = new ReactiveCommand();
-            Reset = new ReactiveCommand();
+          
             Reset.Subscribe(_ => restoreGeoInformation());
-            ToggleEditable = new ReactiveCommand();
 
-            _IsEditable = DistinctStateObservable
-               .Select(s => s.Context == null) //Newly created Units are immediately editable //Not necessary here
-               .Merge(
-                   ToggleEditable.Select(_ => !IsEditable) //Toggle Editable
-               )
-               .ToProperty(this, vm => vm.IsEditable);
+            ToggleEditable = new ReactiveCommand(
+              ValidModel //At this point the UI has been loaded
+              .Select(_ => Event)
+              .Where(ev => ev != null) // Just to be safe
+              .Select(ev => !ev.IsUnmodified())
+              .StartWith(false)
+              );
+            _IsEditable = ToggleEditable
+                .Select(_ => true)
+                .StartWith(false)
+                .ToProperty(this, x => x.IsEditable);
 
             Messenger.RegisterMessageSource(
                Save
@@ -119,14 +57,6 @@ namespace DiversityPhone.ViewModels.Maps
                .Do(_ => OnSave())
                .Select(_ => Event),
                MessageContracts.SAVE);
-
-           
-
-            //On Delete or Save, Navigate Back
-            Messenger.RegisterMessageSource(
-               Save
-               .Select(_ => Page.Previous)
-               );
         }
 
 
@@ -160,10 +90,10 @@ namespace DiversityPhone.ViewModels.Maps
                     if (int.TryParse(s.Referrer, out parent))
                     {
                         Event = Storage.getEventByID(parent);
-                        EVPos = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);                
+                        ItemPos = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);                
                     }
                     else
-                        EVPos = null;
+                        ItemPos = null;
                 }
 
                 return Map;
@@ -171,14 +101,7 @@ namespace DiversityPhone.ViewModels.Maps
             return null;
         }
 
-        private void deleteGeoInformation()
-        {
-            if (this.EVPos != null)
-            {
-                Localizable loc = new Localizable();
-                this.EVPos = loc;
-            }
-        }
+       
 
 
         private void restoreGeoInformation()
@@ -186,31 +109,31 @@ namespace DiversityPhone.ViewModels.Maps
             if (this.Event != null)
             {
                 Localizable loc = new Localizable(Event.Altitude, Event.Latitude, Event.Longitude);
-                this.EVPos = loc;
+                this.ItemPos = loc;
             }
         }
 
-        #region Inheritance
-        protected override void UpdateModel()
+       
+        protected void UpdateModel()
         {
 
-            if (this.Event != null && this.EVPos != null)
+            if (this.Event != null && this.ItemPos != null)
             {
-                this.Event.Altitude = this.EVPos.Altitude;
-                this.Event.Latitude = this.EVPos.Latitude;
-                this.Event.Longitude = this.EVPos.Longitude;
+                this.Event.Altitude = this.ItemPos.Altitude;
+                this.Event.Latitude = this.ItemPos.Latitude;
+                this.Event.Longitude = this.ItemPos.Longitude;
             }
         }
 
-        protected override void OnSave()
+        protected  void OnSave()
         {
         }
 
-        protected override void OnDelete()
+        protected void OnDelete()
         {
         }
 
-        #endregion
+      
 
     }
 }

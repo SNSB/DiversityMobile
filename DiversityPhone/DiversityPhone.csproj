@@ -216,6 +216,7 @@
     </Compile>
     <Compile Include="ViewModels\Maps\ViewDLMVM.cs" />
     <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapEditVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapESVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapIUVM.cs" />
@@ -233,6 +234,7 @@
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
@@ -269,7 +271,7 @@
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditPageAppBarUpdater.cs" />
+    <Compile Include="View\Appbar\EditPageAppBarUpdater.cs" />
     <Compile Include="View\EditPicture.xaml.cs">
       <DependentUpon>EditPicture.xaml</DependentUpon>
     </Compile>
@@ -285,7 +287,7 @@
     <Compile Include="View\ViewAudio.xaml.cs">
       <DependentUpon>ViewAudio.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewAudioPageAppbar.cs" />
+    <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>

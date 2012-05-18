@@ -22,7 +22,7 @@ using DiversityPhone.Model.Geometry;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewMapVM : EditElementPageVMBase<Map>
+    public class ViewMapVM : ElementPageViewModel<Map>
     {
 
         #region Services
@@ -292,20 +292,12 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        protected override IObservable<bool> CanSave()
-        {
-            return Observable.Return(false);
-        }
-
         protected override ElementVMBase<Map> ViewModelFromModel(Map model)
         {
             return new MapVM(Messenger, model, DiversityPhone.Services.Page.Current);
         }
 
-        protected override void UpdateModel()
-        {
-            throw new NotImplementedException();
-        }
+      
 
         #endregion
 

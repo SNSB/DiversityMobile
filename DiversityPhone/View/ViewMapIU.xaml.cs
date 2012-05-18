@@ -20,10 +20,12 @@ namespace DiversityPhone.View
         private ViewMapIUVM VM { get { return this.DataContext as ViewMapIUVM; } }
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
+        private ViewMapEditableAppbar _appbar;
 
         public ViewMapIU()
         {
             InitializeComponent();
+            _appbar = new ViewMapEditableAppbar(this.ApplicationBar, VM);
         }
 
         private void focusOn(double x, double y)
