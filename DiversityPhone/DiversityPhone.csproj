@@ -217,6 +217,10 @@
     </Compile>
     <Compile Include="ViewModels\Maps\ViewDLMVM.cs" />
     <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapEditVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapESVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
+    <Compile Include="ViewModels\Maps\ViewMapIUVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
@@ -231,6 +235,7 @@
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
@@ -267,7 +272,7 @@
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditPageAppBarUpdater.cs" />
+    <Compile Include="View\Appbar\EditPageAppBarUpdater.cs" />
     <Compile Include="View\EditPicture.xaml.cs">
       <DependentUpon>EditPicture.xaml</DependentUpon>
     </Compile>
@@ -283,7 +288,7 @@
     <Compile Include="View\ViewAudio.xaml.cs">
       <DependentUpon>ViewAudio.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewAudioPageAppbar.cs" />
+    <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
@@ -334,6 +339,15 @@
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapES.xaml.cs">
+      <DependentUpon>ViewMapES.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapEV.xaml.cs">
+      <DependentUpon>ViewMapEV.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewMapIU.xaml.cs">
+      <DependentUpon>ViewMapIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewVideo.xaml.cs">
       <DependentUpon>ViewVideo.xaml</DependentUpon>
@@ -454,6 +468,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewMap.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapES.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapEV.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ViewMapIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -64,10 +64,29 @@ namespace DiversityPhone.ViewModels
 
         private IList<MapVM> updatedMapList(PageState s)
         {
+            Page destination = Page.ViewMap;
+            switch (s.ReferrerType)
+            {
+                case ReferrerType.EventSeries:
+                    destination = Page.ViewMapES;
+                    break;
+                case ReferrerType.Event:
+                    destination = Page.ViewMapEV;
+                    break;
+                case ReferrerType.IdentificationUnit:
+                    destination = Page.ViewMapIU;
+                    break;
+                default:
+                    destination = Page.ViewMap;
+                    break;
+            }
             
             return new ObservableCollection<MapVM>(
                 _maps.getAllMaps().Select(
-                (model) => new MapVM(Messenger, model, Page.ViewMap, s.ReferrerType,s.Referrer)
+                (model) => 
+                    
+                    new MapVM(Messenger, model, destination, s.ReferrerType,s.Referrer)
+                    
                 ));
         }
 

@@ -30,6 +30,9 @@ namespace DiversityPhone.Services
         DownLoadMaps,
         SelectMaps,
         ViewMap,
+        ViewMapES,
+        ViewMapEV,
+        ViewMapIU,
         TaxonManagement
     }
 }

@@ -10,26 +10,22 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using DiversityPhone.Model;
-using DiversityPhone.ViewModels;
-using System.Windows.Media.Imaging;
-using System.Collections.Specialized;
+using DiversityPhone.ViewModels.Maps;
 
 namespace DiversityPhone.View
 {
-    public partial class ViewMap : PhoneApplicationPage
+    public partial class ViewMapIU : PhoneApplicationPage
     {
 
-        private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
+        private ViewMapIUVM VM { get { return this.DataContext as ViewMapIUVM; } }
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
+        private ViewMapEditableAppbar _appbar;
 
-
-
-        public ViewMap()
+        public ViewMapIU()
         {
             InitializeComponent();
-
+            _appbar = new ViewMapEditableAppbar(this.ApplicationBar, VM);
         }
 
         private void focusOn(double x, double y)
@@ -56,8 +52,9 @@ namespace DiversityPhone.View
             transform.ScaleX = scale;
             transform.ScaleY = scale;
             MainCanvas.Height = VM.BaseHeight * VM.Zoom;
-            MainCanvas.Width  = VM.BaseWidth * VM.Zoom;    
+            MainCanvas.Width = VM.BaseWidth * VM.Zoom;
         }
+
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
         {
@@ -68,10 +65,10 @@ namespace DiversityPhone.View
         #region Scroll
 
         private void scrollViewer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        { 
+        {
             if (VM != null)
-                if(VM.ActualPosPoint.X>0 && VM.ActualPosPoint.Y>0)
-                        focusOn(VM.ActualPosPoint.X-scrollViewer.Width/2, VM.ActualPosPoint.Y-scrollViewer.Height/2);
+                if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
+                    focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
         }
 
         private void scrollViewer_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)

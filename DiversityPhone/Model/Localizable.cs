@@ -14,6 +14,8 @@ namespace DiversityPhone.Model
 {
     public class Localizable:ReactiveObject, ILocalizable
     {
+
+      
         private double? _Altitude;
         public double? Altitude
         {
@@ -32,5 +34,17 @@ namespace DiversityPhone.Model
             get { return _Longitude; }
             set { this.RaiseAndSetIfChanged(x => x.Longitude, ref _Longitude, value); }
         }
+
+        public Localizable()
+        {
+        }
+
+        public Localizable(double? altitude, double? latitude, double? longitude)
+        {
+            Altitude = altitude;
+            Latitude = latitude;
+            Longitude = longitude;
+        }
+
     }
 }
