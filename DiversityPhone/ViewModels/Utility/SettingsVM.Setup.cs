@@ -232,8 +232,8 @@ namespace DiversityPhone.ViewModels.Utility
             {
                 Messenger.SendMessage(
                     new DialogMessage( Messages.DialogType.OK,
-                        DiversityResources.Setup_Message_SorryHeader,
-                        DiversityResources.Setup_Message_ServiceUnavailable_Body));
+                        DiversityResources.Message_SorryHeader,
+                        DiversityResources.Message_ServiceUnavailable_Body));
             }
             
         }
