@@ -135,9 +135,10 @@ namespace DiversityPhone.Services.BackgroundTasks
                                 Repository.DownloadPropertyValuesChunked(p)
                                     .ForEach(chunk => Vocabulary.addPropertyNames(chunk));
                             }
+                            CurrentStep = STATE_ALL_DONE;
                             break;
                         default:
-                            State[KEY_STATE] = STATE_ALL_DONE;
+                            CurrentStep = STATE_ALL_DONE;
                             break;
                     }
                 }       
@@ -146,7 +147,7 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         protected override void Cancel()
         {
-            throw new NotImplementedException();
+            
         }
 
         protected override void Cleanup(object arg)
