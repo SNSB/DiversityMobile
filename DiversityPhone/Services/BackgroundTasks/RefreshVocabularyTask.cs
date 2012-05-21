@@ -54,9 +54,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                     return STATE_INITIAL;
             }
             set
-            {
-                if (!Cancelled)
-                    State[KEY_STATE] = value;
+            {                
+                State[KEY_STATE] = value;
             }
         }
 

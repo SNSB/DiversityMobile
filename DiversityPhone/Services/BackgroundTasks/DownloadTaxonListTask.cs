@@ -39,9 +39,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                     return STATE_INITIAL;
             }
             set
-            {
-                if (!Cancelled)
-                    State[KEY_PROGRESS] = value;
+            {                
+                State[KEY_PROGRESS] = value;
             }
         }
 
@@ -83,8 +82,9 @@ namespace DiversityPhone.Services.BackgroundTasks
 
                         CurrentState = STATE_FINISHED;
                     }
-                    catch (WebException) // On app resume, catch webexception (and retry)
+                    catch (WebException ex) // On app resume, catch webexception (and retry)
                     {
+                        var t = ex.Message;
                     }
                     
                 }

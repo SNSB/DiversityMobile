@@ -20,13 +20,7 @@ namespace DiversityPhone.Services
         /// - The partial results of this Invocation for the purpose of resuming it
         /// - etc.
         /// </summary>
-        protected Dictionary<string, string> State { get { return Invocation.State; } }        
-
-        /// <summary>
-        /// This Flag is set, after the Cancel Method has run.
-        /// The Task is expected to refrain from changing the state Dictionary after this flag is set.
-        /// </summary>
-        public bool Cancelled { get; private set; }
+        protected Dictionary<string, string> State { get { return Invocation.State; } }       
 
         /// <summary>
         /// Reports a given status string via the AsyncProgressMessages Property
@@ -94,16 +88,13 @@ namespace DiversityPhone.Services
 
             var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Replay(1);
             inflight.Connect();
-            _ItemsInFlightObs = inflight;
-
-            Cancelled = false;            
+            _ItemsInFlightObs = inflight;                      
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
         {
             if (Executor.CanExecute(null))
-            {
-                Cancelled = false;
+            {                
                 Invocation = inv;
                 if (inv.Argument != null)
                     saveArgumentToState(inv.Argument);
@@ -116,8 +107,7 @@ namespace DiversityPhone.Services
 
         public void CancelInvocation()
         {            
-            Cancel();
-            Cancelled = true;
+            Cancel();            
         }
 
 
