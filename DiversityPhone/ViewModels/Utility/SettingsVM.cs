@@ -119,9 +119,12 @@ namespace DiversityPhone.ViewModels.Utility
 
             RefreshVocabulary = new ReactiveCommand(
                 _IsFirstSetup.Select(x => !x)
-                .CombineLatest(refreshVocabularyTask.ItemsInflight.Select(items => items == 0),
-                    (notfirstsetup, noitemsinflight) => notfirstsetup && noitemsinflight)
-                .StartWith(false));
+                .StartWith(IsFirstSetup)
+                .CombineLatest(
+                    refreshVocabularyTask.BusyObservable
+                    .StartWith(refreshVocabularyTask.IsBusy),
+                    (notfirstsetup, busy) => notfirstsetup && !busy)
+                );
             RefreshVocabulary
                 .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
 

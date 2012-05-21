@@ -14,7 +14,7 @@ namespace DiversityPhone.Services
         [DataMember]
         public bool HasStarted { get; set; }
         [DataMember]
-        public bool WasCancelled { get; set; }
+        public bool WasSuspended { get; set; }
                
         [DataMember]
         public Dictionary<string, string> State { get; set; }

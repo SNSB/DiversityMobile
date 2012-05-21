@@ -137,7 +137,7 @@ namespace DiversityPhone.Services
             }            
         }
 
-        public void CancelInvocation()
+        public void StoreInvocation()
         {               
             Cancel();            
         }
@@ -168,7 +168,7 @@ namespace DiversityPhone.Services
 
         public IObservable<object> AsyncStartedNotification
         {
-            get { return _CompletedObs; }
+            get { return _StartObs; }
         }
 
         public IObservable<bool> CanExecuteObservable

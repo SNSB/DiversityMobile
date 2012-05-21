@@ -61,7 +61,7 @@ namespace DiversityPhone.Services
                     BackgroundTask task;
                     if(registry.TryGetValue(runningTask.Type, out task))
                     {
-                        if (task.CurrentItemsInFlight == 0)
+                        if (!task.IsBusy)
                         {
                             if (!runningTask.HasStarted || task.CanResume)
                             {
@@ -80,7 +80,7 @@ namespace DiversityPhone.Services
                                                 taskFailed();
                                         });
 
-                                runningTask.WasCancelled = false;
+                                runningTask.WasSuspended = false;
                                 runningTask.HasStarted = true;
                                 
                                 task.Invoke(runningTask);
@@ -127,16 +127,16 @@ namespace DiversityPhone.Services
         public IEnumerable<BackgroundTaskInvocation> dumpQueue()
         {
             lock (this)
-            {                
+            {
+                var tasks = waitingTasks.ToList();
                 if (runningTask != null)
                 {
-                    runningTask.WasCancelled = true;
+                    runningTask.WasSuspended = true;
                     var bgtask = registry[runningTask.Type];
-                    bgtask.CancelInvocation();                    
-                    waitingTasks.Enqueue(runningTask);
-                    runningTask = null;
-                }        
-                return waitingTasks;                      
+                    bgtask.StoreInvocation();                    
+                    tasks.Add(runningTask);                    
+                }       
+                return tasks;                    
             }
         }
 
