@@ -55,7 +55,7 @@ namespace DiversityPhone
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {    
             var settingsvalid = App.Settings.getSettings() != null;
-            var loadingvocabulary = App.BackgroundTasks.getTaskObject<RefreshVocabularyTask>().CurrentItemsInFlight > 0;
+            var loadingvocabulary = App.BackgroundTasks.getTaskObject<RefreshVocabularyTask>().IsBusy;
             if (!settingsvalid || loadingvocabulary)
                 MessageBus.Current.SendMessage<Page>(Page.Settings);
             else

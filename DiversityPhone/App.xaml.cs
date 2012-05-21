@@ -137,7 +137,8 @@ namespace DiversityPhone
                 && savedTasks != null
                 && savedTasks is IEnumerable<BackgroundTaskInvocation>)
             {
-                BackgroundTasks.initialize(savedTasks as IEnumerable<BackgroundTaskInvocation>);
+                BackgroundTasks.setQueue(savedTasks as IEnumerable<BackgroundTaskInvocation>);
+                BackgroundTasks.resume();
             }
         }
 
@@ -157,7 +158,7 @@ namespace DiversityPhone
 
 
             PhoneApplicationService.Current.State.Remove(TASK_KEY); // remove serialized tasks, they will resume automatically
-                
+            BackgroundTasks.resume();    
             
             // Ensure that application state is restored appropriately
             
@@ -169,14 +170,17 @@ namespace DiversityPhone
         {
             // Ensure that required application state is persisted here./
             PhoneApplicationService.Current.State[STATE_KEY] = NavSvc.States.ToList();
-            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.shutdown().ToList();
+
+            BackgroundTasks.suspend();
+            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.shutdown().ToList();
+            BackgroundTasks.suspend();
+            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
         }
 
         // Code to execute if a navigation fails

@@ -81,9 +81,10 @@ namespace DiversityPhone.ViewModels
 
             downloadTaxonList = Background.getTaskObject<DownloadTaxonListTask>();
 
-            _IsBusy = Observable.Merge(
-                deleteTaxonList.ItemsInflight.Select(count => count > 0),
-                downloadTaxonList.ItemsInflight.Select(count => count > 0)
+            _IsBusy = Observable.CombineLatest(
+                deleteTaxonList.ItemsInflight.Select(count => count > 0).StartWith(false),
+                downloadTaxonList.BusyObservable.StartWith(false),
+                (del, download) => del || download
                 ).ToProperty(this, x => x.IsBusy, false);
 
             Select = new ReactiveCommand(_IsBusy.Select(x => !x));

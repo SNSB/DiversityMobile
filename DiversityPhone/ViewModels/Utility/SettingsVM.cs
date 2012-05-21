@@ -141,8 +141,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             _IsBusy =
                 refreshVocabularyTask
-                .ItemsInflight
-                .Select(items => items > 0)
+                .BusyObservable
                 .ToProperty(this, x => x.IsBusy);
 
             _BusyMessage = refreshVocabularyTask.AsyncProgressMessages

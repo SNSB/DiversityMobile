@@ -71,13 +71,28 @@ namespace DiversityPhone.Services
 
         #endregion
 
-        public BackgroundTaskInvocation Invocation { get; private set; }
-
-        private ISubject<object> _cleanupSubject = new Subject<object>();
+        public BackgroundTaskInvocation Invocation { get; private set; }        
         protected ReactiveAsyncCommand Executor {get; private set;}
-        private IObservable<int> _ItemsInFlightObs;
-        private int _ItemsInFlight = 0;
-        
+        private IObservable<object> _StartObs, _CompletedObs, _ErrorObs;
+        private ISubject<bool> _IsBusySubject = new ReplaySubject<bool>(1);
+
+        private bool _IsBusyStore = false;
+        private bool _IsBusy
+        {
+            get
+            {
+                return _IsBusyStore;
+            }
+            set
+            {
+                lock(this)
+                {
+                    _IsBusyStore = value;
+                    _IsBusySubject.OnNext(value);
+                }
+            }
+        }
+
 
         private ISubject<string> _progressMessageSubject = new ReplaySubject<string>(1);
 
@@ -86,9 +101,26 @@ namespace DiversityPhone.Services
             Executor = new ReactiveAsyncCommand();
             Executor.RegisterAsyncAction(arg => Run(arg));
 
-            var inflight = Executor.ItemsInflight.Do(items => _ItemsInFlight = items).Replay(1);
-            inflight.Connect();
-            _ItemsInFlightObs = inflight;                      
+            var start = Executor.AsyncStartedNotification
+                .Do(_ => _IsBusy = true)
+                .Select(_ => Invocation.Argument)
+                .Publish();
+            start.Connect();
+            _StartObs = start;
+
+            var complete = Executor.AsyncCompletedNotification
+                .Do(_ => _IsBusy = false)
+                .Select(_ => Invocation.Argument)
+                .Publish();
+            complete.Connect();
+            _CompletedObs = complete;
+
+            var error = Executor.AsyncErrorNotification
+                .Do(_ => _IsBusy = false)
+                .Select(_ => Invocation.Argument)
+                .Publish();
+            error.Connect();
+            _ErrorObs = error;
         }
 
         public void Invoke(BackgroundTaskInvocation inv)
@@ -106,7 +138,7 @@ namespace DiversityPhone.Services
         }
 
         public void CancelInvocation()
-        {            
+        {               
             Cancel();            
         }
 
@@ -118,8 +150,7 @@ namespace DiversityPhone.Services
                 saveArgumentToState(inv.Argument);
             else
                 inv.Argument = getArgumentFromState();
-            Cleanup(inv.Argument);
-            _cleanupSubject.OnNext(inv.Argument);
+            Cleanup(inv.Argument);            
         }
 
         
@@ -127,17 +158,17 @@ namespace DiversityPhone.Services
         #region IBackgroundTask
         public IObservable<object> AsyncCompletedNotification
         {
-            get { return Executor.AsyncCompletedNotification.Select(_ => Invocation.Argument); }
+            get { return _CompletedObs; }
         }
 
         public IObservable<object> AsyncErrorNotification
         {
-            get { return Executor.AsyncErrorNotification.Select(_ => Invocation.Argument); }
+            get { return _ErrorObs; }
         }
 
         public IObservable<object> AsyncStartedNotification
         {
-            get { return Executor.AsyncStartedNotification.Select(_ => Invocation.Argument); }
+            get { return _CompletedObs; }
         }
 
         public IObservable<bool> CanExecuteObservable
@@ -145,18 +176,18 @@ namespace DiversityPhone.Services
             get { return Executor.CanExecuteObservable; }
         }
 
-        public IObservable<int> ItemsInflight
+        public IObservable<bool> BusyObservable
         {
-            get { return _ItemsInFlightObs; }
+            get { return _IsBusySubject; }
         }
 
-        public int CurrentItemsInFlight { get { return _ItemsInFlight; } }
+        public bool IsBusy { get { return _IsBusy; } }
 
         public object CurrentArguments
         {
             get 
             {
-                if (CurrentItemsInFlight > 0 && Invocation != null)
+                if (IsBusy && Invocation != null)
                     return Invocation.Argument;
                 else
                     return null;

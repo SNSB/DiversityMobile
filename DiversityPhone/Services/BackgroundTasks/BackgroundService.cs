@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
 
         Dictionary<string, BackgroundTask> registry;
 
-        bool shuttingDown = false;
+        bool suspended = false;
         Queue<BackgroundTaskInvocation> waitingTasks = new Queue<BackgroundTaskInvocation>();
         BackgroundTaskInvocation runningTask;        
 
@@ -50,7 +50,7 @@ namespace DiversityPhone.Services
 
         private void nextTask()
         {
-            if (shuttingDown)
+            if (suspended)
                 return;
 
             lock (this)
@@ -119,13 +119,15 @@ namespace DiversityPhone.Services
             nextTask();
         }
 
+        public void suspend()
+        {
+            suspended = true;
+        }
 
-
-        public IEnumerable<BackgroundTaskInvocation> shutdown()
+        public IEnumerable<BackgroundTaskInvocation> dumpQueue()
         {
             lock (this)
-            {
-                shuttingDown = true;
+            {                
                 if (runningTask != null)
                 {
                     runningTask.WasCancelled = true;
@@ -138,7 +140,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void initialize(IEnumerable<BackgroundTaskInvocation> backlog)
+        public void setQueue(IEnumerable<BackgroundTaskInvocation> backlog)
         {
             lock (this)
             {
@@ -146,11 +148,15 @@ namespace DiversityPhone.Services
                 foreach (var task in backlog)
 	            {
                     waitingTasks.Enqueue(task);		 
-	            }
-                shuttingDown = false;
-            }            
+	            }                
+            }       
+        }
+
+        public void resume()
+        {
+            suspended = false;
             nextTask();
-        }                    
+        }
 
         public T getTaskObject<T>() where T : BackgroundTask
         {
