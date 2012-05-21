@@ -127,12 +127,12 @@ namespace DiversityPhone.Services
         #region IBackgroundTask
         public IObservable<object> AsyncCompletedNotification
         {
-            get { return Executor.AsyncCompletedNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
+            get { return Executor.AsyncCompletedNotification.Select(_ => Invocation.Argument); }
         }
 
         public IObservable<object> AsyncErrorNotification
         {
-            get { return Executor.AsyncErrorNotification.Where(_ => !Invocation.WasCancelled).Select(_ => Invocation.Argument); }
+            get { return Executor.AsyncErrorNotification.Select(_ => Invocation.Argument); }
         }
 
         public IObservable<object> AsyncStartedNotification
