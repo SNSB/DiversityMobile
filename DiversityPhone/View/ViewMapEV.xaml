@@ -45,8 +45,8 @@
                     <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
                         <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
                     </Canvas>
-                    <Canvas Top="{Binding EVPosPoint.Y}" Left="{Binding EVPosPoint.X}">
-                        <Image Name="EVImage" Height="{Binding EVIconSize.Y}" Width="{Binding EVIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding EVPosPoint,Converter={StaticResource PointToVis}}"/>
+                    <Canvas Top="{Binding ItemPosPoint.Y}" Left="{Binding ItemPosPoint.X}">
+                        <Image Name="EVImage" Height="{Binding ItemPosIconSize.Y}" Width="{Binding ItemPosIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding ItemPosPoint,Converter={StaticResource PointToVis}}"/>
                     </Canvas>
                 </Canvas>
             </ScrollViewer>

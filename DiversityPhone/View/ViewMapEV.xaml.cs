@@ -72,7 +72,7 @@ namespace DiversityPhone.View
             //        focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
             if (VM != null && VM.IsEditable)
             {
-                Point pSV= e.GetPosition(this.scrollViewer);
+               
   
                 Point pM = e.GetPosition(this.MainCanvas);
                 

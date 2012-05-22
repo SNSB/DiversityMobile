@@ -45,8 +45,8 @@
                     <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
                         <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
                     </Canvas>
-                    <Canvas Top="{Binding IUPosPoint.Y}" Left="{Binding IUPosPoint.X}">
-                        <Image Name="IUImage" Height="{Binding IUIconSize.Y}" Width="{Binding IUIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding IUPosPoint,Converter={StaticResource PointToVis}}"/>
+                    <Canvas Top="{Binding ItemPosPoint.Y}" Left="{Binding ItemPosPoint.X}">
+                        <Image Name="IUImage" Height="{Binding ItemPosIconSize.Y}" Width="{Binding ItemPosIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding ItemPosPoint,Converter={StaticResource PointToVis}}"/>
                     </Canvas>
                 </Canvas>
             </ScrollViewer>

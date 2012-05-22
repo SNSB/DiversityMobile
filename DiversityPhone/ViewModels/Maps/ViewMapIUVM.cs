@@ -14,7 +14,6 @@ namespace DiversityPhone.ViewModels.Maps
     {
 
       
-
         #region Properties
 
         private IdentificationUnit _IU;
