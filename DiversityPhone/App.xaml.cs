@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using ReactiveUI;
 using Funq;
 using DiversityPhone.Services.BackgroundTasks;
+using System.IO.IsolatedStorage;
 
 
 namespace DiversityPhone
@@ -156,8 +157,7 @@ namespace DiversityPhone
                 NavSvc.States = stack;
             }
 
-
-            PhoneApplicationService.Current.State.Remove(TASK_KEY); // remove serialized tasks, they will resume automatically
+            IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY); // Remove stored Tasks, they will resume automatically            
             BackgroundTasks.resume();    
             
             // Ensure that application state is restored appropriately
@@ -172,7 +172,7 @@ namespace DiversityPhone
             PhoneApplicationService.Current.State[STATE_KEY] = NavSvc.States.ToList();
 
             BackgroundTasks.suspend();
-            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
@@ -180,7 +180,7 @@ namespace DiversityPhone
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             BackgroundTasks.suspend();
-            PhoneApplicationService.Current.State[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
         }
 
         // Code to execute if a navigation fails
