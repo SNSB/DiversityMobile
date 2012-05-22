@@ -23,6 +23,7 @@ namespace DiversityPhone.ViewModels.Maps
         public ReactiveCommand ToggleEditable { get; protected set; }
         public ReactiveCommand Delete { get; protected set; }
         public ReactiveCommand Reset { get; protected set; }
+
         #endregion
 
         #region Properties
@@ -37,31 +38,31 @@ namespace DiversityPhone.ViewModels.Maps
             {
                 this.RaiseAndSetIfChanged(x => x.ItemPos, ref _ItemPos, value);
                 if (ItemPos != null)
-                    IUPerc = this.calculateGPSToPercentagePoint(ItemPos.Latitude, ItemPos.Longitude);
+                    ItemPerc = this.calculateGPSToPercentagePoint(ItemPos.Latitude, ItemPos.Longitude);
                 else
-                    IUPerc = null;
+                    ItemPerc = null;
             }
         }
 
-        private Point? _IUPerc = null;
-        public Point? IUPerc
+        private Point? _ItemPerc = null;
+        public Point? ItemPerc
         {
-            get { return _IUPerc; }
+            get { return _ItemPerc; }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.IUPerc, ref _IUPerc, value);
-                IUPosPoint = this.calculatePercentToPixelPoint(IUPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
+                this.RaiseAndSetIfChanged(x => x.ItemPerc, ref _ItemPerc, value);
+                ItemPosPoint = this.calculatePercentToPixelPoint(ItemPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
             }
         }
 
-        private Point _IUPosPoint;
-        public Point IUPosPoint
+        private Point _ItemPosPoint;
+        public Point ItemPosPoint
         {
 
-            get { return _IUPosPoint; }
+            get { return _ItemPosPoint; }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.IUPosPoint, ref _IUPosPoint, value);
+                this.RaiseAndSetIfChanged(x => x.ItemPosPoint, ref _ItemPosPoint, value);
             }
         }
 
@@ -73,7 +74,7 @@ namespace DiversityPhone.ViewModels.Maps
             {
                 this.RaiseAndSetIfChanged(x => x.Zoom, ref _Zoom, value);
                 ActualPosPoint = this.calculatePercentToPixelPoint(ActualPerc, ActualPosIconSize.X, ActualPosIconSize.Y, Zoom);
-                IUPosPoint = this.calculatePercentToPixelPoint(IUPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
+                ItemPosPoint = this.calculatePercentToPixelPoint(ItemPerc, ItemPosIconSize.X, ItemPosIconSize.Y, Zoom);
             }
         }
 
@@ -99,7 +100,7 @@ namespace DiversityPhone.ViewModels.Maps
             Delete = new ReactiveCommand();
             Delete.Subscribe(_ => deleteGeoInformation());
             Reset = new ReactiveCommand();
-            
+           
   
 
             //On  Save, Navigate Back
@@ -108,6 +109,17 @@ namespace DiversityPhone.ViewModels.Maps
                .Select(_ => Page.Previous)
                );
         }
+
+        public ILocalizable calculatePixelPointToGPS(Point pixelPoint)
+        {
+            double width = MapImage.PixelWidth * Zoom;
+            double height = MapImage.PixelHeight * Zoom;
+            double percX = pixelPoint.X / width;
+            double percY = pixelPoint.Y / height;
+            ILocalizable gpsPoint = Map.calculateGPSFromPerc(percX, percY);
+            return gpsPoint;
+        }
+
 
         private void deleteGeoInformation()
         {

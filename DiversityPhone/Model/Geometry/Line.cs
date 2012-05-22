@@ -41,38 +41,40 @@ namespace DiversityPhone.Model.Geometry
                 return null;
             else
             {
-                Point p = new Point();
-                double deltaX = l1.BasePoint.X - l2.BasePoint.X;
-                double deltaY = l1.BasePoint.Y - l2.BasePoint.Y;
+               
+
+                double a=l1.BasePoint.X;
+                double b=l1.Direction.X;
+                double c=l2.BasePoint.X;
+                double d=l2.Direction.X;
+                double e = l1.BasePoint.Y;
+                double f = l1.Direction.Y;
+                double g = l2.BasePoint.Y;
+                double h = l2.Direction.Y;
                 double mu = 0;
-                if (l1.Direction.X == 0)
+                  //with these definitions the solution can be found with the help og the
+                //solution of  mu the following LES
+                // 1. a + lamba*b=c+mu*d
+                // 2. e + lambda*f=g+mu*h
+                //
+                if (b == 0)
                 {
-                    if (l2.Direction.X == 0)
-                    {
-                        if (l1.BasePoint.X == l2.BasePoint.X && l1.BasePoint.Y == l2.BasePoint.Y)
-                            mu = 0;
-                        else
-                            throw new ArithmeticException("Directions are parallel");
-                    }
+                    if (d == 0)
+                        throw new ArithmeticException();//Lines do not cross (identity or parallel);
                     else
                     {
-                        mu = deltaX / l2.Direction.X;
+                        mu = a - c / d;
                     }
+                }
+                else if (h - d * f / b == 0)
+                {
+                    //Calculation of a unique mu is not possible
+                    throw new ArithmeticException();
                 }
                 else
-                {
-                    double rhs = deltaY + deltaX / l1.Direction.X;
-                    double factor = l2.Direction.Y - l2.Direction.X / l1.Direction.X;
-                    if (factor != 0)
-                    {
-                        mu = rhs / factor;
-                    }
-                    else if (rhs == 0)
-                        mu = 0;
-                    else
-                        throw new ArithmeticException("Directions are parallel");
+                    mu = (e - g + (c - a) * f / b) / (h - d * f / b);
 
-                }
+                //Use mu to travel on l2 and find the solution
                 double x=l2.BasePoint.X+mu*l2.Direction.X;
                 double y=l2.BasePoint.Y+mu*l2.Direction.Y;
                 return new Point(x, y);

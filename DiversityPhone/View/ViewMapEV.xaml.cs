@@ -67,9 +67,17 @@ namespace DiversityPhone.View
 
         private void scrollViewer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (VM != null)
-                if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
-                    focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
+            //if (VM != null)
+            //    if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
+            //        focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
+            if (VM != null && VM.IsEditable)
+            {
+                Point pSV= e.GetPosition(this.scrollViewer);
+  
+                Point pM = e.GetPosition(this.MainCanvas);
+                
+                VM.ItemPos = VM.calculatePixelPointToGPS(pM);
+            }
         }
 
         private void scrollViewer_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
