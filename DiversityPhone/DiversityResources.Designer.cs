@@ -178,6 +178,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die The service is currently unavailable, please try again later ähnelt.
+        /// </summary>
+        public static string Message_ServiceUnavailable_Body {
+            get {
+                return ResourceManager.GetString("Message_ServiceUnavailable_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Sorry ähnelt.
+        /// </summary>
+        public static string Message_SorryHeader {
+            get {
+                return ResourceManager.GetString("Message_SorryHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Cleaning the Database ähnelt.
         /// </summary>
         public static string RefreshVocabularyTask_State_Cleaning {
@@ -246,6 +264,15 @@ namespace DiversityPhone {
         public static string Setup_Item_PleaseChoose {
             get {
                 return ResourceManager.GetString("Setup_Item_PleaseChoose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die You can only use the application once it&apos;s been initialized ähnelt.
+        /// </summary>
+        public static string Setup_Message_CantGoBack_Body {
+            get {
+                return ResourceManager.GetString("Setup_Message_CantGoBack_Body", resourceCulture);
             }
         }
         

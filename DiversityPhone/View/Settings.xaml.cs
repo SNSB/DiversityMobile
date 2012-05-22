@@ -137,7 +137,10 @@ namespace DiversityPhone.View
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (VM != null)
-                e.Cancel = VM.IsBusy;
+            {
+                e.Cancel = true;
+                VM.NavigateBack.Execute(null);
+            }
         }
     }
 }

@@ -14,9 +14,9 @@ namespace DiversityPhone.Services
         /// </summary>
         IObservable<object> AsyncCompletedNotification { get; }
         /// <summary>
-        /// Sends the argument object used to invoke the Task on cleanup
+        /// Sends the argument object used to invoke the Task on task failure
         /// </summary>
-        IObservable<object> AsyncCleanupNotification { get; }
+        IObservable<object> AsyncErrorNotification { get; }
         /// <summary>
         /// Sends the argument object used to invoke the Task on execution
         /// </summary>
@@ -26,13 +26,13 @@ namespace DiversityPhone.Services
         /// </summary>
         IObservable<string> AsyncProgressMessages { get; }
         /// <summary>
-        /// Sends either 0s or 1s depending on whether this task is currently executing or not
+        /// Sends boolean values showing wether this Task is currently busy or not
         /// </summary>
-        IObservable<int> ItemsInflight { get; }
+        IObservable<bool> BusyObservable { get; }
         /// <summary>
-        /// Contains either 0 or 1 depending on whether this task is currently executing or not
+        /// Contains the most recent value transmitted by BusyObservable
         /// </summary>
-        int CurrentItemsInFlight { get; }
+        bool IsBusy { get; }
         /// <summary>
         /// Contains the argument object used by the current task invocation
         /// </summary>

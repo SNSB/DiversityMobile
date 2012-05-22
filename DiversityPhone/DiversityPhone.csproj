@@ -167,6 +167,7 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Database\DiversityDataContext.cs" />
     <Compile Include="Services\DiversityServiceClient.Download.cs" />
+    <Compile Include="Services\DiversityServiceExtensions.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />

@@ -156,6 +156,12 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Message_ServiceUnavailable_Body" xml:space="preserve">
+    <value>The service is currently unavailable, please try again later</value>
+  </data>
+  <data name="Message_SorryHeader" xml:space="preserve">
+    <value>Sorry</value>
+  </data>
   <data name="RefreshVocabularyTask_State_Cleaning" xml:space="preserve">
     <value>Cleaning the Database</value>
   </data>
@@ -179,6 +185,9 @@
   </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
+  </data>
+  <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
+    <value>You can only use the application once it's been initialized</value>
   </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>

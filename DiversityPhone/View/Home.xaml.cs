@@ -7,6 +7,7 @@ using System;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Reactive.Linq;
+using DiversityPhone.Services.BackgroundTasks;
 
 
 
@@ -52,8 +53,10 @@ namespace DiversityPhone
         }
         private bool initialized = false;
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {            
-            if (App.Settings.getSettings() == null)
+        {    
+            var settingsvalid = App.Settings.getSettings() != null;
+            var loadingvocabulary = App.BackgroundTasks.getTaskObject<RefreshVocabularyTask>().IsBusy;
+            if (!settingsvalid || loadingvocabulary)
                 MessageBus.Current.SendMessage<Page>(Page.Settings);
             else
             {

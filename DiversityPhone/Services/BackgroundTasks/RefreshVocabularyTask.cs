@@ -54,9 +54,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                     return STATE_INITIAL;
             }
             set
-            {
-                if (!Cancelled)
-                    State[KEY_STATE] = value;
+            {                
+                State[KEY_STATE] = value;
             }
         }
 
@@ -135,9 +134,10 @@ namespace DiversityPhone.Services.BackgroundTasks
                                 Repository.DownloadPropertyValuesChunked(p)
                                     .ForEach(chunk => Vocabulary.addPropertyNames(chunk));
                             }
+                            CurrentStep = STATE_ALL_DONE;
                             break;
                         default:
-                            State[KEY_STATE] = STATE_ALL_DONE;
+                            CurrentStep = STATE_ALL_DONE;
                             break;
                     }
                 }       
@@ -146,7 +146,7 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         protected override void Cancel()
         {
-            throw new NotImplementedException();
+            
         }
 
         protected override void Cleanup(object arg)

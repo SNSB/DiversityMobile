@@ -36,6 +36,7 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<string> _BusyMessage;
 
         public ReactiveCommand RefreshVocabulary{get; private set;}
+        public ReactiveCommand NavigateBack { get; private set; }
 
 
         private bool _UseGPS;
@@ -118,18 +119,32 @@ namespace DiversityPhone.ViewModels.Utility
 
             RefreshVocabulary = new ReactiveCommand(
                 _IsFirstSetup.Select(x => !x)
-                .CombineLatest(refreshVocabularyTask.ItemsInflight.Select(items => items == 0),
-                    (notfirstsetup, noitemsinflight) => notfirstsetup && noitemsinflight)
-                .StartWith(false));
+                .StartWith(IsFirstSetup)
+                .CombineLatest(
+                    refreshVocabularyTask.BusyObservable
+                    .StartWith(refreshVocabularyTask.IsBusy),
+                    (notfirstsetup, busy) => notfirstsetup && !busy)
+                );
             RefreshVocabulary
                 .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
 
-            
+            NavigateBack = new ReactiveCommand();
+            NavigateBack
+                .Subscribe(_ =>
+                {
+                    if (IsFirstSetup || IsBusy)
+                        Messenger.SendMessage<DialogMessage>(
+                            new DialogMessage(DialogType.OK,
+                                DiversityResources.Message_SorryHeader,
+                                DiversityResources.Setup_Message_CantGoBack_Body));
+                    else
+                        Messenger.SendMessage(Page.Previous);
+                });
+                
 
             _IsBusy =
                 refreshVocabularyTask
-                .ItemsInflight
-                .Select(items => items > 0)
+                .BusyObservable
                 .ToProperty(this, x => x.IsBusy);
 
             _BusyMessage = refreshVocabularyTask.AsyncProgressMessages
@@ -142,7 +157,7 @@ namespace DiversityPhone.ViewModels.Utility
             _Setup = _IsFirstSetup 
                 .Where(setup => setup)
                 .Take(1)
-                .Select(setup => new SetupVM(ioc.Resolve<IDiversityServiceClient>()))                        
+                .Select(setup => new SetupVM(ioc))                        
                 .ToProperty(this, x => x.Setup);
             _Setup
                 .CombineLatest(_IsFirstSetup, (setup, _) => setup)
@@ -208,6 +223,8 @@ namespace DiversityPhone.ViewModels.Utility
             storedConfig.Select(x => x == null)
                 .Subscribe(_IsFirstSetup);            
         }
+
+       
 
         private void saveModel()
         {
