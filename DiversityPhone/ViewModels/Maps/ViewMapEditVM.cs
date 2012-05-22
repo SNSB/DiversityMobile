@@ -101,10 +101,6 @@ namespace DiversityPhone.ViewModels.Maps
             Reset = new ReactiveCommand();
             
   
-            _IsEditable = ToggleEditable
-                .Select(_ => true) 
-                .StartWith(false)
-                .ToProperty(this, x => x.IsEditable);
 
             //On  Save, Navigate Back
             Messenger.RegisterMessageSource(

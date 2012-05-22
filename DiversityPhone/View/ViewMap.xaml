@@ -30,8 +30,6 @@
 
         <!--ContentPanel - place additional content here-->
         <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                                   Command="{Binding ToggleEditable}"/>
             <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="460" Height="620" Tap="scrollViewer_Tap" DoubleTap="scrollViewer_DoubleTap">
                 <Canvas Name="MainCanvas" Height="2200" Width="2200">
                     <Image Source="{Binding MapImage}" RenderTransformOrigin="0.5, 0.5" CacheMode="BitmapCache">
@@ -44,9 +42,6 @@
                     </Image>
                     <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
                         <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
-                    </Canvas>
-                    <Canvas Top="{Binding ItemPosPoint.Y}" Left="{Binding ItemPosPoint.X}">
-                        <Image Name="ItemImage" Height="{Binding ItemIconSize.Y}" Width="{Binding ItemIconSize.X}" Stretch="Uniform"  Source="/Images/ItemPoint.png" Visibility="{Binding ItemPosPoint,Converter={StaticResource PointToVis}}"/>
                     </Canvas>
                 </Canvas>
             </ScrollViewer>

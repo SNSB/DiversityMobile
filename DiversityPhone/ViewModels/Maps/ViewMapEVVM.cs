@@ -45,6 +45,7 @@ namespace DiversityPhone.ViewModels.Maps
               .Select(ev => !ev.IsUnmodified())
               .StartWith(false)
               );
+
             _IsEditable = ToggleEditable
                 .Select(_ => true)
                 .StartWith(false)
