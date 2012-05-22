@@ -134,10 +134,11 @@ namespace DiversityPhone
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
             object savedTasks = null;
-            if (PhoneApplicationService.Current.State.TryGetValue(TASK_KEY, out savedTasks)
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(TASK_KEY, out savedTasks)
                 && savedTasks != null
                 && savedTasks is IEnumerable<BackgroundTaskInvocation>)
             {
+                IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY);
                 BackgroundTasks.setQueue(savedTasks as IEnumerable<BackgroundTaskInvocation>);
                 BackgroundTasks.resume();
             }
