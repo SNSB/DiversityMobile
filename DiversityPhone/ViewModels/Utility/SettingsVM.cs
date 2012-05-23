@@ -74,9 +74,10 @@ namespace DiversityPhone.ViewModels.Utility
             var refreshVocabularyTask = background.getTaskObject<RefreshVocabularyTask>();
             
 
-            _Model =_ModelSubject   
-                .Where(x => true)
-                .ToProperty(this, x => x.Model);            
+            _Model = this.ObservableToProperty(
+                _ModelSubject   
+                .Where(x => true),
+                x => x.Model);            
 
             _ModelSubject
                 .Where(x => x != null)
@@ -88,9 +89,8 @@ namespace DiversityPhone.ViewModels.Utility
                 .StartWith(false)
                 .Subscribe(_CanSaveSubject);
 
-            _IsFirstSetupHelper =                
-                _IsFirstSetup
-                .ToProperty(this, x => x.IsFirstSetup);
+            _IsFirstSetupHelper = this.ObservableToProperty(               
+                _IsFirstSetup, x => x.IsFirstSetup);
 
             Reset = new ReactiveCommand(_CanResetSubject.StartWith(true));
             Messenger.RegisterMessageSource(
@@ -142,23 +142,23 @@ namespace DiversityPhone.ViewModels.Utility
                 });
                 
 
-            _IsBusy =
+            _IsBusy = this.ObservableToProperty(
                 refreshVocabularyTask
-                .BusyObservable
-                .ToProperty(this, x => x.IsBusy);
+                .BusyObservable, x => x.IsBusy);
 
-            _BusyMessage = refreshVocabularyTask.AsyncProgressMessages
-                    .ToProperty(this, x => x.BusyMessage);
+            _BusyMessage = this.ObservableToProperty(
+                refreshVocabularyTask.AsyncProgressMessages, x => x.BusyMessage);
 
             _IsFirstSetup
                 .Where(setup => setup)
                 .Subscribe(_ => clearDatabase.Execute(null));
 
-            _Setup = _IsFirstSetup 
+            _Setup = this.ObservableToProperty( 
+                _IsFirstSetup 
                 .Where(setup => setup)
                 .Take(1)
-                .Select(setup => new SetupVM(ioc))                        
-                .ToProperty(this, x => x.Setup);
+                .Select(setup => new SetupVM(ioc)),
+                x => x.Setup);
             _Setup
                 .CombineLatest(_IsFirstSetup, (setup, _) => setup)
                 .Subscribe(setup => setup.CurrentPivot = SetupVM.Pivots.Login);

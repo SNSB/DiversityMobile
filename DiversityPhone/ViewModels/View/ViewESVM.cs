@@ -26,12 +26,12 @@
 
         public ViewESVM()            
         {   
-            _EventList = ValidModel
+            _EventList = this.ObservableToProperty(
+                ValidModel
                 .Select(es => new VirtualizingReadonlyViewModelList<Event, EventVM>(
                     Storage.getEventsForSeries(es),
                     (model) => new EventVM(Messenger, model, Page.ViewEV)
-                ) as IList<EventVM>)
-                .ToProperty(this, x => x.EventList);
+                ) as IList<EventVM>), x => x.EventList);
 
             //On each Invocation of AddEvent, a new NavigationMessage is generated
             AddEvent = new ReactiveCommand();

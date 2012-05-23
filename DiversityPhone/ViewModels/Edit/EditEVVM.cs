@@ -43,9 +43,10 @@ namespace DiversityPhone.ViewModels
         {
             Geolocation = ioc.Resolve<IGeoLocationService>();
 
-            _CollectionDate = ValidModel
-                .Select(ev => ev.CollectionDate.ToString())
-                .ToProperty<EditEVVM,string>(this, vm => vm.CollectionDate);
+            _CollectionDate = this.ObservableToProperty(
+                ValidModel
+                .Select(ev => ev.CollectionDate.ToString()),
+                vm => vm.CollectionDate);
 
             ValidModel
                 .Select(ev => ev.LocalityDescription)

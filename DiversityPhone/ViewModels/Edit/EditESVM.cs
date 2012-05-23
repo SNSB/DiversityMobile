@@ -76,10 +76,11 @@
                 .Select(es => es.SeriesEnd)
                 .BindTo(this, x => x.SeriesEnd);
 
-            _SeriesStart = ValidModel
+            _SeriesStart = this.ObservableToProperty(
+                ValidModel
                 .Select(es => es.SeriesStart)
-                .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString()))
-                .ToProperty(this, x => x.SeriesStart);
+                .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString())),
+                x => x.SeriesStart);
 
             (FinishSeries = new ReactiveCommand()).Subscribe(_ =>finishSeries());
             FinishSeries

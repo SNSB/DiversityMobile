@@ -104,14 +104,15 @@ namespace DiversityPhone.ViewModels
             Search = new ReactiveAsyncCommand();
             Search.Subscribe(_=>searchMaps());
 
-            _IsBusy = _isBusySubject.ToProperty(this,x=> x.IsBusy);
+            _IsBusy = this.ObservableToProperty(_isBusySubject, x=> x.IsBusy);
 
             Add = new ReactiveCommand();
             Add.Subscribe(mapName => addMap(mapName as String));
 
-            _Keys = StateObservable
-                .Select(_ => getStorageList())
-                .ToProperty(this, x => x.Keys);
+            _Keys = this.ObservableToProperty(
+                StateObservable
+                .Select(_ => getStorageList()),
+                x => x.Keys);
 
             _mapinfo = new PhoneMediaServiceClient();
             _mapinfo.GetMapListFilterCompleted += new EventHandler<GetMapListFilterCompletedEventArgs>(mapinfo_GetMapListCompleted);

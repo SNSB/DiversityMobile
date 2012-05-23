@@ -54,35 +54,48 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncCtpLibrary_Phone">
+      <HintPath>..\Lib\AsyncCTP\AsyncCtpLibrary_Phone.dll</HintPath>
+    </Reference>
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.Reactive.Testing">
+    <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx_Experimental-Testing.1.1.11111\lib\SL3-WP\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
-    <Reference Include="ReactiveUI.Blend_WP7">
-      <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Blend_WP7.dll</HintPath>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\sl4-windowsphone71\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Testing_WP7">
-      <HintPath>..\packages\reactiveui-testing.2.5.2.0\lib\SL3-WP\ReactiveUI.Testing_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Blend_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml_WP7">
-      <HintPath>..\packages\reactiveui-xaml.2.5.2.0\lib\SL3-WP\ReactiveUI.Xaml_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Routing_WP7">
+      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI_WP7">
-      <HintPath>..\packages\reactiveui-core.2.5.2.0\lib\SL3-WP\ReactiveUI_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Testing_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-testing.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Testing_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-core.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive">
+    <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx_Experimental-Main.1.1.11111\lib\SL3-WP\System.Reactive.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx_Experimental-Xaml.1.1.11111\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
@@ -114,7 +127,6 @@
       <DependentUpon>DiversityResources.resx</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="MetroGridHelper.cs" />
     <Compile Include="Model\Analysis.cs" />
     <Compile Include="Model\AnalysisResult.cs" />
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />

@@ -170,11 +170,11 @@ namespace DiversityPhone.ViewModels.Utility
 
                 creds                    
                     .Subscribe(login => getRepositories.Execute(login));
-                _GettingRepositories =
+                _GettingRepositories = this.ObservableToProperty(
                     getRepositories
                     .ItemsInflight
-                    .Select(items => items > 0)
-                    .ToProperty(this, x => x.GettingRepositories);
+                    .Select(items => items > 0),
+                    x => x.GettingRepositories);
 
                 getRepositories                    
                     .RegisterAsyncFunction(login => 
@@ -192,11 +192,11 @@ namespace DiversityPhone.ViewModels.Utility
                     .Subscribe(Databases);                
 
                 credsWithRepo.Subscribe(login => getProjects.Execute(login));
-                _GettingProjects =
+                _GettingProjects = this.ObservableToProperty(
                     getProjects
                     .ItemsInflight
-                    .Select(items => items > 0)
-                    .ToProperty(this, x => x.GettingProjects);
+                    .Select(items => items > 0),
+                    x => x.GettingProjects);
                 
                 getProjects
                     .RegisterAsyncFunction(login => 

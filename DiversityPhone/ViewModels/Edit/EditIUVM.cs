@@ -98,9 +98,10 @@ namespace DiversityPhone.ViewModels
             registerCanSave();         
 
             #region Update View
-            _IsToplevel = ValidModel
-                            .Select(m => m.RelatedUnitID == null)
-                            .ToProperty(this, x => x.IsToplevel);
+            _IsToplevel = this.ObservableToProperty(
+                ValidModel
+                .Select(m => m.RelatedUnitID == null),
+                x => x.IsToplevel);
 
             var isObservation =
                 ValidModel
@@ -116,8 +117,8 @@ namespace DiversityPhone.ViewModels
                     (isobs, onlyobs) => isobs || onlyobs)
                 .BindTo(this, vm => vm.OnlyObserved);
 
-            _IsObservation = isObservation
-                .ToProperty(this, vm => vm.IsObservation);
+            _IsObservation = this.ObservableToProperty(
+                isObservation, vm => vm.IsObservation);
 
             ValidModel
                 .Select(m => m.WorkingName)

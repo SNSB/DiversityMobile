@@ -58,28 +58,33 @@
 
         public ViewEVVM()            
         {
-            _SpecList = ValidModel               
-                .Select(ev => getSpecimenList(ev))
-                .ToProperty(this, x => x.SpecList);
+            _SpecList = this.ObservableToProperty(
+                ValidModel               
+                .Select(ev => getSpecimenList(ev)),
+                x => x.SpecList);
 
-            _Properties = ValidModel
-                .Select(ev => Storage.getPropertiesForEvent(ev.EventID).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>)
-                .ToProperty(this, x => x.Properties);
+            _Properties = this.ObservableToProperty(
+                ValidModel
+                .Select(ev => Storage.getPropertiesForEvent(ev.EventID).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>),
+                x => x.Properties);
 
-            _ImageList = ValidModel
+            _ImageList = this.ObservableToProperty(
+                ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))
-                .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage)))
-                .ToProperty(this, x => x.ImageList);
+                .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage))),
+                x => x.ImageList);
 
-            _AudioList = ValidModel
+            _AudioList = this.ObservableToProperty(
+                ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Audio))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio)))
-                .ToProperty(this, x => x.AudioList);
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio))),
+                x => x.AudioList);
 
-            _VideoList = ValidModel
+            _VideoList = this.ObservableToProperty(
+                ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Video))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo)))
-                .ToProperty(this, x => x.VideoList);
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo))),
+                x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource =

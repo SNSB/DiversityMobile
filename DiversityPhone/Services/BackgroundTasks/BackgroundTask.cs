@@ -115,7 +115,7 @@ namespace DiversityPhone.Services
             complete.Connect();
             _CompletedObs = complete;
 
-            var error = Executor.AsyncErrorNotification
+            var error = Executor.ThrownExceptions
                 .Do(_ => _IsBusy = false)
                 .Select(_ => Invocation.Argument)
                 .Publish();

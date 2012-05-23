@@ -65,12 +65,13 @@ namespace DiversityPhone.ViewModels
             IOC = ioc;
             Vocabulary = ioc.Resolve<IVocabularyService>();
             
-            _Parent = ValidModel
+            _Parent = this.ObservableToProperty(
+                ValidModel
                 .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
-                .Select(parent => new IdentificationUnitVM(IOC,parent, Services.Page.Current))
-                .ToProperty(this, vm => vm.Parent);
+                .Select(parent => new IdentificationUnitVM(IOC,parent, Services.Page.Current)),
+                vm => vm.Parent);
 
-            _Model = ValidModel.ToProperty(this, x => x.Model);
+            _Model = this.ObservableToProperty(ValidModel, x => x.Model);
 
             Analyses = new ListSelectionHelper<Analysis>();
             _Parent
@@ -101,10 +102,11 @@ namespace DiversityPhone.ViewModels
                 .Select(iuan => iuan.AnalysisResult)
                 .BindTo(this, x => x.CustomResult);
 
-            _IsCustomResult = Results.ItemsObservable
+            _IsCustomResult = this.ObservableToProperty(
+                Results.ItemsObservable
                 .Where(res => res != null)
-                .Select(results => results.Count == 0)
-                .ToProperty(this, vm => vm.IsCustomResult);          
+                .Select(results => results.Count == 0),
+                vm => vm.IsCustomResult);          
             _IsCustomResult
                 .Where(custom => custom)
                 .Select(_ => String.Empty)

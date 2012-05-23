@@ -89,12 +89,13 @@ namespace DiversityPhone.ViewModels
                 .Select(m => !m.IsUnmodified()) //Can't edit uploaded Items               
                 );
 
-            _IsEditable = DistinctStateObservable
+            _IsEditable = this.ObservableToProperty(
+            DistinctStateObservable
                .Select(s => s.Context == null) //Newly created Units are immediately editable
                .Merge(
                    ToggleEditable.Select(_ => !IsEditable) //Toggle Editable
-               )
-               .ToProperty(this, vm => vm.IsEditable);
+               ),
+               vm => vm.IsEditable);
 
             Messenger.RegisterMessageSource(
                Save

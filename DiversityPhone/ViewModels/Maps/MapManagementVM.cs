@@ -89,10 +89,11 @@ namespace DiversityPhone.ViewModels
         {            
             MapDownload = maps;
 
-            _IsBusy = Observable.Merge(
-                deleteMap.ItemsInflight.Select(count => count > 0),
-                downloadMap.ItemsInflight.Select(count => count > 0)
-                ).ToProperty(this, x => x.IsBusy, false);
+            _IsBusy = this.ObservableToProperty(
+                Observable.Merge(
+                    deleteMap.ItemsInflight.Select(count => count > 0),
+                    downloadMap.ItemsInflight.Select(count => count > 0)
+                ), x => x.IsBusy, false);
 
             Download = new ReactiveCommand(_IsBusy.Select(x => !x));
             Download

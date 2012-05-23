@@ -77,8 +77,8 @@ namespace DiversityPhone.ViewModels
             Messenger = messenger;
             _StateObservable = new Subject<PageState>();
 
-			_CurrentState = StateObservable
-				.ToProperty(this, vm => vm.CurrentState);
+			_CurrentState =
+                this.ObservableToProperty(StateObservable, vm => vm.CurrentState);
            
         }
     }
