@@ -77,9 +77,10 @@ namespace DiversityPhone.ViewModels
            
             _msc=new MediaService4.MediaService4Client();
             _msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
-            _SeriesList = StateObservable
-                .Select(_ => updatedSeriesList())
-                .ToProperty(this, x => x.SeriesList);
+            _SeriesList = this.ObservableToProperty(
+                StateObservable
+                .Select(_ => updatedSeriesList()),
+                x => x.SeriesList);
 
             //Initialize PlainUpload
             _plainUploadClient = new Svc.DiversityServiceClient();

@@ -45,9 +45,10 @@ namespace DiversityPhone.ViewModels
         {
             _maps = maps;
 
-            _SavedMaps = StateObservable
-                .Select(p => updatedMapList(p))
-                .ToProperty(this, x => x.SavedMaps);
+            _SavedMaps = this.ObservableToProperty(
+                StateObservable
+                .Select(p => updatedMapList(p)),
+                x => x.SavedMaps);
 
             _subscriptions = new List<IDisposable>()
             {

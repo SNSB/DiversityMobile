@@ -46,10 +46,11 @@ namespace DiversityPhone.ViewModels.Maps
               .StartWith(false)
               );
 
-            _IsEditable = ToggleEditable
+            _IsEditable = this.ObservableToProperty(
+                ToggleEditable
                 .Select(_ => true)
-                .StartWith(false)
-                .ToProperty(this, x => x.IsEditable);
+                .StartWith(false),
+                x => x.IsEditable);
 
             Messenger.RegisterMessageSource(
                Save

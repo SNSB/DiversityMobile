@@ -74,19 +74,21 @@ namespace DiversityPhone.ViewModels
             IOC = ioc;
             Vocabulary = ioc.Resolve<IVocabularyService>();
 
-            _Subunits = this.CurrentObservable
+            _Subunits = this.ObservableToProperty(
+                this.CurrentObservable
                 .Select(_ => new Subject<IdentificationUnitVM>())
                 .Select(subject =>
                 {
                     var coll = subject.CreateCollection();
                     fetchSubunits.Execute(subject);
                     return coll;
-                })
-                .ToProperty(this, x => x.Subunits);
+                }),
+                x => x.Subunits);
             fetchSubunits
                 .RegisterAsyncAction(subject => getSubUnitsImpl(subject as ISubject<IdentificationUnitVM>));
 
-            _Analyses = this.ObservableForProperty(x => x.SelectedPivot)
+            _Analyses = this.ObservableToProperty(
+                this.ObservableForProperty(x => x.SelectedPivot)
                 .Value()
                 .Merge(
                     this.ObservableForProperty(x => x.Current) 
@@ -100,28 +102,30 @@ namespace DiversityPhone.ViewModels
                         var coll = subject.CreateCollection();
                         getAnalyses.Execute(subject);
                         return coll;
-                    })
-                .ToProperty(this, x => x.Analyses);
+                    }), x => x.Analyses);
 
             getAnalyses
                 .RegisterAsyncAction(collectionSubject => getAnalysesImpl(Current, collectionSubject as ISubject<IdentificationUnitAnalysisVM>));
                 
             
                         
-            _ImageList = ValidModel
+            _ImageList = this.ObservableToProperty( 
+                ValidModel
                  .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Image))
-                 .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage)))
-                 .ToProperty(this, x => x.ImageList);
+                 .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage))),
+                 x => x.ImageList);
 
-            _AudioList = ValidModel
+            _AudioList = this.ObservableToProperty(
+                ValidModel
                .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Audio))
-               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio)))
-               .ToProperty(this, x => x.AudioList);
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio))),
+               x => x.AudioList);
 
-            _VideoList = ValidModel
+            _VideoList = this.ObservableToProperty(
+                ValidModel
                .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Video))
-               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo)))
-               .ToProperty(this, x => x.VideoList);
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo))),
+               x => x.VideoList);
 
             Add = new ReactiveCommand();
             var addMessageSource = 
