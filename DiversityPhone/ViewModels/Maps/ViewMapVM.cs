@@ -251,6 +251,7 @@ namespace DiversityPhone.ViewModels
 
         protected override Map ModelFromState(Services.PageState s)
         {
+           
             if (s.Context != null)
             {       
                 try
@@ -272,6 +273,7 @@ namespace DiversityPhone.ViewModels
                     MessageBox.Show(e.Message);
                     Map = null;
                 }
+                
                 return Map;
             }
             return null;

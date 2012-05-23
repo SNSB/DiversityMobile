@@ -90,10 +90,10 @@ namespace DiversityPhone.ViewModels
                 ));
         }
 
-        private bool saveReferrer(PageState s)
-        {
+        //private bool saveReferrer(PageState s)
+        //{
 
-            return true;
-        }
+        //    return true;
+        //}
     }
 }

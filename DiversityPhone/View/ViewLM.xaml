@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -17,6 +18,7 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -24,6 +26,14 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <toolkit:PerformanceProgressBar VerticalAlignment="Top" x:Name="ProgressBar" Visibility="Collapsed"  />
+            <ProgressBar
+            VerticalAlignment="Top"
+            Background="{x:Null}"
+            Margin="0,10,0,0"
+            x:Name="_standardProgressBar"
+            Foreground="Red"/>
+
             <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYMOBILE" Style="{StaticResource PhoneTextNormalStyle}" Width="263" HorizontalAlignment="Left" />
             <Grid>
                 <Image Height="100" Margin="0,0,30,6" Name="imageApplication" Width="100" Source="/Images/appbar.map.rest.png" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Center" />
@@ -34,7 +44,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <ListBox ItemsSource="{Binding SavedMaps}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>
+                <ListBox ItemsSource="{Binding SavedMaps}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Tap="ListBox_Tap" />
             </StackPanel>
         </Grid>
     </Grid>

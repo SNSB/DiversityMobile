@@ -27,6 +27,7 @@ namespace DiversityPhone.ViewModels
         {
             _referrerType = ReferrerType.None;
             _referrer = null;
+            //Select.Subscribe
         }
 
         public MapVM(IMessageBus _messenger, Map model, Page targetPage, ReferrerType refType, string referrer)

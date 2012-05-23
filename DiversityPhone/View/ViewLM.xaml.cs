@@ -28,18 +28,30 @@ namespace DiversityPhone.View
         public ViewMapPicker()
         {
             InitializeComponent();
+            //this.ProgressBar.Visibility = Visibility.Visible;
+            //this.ProgressBar.IsIndeterminate = true;
+            this._standardProgressBar.Visibility = Visibility.Collapsed;
+            //this._standardProgressBar.IsIndeterminate = true;
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-
-         
+            this.ProgressBar.Visibility = Visibility.Collapsed;
+            this.ProgressBar.IsIndeterminate = false;
         }
 
         private void LoadMaps_Click(object sender, EventArgs e)
         {
             if (VM != null)
                 VM.AddMaps.Execute(null);
+        }
+
+
+        private void ListBox_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            //Test for ProgreesBinding Here
+            this.ProgressBar.Visibility = Visibility.Visible;
+            this.ProgressBar.IsIndeterminate = true;
         }
 
     }
