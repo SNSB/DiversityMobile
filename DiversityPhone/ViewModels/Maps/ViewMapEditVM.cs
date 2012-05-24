@@ -112,11 +112,8 @@ namespace DiversityPhone.ViewModels.Maps
 
         public ILocalizable calculatePixelPointToGPS(Point pixelPoint)
         {
-            double width = MapImage.PixelWidth * Zoom;
-            double height = MapImage.PixelHeight * Zoom;
-            double percX = pixelPoint.X / width;
-            double percY = pixelPoint.Y / height;
-            ILocalizable gpsPoint = Map.calculateGPSFromPerc(percX, percY);
+            Point percPoint = this.calculatePixelToPercentPoint(pixelPoint);
+            ILocalizable gpsPoint = Map.calculateGPSFromPerc(percPoint.X, percPoint.Y);
             return gpsPoint;
         }
 
