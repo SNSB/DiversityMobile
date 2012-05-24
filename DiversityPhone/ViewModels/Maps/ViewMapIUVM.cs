@@ -22,7 +22,7 @@ namespace DiversityPhone.ViewModels.Maps
             get { return _IU; }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.IU, value);
+                this.RaiseAndSetIfChanged(x => x.IU, ref _IU, value);
             }
         }
 

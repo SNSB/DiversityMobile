@@ -118,14 +118,16 @@ namespace DiversityPhone.ViewModels.Maps
                     int parent;
                     if (int.TryParse(s.Referrer, out parent))
                     {
-
                         EventSeries = Storage.getEventSeriesByID(parent);
-                        int? openID = Settings.getSettings().CurrentSeriesID;
-                        if (EventSeries.SeriesID == openID)
-                            _EventSeriesIsOpen = true;
-                        IList<GeoPointForSeries> geoPoints = Storage.getGeoPointsForSeries(parent); //Binden in AsyncCommand z.B. ViewIU. In AsnyCommand Packen und im Kosntruktor anstoßen+++++++++++++++++++++++                              
-                        foreach (GeoPointForSeries gp in geoPoints)
-                            SeriesPos.Add(gp);
+                        if (EventSeries != null) //Error or NoEventSeries
+                        {
+                            int? openID = Settings.getSettings().CurrentSeriesID;
+                            if (EventSeries.SeriesID == openID)
+                                _EventSeriesIsOpen = true;
+                            IList<GeoPointForSeries> geoPoints = Storage.getGeoPointsForSeries(parent); //Binden in AsyncCommand z.B. ViewIU. In AsnyCommand Packen und im Kosntruktor anstoßen+++++++++++++++++++++++                              
+                            foreach (GeoPointForSeries gp in geoPoints)
+                                SeriesPos.Add(gp);
+                        }
 
                     }
 
