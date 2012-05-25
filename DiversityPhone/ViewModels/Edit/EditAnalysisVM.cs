@@ -79,7 +79,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Analyses);
 
             Analyses.ItemsObservable
-                .Zip(ValidModel, (analyses, iuan) =>
+                .CombineLatest(ValidModel, (analyses, iuan) =>
                             analyses
                             .Where(an => an.AnalysisID == iuan.AnalysisID)
                             .FirstOrDefault())
@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Results);
 
             Results.ItemsObservable
-                .Zip(ValidModel, (results, iuan) =>
+                .CombineLatest(ValidModel, (results, iuan) =>
                     results
                     .Where(res => res.Result == iuan.AnalysisResult)
                     .FirstOrDefault())
