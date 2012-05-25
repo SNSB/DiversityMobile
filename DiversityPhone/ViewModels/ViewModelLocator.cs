@@ -69,6 +69,8 @@ namespace DiversityPhone.ViewModels
 
             _ioc.Register<SettingsVM>(c => new SettingsVM(c));
 
+            _ioc.Register<SyncVM>(c => new SyncVM(c));
+
             #endregion
 
             #region ViewModel Instantiation
@@ -110,6 +112,8 @@ namespace DiversityPhone.ViewModels
 
         public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }
         public SettingsVM Settings { get { return _ioc.Resolve<SettingsVM>(); } }
+        public SyncVM Sync { get { return _ioc.Resolve<SyncVM>(); } }
+
        
     }
 }

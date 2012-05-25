@@ -22,7 +22,7 @@ namespace DiversityPhone.View
     {
         private SettingsVM VM { get { return DataContext as SettingsVM; } }
 
-        static ProgressIndicator Progress { get { return SystemTray.ProgressIndicator; } }
+        private ProgressBinding<SettingsVM> progress;
 
         private ApplicationBarIconButton saveBtn,clearBtn, refreshBtn;
 
@@ -51,6 +51,12 @@ namespace DiversityPhone.View
         {
             if (VM != null)
                 VM.ManageTaxa.Execute(null);
+        }
+
+        private void Upload_Click(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+                VM.UploadData.Execute(null);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
@@ -88,18 +94,7 @@ namespace DiversityPhone.View
                             showButtons(canreset);
                         });
 
-                    VM.ObservableForProperty(x => x.IsBusy)
-                        .Value()
-                        .Subscribe(isBusy =>
-                        {
-                            ApplicationBar.IsVisible = !isBusy;
-                            var p = Progress;
-                            if (p != null)
-                            {
-                                p.IsIndeterminate = p.IsVisible = isBusy;
-                            }
-                            this.Focus();
-                        });
+                    progress = new ProgressBinding<SettingsVM>(VM, x => x.IsBusy);                   
                 }
             }
 

@@ -59,6 +59,8 @@ namespace DiversityPhone.ViewModels.Utility
         private ISubject<bool> _CanResetSubject = new Subject<bool>();
         public ReactiveCommand ManageTaxa { get; private set; }
 
+        public ReactiveCommand UploadData { get; private set; }
+
         private ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
         
 
@@ -216,6 +218,12 @@ namespace DiversityPhone.ViewModels.Utility
             Messenger.RegisterMessageSource(
                 ManageTaxa
                 .Select(_ => new NavigationMessage(Services.Page.TaxonManagement))
+                );
+
+            UploadData = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                UploadData
+                .Select(_ => new NavigationMessage(Services.Page.Sync))
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());

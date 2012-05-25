@@ -33,6 +33,7 @@ namespace DiversityPhone.Services
         ViewMapES,
         ViewMapEV,
         ViewMapIU,
-        TaxonManagement
+        TaxonManagement,
+        Sync
     }
 }

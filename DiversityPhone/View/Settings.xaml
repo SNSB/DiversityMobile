@@ -88,6 +88,7 @@
                 
                 <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
                 <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
+                <HyperlinkButton Content="Upload Data" Click="Upload_Click"/>
             </StackPanel>
         </ScrollViewer>
 
