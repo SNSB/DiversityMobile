@@ -26,6 +26,8 @@ namespace DiversityPhone.View
         private const double SCALEMAX = 3;
         private Point percTouchCenter = new Point(0, 0);
         private double initialScale;
+        private double offsetFromCenterX = 0;
+        private double offsetFromCenterY = 0;
         private IList<Image> _seriesPointImages;
 
 
@@ -112,8 +114,14 @@ namespace DiversityPhone.View
             Point t2 = e.GetPosition(MainCanvas, 1);
             Line t1t2 = new Line(t1, new Vector(t1, t2));
             Point center = t1t2.MoveOnLineFromBaseForUnits(0.5);
+            Point s1 = e.GetPosition(scrollViewer, 0);
+            Point s2 = e.GetPosition(scrollViewer, 1);
+            Line s1s2 = new Line(s1, new Vector(s1, s2));
+            Point scrollCenter = s1s2.MoveOnLineFromBaseForUnits(0.5);
             percTouchCenter = VM.calculatePixelToPercentPoint(center);
             initialScale = transform.ScaleX;
+            offsetFromCenterX = scrollCenter.X;
+            offsetFromCenterY = scrollCenter.Y;
         }
 
         private void OnPinchDelta(object sender, PinchGestureEventArgs e)
@@ -132,7 +140,7 @@ namespace DiversityPhone.View
             MainCanvas.Width = VM.BaseWidth * VM.Zoom;
 
             Point center = VM.calculatePercentToPixelPoint(percTouchCenter, 0, 0, VM.Zoom);
-            focusOn(center.X - scrollViewer.Width / 2, center.Y - scrollViewer.Height / 2);
+            focusOn(center.X - offsetFromCenterX, center.Y - offsetFromCenterY);
 
             if (VM.EventSeries != null)
                 recalculateSeriesPoints();
