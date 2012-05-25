@@ -136,17 +136,20 @@ namespace DiversityPhone.ViewModels
                     return Taxa.getTaxonNames(tg, query);                        
                 })
             .Select( candidates =>
-                {     
-                    //Prepend WorkingName as Identification
-                    candidates.Insert(0,                    
-                        new TaxonName() 
-                        { 
-                            TaxonNameCache = QueryString,
-                            GenusOrSupragenic = null, 
-                            SpeciesEpithet = null, 
-                            Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
-                            URI = null,
-                        } );
+                {
+                    if (!string.IsNullOrWhiteSpace(QueryString))
+                    {
+                        //Prepend WorkingName as Identification
+                        candidates.Insert(0,
+                            new TaxonName()
+                            {
+                                TaxonNameCache = QueryString,
+                                GenusOrSupragenic = null,
+                                SpeciesEpithet = null,
+                                Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
+                                URI = null,
+                            });
+                    }
                     return candidates;                    
                 })
             .Subscribe(Identification);
@@ -167,7 +170,7 @@ namespace DiversityPhone.ViewModels
             Identification.ItemsObservable               
                 .Where(x => x != null)
                 .CombineLatest(ValidModel.Where(m => m.IdentificationUri != null),
-                (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri))                
+                (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())                
                 .BindTo(Identification, x => x.SelectedItem);
             
             
@@ -239,10 +242,11 @@ namespace DiversityPhone.ViewModels
                 .StartWith(false);
 
             var identificationIsSelected = this.Identification
-                .Select(id => id != null)
+                .Select(id => id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache))
                 .StartWith(false);
 
-            taxonomicGroupIsSet.BooleanAnd(identificationIsSelected).Subscribe(_CanSaveSubject);
+            _CanSaveSubject.OnNext(false);
+            taxonomicGroupIsSet.BooleanAnd(identificationIsSelected).Subscribe(_CanSaveSubject.OnNext);
         }
 
         protected override void UpdateModel()
@@ -257,6 +261,11 @@ namespace DiversityPhone.ViewModels
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
             return new IdentificationUnitVM(IOC, model, Page.Current);
+        }
+
+        protected override IObservable<bool> CanSave()
+        {
+            return Observable.Return(false);
         }
     }
 }

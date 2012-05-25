@@ -19,9 +19,8 @@ namespace DiversityPhone.ViewModels
             set
             {
                 _UpdatingItems = value;
-                if (!_UpdatingItems)
-                    if (SelectedIndex != deferredIndex)
-                        SelectedIndex = deferredIndex;
+                if (!_UpdatingItems)                    
+                    SelectedIndex = deferredIndex;
                 if (_UpdatingItems)
                     deferredIndex = SelectedIndex;
             }
@@ -54,7 +53,10 @@ namespace DiversityPhone.ViewModels
                 if (UpdatingItems)
                     deferredIndex = value;
                 else
-                    this.RaiseAndSetIfChanged(x => x.SelectedIndex, ref _SelectedIndex, value);
+                {
+                    _SelectedIndex = value;
+                    this.RaisePropertyChanged(x => x.SelectedIndex);
+                }
             }
         }
 
@@ -80,7 +82,7 @@ namespace DiversityPhone.ViewModels
             _ItemsSubject = new Subject<IList<T>>();
             this.ObservableForProperty(x => x.SelectedIndex)
                 .Value()
-                .Select(idx => (idx > -1) ? Items[idx] : default(T))
+                .Select(idx => (idx > -1) ? Items[idx] : default(T))                
                 .DistinctUntilChanged()
                 .Do(val => _SelectedItem = val)
                 .Subscribe(item => _SelectedItemSubject.OnNext(item));            
@@ -95,7 +97,10 @@ namespace DiversityPhone.ViewModels
                 else
                 {
                     var selectedIdx = items.IndexOf(selectedItem);
-                    SelectedIndex = (selectedIdx != -1) ? selectedIdx : 0;
+                    if (selectedIdx != -1)
+                        SelectedIndex = selectedIdx;                                     
+                    else
+                        SelectedIndex = 0;
                 }
             }
             else

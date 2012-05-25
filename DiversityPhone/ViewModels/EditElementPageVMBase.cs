@@ -72,11 +72,11 @@ namespace DiversityPhone.ViewModels
                         
             Observable.Concat(
                 Observable.Return(false),
-                CanSave(),
-                Observable.Never<bool>()
+                CanSave()
+                //Observable.Never<bool>()
             )            
             .ObserveOnDispatcher() // Work around bug in ReactiveUI
-            .Subscribe(_CanSaveSubject);
+            .Subscribe(_CanSaveSubject.OnNext);
 
 
             Delete = new ReactiveCommand(
