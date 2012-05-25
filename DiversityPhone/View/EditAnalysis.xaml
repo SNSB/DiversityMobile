@@ -31,24 +31,30 @@
             <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}"/>
             <toolkit:ListPicker Header="Analysis" 
-                                DataContext="{Binding Analyses}"
-                                ItemsSource="{Binding Items}"
-								SelectedIndex="{Binding SelectedIndex, Mode=TwoWay}"
+                                IsEnabled="{Binding IsEditable}"                                
+                                ItemsSource="{Binding Analyses.Items}"
+								SelectedIndex="{Binding Analyses.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                                 FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                IsEnabled="{Binding IsEditable}"/>
+                                />
 
             <toolkit:ListPicker Header="Result"                                 
                                 ItemsSource="{Binding Results.Items}" 
-                                SelectedIndex="{Binding Results.SelectedIndex, Mode=TwoWay}" 
-                                Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}"
+                                SelectedIndex="{Binding Results.SelectedIndex, Mode=TwoWay}"                                
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                IsEnabled="{Binding IsEditable}"/>                
-                    
+                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
+                                IsEnabled="{Binding IsEditable}"
+                                Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}"/>
+            
+
             <StackPanel Orientation="Vertical" Visibility="{Binding IsCustomResult, ConverterParameter=false, Converter={StaticResource BoolToVis}}">
-        		<TextBlock TextWrapping="Wrap" Text="Result"/>
-                <TextBox TextWrapping="Wrap" Text="{Binding CustomResult, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+        		<TextBlock Margin="12,0,12,0" 
+                           TextWrapping="Wrap" 
+                           Style="{StaticResource InfoLabelTextStyle}"
+                           Text="Result"/>
+                <TextBox TextWrapping="Wrap" 
+                         Text="{Binding CustomResult, Mode=TwoWay}"
+                         IsEnabled="{Binding IsEditable}"/>
         	</StackPanel>
         </StackPanel>
 

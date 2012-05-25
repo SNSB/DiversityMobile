@@ -108,7 +108,7 @@ namespace DiversityPhone.ViewModels
                 .Select(results => results.Count == 0),
                 vm => vm.IsCustomResult);          
             _IsCustomResult
-                .Where(custom => custom)
+                .Where(custom => !custom)
                 .Select(_ => String.Empty)
                 .BindTo(this, x => x.CustomResult);
         }
