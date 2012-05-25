@@ -43,8 +43,14 @@
             
             <!--Pivot item three-->
             <controls:PivotItem Header="multimedia">
-                <ListBox ItemTemplate="{StaticResource MMOTemplate}"
-                         ItemsSource="{Binding MMOList}"/>
+                <StackPanel>
+                    <ListBox ItemTemplate="{StaticResource ImageTemplate}"
+                             ItemsSource="{Binding ImageList}"/>                    
+                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                             ItemsSource="{Binding AudioList}"/>
+                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                             ItemsSource="{Binding VideoList}"/>
+                </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>       
     </StackPanel>
