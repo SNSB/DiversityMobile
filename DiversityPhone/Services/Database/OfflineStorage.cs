@@ -651,7 +651,7 @@
                     if (row.IsNew())      //New Object
                     {
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
-                        row.ModificationState = true; //Mark for Upload
+                        row.ModificationState = ModificationState.Modified; //Mark for Upload
 
                         table.InsertOnSubmit(row);                        
                         try
@@ -824,7 +824,7 @@
 
                 IQueryable<CollectionEventProperty> clientPropertyList =
                     from cep in ctx.CollectionEventProperties
-                    where cep.EventID == ev.EventID && cep.ModificationState == true
+                    where cep.EventID == ev.EventID && cep.ModificationState == ModificationState.Modified
                     select cep;
                 foreach (CollectionEventProperty cep in clientPropertyList)
                 {
@@ -838,7 +838,7 @@
                     select spec;
                 foreach (Specimen spec in clientSpecList)
                 {
-                    if (spec.ModificationState == true)
+                    if (spec.ModificationState == ModificationState.Modified)
                     {
                         Svc.Specimen serverSpec = Specimen.ConvertToServiceObject(spec);
                         result.Specimen.Add(serverSpec);
@@ -849,7 +849,7 @@
                         select iu;
                     foreach (IdentificationUnit iu in clientIUListForSpec)
                     {
-                        if (iu.ModificationState == true)
+                        if (iu.ModificationState == ModificationState.Modified)
                         {
                             Svc.IdentificationUnit serverIU = IdentificationUnit.ConvertToServiceObject(iu);
                             result.IdentificationUnits.Add(serverIU);
@@ -857,7 +857,7 @@
 
                         IQueryable<IdentificationUnitAnalysis> clientIUAListForIU =
                             from iua in ctx.IdentificationUnitAnalyses
-                            where iua.IdentificationUnitID == iu.UnitID && iu.ModificationState == true
+                            where iua.IdentificationUnitID == iu.UnitID && iu.ModificationState == ModificationState.Modified
                             select iua;
                         foreach (IdentificationUnitAnalysis iua in clientIUAListForIU)
                         {
@@ -876,7 +876,7 @@
             withDataContext(ctx =>
             {
                var query = from es in ctx.EventSeries
-                           where es.ModificationState == true
+                           where es.ModificationState == ModificationState.Modified
                            select es;
                res = query.ToList();               
             });
@@ -900,7 +900,7 @@
                     select es;
                 EventSeries clientSeries = savedSeries.First(); //TODO: Check if there is a key valuation
                 clientSeries.DiversityCollectionEventSeriesID = serverSeriesKey;
-                clientSeries.ModificationState = false;
+                clientSeries.ModificationState = ModificationState.Unmodified;
                 var savedEvents =
                     from ev in ctx.Events
                     where ev.SeriesID == clientSeriesKey
@@ -927,7 +927,7 @@
                     select ev;
                 Event clientEvent = savedEvents.First();//TODO: Check if there is a key valuation
                 clientEvent.DiversityCollectionEventID = serverKey;
-                clientEvent.ModificationState = false;
+                clientEvent.ModificationState = ModificationState.Unmodified;
                 var savedSpecimen =
                     from spec in ctx.Specimen
                     where spec.CollectionEventID == clientKey
@@ -960,7 +960,7 @@
                     select spec;
                 Specimen clientSpecimen = savedSpecimens.First();//TODO: Check if there is a key valuation
                 clientSpecimen.DiversityCollectionSpecimenID = serverKey;
-                clientSpecimen.ModificationState = false;
+                clientSpecimen.ModificationState = ModificationState.Unmodified;
                 var savedIU =
                     from iu in ctx.IdentificationUnits
                     where iu.SpecimenID == clientKey
@@ -987,7 +987,7 @@
                     select iu;
                 IdentificationUnit clientIU = savedIUs.First();//TODO: Check if there is a key valuation
                 clientIU.DiversityCollectionUnitID= serverKey;
-                clientIU.ModificationState = false;
+                clientIU.ModificationState = ModificationState.Unmodified;
                 var relatedIU =
                     from iu in ctx.IdentificationUnits
                     where iu.RelatedUnitID == clientKey

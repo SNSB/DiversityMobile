@@ -20,7 +20,7 @@
             this.SeriesEnd = null;
             this.SeriesID = 0;
             this.LogUpdatedWhen = DateTime.Now;
-            this.ModificationState = null;
+            this.ModificationState = ModificationState.New;
             this.DiversityCollectionEventSeriesID = null;
         }
 
@@ -59,11 +59,10 @@
        
 
         /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
+        /// Tracks modifications to this Object      
         /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
@@ -95,7 +94,7 @@
             {
                 Description = "Events",
                 SeriesCode = "No EventSeries",
-                ModificationState = false
+                ModificationState = ModificationState.Unmodified
             };
         }
 

@@ -18,7 +18,7 @@
             this.SeriesID = null;
             this.CollectionDate = DateTime.Now;
             this.LogUpdatedWhen = DateTime.Now;
-            this.ModificationState = null;
+            this.ModificationState = ModificationState.New;
             this.DiversityCollectionEventID = null;
             this.DiversityCollectionSeriesID = null;
 
@@ -59,11 +59,10 @@
         public DateTime? DeterminationDate { get; set; }
 
         /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
+        /// Tracks modifications to this Object        
         /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

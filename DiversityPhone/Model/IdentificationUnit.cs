@@ -14,7 +14,7 @@ namespace DiversityPhone.Model
     {
         public IdentificationUnit()
         {
-            this.ModificationState = null;
+            this.ModificationState = ModificationState.New;
             this.LogUpdatedWhen = DateTime.Now;
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
@@ -91,11 +91,10 @@ namespace DiversityPhone.Model
         public DateTime AnalysisDate { get; set; }
 
         /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
+        /// Tracks modifications to this Object.        
         /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

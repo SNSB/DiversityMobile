@@ -30,8 +30,8 @@
         /// Tracks modifications to this Object.
         /// is null for newly created Objects
         /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }
@@ -41,7 +41,7 @@
         {
             this.AccessionNumber = null;
             this.LogUpdatedWhen = DateTime.Now;
-            this.ModificationState = null;
+            this.ModificationState = ModificationState.New;
             this.DiversityCollectionSpecimenID = null;
             //_Units = new EntitySet<IdentificationUnit>(
             //  new Action<IdentificationUnit>(Attach_Unit),

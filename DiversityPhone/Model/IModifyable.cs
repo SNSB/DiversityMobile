@@ -5,6 +5,12 @@ using System.Text;
 
 namespace DiversityPhone.Model
 {
+    public enum ModificationState
+    {
+        New,
+        Unmodified,
+        Modified
+    }
     public interface IModifyable
     {
         /// <summary>
@@ -13,22 +19,22 @@ namespace DiversityPhone.Model
         /// false - persisted remotely, local copy unchanged
         /// true - persisted only locally OR the local copy has been changed
         /// </summary>
-        bool? ModificationState { get; set; }
+        ModificationState ModificationState { get; set; }
     }
 
     public static class ModifyableMixin
     {
         public static bool IsNew(this IModifyable modObj)
         {
-            return modObj.ModificationState == null;
+            return modObj.ModificationState == ModificationState.New;
         }
         public static bool IsModified(this IModifyable modObj)
         {
-            return modObj.ModificationState == true;
+            return modObj.ModificationState == ModificationState.Modified;
         }
         public static bool IsUnmodified(this IModifyable modObj)
         {
-            return modObj.ModificationState == false;
+            return modObj.ModificationState == ModificationState.Unmodified;
         }
 
     }

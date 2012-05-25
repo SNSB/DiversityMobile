@@ -42,18 +42,17 @@ namespace DiversityPhone.Model
         public string DisplayText { get; set; }
 
         /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
+        /// Tracks modifications to this Object.        
         /// </summary>
-        [Column(CanBeNull = false)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }        
 
         public IdentificationUnitAnalysis()
         {
-            this.ModificationState = null;
+            this.ModificationState = ModificationState.New;
             this.LogUpdatedWhen = DateTime.Now;
             this.AnalysisDate = DateTime.Now;
             this.DiversityCollectionUnitID = null;

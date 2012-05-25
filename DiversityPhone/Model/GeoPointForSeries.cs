@@ -34,11 +34,10 @@ namespace DiversityPhone.Model
         public double? Altitude { get; set; }
 
         /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
+        /// Tracks modifications to this Object.        
         /// </summary>
-        [Column(CanBeNull = true)]
-        public bool? ModificationState { get; set; }
+        [Column]
+        public ModificationState ModificationState { get; set; }
         
         public static IQueryOperations<GeoPointForSeries> Operations
         {
