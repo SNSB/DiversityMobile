@@ -23,7 +23,12 @@ namespace DiversityPhone.View
                 viewmodel
                     .ObservableForProperty(isBusyProperty)
                     .Value()
-                    .Subscribe(isBusy => Progress.IsIndeterminate = Progress.IsVisible = isBusy);            
+                    .Subscribe(isBusy =>
+            {
+                var p = Progress;
+                if (p != null)
+                    p.IsIndeterminate = p.IsVisible = isBusy;
+            });            
         }
 
         public ProgressBinding(VMType viewmodel, Expression<Func<VMType, int>> progressProperty)
@@ -37,7 +42,12 @@ namespace DiversityPhone.View
                 viewmodel
                     .ObservableForProperty(progressProperty)
                     .Value()
-                    .Subscribe(progress => Progress.Value = progress);
+                    .Subscribe(progress =>
+                         {
+                             var p = Progress;
+                             if (p != null)
+                                 p.Value = progress;
+                         });
         }
     }
 }
