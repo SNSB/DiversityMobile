@@ -182,52 +182,52 @@ namespace DiversityPhone.View
         void btnCrop_Click(object sender, EventArgs e)
         {
 
-            if (this.actualImage == null)
-                return;
+            //if (this.actualImage == null)
+            //    return;
 
-            // Get the size of the source image prepared for cropping
-            double originalImageWidth = this.actualImage.PixelWidth;
-            double originalImageHeight = this.actualImage.PixelHeight;
-
-
-            // Get the size of the image when it is displayed on the phone
-            double displayedWidth = PhotoImage.ActualWidth;
-            double displayedHeight = PhotoImage.ActualHeight;
-
-            // Calculate the ratio of the original image to the displayed image
-            double widthRatio = originalImageWidth / displayedWidth;
-            double heightRatio = originalImageHeight / displayedHeight;
-
-            // Create a new WriteableBitmap. The size of the bitmap is the size of the cropping rectangle
-            // drawn by the user, multiplied by the image size ratio.
-            WriteableBitmap workImage = new WriteableBitmap((int)(widthRatio * Math.Abs(p2.X - p1.X)), (int)(heightRatio * Math.Abs(p2.Y - p1.Y)));
+            //// Get the size of the source image prepared for cropping
+            //double originalImageWidth = this.actualImage.PixelWidth;
+            //double originalImageHeight = this.actualImage.PixelHeight;
 
 
-            // Calculate the offset of the cropped image. This is the distance, in pixels, to the top left corner
-            // of the cropping rectangle, multiplied by the image size ratio.
-            int xoffset = (int)(((p1.X < p2.X) ? p1.X : p2.X) * widthRatio);
-            int yoffset = (int)(((p1.Y < p2.Y) ? p1.Y : p2.Y) * heightRatio);
+            //// Get the size of the image when it is displayed on the phone
+            //double displayedWidth = PhotoImage.ActualWidth;
+            //double displayedHeight = PhotoImage.ActualHeight;
 
-            // Copy the pixels from the targeted region of the source image into the target image, 
-            // using the calculated offset
-            for (int i = 0; i < workImage.Pixels.Length; i++)
-            {
-                int x = (int)((i % workImage.PixelWidth) + xoffset);
-                int y = (int)((i / workImage.PixelWidth) + yoffset);
-                workImage.Pixels[i] = this.actualImage.Pixels[y * this.actualImage.PixelWidth + x];
-            }
-            //Replace the croppedImage with the new generated workImage
-            this.actualImage = workImage;
-            PhotoImage.Source = actualImage;
-            rect.Visibility = Visibility.Collapsed;
+            //// Calculate the ratio of the original image to the displayed image
+            //double widthRatio = originalImageWidth / displayedWidth;
+            //double heightRatio = originalImageHeight / displayedHeight;
+
+            //// Create a new WriteableBitmap. The size of the bitmap is the size of the cropping rectangle
+            //// drawn by the user, multiplied by the image size ratio.
+            //WriteableBitmap workImage = new WriteableBitmap((int)(widthRatio * Math.Abs(p2.X - p1.X)), (int)(heightRatio * Math.Abs(p2.Y - p1.Y)));
 
 
-            //Enable  accept and reject buttons to save or discard current cropped image.
-            //Disable crop button until a new cropping region is selected.
-            setPhotoButtonStates(true, false, true, true);
+            //// Calculate the offset of the cropped image. This is the distance, in pixels, to the top left corner
+            //// of the cropping rectangle, multiplied by the image size ratio.
+            //int xoffset = (int)(((p1.X < p2.X) ? p1.X : p2.X) * widthRatio);
+            //int yoffset = (int)(((p1.Y < p2.Y) ? p1.Y : p2.Y) * heightRatio);
 
-            //Instructional text
-            textStatus.Text = "Continue to crop image, accept, or reject.";
+            //// Copy the pixels from the targeted region of the source image into the target image, 
+            //// using the calculated offset
+            //for (int i = 0; i < workImage.Pixels.Length; i++)
+            //{
+            //    int x = (int)((i % workImage.PixelWidth) + xoffset);
+            //    int y = (int)((i / workImage.PixelWidth) + yoffset);
+            //    workImage.Pixels[i] = this.actualImage.Pixels[y * this.actualImage.PixelWidth + x];
+            //}
+            ////Replace the croppedImage with the new generated workImage
+            //this.actualImage = workImage;
+            //PhotoImage.Source = actualImage;
+            //rect.Visibility = Visibility.Collapsed;
+
+
+            ////Enable  accept and reject buttons to save or discard current cropped image.
+            ////Disable crop button until a new cropping region is selected.
+            //setPhotoButtonStates(true, false, true, true);
+
+            ////Instructional text
+            //textStatus.Text = "Continue to crop image, accept, or reject.";
         }
 
         private void btnSaveImage_Click(object sender, EventArgs e)
@@ -250,13 +250,13 @@ namespace DiversityPhone.View
         /// <param name="e"></param>
         void CompositionTarget_Rendering(object sender, EventArgs e)
         {
-            if (cropping)
-            {
-                rect.SetValue(Canvas.LeftProperty, (p1.X < p2.X) ? p1.X : p2.X);
-                rect.SetValue(Canvas.TopProperty, (p1.Y < p2.Y) ? p1.Y : p2.Y);
-                rect.Width = (int)Math.Abs(p2.X - p1.X);
-                rect.Height = (int)Math.Abs(p2.Y - p1.Y);
-            }
+            //if (cropping)
+            //{
+            //    rect.SetValue(Canvas.LeftProperty, (p1.X < p2.X) ? p1.X : p2.X);
+            //    rect.SetValue(Canvas.TopProperty, (p1.Y < p2.Y) ? p1.Y : p2.Y);
+            //    rect.Width = (int)Math.Abs(p2.X - p1.X);
+            //    rect.Height = (int)Math.Abs(p2.Y - p1.Y);
+            //}
         }
 
 
@@ -267,7 +267,7 @@ namespace DiversityPhone.View
         /// <param name="e"></param>
         void PhotoImage_MouseMove(object sender, MouseEventArgs e)
         {
-            p2 = e.GetPosition(PhotoImage);
+            //p2 = e.GetPosition(PhotoImage);
         }
 
         /// <summary>
@@ -277,8 +277,8 @@ namespace DiversityPhone.View
         /// <param name="e"></param>
         void PhotoImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            p2 = e.GetPosition(PhotoImage);
-            cropping = false;
+            //p2 = e.GetPosition(PhotoImage);
+            //cropping = false;
 
 
         }
@@ -291,11 +291,11 @@ namespace DiversityPhone.View
 
         void PhotoImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            btnCrop.IsEnabled = true;
-            p1 = e.GetPosition(PhotoImage);
-            p2 = p1;
-            rect.Visibility = Visibility.Visible;
-            cropping = true;
+            //btnCrop.IsEnabled = true;
+            //p1 = e.GetPosition(PhotoImage);
+            //p2 = p1;
+            //rect.Visibility = Visibility.Visible;
+            //cropping = true;
         }
 
         /// <summary>
