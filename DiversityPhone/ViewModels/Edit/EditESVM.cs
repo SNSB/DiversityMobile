@@ -133,7 +133,7 @@
 
         protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
         {
-            return new EventSeriesVM(Messenger, model, Page.Current);
+            return new EventSeriesVM(model);
         }
     }
 }

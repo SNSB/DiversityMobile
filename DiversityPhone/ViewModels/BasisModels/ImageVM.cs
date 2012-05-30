@@ -62,8 +62,8 @@ namespace DiversityPhone.ViewModels
             return bi;
         }
 
-         public ImageVM(IMessageBus _messenger, MultimediaObject model, Page targetPage)
-            : base(_messenger, model, targetPage)
+         public ImageVM(MultimediaObject model)
+            : base(model)
         {
 
         }

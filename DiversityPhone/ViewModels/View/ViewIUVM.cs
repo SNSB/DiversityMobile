@@ -10,6 +10,7 @@ using System.Reactive.Subjects;
 using System.Linq;
 using System.Collections.ObjectModel;
 using Funq;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.ViewModels
 {
@@ -79,7 +80,11 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => new Subject<IdentificationUnitVM>())
                 .Select(subject =>
                 {
-                    var coll = subject.CreateCollection();
+                    var coll = subject
+                        .Do(vm => vm.SelectObservable
+                            .Select(v => v.Model.UnitID.ToString())
+                            .ToNavigation(Page.ViewIU))
+                        .CreateCollection();
                     fetchSubunits.Execute(subject);
                     return coll;
                 }),
@@ -99,7 +104,11 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => new Subject<IdentificationUnitAnalysisVM>())
                 .Select(subject =>
                     {
-                        var coll = subject.CreateCollection();
+                        var coll = subject
+                            .Do(vm => vm.SelectObservable
+                                .Select(v => v.Model.IdentificationUnitAnalysisID.ToString())
+                                .ToNavigation(Page.EditIUAN))
+                            .CreateCollection();
                         getAnalyses.Execute(subject);
                         return coll;
                     }), x => x.Analyses);
@@ -112,19 +121,46 @@ namespace DiversityPhone.ViewModels
             _ImageList = this.ObservableToProperty( 
                 ValidModel
                  .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Image))
-                 .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage))),
+                 .Select(mmos => mmos.Select(mmo => new ImageVM(mmo)))
+                 .Do(mmos =>
+                 {
+                     foreach (var mmo in mmos)
+                     {
+                         mmo.SelectObservable
+                             .Select(m => m.Model.Uri)
+                             .ToNavigation(Page.ViewImage);
+                     }
+                 }),
                  x => x.ImageList);
 
             _AudioList = this.ObservableToProperty(
                 ValidModel
                .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Audio))
-               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio))),
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(mmo)))
+               .Do(mmos => 
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewAudio);
+                    }
+                }),
                x => x.AudioList);
 
             _VideoList = this.ObservableToProperty(
                 ValidModel
                .Select(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, iu.UnitID, MediaType.Video))
-               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo))),
+               .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(mmo)))
+               .Do(mmos =>
+               {
+                   foreach (var mmo in mmos)
+                   {
+                       mmo.SelectObservable
+                           .Select(m => m.Model.Uri)
+                           .ToNavigation(Page.ViewVideo);
+                   }
+               }),
                x => x.VideoList);
 
             Add = new ReactiveCommand();
@@ -157,7 +193,7 @@ namespace DiversityPhone.ViewModels
         {
             foreach (var iuanVM in Storage
                                     .getIUANForIU(iuvm.Model)                                    
-                                    .Select(iuan => new IdentificationUnitAnalysisVM(Messenger, iuan)))
+                                    .Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
                 collectionSubject.OnNext(iuanVM);
         }
 
@@ -200,12 +236,25 @@ namespace DiversityPhone.ViewModels
         private void getSubUnitsImpl(ISubject<IdentificationUnitVM> subject)
         {
             var toplevel = Storage.getSubUnits(Current.Model);
-            IdentificationUnitVM.FillIUVMObservable(subject, toplevel, IOC, Page.ViewIU, 2);                  
+            foreach (var top in toplevel)
+            {
+                var unit = new IdentificationUnitVM(top, 2);
+                unit.SelectObservable
+                    .Select(vm => vm.Model.UnitID.ToString())
+                    .ToNavigation(Page.ViewIU);
+                subject.OnNext(unit);
+            }                
         }
+
+        SerialDisposable model_select = new SerialDisposable();
 
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
-            return new IdentificationUnitVM(IOC, model, Page.EditIU);
+            var res = new IdentificationUnitVM(model);
+            model_select.Disposable = res.SelectObservable
+                .Select(vm => vm.Model.UnitID.ToString())
+                .ToNavigation(Page.EditIU);
+            return res;
         }
     }
 }

@@ -163,7 +163,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
         {
-            return new IdentificationUnitAnalysisVM(Messenger, model, Page.Current);
+            return new IdentificationUnitAnalysisVM(model);
         }
     }
 }

@@ -31,8 +31,7 @@ using DiversityPhone.Services;
         public SpecimenVM(Specimen model)
             : base( model)
         {
-            if(canSelectPredicate != null)
-                CanSelect.OnNext(canSelectPredicate(Model));
+            
         }
     }
 }
