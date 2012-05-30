@@ -50,15 +50,10 @@ namespace DiversityPhone.ViewModels
                             return "/Images/appbar.feature.camera.rest.png";
                  }
             }
-        }
+        }       
 
-        protected override NavigationMessage NavigationMessage
-        {
-            get { return new NavigationMessage(TargetPage, Model.Uri); }
-        }
-
-        public MultimediaObjectVM(IMessageBus _messenger, MultimediaObject model, Page targetPage)
-            : base(_messenger, model, targetPage)
+        public MultimediaObjectVM( MultimediaObject model)
+            : base(model)
         {
 
         }

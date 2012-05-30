@@ -23,30 +23,16 @@
             
         }
 
-        public EventSeriesVM( IMessageBus messenger, EventSeries model, Page targetPage, Predicate<EventSeries> canSelectPredicate = null)
-            : base(messenger,model, targetPage)
+        public EventSeriesVM( EventSeries model )
+            : base(model)
         {           
             if (EventSeries.isNoEventSeries(Model)) //Überprüfen auf NoEventSeries
                 _esIcon = ViewModels.Icon.NoEventSeries;
             else
             {
                 _esIcon = ViewModels.Icon.EventSeries;                
-            }
-
-            if(canSelectPredicate != null)
-                CanSelect.OnNext(canSelectPredicate(Model));
-        }
-
-        protected override NavigationMessage NavigationMessage
-        {
-            get
-            {
-                return new NavigationMessage(
-                    TargetPage,
-                    (EventSeries.isNoEventSeries(Model)) ? null : Model.SeriesID.ToString()
-                    );
-            }
-        }
+            }            
+        }        
     }
 }
 

@@ -26,14 +26,10 @@ using DiversityPhone.Services;
                 return (Model.IsObservation()) ? ViewModels.Icon.Observation : ViewModels.Icon.Specimen;
             }
         }
+        
 
-        protected override NavigationMessage NavigationMessage
-        {
-            get { return new NavigationMessage(TargetPage, Model.CollectionSpecimenID.ToString()); }
-        }
-
-        public SpecimenVM(IMessageBus _messenger, Specimen model, Page targetPage, Func<Specimen, bool> canSelectPredicate = null)
-            : base(_messenger, model, targetPage)
+        public SpecimenVM(Specimen model)
+            : base( model)
         {
             if(canSelectPredicate != null)
                 CanSelect.OnNext(canSelectPredicate(Model));

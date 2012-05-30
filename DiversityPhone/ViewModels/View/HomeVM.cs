@@ -42,27 +42,14 @@ namespace DiversityPhone.ViewModels
         public ReactiveAsyncCommand Upload { get; private set; }        
         #endregion
 
-        #region Properties
-        private ObservableAsPropertyHelper<IList<EventSeriesVM>> _SeriesList;
-        public IList<EventSeriesVM> SeriesList
+        #region Properties        
+        public ReactiveCollection<EventSeriesVM> SeriesList
         {
-            get
-            {
-                return _SeriesList.Value;
-            }            
+            get;
+            private set;
         }
 
-        private EventSeriesVM _NoEventSeries;
-        public EventSeriesVM NoEventSeries
-        {
-            get
-            {
-                if (_NoEventSeries == null)
-                    _NoEventSeries = new EventSeriesVM(Messenger, EventSeries.NoEventSeries, Page.ViewES);
-
-                return _NoEventSeries;
-            }
-        }
+        public EventSeriesVM NoEventSeries { get; private set; }
         #endregion
 
         public HomeVM(IMessageBus messenger, IFieldDataService storage, IDiversityServiceClient repo, ISettingsService settings)
@@ -71,25 +58,43 @@ namespace DiversityPhone.ViewModels
             _storage = storage;
             _repository = repo;
             _settings = settings;
+
+            NoEventSeries = new EventSeriesVM(EventSeries.NoEventSeries);
+            NoEventSeries
+                .SelectObservable
+                .Select(_ => (string)null)
+                .ToNavigation(Page.ViewES);
             
 
             //Initialize MultimediaTransfer
            
             _msc=new MediaService4.MediaService4Client();
             _msc.SubmitCompleted+=new EventHandler<MediaService4.SubmitCompletedEventArgs>(msc_SubmitCompleted);
-            _SeriesList = this.ObservableToProperty(
-                StateObservable
-                .Select(_ => updatedSeriesList()),
-                x => x.SeriesList);
+
+            
+            var series = StateObservable
+                .Select(_ => storage.getAllEventSeries())
+                .Publish();
+            series.Connect();
+
+            SeriesList = 
+                series
+                .Do(_ => SeriesList.Clear())
+                .SelectMany(list => list.Select(s => new EventSeriesVM(s)))
+                .Do(vm => vm.SelectObservable
+                    .Select(sender => sender.Model.SeriesID.ToString())
+                    .ToNavigation(Page.ViewES)
+                    )
+                .CreateCollection();
+                    
 
             //Initialize PlainUpload
             _plainUploadClient = new Svc.DiversityServiceClient();
             _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
             _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
 
-            var noOpenSeries = StateObservable
-                .Select(_ => _storage.getAllEventSeries())
-                .Select(series => series.Any(s => s.SeriesEnd == null))
+            var noOpenSeries = series
+                .Select(list => list.Any(s => s.SeriesEnd == null))
                 .Select(openseries => !openseries);
 
             _subscriptions = new List<IDisposable>()
@@ -245,13 +250,7 @@ namespace DiversityPhone.ViewModels
         }
 
         #endregion
-        private IList<EventSeriesVM> updatedSeriesList()
-        {
-            return new VirtualizingReadonlyViewModelList<EventSeries, EventSeriesVM>(
-                _storage.getAllEventSeries(),
-                (model) => new EventSeriesVM(Messenger,model, Page.ViewES)
-                );
-        }        
+             
 
         private void addSeries()
         {
