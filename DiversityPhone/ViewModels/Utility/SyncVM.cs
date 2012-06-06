@@ -50,7 +50,7 @@ namespace DiversityPhone.ViewModels.Utility
             }
 
 
-            public SyncUnitVM(EventSeries model) : base(null, model, Page.Current)
+            public SyncUnitVM(EventSeries model) : base(MessageBus.Current, model, Page.Current)
             {
                 
             }
@@ -140,8 +140,8 @@ namespace DiversityPhone.ViewModels.Utility
             var seriesID = inc.Unit;
             var increment = inc.Increment;
 
-            lock (this)
-            {
+            //lock (this)
+            //{
                 var existing = (from series in SyncUnits
                                where series.Model.SeriesID == seriesID
                                select series).FirstOrDefault();
@@ -155,9 +155,10 @@ namespace DiversityPhone.ViewModels.Utility
                     var vm = new SyncUnitVM(series)
                     {                        
                         ModificationCount = increment
-                    };                    
+                    };
+                    SyncUnits.Add(vm);
                 }
-            }
+            //}
         }
     }
 }

@@ -29,7 +29,8 @@
         <!--ContentPanel - place additional content here-->
         <StackPanel Orientation="Vertical" Grid.Row="1" Margin="12,0,12,0">
             <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-            <ListBox>
+            <ListBox ItemsSource="{Binding SyncUnits}" 
+                     ItemTemplate="{StaticResource FieldDataItemTemplate}">
                 
             </ListBox>
             
