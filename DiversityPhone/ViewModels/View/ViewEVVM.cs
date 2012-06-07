@@ -65,12 +65,16 @@ using System.Reactive.Disposables;
                 .SelectMany(specs => specs)
                 .Do( vm => vm.SelectObservable.Select(v => v.Model.CollectionSpecimenID.ToString()).ToNavigation(Page.ViewCS))
                 .CreateCollection();
+            ValidModel
+                .Subscribe(getSpecimen.Execute);
 
             Properties = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))
                 .Do(_ => Properties.Clear())
                 .SelectMany(props => props)
                 .Do(vm => vm.SelectObservable.Select(v => v.Model.PropertyID.ToString()).ToNavigation(Page.ViewCS,ReferrerType.Event, Current.Model.EventID.ToString()))
                 .CreateCollection();
+            ValidModel
+                .Subscribe(getProperties.Execute);
 
             _ImageList = this.ObservableToProperty(
                 ValidModel

@@ -10,6 +10,7 @@
     using DiversityPhone.Messages;
     using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 
     public class ViewESVM : ElementPageViewModel<EventSeries>
     { 
@@ -24,6 +25,8 @@ using System.Reactive.Disposables;
 
         private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
         private SerialDisposable model_select = new SerialDisposable();
+        private ISubject<ElementVMBase<Event>> event_selected = new Subject<ElementVMBase<Event>>();
+
         public ViewESVM()            
         {   
             EventList = getEvents.RegisterAsyncFunction(es =>
@@ -33,9 +36,14 @@ using System.Reactive.Disposables;
                 })
                 .Do(_ => EventList.Clear())
                 .SelectMany(evs => evs)
+                .Do(vm => vm.SelectObservable.Subscribe(event_selected.OnNext))
                 .CreateCollection();
 
             ValidModel.Subscribe(getEvents.Execute);
+
+            event_selected
+                .Select(vm => vm.Model.EventID.ToString())
+                .ToNavigation(Page.ViewEV);
 
             //On each Invocation of AddEvent, a new NavigationMessage is generated
             AddEvent = new ReactiveCommand();
