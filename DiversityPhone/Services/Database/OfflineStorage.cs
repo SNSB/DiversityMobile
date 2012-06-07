@@ -92,13 +92,16 @@
 
         public IList<EventSeries> getNewEventSeries()
         {
-            return esQuery(es => es.ModificationState == null);
+            return esQuery(es => es.ModificationState == ModificationState.Modified);
         }
 
-        public EventSeries getEventSeriesByID(int id)
-        {            
+        public EventSeries getEventSeriesByID(int? id)
+        {
+            if (!id.HasValue)
+                return EventSeries.NoEventSeries;
+
             return singletonQuery(ctx => from es in ctx.EventSeries
-                                         where es.SeriesID == id
+                                         where es.SeriesID == id.Value
                                          select es);
 
         }

@@ -107,6 +107,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -146,6 +147,7 @@
     <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\Service\Credentials.cs" />
     <Compile Include="Model\Specimen.cs" />
+    <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
     <Compile Include="Service References\DiversityService\Reference.cs">
@@ -804,6 +806,9 @@
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
     <DesignData Include="SampleData\HomeVMSampleData.xaml">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+    </DesignData>
+    <DesignData Include="SampleData\SyncVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
     <DesignData Include="SampleData\TaxonManagementVMSampleData.xaml">

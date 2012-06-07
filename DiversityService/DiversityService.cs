@@ -317,7 +317,7 @@ namespace DiversityService
                     } 
                 }
 
-                //Insert Coordinates and ajust Analyses
+                //Insert Coordinates and adjust Analyses
                 foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
                 {
                     String geoString = null;

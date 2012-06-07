@@ -93,8 +93,8 @@
         public static Svc.Event ConvertToServiceObject(Event ev)
         {
             Svc.Event export = new Svc.Event();
-            if (ev.DiversityCollectionEventID != null)
-                export.DiversityCollectionEventID = (int) ev.DiversityCollectionEventID;
+            if (ev.DiversityCollectionEventID.HasValue)
+                export.DiversityCollectionEventID = ev.DiversityCollectionEventID.Value;
             else
                 export.DiversityCollectionEventID = Int32.MinValue;
             export.DiversityCollectionSeriesID = ev.DiversityCollectionSeriesID;

@@ -65,7 +65,8 @@ namespace DiversityPhone.ViewModels
 
             CanSelect.OnNext(canSelect);
 
-            Messenger.RegisterMessageSource(
+            if(Messenger != null)
+                Messenger.RegisterMessageSource(
                 Select
                 .Select(_ => NavigationMessage)
                 );

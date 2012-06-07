@@ -132,7 +132,7 @@ namespace DiversityPhone.ViewModels
                IList<Svc.EventSeries> convertSeries = new List<Svc.EventSeries>();
                foreach (EventSeries es in series)
                {
-                   Svc.EventSeries sES=EventSeries.ConvertToServiceObject(es);
+                   Svc.EventSeries sES=EventSeries.ToServiceObject(es);
                    //sES.Geography = _storage.convertGeoPointsToString(es.SeriesID);
                    convertSeries.Add(sES);
                }

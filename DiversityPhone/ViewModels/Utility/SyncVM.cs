@@ -10,6 +10,7 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
+using DiversityPhone.Services.BackgroundTasks;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -23,35 +24,43 @@ namespace DiversityPhone.ViewModels.Utility
 
         private CancellationTokenSource search = null;
         
-        public ReactiveCollection<SyncUnitVM> SyncUnits { get; private set; }        
+        public ReactiveCollection<SyncUnitVM> SyncUnits { get; private set; }
+
+        public ReactiveCommand UploadUnit { get; private set; }
 
         private ReactiveAsyncCommand collectModifications = new ReactiveAsyncCommand();
 
-        public class SyncUnitVM : EventSeriesVM
+        public class SyncUnitVM : ReactiveObject
         {
-            public override string Description
-            {
-                get
-                {
-                    return string.Format("{0} ({1})", base.Description, ModificationCount);
-                }
-            }
+            public SyncUnit Model { get; private set; }
+
+            public EventSeriesVM Series { get; private set; }
+
+            public EventVM Event { get; private set; }
 
             private int modC;
 
             public int ModificationCount
             {
                 get { return modC; }
-                set 
-                { 
-                    modC = value;
-                    this.RaisePropertyChanged(x => x.Description);
+                private set 
+                {
+                    this.RaiseAndSetIfChanged(x => x.ModificationCount, ref modC, value);
                 }
             }
 
-
-            public SyncUnitVM(EventSeries model) : base(MessageBus.Current, model, Page.Current)
+            public void Append(SyncUnit inc)
             {
+                Model.increment(inc);
+                ModificationCount += inc.Size;
+            }
+
+
+            public SyncUnitVM(SyncUnit model, Event ev, EventSeries series)
+            {
+                Model = model;
+                Event = new EventVM(null, ev, Page.Current);
+                Series = new EventSeriesVM(null, series, Page.Current);
                 
             }
         }
@@ -66,12 +75,31 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(collectModifications.Execute);
             collectModifications.RegisterAsyncObservable(_ => 
                 {
-                    var res = new ReplaySubject<SyncUnitIncrement>();
+                    var res = new ReplaySubject<SyncUnit>();
                     new Task(() => collectModificationsImpl(res, search.Token)).Start();
                     return res;
                 })
                 .Subscribe(inc => incrementModificationCount(inc));
             _IsBusy = this.ObservableToProperty(collectModifications.ItemsInflight.Select(i => i > 0),x => x.IsBusy, false);
+
+            var backg = ioc.Resolve<IBackgroundService>();
+            var uploading = backg.getTaskObject<UploadSeriesTask>()
+                                .BusyObservable.Select(x => !x)
+                                .StartWith(false);
+            var collectingModifications = collectModifications
+                .ItemsInflight
+                .Select(items => items > 0)
+                .StartWith(false);
+            var canUpload = uploading.Select(x => !x);
+                //.CombineLatest(collectingModifications, (up, coll) => !up && !coll);
+
+
+            UploadUnit = new ReactiveCommand(canUpload);
+            UploadUnit
+                .Select(unit => unit as SyncUnitVM)
+                .Where(unit => unit != null)
+                .Subscribe(unit => backg.startTask<UploadSeriesTask>(unit.Model));
+                
         }
 
         private struct SyncUnitIncrement
@@ -89,73 +117,89 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        private void collectModificationsImpl(ISubject<SyncUnitIncrement> outputSubject, CancellationToken cancellation)
+        private void collectModificationsImpl(ISubject<SyncUnit> outputSubject, CancellationToken cancellation)
         {
             
 
             using (var ctx = new DiversityDataContext())
             {
 
-                //Modified Series
-                var series = from s in ctx.EventSeries
-                             where s.ModificationState == ModificationState.Modified
-                             select s.SeriesID;
-                foreach (var s in series)
-                {
-                    if (cancellation.IsCancellationRequested)
-                        return;
-                    outputSubject.OnNext(new SyncUnitIncrement() { Unit = s, Increment = 1 });
-                }
+                //Modified Series without event not shown
 
+                //Modified Events
                 var events = from e in ctx.Events
-                             where e.ModificationState == ModificationState.Modified
-                             group e by e.SeriesID into g
-                             select new { ID = g.Key, Count = g.Count() };
+                             where e.ModificationState == ModificationState.Modified                             
+                             select new SyncUnit(e.SeriesID, e.EventID);
                 foreach (var ev in events)
                 {
                     if (cancellation.IsCancellationRequested)
                         return;
-                    outputSubject.OnNext(new SyncUnitIncrement() { Unit = ev.ID, Increment = ev.Count });
+                    outputSubject.OnNext(ev);
                 }
 
+                // TODO Modified Properties                
+
+                //Specimen without Units disregarded
+
+                //Modified Units
                 var ius = from iu in ctx.IdentificationUnits
-                          where iu.ModificationState == ModificationState.Modified
-                          group iu by iu.SpecimenID into g
+                          where iu.ModificationState == ModificationState.Modified                          
                           from spec in ctx.Specimen
-                          where spec.CollectionSpecimenID == g.Key
+                          where spec.CollectionSpecimenID == iu.SpecimenID
+                          group iu.UnitID by spec.CollectionEventID into g
                           from ev in ctx.Events
-                          where ev.EventID == spec.CollectionEventID
-                          select new { ID = ev.SeriesID, Count = g.Count() };
+                          where ev.EventID == g.Key
+                          select new { Series = ev.SeriesID, Event = ev.EventID, Units = g };
                 foreach (var iu in ius)
                 {
                     if (cancellation.IsCancellationRequested)                        
                         return;
-                    outputSubject.OnNext(new SyncUnitIncrement() { Unit = iu.ID, Increment = iu.Count });
+
+                    var units = new SyncUnit(iu.Series, iu.Event);
+                    units.UnitIDs.AddRange(iu.Units);
+                    outputSubject.OnNext(units);
+                }
+
+                //Modified Analyses
+                var iuas =  from iua in ctx.IdentificationUnitAnalyses
+                            where iua.ModificationState == ModificationState.Modified
+                            from iu in ctx.IdentificationUnits
+                            where iu.UnitID == iua.IdentificationUnitID
+                            from spec in ctx.Specimen
+                            where spec.CollectionSpecimenID == iu.SpecimenID
+                            group iua.IdentificationUnitAnalysisID by spec.CollectionEventID into g
+                            from ev in ctx.Events
+                            where ev.EventID == g.Key
+                            select new { Series = ev.SeriesID, Event = ev.EventID, IUAs = g };
+                foreach (var iua in iuas)
+                {
+                    if (cancellation.IsCancellationRequested)
+                        return;
+
+                    var analyses = new SyncUnit(iua.Series, iua.Event);
+                    analyses.AnalysisIDs.AddRange(iua.IUAs);
+                    outputSubject.OnNext(analyses);
                 }
             }
         }
 
-        private void incrementModificationCount(SyncUnitIncrement inc)
-        {
-            var seriesID = inc.Unit;
-            var increment = inc.Increment;
+        private void incrementModificationCount(SyncUnit inc)
+        {            
 
             //lock (this)
             //{
                 var existing = (from series in SyncUnits
-                               where series.Model.SeriesID == seriesID
+                               where series.Model.SeriesID == inc.SeriesID && series.Model.EventID == inc.EventID
                                select series).FirstOrDefault();
                 if (existing != null)
                 {
-                    existing.ModificationCount += increment;
+                    existing.Append(inc);
                 }
                 else
                 {
-                    var series = (seriesID.HasValue) ? Storage.getEventSeriesByID(seriesID.Value) : EventSeries.NoEventSeries;
-                    var vm = new SyncUnitVM(series)
-                    {                        
-                        ModificationCount = increment
-                    };
+                    var series = Storage.getEventSeriesByID(inc.SeriesID);
+                    var ev = Storage.getEventByID(inc.EventID);
+                    var vm = new SyncUnitVM(inc,ev,series);
                     SyncUnits.Add(vm);
                 }
             //}

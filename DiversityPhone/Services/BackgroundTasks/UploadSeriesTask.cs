@@ -10,12 +10,19 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using DiversityPhone.Model;
 using Funq;
+using System.Reactive.Linq;
+using System.Linq;
+using Svc = DiversityPhone.DiversityService;
+using System.Collections.ObjectModel;
+using System.Xml.Serialization;
+using System.IO;
+using System.Xml;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
     public class UploadSeriesTask : BackgroundTask
     {
-        private const string SERIES_KEY = "S";
+        private const string UNIT_KEY = "S";        
 
         IDiversityServiceClient Repo;
         IFieldDataService Storage;
@@ -29,24 +36,32 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         public override bool CanResume
         {
-            get { return true; }
+            get { return false; }
         }
 
         protected override void saveArgumentToState(object arg)
         {
-            var series = arg as EventSeries;
+            var series = arg as SyncUnit;
             if (series != null)
             {
-                State[SERIES_KEY] = series.SeriesID.ToString();
+                var serializer = new XmlSerializer(typeof(SyncUnit));
+                var ms = new MemoryStream();
+                serializer.Serialize(ms,series);
+                var reader = new StreamReader(ms);
+                reader.BaseStream.Seek(0,SeekOrigin.Begin);
+                State[UNIT_KEY] = reader.ReadToEnd();
             }
         }
 
         protected override object getArgumentFromState()
         {
-            int id;
-            if (State.ContainsKey(SERIES_KEY) && int.TryParse(State[SERIES_KEY], out id))
-            {
-                return Storage.getEventSeriesByID(id);
+            var serializer = new XmlSerializer(typeof(SyncUnit));
+            if (State.ContainsKey(UNIT_KEY))
+            {                
+                var reader = XmlReader.Create(new StringReader(State[UNIT_KEY]));
+
+                if (serializer.CanDeserialize(reader))
+                    return serializer.Deserialize(reader);                
             }
 
             return null;
@@ -54,22 +69,57 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         protected override void Run(object arg)
         {
-            var series = arg as EventSeries;
-            if (series != null)
+            var unit = arg as SyncUnit;
+            if (unit != null)
             {
+                var series = Storage.getEventSeriesByID(unit.SeriesID);
                 if (series.IsModified())
-                    ;
+                {
+                    var collectionKey = Repo.InsertEventSeries(series).First();
+                    Storage.updateSeriesKey(series.SeriesID, collectionKey);
+                }
+                
+                var ev = Storage.getEventByID(unit.EventID);
+                if (!ev.DiversityCollectionSeriesID.HasValue)
+                    ev.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
+
+                var hierarchy = Storage.getNewHierarchyToSyncBelow(ev);
+                var collectionKeys = Repo.InsertHierarchy(hierarchy).First();
+
+                
+                if (collectionKeys.eventKey.Any())
+                {
+                    var evKeyProjection = collectionKeys.eventKey.First();
+
+                    Storage.updateEventKey(evKeyProjection.Key, evKeyProjection.Value);
+                }
+
+                if (collectionKeys.specimenKeys.Any())
+                {
+                    foreach (var specKey in collectionKeys.specimenKeys)
+                    {
+                        Storage.updateSpecimenKey(specKey.Key, specKey.Value);
+                    }
+                }
+
+                if (collectionKeys.iuKeys.Any())
+                {
+                    foreach (var iuKey in collectionKeys.iuKeys)
+                    {
+                        Storage.updateIUKey(iuKey.Key, iuKey.Value);
+                    }
+                }
             }
-        }
+        }        
 
         protected override void Cancel()
         {
-            throw new NotImplementedException();
+            
         }
 
         protected override void Cleanup(object arg)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
