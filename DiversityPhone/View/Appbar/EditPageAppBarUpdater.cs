@@ -52,6 +52,11 @@ namespace DiversityPhone.View
             };
             _delete.Click += (s,args) => _vm.Delete.Execute(null);
 
+            _vm.ToggleEditable
+                .CanExecuteObservable
+                .StartWith(_vm.ToggleEditable.CanExecute(null))
+                .Subscribe(canToggle => _edit.IsEnabled = canToggle);
+
             _vm.ObservableForProperty(x => x.IsEditable)
                 .Value()
                 .StartWith(_vm.IsEditable)
