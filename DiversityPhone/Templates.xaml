@@ -48,6 +48,36 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
+    
+    <DataTemplate x:Key="IdentificationItemTemplate">
+        <StackPanel Grid.Column="0" Grid.Row="0"
+						Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
+            <Button Style="{StaticResource ItemButtonStyle}"
+	                    Content="{Binding Description}"
+	                    Command="{Binding Select}"/>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="IdentificationOneLevelItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
+                            ContentTemplate="{StaticResource IdentificationItemTemplate}"
+                            Content="{Binding}"/>
+
+            <ItemsControl Grid.Column="1" Grid.Row="1" 					 
+                     ItemsSource="{Binding SubUnits}"
+                     ItemTemplate="{StaticResource IdentificationItemTemplate}"
+                     Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
+        </Grid>
+    </DataTemplate>
     <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -58,22 +88,18 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            
-            <StackPanel Grid.Column="0" Grid.Row="0"
-						Grid.ColumnSpan="2" Orientation="Horizontal">
-                <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
-	            <Button Style="{StaticResource ItemButtonStyle}"
-	                    Content="{Binding Description}"
-	                    Command="{Binding Select}"/>
-       		</StackPanel>
-            
+            <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
+                            ContentTemplate="{StaticResource IdentificationItemTemplate}"
+                            Content="{Binding}"/>            
+
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"
+                     ItemTemplate="{StaticResource IdentificationOneLevelItemTemplate}"
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </DataTemplate>
     
+
     <DataTemplate x:Key="IdentificationDetailItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image />

@@ -189,6 +189,9 @@
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>
   </data>
+  <data name="Sync_Label_Modifications" xml:space="preserve">
+    <value>Modifications</value>
+  </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>
   </data>

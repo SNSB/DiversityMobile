@@ -15,11 +15,11 @@ using System;
         void updateHierarchy(Svc.HierarchySection from, Svc.HierarchySection to);
 
         IList<EventSeries> getAllEventSeries();
-        EventSeries getEventSeriesByID(int id);
+        EventSeries getEventSeriesByID(int? id);
         IList<EventSeries> getNewEventSeries();
         void addOrUpdateEventSeries(EventSeries newSeries);
         void deleteEventSeries(EventSeries es);
-        void updateSeriesKey(int oldSeriesKey, int newSeriesKey);
+        void updateSeriesKey(int clientSeriesKey, int serverSeriesKey);
 
         IList<GeoPointForSeries> getAllGeoPoints();
         IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);

@@ -23,14 +23,15 @@ namespace DiversityPhone.Services
 
 
 
-        public IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<EventSeries> seriesList)
+        public IObservable<int> InsertEventSeries(Client.EventSeries series)
         {
             var res = Observable.FromEvent<EventHandler<InsertEventSeriesCompletedEventArgs>, InsertEventSeriesCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertEventSeriesCompleted += d, d => _svc.InsertEventSeriesCompleted -= d)
                 .Select(args => args.Result)
                 .Take(1);
-            ObservableCollection<EventSeries> seriesConv = ObservableConverter.ToObservableCollection<EventSeries>(seriesList);
-            _svc.InsertEventSeriesAsync(seriesConv, this.GetCreds());
-            return res;
+            var repoSeries = new ObservableCollection<EventSeries>();
+            repoSeries.Add(Client.EventSeries.ToServiceObject(series));
+            _svc.InsertEventSeriesAsync(repoSeries, this.GetCreds());
+            return res.Select(dict => dict[series.SeriesID]);
         }
     }
 }

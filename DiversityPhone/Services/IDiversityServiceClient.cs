@@ -27,7 +27,7 @@ namespace DiversityPhone.Services
         #region Upload
         IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
 
-        IObservable<Dictionary<int, int>> InsertEventSeries(IEnumerable<Svc.EventSeries> seriesList);
+        IObservable<int> InsertEventSeries(EventSeries series);
         Svc.UserCredentials GetCreds();
         #endregion
 
