@@ -72,7 +72,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
         {
-            return new SpecimenVM(Messenger, model, Page.Current);
+            return new SpecimenVM(model);
         }
     }
 }

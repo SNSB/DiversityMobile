@@ -58,5 +58,5 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => this)
                 .Subscribe(SelectSubject);
         }
-    }
+    }   
 }

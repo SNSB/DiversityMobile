@@ -295,7 +295,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<Map> ViewModelFromModel(Map model)
         {
-            return new MapVM(Messenger, model, DiversityPhone.Services.Page.Current);
+            return new MapVM(model);
         }
 
       

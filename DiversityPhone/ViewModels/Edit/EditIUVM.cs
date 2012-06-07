@@ -260,7 +260,7 @@ namespace DiversityPhone.ViewModels
         
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
-            return new IdentificationUnitVM(IOC, model, Page.Current);
+            return new IdentificationUnitVM(model);
         }
 
         protected override IObservable<bool> CanSave()
