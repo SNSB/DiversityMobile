@@ -83,7 +83,8 @@ namespace DiversityPhone.ViewModels.Utility
             _IsBusy = this.ObservableToProperty(collectModifications.ItemsInflight.Select(i => i > 0),x => x.IsBusy, false);
 
             var backg = ioc.Resolve<IBackgroundService>();
-            var uploading = backg.getTaskObject<UploadSeriesTask>()
+            var uploadTask = backg.getTaskObject<UploadSeriesTask>();
+            var uploading = uploadTask
                                 .BusyObservable.Select(x => !x)
                                 .StartWith(false);
             var collectingModifications = collectModifications
@@ -92,6 +93,16 @@ namespace DiversityPhone.ViewModels.Utility
                 .StartWith(false);
             var canUpload = uploading.Select(x => !x);
                 //.CombineLatest(collectingModifications, (up, coll) => !up && !coll);
+            uploadTask.AsyncCompletedNotification
+                .Select(arg => arg as SyncUnit)
+                .Where(arg => arg != null)
+                .SubscribeOnDispatcher()
+                .Subscribe(unit =>
+                    {
+                        var vm = SyncUnits.Where(v => v.Model == unit).FirstOrDefault();
+                        if (vm != null)
+                            SyncUnits.Remove(vm);
+                    });
 
 
             UploadUnit = new ReactiveCommand(canUpload);
