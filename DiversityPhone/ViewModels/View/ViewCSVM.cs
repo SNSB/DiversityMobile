@@ -136,7 +136,7 @@ namespace DiversityPhone.ViewModels
                     switch (SelectedPivot)
                     {
                         case Pivots.Multimedia:
-                            return Page.EditMMO;
+                            return Page.SelectNewMMO;
                         case Pivots.Units:
                         default:
                             return Page.EditIU;

@@ -237,6 +237,9 @@
     <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapIUVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
+    <Compile Include="ViewModels\Multimedia\NewAudioVM.cs" />
+    <Compile Include="ViewModels\Multimedia\NewImageVM.cs" />
+    <Compile Include="ViewModels\Multimedia\NewVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\SelectNewMMOVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
@@ -295,6 +298,15 @@
     </Compile>
     <Compile Include="View\Converters\IconToImageConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
+    <Compile Include="View\NewAudio.xaml.cs">
+      <DependentUpon>NewAudio.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewImage.xaml.cs">
+      <DependentUpon>NewImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\NewVideo.xaml.cs">
+      <DependentUpon>NewVideo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ProgressBinding.cs" />
     <Compile Include="View\SelectNewMMO.xaml.cs">
       <DependentUpon>SelectNewMMO.xaml</DependentUpon>
@@ -435,6 +447,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditPicture.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewAudio.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\NewVideo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

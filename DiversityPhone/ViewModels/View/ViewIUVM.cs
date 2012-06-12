@@ -173,7 +173,7 @@ namespace DiversityPhone.ViewModels
                             case Pivots.Descriptions:
                                 return Page.EditIUAN;
                             case Pivots.Multimedia:
-                                return Page.EditMMO;                            
+                                return Page.SelectNewMMO;                           
                             case Pivots.Subunits:
                                 return Page.EditIU;
                             default:

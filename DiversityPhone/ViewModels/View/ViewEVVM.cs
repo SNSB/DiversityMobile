@@ -129,7 +129,7 @@ using System.Reactive.Disposables;
                         switch (SelectedPivot)
                         {
                             case Pivots.Multimedia:
-                                return Page.EditMMO;
+                                return Page.SelectNewMMO;
                             case Pivots.Descriptions:
                                 return Page.EditEventProperty;
                             case Pivots.Specimen:

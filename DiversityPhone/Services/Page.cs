@@ -18,7 +18,7 @@ namespace DiversityPhone.Services
         EditIUAN,
 
  
-        EditMMO,
+        EditMMO, //Eliminieren nach Umstellung
         SelectNewMMO,
         NewImage,
         NewAudio,

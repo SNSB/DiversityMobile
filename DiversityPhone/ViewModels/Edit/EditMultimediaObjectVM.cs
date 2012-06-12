@@ -150,10 +150,7 @@ namespace DiversityPhone.ViewModels
                 .StartWith(false);
         }
 
-        //protected override IObservable<bool> CanSave()
-        //{
-        //    return Observable.Return(false);
-        //}
+ 
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {

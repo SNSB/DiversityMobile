@@ -38,6 +38,20 @@ namespace DiversityPhone.ViewModels
         {
             MapSelected = new Subject<ElementVMBase<Map>>();
 
+            var lastState = StateObservable                
+                .Replay(1);
+
+            Messenger.RegisterMessageSource(
+            MapSelected
+                .Select(m => m.Model.Uri)
+                .Select(uri =>
+                    {
+                        var latestState = lastState.First();
+                        return new NavigationMessage(destinationFromState(latestState), uri, latestState.ReferrerType, latestState.Referrer);
+                    })
+                    );
+                    
+
 
             _maps = maps;
 

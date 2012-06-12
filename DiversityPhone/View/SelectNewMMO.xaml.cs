@@ -11,6 +11,15 @@ namespace DiversityPhone.View
 {
     public partial class SelectNewMMO : PhoneApplicationPage
     {
+
+        private SelectNewMMOVM VM
+        {
+            get
+            {
+                return DataContext as SelectNewMMOVM;
+            }
+        }
+
         public SelectNewMMO()
         {
             InitializeComponent();
@@ -19,15 +28,18 @@ namespace DiversityPhone.View
 
         private void btnNewPhoto_Click(object sender, EventArgs e)
         {
+            VM.SelectImage.Execute(null);
         }
 
 
         private void btnNewAudio_Click(object sender, EventArgs e)
         {
+            VM.SelectAudio.Execute(null);
         }
 
-        private void btnVideoPhoto_Click(object sender, EventArgs e)
+        private void btnNewVideo_Click(object sender, EventArgs e)
         {
+            VM.SelectVideo.Execute(null);
         }
 
 

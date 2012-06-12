@@ -17,8 +17,9 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Collections.ObjectModel;
+using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels.Multimedia
+namespace DiversityPhone.ViewModels
 {
     public class SelectNewMMOVM : PageViewModel
     {
@@ -31,35 +32,39 @@ namespace DiversityPhone.ViewModels.Multimedia
 
         #endregion
 
+        ISubject<Page> DestinationSelected = new Subject<Page>();
+
         public SelectNewMMOVM()
         {
-            //PageState p = this.ObservableForProperty(StateObservable.Select(;
+
+            var lastState = StateObservable
+                .Replay(1);
+            Messenger.RegisterMessageSource(
+            DestinationSelected
+                .Select(dest =>
+                    {
+                        var latestState = lastState.First();
+                        return new NavigationMessage(dest, null, latestState.ReferrerType, latestState.Referrer);
+                    }));
+
+
+
             _subscriptions = new List<IDisposable>()
             {
-                (SelectImage = new ReactiveCommand())
-                    .Subscribe(_ => (StateObservable.Select(page =>selectImage(page)))),
-                //(SelectAudio = new ReactiveCommand())
-                //    .Subscribe(_ => selectAudio(p)),
-                //(SelectVideo = new ReactiveCommand())
-                //    .Subscribe(_ => selectVideo(p)),    
+             (SelectImage = new ReactiveCommand())
+                    .Select(_ => Page.NewImage)
+                    .Subscribe(DestinationSelected.OnNext),
+            (SelectAudio = new ReactiveCommand())
+                .Select(_ => Page.NewAudio)
+                    .Subscribe(DestinationSelected.OnNext),
+            (SelectVideo = new ReactiveCommand())
+                .Select(_ => Page.NewVideo)
+                    .Subscribe(DestinationSelected.OnNext),    
             };
         }
 
 
-        private void selectImage(PageState s)
-        {
-            Messenger.SendMessage(new NavigationMessage(Page.NewImage, null,s.ReferrerType, s.Referrer));
-        }
-
-        private void selectAudio(PageState s)
-        {
-            Messenger.SendMessage(new NavigationMessage(Page.NewAudio, null, s.ReferrerType, s.Referrer));
-        }
-
-        private void selectVideo(PageState s)
-        {
-            Messenger.SendMessage(new NavigationMessage(Page.NewVideo, null, s.ReferrerType, s.Referrer));
-        }
+        
 
     }
 }

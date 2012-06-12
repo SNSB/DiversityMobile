@@ -38,8 +38,6 @@ namespace DiversityPhone.ViewModels
 
         public IObservable<ElementVMBase<T>> SelectObservable { get; private set; }
 
-
-
         protected ISubject<ElementVMBase<T>> SelectSubject = new Subject<ElementVMBase<T>>();
 
         public ElementVMBase(T model)
