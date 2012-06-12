@@ -21,9 +21,7 @@ namespace DiversityPhone.View
 {
     public partial class ViewMapPicker : PhoneApplicationPage
     {
-        private ViewMapPickerVM VM { get { return DataContext as ViewMapPickerVM; } }
-
-  
+        private ViewMapPickerVM VM { get { return DataContext as ViewMapPickerVM; } }  
         
         public ViewMapPicker()
         {

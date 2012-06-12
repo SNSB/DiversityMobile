@@ -82,8 +82,6 @@ namespace DiversityPhone.View
         public EditMMO()
         {
             InitializeComponent();
-           
-           
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
