@@ -45,21 +45,36 @@ namespace DiversityPhone.ViewModels
             {
                 return _StateObservable.DistinctUntilChanged();
             }
-        }
+        }            
+        
+        private PageState _CurrentState;
 
-        private ObservableAsPropertyHelper<PageState> _CurrentState;
         /// <summary>
         /// Always returns the most recent State        
         /// </summary>
-        protected PageState CurrentState { get { return _CurrentState.Value; } }
+        protected PageState CurrentState
+        {
+            get
+            {
+                return _CurrentState;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentState, ref _CurrentState, value);
+            }
+        }
+        
 
         
 
 
         public void SetState(PageState state)
         {
-            if(state != null)
+            if (state != null)
+            {
+                CurrentState = state;
                 _StateObservable.OnNext(state);
+            }
         }    
         public virtual void SaveState(){}
 
@@ -75,10 +90,7 @@ namespace DiversityPhone.ViewModels
                 messenger = MessageBus.Current;
 
             Messenger = messenger;
-            _StateObservable = new Subject<PageState>();
-
-			_CurrentState =
-                this.ObservableToProperty(StateObservable, vm => vm.CurrentState);
+            _StateObservable = new Subject<PageState>();	
            
         }
     }

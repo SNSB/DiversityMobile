@@ -35,16 +35,12 @@ namespace DiversityPhone.ViewModels
         ISubject<Page> DestinationSelected = new Subject<Page>();
 
         public SelectNewMMOVM()
-        {
-
-            var lastState = StateObservable
-                .Replay(1);
+        {            
             Messenger.RegisterMessageSource(
             DestinationSelected
                 .Select(dest =>
                     {
-                        var latestState = lastState.First();
-                        return new NavigationMessage(dest, null, latestState.ReferrerType, latestState.Referrer);
+                        return new NavigationMessage(dest, null, CurrentState.ReferrerType, CurrentState.Referrer);
                     }));
 
 

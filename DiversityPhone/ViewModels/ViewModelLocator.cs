@@ -113,8 +113,8 @@ namespace DiversityPhone.ViewModels
 
         public SelectNewMMOVM SelectNewMMO { get { return _ioc.Resolve <SelectNewMMOVM>(); } }
         public NewImageVM NewImage { get { return _ioc.Resolve<NewImageVM>(); } }
-        public NewAudioVM NewImage { get { return _ioc.Resolve<NewAudioVM>(); } }
-        public NewVideoVM NewImage { get { return _ioc.Resolve<NewVideoVM>(); } }
+        public NewAudioVM NewAudio { get { return _ioc.Resolve<NewAudioVM>(); } }
+        public NewVideoVM NewVideo { get { return _ioc.Resolve<NewVideoVM>(); } }
 
         public ViewImageVM ViewImage { get { return _ioc.Resolve<ViewImageVM>(); } }
         public ViewAudioVM ViewAudio { get { return _ioc.Resolve<ViewAudioVM>(); } }
