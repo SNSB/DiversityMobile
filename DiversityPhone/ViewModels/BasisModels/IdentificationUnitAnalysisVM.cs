@@ -6,19 +6,13 @@ using DiversityPhone.Services;
 namespace DiversityPhone.ViewModels
 {
     public class IdentificationUnitAnalysisVM : ElementVMBase<IdentificationUnitAnalysis>
-    {
-        public IdentificationUnitAnalysisVM(IMessageBus msngr, IdentificationUnitAnalysis model)
-            : this(msngr, model, Page.EditIUAN)
-        {
-           
-        }
-        public IdentificationUnitAnalysisVM(IMessageBus msngr, IdentificationUnitAnalysis model, Page page)
-            : base(msngr, model, page)
+    {        
+        public IdentificationUnitAnalysisVM(IdentificationUnitAnalysis model)
+            : base(model)
         {
             
         }
-
-        string _Description;
+        
         public override string Description
         {
             get { return Model.DisplayText; } 
@@ -27,11 +21,6 @@ namespace DiversityPhone.ViewModels
         public override Icon Icon
         {
             get { return Icon.Analysis; }
-        }
-
-        protected override Messages.NavigationMessage NavigationMessage
-        {
-            get { return new Messages.NavigationMessage(TargetPage, Model.IdentificationUnitAnalysisID.ToString()); }
-        }
+        }        
     }
 }

@@ -9,6 +9,7 @@ using ReactiveUI.Xaml;
 using System.Linq;
 using System.Reactive.Subjects;
 using Funq;
+using System.Reactive.Disposables;
 namespace DiversityPhone.ViewModels
 {
    
@@ -84,20 +85,47 @@ namespace DiversityPhone.ViewModels
             _ImageList = this.ObservableToProperty(
                 ValidModel
                .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Image))
-               .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage))), 
+               .Select(mmos => mmos.Select(mmo => new ImageVM( mmo)))
+               .Do(mmos =>
+               {
+                   foreach (var mmo in mmos)
+                   {
+                       mmo.SelectObservable
+                           .Select(m => m.Model.Uri)
+                           .ToNavigation(Page.ViewImage);
+                   }
+               }), 
                x => x.ImageList);
 
 
             _AudioList = this.ObservableToProperty( 
                 ValidModel
                 .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Audio))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio))),
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
+                .Do(mmos =>
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewAudio);
+                    }
+                }),
                 x => x.AudioList);
 
             _VideoList = this.ObservableToProperty(
                 ValidModel
                 .Select(spec => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, spec.CollectionSpecimenID, MediaType.Video))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo))),
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
+                .Do(mmos =>
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewVideo);
+                    }
+                }),
                 x => x.VideoList);
                     
 
@@ -126,7 +154,14 @@ namespace DiversityPhone.ViewModels
         private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
         {
             var toplevel = Storage.getTopLevelIUForSpecimen(Current.Model);
-            IdentificationUnitVM.FillIUVMObservable(subject, toplevel, IOC, Page.ViewIU, 2);
+            foreach(var top in  toplevel)
+            {
+                var unit = new IdentificationUnitVM(top,2);
+                unit.SelectObservable
+                    .Select(vm => vm.Model.UnitID.ToString())
+                    .ToNavigation(Page.ViewIU);
+                subject.OnNext(unit);
+            }
         }       
 
         protected override Specimen ModelFromState(PageState s)
@@ -140,11 +175,23 @@ namespace DiversityPhone.ViewModels
                 }
             }            
             return null;
-        }   
+        }
+
+        SerialDisposable model_select = new SerialDisposable();
 
         protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
         {
-            return new SpecimenVM(Messenger, model, Page.EditCS, spec => !spec.IsObservation());
+            var res = new SpecimenVM(model);
+            if (!model.IsObservation())
+            {
+                res.SelectObservable
+                    .Select(vm => vm.Model.CollectionSpecimenID.ToString())
+                    .ToNavigation(Page.EditCS);
+            }
+            else
+                model_select.Disposable = null;
+
+            return res;
         }
     }
 }

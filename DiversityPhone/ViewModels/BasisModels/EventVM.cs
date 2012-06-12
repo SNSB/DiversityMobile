@@ -20,14 +20,10 @@ namespace DiversityPhone.ViewModels
             {
                 return ViewModels.Icon.Event;
             }
-        }
-        protected override NavigationMessage NavigationMessage
-        {
-            get { return new NavigationMessage(TargetPage, Model.EventID.ToString()); }
-        }
+        }        
 
-        public EventVM(IMessageBus _messenger, Event model, Page targetPage)
-            : base(_messenger, model, targetPage)
+        public EventVM(Event model)
+            : base(model)
         {
 
         }

@@ -105,7 +105,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {
-            return new MultimediaObjectVM(Messenger, model, DiversityPhone.Services.Page.Current);
+            return new MultimediaObjectVM(model);
         }
 
     }

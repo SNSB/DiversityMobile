@@ -136,7 +136,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<CollectionEventProperty> ViewModelFromModel(CollectionEventProperty model)
         {
-            return new PropertyVM(Messenger, model, Page.Current);
+            return new PropertyVM(model);
         }
     }
 }

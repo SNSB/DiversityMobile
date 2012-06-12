@@ -68,7 +68,7 @@ namespace DiversityPhone.ViewModels
             _Parent = this.ObservableToProperty(
                 ValidModel
                 .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
-                .Select(parent => new IdentificationUnitVM(IOC,parent, Services.Page.Current)),
+                .Select(parent => new IdentificationUnitVM(parent)),
                 vm => vm.Parent);
 
             _Model = this.ObservableToProperty(ValidModel, x => x.Model);
@@ -163,7 +163,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
         {
-            return new IdentificationUnitAnalysisVM(Messenger, model, Page.Current);
+            return new IdentificationUnitAnalysisVM(model);
         }
     }
 }

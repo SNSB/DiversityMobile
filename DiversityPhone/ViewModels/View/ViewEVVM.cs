@@ -10,6 +10,8 @@
     using ReactiveUI.Xaml;
     using System.Linq;
 
+using System.Reactive.Disposables;
+
     public class ViewEVVM : ElementPageViewModel<Event>
     {
         public enum Pivots
@@ -37,12 +39,11 @@
                 this.RaiseAndSetIfChanged(vm => vm.SelectedPivot, ref _SelectedPivot, value);
             }
         }
-        
-        public IList<SpecimenVM> SpecList { get { return _SpecList.Value; } }
-        private ObservableAsPropertyHelper<IList<SpecimenVM>> _SpecList;
 
-        public IList<PropertyVM> Properties { get { return _Properties.Value; } }
-        private ObservableAsPropertyHelper<IList<PropertyVM>> _Properties;
+        public ReactiveCollection<SpecimenVM> SpecList { get; private set; }
+
+
+        public ReactiveCollection<PropertyVM> Properties { get; private set; }        
 
         public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
         private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
@@ -55,35 +56,69 @@
 
         #endregion
 
-
+        private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
         public ViewEVVM()            
         {
-            _SpecList = this.ObservableToProperty(
-                ValidModel               
-                .Select(ev => getSpecimenList(ev)),
-                x => x.SpecList);
+            SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))
+                .Do(_ => SpecList.Clear())
+                .SelectMany(specs => specs)
+                .Do( vm => vm.SelectObservable.Select(v => v.Model.CollectionSpecimenID.ToString()).ToNavigation(Page.ViewCS))
+                .CreateCollection();
+            ValidModel
+                .Subscribe(getSpecimen.Execute);
 
-            _Properties = this.ObservableToProperty(
-                ValidModel
-                .Select(ev => Storage.getPropertiesForEvent(ev.EventID).Select(p => new PropertyVM(Messenger, p, Page.EditEventProperty)).ToList() as IList<PropertyVM>),
-                x => x.Properties);
+            Properties = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))
+                .Do(_ => Properties.Clear())
+                .SelectMany(props => props)
+                .Do(vm => vm.SelectObservable.Select(v => v.Model.PropertyID.ToString()).ToNavigation(Page.ViewCS,ReferrerType.Event, Current.Model.EventID.ToString()))
+                .CreateCollection();
+            ValidModel
+                .Subscribe(getProperties.Execute);
 
             _ImageList = this.ObservableToProperty(
                 ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))
-                .Select(mmos => mmos.Select(mmo => new ImageVM(Messenger, mmo, Page.ViewImage))),
+                .Select(mmos => mmos.Select(mmo => new ImageVM(mmo)))
+                .Do(mmos =>
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewImage);
+                    }
+                }),
                 x => x.ImageList);
 
             _AudioList = this.ObservableToProperty(
                 ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Audio))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewAudio))),
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
+                .Do(mmos =>
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewAudio);
+                    }
+                }),
                 x => x.AudioList);
 
             _VideoList = this.ObservableToProperty(
                 ValidModel
                 .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Video))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM(Messenger, mmo, Page.ViewVideo))),
+                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
+                .Do(mmos =>
+                {
+                    foreach (var mmo in mmos)
+                    {
+                        mmo.SelectObservable
+                            .Select(m => m.Model.Uri)
+                            .ToNavigation(Page.ViewVideo);
+                    }
+                }),
                 x => x.VideoList);
 
             Add = new ReactiveCommand();
@@ -110,15 +145,7 @@
                 Maps
                 .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Event, Current.Model.EventID.ToString()));
             Messenger.RegisterMessageSource(mapMessageSource);
-        }
-
-        private IList<SpecimenVM> getSpecimenList(Event ev)
-        {
-            return new VirtualizingReadonlyViewModelList<Specimen, SpecimenVM>(
-                Storage.getSpecimenForEvent(ev),
-                (model) => new SpecimenVM(Messenger, model, Page.ViewCS)
-                );
-        }
+        }       
 
         //private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
         //{
@@ -149,9 +176,15 @@
             return null;
         }
 
+        private SerialDisposable model_select = new SerialDisposable();
+
         protected override ElementVMBase<Event> ViewModelFromModel(Event model)
         {
-            return new EventVM(Messenger, model, Page.EditEV);
+            var res = new EventVM(model);
+            model_select.Disposable = res.SelectObservable
+                .Select(vm => vm.Model.EventID.ToString())
+                .ToNavigation(Page.EditEV);
+            return res;
         }
     }
 }

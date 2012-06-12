@@ -1,4 +1,7 @@
 ﻿using DiversityPhone.Services;
+using System;
+using ReactiveUI;
+using System.Reactive.Linq;
 namespace DiversityPhone.Messages
 {
     public enum DialogType
@@ -32,5 +35,25 @@ namespace DiversityPhone.Messages
         }
 
         
+    }
+
+    public static class MessengerMixin
+    {
+        public static IDisposable ToNavigation(this IObservable<string> This, Page targetPage, ReferrerType refT = ReferrerType.None, string referrer = null)
+        {
+            if (This == null)
+                throw new ArgumentNullException("This");
+
+            return This.Subscribe(x =>
+                {
+                    var msngr = MessageBus.Current;
+                    if (msngr != null)
+                    {
+                        msngr.SendMessage(
+                        new NavigationMessage(targetPage, x, refT, referrer)
+                        );
+                    }
+                });
+        }        
     }
 }

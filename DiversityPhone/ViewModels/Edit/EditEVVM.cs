@@ -107,7 +107,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<Event> ViewModelFromModel(Event model)
         {
-            return new EventVM(Messenger, model, Page.Current);
+            return new EventVM(model);
         }
     }
 }

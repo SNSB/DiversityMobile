@@ -59,8 +59,8 @@ namespace DiversityPhone.ViewModels.Utility
             public SyncUnitVM(SyncUnit model, Event ev, EventSeries series)
             {
                 Model = model;
-                Event = new EventVM(null, ev, Page.Current);
-                Series = new EventSeriesVM(null, series, Page.Current);
+                Event = new EventVM( ev);
+                Series = new EventSeriesVM(series);
                 
             }
         }
