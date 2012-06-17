@@ -260,6 +260,7 @@
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />

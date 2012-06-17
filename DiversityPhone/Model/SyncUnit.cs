@@ -35,15 +35,7 @@ namespace DiversityPhone.Model
             (SpecimenIDs as List<int>).AddRange(inc.SpecimenIDs);
             (UnitIDs as List<int>).AddRange(inc.UnitIDs);
             (AnalysisIDs as List<int>).AddRange(inc.AnalysisIDs);
-        }
-
-        public int Size 
-        { 
-            get
-            {               
-                return SpecimenIDs.Count + UnitIDs.Count + AnalysisIDs.Count;                
-            }
-        }       
+        }      
 
     }
 }

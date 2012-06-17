@@ -6,7 +6,7 @@ using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
-    public class ProgressBinding<VMType> where VMType : ReactiveUI.ReactiveObject
+    public class ProgressBinding<VMType> : IDisposable where VMType : ReactiveUI.ReactiveObject
     {
         IDisposable _subscription;
 
@@ -48,6 +48,11 @@ namespace DiversityPhone.View
                              if (p != null)
                                  p.Value = progress;
                          });
+        }
+
+        public void Dispose()
+        {
+            _subscription.Dispose();
         }
     }
 }
