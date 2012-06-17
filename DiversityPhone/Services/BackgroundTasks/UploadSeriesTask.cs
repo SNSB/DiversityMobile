@@ -40,7 +40,7 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         public override bool CanResume
         {
-            get { return false; }
+            get { return true; }
         }
 
         protected override void saveArgumentToState(object arg)
