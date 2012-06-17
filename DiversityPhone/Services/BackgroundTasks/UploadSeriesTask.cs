@@ -17,12 +17,16 @@ using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
+using DiversityPhone.DiversityService;
+using Newtonsoft.Json;
+
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
     public class UploadSeriesTask : BackgroundTask
     {
-        private const string UNIT_KEY = "S";        
+        private const string UNIT_KEY = "S";
+        private const string PROJECTION_KEY = "P";
 
         IDiversityServiceClient Repo;
         IFieldDataService Storage;
@@ -44,24 +48,16 @@ namespace DiversityPhone.Services.BackgroundTasks
             var series = arg as SyncUnit;
             if (series != null)
             {
-                var serializer = new XmlSerializer(typeof(SyncUnit));
-                var ms = new MemoryStream();
-                serializer.Serialize(ms,series);
-                var reader = new StreamReader(ms);
-                reader.BaseStream.Seek(0,SeekOrigin.Begin);
-                State[UNIT_KEY] = reader.ReadToEnd();
+                
+                State[UNIT_KEY] = JsonConvert.SerializeObject(series);
             }
         }
 
         protected override object getArgumentFromState()
-        {
-            var serializer = new XmlSerializer(typeof(SyncUnit));
+        {            
             if (State.ContainsKey(UNIT_KEY))
-            {                
-                var reader = XmlReader.Create(new StringReader(State[UNIT_KEY]));
-
-                if (serializer.CanDeserialize(reader))
-                    return serializer.Deserialize(reader);                
+            {
+                return JsonConvert.DeserializeObject<SyncUnit>(State[UNIT_KEY]);          
             }
 
             return null;
@@ -78,14 +74,19 @@ namespace DiversityPhone.Services.BackgroundTasks
                     var collectionKey = Repo.InsertEventSeries(series).First();
                     Storage.updateSeriesKey(series.SeriesID, collectionKey);
                 }
+
+                var collectionKeys = loadKeys();
+                if (collectionKeys == null)
+                {
+                    var ev = Storage.getEventByID(unit.EventID);
+                    if (!ev.DiversityCollectionSeriesID.HasValue)
+                        ev.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
+
+                    var hierarchy = Storage.getNewHierarchyToSyncBelow(ev);
+                    collectionKeys = Repo.InsertHierarchy(hierarchy).First();
+                    saveKeys(collectionKeys);
+                }
                 
-                var ev = Storage.getEventByID(unit.EventID);
-                if (!ev.DiversityCollectionSeriesID.HasValue)
-                    ev.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
-
-                var hierarchy = Storage.getNewHierarchyToSyncBelow(ev);
-                var collectionKeys = Repo.InsertHierarchy(hierarchy).First();
-
                 
                 if (collectionKeys.eventKey.Any())
                 {
@@ -110,7 +111,33 @@ namespace DiversityPhone.Services.BackgroundTasks
                     }
                 }
             }
-        }        
+        }
+
+        void saveKeys(KeyProjection keys)
+        {
+            State[PROJECTION_KEY] = JsonConvert.SerializeObject(keys);
+        }
+
+        KeyProjection loadKeys()
+        {
+            try
+            {
+               
+                if (State.ContainsKey(PROJECTION_KEY))
+                {
+                    return JsonConvert.DeserializeObject<KeyProjection>(State[PROJECTION_KEY]);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                
+                throw ex ;
+            }
+            
+           
+        }
+
 
         protected override void Cancel()
         {
