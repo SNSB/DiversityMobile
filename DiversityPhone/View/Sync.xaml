@@ -74,7 +74,7 @@
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.upload.rest.png" Text="upload all" x:Name="btn_uploadall"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.upload.rest.png" Text="upload all"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

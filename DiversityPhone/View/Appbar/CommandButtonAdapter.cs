@@ -29,6 +29,8 @@ namespace DiversityPhone.View.Appbar
 
             _cmd.CanExecuteChanged += new EventHandler(CanExecuteChanged);
             _btn.Click += new EventHandler(Click);
+
+            CanExecuteChanged(null, null);
         }
 
         void Click(object sender, EventArgs e)
