@@ -538,6 +538,15 @@
 
         }
 
+        public IList<MultimediaObject> getMultimediaObjectForUpload()
+        {
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.DiversityCollectionRelatedID!=null
+                                                                           && mm.ModificationState==ModificationState.Modified
+                                                                   select mm);
+            return objects;
+        }
+
         public MultimediaObject getMultimediaByURI(string uri)
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
@@ -578,11 +587,11 @@
                 default:
                     break;
             }
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.MultimediaObjects.InsertOnSubmit(mmo);
-                ctx.SubmitChanges();
-            }
+
+            addOrUpdateRow(MultimediaObject.Operations,
+            ctx => ctx.MultimediaObjects,
+            mmo
+            ); 
         }
 
         public void deleteMMO(MultimediaObject toDeleteMMO)
@@ -948,7 +957,10 @@
                     where cep.EventID == clientKey
                     select cep;
                 foreach (CollectionEventProperty cep in ceProperties)
+                {
                     cep.DiversityCollectionEventID = serverKey;
+                    cep.ModificationState = ModificationState.Unmodified;
+                }
                 ctx.SubmitChanges();
             }
         }
@@ -1002,7 +1014,10 @@
                     where iua.IdentificationUnitID == clientKey
                     select iua;
                 foreach (IdentificationUnitAnalysis iua in iuaList)
+                {
                     iua.DiversityCollectionUnitID = serverKey;
+                    iua.ModificationState = ModificationState.Unmodified;
+                }
                 var iuMMO =
                     from mmo in ctx.MultimediaObjects
                     where mmo.RelatedId == clientKey && mmo.OwnerType == ReferrerType.IdentificationUnit
