@@ -28,6 +28,8 @@ namespace DiversityPhone.ViewModels.Utility
 
         public ReactiveCommand UploadUnit { get; private set; }
 
+        public ReactiveCommand UploadAll { get; private set; }
+
         private ReactiveAsyncCommand collectModifications = new ReactiveAsyncCommand();
 
         public class SyncUnitVM : ReactiveObject
@@ -36,23 +38,11 @@ namespace DiversityPhone.ViewModels.Utility
 
             public EventSeriesVM Series { get; private set; }
 
-            public EventVM Event { get; private set; }
-
-            private int modC;
-
-            public int ModificationCount
-            {
-                get { return modC; }
-                private set 
-                {
-                    this.RaiseAndSetIfChanged(x => x.ModificationCount, ref modC, value);
-                }
-            }
+            public EventVM Event { get; private set; }           
 
             public void Append(SyncUnit inc)
             {
-                Model.increment(inc);
-                ModificationCount += inc.Size;
+                Model.increment(inc);                
             }
 
 
@@ -110,6 +100,16 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(unit => unit as SyncUnitVM)
                 .Where(unit => unit != null)
                 .Subscribe(unit => backg.startTask<UploadSeriesTask>(unit.Model));
+
+            UploadAll = new ReactiveCommand(canUpload);
+            UploadAll
+                .Subscribe(_ =>
+                    {
+                        foreach (var unit in SyncUnits)
+                        {
+                            backg.startTask<UploadSeriesTask>(unit.Model);
+                        }
+                    });
                 
         }
 

@@ -31,24 +31,6 @@
         public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;        
 
         public Table<MultimediaObject> MultimediaObjects;
-        public Table<Map> Maps;       
-
-        
-
-        
-
-        public IList<MemberInfo> getNotNullableColumns(Type t)
-        {
-            MetaTable mt = this.Mapping.GetTable(t);
-            var columns = mt.RowType.PersistentDataMembers;
-            IList<MemberInfo> notNullableMembers=new List<MemberInfo>();
-            foreach (MetaDataMember mdm in columns)
-            {
-                if (mdm.CanBeNull == false)
-                    notNullableMembers.Add(mdm.Member);
-            }
-            return notNullableMembers;
-        }
-
+        public Table<Map> Maps; 
     }
 }

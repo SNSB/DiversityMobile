@@ -62,11 +62,17 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx_Experimental-Testing.1.1.11111\lib\SL3-WP\Microsoft.Reactive.Testing.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\sl4-windowsphone71\NLog.dll</HintPath>
     </Reference>
@@ -107,7 +113,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -552,6 +557,10 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -746,7 +755,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -757,9 +765,6 @@
     <None Include="Service References\MediaService4\MediaService41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <None Include="Service References\MapServiceReference\DiversityPhone.MapServiceReference.CompositeType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

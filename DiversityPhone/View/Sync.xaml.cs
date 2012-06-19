@@ -11,16 +11,44 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels.Utility;
+using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
     public partial class Sync : PhoneApplicationPage
     {
+        private SyncVM VM { get { return DataContext as SyncVM; } }
+
         ProgressBinding<SyncVM> progress;
+        CommandButtonAdapter uploadall;
 
         public Sync()
         {
-            InitializeComponent();
+            InitializeComponent();           
+        }        
+
+        private void syncPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (progress == null && VM != null)
+            {
+                progress = new ProgressBinding<SyncVM>(VM, x => x.IsBusy);
+                uploadall = new CommandButtonAdapter(VM.UploadAll, ApplicationBar.Buttons[0] as IApplicationBarIconButton);
+            }
+        }
+
+        private void syncPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            if (progress != null)
+            {
+                progress.Dispose();
+                progress = null;
+            }
+            if (uploadall != null)
+            {
+                uploadall.Dispose();
+                uploadall = null;
+            }
         }
     }
 }
