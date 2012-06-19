@@ -160,17 +160,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\MapServiceReference\Reference.cs">
+    <Compile Include="Service References\MapMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\MediaService4\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\PMService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -558,6 +553,13 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
+    <None Include="Service References\MapMediaService\configuration91.svcinfo" />
+    <None Include="Service References\MapMediaService\configuration.svcinfo" />
+    <None Include="Service References\MapMediaService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -624,16 +626,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Service16.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PMService\PhoneMediaService.wsdl" />
-    <None Include="Service References\PMService\PhoneMediaService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PMService\PhoneMediaService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PMService\PhoneMediaService2.xsd">
       <SubType>Designer</SubType>
     </None>
     <Resource Include="Images\MetroIcons\white\i.png" />
@@ -742,13 +734,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <None Include="Service References\PMService\PhoneMediaService.disco" />
-    <None Include="Service References\PMService\configuration91.svcinfo" />
-    <None Include="Service References\PMService\configuration.svcinfo" />
-    <None Include="Service References\PMService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
@@ -759,24 +744,22 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\MapMediaService\PhoneMediaService.wsdl" />
+    <None Include="Service References\MapMediaService\PhoneMediaService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapMediaService\PhoneMediaService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapMediaService\PhoneMediaService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\MediaService4\MediaService4.wsdl" />
     <None Include="Service References\MediaService4\MediaService4.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService41.xsd">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapServiceReference\DiversityPhone.MapServiceReference.CompositeType.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\MapServiceReference\MapService.disco" />
-    <None Include="Service References\MapServiceReference\configuration91.svcinfo">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapServiceReference\configuration.svcinfo" />
-    <None Include="Service References\MapServiceReference\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
@@ -786,19 +769,6 @@
     <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="Service References\MapServiceReference\MapService.wsdl" />
-    <None Include="Service References\MapServiceReference\MapService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapServiceReference\MapService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapServiceReference\MapService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapServiceReference\MapService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Images\appbar.cancel.rest.png" />
     <Content Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />
@@ -830,9 +800,8 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
-    <WCFMetadataStorage Include="Service References\MapServiceReference\" />
+    <WCFMetadataStorage Include="Service References\MapMediaService\" />
     <WCFMetadataStorage Include="Service References\MediaService4\" />
-    <WCFMetadataStorage Include="Service References\PMService\" />
   </ItemGroup>
   <ItemGroup>
     <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">

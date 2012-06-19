@@ -17,7 +17,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.IO.IsolatedStorage;
-using DiversityPhone.PMService;
+using DiversityPhone.MapMediaService;
 using System.IO;
 using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;

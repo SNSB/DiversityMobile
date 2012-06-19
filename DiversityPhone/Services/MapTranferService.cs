@@ -9,7 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ReactiveUI;
-using DiversityPhone.PMService;
+using DiversityPhone.MapMediaService;
 using System.IO.IsolatedStorage;
 using System.IO;
 using DiversityPhone.Model;

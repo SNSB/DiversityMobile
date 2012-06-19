@@ -474,6 +474,8 @@
 
         #endregion
 
+        #region Analysis
+
         public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
             return uncachedQuery(ctx =>
@@ -505,6 +507,8 @@
         {
             deleteRow(IdentificationUnitAnalysis.Operations, ctx => ctx.IdentificationUnitAnalyses, toDeleteIUA);
         }
+
+        #endregion
 
         #region Multimedia
 
@@ -593,10 +597,6 @@
 
 
         #endregion
-
-       
-
-      
 
         #region SampleData
         private void sampleData()

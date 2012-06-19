@@ -18,6 +18,10 @@ namespace DiversityPhone.Model
     [Table]
     public class MultimediaObject : IModifyable
     {
+        
+        [Column(IsPrimaryKey = true)]
+        public int MMOID { get; set; }
+
         [Column]
         public ReferrerType OwnerType { get; set; }
 
@@ -27,8 +31,11 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public int? DiversityCollectionRelatedID { get; set; }
 
-        [Column(IsPrimaryKey = true)]
+        [Column]
         public String Uri { get; set; }
+
+        [Column(CanBeNull = true)]
+        public String 
 
         [Column]
         public MediaType MediaType { get; set; }
@@ -53,17 +60,17 @@ namespace DiversityPhone.Model
         {
             Operations = new QueryOperations<MultimediaObject>(
                 //Smallerthan
-                         (q, mmo) => q.Where(row => row.RelatedId < mmo.RelatedId),
+                         (q, mmo) => q.Where(row => row.MMOID < mmo.MMOID),
                 //Equals
-                         (q, mmo) => q.Where(row => row.Uri == mmo.Uri),
+                         (q, mmo) => q.Where(row => row.MMOID == mmo.MMOID),
                 //Orderby
                          (q) => from mmo in q
-                                orderby mmo.RelatedId, mmo.OwnerType
+                                orderby mmo.MediaType, mmo.OwnerType, mmo.RelatedId
                                 select mmo,
                 //FreeKey
-                         (q, cep) =>
+                         (q, mmo) =>
                          {
-                             //Not Applicable
+                             mmo.MMOID = QueryOperations<MultimediaObject>.FindFreeIntKey(q, row => row.MMOID);
                          });
         }
 
