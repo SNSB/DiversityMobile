@@ -538,7 +538,7 @@
 
         }
 
-        public IList<MultimediaObject> getMultimediaObjectForUpload()
+        public IList<MultimediaObject> getMultimediaObjectsForUpload()
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                                                    where mm.DiversityCollectionRelatedID!=null
@@ -1025,6 +1025,50 @@
                 foreach (MultimediaObject mmo in iuMMO)
                     mmo.DiversityCollectionRelatedID = serverKey;
                 ctx.SubmitChanges();
+            }
+        }
+
+        public void updateMMOUri(string clientUri, string serverUri)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                try
+                {
+                   var mmo =
+                        from mmos in ctx.MultimediaObjects
+                        where mmos.Uri == clientUri
+                        select mmos;
+                   if (mmo.Count() != 1)
+                       throw new Exception("Uri not unique or not present");
+                   mmo.First().DiversityCollectionUri = serverUri;
+                   ctx.SubmitChanges();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Unable to update uri");
+                }
+            }
+        }
+
+        public void updateMMOState(string serverUri)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                try
+                {
+                    var mmo =
+                         from mmos in ctx.MultimediaObjects
+                         where mmos.Uri == serverUri
+                         select mmos;
+                    if (mmo.Count() != 1)
+                        throw new Exception("Uri not unique or not present");
+                    mmo.First().ModificationState = ModificationState.Unmodified;
+                    ctx.SubmitChanges();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Unable to update State");
+                }
             }
         }
 

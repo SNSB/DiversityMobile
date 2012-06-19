@@ -35,7 +35,7 @@ namespace DiversityPhone.Model
         public String Uri { get; set; }
 
         [Column(CanBeNull = true)]
-        public String 
+        public String DiversityCollectionUri;
 
         [Column]
         public MediaType MediaType { get; set; }

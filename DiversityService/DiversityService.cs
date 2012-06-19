@@ -195,6 +195,22 @@ namespace DiversityService
             return result;
         }
 
+        public bool InsertMMO(MultimediaObject mmo, UserCredentials login)
+        {
+            try
+            {
+                using (var db = new DiversityORM.Diversity(login))
+                {
+                    db.Insert(mmo);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials login)
         {
             KeyProjection result = new KeyProjection();
@@ -356,7 +372,7 @@ namespace DiversityService
             }
         }
 
-
+         
 
         #region GeoData
         public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)

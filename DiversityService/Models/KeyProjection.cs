@@ -14,7 +14,7 @@ namespace DiversityService.Model
 
         public KeyProjection()
         {
-            eventKey = new Dictionary<int, int>();
+            eventKey = new Dictionary<int, int>(); //Include Dictinary<int,bool> for dependent classes like CollectionEventProperty to notify success?
             specimenKeys = new Dictionary<int, int>();
             iuKeys = new Dictionary<int, int>();
         }
