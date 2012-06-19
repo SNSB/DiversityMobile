@@ -67,8 +67,8 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
-                this.aiseAndSetIfChanged(x => x.ShootingEnabled, ref _shootingEnabled, value);
-                //Adjust appbar which is in View
+                this.RaiseAndSetIfChanged(x => x.ShootingEnabled, ref _shootingEnabled, value);
+                this.raisePropertyChanged("ShootingDisabled");
             }
         }
         public bool ShootingDisabled //For DataBinding
@@ -110,6 +110,8 @@ namespace DiversityPhone.ViewModels
                 return;
             }
             this.Camera.CaptureImageAvailable += new EventHandler<ContentReadyEventArgs>(Camera_CaptureImageAvailable);
+            this.Camera.Initialized += new EventHandler<CameraOperationCompletedEventArgs>(Camera_Initialized);
+            this.Camera.AutoFocusCompleted += new EventHandler<CameraOperationCompletedEventArgs>(Camera_AutoFocusCompleted);
         }
 
         protected override void UpdateModel()
@@ -189,7 +191,21 @@ namespace DiversityPhone.ViewModels
                 ActualImage = OldImage;
         }
 
-    
+        private void Camera_Initialized(object sender, CameraOperationCompletedEventArgs e)
+        {
+
+            if (this.Camera.IsFlashModeSupported(FlashMode.Auto))
+                this.Camera.FlashMode = FlashMode.Auto;
+
+        }
+
+        private void Camera_AutoFocusCompleted(object sender, CameraOperationCompletedEventArgs e) //Einbinden
+        {
+            //Deployment.Current.Dispatcher.BeginInvoke(() =>
+            //{
+            //    this.cameraView.BorderBrush = new SolidColorBrush(Colors.Red);
+            //});
+        }
 
         private void saveImage()
         {
@@ -197,7 +213,7 @@ namespace DiversityPhone.ViewModels
             //
 
             //Make progress bar visible for the event handler as there may be posible latency.
-            progressBar1.Visibility = Visibility.Visible; //Work with iBusy and AsyncCommands
+            //progressBar1.Visibility = Visibility.Visible; //Work with iBusy and AsyncCommands
 
             //Create filename for JPEG in isolated storage as a Guid and filename for thumb
             String uri;
@@ -226,7 +242,7 @@ namespace DiversityPhone.ViewModels
                 this.Uri = uri;
 
             }
-            progressBar1.Visibility = Visibility.Collapsed;
+            //progressBar1.Visibility = Visibility.Collapsed;
         }
 
     }

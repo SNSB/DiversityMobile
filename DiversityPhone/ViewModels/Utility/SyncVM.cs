@@ -112,7 +112,7 @@ namespace DiversityPhone.ViewModels.Utility
                             .TakeWhile(next => next != null)
                             .Subscribe(UploadUnit.Execute);
 
-                        UploadUnit.Execute(first.Model);
+                        UploadUnit.Execute(first);
                     });
                 
         }

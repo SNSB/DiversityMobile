@@ -17,6 +17,8 @@ namespace DiversityPhone.View
     public partial class NewImage : PhoneApplicationPage
     {
 
+  
+
         private NewImageVM VM
         {
             get
@@ -31,37 +33,21 @@ namespace DiversityPhone.View
             InitializeComponent();
             _appbar = new NewImageAppBarUpdater(this.ApplicationBar, VM);
 
-            this.CorrectViewFinderOrientation(this.Orientation);
-            this.OrientationChanged += new EventHandler<OrientationChangedEventArgs>(NewImagePage_OrientationChanged);
+            this.Loaded += new RoutedEventHandler(MainPage_Loaded);
 
         }
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e) //Einbinden
+        private void MainPage_Loaded(object sender, RoutedEventArgs e) 
         {
 
-            VM.Camera.Initialized += new EventHandler<CameraOperationCompletedEventArgs>(Camera_Initialized);
-            VM.Camera.AutoFocusCompleted += new EventHandler<CameraOperationCompletedEventArgs>(Camera_AutoFocusCompleted);
+        
+
             this.cameraViewBrush.SetSource(VM.Camera);
-
             this.CorrectViewFinderOrientation(this.Orientation);
             this.OrientationChanged += new EventHandler<OrientationChangedEventArgs>(NewImagePage_OrientationChanged);
         }
 
-        private void Camera_Initialized(object sender, CameraOperationCompletedEventArgs e)//Einbinden
-        {
-
-            if (VM.Camera.IsFlashModeSupported(FlashMode.Auto))
-                VM.Camera.FlashMode = FlashMode.Auto;
-           
-        }
-
-        private void Camera_AutoFocusCompleted(object sender, CameraOperationCompletedEventArgs e) //Einbinden
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                this.cameraView.BorderBrush = new SolidColorBrush(Colors.Red);
-            });
-        }
+       
 
 
         #region Orientation

@@ -34,7 +34,7 @@ namespace DiversityPhone.View
             
             _take = new ApplicationBarIconButton()
             {
-                IconUri = new Uri("/Images/appbar.feature.camera.png",UriKind.Relative),
+                IconUri = new Uri("/Images/appbar.feature.camera.rest.png",UriKind.Relative),
                 Text = "take",
                 IsEnabled = true,
             };
@@ -77,9 +77,12 @@ namespace DiversityPhone.View
             _appbar.Buttons.Add(_take);
             _appbar.Buttons.Add(_refresh);
             _appbar.Buttons.Add(_save);
-            _appbar.Buttons.Add(_settings);
+            //_appbar.Buttons.Add(_settings); //For Preparation of a setting page
 
-            adjustApplicationBar(_vm.ShootingEnabled);
+            _vm.ObservableForProperty(x => x.ShootingEnabled)
+              .Value()
+              .StartWith(_vm.ShootingEnabled)
+              .Subscribe(shootenabled=> adjustApplicationBar(shootenabled));
         }
 
         public void adjustApplicationBar(bool shootEnabled)
