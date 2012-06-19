@@ -103,12 +103,16 @@ namespace DiversityPhone.ViewModels.Utility
 
             UploadAll = new ReactiveCommand(canUpload);
             UploadAll
-                .Subscribe(_ =>
+                .Select(_ => SyncUnits.FirstOrDefault())
+                .Where(vm => vm != null)
+                .Subscribe(first =>
                     {
-                        foreach (var unit in SyncUnits)
-                        {
-                            backg.startTask<UploadSeriesTask>(unit.Model);
-                        }
+                        uploadTask.AsyncCompletedNotification
+                            .Select(unit => SyncUnits.Where(v => v.Model != unit).FirstOrDefault())
+                            .TakeWhile(next => next != null)
+                            .Subscribe(UploadUnit.Execute);
+
+                        UploadUnit.Execute(first.Model);
                     });
                 
         }
