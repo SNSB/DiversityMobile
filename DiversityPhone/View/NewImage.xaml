@@ -9,8 +9,8 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Landscape" Orientation="Landscape"
-    mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="728"
+    SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding NewImage,Source={StaticResource Locator}}">
 
@@ -21,26 +21,31 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <Border x:Name="cameraView" BorderBrush="Black" BorderThickness="5" Grid.Column="0"  Visibility="{Binding ShootingEnabled, Converter={StaticResource BoolToVis}}">
+            <Border.Background>
+                <VideoBrush x:Name="cameraViewBrush" >
+                    <VideoBrush.RelativeTransform>
+                        <CompositeTransform x:Name="cameraViewBrushTransform" CenterX=".5" CenterY=".5" />
+                    </VideoBrush.RelativeTransform>
+                </VideoBrush>
+            </Border.Background>
+        </Border>
 
+        <Border x:Name="lastShootFrame" BorderThickness="1" BorderBrush="Black" 
+                Visibility="{Binding ShootingDisabled, Converter={StaticResource BoolToVis}}" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10">
+            <Image x:Name="lastShoot" />
+        </Border>
+        
+        
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0"></Grid>
     </Grid>
  
     <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
+    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
+           
         </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
+    </phone:PhoneApplicationPage.ApplicationBar>
 
 </phone:PhoneApplicationPage>
