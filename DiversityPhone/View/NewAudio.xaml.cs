@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using System.Windows.Data;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -20,9 +21,12 @@ namespace DiversityPhone.View
             }
         }
 
+        private NewAudioAppBarUpdater _appbar;
+
         public NewAudio()
         {
             InitializeComponent();
+            _appbar = new NewAudioAppBarUpdater(this.ApplicationBar, VM);
         }
     }
 }

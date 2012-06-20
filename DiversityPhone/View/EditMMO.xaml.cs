@@ -44,7 +44,6 @@ namespace DiversityPhone.View
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
-        
         private DispatcherTimer timer;
         private byte[] audioBuffer;                             // Dynamic buffer to retrieve audio data from the microphone
         private MemoryStream audioStream = new MemoryStream();  // Stores the audio data for later playback

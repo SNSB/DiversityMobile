@@ -242,7 +242,8 @@ namespace DiversityPhone.ViewModels
 
                 }
                 this.actualMMOSync = mmo;
-                _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(),  0, 0, 0, "Test", DateTime.Now.ToShortDateString(), 371,data);
+                Svc.UserCredentials cred = _repository.GetCreds();
+                _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(),  0, 0, 0, cred.AgentName, DateTime.Now.ToShortDateString(), cred.ProjectID,data);
             }
         }
 
