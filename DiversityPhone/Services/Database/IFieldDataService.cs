@@ -55,7 +55,7 @@ using System;
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
 
         IList<MultimediaObject> getAllMultimediaObjects();
-        public IList<MultimediaObject> getMultimediaObjectsForUpload();
+        IList<MultimediaObject> getMultimediaObjectsForUpload();
         IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
         IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType objectType, int id,MediaType type);
         MultimediaObject getMultimediaByURI(string uri);        

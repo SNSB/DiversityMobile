@@ -191,6 +191,7 @@
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Services\IMapStorageService.cs" />
     <Compile Include="Services\IMapTransferService.cs" />
+    <Compile Include="Services\IMultiMediaClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\DiversityServiceClient.Upload.cs" />
     <Compile Include="Services\Database\ITaxonService.cs" />
@@ -202,6 +203,7 @@
     <Compile Include="Services\MapTranferService.cs" />
     <Compile Include="Services\MediaType.cs" />
     <Compile Include="Services\ModelProjection.cs" />
+    <Compile Include="Services\MultimediaClient.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />

@@ -6,7 +6,7 @@ using PetaPoco;
 
 namespace DiversityService.Model
 {
-    class CollectionEventSeriesImage
+    public class CollectionEventSeriesImage
     {
         public int SeriesID { get; set; }
         public string Uri{ get; set; }

@@ -74,6 +74,18 @@ namespace DiversityPhone.Model
                          });
         }
 
+        public static Svc.MultimediaObject ToServiceObject(MultimediaObject mmo)
+        {
+            if (mmo.DiversityCollectionRelatedID == null)
+                throw new Exception("Partner not synced");
+            Svc.MultimediaObject export = new Svc.MultimediaObject();
+            export.LogUpdatedWhen = mmo.LogUpdatedWhen;
+            export.MediaType = mmo.MediaType.ToString().ToLower();
+            export.OwnerType = mmo.OwnerType.ToString();
+            export.RelatedId = (int) mmo.DiversityCollectionRelatedID;
+            export.Uri = mmo.DiversityCollectionUri;
+            return export;
+        }
         
     }
 }
