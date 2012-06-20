@@ -547,6 +547,13 @@
             return objects;
         }
 
+        public MultimediaObject getMultimediaByID(int id)
+        {
+            return singletonQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.MMOID == id
+                                                                   select mm);
+        }
+
         public MultimediaObject getMultimediaByURI(string uri)
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
@@ -1086,5 +1093,8 @@
                 context.CreateDatabase();
             }
         }
+
+
+        
     }
 }
