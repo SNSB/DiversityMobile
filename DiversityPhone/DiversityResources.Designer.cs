@@ -277,11 +277,20 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Modifications ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die data ähnelt.
         /// </summary>
-        public static string Sync_Label_Modifications {
+        public static string Sync_Header_Data {
             get {
-                return ResourceManager.GetString("Sync_Label_Modifications", resourceCulture);
+                return ResourceManager.GetString("Sync_Header_Data", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die multimedia ähnelt.
+        /// </summary>
+        public static string Sync_Header_Multimedia {
+            get {
+                return ResourceManager.GetString("Sync_Header_Multimedia", resourceCulture);
             }
         }
         
