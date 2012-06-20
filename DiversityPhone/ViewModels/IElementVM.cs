@@ -12,26 +12,26 @@ namespace DiversityPhone.ViewModels
         /// <summary>
         /// Operation: Select (Go To Target Page)
         /// </summary>
-        public ReactiveCommand Select { get; }
+        ReactiveCommand Select { get; }
 
         /// <summary>
         /// Encapsulated Model Instance
         /// </summary>
-        public T Model { get; }
+        T Model { get; }
 
         /// <summary>
         /// String to Display for this Object
         /// </summary>
-        public abstract string Description { get; }
+        string Description { get; }
 
         /// <summary>
         /// Icon to display for this Object
         /// </summary>
-        public abstract Icon Icon { get; }
+        Icon Icon { get; }
 
-        public ISubject<bool> CanSelect { get; }
+        ISubject<bool> CanSelect { get; }
 
-        public IObservable<IElementVM<T>> SelectObservable { get;  }
+        //IObservable<IElementVM<T>> SelectObservable { get;  }
 
     }
 }
