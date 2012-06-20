@@ -58,6 +58,7 @@ using System;
         IList<MultimediaObject> getMultimediaObjectsForUpload();
         IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
         IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType objectType, int id,MediaType type);
+        MultimediaObject getMultimediaByID(int id);    
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
         void updateMMOUri(string clientUri, string serverUri);
