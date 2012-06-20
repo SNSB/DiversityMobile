@@ -62,7 +62,7 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
@@ -175,6 +175,7 @@
     <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
+    <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadSeriesTask.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
+    <Compile Include="ViewModels\IElementVM.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
     <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
@@ -253,8 +255,8 @@
     <Compile Include="ViewModels\Utility\SettingsVM.Setup.cs" />
     <Compile Include="ViewModels\Utility\SyncVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
-    <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
+    <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
+    <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
     <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
     <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />
@@ -556,6 +559,10 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
@@ -563,10 +570,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -846,10 +849,6 @@
     <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
       <Name>GeneralUtility</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Silverlight for Windows Phone Toolkit Source Code\Microsoft.Phone.Controls.Toolkit\Microsoft.Phone.Controls.Toolkit.csproj">
-      <Project>{0754458A-7AFC-463A-B27D-2F6980522119}</Project>
-      <Name>Microsoft.Phone.Controls.Toolkit</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

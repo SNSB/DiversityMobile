@@ -17,7 +17,6 @@ using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
-using DiversityPhone.DiversityService;
 using Newtonsoft.Json;
 
 
@@ -45,11 +44,11 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         protected override void saveArgumentToState(object arg)
         {
-            var series = arg as SyncUnit;
-            if (series != null)
+            var ev = arg as DiversityPhone.Model.Event;
+            if (ev != null)
             {
                 
-                State[UNIT_KEY] = JsonConvert.SerializeObject(series);
+                State[UNIT_KEY] = ev.EventID.ToString();
             }
         }
 
@@ -57,7 +56,7 @@ namespace DiversityPhone.Services.BackgroundTasks
         {            
             if (State.ContainsKey(UNIT_KEY))
             {
-                return JsonConvert.DeserializeObject<SyncUnit>(State[UNIT_KEY]);          
+                return Storage.getEventByID(int.Parse(State[UNIT_KEY]));          
             }
 
             return null;
@@ -65,7 +64,7 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         protected override void Run(object arg)
         {
-            var unit = arg as SyncUnit;
+            var unit = arg as Event;
             if (unit != null)
             {
                 var series = Storage.getEventSeriesByID(unit.SeriesID);
@@ -78,7 +77,7 @@ namespace DiversityPhone.Services.BackgroundTasks
                 var collectionKeys = loadKeys();
                 if (collectionKeys == null)
                 {
-                    var ev = Storage.getEventByID(unit.EventID);
+                    var ev = unit; 
                     if (!ev.DiversityCollectionSeriesID.HasValue)
                         ev.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
 
@@ -113,25 +112,24 @@ namespace DiversityPhone.Services.BackgroundTasks
             }
         }
 
-        void saveKeys(KeyProjection keys)
+        void saveKeys(DiversityPhone.DiversityService.KeyProjection keys)
         {
             State[PROJECTION_KEY] = JsonConvert.SerializeObject(keys);
         }
 
-        KeyProjection loadKeys()
+        DiversityPhone.DiversityService.KeyProjection loadKeys()
         {
             try
             {
                
                 if (State.ContainsKey(PROJECTION_KEY))
                 {
-                    return JsonConvert.DeserializeObject<KeyProjection>(State[PROJECTION_KEY]);
+                    return JsonConvert.DeserializeObject<DiversityPhone.DiversityService.KeyProjection>(State[PROJECTION_KEY]);
                 }
                 return null;
             }
             catch (Exception ex)
-            {
-                
+            {                
                 throw ex ;
             }
             
