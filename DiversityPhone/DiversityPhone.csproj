@@ -175,6 +175,7 @@
     <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
+    <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadSeriesTask.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
