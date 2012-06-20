@@ -84,7 +84,7 @@ namespace DiversityPhone.ViewModels
         #region Commands
 
         public ReactiveCommand Reset { get; private set; }
-        public ReactiveCommand Take { get; private set; } //Action depending on ShootingEnabled
+        public ReactiveCommand Take { get; private set; } 
         //public ReactiveCommand Crop { get; private set; }
 
         #endregion
@@ -97,7 +97,6 @@ namespace DiversityPhone.ViewModels
             Take = new ReactiveCommand();
             Take.Subscribe(_ => take());
             this.initializeCamera();
-
         }
 
         private void initializeCamera()
@@ -113,6 +112,8 @@ namespace DiversityPhone.ViewModels
             this.Camera.Initialized += new EventHandler<CameraOperationCompletedEventArgs>(Camera_Initialized);
             this.Camera.AutoFocusCompleted += new EventHandler<CameraOperationCompletedEventArgs>(Camera_AutoFocusCompleted);
         }
+
+        #region inherited
 
         protected override void UpdateModel()
         {
@@ -153,8 +154,8 @@ namespace DiversityPhone.ViewModels
 
         protected override IObservable<bool> CanSave()
         {
-            return this.ObservableForProperty(x => x.Uri)
-                .Select(uri=> !string.IsNullOrEmpty(uri.Value))
+            return this.ObservableForProperty(x => x.ActualImage)
+                .Select(image=> image!=null)
                 .StartWith(false);
         }
 
@@ -162,6 +163,8 @@ namespace DiversityPhone.ViewModels
         {
             return new MultimediaObjectVM(model);
         }
+
+        #endregion
 
         private void take()
         {
@@ -209,12 +212,6 @@ namespace DiversityPhone.ViewModels
 
         private void saveImage()
         {
-            //Save Picture
-            //
-
-            //Make progress bar visible for the event handler as there may be posible latency.
-            //progressBar1.Visibility = Visibility.Visible; //Work with iBusy and AsyncCommands
-
             //Create filename for JPEG in isolated storage as a Guid and filename for thumb
             String uri;
 
@@ -242,7 +239,7 @@ namespace DiversityPhone.ViewModels
                 this.Uri = uri;
 
             }
-            //progressBar1.Visibility = Visibility.Collapsed;
+            
         }
 
     }

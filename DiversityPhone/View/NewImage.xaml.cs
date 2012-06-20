@@ -39,9 +39,6 @@ namespace DiversityPhone.View
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e) 
         {
-
-        
-
             this.cameraViewBrush.SetSource(VM.Camera);
             this.CorrectViewFinderOrientation(this.Orientation);
             this.OrientationChanged += new EventHandler<OrientationChangedEventArgs>(NewImagePage_OrientationChanged);
