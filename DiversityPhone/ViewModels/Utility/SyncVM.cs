@@ -34,24 +34,14 @@ namespace DiversityPhone.ViewModels.Utility
 
         public class SyncUnitVM : ReactiveObject
         {
-            public SyncUnit Model { get; private set; }
-
             public EventSeriesVM Series { get; private set; }
 
-            public EventVM Event { get; private set; }           
+            public EventVM Event { get; private set; }
 
-            public void Append(SyncUnit inc)
-            {
-                Model.increment(inc);                
-            }
-
-
-            public SyncUnitVM(SyncUnit model, Event ev, EventSeries series)
-            {
-                Model = model;
+            public SyncUnitVM(Event ev, EventSeries series)
+            {                
                 Event = new EventVM( ev);
-                Series = new EventSeriesVM(series);
-                
+                Series = new EventSeriesVM(series);                
             }
         }
 
@@ -65,11 +55,11 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(collectModifications.Execute);
             collectModifications.RegisterAsyncObservable(_ => 
                 {
-                    var res = new ReplaySubject<SyncUnit>();
+                    var res = new ReplaySubject<Event>();
                     new Task(() => collectModificationsImpl(res, search.Token)).Start();
                     return res;
                 })
-                .Subscribe(inc => incrementModificationCount(inc));
+                .Subscribe(ev => addModifiedEvent(ev));
             _IsBusy = this.ObservableToProperty(collectModifications.ItemsInflight.Select(i => i > 0),x => x.IsBusy, false);
 
             var backg = ioc.Resolve<IBackgroundService>();
@@ -84,12 +74,12 @@ namespace DiversityPhone.ViewModels.Utility
             var canUpload = uploading.Select(x => !x);
                 //.CombineLatest(collectingModifications, (up, coll) => !up && !coll);
             uploadTask.AsyncCompletedNotification
-                .Select(arg => arg as SyncUnit)
+                .Select(arg => arg as Event)
                 .Where(arg => arg != null)
                 .SubscribeOnDispatcher()
                 .Subscribe(unit =>
                     {
-                        var vm = SyncUnits.Where(v => v.Model == unit).FirstOrDefault();
+                        var vm = SyncUnits.Where(v => v.Event.Model == unit).FirstOrDefault();
                         if (vm != null)
                             SyncUnits.Remove(vm);
                     });
@@ -99,7 +89,7 @@ namespace DiversityPhone.ViewModels.Utility
             UploadUnit
                 .Select(unit => unit as SyncUnitVM)
                 .Where(unit => unit != null)
-                .Subscribe(unit => backg.startTask<UploadSeriesTask>(unit.Model));
+                .Subscribe(unit => backg.startTask<UploadSeriesTask>(unit.Event.Model));
 
             UploadAll = new ReactiveCommand(canUpload);
             UploadAll
@@ -108,11 +98,11 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(first =>
                     {
                         uploadTask.AsyncCompletedNotification
-                            .Select(unit => SyncUnits.Where(v => v.Model != unit).FirstOrDefault())
+                            .Select(unit => SyncUnits.Where(v => v.Event.Model != unit).FirstOrDefault())
                             .TakeWhile(next => next != null)
                             .Subscribe(UploadUnit.Execute);
 
-                        UploadUnit.Execute(first.Model);
+                        UploadUnit.Execute(first);
                     });
                 
         }
@@ -132,92 +122,34 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        private void collectModificationsImpl(ISubject<SyncUnit> outputSubject, CancellationToken cancellation)
+        private void collectModificationsImpl(ISubject<Event> outputSubject, CancellationToken cancellation)
         {
-            
+            var events = Storage.getAllEvents();
 
-            using (var ctx = new DiversityDataContext())
+            foreach (var ev in events)
             {
-
-                //Modified Series without event not shown
-
-                //Modified Events
-                var events = from e in ctx.Events
-                             where e.ModificationState == ModificationState.Modified                             
-                             select new SyncUnit(e.SeriesID, e.EventID);
-                foreach (var ev in events)
-                {
-                    if (cancellation.IsCancellationRequested)
-                        return;
+                if (ev.IsModified())
                     outputSubject.OnNext(ev);
-                }
-
-                // TODO Modified Properties                
-
-                //Specimen without Units disregarded
-
-                //Modified Units
-                var ius = from iu in ctx.IdentificationUnits
-                          where iu.ModificationState == ModificationState.Modified                          
-                          from spec in ctx.Specimen
-                          where spec.CollectionSpecimenID == iu.SpecimenID
-                          group iu.UnitID by spec.CollectionEventID into g
-                          from ev in ctx.Events
-                          where ev.EventID == g.Key
-                          select new { Series = ev.SeriesID, Event = ev.EventID, Units = g };
-                foreach (var iu in ius)
-                {
-                    if (cancellation.IsCancellationRequested)                        
-                        return;
-
-                    var units = new SyncUnit(iu.Series, iu.Event);
-                    units.UnitIDs.AddRange(iu.Units);
-                    outputSubject.OnNext(units);
-                }
-
-                //Modified Analyses
-                var iuas =  from iua in ctx.IdentificationUnitAnalyses
-                            where iua.ModificationState == ModificationState.Modified
-                            from iu in ctx.IdentificationUnits
-                            where iu.UnitID == iua.IdentificationUnitID
-                            from spec in ctx.Specimen
-                            where spec.CollectionSpecimenID == iu.SpecimenID
-                            group iua.IdentificationUnitAnalysisID by spec.CollectionEventID into g
-                            from ev in ctx.Events
-                            where ev.EventID == g.Key
-                            select new { Series = ev.SeriesID, Event = ev.EventID, IUAs = g };
-                foreach (var iua in iuas)
-                {
-                    if (cancellation.IsCancellationRequested)
-                        return;
-
-                    var analyses = new SyncUnit(iua.Series, iua.Event);
-                    analyses.AnalysisIDs.AddRange(iua.IUAs);
-                    outputSubject.OnNext(analyses);
-                }
-            }
-        }
-
-        private void incrementModificationCount(SyncUnit inc)
-        {            
-
-            //lock (this)
-            //{
-                var existing = (from series in SyncUnits
-                               where series.Model.SeriesID == inc.SeriesID && series.Model.EventID == inc.EventID
-                               select series).FirstOrDefault();
-                if (existing != null)
-                {
-                    existing.Append(inc);
-                }
                 else
                 {
-                    var series = Storage.getEventSeriesByID(inc.SeriesID);
-                    var ev = Storage.getEventByID(inc.EventID);
-                    var vm = new SyncUnitVM(inc,ev,series);
-                    SyncUnits.Add(vm);
+                    var modifications = Storage.getNewHierarchyToSyncBelow(ev);
+                    if (modifications.Specimen.Any()
+                        || modifications.Properties.Any()
+                        || modifications.IdentificationUnits.Any()
+                        || modifications.IdentificationUnitAnalyses.Any())
+                        outputSubject.OnNext(ev);
+                        
+
                 }
-            //}
+            }
+            
+        }
+
+        private void addModifiedEvent(Event ev)
+        {         
+            var series = Storage.getEventSeriesByID(ev.SeriesID);                 
+                    
+            SyncUnits.Add(new SyncUnitVM(ev,series));                
         }
     }
 }
