@@ -55,6 +55,7 @@ namespace DiversityPhone.View.Appbar
                 Text = "stop",
                 IsEnabled = true,
             };
+            _stop.Click += (s, args) => _vm.Stop.Execute(null);
 
              _save = new ApplicationBarIconButton()
             {
@@ -88,6 +89,8 @@ namespace DiversityPhone.View.Appbar
                     _record.IsEnabled = true;
                     if (_vm.AudioBuffer != null)
                         _play.IsEnabled = true;
+                    else
+                        _play.IsEnabled = false;
                     _stop.IsEnabled = false;
                     break;
                 case NewAudioVM.PlayStates.Playing:

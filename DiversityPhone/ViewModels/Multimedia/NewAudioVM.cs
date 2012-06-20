@@ -280,10 +280,10 @@ namespace DiversityPhone.ViewModels
         void microphone_BufferReady(object sender, EventArgs e)
         {
             // Retrieve audio data
-            microphone.GetData(this._audioBuffer);
+            microphone.GetData(this.AudioBuffer);
 
             // Store the audio data in a stream
-            audioStream.Write(_audioBuffer, 0, _audioBuffer.Length);
+            audioStream.Write(AudioBuffer, 0, AudioBuffer.Length);
         }
 
        
@@ -336,19 +336,20 @@ namespace DiversityPhone.ViewModels
         private void playAudio()
         {
             if (audioStream.Length > 0)
-
+            {
                 AudioStatusImage = speakerImage;
 
-            // Play the audio in a new thread so the UI can update.
-            Thread soundThread = new Thread(new ThreadStart(playSound));
-            soundThread.Start();
+                // Play the audio in a new thread so the UI can update.
+                Thread soundThread = new Thread(new ThreadStart(playSound));
+                soundThread.Start();
+            }
         }
 
 
         private void recordAudio()
         {
             microphone.BufferDuration = TimeSpan.FromMilliseconds(500);
-            _audioBuffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
+            AudioBuffer = new byte[microphone.GetSampleSizeInBytes(microphone.BufferDuration)];
             audioStream.SetLength(0);
             State = PlayStates.Recording;
             microphone.Start();
