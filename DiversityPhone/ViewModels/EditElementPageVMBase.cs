@@ -78,7 +78,6 @@ namespace DiversityPhone.ViewModels
             .ObserveOnDispatcher() // Work around bug in ReactiveUI
             .Subscribe(_CanSaveSubject.OnNext);
 
-
             Delete = new ReactiveCommand(
                 ValidModel
                 .Select(m => !m.IsNew())

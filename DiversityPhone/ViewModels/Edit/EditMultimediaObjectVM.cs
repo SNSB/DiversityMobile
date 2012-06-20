@@ -18,8 +18,7 @@ namespace DiversityPhone.ViewModels
 
 
         #region Properties
-
-        //Noch nicht fertig. Typ des MMO wählbar machen und Dialoge zur Aufnahme bereit stellen.   
+ 
 
         private string _Uri;
         public string Uri
@@ -106,7 +105,6 @@ namespace DiversityPhone.ViewModels
         {
             Current.Model.LogUpdatedWhen = DateTime.Now;
             Current.Model.Uri = Uri;
-            
         }
 
       
@@ -139,8 +137,6 @@ namespace DiversityPhone.ViewModels
         public override void SaveState()
         {
             base.SaveState();
-
-
         }
 
         protected override IObservable<bool> CanSave()

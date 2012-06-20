@@ -33,5 +33,17 @@ namespace DiversityPhone.Services
             _svc.InsertEventSeriesAsync(repoSeries, this.GetCreds());
             return res.Select(dict => dict[series.SeriesID]);
         }
+
+
+        public IObservable<bool> InsertMultimediaObject(Client.MultimediaObject mmo)
+        {
+            var res = Observable.FromEvent<EventHandler<InsertMMOCompletedEventArgs>, InsertMMOCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.InsertMMOCompleted += d, d => _svc.InsertMMOCompleted -= d)
+               .Select(args => args.Result)
+               .Take(1);
+            var repoMmo = Client.MultimediaObject.ToServiceObject(mmo);
+            _svc.InsertMMOAsync(repoMmo, this.GetCreds());
+            return res;
+        }
+
     }
 }

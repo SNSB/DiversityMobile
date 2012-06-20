@@ -28,6 +28,7 @@ namespace DiversityPhone.Services
         IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
 
         IObservable<int> InsertEventSeries(EventSeries series);
+        IObservable<bool> InsertMultimediaObject(MultimediaObject mmo);
         Svc.UserCredentials GetCreds();
         #endregion
 

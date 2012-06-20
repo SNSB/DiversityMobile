@@ -474,6 +474,8 @@
 
         #endregion
 
+        #region Analysis
+
         public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
         {
             return uncachedQuery(ctx =>
@@ -506,6 +508,8 @@
             deleteRow(IdentificationUnitAnalysis.Operations, ctx => ctx.IdentificationUnitAnalyses, toDeleteIUA);
         }
 
+        #endregion
+
         #region Multimedia
 
         public IList<MultimediaObject> getAllMultimediaObjects()
@@ -532,6 +536,15 @@
                                                                    select mm);
             return objects;
 
+        }
+
+        public IList<MultimediaObject> getMultimediaObjectsForUpload()
+        {
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.DiversityCollectionRelatedID!=null
+                                                                           && mm.ModificationState==ModificationState.Modified
+                                                                   select mm);
+            return objects;
         }
 
         public MultimediaObject getMultimediaByURI(string uri)
@@ -574,11 +587,11 @@
                 default:
                     break;
             }
-            using (var ctx = new DiversityDataContext())
-            {
-                ctx.MultimediaObjects.InsertOnSubmit(mmo);
-                ctx.SubmitChanges();
-            }
+
+            addOrUpdateRow(MultimediaObject.Operations,
+            ctx => ctx.MultimediaObjects,
+            mmo
+            ); 
         }
 
         public void deleteMMO(MultimediaObject toDeleteMMO)
@@ -593,10 +606,6 @@
 
 
         #endregion
-
-       
-
-      
 
         #region SampleData
         private void sampleData()
@@ -948,7 +957,10 @@
                     where cep.EventID == clientKey
                     select cep;
                 foreach (CollectionEventProperty cep in ceProperties)
+                {
                     cep.DiversityCollectionEventID = serverKey;
+                    cep.ModificationState = ModificationState.Unmodified;
+                }
                 ctx.SubmitChanges();
             }
         }
@@ -1002,7 +1014,10 @@
                     where iua.IdentificationUnitID == clientKey
                     select iua;
                 foreach (IdentificationUnitAnalysis iua in iuaList)
+                {
                     iua.DiversityCollectionUnitID = serverKey;
+                    iua.ModificationState = ModificationState.Unmodified;
+                }
                 var iuMMO =
                     from mmo in ctx.MultimediaObjects
                     where mmo.RelatedId == clientKey && mmo.OwnerType == ReferrerType.IdentificationUnit
@@ -1010,6 +1025,50 @@
                 foreach (MultimediaObject mmo in iuMMO)
                     mmo.DiversityCollectionRelatedID = serverKey;
                 ctx.SubmitChanges();
+            }
+        }
+
+        public void updateMMOUri(string clientUri, string serverUri)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                try
+                {
+                   var mmo =
+                        from mmos in ctx.MultimediaObjects
+                        where mmos.Uri == clientUri
+                        select mmos;
+                   if (mmo.Count() != 1)
+                       throw new Exception("Uri not unique or not present");
+                   mmo.First().DiversityCollectionUri = serverUri;
+                   ctx.SubmitChanges();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Unable to update uri");
+                }
+            }
+        }
+
+        public void updateMMOState(string serverUri)
+        {
+            using (DiversityDataContext ctx = new DiversityDataContext())
+            {
+                try
+                {
+                    var mmo =
+                         from mmos in ctx.MultimediaObjects
+                         where mmos.Uri == serverUri
+                         select mmos;
+                    if (mmo.Count() != 1)
+                        throw new Exception("Uri not unique or not present");
+                    mmo.First().ModificationState = ModificationState.Unmodified;
+                    ctx.SubmitChanges();
+                }
+                catch (Exception)
+                {
+                    throw new Exception("Unable to update State");
+                }
             }
         }
 

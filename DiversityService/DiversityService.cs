@@ -195,6 +195,43 @@ namespace DiversityService
             return result;
         }
 
+        public bool InsertMMO(MultimediaObject mmo, UserCredentials login)
+        {
+            try
+            {
+                using (var db = new DiversityORM.Diversity(login))
+                {
+                    switch (mmo.OwnerType)
+                    {
+                        case "EventSeries":
+                            CollectionEventSeriesImage cesi = MultimediaObject.ToSeriesImage(mmo);
+                            db.Insert(cesi);
+                            break;
+                        case "Event":
+                            CollectionEventImage cei = MultimediaObject.ToEventImage(mmo);
+                            db.Insert(cei);
+                            break;
+                        case "Specimen":
+                            CollectionSpecimenImage csi=MultimediaObject.ToSpecimenImage(mmo,null);
+                            db.Insert(csi);
+                            break;
+                        case "IU":
+                            IdentificationUnit iu = db.Single<IdentificationUnit>(mmo.RelatedId);
+                            CollectionSpecimenImage ciui = MultimediaObject.ToSpecimenImage(mmo, iu);
+                            db.Insert(ciui);
+                            break;
+                        default:
+                            throw new Exception("unknown type");
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
         public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials login)
         {
             KeyProjection result = new KeyProjection();
@@ -356,7 +393,7 @@ namespace DiversityService
             }
         }
 
-
+         
 
         #region GeoData
         public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)

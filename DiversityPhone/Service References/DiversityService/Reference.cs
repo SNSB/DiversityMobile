@@ -1759,6 +1759,111 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="MultimediaObject", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class MultimediaObject : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string DescriptionField;
+        
+        private System.DateTime LogUpdatedWhenField;
+        
+        private string MediaTypeField;
+        
+        private string OwnerTypeField;
+        
+        private int RelatedIdField;
+        
+        private string UriField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Description {
+            get {
+                return this.DescriptionField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.DescriptionField, value) != true)) {
+                    this.DescriptionField = value;
+                    this.RaisePropertyChanged("Description");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime LogUpdatedWhen {
+            get {
+                return this.LogUpdatedWhenField;
+            }
+            set {
+                if ((this.LogUpdatedWhenField.Equals(value) != true)) {
+                    this.LogUpdatedWhenField = value;
+                    this.RaisePropertyChanged("LogUpdatedWhen");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string MediaType {
+            get {
+                return this.MediaTypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MediaTypeField, value) != true)) {
+                    this.MediaTypeField = value;
+                    this.RaisePropertyChanged("MediaType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string OwnerType {
+            get {
+                return this.OwnerTypeField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.OwnerTypeField, value) != true)) {
+                    this.OwnerTypeField = value;
+                    this.RaisePropertyChanged("OwnerType");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int RelatedId {
+            get {
+                return this.RelatedIdField;
+            }
+            set {
+                if ((this.RelatedIdField.Equals(value) != true)) {
+                    this.RelatedIdField = value;
+                    this.RaisePropertyChanged("RelatedId");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Uri {
+            get {
+                return this.UriField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UriField, value) != true)) {
+                    this.UriField = value;
+                    this.RaisePropertyChanged("Uri");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="TaxonList", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class TaxonList : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -6818,6 +6923,7 @@ namespace DiversityPhone.DiversityService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Specimen>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Specimen))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.KeyProjection))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.MultimediaObject))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonList>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TaxonList))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.TaxonName>))]
@@ -7024,6 +7130,11 @@ namespace DiversityPhone.DiversityService {
         System.IAsyncResult BeginInsertHierarchy(DiversityPhone.DiversityService.HierarchySection hierarchy, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState);
         
         DiversityPhone.DiversityService.KeyProjection EndInsertHierarchy(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/InsertMMO", ReplyAction="http://tempuri.org/IDiversityService/InsertMMOResponse")]
+        System.IAsyncResult BeginInsertMMO(DiversityPhone.DiversityService.MultimediaObject mmo, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState);
+        
+        bool EndInsertMMO(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser", ReplyAction="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse")]
         System.IAsyncResult BeginGetTaxonListsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
@@ -7242,6 +7353,25 @@ namespace DiversityPhone.DiversityService {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((DiversityPhone.DiversityService.KeyProjection)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class InsertMMOCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public InsertMMOCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public bool Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((bool)(this.results[0]));
             }
         }
     }
@@ -7481,6 +7611,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onInsertHierarchyCompletedDelegate;
         
+        private BeginOperationDelegate onBeginInsertMMODelegate;
+        
+        private EndOperationDelegate onEndInsertMMODelegate;
+        
+        private System.Threading.SendOrPostCallback onInsertMMOCompletedDelegate;
+        
         private BeginOperationDelegate onBeginGetTaxonListsForUserDelegate;
         
         private EndOperationDelegate onEndGetTaxonListsForUserDelegate;
@@ -7607,6 +7743,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> InsertGeographyIntoSeriesCompleted;
         
         public event System.EventHandler<InsertHierarchyCompletedEventArgs> InsertHierarchyCompleted;
+        
+        public event System.EventHandler<InsertMMOCompletedEventArgs> InsertMMOCompleted;
         
         public event System.EventHandler<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUserCompleted;
         
@@ -8099,6 +8237,54 @@ namespace DiversityPhone.DiversityService {
             base.InvokeAsync(this.onBeginInsertHierarchyDelegate, new object[] {
                         hierarchy,
                         cred}, this.onEndInsertHierarchyDelegate, this.onInsertHierarchyCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginInsertMMO(DiversityPhone.DiversityService.MultimediaObject mmo, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginInsertMMO(mmo, cred, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        bool DiversityPhone.DiversityService.IDiversityService.EndInsertMMO(System.IAsyncResult result) {
+            return base.Channel.EndInsertMMO(result);
+        }
+        
+        private System.IAsyncResult OnBeginInsertMMO(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            DiversityPhone.DiversityService.MultimediaObject mmo = ((DiversityPhone.DiversityService.MultimediaObject)(inValues[0]));
+            DiversityPhone.DiversityService.UserCredentials cred = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginInsertMMO(mmo, cred, callback, asyncState);
+        }
+        
+        private object[] OnEndInsertMMO(System.IAsyncResult result) {
+            bool retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndInsertMMO(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnInsertMMOCompleted(object state) {
+            if ((this.InsertMMOCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.InsertMMOCompleted(this, new InsertMMOCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void InsertMMOAsync(DiversityPhone.DiversityService.MultimediaObject mmo, DiversityPhone.DiversityService.UserCredentials cred) {
+            this.InsertMMOAsync(mmo, cred, null);
+        }
+        
+        public void InsertMMOAsync(DiversityPhone.DiversityService.MultimediaObject mmo, DiversityPhone.DiversityService.UserCredentials cred, object userState) {
+            if ((this.onBeginInsertMMODelegate == null)) {
+                this.onBeginInsertMMODelegate = new BeginOperationDelegate(this.OnBeginInsertMMO);
+            }
+            if ((this.onEndInsertMMODelegate == null)) {
+                this.onEndInsertMMODelegate = new EndOperationDelegate(this.OnEndInsertMMO);
+            }
+            if ((this.onInsertMMOCompletedDelegate == null)) {
+                this.onInsertMMOCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnInsertMMOCompleted);
+            }
+            base.InvokeAsync(this.onBeginInsertMMODelegate, new object[] {
+                        mmo,
+                        cred}, this.onEndInsertMMODelegate, this.onInsertMMOCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -8729,6 +8915,20 @@ namespace DiversityPhone.DiversityService {
             public DiversityPhone.DiversityService.KeyProjection EndInsertHierarchy(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 DiversityPhone.DiversityService.KeyProjection _result = ((DiversityPhone.DiversityService.KeyProjection)(base.EndInvoke("InsertHierarchy", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginInsertMMO(DiversityPhone.DiversityService.MultimediaObject mmo, DiversityPhone.DiversityService.UserCredentials cred, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = mmo;
+                _args[1] = cred;
+                System.IAsyncResult _result = base.BeginInvoke("InsertMMO", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public bool EndInsertMMO(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                bool _result = ((bool)(base.EndInvoke("InsertMMO", _args, result)));
                 return _result;
             }
             

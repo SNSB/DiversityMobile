@@ -44,6 +44,9 @@ namespace DiversityService
         [OperationContract]
         KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred);
 
+        [OperationContract]
+        bool InsertMMO(MultimediaObject mmo, UserCredentials cred);
+
         #endregion
         #endregion
 

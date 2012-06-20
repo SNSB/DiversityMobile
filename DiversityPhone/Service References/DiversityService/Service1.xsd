@@ -255,6 +255,17 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="KeyProjection" nillable="true" type="tns:KeyProjection" />
+  <xs:complexType name="MultimediaObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="MediaType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OwnerType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RelatedId" type="xs:int" />
+      <xs:element minOccurs="0" name="Uri" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MultimediaObject" nillable="true" type="tns:MultimediaObject" />
   <xs:complexType name="ArrayOfTaxonList">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonList" nillable="true" type="tns:TaxonList" />

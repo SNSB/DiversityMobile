@@ -11,7 +11,6 @@ namespace DiversityPhone.ViewModels
     using DiversityPhone.Services;
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
-    using DiversityPhone.PMService;
     using System.IO.IsolatedStorage;
     using System.IO;
     using System.Collections.ObjectModel;
@@ -31,6 +30,7 @@ namespace DiversityPhone.ViewModels
         private DiversityService.DiversityServiceClient _plainUploadClient;
         private DiversityPhone.MediaService4.MediaService4Client _msc;
         private IObservable<Svc.HierarchySection> _uploadAsync;
+        private MultimediaObject actualMMOSync;
         #endregion
 
         #region Commands
@@ -92,6 +92,7 @@ namespace DiversityPhone.ViewModels
             _plainUploadClient = new Svc.DiversityServiceClient();
             _plainUploadClient.InsertEventSeriesCompleted+=new EventHandler<Svc.InsertEventSeriesCompletedEventArgs>(_plainUploadClient_InsertEventSeriesCompleted);
             _plainUploadClient.InsertHierarchyCompleted += new EventHandler<Svc.InsertHierarchyCompletedEventArgs>(_plainUploadClient_InsertHierarchyCompleted);
+            _plainUploadClient.InsertMMOCompleted+=new EventHandler<Svc.InsertMMOCompletedEventArgs>(_plainUploadClient_InsertMMOCompleted);
 
             var noOpenSeries = series
                 .Select(list => list.Any(s => s.SeriesEnd == null))
@@ -105,7 +106,7 @@ namespace DiversityPhone.ViewModels
                 (Add = new ReactiveCommand(noOpenSeries))
                     .Subscribe(_ => addSeries()),
                 (UploadMMO = new ReactiveCommand())
-                    .Subscribe(_ => uploadMMos()),               
+                    .Subscribe(_ => uploadFirstMMo()),               
                 (UploadPlain=new ReactiveCommand())
                     .Subscribe(_ =>uploadPlain()),
                 (Maps=new ReactiveCommand())
@@ -211,10 +212,10 @@ namespace DiversityPhone.ViewModels
 
 
         #region Upload MMO
-        private void uploadMMos()
+        private void uploadFirstMMo()
         {
             //Testfunktion zur Übertagung eines MMO´s
-            IList<MultimediaObject> mmoList = _storage.getAllMultimediaObjects();
+            IList<MultimediaObject> mmoList = _storage.getMultimediaObjectsForUpload();
             if (mmoList != null && mmoList.Count > 0)
             {
                 MultimediaObject mmo = mmoList.First();
@@ -240,6 +241,7 @@ namespace DiversityPhone.ViewModels
                     }
 
                 }
+                this.actualMMOSync = mmo;
                 _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(),  0, 0, 0, "Test", DateTime.Now.ToShortDateString(), 371,data);
             }
         }
@@ -247,6 +249,38 @@ namespace DiversityPhone.ViewModels
         private void msc_SubmitCompleted(object sender, MediaService4.SubmitCompletedEventArgs e)
         {
             String s = e.Result;
+            try
+            {
+                MultimediaObject mmo = actualMMOSync;//Alternativ über Guid bauen und aus storge ziehen
+                mmo.DiversityCollectionUri = e.Result;
+                _storage.updateMMOUri(mmo.Uri, mmo.DiversityCollectionUri);
+                Svc.MultimediaObject serviceMmo = MultimediaObject.ToServiceObject(mmo);
+                _plainUploadClient.InsertMMOAsync(serviceMmo, _repository.GetCreds());
+            }
+            catch (Exception)
+            {
+                //Todo Handling
+            }
+        }
+
+        private void _plainUploadClient_InsertMMOCompleted(object sender, DiversityService.InsertMMOCompletedEventArgs args)
+        {
+            try
+            {
+                bool uploadsuccess = args.Result;
+                if (uploadsuccess == true)
+                {
+                    _storage.updateMMOState(actualMMOSync.DiversityCollectionUri);
+                }
+                else
+                {
+                    //Not Succesfull handle here
+                }
+            }
+            catch (Exception)
+            {
+                //Todo Handling
+            }
         }
 
         #endregion

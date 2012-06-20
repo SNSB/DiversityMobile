@@ -66,6 +66,9 @@
     </Compile>
     <Compile Include="DiversityService.cs" />
     <Compile Include="DiversityService.Queries.cs" />
+    <Compile Include="Models\CollectionEventImage.cs" />
+    <Compile Include="Models\CollectionEventSeriesImage.cs" />
+    <Compile Include="Models\CollectionSpecimenImage.cs" />
     <Compile Include="Models\IdentificationUnitGeoAnalysis.cs" />
     <Compile Include="IDiversityService.cs" />
     <Compile Include="ModelProjection.cs" />

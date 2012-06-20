@@ -9,7 +9,7 @@ using System.Windows.Media.Imaging;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using System.IO;
-using DiversityPhone.PMService;
+using DiversityPhone.MapMediaService;
 using DiversityPhone.Services;
 using System.Collections.ObjectModel;
 
