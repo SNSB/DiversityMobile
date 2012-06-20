@@ -227,6 +227,7 @@
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
+    <Compile Include="ViewModels\IElementVM.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
     <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
@@ -253,8 +254,8 @@
     <Compile Include="ViewModels\Utility\SettingsVM.Setup.cs" />
     <Compile Include="ViewModels\Utility\SyncVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
-    <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
+    <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
+    <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
     <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
     <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />

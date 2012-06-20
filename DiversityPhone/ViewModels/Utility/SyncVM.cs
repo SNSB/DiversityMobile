@@ -16,6 +16,28 @@ namespace DiversityPhone.ViewModels.Utility
 {
     public class SyncVM : PageViewModel
     {
+        public enum Pivots
+        {
+            data,
+            multimedia
+        }
+
+
+        private Pivots _CurrentPivot;
+
+        public Pivots CurrentPivot
+        {
+            get
+            {
+                return _CurrentPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
+            }
+        }
+        
+
         private IFieldDataService Storage;
 
 
@@ -44,6 +66,8 @@ namespace DiversityPhone.ViewModels.Utility
                 Series = new EventSeriesVM(series);                
             }
         }
+
+        
 
         public SyncVM(Container ioc)
         {
