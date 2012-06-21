@@ -23,9 +23,9 @@
             Width="656" 
             Height="480" 
             HorizontalAlignment="Left" 
-            Fill="{Binding Fill}" Canvas.Left="0" />
+            Canvas.Left="0" />
 
-        <!--<MediaElement 
+        <MediaElement 
             x:Name="videoPlayer" 
             Width="656" 
             Height="480"
@@ -34,7 +34,7 @@
             VerticalAlignment="Center" 
             HorizontalAlignment="Center" 
             Stretch="Fill"
-            Canvas.Left="0"/>-->
+            Canvas.Left="0"/>
     </Canvas>
  
     
