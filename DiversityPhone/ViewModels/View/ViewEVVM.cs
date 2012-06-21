@@ -42,22 +42,22 @@ using System.Reactive.Disposables;
 
         public ReactiveCollection<SpecimenVM> SpecList { get; private set; }
 
+        public ReactiveCollection<PropertyVM> Properties { get; private set; }
 
-        public ReactiveCollection<PropertyVM> Properties { get; private set; }        
+        public ReactiveCollection<ImageVM> ImageList { get; private set; }
 
-        public IEnumerable<ImageVM> ImageList { get { return _ImageList.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<ImageVM>> _ImageList;
+        public ReactiveCollection<MultimediaObjectVM> AudioList { get; private set; }
 
-        public IEnumerable<MultimediaObjectVM> AudioList { get { return _AudioList.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _AudioList;
-
-        public IEnumerable<MultimediaObjectVM> VideoList { get { return _VideoList.Value; } }
-        private ObservableAsPropertyHelper<IEnumerable<MultimediaObjectVM>> _VideoList;
+        public ReactiveCollection<MultimediaObjectVM> VideoList { get; private set; }
 
         #endregion
 
         private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getImages = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
+
         public ViewEVVM()            
         {
             SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))
@@ -76,50 +76,26 @@ using System.Reactive.Disposables;
             ValidModel
                 .Subscribe(getProperties.Execute);
 
-            _ImageList = this.ObservableToProperty(
-                ValidModel
-                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image))
-                .Select(mmos => mmos.Select(mmo => new ImageVM(mmo)))
-                .Do(mmos =>
-                {
-                    foreach (var mmo in mmos)
-                    {
-                        mmo.SelectObservable
-                            .Select(m => m.Model.Uri)
-                            .ToNavigation(Page.ViewImage);
-                    }
-                }),
-                x => x.ImageList);
+            ImageList = getImages.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Image).Select(im => new ImageVM(im)))
+                .Do(_ => ImageList.Clear())
+                .SelectMany(images => images)
+                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Event,Current.Model.EventID.ToString()))
+                .CreateCollection();
+            ValidModel.Subscribe(getImages.Execute);
 
-            _AudioList = this.ObservableToProperty(
-                ValidModel
-                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Audio))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
-                .Do(mmos =>
-                {
-                    foreach (var mmo in mmos)
-                    {
-                        mmo.SelectObservable
-                            .Select(m => m.Model.Uri)
-                            .ToNavigation(Page.ViewAudio);
-                    }
-                }),
-                x => x.AudioList);
+            AudioList = getAudioFiles.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Audio).Select(aud=> new MultimediaObjectVM(aud)))
+                .Do(_ => AudioList.Clear())
+                .SelectMany(audioFiles => audioFiles)
+                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Event, Current.Model.EventID.ToString()))
+                .CreateCollection();
+            ValidModel.Subscribe(getAudioFiles.Execute);
 
-            _VideoList = this.ObservableToProperty(
-                ValidModel
-                .Select(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Video))
-                .Select(mmos => mmos.Select(mmo => new MultimediaObjectVM( mmo)))
-                .Do(mmos =>
-                {
-                    foreach (var mmo in mmos)
-                    {
-                        mmo.SelectObservable
-                            .Select(m => m.Model.Uri)
-                            .ToNavigation(Page.ViewVideo);
-                    }
-                }),
-                x => x.VideoList);
+            VideoList = getVideos.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
+               .Do(_ => VideoList.Clear())
+               .SelectMany(videoFiles => videoFiles)
+               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Event, Current.Model.EventID.ToString()))
+               .CreateCollection();
+            ValidModel.Subscribe(getVideos.Execute);
 
             Add = new ReactiveCommand();
             var addMessageSource =
@@ -147,21 +123,7 @@ using System.Reactive.Disposables;
             Messenger.RegisterMessageSource(mapMessageSource);
         }       
 
-        //private IList<MultimediaObjectVM> getMMOList(Event ev,MediaType type)
-        //{
-        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, MultimediaObjectVM>(
-        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event,ev.EventID, type),
-        //        (model) => new MultimediaObjectVM(Messenger, model, Page.ViewMMO)
-        //        );
-        //}
-
-        //private IList<ImageVM> getImageList(Event ev)
-        //{
-        //    return new VirtualizingReadonlyViewModelList<MultimediaObject, ImageVM>(
-        //        Storage.getMultimediaForObjectAndType(ReferrerType.Event, ev.EventID, MediaType.Image),
-        //        (model) => new ImageVM(Messenger, model, Page.ViewMMO)
-        //        );
-        //}
+       
 
         protected override Event ModelFromState(PageState s)
         {
