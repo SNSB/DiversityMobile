@@ -38,7 +38,13 @@ namespace DiversityPhone.ViewModels
 
         public string Description
         {
-            get { return Map.Description; }
+            get {
+
+                if (Map != null)
+                    return Map.Description;
+                else
+                    return String.Empty;
+            }
         }
 
 
@@ -274,6 +280,8 @@ namespace DiversityPhone.ViewModels
                         else
                             ActualPerc = null;
                     }
+                    else
+                        throw new Exception("Map not found");
                 }
                 catch (Exception e)
                 {

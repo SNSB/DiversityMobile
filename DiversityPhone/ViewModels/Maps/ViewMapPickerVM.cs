@@ -40,16 +40,13 @@ namespace DiversityPhone.ViewModels
 
             Messenger.RegisterMessageSource(
             MapSelected
-                .Select(m => m.Model.Uri)
+                .Select(m => m.Model.ServerKey)
                 .Select(uri =>
                     {
                         return new NavigationMessage(destinationFromState(CurrentState), uri, CurrentState.ReferrerType, CurrentState.Referrer);
                     })
                     );
                     
-
-
-
             _maps = maps;
 
             _SavedMaps = this.ObservableToProperty(
