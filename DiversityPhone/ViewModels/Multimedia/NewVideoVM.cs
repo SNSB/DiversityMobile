@@ -191,10 +191,7 @@ namespace DiversityPhone.ViewModels
 
         private void saveVideo()
         {
-
-            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
             String uri;
-
             if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
             {
                 Guid g = Guid.NewGuid();
@@ -225,7 +222,6 @@ namespace DiversityPhone.ViewModels
 
         #region Recording
 
-        // Set recording state: start recording.
         private void startVideoRecording()
         {
             try
@@ -235,17 +231,14 @@ namespace DiversityPhone.ViewModels
                     && captureSource.State == CaptureState.Started)
                 {
                     captureSource.Stop();
-
                     // Connect the input and output of fileSink.
                     fileSink.CaptureSource = captureSource;
                     fileSink.IsolatedStorageFileName = isoVideoFileName;
                 }
-
                 // Begin recording.
                 if (captureSource.VideoCaptureDevice != null
                     && captureSource.State == CaptureState.Stopped)
                 {
-
                     captureSource.Start();
                 }
                 this.State = PlayStates.Recording;
@@ -258,8 +251,6 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
-        // Set the recording state: stop recording.
         private void stopVideoRecording()
         {
             try
@@ -278,7 +269,6 @@ namespace DiversityPhone.ViewModels
                 }
                 this.State = PlayStates.Idle;
             }
-            // If stop fails, display an error.
             catch (Exception e)
             {
                 MessageBox.Show("Recording error");
@@ -291,11 +281,9 @@ namespace DiversityPhone.ViewModels
 
         #region Playback
 
-        // Start video playback.
         private void startPlayback()
         {
-            videoRecorderBrush.SetSource(videoPlayer);
-            Fill = videoRecorderBrush;
+            
             // Start video playback when the file stream exists.
             if (isoVideoFile != null)
             {
@@ -304,32 +292,25 @@ namespace DiversityPhone.ViewModels
             // Start the video for the first time.
             else
             {
-                // Stop the capture source.
                 captureSource.Stop();
 
                 // Remove VideoBrush from the tree.
                 Fill = null;
-
-                // Create the file stream and attach it to the MediaElement.
                 isoVideoFile = new IsolatedStorageFileStream(isoVideoFileName,
                                         FileMode.Open, FileAccess.Read,
                                         IsolatedStorageFile.GetUserStoreForApplication());
 
                 videoPlayer.SetSource(isoVideoFile);
-
-                // Add an event handler for the end of playback.
                 videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
-
-                // Start video playback.
                 videoPlayer.Play();
             }
+            videoRecorderBrush.SetSource(videoPlayer);
+            Fill = videoRecorderBrush;
             this.State = PlayStates.Playing;
         }
 
         private void stopPlayback()
         {
-
-            // Remove playback objects.
             disposeVideoPlayer();
             startVideoPreview();
         }
@@ -345,15 +326,11 @@ namespace DiversityPhone.ViewModels
                 if (captureSource.VideoCaptureDevice != null
                 && captureSource.State == CaptureState.Stopped)
                 {
-                    // Add captureSource to videoBrush.
                     videoRecorderBrush.SetSource(captureSource);
-
-                    // Add videoBrush to the visual tree.
                     Fill = videoRecorderBrush;
                     captureSource.Start();
                 }
             }
-            // If preview fails, display an error.
             catch (Exception e)
             {
                 MessageBox.Show("Preview Error");
@@ -364,28 +341,18 @@ namespace DiversityPhone.ViewModels
         {
             if (captureSource == null)
             {
-                // Create the VideoRecorder objects.
                 captureSource = new CaptureSource();
                 fileSink = new FileSink();
-
                 videoCaptureDevice = CaptureDeviceConfiguration.GetDefaultVideoCaptureDevice();
 
                 // Add eventhandlers for captureSource.
                 captureSource.CaptureFailed += new EventHandler<ExceptionRoutedEventArgs>(OnCaptureFailed);
-
-                // Initialize the camera if it exists on the device.
                 if (videoCaptureDevice != null)
                 {
-                    // Create the VideoBrush for the viewfinder.
                     videoRecorderBrush = new VideoBrush();
                     videoRecorderBrush.SetSource(captureSource);
-
-                    // Display the viewfinder image on the rectangle.
                     Fill = videoRecorderBrush;
-
-                    // Start video capture and display it on the viewfinder.
                     captureSource.Start();
-
                 }
             }
         }
@@ -395,16 +362,15 @@ namespace DiversityPhone.ViewModels
 
         #region Events
 
-        // If recording fails, display an error message.
+
         private void OnCaptureFailed(object sender, ExceptionRoutedEventArgs e)
         {
-            MessageBox.Show("Capture failed:" + e.ErrorException.Message);
+            MessageBox.Show("No VideoRecording device foiund:"+ e.ErrorException.Message);
         }
 
         // Display the viewfinder when playback ends.
         public void VideoPlayerMediaEnded(object sender, RoutedEventArgs e)
         {
-            // Remove the playback objects.
             disposeVideoPlayer();
             startVideoPreview();
         }
@@ -417,13 +383,8 @@ namespace DiversityPhone.ViewModels
         {
             if (videoPlayer != null)
             {
-                // Stop the VideoPlayer MediaElement.
                 videoPlayer.Stop();
-
-                // Remove playback objects.
                 videoPlayer.Source = null;
-
-                // Remove the event handler.
                 videoPlayer.MediaEnded -= VideoPlayerMediaEnded;
             }
             this.State = PlayStates.Idle;
@@ -433,17 +394,12 @@ namespace DiversityPhone.ViewModels
         {
             if (captureSource != null)
             {
-                // Stop captureSource if it is running.
                 if (captureSource.VideoCaptureDevice != null
                     && captureSource.State == CaptureState.Started)
                 {
                     captureSource.Stop();
                 }
-
-                // Remove the event handlers for capturesource and the shutter button.
                 captureSource.CaptureFailed -= OnCaptureFailed;
-
-                // Remove the video recording objects.
                 captureSource = null;
                 videoCaptureDevice = null;
                 fileSink = null;
@@ -457,7 +413,5 @@ namespace DiversityPhone.ViewModels
             disposeVideoRecorder();
         }
         #endregion
-
-
     }
 }
