@@ -6,6 +6,8 @@ using System.Xml.Linq;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using System.Windows.Data;
+using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace DiversityPhone.View
 {
@@ -23,6 +25,18 @@ namespace DiversityPhone.View
         public NewVideo()
         {
             InitializeComponent();
+            videoPlayer.SetSource
+            
         }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            // Dispose of camera and media objects.
+            VM.clean();
+
+            base.OnNavigatedFrom(e);
+        }
+
+
     }
 }

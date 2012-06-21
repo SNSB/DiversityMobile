@@ -244,6 +244,7 @@
     <Compile Include="ViewModels\Multimedia\NewAudioVM.cs" />
     <Compile Include="ViewModels\Multimedia\NewImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\NewVideoVM.cs" />
+    <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
     <Compile Include="ViewModels\Multimedia\SelectNewMMOVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />

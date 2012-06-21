@@ -81,11 +81,11 @@ namespace DiversityPhone.View.Appbar
 
         }
 
-        public void adjustApplicationBar(NewAudioVM.PlayStates state)
+        public void adjustApplicationBar(PlayStates state)
         {
             switch (state)
             {
-                case NewAudioVM.PlayStates.Idle:
+                case PlayStates.Idle:
                     _record.IsEnabled = true;
                     if (_vm.AudioBuffer != null)
                         _play.IsEnabled = true;
@@ -93,12 +93,12 @@ namespace DiversityPhone.View.Appbar
                         _play.IsEnabled = false;
                     _stop.IsEnabled = false;
                     break;
-                case NewAudioVM.PlayStates.Playing:
+                case PlayStates.Playing:
                     _record.IsEnabled = false;
                     _play.IsEnabled = false;
                     _stop.IsEnabled = true;
                     break;
-                case NewAudioVM.PlayStates.Recording:
+                case PlayStates.Recording:
                     _record.IsEnabled = false;
                     _play.IsEnabled = false;
                     _stop.IsEnabled = true;

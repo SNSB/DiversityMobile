@@ -31,16 +31,10 @@ namespace DiversityPhone.ViewModels
     public class NewAudioVM : EditElementPageVMBase<MultimediaObject>
     {
 
-        #region PlayStates
+      
 
-        public enum PlayStates
-        {
-            Idle,
-            Recording,
-            Playing
-        }
+        
 
-        #endregion
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
