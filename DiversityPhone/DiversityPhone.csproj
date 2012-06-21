@@ -263,6 +263,7 @@
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\NewAudioAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewPhotoAppbarUpdater.cs" />
+    <Compile Include="View\Appbar\NewVideoAppBarUpdater.cs" />
     <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />

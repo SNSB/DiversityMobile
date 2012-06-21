@@ -20,29 +20,26 @@
         <!--Camera viewfinder >-->
         <Rectangle 
             x:Name="viewfinderRectangle"
-            Width="640" 
+            Width="656" 
             Height="480" 
             HorizontalAlignment="Left" 
-            Canvas.Left="80"
-            Fill="{Binding Fill}"
-            />
+            Fill="{Binding Fill}" Canvas.Left="0" />
 
-        <MediaElement 
+        <!--<MediaElement 
             x:Name="videoPlayer" 
-            Width="640" 
+            Width="656" 
             Height="480"
             AutoPlay="True" 
             RenderTransformOrigin="0.5, 0.5" 
             VerticalAlignment="Center" 
             HorizontalAlignment="Center" 
             Stretch="Fill"
-            Canvas.Left="80"/>
+            Canvas.Left="0"/>-->
     </Canvas>
  
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

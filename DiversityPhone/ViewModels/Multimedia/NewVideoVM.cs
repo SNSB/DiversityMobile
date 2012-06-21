@@ -30,7 +30,7 @@ namespace DiversityPhone.ViewModels
 
         //Presentation Elements
 
-        public MediaElement videoPlayer=new MediaElement();
+        private MediaElement videoPlayer=new MediaElement();
 
 
         #region Properties
@@ -57,7 +57,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private bool _recordPresent = false; //Flag to monitor if a record has been made
-        private bool RecordPresent
+        public bool RecordPresent
         {
             get
             {
@@ -97,6 +97,7 @@ namespace DiversityPhone.ViewModels
 
         public NewVideoVM()
         {
+            //In die View setzen und Appbar übergeben
             Record = new ReactiveCommand();
             Record.Subscribe(_ => record());
             Play = new ReactiveCommand();
@@ -272,6 +273,7 @@ namespace DiversityPhone.ViewModels
                     // Disconnect fileSink.
                     fileSink.CaptureSource = null;
                     fileSink.IsolatedStorageFileName = null;
+                    RecordPresent = true;
 
                 }
                 this.State = PlayStates.Idle;
@@ -282,6 +284,7 @@ namespace DiversityPhone.ViewModels
                 MessageBox.Show("Recording error");
                 this.State = PlayStates.Idle;
             }
+            startVideoPreview();
         }
 
         #endregion
@@ -291,7 +294,8 @@ namespace DiversityPhone.ViewModels
         // Start video playback.
         private void startPlayback()
         {
-
+            videoRecorderBrush.SetSource(videoPlayer);
+            Fill = videoRecorderBrush;
             // Start video playback when the file stream exists.
             if (isoVideoFile != null)
             {
@@ -319,6 +323,7 @@ namespace DiversityPhone.ViewModels
                 // Start video playback.
                 videoPlayer.Play();
             }
+            this.State = PlayStates.Playing;
         }
 
         private void stopPlayback()
@@ -382,7 +387,6 @@ namespace DiversityPhone.ViewModels
                     captureSource.Start();
 
                 }
-
             }
         }
 
@@ -422,6 +426,7 @@ namespace DiversityPhone.ViewModels
                 // Remove the event handler.
                 videoPlayer.MediaEnded -= VideoPlayerMediaEnded;
             }
+            this.State = PlayStates.Idle;
         }
 
         private void disposeVideoRecorder()

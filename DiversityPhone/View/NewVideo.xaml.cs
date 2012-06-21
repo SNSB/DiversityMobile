@@ -8,6 +8,8 @@ using DiversityPhone.Model;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using ReactiveUI.Xaml;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -22,11 +24,12 @@ namespace DiversityPhone.View
             }
         }
 
+        private NewVideoAppBarUpdater _appbar;
+
         public NewVideo()
         {
             InitializeComponent();
-            videoPlayer.SetSource
-            
+            _appbar = new NewVideoAppBarUpdater(this.ApplicationBar, VM);          
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
