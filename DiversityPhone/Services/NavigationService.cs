@@ -188,9 +188,6 @@ namespace DiversityPhone.Services
                 case Page.NewVideo:
                     destination = "/View/NewVideo.xaml";
                     break;
-                case Page.EditMMO: //Eliminieren nach Umstellung
-                    destination = "/View/EditMMO.xaml";
-                    break; 
                 case Page.EditIUAN:
                     destination = "/View/EditAnalysis.xaml";
                     break;

@@ -63,8 +63,6 @@ namespace DiversityPhone.ViewModels
             _ioc.Register<NewImageVM>(c => new NewImageVM());
             _ioc.Register<NewAudioVM>(c => new NewAudioVM());
             _ioc.Register<NewVideoVM>(c => new NewVideoVM());
-
-            _ioc.Register<EditMultimediaObjectVM>(c => new EditMultimediaObjectVM());//Eliminieren nach Umstellung
             _ioc.Register<ViewImageVM>(c => new ViewImageVM());
             _ioc.Register<ViewAudioVM>(c => new ViewAudioVM());
             _ioc.Register<ViewVideoVM>(c => new ViewVideoVM());
@@ -98,6 +96,8 @@ namespace DiversityPhone.ViewModels
         public EditIUVM EditIU { get { return _ioc.Resolve<EditIUVM>(); } }
         public ViewIUVM ViewIU { get { return _ioc.Resolve<ViewIUVM>(); } }
         public EditAnalysisVM EditAnalysis { get { return _ioc.Resolve<EditAnalysisVM>(); } }
+        public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
+
 
         public ViewMapPickerVM ViewLM { get { return _ioc.Resolve<ViewMapPickerVM>(); } }
         public ViewDLMVM ViewDLM{ get { return _ioc.Resolve<ViewDLMVM>(); } }
@@ -108,18 +108,13 @@ namespace DiversityPhone.ViewModels
         public ViewMapEVVM ViewMapEV { get { return _ioc.Resolve<ViewMapEVVM>(); } }
         public ViewMapIUVM ViewMapIU { get { return _ioc.Resolve<ViewMapIUVM>(); } }
 
-        public EditMultimediaObjectVM EditMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } } //Eliminieren nach Umstellung
-        public EditMultimediaObjectVM ViewMMO { get { return _ioc.Resolve<EditMultimediaObjectVM>(); } } //Eliminieren nach Umstellung
-
         public SelectNewMMOVM SelectNewMMO { get { return _ioc.Resolve <SelectNewMMOVM>(); } }
         public NewImageVM NewImage { get { return _ioc.Resolve<NewImageVM>(); } }
         public NewAudioVM NewAudio { get { return _ioc.Resolve<NewAudioVM>(); } }
         public NewVideoVM NewVideo { get { return _ioc.Resolve<NewVideoVM>(); } }
-
         public ViewImageVM ViewImage { get { return _ioc.Resolve<ViewImageVM>(); } }
         public ViewAudioVM ViewAudio { get { return _ioc.Resolve<ViewAudioVM>(); } }
         public ViewVideoVM ViewVideo { get { return _ioc.Resolve<ViewVideoVM>(); } }
-        public EditPropertyVM EditProperty { get { return _ioc.Resolve<EditPropertyVM>(); } }
 
         public TaxonManagementVM TaxonManagement { get { return _ioc.Resolve<TaxonManagementVM>(); } }
         public SettingsVM Settings { get { return _ioc.Resolve<SettingsVM>(); } }

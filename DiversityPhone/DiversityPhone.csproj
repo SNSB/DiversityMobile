@@ -220,7 +220,6 @@
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="ViewModels\Edit\EditMapVM.cs" />
-    <Compile Include="ViewModels\Edit\EditMultimediaObjectVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\MapVM.cs" />
     <Compile Include="ViewModels\BasisModels\MultimediaObjectVM.cs" />
@@ -296,16 +295,10 @@
     <Compile Include="View\EditMap.xaml.cs">
       <DependentUpon>EditMap.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditMMO.xaml.cs">
-      <DependentUpon>EditMMO.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Appbar\EditPageAppBarUpdater.cs" />
-    <Compile Include="View\EditPicture.xaml.cs">
-      <DependentUpon>EditPicture.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Converters\IconToImageConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
     <Compile Include="View\NewAudio.xaml.cs">
@@ -448,15 +441,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\EditMMO.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\EditEventProperty.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditPicture.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
