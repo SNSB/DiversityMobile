@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{91f2ec9d-1ead-48ee-b95c-e3f58d86572c}" Title="DiversityPhone" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="DiversityPhone author" Description="Sample description" Publisher="DiversityPhone">
+  <App xmlns="" ProductID="{91f2ec9d-1ead-48ee-b95c-e3f58d86572c}" Title="DiversityMobile" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="DiversityPhone author" Description="Sample description" Publisher="DiversityPhone">
     <IconPath IsRelative="true" IsResource="false">Images\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
@@ -26,7 +26,7 @@
         <TemplateType5>
           <BackgroundImageURI IsRelative="true" IsResource="false">Images\ApplicationIcon.png</BackgroundImageURI>
           <Count>0</Count>
-          <Title>DiversityPhone</Title>
+          <Title>DiversityMobile</Title>
         </TemplateType5>
       </PrimaryToken>
     </Tokens>
