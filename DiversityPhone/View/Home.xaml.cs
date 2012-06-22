@@ -53,7 +53,7 @@ namespace DiversityPhone
         }
         private bool initialized = false;
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {    
+        {
             var settingsvalid = App.Settings.getSettings() != null;
             var loadingvocabulary = App.BackgroundTasks.getTaskObject<RefreshVocabularyTask>().IsBusy;
             if (!settingsvalid || loadingvocabulary)
@@ -63,7 +63,7 @@ namespace DiversityPhone
                 Splash.Visibility = Visibility.Collapsed;
                 ApplicationBar.IsVisible = true;
             }
-
+           
             if (!initialized)
             {
                 initialized = true;

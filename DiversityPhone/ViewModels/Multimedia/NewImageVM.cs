@@ -18,8 +18,7 @@ namespace DiversityPhone.ViewModels
     public class NewImageVM : EditElementPageVMBase<MultimediaObject>
     {
 
-        public PhotoCamera Camera { get; private set; }
-
+      
         #region Properties
 
         private string _Uri;
@@ -59,7 +58,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private bool _shootingEnabled = true;
-        public bool ShootingEnabled //Converter for image and vidfeoBrush in View needed
+        public bool ShootingEnabled //Converter for image and videoBrush in View needed
         {
             get
             {
@@ -85,34 +84,17 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCommand Reset { get; private set; }
         public ReactiveCommand Take { get; private set; } 
-        //public ReactiveCommand Crop { get; private set; }
-
+ 
         #endregion
 
 
         public NewImageVM()
         {
             Reset = new ReactiveCommand();
-            Reset.Subscribe(_ => refresh());
             Take = new ReactiveCommand();
-            Take.Subscribe(_ => take());
-            this.initializeCamera();
         }
 
-        private void initializeCamera()
-        {
-            if (PhotoCamera.IsCameraTypeSupported(CameraType.Primary))
-                this.Camera = new PhotoCamera(CameraType.Primary);
-            else
-            {
-                MessageBox.Show("Cannot find a camera on this device");
-                return;
-            }
-            this.Camera.CaptureImageAvailable += new EventHandler<ContentReadyEventArgs>(Camera_CaptureImageAvailable);
-            this.Camera.Initialized += new EventHandler<CameraOperationCompletedEventArgs>(Camera_Initialized);
-            this.Camera.AutoFocusCompleted += new EventHandler<CameraOperationCompletedEventArgs>(Camera_AutoFocusCompleted);
-        }
-
+       
         #region inherited
 
         protected override void UpdateModel()
@@ -166,49 +148,7 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        private void take()
-        {
-            if (ShootingEnabled)
-            {
-                this.Camera.CaptureImage();
-            }
-            else
-                ShootingEnabled = true;
-        }
-
-        private void Camera_CaptureImageAvailable(object sender, ContentReadyEventArgs e)
-        {
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                BitmapImage image = new BitmapImage();
-                image.SetSource(e.ImageStream);
-                this.OldImage = ActualImage;
-                this.ActualImage = image;
-                this.ShootingEnabled = false;
-            });
-        }
-
-        private void refresh()
-        {
-            if(OldImage!=null)
-                ActualImage = OldImage;
-        }
-
-        private void Camera_Initialized(object sender, CameraOperationCompletedEventArgs e)
-        {
-
-            if (this.Camera.IsFlashModeSupported(FlashMode.Auto))
-                this.Camera.FlashMode = FlashMode.Auto;
-
-        }
-
-        private void Camera_AutoFocusCompleted(object sender, CameraOperationCompletedEventArgs e) //Einbinden
-        {
-            //Deployment.Current.Dispatcher.BeginInvoke(() =>
-            //{
-            //    this.cameraView.BorderBrush = new SolidColorBrush(Colors.Red);
-            //});
-        }
+       
 
         private void saveImage()
         {

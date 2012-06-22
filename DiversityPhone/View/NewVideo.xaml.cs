@@ -169,6 +169,7 @@ namespace DiversityPhone.View
             // Start video playback when the file stream exists.
             if (isoVideoFile != null)
             {
+  
                 videoPlayer.Play();
             }
             // Start the video for the first time.
@@ -249,6 +250,7 @@ namespace DiversityPhone.View
             {
                 videoPlayer.Stop();
                 videoPlayer.Source = null;
+                isoVideoFile = null;
                 videoPlayer.MediaEnded -= VideoPlayerMediaEnded;
             }
             VM.State = PlayStates.Idle;
