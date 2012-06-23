@@ -107,7 +107,7 @@ namespace DiversityPhone.Services
                 .Publish();
             start.Connect();
             _StartObs = start;
-
+           
             var complete = Executor.AsyncCompletedNotification
                 .Do(_ => _IsBusy = false)
                 .Select(_ => Invocation.Argument)

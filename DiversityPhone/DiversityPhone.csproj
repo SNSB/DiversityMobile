@@ -176,7 +176,7 @@
     <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
-    <Compile Include="Services\BackgroundTasks\UploadSeriesTask.cs" />
+    <Compile Include="Services\BackgroundTasks\UploadEventTask.cs" />
     <Compile Include="Services\ConnectionStatus.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
@@ -227,7 +227,6 @@
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
-    <Compile Include="ViewModels\IElementVM.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
     <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">

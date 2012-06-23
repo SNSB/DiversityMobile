@@ -35,11 +35,11 @@ namespace DiversityPhone.ViewModels
         }
 
         private BitmapImage LoadThumb()
-        {
-
-            BitmapImage bi = new BitmapImage();
+        {            
             if (Model.MediaType != MediaType.Image)
                 return null;
+
+            BitmapImage bi = new BitmapImage();
 
             byte[] data;
 

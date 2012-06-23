@@ -81,7 +81,7 @@
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Multimedia, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical" >
                     <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                    <ListBox ItemsSource="{Binding SyncUnits}" >
+                    <ListBox ItemsSource="{Binding Multimedia}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -94,14 +94,14 @@
                                     </Grid.RowDefinitions>
 
                                     <Image Grid.Column="0" Grid.Row="0"
-                                       Source="{Binding Event.Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
+                                       Source="{Binding IconPath, Converter={StaticResource IconUrlConverter}}" Height="40" Width="40"/>
+                                    <Image Grid.Column="0" Grid.Row="0"
+                                       Source="{Binding Image.Thumb}" Height="40" Width="40"/>
                                     <TextBlock Grid.Column="1" Grid.Row="0" 
                                            Style="{StaticResource PhoneTextTitle3Style}"
                                            VerticalAlignment="Center"
                                            Margin="{StaticResource PhoneHorizontalMargin}">                                
-                                    <Run Text="{Binding Series.Description}"/>
-                                    <Run Text=": "/>
-                                    <Run Text="{Binding Event.Description}" />
+                                    <Run Text="{Binding Owner.Description}"/>                                   
                                     </TextBlock>
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>

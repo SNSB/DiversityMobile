@@ -41,6 +41,7 @@ namespace DiversityPhone.ViewModels
                 switch(Model.MediaType)
                 {
                     case MediaType.Image:
+                        return Model.Uri;
                         return "/Images/appbar.feature.camera.rest.png";
                     case MediaType.Audio:
                             return "/Images/appbar.feature.audio.rest.png";

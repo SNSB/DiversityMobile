@@ -277,6 +277,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die upload all ähnelt.
+        /// </summary>
+        public static string Sync_Dialog_UploadAll_Caption {
+            get {
+                return ResourceManager.GetString("Sync_Dialog_UploadAll_Caption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you want to upload all new Multimedia? Only do this if the Phone is charging and connected via Wifi. ähnelt.
+        /// </summary>
+        public static string Sync_Dialog_UploadAll_Text {
+            get {
+                return ResourceManager.GetString("Sync_Dialog_UploadAll_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die data ähnelt.
         /// </summary>
         public static string Sync_Header_Data {
