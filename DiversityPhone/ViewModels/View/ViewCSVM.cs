@@ -92,7 +92,7 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
             ValidModel.Subscribe(getAudioFiles.Execute);
 
-            VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (cs as IdentificationUnit).UnitID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
+            VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
                .Do(_ => VideoList.Clear())
                .SelectMany(videoFiles => videoFiles)
                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
