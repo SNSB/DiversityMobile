@@ -20,12 +20,19 @@ namespace DiversityPhone.View
         private EditAnalysisVM VM { get { return DataContext as EditAnalysisVM; } }
 
         private EditPageAppBarUpdater<IdentificationUnitAnalysis> _appb;
+        private IList<Control> _toStore;
 
         public EditAnalysis()
         {
             InitializeComponent();
-
+            _toStore = new List<Control> { TB_CustomResult};
+            DPControlBackGround.adjustStoreBackgroundColors(_toStore);      
             _appb = new EditPageAppBarUpdater<IdentificationUnitAnalysis>(ApplicationBar, VM);
+        }
+
+        private void TB_CustomResult_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DPControlBackGround.setTBBackgroundColor(TB_CustomResult);
         }
     }
 }

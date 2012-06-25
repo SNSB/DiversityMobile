@@ -20,12 +20,15 @@ namespace DiversityPhone.View
         private EditIUVM VM { get { return DataContext as EditIUVM; } }
 
         private EditPageAppBarUpdater<IdentificationUnit> _appb;
+        private IList<Control> _toStore;
+
 
         public EditIU()
         {
             InitializeComponent();
 
             _appb = new EditPageAppBarUpdater<IdentificationUnit>(this.ApplicationBar, VM);
+            _toStore = new List<Control> {  };
         }        
     }
 }

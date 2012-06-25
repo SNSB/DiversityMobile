@@ -30,7 +30,7 @@
             <ContentControl Content="{Binding Parent}" ContentTemplate="{StaticResource IdentificationSingleLevelItemTemplate}" HorizontalContentAlignment="Left"/>
             <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}"/>
-            <toolkit:ListPicker Header="Analysis" 
+            <toolkit:ListPicker Name="LP_Type" Header="Analysis" 
                                 IsEnabled="{Binding IsEditable}"                                
                                 ItemsSource="{Binding Analyses.Items}"
 								SelectedIndex="{Binding Analyses.SelectedIndex, Mode=TwoWay}"
@@ -52,9 +52,9 @@
                            TextWrapping="Wrap" 
                            Style="{StaticResource InfoLabelTextStyle}"
                            Text="Result"/>
-                <TextBox TextWrapping="Wrap" 
+                <TextBox Name="TB_CustomResult" TextWrapping="Wrap" 
                          Text="{Binding CustomResult, Mode=TwoWay}"
-                         IsEnabled="{Binding IsEditable}"/>
+                         IsEnabled="{Binding IsEditable}" TextChanged="TB_CustomResult_TextChanged" />
         	</StackPanel>
         </StackPanel>
 

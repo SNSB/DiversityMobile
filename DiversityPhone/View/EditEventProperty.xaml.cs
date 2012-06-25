@@ -20,9 +20,12 @@ namespace DiversityPhone.View
         public EditPropertyVM VM { get { return DataContext as EditPropertyVM; } }
 
         EditPageAppBarUpdater<CollectionEventProperty> _appb;
+        private IList<Control> _toStore;
+
         public EditEventProperty()
         {
             InitializeComponent();
+            _toStore = new List<Control> { LP_Type, LP_Value };
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)

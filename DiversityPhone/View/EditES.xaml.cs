@@ -39,7 +39,7 @@ namespace DiversityPhone.View
             if (VM != null)
             {
                 this._toStore = new List<Control> { this.DescTB };
-                this.adjustStoreBackgroundColors();                
+                DPControlBackGround.adjustStoreBackgroundColors(_toStore);               
                                 
             }          
         }
@@ -54,31 +54,10 @@ namespace DiversityPhone.View
             if (VM != null)
             {
                 VM.Description = DescTB.Text;
-                this.setTBBackgroundColor(DescTB);//Kann man die binden?
+                DPControlBackGround.setTBBackgroundColor(DescTB);
             }
         }
 
-        public void adjustStoreBackgroundColors()
-        {
-            if (_toStore != null)
-            {
-                foreach (Control c in _toStore)
-                {
-                    if (c.GetType().Equals(typeof(TextBox)))
-                    {
-                        TextBox tb = (TextBox)c;
-                        this.setTBBackgroundColor(tb);
-                    }
-                }
-            }
-        }
-
-        public void setTBBackgroundColor(TextBox tb)
-        {
-            if (tb.Text == String.Empty || tb.Text == null)
-                tb.Background = DPColors.INPUTMISSSING;
-            else
-                tb.Background = DPColors.STANDARD;
-        } 
+       
     }
 }

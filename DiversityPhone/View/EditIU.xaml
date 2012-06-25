@@ -34,7 +34,7 @@
            <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                               Command="{Binding ToggleEditable}"/>
 
-            <toolkit:ListPicker ItemsSource="{Binding TaxonomicGroup.Items}" 
+            <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
                             SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
                             ItemTemplate="{StaticResource TermListItemTemplate}"                                
                             FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
@@ -47,10 +47,10 @@
 
             <StackPanel Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}, ConverterParameter=True}" Orientation="Vertical">
                 <TextBlock Text="{Binding Resources.IdentificationUnit_Header_Identification, Source={StaticResource LocalizedStrings}}"/>
-                <TextBox Text="{Binding Current.Description}" IsEnabled="False"/>
+                <TextBox  Text="{Binding Current.Description}" IsEnabled="False"/>
             </StackPanel>
 
-            <ListBox BorderThickness="3"  
+            <ListBox Name="LB_IdentificationCandidates" MaxHeight="300" BorderThickness="3"  
                     ItemsSource="{Binding Identification.Items}"                     
                     SelectedIndex="{Binding Identification.SelectedIndex, Mode=TwoWay}"
                     ItemTemplate="{StaticResource TaxonNameItemTemplate}"

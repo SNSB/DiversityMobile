@@ -22,7 +22,9 @@ namespace DiversityPhone.View
 
         public EditCSVM VM { get{return DataContext as EditCSVM;} }
 
-        EditPageAppBarUpdater<Specimen> _appbarupd;
+        private EditPageAppBarUpdater<Specimen> _appbarupd;
+        private IList<Control> _toStore;
+
         public EditCS()
         {
             InitializeComponent();
@@ -30,11 +32,14 @@ namespace DiversityPhone.View
             _appbarupd = new EditPageAppBarUpdater<Specimen>(this.ApplicationBar, VM);
 
             anBinding =  AN_TB.GetBindingExpression(TextBox.TextProperty);
+            this._toStore = new List<Control> { this.AN_TB };
+            DPControlBackGround.adjustStoreBackgroundColors(_toStore);  
         }
 
         private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
         {
             anBinding.UpdateSource();
+            DPControlBackGround.setTBBackgroundColor(AN_TB);
         }      
     }
 }

@@ -43,7 +43,7 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <ListBox ItemsSource="{Binding SavedMaps}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Tap="ListBox_Tap" />
+                <ListBox ItemsSource="{Binding SavedMaps}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Tap="ListBox_Tap" Height="490" />
             </StackPanel>
         </Grid>
     </Grid>

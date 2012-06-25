@@ -276,6 +276,7 @@
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
     <Compile Include="View\DPColors.cs" />
+    <Compile Include="View\DPControlBackGround.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
       <DependentUpon>EditAnalysis.xaml</DependentUpon>
     </Compile>
@@ -290,9 +291,6 @@
     </Compile>
     <Compile Include="View\EditIU.xaml.cs">
       <DependentUpon>EditIU.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\EditMap.xaml.cs">
-      <DependentUpon>EditMap.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
@@ -433,10 +431,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\EditIU.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditMap.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

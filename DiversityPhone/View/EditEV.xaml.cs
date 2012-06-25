@@ -23,24 +23,30 @@ namespace DiversityPhone.View
     {
         private EditEVVM VM { get { return DataContext as EditEVVM; } }
         private EditPageAppBarUpdater<Event> _appbar;
+        private IList<Control> _toStore;
 
         public EditEV()
         {
             InitializeComponent();
 
             _appbar = new EditPageAppBarUpdater<Event>(this.ApplicationBar, VM);
+            this._toStore = new List<Control> { this.LocalityTB };
+            DPControlBackGround.adjustStoreBackgroundColors(_toStore);
         }      
 
         private void LocalityTB_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (VM != null)
+            {
                 VM.LocalityDescription = LocalityTB.Text;
+                DPControlBackGround.setTBBackgroundColor(LocalityTB);
+            }
         }
 
         private void HabitatTB_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (VM != null)
                 VM.HabitatDescription = HabitatTB.Text;
-        }              
+        }
     }
 }

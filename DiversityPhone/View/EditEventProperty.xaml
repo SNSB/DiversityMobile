@@ -33,7 +33,7 @@
         <StackPanel Grid.Row="1">
             <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}" Width="Auto"/>
-            <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
+            <toolkit:ListPicker Name="LP_Type" IsEnabled="{Binding IsEditable}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
@@ -41,7 +41,7 @@
                                 ItemsSource="{Binding Properties.Items}"
                                 SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"
                                 />
-            <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
+            <toolkit:ListPicker Name="LP_Value" IsEnabled="{Binding IsEditable}"
                                 Header="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
