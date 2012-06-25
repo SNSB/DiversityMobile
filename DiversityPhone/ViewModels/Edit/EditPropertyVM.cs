@@ -21,7 +21,12 @@ namespace DiversityPhone.ViewModels
         private IFieldDataService Storage { get; set; }   
         #endregion        
 
-        #region Properties       
+        #region Properties    
+   
+
+        public bool IsNew { get { return _IsNew.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsNew;
+        
 
         public ListSelectionHelper<Property> Properties { get; private set; }
 
@@ -38,19 +43,19 @@ namespace DiversityPhone.ViewModels
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Storage = ioc.Resolve<IFieldDataService>();
 
+            _IsNew = this.ObservableToProperty(ValidModel.Select(m => m.IsNew()), x => x.IsNew, false);
+
             Properties = new ListSelectionHelper<Property>();
             ValidModel                
                 .Subscribe(getProperties.Execute);
-            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as CollectionEventProperty))
-                .Merge(ValidModel.Select(_ => Enumerable.Empty<Property>() as IEnumerable<Property>))
+            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as CollectionEventProperty))                
                 .Select(props => props.ToList() as IList<Property>)
                 .Subscribe(Properties);
 
             Values = new ListSelectionHelper<PropertyName>();
             Properties                
                 .Subscribe(getValues.Execute);
-            getValues.RegisterAsyncFunction(prop => getValuesImpl(prop as Property))
-                .Merge(Properties.Select(_ => new List<PropertyName>() as IList<PropertyName>))
+            getValues.RegisterAsyncFunction(prop => getValuesImpl(prop as Property))                
                 .Subscribe(Values);
 
 
@@ -84,7 +89,7 @@ namespace DiversityPhone.ViewModels
 
         private IList<PropertyName> getValuesImpl(Property p)
         {
-            return Vocabulary.getPropertyNames(p);
+            return Vocabulary.getPropertyNames(p);           
         }
 
         private IObservable<bool> CanSaveObs()
@@ -93,14 +98,14 @@ namespace DiversityPhone.ViewModels
                 .Select(x => x!=null)
                 .StartWith(false);
 
+            var valuesLoaded = getValues.ItemsInflight.Select(items => items == 0).StartWith(false);
+
 
             var valueSelected = Values
                  .Select(x => x != null)
                  .StartWith(false);
 
-            var isnew = ValidModel.Select(s => s.IsNew()).StartWith(true);
-
-            return Extensions.BooleanAnd(propSelected, valueSelected, isnew);
+            return Extensions.BooleanAnd(propSelected, valueSelected, valuesLoaded);
         }         
 
 

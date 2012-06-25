@@ -33,7 +33,7 @@
         <StackPanel Grid.Row="1">
             <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}" Width="Auto"/>
-            <toolkit:ListPicker Name="LP_Type" IsEnabled="{Binding IsEditable}"
+            <toolkit:ListPicker Name="LP_Type" IsEnabled="{Binding IsNew}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
