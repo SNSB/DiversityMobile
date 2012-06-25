@@ -132,8 +132,6 @@ namespace DiversityPhone.Services.BackgroundTasks
             {                
                 throw ex ;
             }
-            
-           
         }
 
 

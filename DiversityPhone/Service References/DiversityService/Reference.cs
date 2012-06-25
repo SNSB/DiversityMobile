@@ -17,6 +17,111 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="UserCredentials", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
+    public partial class UserCredentials : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private string AgentNameField;
+        
+        private string AgentURIField;
+        
+        private string LoginNameField;
+        
+        private string PasswordField;
+        
+        private int ProjectIDField;
+        
+        private string RepositoryField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AgentName {
+            get {
+                return this.AgentNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AgentNameField, value) != true)) {
+                    this.AgentNameField = value;
+                    this.RaisePropertyChanged("AgentName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string AgentURI {
+            get {
+                return this.AgentURIField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.AgentURIField, value) != true)) {
+                    this.AgentURIField = value;
+                    this.RaisePropertyChanged("AgentURI");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string LoginName {
+            get {
+                return this.LoginNameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.LoginNameField, value) != true)) {
+                    this.LoginNameField = value;
+                    this.RaisePropertyChanged("LoginName");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Password {
+            get {
+                return this.PasswordField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
+                    this.PasswordField = value;
+                    this.RaisePropertyChanged("Password");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ProjectID {
+            get {
+                return this.ProjectIDField;
+            }
+            set {
+                if ((this.ProjectIDField.Equals(value) != true)) {
+                    this.ProjectIDField = value;
+                    this.RaisePropertyChanged("ProjectID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Repository {
+            get {
+                return this.RepositoryField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.RepositoryField, value) != true)) {
+                    this.RepositoryField = value;
+                    this.RaisePropertyChanged("Repository");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Term", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
     public partial class Term : object, System.ComponentModel.INotifyPropertyChanged {
         
@@ -135,111 +240,6 @@ namespace DiversityPhone.DiversityService {
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         EventImageTypes = 3,
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="UserCredentials", Namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model")]
-    public partial class UserCredentials : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private string AgentNameField;
-        
-        private string AgentURIField;
-        
-        private string LoginNameField;
-        
-        private string PasswordField;
-        
-        private int ProjectIDField;
-        
-        private string RepositoryField;
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AgentName {
-            get {
-                return this.AgentNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AgentNameField, value) != true)) {
-                    this.AgentNameField = value;
-                    this.RaisePropertyChanged("AgentName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string AgentURI {
-            get {
-                return this.AgentURIField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.AgentURIField, value) != true)) {
-                    this.AgentURIField = value;
-                    this.RaisePropertyChanged("AgentURI");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LoginName {
-            get {
-                return this.LoginNameField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LoginNameField, value) != true)) {
-                    this.LoginNameField = value;
-                    this.RaisePropertyChanged("LoginName");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Password {
-            get {
-                return this.PasswordField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.PasswordField, value) != true)) {
-                    this.PasswordField = value;
-                    this.RaisePropertyChanged("Password");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int ProjectID {
-            get {
-                return this.ProjectIDField;
-            }
-            set {
-                if ((this.ProjectIDField.Equals(value) != true)) {
-                    this.ProjectIDField = value;
-                    this.RaisePropertyChanged("ProjectID");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Repository {
-            get {
-                return this.RepositoryField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.RepositoryField, value) != true)) {
-                    this.RepositoryField = value;
-                    this.RaisePropertyChanged("Repository");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -6896,10 +6896,10 @@ namespace DiversityPhone.DiversityService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="EntityKeyMember", Namespace="http://schemas.datacontract.org/2004/07/System.Data")]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.EventSeries))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserCredentials))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Term>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Term))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.TermList))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserCredentials))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.UserProfile))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Repository>))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(DiversityPhone.DiversityService.Repository))]
@@ -7081,7 +7081,7 @@ namespace DiversityPhone.DiversityService {
     public interface IDiversityService {
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetStandardVocabularyResponse")]
-        System.IAsyncResult BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginGetStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Term> EndGetStandardVocabulary(System.IAsyncResult result);
         
@@ -7157,7 +7157,7 @@ namespace DiversityPhone.DiversityService {
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.PropertyName> EndDownloadPropertyNames(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetXMLStandardVocabulary", ReplyAction="http://tempuri.org/IDiversityService/GetXMLStandardVocabularyResponse")]
-        System.IAsyncResult BeginGetXMLStandardVocabulary(System.AsyncCallback callback, object asyncState);
+        System.IAsyncResult BeginGetXMLStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         string EndGetXMLStandardVocabulary(System.IAsyncResult result);
         
@@ -7769,8 +7769,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<System.ComponentModel.AsyncCompletedEventArgs> CloseCompleted;
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetStandardVocabulary(callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetStandardVocabulary(login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -7779,7 +7779,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         private System.IAsyncResult OnBeginGetStandardVocabulary(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetStandardVocabulary(callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetStandardVocabulary(login, callback, asyncState);
         }
         
         private object[] OnEndGetStandardVocabulary(System.IAsyncResult result) {
@@ -7795,11 +7796,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void GetStandardVocabularyAsync() {
-            this.GetStandardVocabularyAsync(null);
+        public void GetStandardVocabularyAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetStandardVocabularyAsync(login, null);
         }
         
-        public void GetStandardVocabularyAsync(object userState) {
+        public void GetStandardVocabularyAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginGetStandardVocabularyDelegate == null)) {
                 this.onBeginGetStandardVocabularyDelegate = new BeginOperationDelegate(this.OnBeginGetStandardVocabulary);
             }
@@ -7809,7 +7810,8 @@ namespace DiversityPhone.DiversityService {
             if ((this.onGetStandardVocabularyCompletedDelegate == null)) {
                 this.onGetStandardVocabularyCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetStandardVocabularyCompleted);
             }
-            base.InvokeAsync(this.onBeginGetStandardVocabularyDelegate, null, this.onEndGetStandardVocabularyDelegate, this.onGetStandardVocabularyCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetStandardVocabularyDelegate, new object[] {
+                        login}, this.onEndGetStandardVocabularyDelegate, this.onGetStandardVocabularyCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -8480,8 +8482,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetXMLStandardVocabulary(System.AsyncCallback callback, object asyncState) {
-            return base.Channel.BeginGetXMLStandardVocabulary(callback, asyncState);
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginGetXMLStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginGetXMLStandardVocabulary(login, callback, asyncState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -8490,7 +8492,8 @@ namespace DiversityPhone.DiversityService {
         }
         
         private System.IAsyncResult OnBeginGetXMLStandardVocabulary(object[] inValues, System.AsyncCallback callback, object asyncState) {
-            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetXMLStandardVocabulary(callback, asyncState);
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[0]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginGetXMLStandardVocabulary(login, callback, asyncState);
         }
         
         private object[] OnEndGetXMLStandardVocabulary(System.IAsyncResult result) {
@@ -8506,11 +8509,11 @@ namespace DiversityPhone.DiversityService {
             }
         }
         
-        public void GetXMLStandardVocabularyAsync() {
-            this.GetXMLStandardVocabularyAsync(null);
+        public void GetXMLStandardVocabularyAsync(DiversityPhone.DiversityService.UserCredentials login) {
+            this.GetXMLStandardVocabularyAsync(login, null);
         }
         
-        public void GetXMLStandardVocabularyAsync(object userState) {
+        public void GetXMLStandardVocabularyAsync(DiversityPhone.DiversityService.UserCredentials login, object userState) {
             if ((this.onBeginGetXMLStandardVocabularyDelegate == null)) {
                 this.onBeginGetXMLStandardVocabularyDelegate = new BeginOperationDelegate(this.OnBeginGetXMLStandardVocabulary);
             }
@@ -8520,7 +8523,8 @@ namespace DiversityPhone.DiversityService {
             if ((this.onGetXMLStandardVocabularyCompletedDelegate == null)) {
                 this.onGetXMLStandardVocabularyCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnGetXMLStandardVocabularyCompleted);
             }
-            base.InvokeAsync(this.onBeginGetXMLStandardVocabularyDelegate, null, this.onEndGetXMLStandardVocabularyDelegate, this.onGetXMLStandardVocabularyCompletedDelegate, userState);
+            base.InvokeAsync(this.onBeginGetXMLStandardVocabularyDelegate, new object[] {
+                        login}, this.onEndGetXMLStandardVocabularyDelegate, this.onGetXMLStandardVocabularyCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -8783,8 +8787,9 @@ namespace DiversityPhone.DiversityService {
                     base(client) {
             }
             
-            public System.IAsyncResult BeginGetStandardVocabulary(System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[0];
+            public System.IAsyncResult BeginGetStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = login;
                 System.IAsyncResult _result = base.BeginInvoke("GetStandardVocabulary", _args, callback, asyncState);
                 return _result;
             }
@@ -8988,8 +8993,9 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
-            public System.IAsyncResult BeginGetXMLStandardVocabulary(System.AsyncCallback callback, object asyncState) {
-                object[] _args = new object[0];
+            public System.IAsyncResult BeginGetXMLStandardVocabulary(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[1];
+                _args[0] = login;
                 System.IAsyncResult _result = base.BeginInvoke("GetXMLStandardVocabulary", _args, callback, asyncState);
                 return _result;
             }

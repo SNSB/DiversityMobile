@@ -271,7 +271,7 @@ namespace DiversityPhone.ViewModels
                 bool uploadsuccess = args.Result;
                 if (uploadsuccess == true)
                 {
-                    _storage.updateMMOState(actualMMOSync.DiversityCollectionUri);
+                    _storage.updateMMOSuccessfullUpload(actualMMOSync.Uri, actualMMOSync.DiversityCollectionUri, uploadsuccess);
                 }
                 else
                 {

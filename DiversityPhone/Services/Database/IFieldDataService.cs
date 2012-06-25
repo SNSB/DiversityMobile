@@ -62,7 +62,7 @@ using System;
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
         void updateMMOUri(string clientUri, string serverUri);
-        void updateMMOState(string serverUri);
+        void updateMMOSuccessfullUpload(string clientUri,string ServerUri,bool success);
         void deleteMMO(MultimediaObject toDeleteMMO);
         
     }

@@ -10,6 +10,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using DiversityPhone.Model;
 using Funq;
+using System.IO.IsolatedStorage;
+using System.IO;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
@@ -18,11 +21,13 @@ namespace DiversityPhone.Services.BackgroundTasks
         private const string ARGUMENT_KEY = "A";
         private IFieldDataService Storage;
         private IDiversityServiceClient Repository;
+        private IMultiMediaClient MMOSink;
 
         public UploadMultimediaTask(Container ioc)
         {
             Storage = ioc.Resolve<IFieldDataService>();
             Repository = ioc.Resolve<IDiversityServiceClient>();
+            MMOSink = ioc.Resolve<IMultiMediaClient>();
         }
 
 
@@ -54,7 +59,12 @@ namespace DiversityPhone.Services.BackgroundTasks
             var mmo = arg as MultimediaObject;
             if (mmo != null)
             {
-                //TODO
+                var sinkUri = MMOSink.UploadMultiMediaObjectRawData(mmo).First();
+                if (String.IsNullOrWhiteSpace(sinkUri))
+                    throw new Exception("No value returned");
+                Storage.updateMMOUri(mmo.Uri, sinkUri);
+                var success= Repository.InsertMultimediaObject(mmo).First();
+                Storage.updateMMOSuccessfullUpload(mmo.Uri,sinkUri,success);
             }
         }
 

@@ -22,7 +22,6 @@ namespace DiversityPhone.Services
     {
         private MediaService4Client _msc = new MediaService4Client();
         private ISettingsService _settings;
-        public Client.MultimediaObject actualSyncObject;
         
         public MultimediaClient(ISettingsService settings)
         {
@@ -52,7 +51,6 @@ namespace DiversityPhone.Services
                 }
 
             }
-            this.actualSyncObject = mmo;
             UserCredentials cred = new UserCredentials(_settings.getSettings());
             _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, cred.AgentName, DateTime.Now.ToShortDateString(),cred.ProjectID, data);
             return res;

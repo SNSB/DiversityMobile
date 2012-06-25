@@ -1057,7 +1057,7 @@
             }
         }
 
-        public void updateMMOState(string serverUri)
+        public void updateMMOSuccessfullUpload(string clientUri,string serverUri, bool success)
         {
             using (DiversityDataContext ctx = new DiversityDataContext())
             {
@@ -1065,12 +1065,15 @@
                 {
                     var mmo =
                          from mmos in ctx.MultimediaObjects
-                         where mmos.Uri == serverUri
+                         where mmos.Uri == clientUri
                          select mmos;
                     if (mmo.Count() != 1)
                         throw new Exception("Uri not unique or not present");
-                    mmo.First().ModificationState = ModificationState.Unmodified;
-                    ctx.SubmitChanges();
+                    if (success && mmo.First().DiversityCollectionUri.Equals(serverUri))
+                    {
+                        mmo.First().ModificationState = ModificationState.Unmodified;
+                        ctx.SubmitChanges();
+                    }
                 }
                 catch (Exception)
                 {

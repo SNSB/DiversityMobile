@@ -76,6 +76,7 @@ namespace DiversityPhone
 
             IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
             IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
+            IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             IOC.Register<Services.NavigationService>(new Services.NavigationService(IOC.Resolve<IMessageBus>()));
 
             var backg = new BackgroundService(IOC);

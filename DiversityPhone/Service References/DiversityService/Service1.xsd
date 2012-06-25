@@ -14,6 +14,17 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
+  <xs:complexType name="UserCredentials">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AgentName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AgentURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LoginName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
+      <xs:element minOccurs="0" name="Repository" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserCredentials" nillable="true" type="tns:UserCredentials" />
   <xs:complexType name="ArrayOfTerm">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Term" nillable="true" type="tns:Term" />
@@ -40,17 +51,6 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="TermList" nillable="true" type="tns:TermList" />
-  <xs:complexType name="UserCredentials">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AgentName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="AgentURI" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LoginName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
-      <xs:element minOccurs="0" name="Repository" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserCredentials" nillable="true" type="tns:UserCredentials" />
   <xs:complexType name="UserProfile">
     <xs:sequence>
       <xs:element minOccurs="0" name="AgentUri" nillable="true" type="xs:string" />
