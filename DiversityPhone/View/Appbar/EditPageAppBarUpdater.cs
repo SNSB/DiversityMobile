@@ -13,6 +13,7 @@ using DiversityPhone.ViewModels;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DiversityPhone.Model;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -21,6 +22,7 @@ namespace DiversityPhone.View
         IApplicationBar _appbar;
         EditElementPageVMBase<T> _vm;
         ApplicationBarIconButton _save,_edit,_delete;
+        CommandButtonAdapter _to_save, _to_edit, _to_delete;
 
         public EditPageAppBarUpdater(IApplicationBar appbar, EditElementPageVMBase<T> viewmodel )
         {
@@ -36,35 +38,26 @@ namespace DiversityPhone.View
                 Text = "save",
                 IsEnabled = true,
             };
-            _save.Click += (s,args) => _vm.Save.Execute(null);
+            _to_save = new CommandButtonAdapter(_vm.Save, _save);
             _edit = new ApplicationBarIconButton()
             {
                 IconUri = new Uri("/Images/appbar.edit.rest.png",UriKind.Relative),
                 Text = "edit",
                 IsEnabled = true,
             };
-            _edit.Click += (s,args) => _vm.ToggleEditable.Execute(null);
+            _to_edit = new CommandButtonAdapter(_vm.ToggleEditable, _edit);
             _delete = new ApplicationBarIconButton()
             {
                 IconUri = new Uri("/Images/appbar.delete.rest.png",UriKind.Relative),
                 Text = "delete",
                 IsEnabled = true,
             };
-            _delete.Click += (s,args) => _vm.Delete.Execute(null);
-
-            _vm.ToggleEditable
-                .CanExecuteObservable
-                .StartWith(_vm.ToggleEditable.CanExecute(null))
-                .Subscribe(canToggle => _edit.IsEnabled = canToggle);
+            _to_delete = new CommandButtonAdapter(_vm.Delete, _delete);            
 
             _vm.ObservableForProperty(x => x.IsEditable)
                 .Value()
                 .StartWith(_vm.IsEditable)
-                .Subscribe(iseditable => adjustApplicationBar(iseditable));
-
-            _vm.Save.CanExecuteObservable
-                .StartWith(_vm.Save.CanExecute(null))
-                .Subscribe(canSave => _save.IsEnabled = canSave);               
+                .Subscribe(iseditable => adjustApplicationBar(iseditable));                     
         }
 
         private void adjustApplicationBar(bool editable)
