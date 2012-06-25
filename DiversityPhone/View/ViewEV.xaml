@@ -27,10 +27,8 @@
         <controls:Pivot Margin="0" VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
             <controls:PivotItem Header="specimen">
-               
                     <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
-                         ItemsSource="{Binding SpecList}"/>
-               
+                         ItemsSource="{Binding SpecList}" Height="470" />
             </controls:PivotItem>
 
             <!--Pivot item two-->
@@ -40,21 +38,21 @@
                         <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
                                     Content="{Binding Current.Model}"/>
                         <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
-                             ItemsSource="{Binding Properties}"/>
+                             ItemsSource="{Binding Properties}" Height="430"/>
                     </StackPanel>
     
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                
-                    <StackPanel>
-                        <ListBox ItemTemplate="{StaticResource ImageTemplate}"
+
+                <ListBox Height="450">
+                    <ListBox ItemTemplate="{StaticResource ImageTemplate}"
                              ItemsSource="{Binding ImageList}"/>
-                        <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding AudioList}"/>
-                        <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding VideoList}"/>
-                    </StackPanel>
+                </ListBox>
             </controls:PivotItem>
         </controls:Pivot>
         

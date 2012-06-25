@@ -27,20 +27,20 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="units">
                 <ListBox ItemsSource="{Binding UnitList}"
-                         ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+                         ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}" Height="490"/>
             </controls:PivotItem>
 
 
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <StackPanel>
+                <ListBox Height="480">
                     <ListBox ItemTemplate="{StaticResource ImageTemplate}"
                              ItemsSource="{Binding ImageList}"/>                    
                     <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding AudioList}"/>
                     <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding VideoList}"/>
-                </StackPanel>
+                </ListBox>
             </controls:PivotItem>
         </controls:Pivot>
        

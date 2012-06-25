@@ -23,9 +23,7 @@
         </Grid.RowDefinitions>
         <ContentControl Grid.Row="0" ContentTemplate="{StaticResource FieldDataItemTemplate}"
                             Content="{Binding Current}"/>
-
-            <ListBox Grid.Row="1" ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" />
-        
+            <ListBox Grid.Row="1" ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" />        
     </Grid>
     
     

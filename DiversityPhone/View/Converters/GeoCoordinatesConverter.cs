@@ -24,7 +24,7 @@ namespace DiversityPhone.View
             
             if (!(value is double && parameter != null))
             {
-                System.Diagnostics.Debugger.Break();
+                //System.Diagnostics.Debugger.Break();
                 return null;
             }
 

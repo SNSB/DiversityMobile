@@ -28,7 +28,7 @@
             <!--Pivot item one-->
             <controls:PivotItem Header="subunits">
                 <ListBox ItemsSource="{Binding Subunits}"
-                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}"/>
+                 ItemTemplate="{StaticResource IdentificationTwoLevelItemTemplate}" Height="470"/>
             </controls:PivotItem>
 
             <!--Pivot item two-->
@@ -37,20 +37,20 @@
                     <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
                                     Content="{Binding Current.Model}"/>
                     <ListBox ItemsSource="{Binding Analyses}"
-                     ItemTemplate="{StaticResource FieldDataItemTemplate}"/>
+                     ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="470"/>
                 </StackPanel>                
             </controls:PivotItem>
             
             <!--Pivot item three-->
             <controls:PivotItem Header="multimedia">
-                <StackPanel>
+                <ListBox Height="470">
                     <ListBox ItemTemplate="{StaticResource ImageTemplate}"
                              ItemsSource="{Binding ImageList}"/>                    
                     <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding AudioList}"/>
                     <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding VideoList}"/>
-                </StackPanel>
+                </ListBox>
             </controls:PivotItem>
         </controls:Pivot>       
     </StackPanel>
