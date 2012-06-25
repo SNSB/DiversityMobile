@@ -545,17 +545,6 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
-    <None Include="Service References\MapMediaService\configuration91.svcinfo" />
-    <None Include="Service References\MapMediaService\configuration.svcinfo" />
-    <None Include="Service References\MapMediaService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -598,27 +587,39 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.xsd">
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
+    <None Include="Service References\DiversityService\Service11.disco" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
+    <None Include="Service References\DiversityService\Service17.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
+    <None Include="Service References\DiversityService\Service171.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service12.xsd">
+    <None Include="Service References\DiversityService\Service172.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service13.xsd">
+    <None Include="Service References\DiversityService\Service173.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service14.xsd">
+    <None Include="Service References\DiversityService\Service174.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service15.xsd">
+    <None Include="Service References\DiversityService\Service175.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service16.xsd">
+    <None Include="Service References\DiversityService\Service176.xsd">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
+    <None Include="Service References\MapMediaService\configuration91.svcinfo" />
+    <None Include="Service References\MapMediaService\configuration.svcinfo" />
+    <None Include="Service References\MapMediaService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Resource Include="Images\MetroIcons\white\i.png" />
     <Content Include="Images\BlackPoint.png" />
@@ -726,7 +727,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <None Include="Service References\DiversityService\Service1.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">

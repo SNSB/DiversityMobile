@@ -15,7 +15,7 @@ namespace DiversityService
         #region Repository
         #region Download
         [OperationContract]
-        IEnumerable<Term> GetStandardVocabulary();
+        IEnumerable<Term> GetStandardVocabulary(UserCredentials login);
 
         [OperationContract]
         UserProfile GetUserInfo(UserCredentials login);
@@ -69,7 +69,7 @@ namespace DiversityService
         #region Android
         
         [OperationContract]
-        String GetXMLStandardVocabulary();
+        String GetXMLStandardVocabulary(UserCredentials login);
 
         [OperationContract]
         int InsertEventSeriesForAndroid(int SeriesID, String Description);

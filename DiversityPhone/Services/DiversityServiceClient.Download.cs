@@ -184,7 +184,7 @@ namespace DiversityPhone.Services
                    }));
             var res = singleResultObservable(source);
                
-            _svc.GetStandardVocabularyAsync();
+            _svc.GetStandardVocabularyAsync(GetCreds());
             return res;
         }
 

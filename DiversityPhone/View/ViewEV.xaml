@@ -27,29 +27,34 @@
         <controls:Pivot Margin="0" VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
             <controls:PivotItem Header="specimen">
-                <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
+               
+                    <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
                          ItemsSource="{Binding SpecList}"/>
+               
             </controls:PivotItem>
 
             <!--Pivot item two-->
             <controls:PivotItem Header="descriptions" >
-                <StackPanel>
-                    <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
+                
+                    <StackPanel>
+                        <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
                                     Content="{Binding Current.Model}"/>
-                    <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
+                        <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
                              ItemsSource="{Binding Properties}"/>
-                </StackPanel>
+                    </StackPanel>
+    
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <StackPanel>
-                    <ListBox ItemTemplate="{StaticResource ImageTemplate}"
-                             ItemsSource="{Binding ImageList}"/>                    
-                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                
+                    <StackPanel>
+                        <ListBox ItemTemplate="{StaticResource ImageTemplate}"
+                             ItemsSource="{Binding ImageList}"/>
+                        <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding AudioList}"/>
-                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
+                        <ListBox ItemTemplate="{StaticResource MMOTemplate}"
                              ItemsSource="{Binding VideoList}"/>
-                </StackPanel>
+                    </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>
         

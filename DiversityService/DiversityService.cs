@@ -22,11 +22,11 @@ namespace DiversityService
 
         #region Get
 
-        public IEnumerable<Term> GetStandardVocabulary()
+        public IEnumerable<Term> GetStandardVocabulary(UserCredentials login)
         {
 
             IEnumerable<Term> linqTerms;
-            using (var ctx = new DiversityCollectionFunctionsDataContext())
+            using (var ctx = new DiversityCollectionFunctionsDataContext(Diversity.GetConnectionString(login)))
             {
                 var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
                                       select new Term()
@@ -521,9 +521,9 @@ namespace DiversityService
             xmlString = UTF8ByteArrayToString(memoryStream.ToArray());
             return xmlString;
         }
-        public String GetXMLStandardVocabulary()
+        public String GetXMLStandardVocabulary(UserCredentials login)
         {
-            IEnumerable<Term> linqTerms = GetStandardVocabulary();
+            IEnumerable<Term> linqTerms = GetStandardVocabulary(login);
             return Term2XMLSerialization(linqTerms);
         }
         private String UTF8ByteArrayToString(Byte[] characters)

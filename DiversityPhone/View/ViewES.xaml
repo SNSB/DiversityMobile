@@ -15,17 +15,19 @@
     d:DataContext="{x:Null}"
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <ScrollViewer x:Name="LayoutRoot" Background="Transparent" d:DataContext="{d:DesignData /SampleData/ViewESVMSampleData.xaml}">      
+  
+     <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" DataContext="{Binding}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ContentControl Grid.Row="0" ContentTemplate="{StaticResource FieldDataItemTemplate}"
+                            Content="{Binding Current}"/>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" DataContext="{Binding}">
-            <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}"
-                            Content="{Binding Current}"/>            
-            <ListBox ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}"/>     
-        </StackPanel>
-
-    </ScrollViewer>
+            <ListBox Grid.Row="1" ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" />
+        
+    </Grid>
+    
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True">
