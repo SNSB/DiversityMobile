@@ -46,57 +46,90 @@ namespace DiversityPhone.ViewModels.Utility
 
         private CancellationTokenSource search = null;
         
-        public ReactiveCollection<SyncUnitVM> SyncUnits { get; private set; }
+        public ReactiveCollection<ModifiedEventVM> SyncUnits { get; private set; }
+        public ReactiveCollection<MultimediaVM> Multimedia { get; private set; }
 
         public ReactiveCommand UploadUnit { get; private set; }
 
         public ReactiveCommand UploadAll { get; private set; }
 
         private ReactiveAsyncCommand collectModifications = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand collectMultimedia = new ReactiveAsyncCommand();
 
-        public class SyncUnitVM : ReactiveObject
+        public class ModifiedEventVM 
         {
             public EventSeriesVM Series { get; private set; }
 
             public EventVM Event { get; private set; }
 
-            public SyncUnitVM(Event ev, EventSeries series)
+            public ModifiedEventVM(Event ev, EventSeries series)
             {                
                 Event = new EventVM( ev);
                 Series = new EventSeriesVM(series);                
             }
         }
 
-        
+        public class MultimediaVM : MultimediaObjectVM
+        { 
+            public object Image { get; private set; }
+
+            public object Owner { get; private set; }           
+
+            public MultimediaVM(MultimediaObject obj, object owner)
+                :base(obj)
+            {
+                Owner = owner;
+
+                if (obj.MediaType == MediaType.Image)
+                {
+                    Image =  new ImageVM(obj);
+                }
+            }
+        }
 
         public SyncVM(Container ioc)
         {
             Storage = ioc.Resolve<IFieldDataService>();
-            SyncUnits = new ReactiveCollection<SyncUnitVM>();
+            SyncUnits = new ReactiveCollection<ModifiedEventVM>();
             StateObservable
                 .Do(_ => search = new CancellationTokenSource())
                 .Do(_ => SyncUnits.Clear())
                 .Subscribe(collectModifications.Execute);
-            collectModifications.RegisterAsyncObservable(_ => 
+            collectModifications.RegisterAsyncObservable(_ =>
                 {
-                    var res = new ReplaySubject<Event>();
+                    var res = new ReplaySubject<ModifiedEventVM>();
                     new Task(() => collectModificationsImpl(res, search.Token)).Start();
                     return res;
                 })
-                .Subscribe(ev => addModifiedEvent(ev));
+               .Subscribe(ev => SyncUnits.Add(ev));
+            Multimedia = new ReactiveCollection<MultimediaVM>();
+            //Needs to be cleared?
+            this.ObservableForProperty(x => x.CurrentPivot)
+                .Value()
+                .Where(p => p == Pivots.multimedia)
+                //.Take(1)
+                .Subscribe(_ => collectMultimedia.Execute(null));
+            collectMultimedia.RegisterAsyncObservable(_ =>
+                {
+                    var res = new ReplaySubject<MultimediaVM>();
+                    new Task(() => collectMultimediaImpl(res, search.Token)).Start();
+                    return res;
+                })
+                .Subscribe(mvm => Multimedia.Add(mvm));
+
+           
             _IsBusy = this.ObservableToProperty(collectModifications.ItemsInflight.Select(i => i > 0),x => x.IsBusy, false);
 
             var backg = ioc.Resolve<IBackgroundService>();
-            var uploadTask = backg.getTaskObject<UploadSeriesTask>();
-            var uploading = uploadTask
-                                .BusyObservable.Select(x => !x)
-                                .StartWith(false);
-            var collectingModifications = collectModifications
-                .ItemsInflight
-                .Select(items => items > 0)
-                .StartWith(false);
+            var uploadTask = backg.getTaskObject<UploadEventTask>();
+            var multimediaUpload = backg.getTaskObject<UploadMultimediaTask>();
+            var uploading = uploadTask                
+                                .BusyObservable
+                                .BooleanOr(multimediaUpload.BusyObservable)
+                                .Select(x => !x)
+                                .StartWith(false);           
             var canUpload = uploading.Select(x => !x);
-                //.CombineLatest(collectingModifications, (up, coll) => !up && !coll);
+                
             uploadTask.AsyncCompletedNotification
                 .Select(arg => arg as Event)
                 .Where(arg => arg != null)
@@ -108,15 +141,30 @@ namespace DiversityPhone.ViewModels.Utility
                             SyncUnits.Remove(vm);
                     });
 
+            multimediaUpload.AsyncCompletedNotification
+                .Select(arg => arg as MultimediaObject)
+                .Where(arg => arg != null)
+                .Subscribe(mmo =>
+                    {
+                        var vm = Multimedia.Where(v => v.Model == mmo).FirstOrDefault();
+                        if(vm != null)
+                            Multimedia.Remove(vm);
+                    });
+
 
             UploadUnit = new ReactiveCommand(canUpload);
             UploadUnit
-                .Select(unit => unit as SyncUnitVM)
+                .Select(unit => unit as ModifiedEventVM)
                 .Where(unit => unit != null)
-                .Subscribe(unit => backg.startTask<UploadSeriesTask>(unit.Event.Model));
+                .Subscribe(unit => backg.startTask<UploadEventTask>(unit.Event.Model));
+            UploadUnit
+                .Select(unit => unit as MultimediaVM)
+                .Where(unit => unit != null)
+                .Subscribe(unit => backg.startTask<UploadMultimediaTask>(unit.Model));
 
             UploadAll = new ReactiveCommand(canUpload);
             UploadAll
+                .Where(_ => CurrentPivot == Pivots.data)
                 .Select(_ => SyncUnits.FirstOrDefault())
                 .Where(vm => vm != null)
                 .Subscribe(first =>
@@ -128,6 +176,20 @@ namespace DiversityPhone.ViewModels.Utility
 
                         UploadUnit.Execute(first);
                     });
+            Messenger.RegisterMessageSource(
+            UploadAll
+               .Where(_ => CurrentPivot == Pivots.multimedia)
+               .Select(_ => 
+                   new DialogMessage(Messages.DialogType.YesNo, 
+                        DiversityResources.Sync_Dialog_UploadAll_Caption, 
+                        DiversityResources.Sync_Dialog_UploadAll_Text, 
+                        (res) => 
+                        { 
+                            if (res == DialogResult.OKYes) 
+                                uploadAllMultimedia(multimediaUpload); 
+                        }))
+               );
+               
                 
         }
 
@@ -146,34 +208,76 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        private void collectModificationsImpl(ISubject<Event> outputSubject, CancellationToken cancellation)
+        private void collectModificationsImpl(ISubject<ModifiedEventVM> outputSubject, CancellationToken cancellation)
         {
             var events = Storage.getAllEvents();
 
             foreach (var ev in events)
             {
-                if (ev.IsModified())
-                    outputSubject.OnNext(ev);
-                else
+                bool modified = ev.IsModified();
+                if (!modified)
                 {
                     var modifications = Storage.getNewHierarchyToSyncBelow(ev);
                     if (modifications.Specimen.Any()
                         || modifications.Properties.Any()
                         || modifications.IdentificationUnits.Any()
-                        || modifications.IdentificationUnitAnalyses.Any())
-                        outputSubject.OnNext(ev);
-                        
-
+                        || modifications.IdentificationUnitAnalyses.Any())    
+                        modified = true;
                 }
-            }
-            
+                if(modified)
+                {
+                    var series = Storage.getEventSeriesByID(ev.SeriesID);
+
+                    outputSubject.OnNext(new ModifiedEventVM(ev,series));
+                }                    
+            }            
         }
 
-        private void addModifiedEvent(Event ev)
-        {         
-            var series = Storage.getEventSeriesByID(ev.SeriesID);                 
-                    
-            SyncUnits.Add(new SyncUnitVM(ev,series));                
+        private void collectMultimediaImpl(ISubject<MultimediaVM> outputSubject, CancellationToken cancellation)
+        {
+            var mmos = Storage.getMultimediaObjectsForUpload();
+
+            foreach (var mmo in mmos)
+            {
+                if (!cancellation.IsCancellationRequested)
+                {                    
+                    object ownerVM;
+                    switch (mmo.OwnerType)
+                    {                        
+                        case ReferrerType.EventSeries:
+                            ownerVM = new EventSeriesVM(Storage.getEventSeriesByID(mmo.RelatedId));
+                            break;
+                        case ReferrerType.Event:
+                            ownerVM = new EventVM(Storage.getEventByID(mmo.RelatedId));
+                            break;
+                        case ReferrerType.Specimen:
+                            ownerVM = new SpecimenVM(Storage.getSpecimenByID(mmo.RelatedId));
+                            break;
+                        case ReferrerType.IdentificationUnit:
+                            ownerVM = new IdentificationUnitVM(Storage.getIdentificationUnitByID(mmo.RelatedId));
+                            break;
+                        default:
+                            continue;
+                    }
+
+                    outputSubject.OnNext(new MultimediaVM(mmo, ownerVM));
+                }
+            }
+
+        }
+
+        private void uploadAllMultimedia(UploadMultimediaTask task)
+        {            
+            var first = Multimedia.FirstOrDefault();
+            if (first != null)
+            {                
+                task.AsyncCompletedNotification
+                    .Select(unit => Multimedia.Where(v => v.Model != unit).FirstOrDefault())
+                    .TakeWhile(next => next != null)
+                    .Subscribe(UploadUnit.Execute);
+                UploadUnit.Execute(first);
+            }
+
         }
     }
 }

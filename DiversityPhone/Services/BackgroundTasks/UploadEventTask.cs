@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
-    public class UploadSeriesTask : BackgroundTask
+    public class UploadEventTask : BackgroundTask
     {
         private const string UNIT_KEY = "S";
         private const string PROJECTION_KEY = "P";
@@ -30,7 +30,7 @@ namespace DiversityPhone.Services.BackgroundTasks
         IDiversityServiceClient Repo;
         IFieldDataService Storage;
 
-        public UploadSeriesTask(Container ioc)
+        public UploadEventTask(Container ioc)
         {
             Repo = ioc.Resolve<IDiversityServiceClient>();
             Storage = ioc.Resolve<IFieldDataService>();

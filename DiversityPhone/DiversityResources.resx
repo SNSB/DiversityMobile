@@ -189,6 +189,12 @@
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>
   </data>
+  <data name="Sync_Dialog_UploadAll_Caption" xml:space="preserve">
+    <value>upload all</value>
+  </data>
+  <data name="Sync_Dialog_UploadAll_Text" xml:space="preserve">
+    <value>Do you want to upload all new Multimedia? Only do this if the Phone is charging and connected via Wifi.</value>
+  </data>
   <data name="Sync_Header_Data" xml:space="preserve">
     <value>data</value>
   </data>

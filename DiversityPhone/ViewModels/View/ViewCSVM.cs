@@ -79,21 +79,21 @@ namespace DiversityPhone.ViewModels
                 .RegisterAsyncAction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>));
 
             ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Image).Select(im => new ImageVM(im)))
-             .Do(_ => ImageList.Clear())
+             .Do(_ => {if(ImageList != null) ImageList.Clear();})
              .SelectMany(images => images)
              .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
              .CreateCollection();
             ValidModel.Subscribe(getImages.Execute);
 
             AudioList = getAudioFiles.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
-                .Do(_ => AudioList.Clear())
+                .Do(_ => { if (AudioList != null) AudioList.Clear(); })
                 .SelectMany(audioFiles => audioFiles)
                 .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
                 .CreateCollection();
             ValidModel.Subscribe(getAudioFiles.Execute);
 
             VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
-               .Do(_ => VideoList.Clear())
+               .Do(_ => { if (VideoList != null) VideoList.Clear(); })
                .SelectMany(videoFiles => videoFiles)
                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
                .CreateCollection();

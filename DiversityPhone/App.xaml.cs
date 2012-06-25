@@ -81,7 +81,8 @@ namespace DiversityPhone
             var backg = new BackgroundService(IOC);
             backg.registerTask(new DownloadTaxonListTask(IOC));
             backg.registerTask(new RefreshVocabularyTask(IOC));
-            backg.registerTask(new UploadSeriesTask(IOC));
+            backg.registerTask(new UploadEventTask(IOC));
+            backg.registerTask(new UploadMultimediaTask(IOC));
 
             IOC.Register<IBackgroundService>(backg);           
 
