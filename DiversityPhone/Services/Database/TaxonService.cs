@@ -169,25 +169,46 @@ namespace DiversityPhone.Services
 
         private IList<TaxonName> getTaxonNames(int tableID, string query)
         {
-            var queryWords =     from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                                 orderby word.Length descending
-                                 select word;
+            
+            var queryWords = from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                             select word;
 
             var allTaxa = from tn in (new TaxonDataContext(tableID).TaxonNames)                    
                     select tn;
-
+            
             if (queryWords.Any())
             {
-                var q = from tn in allTaxa
-                    where tn.TaxonNameCache.Contains(queryWords.First())
+                var genus = from tn in allTaxa
+                    where tn.GenusOrSupragenic.Contains(queryWords.First())
                     select tn;
-                var completeQ = from tn in q.AsEnumerable()
-                                where queryWords.Skip(1).All(word => tn.TaxonNameCache.Contains(word))
-                                select tn;
-                return completeQ.Take(10).ToList();
+  
+                if (queryWords.Count()>1)
+                {
+                    var species = from gen in genus
+                                  where gen.SpeciesEpithet.Contains(queryWords.Skip(1).First())
+                                  select gen;
+                    var completeQ = from spec in species.AsEnumerable()
+                                    where queryWords.Skip(2).All(word => spec.TaxonNameCache.Contains(word))
+                                    orderby spec.GenusOrSupragenic, spec.SpeciesEpithet
+                                    select spec;
+                    if (completeQ.Count() > 0)
+                        return completeQ.Take(20).ToList();
+                    else
+                        return new List<TaxonName>();
+                }
+                else
+                {
+                    var completeQ = from gen in genus.AsEnumerable()
+                                    orderby gen.GenusOrSupragenic, gen.SpeciesEpithet
+                                    select gen;
+                    if (completeQ.Count() > 0)
+                        return completeQ.Take(20).ToList();
+                    else
+                        return new List<TaxonName>();
+                }
             }
             else
-                return allTaxa.Take(10).ToList();         
+                return allTaxa.Take(20).ToList();         
         }
 
         private int getTaxonTableIDForGroup(string taxonGroup)
