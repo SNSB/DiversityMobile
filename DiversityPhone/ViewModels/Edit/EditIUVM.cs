@@ -192,7 +192,12 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(
                 Save                
                 .Select(_ => TaxonomicGroup.SelectedItem),
-                MessageContracts.USE); 
+                MessageContracts.USE);
+
+            Messenger.RegisterMessageSource(
+                Save
+                .Select(_ => RelationshipType.SelectedItem),
+                MessageContracts.USE);
         }       
 
         protected override IdentificationUnit ModelFromState(PageState state)
