@@ -71,7 +71,7 @@ using System.Reactive.Disposables;
             Properties = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))
                 .Do(_ => Properties.Clear())
                 .SelectMany(props => props)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.PropertyID.ToString()).ToNavigation(Page.ViewCS,ReferrerType.Event, Current.Model.EventID.ToString()))
+                .Do(vm => vm.SelectObservable.Select(v => v.Model.PropertyID.ToString()).ToNavigation(Page.EditEventProperty,ReferrerType.Event, Current.Model.EventID.ToString()))
                 .CreateCollection();
             ValidModel
                 .Subscribe(getProperties.Execute);
