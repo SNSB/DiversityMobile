@@ -69,6 +69,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
+                            HorizontalAlignment="Left"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"
                             Content="{Binding}"/>
 
@@ -89,6 +90,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
+                            HorizontalAlignment="Left"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"
                             Content="{Binding}"/>            
 
