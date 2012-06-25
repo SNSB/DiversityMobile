@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using Funq;
+using DiversityPhone.Messages;
 
 
 
@@ -111,6 +112,11 @@ namespace DiversityPhone.ViewModels
                 .Where(custom => !custom)
                 .Select(_ => String.Empty)
                 .BindTo(this, x => x.CustomResult);
+
+            Messenger.RegisterMessageSource(
+              Save
+              .Select(_ => Analyses.SelectedItem),
+              MessageContracts.USE);
         }
 
         protected override IObservable<bool> CanSave()

@@ -19,6 +19,8 @@ namespace DiversityPhone.Services
         {
             _inner.Add(msngr.Listen<Term>(MessageContracts.USE)
                         .Subscribe(term => updateLastUsed(term)));
+            _inner.Add(msngr.Listen<Analysis>(MessageContracts.USE)
+                       .Subscribe(analysis => updateLastUsed(analysis)));
         }
 
 
@@ -36,6 +38,7 @@ namespace DiversityPhone.Services
                 from an in ctx.Analyses
                 join atg in ctx.AnalysisTaxonomicGroups on an.AnalysisID equals atg.AnalysisID
                 where atg.TaxonomicGroup == taxonomicGroup
+                orderby an.LastUsed descending
                 select an);
         }
 
@@ -144,6 +147,29 @@ namespace DiversityPhone.Services
                 ctx.SubmitChanges();
             });
         }
+
+        public void updateLastUsed(Analysis analysis)
+        {
+            if (analysis == null)
+            {
+               
+                        
+            #if DEBUG
+                            throw new ArgumentNullException("term");
+            #else
+                            return;
+            #endif
+            //TODO Log
+            }
+
+            withDataContext(ctx =>
+            {
+                ctx.Analyses.Attach(analysis);
+                analysis.LastUsed = DateTime.Now;
+                ctx.SubmitChanges();
+            });
+        }
+
 
         #endregion
 

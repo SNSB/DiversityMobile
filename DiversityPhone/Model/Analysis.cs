@@ -13,18 +13,22 @@ using System.Data.Linq;
 using System.Linq;
 using DiversityPhone.Services;
 using System.Text;
+using Microsoft.Phone.Data.Linq.Mapping;
 
 
 namespace DiversityPhone.Model
 {
     [Table]
+    [Index(Columns = "LastUsed", IsUnique = false, Name = "term_lastusage")]
     public class Analysis
     {
         //Read-Only
 
+        public static readonly DateTime DefaultLastUsed = new DateTime(2009, 01, 01); // DateTime.MinValue creates an overflow on insert.
+
         public Analysis()
         {
-            //LogUpdatedWhen = DateTime.Now;
+            this.LastUsed = DefaultLastUsed;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -38,6 +42,10 @@ namespace DiversityPhone.Model
 
         [Column]
         public String MeasurementUnit { get; set; }
+
+
+        [Column]
+        public DateTime LastUsed { get; set; }
 
         public String TextAndUnit
         {
