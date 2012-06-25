@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
+using System.Linq;
 using System;
 
 namespace DiversityPhone.ViewModels
@@ -120,7 +121,18 @@ namespace DiversityPhone.ViewModels
         public void OnNext(IList<T> value)
         {
             UpdatingItems = true;
-            Items = value;
+            var emptySelection = (value != null && !value.Any()) || (value == null);
+
+            try
+            {
+                Items = value;
+            }
+            catch (InvalidOperationException)
+            {
+                if (!emptySelection)
+                    throw;
+            }
+
             correctSelectedIndex(value, SelectedItem);
             _ItemsSubject.OnNext(value);
             UpdatingItems = false;
