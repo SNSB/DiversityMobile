@@ -12,6 +12,7 @@ using System.Data.Linq.Mapping;
 using System.Data.Linq;
 using System.Linq;
 using DiversityPhone.Services;
+using System.Text;
 
 
 namespace DiversityPhone.Model
@@ -38,9 +39,18 @@ namespace DiversityPhone.Model
         [Column]
         public String MeasurementUnit { get; set; }
 
-        //Necessary?
-        //[Column]
-        //public DateTime LogUpdatedWhen { get; set; }
+        public String TextAndUnit
+        {
+            get
+            {
+                StringBuilder sb = new StringBuilder(DisplayText);
+                if (!String.IsNullOrWhiteSpace(MeasurementUnit))
+                {
+                    sb.Append(" in ").Append(MeasurementUnit);
+                }
+                return sb.ToString();
+            }
+        }
 
 
         public static IQueryOperations<Analysis> Operations

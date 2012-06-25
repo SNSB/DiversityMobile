@@ -139,6 +139,10 @@
         <TextBlock Text="{Binding DisplayText}"/>
     </DataTemplate>
 
+    <DataTemplate x:Key="TextAndUnitItemTemplate">
+        <TextBlock Text="{Binding TextAndUnit}"/>
+    </DataTemplate>
+    
     <DataTemplate x:Key="TaxonListItemTemplate">
         
         <Grid>

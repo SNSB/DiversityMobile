@@ -34,8 +34,8 @@
                                 IsEnabled="{Binding IsEditable}"                                
                                 ItemsSource="{Binding Analyses.Items}"
 								SelectedIndex="{Binding Analyses.SelectedIndex, Mode=TwoWay}"
-                                ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                ItemTemplate="{StaticResource TextAndUnitItemTemplate}"
+                                FullModeItemTemplate="{StaticResource TextAndUnitItemTemplate}"
                                 />
 
             <toolkit:ListPicker Header="Result"                                 

@@ -125,13 +125,17 @@ namespace DiversityPhone.Services
         {
             if (term == null)
             {
-#if DEBUG
-                throw new ArgumentNullException("term");
-#else
+                //e.g. Relationship when ToplevelIU is saved
                 return;
-#endif
-                //TODO Log
             }
+//            {
+//#if DEBUG
+//                throw new ArgumentNullException("term");
+//#else
+//                return;
+//#endif
+                //TODO Log
+            //}
 
             withDataContext(ctx =>
             {
