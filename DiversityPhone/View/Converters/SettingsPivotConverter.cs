@@ -19,18 +19,18 @@ namespace DiversityPhone.View
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is SettingsVM.SetupVM.Pivots) && targetType == typeof(int)))
+            if (!((value is SetupVM.Pivots) && targetType == typeof(int)))
                 throw new NotSupportedException();
 
 
-            var v = (SettingsVM.SetupVM.Pivots)value;
+            var v = (SetupVM.Pivots)value;
             switch (v)
             {
-                case SettingsVM.SetupVM.Pivots.Login:
+                case SetupVM.Pivots.Login:
                     return 0;
-                case SettingsVM.SetupVM.Pivots.Repository:
+                case SetupVM.Pivots.Repository:
                     return 1;
-                case SettingsVM.SetupVM.Pivots.Projects:
+                case SetupVM.Pivots.Projects:
                     return 2;
                 default:
                     return 0;
@@ -41,7 +41,7 @@ namespace DiversityPhone.View
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is int) && targetType == typeof(SettingsVM.SetupVM.Pivots)))
+            if (!((value is int) && targetType == typeof(SetupVM.Pivots)))
                 throw new NotSupportedException();
 
 
@@ -49,13 +49,13 @@ namespace DiversityPhone.View
             switch (v)
             {
                 case 0:
-                    return SettingsVM.SetupVM.Pivots.Login;
+                    return SetupVM.Pivots.Login;
                 case 1:
-                    return SettingsVM.SetupVM.Pivots.Repository;
+                    return SetupVM.Pivots.Repository;
                 case 2:
-                    return SettingsVM.SetupVM.Pivots.Projects; 
+                    return SetupVM.Pivots.Projects; 
                 default:
-                    return SettingsVM.SetupVM.Pivots.Login;
+                    return SetupVM.Pivots.Login;
             }  
         }
     }

@@ -100,9 +100,7 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
         public ReactiveCommand Save { get; private set; }
-        #endregion
-
-        public IObservable<AppSettings> Result { get; private set; }
+        #endregion        
 
         #region Async Operations
         ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
@@ -165,9 +163,12 @@ namespace DiversityPhone.ViewModels.Utility
             RefreshVocabulary
                 .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
 
+            _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable, x => x.IsBusy);
+
             _BusyMessage = this.ObservableToProperty(
                 refreshVocabularyTask.AsyncProgressMessages, x => x.BusyMessage);
 
+            
 
             clearDatabase.RegisterAsyncAction(_ =>
             {
@@ -216,7 +217,8 @@ namespace DiversityPhone.ViewModels.Utility
             _GettingRepositories = this.ObservableToProperty(
                 getRepositories
                 .ItemsInflight
-                .Select(items => items > 0),
+                .Select(items => items > 0)
+                .ObserveOnDispatcher(),
                 x => x.GettingRepositories);
 
             getRepositories                    
@@ -228,9 +230,13 @@ namespace DiversityPhone.ViewModels.Utility
                     .First())
                 .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
                 .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
+                .ObserveOnDispatcher()
                 .Do(repos => 
                 {
-                    if (repos.Count > 1) { CurrentPivot = Pivots.Repository; }
+                    if (repos.Count > 1) 
+                    {                        
+                        CurrentPivot = Pivots.Repository; 
+                    }
                 })
                 .Subscribe(Databases);                
 
@@ -238,7 +244,8 @@ namespace DiversityPhone.ViewModels.Utility
             _GettingProjects = this.ObservableToProperty(
                 getProjects
                 .ItemsInflight
-                .Select(items => items > 0),
+                .Select(items => items > 0)
+                .ObserveOnDispatcher(),
                 x => x.GettingProjects);
                 
             getProjects
@@ -249,6 +256,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .First())                     
                 .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
                 .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
+                .ObserveOnDispatcher()
                 .Do(projects =>
                 {
                     if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
@@ -264,12 +272,17 @@ namespace DiversityPhone.ViewModels.Utility
                         .OnServiceUnavailable(() => { notifySvcUnavailable(); return null;})
                         .First()),
                     _ => { }, null
-                );          
-
-            Result = settingsValid()
-                .Select(valid => (valid) ? createSettings() : null);
+                );            
             #endregion
 
+
+            Save = new ReactiveCommand(settingsValid().ObserveOnDispatcher());
+
+            Save
+                .Select(_ => createSettings())
+                .Merge(Observable.Return(Settings.getSettings()).Where(settings => settings != null)) // just refresh
+                .Do(res => Settings.saveSettings(res))
+                .Subscribe(RefreshVocabulary.Execute);
         }
 
         private void notifySvcUnavailable()

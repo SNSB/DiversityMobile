@@ -11,6 +11,9 @@ using DiversityPhone.Services.BackgroundTasks;
 using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System;
+using DiversityPhone.ViewModels;
+using DiversityPhone.ViewModels.Maps;
+using DiversityPhone.ViewModels.Utility;
 
 
 namespace DiversityPhone
@@ -24,9 +27,10 @@ namespace DiversityPhone
         
         private static BackgroundService BackgroundTasks = new BackgroundService();
         private static IMessageBus Messenger = RxApp.MessageBus;
-        private static Services.NavigationService NavSvc = new Services.NavigationService(Messenger);
-        private static ISettingsService Settings = new SettingsService(Messenger);
+        private static Services.NavigationService NavSvc;
+        private static ISettingsService Settings;
         private static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
+        public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
         
         
         /// <summary>
@@ -41,8 +45,10 @@ namespace DiversityPhone
         public App()
         {            
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;                     
+            UnhandledException += Application_UnhandledException;
 
+            Settings = new SettingsService(Messenger);
+            NavSvc = new Services.NavigationService(Messenger);
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -74,11 +80,67 @@ namespace DiversityPhone
             
         }
 
+        private static void registerViewModels()
+        {
+
+
+
+            #region ViewModel Factories
+            IOC.Register<HomeVM>(new HomeVM(
+                IOC.Resolve<IMessageBus>(),
+                IOC.Resolve<IFieldDataService>(),
+                IOC.Resolve<IDiversityServiceClient>(),
+                IOC.Resolve<ISettingsService>()
+                ));
+
+            IOC.Register<EditESVM>(c => new EditESVM(c.Resolve<ISettingsService>()));
+
+            IOC.Register<ViewESVM>(container => new ViewESVM());
+            IOC.Register<EditEVVM>(c => new EditEVVM(c));
+
+
+            IOC.Register<ViewEVVM>(c => new ViewEVVM());
+
+            IOC.Register<ViewCSVM>(c => new ViewCSVM(c));
+            IOC.Register<EditCSVM>(c => new EditCSVM());
+            IOC.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
+            IOC.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
+            IOC.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
+            IOC.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            IOC.Register<ViewMapESVM>(c => new ViewMapESVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            IOC.Register<ViewMapEVVM>(c => new ViewMapEVVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            IOC.Register<ViewMapIUVM>(c => new ViewMapIUVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            IOC.Register<EditIUVM>(c => new EditIUVM(c));
+            IOC.Register<ViewIUVM>(c => new ViewIUVM(c));
+            IOC.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));
+            IOC.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
+            IOC.Register<SelectNewMMOVM>(c => new SelectNewMMOVM());
+            IOC.Register<NewImageVM>(c => new NewImageVM());
+            IOC.Register<NewAudioVM>(c => new NewAudioVM());
+            IOC.Register<NewVideoVM>(c => new NewVideoVM());
+            IOC.Register<ViewImageVM>(c => new ViewImageVM());
+            IOC.Register<ViewAudioVM>(c => new ViewAudioVM());
+            IOC.Register<ViewVideoVM>(c => new ViewVideoVM());
+            IOC.Register<EditPropertyVM>(c => new EditPropertyVM(c));
+
+            IOC.Register<TaxonManagementVM>(c => new TaxonManagementVM(c));
+
+            IOC.Register<SettingsVM>(c => new SettingsVM(c));
+
+            IOC.Register<SyncVM>(c => new SyncVM(c));
+
+            IOC.Register<SetupVM>(c => new SetupVM(c));
+            #endregion
+            
+        }
+
         public static void Initialize()
         {
 
             IOC = new Container();
             IOC.DefaultReuse = ReuseScope.None;
+
+            
 
             IOC.Register<IMessageBus>(Messenger);
             IOC.Register<ISettingsService>(Settings);
@@ -105,6 +167,8 @@ namespace DiversityPhone
             BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));
 
             IOC.Register<IBackgroundService>(BackgroundTasks);
+
+            registerViewModels();
 
             var settings = Settings.getSettings();
 

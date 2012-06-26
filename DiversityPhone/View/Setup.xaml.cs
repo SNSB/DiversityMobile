@@ -20,6 +20,7 @@ namespace DiversityPhone.View
     {
         private SetupVM VM { get { return DataContext as SetupVM; } }
         private CommandButtonAdapter _save;
+        private ProgressBinding<SetupVM> progress;
 
         public Setup()
         {
@@ -30,6 +31,8 @@ namespace DiversityPhone.View
         {
             while (this.NavigationService.BackStack.Any())
                 this.NavigationService.RemoveBackEntry();
+            if (progress == null)
+                progress = new ProgressBinding<SetupVM>(VM, x => x.IsBusy);
 
             if (_save == null)
                 _save = new CommandButtonAdapter(VM.Save, ApplicationBar.Buttons[0] as IApplicationBarIconButton);

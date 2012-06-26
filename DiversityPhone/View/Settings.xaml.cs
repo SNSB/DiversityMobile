@@ -94,7 +94,7 @@ namespace DiversityPhone.View
                             showButtons(canreset);
                         });
 
-                    progress = new ProgressBinding<SettingsVM>(VM, x => x.IsBusy);                   
+                                   
                 }
             }
 
@@ -127,15 +127,6 @@ namespace DiversityPhone.View
                     ApplicationBar.Buttons.Add(saveBtn);
                 }
             }
-        }
-
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (VM != null)
-            {
-                e.Cancel = true;
-                VM.NavigateBack.Execute(null);
-            }
-        }
+        }       
     }
 }

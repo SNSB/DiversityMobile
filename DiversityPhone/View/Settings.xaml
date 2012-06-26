@@ -19,10 +19,8 @@
     DataContext="{Binding Settings, Source={StaticResource Locator}}"
     IsTabStop="True"
     Loaded="PhoneApplicationPage_Loaded"
-    BackKeyPress="PhoneApplicationPage_BackKeyPress">
-    <phone:PhoneApplicationPage.Resources>
-        <vw:SettingsPivotConverter x:Key="PivotConverter"/>
-    </phone:PhoneApplicationPage.Resources>
+    >
+    
     
 
     <!--LayoutRoot is the root grid where all page content is placed-->
