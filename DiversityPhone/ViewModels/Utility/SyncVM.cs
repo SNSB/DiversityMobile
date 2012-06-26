@@ -164,17 +164,14 @@ namespace DiversityPhone.ViewModels.Utility
 
             UploadAll = new ReactiveCommand(canUpload);
             UploadAll
-                .Where(_ => CurrentPivot == Pivots.data)
-                .Select(_ => SyncUnits.FirstOrDefault())
-                .Where(vm => vm != null)
-                .Subscribe(first =>
+                .Where(_ => CurrentPivot == Pivots.data)                
+                .Subscribe(_ =>
                     {
+                        var syncUnits = new List<ModifiedEventVM>(SyncUnits).ToObservable();
                         uploadTask.AsyncCompletedNotification
-                            .Select(unit => SyncUnits.Where(v => v.Event.Model != unit).FirstOrDefault())
-                            .TakeWhile(next => next != null)
-                            .Subscribe(UploadUnit.Execute);
-
-                        UploadUnit.Execute(first);
+                            .StartWith(new object[]{null})
+                            .Zip(syncUnits, (_2,unit) => unit)                            
+                            .Subscribe(UploadUnit.Execute);                        
                     });
             Messenger.RegisterMessageSource(
             UploadAll
@@ -267,17 +264,13 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
         private void uploadAllMultimedia(UploadMultimediaTask task)
-        {            
-            var first = Multimedia.FirstOrDefault();
-            if (first != null)
-            {                
-                task.AsyncCompletedNotification
-                    .Select(unit => Multimedia.Where(v => v.Model != unit).FirstOrDefault())
-                    .TakeWhile(next => next != null)
-                    .Subscribe(UploadUnit.Execute);
-                UploadUnit.Execute(first);
-            }
-
+        {
+            var multimedia = new List<MultimediaVM>(Multimedia).ToObservable();
+                           
+            task.AsyncCompletedNotification
+                .StartWith(new object[]{null})
+                .Zip(multimedia, (_, multvm) => multvm)                
+                .Subscribe(UploadUnit.Execute);
         }
     }
 }

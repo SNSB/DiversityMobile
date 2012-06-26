@@ -157,15 +157,13 @@ namespace DiversityPhone.ViewModels
             DownloadAll
                 .Subscribe(_ =>
                     {
-                        if (RepoLists.Any())
-                        {
-                            downloadTaxonList
-                                .AsyncCompletedNotification
-                                .TakeWhile(_2 => RepoLists.Any())
-                                .Select(_2 => RepoLists.First())
-                                .Subscribe(Download.Execute);
-                            Download.Execute(RepoLists.First());
-                        }
+                        var repLists = new List<TaxonListVM>(RepoLists).ToObservable();
+                        
+                        downloadTaxonList
+                            .AsyncCompletedNotification
+                            .StartWith(new object[]{null}) // start first download
+                            .Zip(repLists, (_2,listvm) => listvm)
+                            .Subscribe(Download.Execute);                  
                     });
 
 
