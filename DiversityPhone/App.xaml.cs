@@ -20,31 +20,14 @@ namespace DiversityPhone
         private const string STATE_KEY = "StateTracking";
         private const string TASK_KEY = "BackgroundTasks";
 
-        public static Container IOC { get; private set; }
-
-        public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
-        public static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
-        public static Services.NavigationService NavSvc
-        {
-            get
-            {
-                return IOC.Resolve<Services.NavigationService>();
-            }
-        }
-        public static ISettingsService Settings
-        {
-            get
-            {
-                return IOC.Resolve<ISettingsService>();
-            }
-        }
-        public static BackgroundService BackgroundTasks
-        {
-            get
-            {
-                return IOC.Resolve<IBackgroundService>() as BackgroundService;
-            }
-        }
+        public static Container IOC { get; private set; }       
+        
+        private static BackgroundService BackgroundTasks = new BackgroundService();
+        private static IMessageBus Messenger = RxApp.MessageBus;
+        private static Services.NavigationService NavSvc = new Services.NavigationService(Messenger);
+        private static ISettingsService Settings = new SettingsService(Messenger);
+        private static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
+        
         
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -58,34 +41,7 @@ namespace DiversityPhone
         public App()
         {            
             // Global handler for uncaught exceptions. 
-            UnhandledException += Application_UnhandledException;
-
-            IOC = new Container();
-            IOC.DefaultReuse = ReuseScope.None;
-
-            IOC.Register<IMessageBus>(RxApp.MessageBus);
-
-            IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
-
-            IOC.Register<IFieldDataService>(new OfflineStorage(IOC.Resolve<IMessageBus>()));
-            IOC.Register<ITaxonService>(new TaxonService());
-            IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IMapStorageService>(new MapStorageService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<ISettingsService>(new SettingsService(IOC.Resolve<IMessageBus>()));
-
-            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
-            IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
-            IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
-            IOC.Register<Services.NavigationService>(new Services.NavigationService(IOC.Resolve<IMessageBus>()));
-
-            var backg = new BackgroundService(IOC);
-            backg.registerTask(new DownloadTaxonListTask(IOC));
-            backg.registerTask(new RefreshVocabularyTask(IOC));
-            backg.registerTask(new UploadEventTask(IOC));
-            backg.registerTask(new UploadMultimediaTask(IOC));
-
-            IOC.Register<IBackgroundService>(backg);           
+            UnhandledException += Application_UnhandledException;                     
 
 
             // Standard Silverlight initialization
@@ -94,14 +50,7 @@ namespace DiversityPhone
 
             // Phone-specific initialization
             InitializePhoneApplication();
-            var settings = Settings.getSettings();
-
-            if (settings != null && settings.UseGPS == true)
-            {
-                GeoLocation.startWatcher();
-                if (settings.CurrentSeriesID != null)
-                    GeoLocation.setTourEventSeriesID((int)settings.CurrentSeriesID);
-            }
+            
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -124,8 +73,48 @@ namespace DiversityPhone
             }
             
         }
-       
 
+        public static void Initialize()
+        {
+
+            IOC = new Container();
+            IOC.DefaultReuse = ReuseScope.None;
+
+            IOC.Register<IMessageBus>(Messenger);
+            IOC.Register<ISettingsService>(Settings);
+            IOC.Register<Services.NavigationService>(NavSvc);
+
+            IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
+
+            IOC.Register<IFieldDataService>(new OfflineStorage(IOC.Resolve<IMessageBus>()));
+            IOC.Register<ITaxonService>(new TaxonService());
+            IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapStorageService>(new MapStorageService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
+            
+
+            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
+            IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
+            IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
+            
+
+
+            BackgroundTasks.registerTask(new DownloadTaxonListTask(IOC));
+            BackgroundTasks.registerTask(new RefreshVocabularyTask(IOC));
+            BackgroundTasks.registerTask(new UploadEventTask(IOC));
+            BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));
+
+            IOC.Register<IBackgroundService>(BackgroundTasks);
+
+            var settings = Settings.getSettings();
+
+            if (settings != null && settings.UseGPS == true)
+            {
+                GeoLocation.startWatcher();
+                if (settings.CurrentSeriesID != null)
+                    GeoLocation.setTourEventSeriesID((int)settings.CurrentSeriesID);
+            }
+        }
        
 
         // Code to execute when the application is launching (eg, from Start)

@@ -20,7 +20,7 @@ namespace DiversityPhone.Services
 {
     public class BackgroundService :  IBackgroundService
     {
-        IMessageBus Messenger;
+        
 
         Dictionary<string, BackgroundTask> registry;
 
@@ -28,9 +28,8 @@ namespace DiversityPhone.Services
         Queue<BackgroundTaskInvocation> waitingTasks = new Queue<BackgroundTaskInvocation>();
         BackgroundTaskInvocation runningTask;        
 
-        public BackgroundService(Container ioc)
-        {
-            Messenger = ioc.Resolve<IMessageBus>();
+        public BackgroundService()
+        {            
             registry = new Dictionary<string, BackgroundTask>();
         }
         public void registerTask<T>(T task) where T : BackgroundTask

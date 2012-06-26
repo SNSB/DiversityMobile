@@ -80,7 +80,9 @@ namespace DiversityPhone.ViewModels
             _homeVM = _ioc.Resolve<HomeVM>();                        
             #endregion
 
-        }       
+        }
+
+        public SyncVM Sync { get { return _ioc.Resolve<SyncVM>(); } }
 
         public HomeVM Home { get { return _homeVM; } }
 

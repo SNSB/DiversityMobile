@@ -24,7 +24,7 @@ namespace DiversityPhone.View
 
         private ProgressBinding<SettingsVM> progress;
 
-        private ApplicationBarIconButton saveBtn,clearBtn, refreshBtn;
+        private ApplicationBarIconButton saveBtn, clearBtn, refreshBtn;
 
         private bool initialized = false;
 

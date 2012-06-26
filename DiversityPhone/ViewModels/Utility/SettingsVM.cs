@@ -21,22 +21,13 @@ namespace DiversityPhone.ViewModels.Utility
         
         ISettingsService Settings;
         IGeoLocationService GeoLocation;
+        NavigationService Navigation;
+
         
-        public SetupVM Setup { get { return _Setup.Value; } }
-        private ObservableAsPropertyHelper<SetupVM> _Setup;
 
-        public bool IsFirstSetup { get { return _IsFirstSetupHelper.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsFirstSetupHelper;
-        private ISubject<bool> _IsFirstSetup = new Subject<bool>();  
+        
 
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;
-
-        public string BusyMessage { get { return _BusyMessage.Value; } }
-        private ObservableAsPropertyHelper<string> _BusyMessage;
-
-        public ReactiveCommand RefreshVocabulary{get; private set;}
-        public ReactiveCommand NavigateBack { get; private set; }
+        public ReactiveCommand RefreshVocabulary{get; private set;}      
 
 
         private bool _UseGPS;
@@ -52,16 +43,13 @@ namespace DiversityPhone.ViewModels.Utility
                 this.RaiseAndSetIfChanged(x => x.UseGPS,ref _UseGPS, value);
             }
         }             
-        public ReactiveCommand Save { get; private set; }
-        private ISubject<bool> _CanSaveSubject = new Subject<bool>();
+        public ReactiveCommand Save { get; private set; }       
 
-        public ReactiveCommand Reset { get; private set; }               
-        private ISubject<bool> _CanResetSubject = new Subject<bool>();
+        public ReactiveCommand Reset { get; private set; }           
+        
         public ReactiveCommand ManageTaxa { get; private set; }
 
-        public ReactiveCommand UploadData { get; private set; }
-
-        private ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
+        public ReactiveCommand UploadData { get; private set; }       
         
 
         public AppSettings Model { get { return _Model.Value; } }
@@ -72,9 +60,7 @@ namespace DiversityPhone.ViewModels.Utility
         {            
             Settings = ioc.Resolve<ISettingsService>();
             GeoLocation = ioc.Resolve<IGeoLocationService>();
-            var background = ioc.Resolve<IBackgroundService>();
-            var refreshVocabularyTask = background.getTaskObject<RefreshVocabularyTask>();
-            
+            Navigation = ioc.Resolve<NavigationService>();
 
             _Model = this.ObservableToProperty(
                 _ModelSubject   
@@ -84,17 +70,9 @@ namespace DiversityPhone.ViewModels.Utility
             _ModelSubject
                 .Where(x => x != null)
                 .Select(m => m.UseGPS)
-                .BindTo(this, x => x.UseGPS);
+                .BindTo(this, x => x.UseGPS);                      
 
-            _ModelSubject
-                .Select(x => x != null)
-                .StartWith(false)
-                .Subscribe(_CanSaveSubject);
-
-            _IsFirstSetupHelper = this.ObservableToProperty(               
-                _IsFirstSetup, x => x.IsFirstSetup);
-
-            Reset = new ReactiveCommand(_CanResetSubject.StartWith(true));
+            Reset = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 Reset                
                 .Select(_ => new DialogMessage(
@@ -106,110 +84,22 @@ namespace DiversityPhone.ViewModels.Utility
                         if (res == DialogResult.OKYes)
                             OnReset();
                     }
-                    )));
-
-            Observable.Concat(
-                Observable.Return(false),
-                _IsFirstSetup.Select(x => !x),
-                Observable.Never<bool>()
-            )
-            .Delay(TimeSpan.FromMilliseconds(500))
-            .ObserveOnDispatcher() // Work around bug in ReactiveUI
-            .Subscribe(_CanResetSubject);
+                    )));            
              
-            Save = new ReactiveCommand(_CanSaveSubject);
+            Save = new ReactiveCommand();
 
-            RefreshVocabulary = new ReactiveCommand(
-                _IsFirstSetup.Select(x => !x)
-                .StartWith(IsFirstSetup)
-                .CombineLatest(
-                    refreshVocabularyTask.BusyObservable
-                    .StartWith(refreshVocabularyTask.IsBusy),
-                    (notfirstsetup, busy) => notfirstsetup && !busy)
-                );
+            RefreshVocabulary = new ReactiveCommand();
             RefreshVocabulary
-                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
-
-            NavigateBack = new ReactiveCommand();
-            NavigateBack
-                .Subscribe(_ =>
+                .Subscribe(_ => 
                 {
-                    if (IsFirstSetup || IsBusy)
-                        Messenger.SendMessage<DialogMessage>(
-                            new DialogMessage(DialogType.OK,
-                                DiversityResources.Message_SorryHeader,
-                                DiversityResources.Setup_Message_CantGoBack_Body));
-                    else
-                        Messenger.SendMessage(Page.Previous);
-                });
-                
-
-            _IsBusy = this.ObservableToProperty(
-                refreshVocabularyTask
-                .BusyObservable, x => x.IsBusy);
-
-            _BusyMessage = this.ObservableToProperty(
-                refreshVocabularyTask.AsyncProgressMessages, x => x.BusyMessage);
-
-            _IsFirstSetup
-                .Where(setup => setup)
-                .Subscribe(_ => clearDatabase.Execute(null));
-
-            _Setup = this.ObservableToProperty( 
-                _IsFirstSetup 
-                .Where(setup => setup)
-                .Take(1)
-                .Select(setup => new SetupVM(ioc)),
-                x => x.Setup);
-            _Setup
-                .CombineLatest(_IsFirstSetup, (setup, _) => setup)
-                .Subscribe(setup => setup.CurrentPivot = SetupVM.Pivots.Login);
-
-            _Setup
-                .SelectMany(s => (s != null) ? s.Result : Observable.Never<AppSettings>())                
-                .Subscribe(cfg => _ModelSubject.OnNext(cfg));
-
-
-            clearDatabase.RegisterAsyncAction(_ =>
-                {
-                    var taxa = ioc.Resolve<ITaxonService>();
-                    var vocabulary = ioc.Resolve<IVocabularyService>();
-                    var storage = ioc.Resolve<IFieldDataService>();
-
-                    if (taxa == null || vocabulary == null || storage == null)
-                    {
-#if DEBUG
-                        throw new ArgumentNullException("services");
-#else
-                        return;
-#endif
-                    }
-
-                    taxa.clearTaxonLists();
-                    vocabulary.clearVocabulary();
-                    storage.clearDatabase();
-                });
+                    Messenger.SendMessage(Page.Setup);
+                });           
             
                                    
             var onsave =
             Save            
             .Do(_ => saveModel())
-            .Publish();
-
-            onsave
-            .Where(_ => IsFirstSetup)
-            .Do(_ => _IsFirstSetup.OnNext(false))
-            .Do(_ => refreshVocabularyTask //After Voc download, navigate to Taxon Page
-                .AsyncCompletedNotification
-                .Take(1)                
-                .Subscribe(__ => ManageTaxa.Execute(null))
-                )
-            .Subscribe(RefreshVocabulary.Execute);
-
-            Messenger.RegisterMessageSource(
-                onsave
-                .Where(_ => !IsFirstSetup)
-                .Select(_ => Page.Previous));
+            .Publish();        
 
             onsave.Connect();
                
@@ -227,9 +117,7 @@ namespace DiversityPhone.ViewModels.Utility
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
-            storedConfig.Subscribe(_ModelSubject);
-            storedConfig.Select(x => x == null)
-                .Subscribe(_IsFirstSetup);            
+            storedConfig.Subscribe(_ModelSubject);                       
         }
 
        
@@ -251,8 +139,8 @@ namespace DiversityPhone.ViewModels.Utility
         
         private void OnReset()
         {
-            Settings.saveSettings(null);            
-            _IsFirstSetup.OnNext(true);
+            Settings.saveSettings(null);
+            Messenger.SendMessage(Page.Setup);
         }     
     }
 }

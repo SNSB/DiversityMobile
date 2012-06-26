@@ -1,0 +1,79 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="DiversityPhone.View.Setup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True"
+    DataContext="{Binding Setup, Source={StaticResource Locator}}"
+    Loaded="PhoneApplicationPage_Loaded">
+
+    <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        
+        <Grid>
+            <controls:Pivot Title="SETUP"                             
+                            SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
+                <!--Pivot item one-->
+                <controls:PivotItem Header="Login">
+                    <StackPanel>
+                        <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
+                        <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox Text="{Binding Password, Mode=TwoWay}"/>
+                    </StackPanel>
+                </controls:PivotItem>
+
+
+                <controls:PivotItem Header="Repository">
+                    <StackPanel>
+                        <toolkit:ListPicker ItemsSource="{Binding Databases.Items}"
+                                            SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}"
+                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                            FullModeHeader="{Binding Resources.Setup_Header_Repository, Source={StaticResource LocalizedStrings}}"
+                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
+
+
+
+                        <!--Busy Overlay-->
+                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                     Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </controls:PivotItem>
+
+                <controls:PivotItem Header="Project">
+                    <StackPanel>
+                        <toolkit:ListPicker ItemsSource="{Binding Projects.Items}"
+                                            SelectedIndex="{Binding Projects.SelectedIndex, Mode=TwoWay}"
+                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                            FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
+                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
+
+                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                     Visibility="{Binding GettingProjects, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </controls:PivotItem>
+            </controls:Pivot>
+        </Grid>
+
+        <Grid Background="Black" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
+            <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+ 
+   <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" >
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save"/>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>
+
+</phone:PhoneApplicationPage>

@@ -28,51 +28,7 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">                
         <!--Pivot Control-->
-        <Grid Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}}">
-            <controls:Pivot Title="SETUP" 
-                            DataContext="{Binding Setup}"
-                            SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
-                <!--Pivot item one-->
-                <controls:PivotItem Header="Login">
-                    <StackPanel>
-                        <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
-                        <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
-                        <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
-                        <TextBox Text="{Binding Password, Mode=TwoWay}"/>
-                    </StackPanel>
-                </controls:PivotItem>
-
-            
-                <controls:PivotItem Header="Repository">
-                    <StackPanel>
-                        <toolkit:ListPicker ItemsSource="{Binding Databases.Items}"
-                                            SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}"
-                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                            FullModeHeader="{Binding Resources.Setup_Header_Repository, Source={StaticResource LocalizedStrings}}"
-                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
-                                            
-                        
-
-                        <!--Busy Overlay-->                    
-                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                     Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>                    
-                    </StackPanel>
-                </controls:PivotItem>
-
-                <controls:PivotItem Header="Project">
-                    <StackPanel>
-                        <toolkit:ListPicker ItemsSource="{Binding Projects.Items}"
-                                            SelectedIndex="{Binding Projects.SelectedIndex, Mode=TwoWay}"
-                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                            FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
-                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>                       
-
-                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                     Visibility="{Binding GettingProjects, Converter={StaticResource BoolToVis}}"/>
-                    </StackPanel>
-                </controls:PivotItem>       
-            </controls:Pivot>
-        </Grid>
+        
 
         <ScrollViewer Grid.Row="1" Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
             <StackPanel>
@@ -92,9 +48,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <Grid Background="Black" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}">
-            <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>            
-        </Grid>
+       
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>

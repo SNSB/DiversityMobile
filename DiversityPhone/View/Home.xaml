@@ -41,10 +41,7 @@
                 <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
             </StackPanel>
         </ScrollViewer>
-    </Grid>
-    <Grid x:Name="Splash" Background="Black" Visibility="Visible" d:IsHidden="True">
-        <Image Source="/Images/ApplicationIcon.png" Height="200" HorizontalAlignment="Center" VerticalAlignment="Center" />
-    </Grid>
+    </Grid>    
     </Grid>
 
 
