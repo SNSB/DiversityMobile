@@ -34,7 +34,7 @@
                 <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />
 
                 
-                <StackPanel Height="480">
+                <StackPanel Height="510">
                     <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
