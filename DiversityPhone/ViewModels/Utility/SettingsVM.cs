@@ -87,6 +87,11 @@ namespace DiversityPhone.ViewModels.Utility
                     )));            
              
             Save = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                Save
+                .Do(_ => saveModel())
+                .Select(_ => Page.Previous)
+                );
 
             RefreshVocabulary = new ReactiveCommand();
             RefreshVocabulary
@@ -96,12 +101,7 @@ namespace DiversityPhone.ViewModels.Utility
                 });           
             
                                    
-            var onsave =
-            Save            
-            .Do(_ => saveModel())
-            .Publish();        
-
-            onsave.Connect();
+            
                
 
             ManageTaxa = new ReactiveCommand();

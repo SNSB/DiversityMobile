@@ -52,7 +52,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton Text="save" IconUri="/Images/appbar.save.rest.png" Click="Save_Click"/>                
+                <shell:ApplicationBarIconButton Text="save" IconUri="/Images/appbar.save.rest.png"/>                
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

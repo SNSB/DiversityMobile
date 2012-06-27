@@ -168,7 +168,11 @@ namespace DiversityPhone.ViewModels.Utility
             _BusyMessage = this.ObservableToProperty(
                 refreshVocabularyTask.AsyncProgressMessages, x => x.BusyMessage);
 
-            
+            Messenger.RegisterMessageSource(
+            refreshVocabularyTask.AsyncCompletedNotification
+                .Take(1)
+                .Select(_ => Page.Home)
+                );
 
             clearDatabase.RegisterAsyncAction(_ =>
             {

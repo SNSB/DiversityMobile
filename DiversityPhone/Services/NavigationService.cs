@@ -200,6 +200,9 @@ namespace DiversityPhone.Services
                 case Page.EditEventProperty:
                     destination = "/View/EditEventProperty.xaml";
                     break;
+                case Page.Setup:
+                    destination = "/View/Setup.xaml";
+                    break;
 
 #if DEBUG
                 default:
@@ -214,8 +217,10 @@ namespace DiversityPhone.Services
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
                 States.Push(new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer));
 
-                if(!onTheSpotNavigation)
-                    _frame.Navigate(destURI);
+                if (!onTheSpotNavigation)
+                {
+                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
+                }
                 else
                 {
                     //Simulate Navigation (staying on the same Page)

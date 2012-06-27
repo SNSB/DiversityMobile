@@ -15,37 +15,24 @@ using Microsoft.Phone.Shell;
 using System.Reactive.Linq;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
     public partial class Settings : PhoneApplicationPage
     {
-        private SettingsVM VM { get { return DataContext as SettingsVM; } }
-
-        private ProgressBinding<SettingsVM> progress;
+        private SettingsVM VM { get { return DataContext as SettingsVM; } }       
 
         private ApplicationBarIconButton saveBtn, clearBtn, refreshBtn;
+
+        private CommandButtonAdapter toSave, toClear, toRefresh;
 
         private bool initialized = false;
 
         public Settings()
         {
-            InitializeComponent();
-
-            
-        }
-
-        private void Save_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Save.Execute(null);
-        }
-
-        private void Reset_Click(object sender, EventArgs e)
-        {
-            if (VM != null && VM.Reset.CanExecute(null))
-                VM.Reset.Execute(null);
-        }
+            InitializeComponent();            
+        }      
 
         private void ManageTaxa_Click(object sender, RoutedEventArgs e)
         {
@@ -65,68 +52,24 @@ namespace DiversityPhone.View
             {
                 initialized = true;
                 saveBtn = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
+                toSave = new CommandButtonAdapter(VM.Save, saveBtn);
 
                 clearBtn = new ApplicationBarIconButton()
                 {
                     IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
                     Text = "reset",
                 };
-                clearBtn.Click += Reset_Click;
+                ApplicationBar.Buttons.Add(clearBtn);
+                toClear = new CommandButtonAdapter(VM.Reset, clearBtn);
 
                 refreshBtn = new ApplicationBarIconButton()
                 {
                     IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
                     Text = "refresh vocabulary"
                 };
-                refreshBtn.Click += new EventHandler(refreshBtn_Click);
-
-
-                if (VM != null)
-                {
-                    VM.Save.CanExecuteObservable
-                        .StartWith(VM.Save.CanExecute(null))                        
-                        .Subscribe(cansave => saveBtn.IsEnabled = cansave);
-
-                    VM.Reset.CanExecuteObservable
-                        .StartWith(false)//VM.Reset.CanExecute(null))
-                        .Subscribe(canreset =>
-                        {
-                            showButtons(canreset);
-                        });
-
-                                   
-                }
-            }
-
-            
-        }
-
-        void refreshBtn_Click(object sender, EventArgs e)
-        {
-            if (VM != null && VM.RefreshVocabulary.CanExecute(null))
-                VM.RefreshVocabulary.Execute(null);
-        }
-
-        private void showButtons(bool canreset)
-        {
-            if (canreset)
-            {
-                if (ApplicationBar.Buttons.Count != 3)
-                {
-                    ApplicationBar.Buttons.Clear();
-                    ApplicationBar.Buttons.Add(saveBtn);
-                    ApplicationBar.Buttons.Add(refreshBtn);
-                    ApplicationBar.Buttons.Add(clearBtn);
-                }
-            }
-            else
-            {
-                if (ApplicationBar.Buttons.Count != 1)
-                {
-                    ApplicationBar.Buttons.Clear();
-                    ApplicationBar.Buttons.Add(saveBtn);
-                }
-            }
-        }       
+                ApplicationBar.Buttons.Add(refreshBtn);
+                toRefresh = new CommandButtonAdapter(VM.RefreshVocabulary, refreshBtn);              
+            }            
+        }      
     }
 }
