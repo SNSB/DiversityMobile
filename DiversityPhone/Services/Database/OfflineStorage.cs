@@ -864,7 +864,7 @@
                     }
                     IQueryable<IdentificationUnit> clientIUListForSpec =
                         from iu in ctx.IdentificationUnits
-                        where iu.UnitID == spec.CollectionSpecimenID
+                        where iu.SpecimenID== spec.CollectionSpecimenID
                         select iu;
                     foreach (IdentificationUnit iu in clientIUListForSpec)
                     {

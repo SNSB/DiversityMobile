@@ -309,7 +309,7 @@ namespace DiversityService
                 IList<IdentificationUnit> actualLevelIU = new List<IdentificationUnit>();
                 IList<IdentificationUnit> nextLevelIU = new List<IdentificationUnit>();
                 foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
-                    if (iu.RelatedUnitID == null)
+                    if (iu.RelatedUnitID == null || iu.DiversityCollectionRelatedUnitID!=null) //IsTopLevel or RelatedUnit is already in DB
                         actualLevelIU.Add(iu);
 
                 //Start with top Level IU´s
