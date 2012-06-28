@@ -52,7 +52,7 @@ namespace DiversityPhone.Services
 
             }
             UserCredentials cred = new UserCredentials(_settings.getSettings());
-            _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, cred.AgentName, DateTime.Now.ToShortDateString(),cred.ProjectID, data);
+            _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, cred.LoginName, DateTime.Now.ToShortDateString(),cred.ProjectID, data);
             return res;
         }
     }
