@@ -179,13 +179,13 @@ namespace DiversityPhone.Services
             if (queryWords.Any())
             {
                 var genus = from tn in allTaxa
-                    where tn.GenusOrSupragenic.Contains(queryWords.First())
+                    where tn.GenusOrSupragenic.StartsWith(queryWords.First())
                     select tn;
   
                 if (queryWords.Count()>1)
                 {
                     var species = from gen in genus
-                                  where gen.SpeciesEpithet.Contains(queryWords.Skip(1).First())
+                                  where gen.SpeciesEpithet.StartsWith(queryWords.Skip(1).First())
                                   select gen;
                     var completeQ = from spec in species.AsEnumerable()
                                     where queryWords.Skip(2).All(word => spec.TaxonNameCache.Contains(word))
