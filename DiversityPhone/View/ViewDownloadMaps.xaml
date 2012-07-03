@@ -31,11 +31,10 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" VerticalAlignment="Top" Width="456" Text="{Binding SearchString, Mode=TwoWay}" />
-                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />
-
-                
-                <StackPanel Height="510">
-                    <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
+                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />                
+                <StackPanel>
+                    <!--Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" /-->
+                    <ListBox Height="510" Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent" Margin="0,0,0,30">
@@ -53,7 +52,7 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
+                    
 
                 </StackPanel>
                 
