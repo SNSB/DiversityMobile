@@ -165,4 +165,21 @@
                    Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"/>
         </Grid> 
     </DataTemplate>
+
+
+    <DataTemplate x:Key="DownloadMapTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <TextBlock Text="{Binding AvailableMaps}" Tag="{Binding AvailableMaps}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Tap="mapText_Tap"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Button Tag="{Binding AvailableMaps}" Content="Add" Height="72" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="80" FontSize="15" Click="addButton_Click"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
 </ResourceDictionary>
