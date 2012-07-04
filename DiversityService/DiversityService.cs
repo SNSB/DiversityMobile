@@ -472,22 +472,7 @@ namespace DiversityService
         //#endregion
 
         #region utility
-        public IEnumerable<Repository> GetRepositories(UserCredentials login)
-        {
-            
-            using (var ctx = new Diversity(login))
-            {
-                try
-                {                                        
-                    ctx.OpenSharedConnection(); // validate Credentials
-                }
-                catch (Exception)
-                {
-                    return Enumerable.Empty<Repository>();
-                }
-            }          
-
-            return new Repository[]
+        public static readonly Repository[] Repositories = new Repository[]
             {
                 new Repository()
                 { 
@@ -505,6 +490,27 @@ namespace DiversityService
                     Database="DiversityCollection_Monitoring",
                 },
             };
+
+        public IEnumerable<Repository> GetRepositories(UserCredentials login)
+        {
+            List<Repository> result = new List<Repository>();
+
+            foreach (var repo in Repositories)
+            {
+                using (var ctx = new Diversity(login))
+                {
+                    try
+                    {
+                        ctx.OpenSharedConnection(); // validate Credentials
+                        result.Add(repo);
+                    }
+                    catch (Exception)
+                    {                        
+                    }
+                }  
+            }
+
+            return result;
         }
         #endregion
 
