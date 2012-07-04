@@ -482,6 +482,7 @@ namespace DiversityService
 
             foreach (var repo in Repositories)
             {
+                login.Repository = repo.Database;
                 using (var ctx = new Diversity(login))
                 {
                     try
