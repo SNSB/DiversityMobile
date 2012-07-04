@@ -55,7 +55,7 @@ namespace DiversityPhone.View
             _reset = new ApplicationBarIconButton()
             {
                 IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
-                Text = "delete",
+                Text = "refresh",
                 IsEnabled = true,
             };
             _reset.Click += (s, args) => _vm.Reset.Execute(null);

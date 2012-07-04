@@ -581,7 +581,13 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\configuration91.svcinfo" />
+    <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\DiversityService1.wsdl" />
+    <None Include="Service References\DiversityService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <None Include="Service References\DiversityService\Service11.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -721,12 +727,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <None Include="Service References\DiversityService\configuration91.svcinfo" />
-    <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>

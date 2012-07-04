@@ -114,6 +114,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="SyncException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">

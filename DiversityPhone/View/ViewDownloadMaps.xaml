@@ -31,32 +31,31 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
                 <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" VerticalAlignment="Top" Width="456" Text="{Binding SearchString, Mode=TwoWay}" />
-                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />
-
-                <ScrollViewer Name="scrollViewer" Height="410" Width="440">
-                    <StackPanel>
-                        <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Background="Transparent" Margin="0,0,0,30">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="350"/>
-                                            <ColumnDefinition Width="80"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="0">
-                                            <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap" VerticalAlignment="Center" />
-                                        </Grid>
-                                        <Grid Grid.Column="1">
-                                            <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
-                                        </Grid>
+                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />                
+                <StackPanel>
+                    <!--Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" /-->
+                    <ListBox Height="510" Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent" Margin="0,0,0,30">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="350"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid Grid.Column="0">
+                                        <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap" VerticalAlignment="Center" />
                                     </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
+                                    <Grid Grid.Column="1">
+                                        <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
+                                    </Grid>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    
 
-                    </StackPanel>
-                </ScrollViewer>
+                </StackPanel>
+                
             </StackPanel>
         </Grid>
     </Grid>

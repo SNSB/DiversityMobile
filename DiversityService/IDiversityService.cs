@@ -63,28 +63,5 @@ namespace DiversityService
 
         #endregion
 
-
-       
-
-        #region Android
-        
-        [OperationContract]
-        String GetXMLStandardVocabulary(UserCredentials login);
-
-        [OperationContract]
-        int InsertEventSeriesForAndroid(int SeriesID, String Description);
-
-        [OperationContract]
-        int InsertEventSeriesForAndroidVIntES(EventSeries es);
-
-        [OperationContract]
-        DiversityCollection.CollectionEventSeries InsertEventSeriesForAndroidVESES(EventSeries es);
-
-        [OperationContract]
-        EventSeries TestSeriesForAndroid();
-        
-        
-
-        #endregion;
     }   
 }

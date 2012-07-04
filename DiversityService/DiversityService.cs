@@ -238,40 +238,61 @@ namespace DiversityService
             using (var db = new DiversityORM.Diversity(login))
             {
                 #region event
-                if (hierarchy.Event != null) //Event is not synced before-Event is always needed for key or related keys have to be saved and adjusted
+                try
                 {
-                    Event ev = hierarchy.Event;
-                    db.Insert(ev);
-                    result.eventKey.Add(ev.EventID, (int) ev.DiversityCollectionEventID);
-                    foreach (CollectionEventProperty cep in hierarchy.Properties)
+                    if (hierarchy.Event != null) //Event is not synced before-Event is always needed for key or related keys have to be saved and adjusted
                     {
-                        cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
-                    }
-                    foreach (Specimen spec in hierarchy.Specimen)
-                    {
-                        spec.DiversityCollectionSpecimenID = ev.DiversityCollectionEventID;
-                    }
-                    var newLocalisations = PetaPocoProjection.ToLocalisations(ev, login);
-                    foreach (CollectionEventLocalisation loc in newLocalisations)
-                    {
-                        db.Insert(loc);
-                    }
-                    String geoString = null;
-                    try
-                    {
-                        if (ev.Latitude != null && ev.Longitude != null)
+                        Event ev = hierarchy.Event;
+                        try
                         {
-                            geoString = GlobalUtility.GeographySerialzier.SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
-                            this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 8, geoString, login);
-                            if (ev.Altitude != null)
-                                this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
+                            db.Insert(ev);
+                            result.eventKey.Add(ev.EventID, (int)ev.DiversityCollectionEventID);
+                        }
+                        catch (Exception e)
+                        {
+                            throw new SyncException("Event:" + ev.EventID + " " + e.Message);
+                        }
+
+                        foreach (CollectionEventProperty cep in hierarchy.Properties)
+                        {
+                            cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
+                        }
+                        foreach (Specimen spec in hierarchy.Specimen)
+                        {
+                            spec.DiversityCollectionSpecimenID = ev.DiversityCollectionEventID;
+                        }
+                        var newLocalisations = PetaPocoProjection.ToLocalisations(ev, login);
+                        foreach (CollectionEventLocalisation loc in newLocalisations)
+                        {
+                            db.Insert(loc);
+                        }
+                        String geoString = null;
+                        try
+                        {
+                            if (ev.Latitude != null && ev.Longitude != null)
+                            {
+                                geoString = GlobalUtility.GeographySerialzier.SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
+                                this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 8, geoString, login);
+                                if (ev.Altitude != null)
+                                    this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            String s = e.Message;
                         }
                     }
-                    catch (Exception e) {
-                        String s = e.Message;
-                    }
-                }
 
+                }
+                catch (Exception e)
+                {
+                   
+                    if (!(hierarchy.Event != null && hierarchy.Event.DiversityCollectionEventID > Int32.MinValue))
+                    {
+                        throw new Exception("Unable to sync");
+                    }
+
+                }
                 IList<CollectionEventProperty> cepList = hierarchy.Properties;
                 foreach (CollectionEventProperty cep in cepList)
                     db.Insert(cep);
@@ -348,7 +369,7 @@ namespace DiversityService
                             if (iUnit.RelatedUnitID == iu.UnitID)
                             {
                                 iUnit.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
-                                nextLevelIU.Add(iu);
+                                nextLevelIU.Add(iUnit);
                             }
                         }
                     } 
@@ -433,43 +454,7 @@ namespace DiversityService
         }
         #endregion
 
-        //#region GeoData 
-        //public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)
-        //{
-        //    if (geoString == null)
-        //        return;
-        //    //Adjust GeoData
-        //    using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
-        //    {
-        //        String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
-        //        ctx.ExecuteStoreCommand(sql);
-        //    }
-        //}
-
-        //public void InsertGeographyIntoCollectionEventLocalisation(int eventID, int localisationSystemID, String geoString, UserCredentials login)
-        //{
-        //    if (geoString == null)
-        //        return;
-        //    //Adjust GeoData
-        //    using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
-        //    {
-        //        String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where CollectionEventID=" + eventID + " AND LocalisationSystemID=" + localisationSystemID;
-        //        ctx.ExecuteStoreCommand(sql);
-        //    }
-        //}
-
-        //public void InsertGeographyIntoIdentifactionUnitGeoAnalysis(int unitID, int localisationSystemID, String geoString, UserCredentials login)
-        //{
-        //    if (geoString == null)
-        //        return;
-        //    //Adjust GeoData
-        //    using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities(Diversity.GetConnectionString(login)))
-        //    {
-        //        String sql = "Update [dbo].[IdentificationUnitGeoAnalysis] Set Geography=" + geoString + " Where IdentificationUnitID=" + unitID + " AND LocalisationSystemID=" + localisationSystemID;
-        //        ctx.ExecuteStoreCommand(sql);
-        //    }
-        //}
-        //#endregion
+       
 
         #region utility
         public static readonly Repository[] Repositories = new Repository[]
@@ -514,104 +499,6 @@ namespace DiversityService
         }
         #endregion
 
-        #region XML serialization for Android WebService
-        private String Term2XMLSerialization(IEnumerable<Term> linqTerms)
-        {
-            String xmlString = null;
-            TermExportList terms = new TermExportList(linqTerms);
-            XmlSerializer ser = new XmlSerializer(typeof(TermExportList));
-            MemoryStream memoryStream = new MemoryStream();
-            XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-            ser.Serialize(memoryStream, terms);
-            memoryStream = (MemoryStream)xmlTextWriter.BaseStream;
-            xmlString = UTF8ByteArrayToString(memoryStream.ToArray());
-            return xmlString;
-        }
-        public String GetXMLStandardVocabulary(UserCredentials login)
-        {
-            IEnumerable<Term> linqTerms = GetStandardVocabulary(login);
-            return Term2XMLSerialization(linqTerms);
-        }
-        private String UTF8ByteArrayToString(Byte[] characters)
-        {
-            UTF8Encoding encoding = new UTF8Encoding();
-            String constructedString = encoding.GetString(characters);
-            return (constructedString);
-        }
-
-        public int InsertEventSeriesForAndroid(int SeriesID, String Description)
-        {
-            EventSeries es = new EventSeries();
-            es.SeriesID = SeriesID;
-            es.Description = Description;
-            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
-            {
-                {
-                    var newSeries = es.ToEntity();
-                    ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();
-                    return newSeries.SeriesID;
-                }
-
-            }
-        }
-
-        public int InsertEventSeriesForAndroidVIntES(EventSeries es)
-        {
-
-            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
-            {
-                {
-                    var newSeries = es.ToEntity();
-                    ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();
-                    return newSeries.SeriesID;
-                }
-
-            }
-        }
-
-
-        public int InsertEventSeriesForAndroidVIntES(String xmlSeries)
-        {
-            DataContractSerializer ds = new DataContractSerializer(typeof(EventSeries));
-
-            EventSeries es = new EventSeries();
-            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
-            {
-                {
-                    var newSeries = es.ToEntity();
-                    ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();
-                    return newSeries.SeriesID;
-                }
-
-            }
-        }
-
-        public EventSeries TestSeriesForAndroid()
-        {
-            EventSeries es = new EventSeries();
-            es.Description = "TestSeries";
-            return es;
-        }
-
-        public DiversityCollection.CollectionEventSeries InsertEventSeriesForAndroidVESES(EventSeries es)
-        {
-
-            using (var ctx = new DiversityCollection.DiversityCollection_MonitoringEntities())
-            {
-                {
-                    var newSeries = es.ToEntity();
-                    ctx.CollectionEventSeries.AddObject(newSeries);
-                    ctx.SaveChanges();
-                    return newSeries;
-                }
-
-            }
-        }
-
-
-        #endregion       
+        
     }
 }
