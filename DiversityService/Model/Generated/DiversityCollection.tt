@@ -2,7 +2,7 @@
 <#
 	// Settings
     ConnectionStringName = "DiversityService.Properties.Settings.DiversityCollection_TestConnectionString";			// Uses last connection string in config if not specified
-    Namespace = "Diversity";
+    Namespace = "DiversityORM";
     RepoName = "Diversity";
     GenerateOperations = true;
 	GeneratePocos = false;

@@ -22,6 +22,11 @@ namespace DiversityService
             return db.Query<TaxonList>("FROM [TaxonListsForUser](@0) AS [TaxonList]", loginName);
         }
 
+        private static IEnumerable<TaxonList> taxonListsForUser(Diversity db)
+        {
+            return db.Query<TaxonList>("FROM [TaxonListsForUser]() AS [TaxonList]");
+        }
+
         private static IEnumerable<Analysis> analysesForProject(int projectID, Diversity db)
         {
             return db.Query<Analysis>("FROM [DiversityMobile_AnalysisProjectList](@0) AS [Analysis]", projectID);

@@ -26,7 +26,7 @@ namespace DiversityService
         {
 
             IEnumerable<Term> linqTerms;
-            using (var ctx = new DiversityCollectionFunctionsDataContext(Diversity.GetConnectionString(login)))
+            using (var ctx = new DiversityCollectionFunctionsDataContext(Diversity.GetConnectionString(login, Diversity.SERVER_COLLECTION)))
             {
                 var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
                                       select new Term()
@@ -139,13 +139,26 @@ namespace DiversityService
 
         }
 
+        private static readonly UserCredentials TNT_Login = new UserCredentials() { LoginName = "GBOL", Password = "DWB_2012", Repository="DiversityMobile" };
+
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
-            login.Repository = CATALOG_DIVERSITYMOBILE;
-            using (var db = new DiversityORM.Diversity(login))
+            List<Model.TaxonList> result = new List<TaxonList>();
+            using (var db = new DiversityORM.Diversity(login, CATALOG_DIVERSITYMOBILE))
             {
-                return taxonListsForUser(login.LoginName,db).ToList();
+                result.AddRange(
+                    taxonListsForUser(login.LoginName,db)
+                    .Select(l => {l.IsPublicList = false; return l;})
+                    );
             }
+            using (var db = new DiversityORM.Diversity(TNT_Login))
+            {
+                result.AddRange(
+                    taxonListsForUser(db)
+                    .Select(l => { l.IsPublicList = true; return l; })
+                    );
+            }
+            return result;
         }
       
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
@@ -500,6 +513,9 @@ namespace DiversityService
         }
         #endregion
 
-        
+
+
+
+       
     }
 }
