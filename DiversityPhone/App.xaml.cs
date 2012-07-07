@@ -12,6 +12,9 @@ using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System;
 using DiversityPhone.Messages;
+using DiversityPhone.ViewModels;
+using DiversityPhone.ViewModels.Maps;
+using DiversityPhone.ViewModels.Utility;
 
 
 namespace DiversityPhone
@@ -153,7 +156,7 @@ namespace DiversityPhone
             IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
             
 
-            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
+            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));
             IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             

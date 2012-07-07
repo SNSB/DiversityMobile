@@ -161,7 +161,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             RefreshVocabulary = new ReactiveCommand();
             RefreshVocabulary
-                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
+                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(Settings.getSettings().ToCreds()));
 
             _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable, x => x.IsBusy);
 
