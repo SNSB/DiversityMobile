@@ -28,7 +28,8 @@ namespace DiversityPhone.ViewModels
         public enum Pivot
         {
             Local,
-            Repository
+            Personal, 
+            Public
         }
 
         #region Services
@@ -57,9 +58,10 @@ namespace DiversityPhone.ViewModels
 
         private IList<Client.TaxonSelection> _TaxonSelections;
         public ObservableCollection<TaxonListVM> LocalLists { get; private set; }
-        public ObservableCollection<TaxonListVM> RepoLists { get; private set; } 
+        public ObservableCollection<TaxonListVM> PersonalLists { get; private set; }
+        public ObservableCollection<TaxonListVM> PublicLists { get; private set; } 
      
-        private ReactiveAsyncCommand getRepoLists = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getPersonalLists = new ReactiveAsyncCommand();
         private IBackgroundTask downloadTaxonList;
         private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
 
@@ -130,7 +132,7 @@ namespace DiversityPhone.ViewModels
                             deleteTaxonList.Execute(taxonlist);                                                        
                             taxonlist.IsSelected = false;
                             LocalLists.Remove(taxonlist);
-                            RepoLists.Add(taxonlist);
+                            PersonalLists.Add(taxonlist);
                         }
                     });
 
@@ -157,7 +159,7 @@ namespace DiversityPhone.ViewModels
             DownloadAll
                 .Subscribe(_ =>
                     {
-                        var repLists = new List<TaxonListVM>(RepoLists).ToObservable();
+                        var repLists = new List<TaxonListVM>(PersonalLists).ToObservable();
                         
                         downloadTaxonList
                             .AsyncCompletedNotification
@@ -194,7 +196,7 @@ namespace DiversityPhone.ViewModels
 
             localLists
                 .Where(selections => selections == null || !selections.Any())
-                .Subscribe(_ => CurrentPivot = Pivot.Repository);
+                .Subscribe(_ => CurrentPivot = Pivot.Personal);
 
             LocalLists =            
                 localLists              
@@ -202,7 +204,7 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
 
             var repoLists =
-               getRepoLists
+               getPersonalLists
                    .RegisterAsyncFunction(_ => getRepoListsImpl())
                    .CombineLatest(localLists, (repolists, localselections) =>
                        repolists.Where(repolist => !localselections.Any(selection => selection.Model.Table == repolist.Table)) //Filter Lists that have already been downloaded
@@ -211,7 +213,7 @@ namespace DiversityPhone.ViewModels
                    .Publish();
             repoLists.Connect();
 
-            RepoLists = 
+            PersonalLists = 
                 repoLists
                     .CreateCollection();
 
@@ -232,7 +234,7 @@ namespace DiversityPhone.ViewModels
             deleteTaxonList
                 .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));          
 
-            getRepoLists.Execute(null);
+            getPersonalLists.Execute(null);
             
         }
 
@@ -244,7 +246,7 @@ namespace DiversityPhone.ViewModels
                 if (listVM != null)
                 {
                     LocalLists.Remove(listVM);
-                    RepoLists.Add(listVM);
+                    PersonalLists.Add(listVM);
                     listVM.IsDownloading = false;
                     listVM.IsSelected = false;
                 }
@@ -255,10 +257,10 @@ namespace DiversityPhone.ViewModels
         {
             if (list != null)
             {
-                var listVM = RepoLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                var listVM = PersonalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
                 if (listVM != null)
                 {
-                    RepoLists.Remove(listVM);
+                    PersonalLists.Remove(listVM);
                     LocalLists.Add(listVM);
                 }
                 else

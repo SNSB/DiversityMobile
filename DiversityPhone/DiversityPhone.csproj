@@ -155,11 +155,6 @@
     <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonSelection.cs" />
-    <Compile Include="Service References\DiversityService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\MapMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -539,81 +534,10 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonList.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonName.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Term.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\configuration91.svcinfo" />
-    <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
-    <None Include="Service References\DiversityService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\DiversityService\Service11.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="Service References\DiversityService\Service17.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service171.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service172.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service173.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service174.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service175.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service176.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
@@ -785,7 +709,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DiversityService\" />
     <WCFMetadataStorage Include="Service References\MapMediaService\" />
     <WCFMetadataStorage Include="Service References\MediaService4\" />
   </ItemGroup>
@@ -825,6 +748,10 @@
     <ProjectReference Include="..\DiversityPhone.Common\DiversityPhone.Common.csproj">
       <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
       <Name>DiversityPhone.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj">
+      <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>
+      <Name>DiversityPhone.ServiceReference</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>

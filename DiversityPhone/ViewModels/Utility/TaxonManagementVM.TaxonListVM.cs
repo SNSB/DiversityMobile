@@ -56,14 +56,15 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.IsDownloading, ref _IsDownloading, value);
             }
-        }       
+        }   
+        
 
         TaxonList _model;
         public TaxonList Model { get { return _model; } }
 
         public TaxonListVM(TaxonList model)
         {
-            _model = model;            
+            _model = model;           
         }        
     }
 }

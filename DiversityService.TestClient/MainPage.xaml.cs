@@ -28,7 +28,7 @@ namespace DiversityService.TestClient
             { 
                 System.Diagnostics.Debug.WriteLine(args.Result.AgentUri);
             };
-            svc.GetUserInfoAsync();
+            
         }
         
     }

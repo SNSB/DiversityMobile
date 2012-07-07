@@ -275,6 +275,7 @@
   <xs:complexType name="TaxonList">
     <xs:sequence>
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsPublicList" type="xs:boolean" />
       <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
     </xs:sequence>

@@ -1,0 +1,22 @@
+﻿<configuration>
+    <system.serviceModel>
+        <bindings>
+            <basicHttpBinding>
+                <binding name="BasicHttpBinding_IDiversityService"
+                	closeTimeout="00:10:00"
+                    openTimeout="00:03:00"
+                    receiveTimeout="00:10:00"
+                    sendTimeout="00:10:00"
+                    maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
+            </basicHttpBinding>
+        </bindings>
+        <client>
+            <endpoint address="http://localhost:7091/Service1.svc" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_IDiversityService"
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
+        </client>
+    </system.serviceModel>
+</configuration>
