@@ -9,7 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ReactiveUI;
-using DiversityPhone.DiversityService;
+using DiversityPhone.Model;
+
 
 namespace DiversityPhone.ViewModels
 {   
@@ -27,7 +28,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _model.DisplayText;
+                return _model.TableDisplayName;
             }
         }
 

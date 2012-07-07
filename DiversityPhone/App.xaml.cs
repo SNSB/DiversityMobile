@@ -11,6 +11,7 @@ using DiversityPhone.Services.BackgroundTasks;
 using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System;
+using DiversityPhone.Messages;
 
 
 namespace DiversityPhone
@@ -85,8 +86,9 @@ namespace DiversityPhone
             backg.registerTask(new UploadEventTask(IOC));
             backg.registerTask(new UploadMultimediaTask(IOC));
 
-            IOC.Register<IBackgroundService>(backg);           
+            IOC.Register<IBackgroundService>(backg);
 
+            RxApp.MessageBus.SendMessage(new InitMessage());
 
             // Standard Silverlight initialization
             InitializeComponent();

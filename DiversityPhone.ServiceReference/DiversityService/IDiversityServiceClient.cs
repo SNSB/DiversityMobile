@@ -34,9 +34,9 @@ namespace DiversityPhone.Services
         #endregion
 
         #region DB "DiversityMobile" at SNSB 
-        IObservable<IEnumerable<Svc.TaxonList>> GetTaxonLists();
+        IObservable<IEnumerable<TaxonList>> GetTaxonLists();
 
-        IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(Svc.TaxonList list);
+        IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list);
 
         IObservable<IEnumerable<Property>> GetPropertiesForUser(Svc.UserCredentials login);
 

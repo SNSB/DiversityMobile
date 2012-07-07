@@ -17,6 +17,11 @@ namespace DiversityPhone.Model
     [Table]    
     public class TaxonList
     {
+        public TaxonList()
+        {
+            TableID = -1;
+        }
+
         [Column(IsPrimaryKey = true)]
         public int TableID { get; set; }
 
@@ -30,10 +35,10 @@ namespace DiversityPhone.Model
         public string TaxonomicGroup { get; set; }
 
         [Column]
-        public bool IsPublic { get; set; }
+        public bool IsPublicList { get; set; }
 
         [Column]
-        public bool IsSelected;
+        public bool IsSelected { get; set; }
 
 
         public static IEnumerable<int> ValidTableIDs

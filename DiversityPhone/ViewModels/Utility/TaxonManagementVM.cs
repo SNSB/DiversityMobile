@@ -13,8 +13,8 @@ using System.Reactive.Linq;
 using System.Linq;
 using DiversityPhone.Services;
 using System.Collections.Generic;
-using Client = DiversityPhone.Model;
-using DiversityPhone.DiversityService;
+using DiversityPhone.Model;
+using Svc = DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
@@ -55,8 +55,7 @@ namespace DiversityPhone.ViewModels
 
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;       
-
-        private IList<Client.TaxonList> _TaxonSelections;
+        
         public ObservableCollection<TaxonListVM> LocalLists { get; private set; }
         public ObservableCollection<TaxonListVM> PersonalLists { get; private set; }
         public ObservableCollection<TaxonListVM> PublicLists { get; private set; } 
@@ -114,7 +113,7 @@ namespace DiversityPhone.ViewModels
                             if (Taxa.getTaxonTableFreeCount() > 0)
                             {                                
                                 CurrentPivot = Pivot.Local;
-                                
+                                Taxa.addTaxonList(taxonlist.Model);
                                 Background.startTask<DownloadTaxonListTask>(taxonlist.Model);
                             }
                             else
@@ -132,7 +131,10 @@ namespace DiversityPhone.ViewModels
                             deleteTaxonList.Execute(taxonlist);                                                        
                             taxonlist.IsSelected = false;
                             LocalLists.Remove(taxonlist);
-                            PersonalLists.Add(taxonlist);
+                            if (taxonlist.Model.IsPublicList)
+                                PublicLists.Add(taxonlist);
+                            else
+                                PersonalLists.Add(taxonlist);
                         }
                     });
 
@@ -178,13 +180,13 @@ namespace DiversityPhone.ViewModels
                         var currentDownload = downloadTaxonList.CurrentArguments as TaxonList;
                         string downloadingTable = null;
                         if (currentDownload != null)
-                            downloadingTable = currentDownload.Table;
+                            downloadingTable = currentDownload.TableName;
 
 
                         return selections
                             .Select(selection =>
                             {
-                                return new TaxonListVM(new TaxonList() { DisplayText = selection.TableDisplayName, Table = selection.TableName, TaxonomicGroup = selection.TaxonomicGroup })
+                                return new TaxonListVM(selection)
                                 {
                                     IsDownloading = (selection.TableName == downloadingTable),
                                     IsSelected = selection.IsSelected
@@ -207,7 +209,7 @@ namespace DiversityPhone.ViewModels
                getLists
                    .RegisterAsyncFunction(_ => getRepoListsImpl())
                    .CombineLatest(localLists, (repolists, localselections) =>
-                       repolists.Where(repolist => !localselections.Any(selection => selection.Model.Table == repolist.Table)) //Filter Lists that have already been downloaded
+                       repolists.Where(repolist => !localselections.Any(selection => selection.Model.TableName == repolist.TableName)) //Filter Lists that have already been downloaded
                        )
                    .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
                    .Publish();
@@ -215,6 +217,12 @@ namespace DiversityPhone.ViewModels
 
             PersonalLists = 
                 repoLists
+                    .Where(vm => !vm.Model.IsPublicList)
+                    .CreateCollection();
+
+            PublicLists =
+                repoLists
+                    .Where(vm => vm.Model.IsPublicList)
                     .CreateCollection();
 
             downloadTaxonList
@@ -242,11 +250,14 @@ namespace DiversityPhone.ViewModels
         {
             if (taxonList != null)
             {
-                var listVM = LocalLists.Where(vm => vm.Model.Table == taxonList.Table).FirstOrDefault();
+                var listVM = LocalLists.Where(vm => vm.Model.TableName == taxonList.TableName).FirstOrDefault();
                 if (listVM != null)
                 {
                     LocalLists.Remove(listVM);
-                    PersonalLists.Add(listVM);
+                    if (listVM.Model.IsPublicList)
+                        PublicLists.Add(listVM);
+                    else
+                        PersonalLists.Add(listVM);
                     listVM.IsDownloading = false;
                     listVM.IsSelected = false;
                 }
@@ -257,14 +268,15 @@ namespace DiversityPhone.ViewModels
         {
             if (list != null)
             {
-                var listVM = PersonalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                var catalogue = (list.IsPublicList) ? PublicLists : PersonalLists;
+                var listVM = catalogue.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
                 if (listVM != null)
                 {
-                    PersonalLists.Remove(listVM);
+                    catalogue.Remove(listVM);
                     LocalLists.Add(listVM);
                 }
                 else
-                	listVM = LocalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                    listVM = LocalLists.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
                 if (listVM != null)
                 {                    
                     listVM.IsDownloading = true;                    
@@ -276,14 +288,11 @@ namespace DiversityPhone.ViewModels
         {
             if (list != null)
             {
-                var listVM = LocalLists.Where(vm => vm.Model.Table == list.Table).FirstOrDefault();
+                var listVM = LocalLists.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
                 if (listVM != null)
                 {
                     listVM.IsDownloading = false;
-                    listVM.IsSelected = Taxa.getTaxonSelections()
-                                                .Where(sel => sel.TableName == listVM.Model.Table && sel.TaxonomicGroup == listVM.Model.TaxonomicGroup)
-                                                .Select(sel => sel.IsSelected)
-                                                .FirstOrDefault();
+                    listVM.IsSelected = list.IsSelected;
                 }
             }
         }

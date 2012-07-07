@@ -8,9 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using DiversityPhone.Model;
+using DiversityPhone.DiversityService;
 
-namespace DiversityPhone.DiversityService
+namespace DiversityPhone.Model
 {
     public static class UserCredentialsMixin
     {     

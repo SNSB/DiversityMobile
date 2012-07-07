@@ -38,6 +38,8 @@ namespace DiversityPhone.Messages
         
     }
 
+    public class InitMessage { }
+
     public static class MessengerMixin
     {
         public static IDisposable ToNavigation(this IObservable<string> This, Page targetPage, ReferrerType refT = ReferrerType.None, string referrer = null)

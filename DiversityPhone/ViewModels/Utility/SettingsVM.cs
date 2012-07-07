@@ -192,7 +192,8 @@ namespace DiversityPhone.ViewModels.Utility
             
                                    
             var onsave =
-            Save            
+            Save
+            .Where(_ => Model != null)
             .Do(_ => saveModel())
             .Publish();
 

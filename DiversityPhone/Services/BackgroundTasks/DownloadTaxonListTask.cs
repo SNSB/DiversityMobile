@@ -8,19 +8,20 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using DiversityPhone.DiversityService;
 using System.Reactive.Linq;
 using Funq;
 using DiversityPhone.ViewModels;
 using System.Collections.Generic;
 using System.ServiceModel;
+using DiversityPhone.Model;
+using System.Linq;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
     public class DownloadTaxonListTask : BackgroundTask
     {
         private const string KEY_TABLE = "T";
-        private const string KEY_NAME = "N";
+        private const string KEY_ID = "N";
         private const string KEY_GROUP = "G";
 
         private const string KEY_PROGRESS = "S";
@@ -66,7 +67,7 @@ namespace DiversityPhone.Services.BackgroundTasks
 
             if (list != null)
             {
-
+                
                 while (CurrentState != STATE_FINISHED)
                 {
                     if (CurrentState == STATE_STARTED)
@@ -96,20 +97,16 @@ namespace DiversityPhone.Services.BackgroundTasks
             var list = arg as TaxonList;
             if(list != null)
             {
-                State[KEY_NAME] = list.DisplayText;
-                State[KEY_TABLE] = list.Table;
-                State[KEY_GROUP] = list.TaxonomicGroup;
+                State[KEY_ID] = list.TableID.ToString();                
             }
         }
 
         protected override object  getArgumentFromState()
         {
-            return new TaxonList()
-            {
-                DisplayText = State[KEY_NAME],
-                Table = State[KEY_TABLE],
-                TaxonomicGroup = State[KEY_GROUP]
-            };            
+            var id = State[KEY_ID];
+            return Taxa.getTaxonSelections()
+                .Where(list => list.TableID.ToString() == id)
+                .FirstOrDefault();          
         }
 
         protected override void Cancel()

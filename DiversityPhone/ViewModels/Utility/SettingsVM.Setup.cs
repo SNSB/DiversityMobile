@@ -212,7 +212,7 @@ namespace DiversityPhone.ViewModels.Utility
                     })
                     .Subscribe(Projects);                
 
-                creds.Subscribe(login => getUserInfo.Execute(login));
+                credsWithRepo.Subscribe(login => getUserInfo.Execute(login));
                 _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
                         getUserInfo
                         .RegisterAsyncFunction(login => 

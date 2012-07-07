@@ -13,16 +13,14 @@ namespace DiversityPhone.Services
     {
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         IMessageBus Messenger;
-        IObservable<UserCredentials> LatestCreds;
+        ObservableAsPropertyHelper<UserCredentials> LatestCreds;
 
-        private UserCredentials GetCreds() { return LatestCreds.FirstOrDefault(); }
+        private UserCredentials GetCreds() { return LatestCreds.Value; }
 
         public DiversityServiceObservableClient(IMessageBus messenger)
         {
             Messenger = messenger;
-            var creds = messenger.Listen<UserCredentials>().Replay(1);
-            creds.Connect();
-            LatestCreds = creds;
+            LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });           
         }
 
         private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
@@ -63,17 +61,27 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<TaxonList>> GetTaxonLists()
+        public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
         {
             var source = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d)
-                .Select(args => args.Result as IEnumerable<TaxonList>);
+                .Select(args => args.Result
+                    .Select(svcList => new Client.TaxonList()
+                    {
+                        IsPublicList = svcList.IsPublicList,
+                        TableDisplayName = svcList.DisplayText,
+                        TableName = svcList.Table,
+                        TaxonomicGroup =svcList.TaxonomicGroup
+                    }
+                    ));
             var res = singleResultObservable(source);
             _svc.GetTaxonListsForUserAsync(GetCreds());
             return res;
         }
 
-        public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(TaxonList list)
+        public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)
         {
+            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };
+
             var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
             int chunk = 1; //First Chunk is 1, not 0!
 
@@ -95,14 +103,14 @@ namespace DiversityPhone.Services
                         if(taxonChunk.Any())
                         {
                             //There might still be more Taxa -> request next chunk
-                            localclient.DownloadTaxonListAsync(list, ++chunk, GetCreds());
+                            localclient.DownloadTaxonListAsync(serviceList, ++chunk, GetCreds());
                             return true;
                         }
                         else //Transfer finished
                             return false;
                     });
             //Request first chunk
-            localclient.DownloadTaxonListAsync(list,chunk, GetCreds());
+            localclient.DownloadTaxonListAsync(serviceList, chunk, GetCreds());
             return res;
         }
 
