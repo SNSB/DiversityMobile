@@ -9,6 +9,12 @@ namespace DiversityService.Test
 {
     public class DiversityServiceTest
     {
+        private UserCredentials testInitCredentials = new UserCredentials()
+        {
+            LoginName = "Rollinger",
+            Password = "Rolli#2-AI4@UBT"
+        };
+
         private UserCredentials testCredentials = new UserCredentials()
         {
             LoginName = "Rollinger",
@@ -64,6 +70,50 @@ namespace DiversityService.Test
         //}
 
         [Fact]
+        public void getUserInfo_should_return_valid_info()
+        {
+            //Prepare
+           
+
+            //Execute
+            var profile = _target.GetUserInfo(testCredentials);
+
+
+            //Assert
+            Assert.NotNull(profile);
+            Assert.Equal(testCredentials.LoginName, profile.LoginName);
+            
+        }
+
+        [Fact]
+        public void getRepositories_should_return_valid_info()
+        {
+            //Prepare
+
+
+            //Execute
+            var repos = _target.GetRepositories(testInitCredentials);
+
+
+            //Assert
+            Assert.NotEmpty(repos);
+        }
+
+        [Fact]
+        public void getProjects_should_return_valid_info()
+        {
+            //Prepare
+
+
+            //Execute
+            var projects = _target.GetProjectsForUser(testCredentials);
+
+
+            //Assert
+            Assert.NotEmpty(projects);
+        }
+
+        [Fact]
         public void taxonNames_via_PetaPoco_should_work()
         {
             //Prepare
@@ -71,7 +121,8 @@ namespace DiversityService.Test
             {
                 DisplayText = "N/A",
                 Table = "TaxRef_BfN_VPlants",
-                TaxonomicGroup = "plants"
+                TaxonomicGroup = "plants",
+                IsPublicList = false
             };
             
 
@@ -84,21 +135,40 @@ namespace DiversityService.Test
         }
 
         [Fact]
+        public void TNT_taxonNames_should_work()
+        {
+            //Prepare
+            var tl = new TaxonList()
+            {
+                DisplayText = "N/A",
+                Table = "TaxRef_GBOL_Auchenorrhyncha_DE",
+                TaxonomicGroup = "plants",
+                IsPublicList = true
+            };
+            
+
+            //Execute
+            var taxa = _target.DownloadTaxonList(tl,1,testCredentials);
+
+
+            //Assert
+            Assert.NotEmpty(taxa);
+        }
+
+
+        [Fact]
         public void taxonNamesForUser_should_work()
         {
             //Prepare
-            var profile = new UserCredentials()
-            {
-                LoginName = "Rollinger",
-                Password = "Rolli#2-AI4@UBT"
-            };
-
+            
             //Execute
-            var lists = _target.GetTaxonListsForUser(profile);
+            var lists = _target.GetTaxonListsForUser(testCredentials);
 
 
             //Assert
             Assert.NotEmpty(lists);
+            Assert.NotEmpty(lists.Where(l => l.IsPublicList));
+            Assert.NotEmpty(lists.Where(l => !l.IsPublicList));
         }
 
         [Fact]
@@ -150,7 +220,7 @@ namespace DiversityService.Test
             
 
             //Execute
-            var ar = _target.GetStandardVocabulary();
+            var ar = _target.GetStandardVocabulary(testCredentials);
 
 
             //Assert

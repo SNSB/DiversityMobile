@@ -2,6 +2,7 @@
 using System;
 using ReactiveUI;
 using System.Reactive.Linq;
+using DiversityPhone.Model;
 namespace DiversityPhone.Messages
 {
     public enum DialogType
@@ -36,6 +37,8 @@ namespace DiversityPhone.Messages
 
         
     }
+
+    public class InitMessage { }
 
     public static class MessengerMixin
     {

@@ -16,8 +16,7 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}"
-    shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
-    BackKeyPress="taxonPage_BackKeyPress"
+    shell:SystemTray.ProgressIndicator="{StaticResource Progress}"    
     x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <vw:TaxonManagementPivotConverter x:Key="PivotConverter"/>
@@ -59,10 +58,10 @@
             </controls:PivotItem>
 
             <!--Pivotelement zwei-->
-            <controls:PivotItem Header="repository">
+            <controls:PivotItem Header="personal">
                 <StackPanel>
                     <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <ItemsControl x:Name="RepoListBox" ItemsSource="{Binding RepoLists}">
+                    <ItemsControl ItemsSource="{Binding PersonalLists}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
@@ -72,6 +71,27 @@
                                                               Command="{Binding ElementName=taxonPage, Path=DataContext.Download}" 
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded, Converter={StaticResource InvertBoolean}}"/>                                            
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </controls:PivotItem>
+            <controls:PivotItem Header="public">
+                <StackPanel>
+                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ItemsControl ItemsSource="{Binding PublicLists}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <toolkit:MenuItem Header="download" 
+                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Download}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsDownloaded, Converter={StaticResource InvertBoolean}}"/>
                                         </toolkit:ContextMenu>
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </ContentControl>

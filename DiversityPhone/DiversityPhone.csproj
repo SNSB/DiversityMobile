@@ -62,8 +62,8 @@
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit">
-      <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
+      <HintPath>..\packages\SilverlightToolkitWP.4.2012.6.25\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -76,24 +76,25 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\sl4-windowsphone71\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Blend_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ReactiveUI.Blend_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Routing_WP7">
-      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Testing_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ReactiveUI.Routing_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-testing.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Testing_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Xaml_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ReactiveUI.Testing_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-xaml.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-testing.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Testing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI_WP7, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ReactiveUI.Xaml_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-core.3.1.2\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\reactiveui-core.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
@@ -133,33 +134,17 @@
       <DependentUpon>DiversityResources.resx</DependentUpon>
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
-    <Compile Include="Model\Analysis.cs" />
-    <Compile Include="Model\AnalysisResult.cs" />
-    <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
     <Compile Include="Model\AppSettings.cs" />
     <Compile Include="Model\CollectionEventProperty.cs" />
     <Compile Include="Model\Geometry\Line.cs" />
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
-    <Compile Include="Model\ILocalizable.cs" />
-    <Compile Include="Model\IModifyable.cs" />
     <Compile Include="Model\Localizable.cs" />
     <Compile Include="Model\Map.cs" />
-    <Compile Include="Model\MultimediaObject.cs" />
-    <Compile Include="Model\Property.cs" />
-    <Compile Include="Model\PropertyName.cs" />
-    <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\Service\Credentials.cs" />
     <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\SyncUnit.cs" />
-    <Compile Include="Model\Synonymy.cs" />
-    <Compile Include="Model\TaxonSelection.cs" />
-    <Compile Include="Service References\DiversityService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\MapMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -182,34 +167,28 @@
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Database\DiversityDataContext.cs" />
-    <Compile Include="Services\DiversityServiceClient.Download.cs" />
     <Compile Include="Services\DiversityServiceExtensions.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
-    <Compile Include="Services\IDiversityServiceClient.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Services\IMapStorageService.cs" />
     <Compile Include="Services\IMapTransferService.cs" />
     <Compile Include="Services\IMultiMediaClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
-    <Compile Include="Services\DiversityServiceClient.Upload.cs" />
     <Compile Include="Services\Database\ITaxonService.cs" />
     <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\Database\IFieldDataService.cs" />
     <Compile Include="Services\Database\IVocabularyService.cs" />
-    <Compile Include="Model\IQueryOperations.cs" />
     <Compile Include="Services\MapStorage.cs" />
     <Compile Include="Services\MapTranferService.cs" />
-    <Compile Include="Services\MediaType.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\MultimediaClient.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />
     <Compile Include="Services\Page.cs" />
     <Compile Include="Services\PageState.cs" />
-    <Compile Include="Services\ReferrerType.cs" />
     <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\Database\TaxonDataContext.cs" />
     <Compile Include="Services\Database\TaxonService.cs" />
@@ -356,10 +335,7 @@
     </Compile>
     <Compile Include="Messages\Messages.cs" />
     <Compile Include="Model\Event.cs" />
-    <Compile Include="Model\EventSeries.cs" />
     <Compile Include="Model\IdentificationUnit.cs" />
-    <Compile Include="Model\TaxonName.cs" />
-    <Compile Include="Model\Term.cs" />
     <Compile Include="ViewModels\Edit\EditEVVM.cs" />
     <Compile Include="ViewModels\Edit\EditIUVM.cs" />
     <Compile Include="ViewModels\BasisModels\EventSeriesVM.cs" />
@@ -553,75 +529,10 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisResult.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.CollectionEventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonList.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonName.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Term.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <None Include="Service References\DiversityService\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service14.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service15.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service16.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
@@ -735,12 +646,6 @@
       <Numbers>True</Numbers>
       <Punctuation>True</Punctuation>
     </BlendEmbeddedFont>
-    <None Include="Service References\DiversityService\configuration91.svcinfo" />
-    <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -799,7 +704,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DiversityService\" />
     <WCFMetadataStorage Include="Service References\MapMediaService\" />
     <WCFMetadataStorage Include="Service References\MediaService4\" />
   </ItemGroup>
@@ -839,6 +743,10 @@
     <ProjectReference Include="..\DiversityPhone.Common\DiversityPhone.Common.csproj">
       <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
       <Name>DiversityPhone.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj">
+      <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>
+      <Name>DiversityPhone.ServiceReference</Name>
     </ProjectReference>
     <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
       <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>

@@ -10,45 +10,36 @@ namespace DiversityPhone.Services
     {
         #region TaxonNames
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, Svc.TaxonList list)
+        public void addTaxonList(TaxonList list)
         {
-            int tableIdx = -1;
+            if (TaxonList.ValidTableIDs.Contains(list.TableID))
+                throw new ArgumentException("newList");
+            
             lock (this)
             {
                 withSelections(ctx =>
-                {
-                    var existingSelection = (from ts in ctx.TaxonSelection
-                                             where ts.TableName == list.Table
-                                             select ts).FirstOrDefault();
-                    if (existingSelection != null)
+                {                    
+                    var unusedIDs = getUnusedTaxonTableIDs(ctx);
+                    if (unusedIDs.Count() > 0)
                     {
-                        tableIdx = existingSelection.TableID;
+                        var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
+                        list.IsSelected = !TaxonList.ValidTableIDs.Contains(currentlyselectedTable); //If this is the first table for this group, select it.
+                        list.TableID = unusedIDs.First();
+                        ctx.TaxonLists.InsertOnSubmit(list);
+                        ctx.SubmitChanges();                        
                     }
                     else
-                    {
-                        var unusedIDs = getUnusedTaxonTableIDs(ctx);
-                        if (unusedIDs.Count() > 0)
-                        {
-                            var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
-                            var selection = new TaxonSelection()
-                            {
-                                TableDisplayName = list.DisplayText,
-                                TableID = unusedIDs.First(),
-                                TableName = list.Table,
-                                TaxonomicGroup = list.TaxonomicGroup,
-                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable) //If this is the first table for this group, select it.
-                            };
-                            ctx.TaxonSelection.InsertOnSubmit(selection);
-                            ctx.SubmitChanges();
-                            tableIdx = selection.TableID;
-                        }
-                        else
-                            throw new InvalidOperationException("No Unused Taxon Table");
-                    }
+                        throw new InvalidOperationException("No Unused Taxon Table");                    
                 });
             }
+        }
 
-            using (var taxctx = new TaxonDataContext(tableIdx))
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, TaxonList list)
+        {
+            if (!TaxonList.ValidTableIDs.Contains(list.TableID))
+                throw new ArgumentException("list");
+
+            using (var taxctx = new TaxonDataContext(list.TableID))
             {
                 taxctx.TaxonNames.InsertAllOnSubmit(taxa);
                 try
@@ -63,63 +54,62 @@ namespace DiversityPhone.Services
             }
         }
 
-        public IList<TaxonSelection> getTaxonSelections()
+        public IList<TaxonList> getTaxonSelections()
         {
-            IList<TaxonSelection> result = null;
+            IList<TaxonList> result = null;
             withSelections(ctx =>
             {
-                result = (ctx.TaxonSelection.ToList());
+                result = (ctx.TaxonLists.ToList());
             });
             return result;
         }
 
-        public void selectTaxonList(Svc.TaxonList list)
+        public void selectTaxonList(TaxonList list)
         {
+            if (list == null)
+                throw new ArgumentNullException("list");
+            if (!TaxonList.ValidTableIDs.Contains(list.TableID))
+                throw new ArgumentException("list");
+            if (list.IsSelected)
+                return;
+
+
             withSelections(ctx =>
             {
-                var tables = from s in ctx.TaxonSelection
+                var tables = from s in ctx.TaxonLists
                              where s.TaxonomicGroup == list.TaxonomicGroup
                              select s;
-                var oldSelection = tables.FirstOrDefault(s => s.IsSelected);
-                var newSelection = tables.FirstOrDefault(s => s.TableName == list.Table);
-                if (newSelection != null)
+                var oldSelection = tables.FirstOrDefault(s => s.IsSelected);                
+                if (oldSelection != null)
                 {
-                    newSelection.IsSelected = true;
-
-                    if (oldSelection != null)
-                        oldSelection.IsSelected = false;
-
-                    ctx.SubmitChanges();
+                    oldSelection.IsSelected = false;
                 }
-                else
-                {
-                    //TODO Log
-                }
+
+                list.IsSelected = false;
+                ctx.TaxonLists.Attach(list);
+                list.IsSelected = true;
+                ctx.SubmitChanges();
+                               
             }
             );
         }
 
-        public void deleteTaxonList(Svc.TaxonList list)
+        public void deleteTaxonList(TaxonList list)
         {
+            if (list == null)
+                return;
+            if (!TaxonList.ValidTableIDs.Contains(list.TableID))
+                throw new ArgumentException("list");
+
             withSelections(ctx =>
             {
-                var selection = (from sel in ctx.TaxonSelection
-                                 where sel.TableName == list.Table
-                                 select sel).FirstOrDefault();
-
-                if (selection != null)
+                using (var taxa = new TaxonDataContext(list.TableID))
                 {
-                    using (var taxa = new TaxonDataContext(selection.TableID))
-                    {
-                        taxa.DeleteDatabase();
-                    }
-                    ctx.TaxonSelection.DeleteOnSubmit(selection);
-                    ctx.SubmitChanges();
+                    taxa.DeleteDatabase();
                 }
-                else
-                {
-                    //TODO Log
-                }
+                ctx.TaxonLists.Attach(list);
+                ctx.TaxonLists.DeleteOnSubmit(list);
+                ctx.SubmitChanges();               
             });
         }
 
@@ -151,7 +141,7 @@ namespace DiversityPhone.Services
         {
             withSelections(sel => 
                 {
-                    foreach (var list in sel.TaxonSelection)
+                    foreach (var list in sel.TaxonLists)
                     {
                         withTaxonTable(list.TableID, taxa => taxa.DeleteDatabase());
                     }
@@ -162,9 +152,9 @@ namespace DiversityPhone.Services
 
         private IEnumerable<int> getUnusedTaxonTableIDs(TaxonSelectionDataContext ctx)
         {
-            var usedTableIDs = from ts in ctx.TaxonSelection
+            var usedTableIDs = from ts in ctx.TaxonLists
                                select ts.TableID;
-            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);
+            return TaxonList.ValidTableIDs.Except(usedTableIDs);
         }
 
         private IList<TaxonName> getTaxonNames(int tableID, string query)
@@ -217,7 +207,7 @@ namespace DiversityPhone.Services
             if (taxonGroup != null)
                 withSelections(ctx =>
                 {
-                    var assignment = from a in ctx.TaxonSelection
+                    var assignment = from a in ctx.TaxonLists
                                      where a.TaxonomicGroup == taxonGroup && a.IsSelected
                                      select a.TableID;
                     if (assignment.Any())
@@ -255,7 +245,7 @@ namespace DiversityPhone.Services
                 if (!this.DatabaseExists())
                     this.CreateDatabase();
             }
-            public Table<TaxonSelection> TaxonSelection;
+            public Table<TaxonList> TaxonLists;
         }
 
         private class TaxonDataContext : DataContext
@@ -272,6 +262,8 @@ namespace DiversityPhone.Services
         }
 
 
-       
+
+
+        
     }
 }

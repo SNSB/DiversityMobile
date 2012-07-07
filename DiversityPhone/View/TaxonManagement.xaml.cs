@@ -26,43 +26,10 @@ namespace DiversityPhone.View
 
             if (VM != null)
             {
-                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);
-
-
-                var downloadAllButton = new ApplicationBarIconButton()
-                {
-                    IconUri = new Uri("/Images/appbar.download.rest.png", UriKind.Relative),
-                    IsEnabled = true,
-                    Text = DiversityResources.TaxonManagement_Title_DownloadAll,
-                };
-
-                downloadAllButton.Click += new EventHandler(downloadAllButton_Click);
-
-                ApplicationBar.Buttons.Add(downloadAllButton);
-
-                VM.DownloadAll
-                    .CanExecuteObservable
-                    .Subscribe(canexec => downloadAllButton.IsEnabled = canexec);
+                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);                
             }
 
 
-        }
-
-        void downloadAllButton_Click(object sender, EventArgs e)
-        {
-            if (VM != null && VM.DownloadAll.CanExecute(null))
-                VM.DownloadAll.Execute(null);
-        }
-
-
-        private void taxonPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            //if (VM != null)
-            //    e.Cancel = VM.IsBusy;
-        }
-
-
-
-        
+        } 
     }
 }

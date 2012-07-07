@@ -3,19 +3,27 @@ using System.IO.IsolatedStorage;
 using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
     public class SettingsService : ISettingsService
     {
-        private const string SETTINGS_KEY = "Settings";   
-     
+        private const string SETTINGS_KEY = "Settings";
+
+        IMessageBus Messenger;
         AppSettings _settings;
-        public SettingsService (IMessageBus msg = null)
+        public SettingsService (IMessageBus msg)
 	    {
-            if (msg != null)
-                msg.Listen<AppSettings>(MessageContracts.SAVE)
-                    .Subscribe(s => saveSettings(s));
+            Messenger = msg;
+            msg.Listen<AppSettings>(MessageContracts.SAVE)
+                .Subscribe(s => saveSettings(s));
+
+            Messenger.RegisterMessageSource(
+            Messenger.Listen<InitMessage>()
+                .Where(_ => _settings != null)
+                .Select(_ => _settings.ToCreds())
+                );
             
             if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out _settings))
                 _settings = null;
@@ -29,6 +37,8 @@ namespace DiversityPhone.Services
         public void saveSettings(AppSettings settings)
         {
             _settings = settings;
+            if (settings != null)
+                Messenger.SendMessage(settings.ToCreds());
             IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
             IsolatedStorageSettings.ApplicationSettings.Save();
         }

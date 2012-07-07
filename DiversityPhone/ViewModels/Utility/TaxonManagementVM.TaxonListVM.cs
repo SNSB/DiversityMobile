@@ -9,7 +9,8 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using ReactiveUI;
-using DiversityPhone.DiversityService;
+using DiversityPhone.Model;
+
 
 namespace DiversityPhone.ViewModels
 {   
@@ -27,7 +28,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _model.DisplayText;
+                return _model.TableDisplayName;
             }
         }
 
@@ -56,14 +57,15 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.IsDownloading, ref _IsDownloading, value);
             }
-        }       
+        }   
+        
 
         TaxonList _model;
         public TaxonList Model { get { return _model; } }
 
         public TaxonListVM(TaxonList model)
         {
-            _model = model;            
+            _model = model;           
         }        
     }
 }

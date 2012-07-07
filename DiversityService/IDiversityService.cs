@@ -53,7 +53,7 @@ namespace DiversityService
         #region DB "DiversityMobile" Attribute SNSB
 
         [OperationContract]
-        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);       
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
         [OperationContract]
@@ -63,28 +63,5 @@ namespace DiversityService
 
         #endregion
 
-
-       
-
-        #region Android
-        
-        [OperationContract]
-        String GetXMLStandardVocabulary(UserCredentials login);
-
-        [OperationContract]
-        int InsertEventSeriesForAndroid(int SeriesID, String Description);
-
-        [OperationContract]
-        int InsertEventSeriesForAndroidVIntES(EventSeries es);
-
-        [OperationContract]
-        DiversityCollection.CollectionEventSeries InsertEventSeriesForAndroidVESES(EventSeries es);
-
-        [OperationContract]
-        EventSeries TestSeriesForAndroid();
-        
-        
-
-        #endregion;
     }   
 }

@@ -265,9 +265,9 @@ namespace DiversityPhone.ViewModels.Utility
                 {
                     if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
                 })
-                .Subscribe(Projects);                
+                .Subscribe(Projects);
 
-            creds.Subscribe(login => getUserInfo.Execute(login));
+            credsWithRepo.Subscribe(login => getUserInfo.Execute(login));
             _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
                     getUserInfo
                     .RegisterAsyncFunction(login => 

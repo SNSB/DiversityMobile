@@ -11,9 +11,7 @@ using DiversityPhone.Services.BackgroundTasks;
 using System.IO.IsolatedStorage;
 using System.Device.Location;
 using System;
-using DiversityPhone.ViewModels;
-using DiversityPhone.ViewModels.Maps;
-using DiversityPhone.ViewModels.Utility;
+using DiversityPhone.Messages;
 
 
 namespace DiversityPhone
@@ -178,6 +176,8 @@ namespace DiversityPhone
                 if (settings.CurrentSeriesID != null)
                     GeoLocation.setTourEventSeriesID((int)settings.CurrentSeriesID);
             }
+
+            RxApp.MessageBus.SendMessage(new InitMessage());
         }
        
 

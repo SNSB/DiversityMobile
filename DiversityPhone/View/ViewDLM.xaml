@@ -6,6 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -21,42 +22,19 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="download maps" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="56" />
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="0,0,0,2">
+            <TextBlock x:Name="PageTitle" Text="download maps" Margin="9,0,0,0" Style="{StaticResource PhoneTextTitle1Style}" FontSize="56" />
+            <TextBox Height="72"  Name="textBoxSearch" VerticalAlignment="Top" HorizontalAlignment="Center" Width="456" Text="{Binding SearchString, Mode=TwoWay}" />
+            <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />
         </StackPanel>
-
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,0">
             <StackPanel>
-                <TextBox Height="72" HorizontalAlignment="Left" Name="textBoxSearch" VerticalAlignment="Top" Width="456" Text="{Binding SearchString, Mode=TwoWay}" />
-                <Button Content="Search" Height="72" Name="btn_Search" Width="160" Click="btn_Search_Click"   />
-               
-                <ScrollViewer Name="scrollViewer" Height="410" Width="440">
-                    <StackPanel>
-                        <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" >
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Background="Transparent" Margin="0,0,0,30">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="350"/>
-                                            <ColumnDefinition Width="80"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="0">
-                                            <TextBlock Text="{Binding}" Tag="{Binding}" TextWrapping="Wrap" HorizontalAlignment="Left" Tap="mapText_Tap"/>
-                                        </Grid>
-                                        <Grid Grid.Column="1">
-                                            <Button Tag="{Binding}" Content="Add" Height="72" HorizontalAlignment="Left" Name="button1" VerticalAlignment="Top" Width="80" FontSize="15" Click="addButton_Click"/>
-                                        </Grid>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                        <Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />
-                        
-                    </StackPanel>
-                </ScrollViewer>
+                <ListBox Name="URLListBox" ItemsSource="{Binding AvailableMaps}" Height="300" ItemTemplate="{StaticResource DownloadMapTemplate}" />
+                <!--<Image x:Name="MapImage" Stretch="Uniform" Source="{Binding MapImage}" />-->
             </StackPanel>
         </Grid>
+
     </Grid>
  
 </phone:PhoneApplicationPage>

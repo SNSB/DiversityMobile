@@ -37,8 +37,11 @@ namespace DiversityPhone.View
 		        case TaxonManagementVM.Pivot.Local:
                     return 0;
                  
-                case TaxonManagementVM.Pivot.Repository:
-                    return 1;                 
+                case TaxonManagementVM.Pivot.Personal:
+                    return 1;  
+               
+                case TaxonManagementVM.Pivot.Public:
+                    return 2;
                 default:
                     return 0;                 
 	        }
@@ -65,7 +68,9 @@ namespace DiversityPhone.View
                 case 0:
                     return TaxonManagementVM.Pivot.Local;
                 case 1:
-                    return TaxonManagementVM.Pivot.Repository;               
+                    return TaxonManagementVM.Pivot.Personal;      
+                case 2:
+                    return TaxonManagementVM.Pivot.Public;
                 default:
                     System.Diagnostics.Debugger.Break();
                     return TaxonManagementVM.Pivot.Local;                   

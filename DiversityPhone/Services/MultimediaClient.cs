@@ -51,7 +51,7 @@ namespace DiversityPhone.Services
                 }
 
             }
-            UserCredentials cred = new UserCredentials(_settings.getSettings());
+            UserCredentials cred = _settings.getSettings().ToCreds();
             _msc.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, cred.LoginName, DateTime.Now.ToShortDateString(),cred.ProjectID, data);
             return res;
         }

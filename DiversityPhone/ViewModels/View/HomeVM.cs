@@ -47,8 +47,7 @@ namespace DiversityPhone.ViewModels
         public HomeVM(IMessageBus messenger, IFieldDataService storage, IDiversityServiceClient repo, ISettingsService settings)
             : base(messenger)
         {            
-            _storage = storage;
-            _repository = repo;
+            _storage = storage;            
             _settings = settings;
 
             NoEventSeries = new EventSeriesVM(EventSeries.NoEventSeries);
@@ -62,7 +61,7 @@ namespace DiversityPhone.ViewModels
                 .Publish();
             series.Connect();
 
-            SeriesList = 
+            SeriesList =
                 series
                 .Do(_ => SeriesList.Clear())
                 .SelectMany(list => list.Select(s => new EventSeriesVM(s)))

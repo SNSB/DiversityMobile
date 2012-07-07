@@ -27,18 +27,17 @@ namespace DiversityPhone.View
      
         private PhoneMediaServiceClient _mapinfo;
         private HttpWebRequest _imageHttp;
-        private IMapStorageService _mapStorage;
 
         #endregion
 
         #region Properties
 
-        private ObservableCollection<String> _AvailableMaps;
+        //private ObservableCollection<String> _AvailableMaps;
 
-        public IList<String> AvailableMaps
-        {
-            get { return _AvailableMaps; }
-        }
+        //public IList<String> AvailableMaps
+        //{
+        //    get { return _AvailableMaps; }
+        //}
 
 
         private IList<String> _Keys;
@@ -117,7 +116,7 @@ namespace DiversityPhone.View
                 saveMap(newMap);
                 Keys.Remove(keyXML);
                 Keys.Remove(keyPng);
-                loadMap(keyPng);
+                //loadMap(keyPng);
                 _isBusy = false;
             }
            
@@ -128,27 +127,27 @@ namespace DiversityPhone.View
             VM.Save.Execute(map);
         }
 
-        private void loadMap(String filename)
-        {
+        //private void loadMap(String filename)
+        //{
 
-            byte[] data;
+        //    byte[] data;
 
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
+        //    using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+        //    {
 
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(filename, FileMode.Open, FileAccess.Read))
-                {
-                    data = new byte[isfs.Length];
-                    isfs.Read(data, 0, data.Length);
-                    isfs.Close();
-                }
+        //        using (IsolatedStorageFileStream isfs = isf.OpenFile(filename, FileMode.Open, FileAccess.Read))
+        //        {
+        //            data = new byte[isfs.Length];
+        //            isfs.Read(data, 0, data.Length);
+        //            isfs.Close();
+        //        }
 
-            }
-            MemoryStream ms = new MemoryStream(data);
-            BitmapImage bi = new BitmapImage();
-            bi.SetSource(ms);
-            MapImage.Source = bi;
-        }
+        //    }
+        //    MemoryStream ms = new MemoryStream(data);
+        //    BitmapImage bi = new BitmapImage();
+        //    bi.SetSource(ms);
+        //    MapImage.Source = bi;
+        //}
 
         #endregion
 
