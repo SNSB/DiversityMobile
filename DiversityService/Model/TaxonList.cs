@@ -4,6 +4,7 @@ using PetaPoco;
 
 namespace DiversityService.Model
 {    
+    [ExplicitColumns]
     public class TaxonList
     {
         [Column("DataSource")]
@@ -12,7 +13,7 @@ namespace DiversityService.Model
         public string TaxonomicGroup { get; set; }
         [Column("DisplayText")]
         public string DisplayText { get; set; }
-
+        
         public bool IsPublicList { get; set; }
     }
 }

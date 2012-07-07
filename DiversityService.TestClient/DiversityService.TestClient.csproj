@@ -95,13 +95,19 @@
     <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.HierarchySection.datasource">
+    <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.Project.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.Property.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.PropertyName.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.Repository.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.TaxonList.datasource">
@@ -116,25 +122,25 @@
     <None Include="Service References\ServiceReference1\DiversityService.TestClient.ServiceReference1.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference1\Service1.disco" />
     <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
     <None Include="Service References\ServiceReference1\configuration.svcinfo" />
+    <None Include="Service References\ServiceReference1\DiversityService1.wsdl" />
     <None Include="Service References\ServiceReference1\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\ServiceReference1\Service11.disco" />
     <Content Include="ServiceReferences.ClientConfig" />
-    <None Include="Service References\ServiceReference1\DiversityService.wsdl" />
-    <None Include="Service References\ServiceReference1\Service1.xsd">
+    <None Include="Service References\ServiceReference1\Service14.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\Service11.xsd">
+    <None Include="Service References\ServiceReference1\Service141.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\Service12.xsd">
+    <None Include="Service References\ServiceReference1\Service142.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\Service13.xsd">
+    <None Include="Service References\ServiceReference1\Service143.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

@@ -99,6 +99,8 @@ namespace DiversityService.Test
 
             //Assert
             Assert.NotEmpty(lists);
+            Assert.NotEmpty(lists.Where(l => l.IsPublicList));
+            Assert.NotEmpty(lists.Where(l => !l.IsPublicList));
         }
 
         [Fact]
@@ -150,7 +152,7 @@ namespace DiversityService.Test
             
 
             //Execute
-            var ar = _target.GetStandardVocabulary();
+            var ar = _target.GetStandardVocabulary(testCredentials);
 
 
             //Assert

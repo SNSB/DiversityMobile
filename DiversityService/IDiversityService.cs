@@ -53,9 +53,7 @@ namespace DiversityService
         #region DB "DiversityMobile" Attribute SNSB
 
         [OperationContract]
-        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
-        [OperationContract]
-        IEnumerable<TaxonList> GetPublicTaxonLists();
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);       
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
         [OperationContract]

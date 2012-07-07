@@ -151,7 +151,7 @@ namespace DiversityService
                     .Select(l => {l.IsPublicList = false; return l;})
                     );
             }
-            using (var db = new DiversityORM.Diversity(TNT_Login))
+            using (var db = new DiversityORM.Diversity(TNT_Login,Diversity.SERVER_TNT))
             {
                 result.AddRange(
                     taxonListsForUser(db)
