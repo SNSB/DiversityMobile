@@ -128,7 +128,7 @@ namespace DiversityPhone.ViewModels.Utility
                     (notfirstsetup, busy) => notfirstsetup && !busy)
                 );
             RefreshVocabulary
-                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(new UserCredentials(Settings.getSettings())));
+                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(Settings.getSettings().ToCreds()));
 
             NavigateBack = new ReactiveCommand();
             NavigateBack

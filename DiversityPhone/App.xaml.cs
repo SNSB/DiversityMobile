@@ -74,7 +74,7 @@ namespace DiversityPhone
             IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
             IOC.Register<ISettingsService>(new SettingsService(IOC.Resolve<IMessageBus>()));
 
-            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<ISettingsService>()));
+            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));
             IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             IOC.Register<Services.NavigationService>(new Services.NavigationService(IOC.Resolve<IMessageBus>()));

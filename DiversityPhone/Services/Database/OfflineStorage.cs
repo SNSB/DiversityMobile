@@ -517,7 +517,7 @@
             return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
-        public IList<MultimediaObject> getMultimediaForObject(DiversityPhone.Services.ReferrerType refType, int key)
+        public IList<MultimediaObject> getMultimediaForObject(ReferrerType refType, int key)
         {
              IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                         where mm.OwnerType == refType
@@ -527,7 +527,7 @@
 
         }
 
-        public IList<MultimediaObject> getMultimediaForObjectAndType(DiversityPhone.Services.ReferrerType refType, int key, DiversityPhone.Services.MediaType type)
+        public IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType refType, int key, MediaType type)
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                                                    where mm.OwnerType == refType

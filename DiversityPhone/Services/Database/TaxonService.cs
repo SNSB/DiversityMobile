@@ -30,13 +30,14 @@ namespace DiversityPhone.Services
                         if (unusedIDs.Count() > 0)
                         {
                             var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
-                            var selection = new TaxonSelection()
+                            var selection = new TaxonList()
                             {
                                 TableDisplayName = list.DisplayText,
                                 TableID = unusedIDs.First(),
                                 TableName = list.Table,
                                 TaxonomicGroup = list.TaxonomicGroup,
-                                IsSelected = !TaxonSelection.ValidTableIDs.Contains(currentlyselectedTable) //If this is the first table for this group, select it.
+                                IsPublic = list.IsPublicList,
+                                IsSelected = !TaxonList.ValidTableIDs.Contains(currentlyselectedTable) //If this is the first table for this group, select it.
                             };
                             ctx.TaxonSelection.InsertOnSubmit(selection);
                             ctx.SubmitChanges();
@@ -63,9 +64,9 @@ namespace DiversityPhone.Services
             }
         }
 
-        public IList<TaxonSelection> getTaxonSelections()
+        public IList<TaxonList> getTaxonSelections()
         {
-            IList<TaxonSelection> result = null;
+            IList<TaxonList> result = null;
             withSelections(ctx =>
             {
                 result = (ctx.TaxonSelection.ToList());
@@ -164,7 +165,7 @@ namespace DiversityPhone.Services
         {
             var usedTableIDs = from ts in ctx.TaxonSelection
                                select ts.TableID;
-            return TaxonSelection.ValidTableIDs.Except(usedTableIDs);
+            return TaxonList.ValidTableIDs.Except(usedTableIDs);
         }
 
         private IList<TaxonName> getTaxonNames(int tableID, string query)
@@ -255,7 +256,7 @@ namespace DiversityPhone.Services
                 if (!this.DatabaseExists())
                     this.CreateDatabase();
             }
-            public Table<TaxonSelection> TaxonSelection;
+            public Table<TaxonList> TaxonSelection;
         }
 
         private class TaxonDataContext : DataContext

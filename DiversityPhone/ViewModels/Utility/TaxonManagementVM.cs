@@ -56,12 +56,12 @@ namespace DiversityPhone.ViewModels
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;       
 
-        private IList<Client.TaxonSelection> _TaxonSelections;
+        private IList<Client.TaxonList> _TaxonSelections;
         public ObservableCollection<TaxonListVM> LocalLists { get; private set; }
         public ObservableCollection<TaxonListVM> PersonalLists { get; private set; }
         public ObservableCollection<TaxonListVM> PublicLists { get; private set; } 
      
-        private ReactiveAsyncCommand getPersonalLists = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getLists = new ReactiveAsyncCommand();
         private IBackgroundTask downloadTaxonList;
         private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
 
@@ -204,7 +204,7 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
 
             var repoLists =
-               getPersonalLists
+               getLists
                    .RegisterAsyncFunction(_ => getRepoListsImpl())
                    .CombineLatest(localLists, (repolists, localselections) =>
                        repolists.Where(repolist => !localselections.Any(selection => selection.Model.Table == repolist.Table)) //Filter Lists that have already been downloaded
@@ -234,7 +234,7 @@ namespace DiversityPhone.ViewModels
             deleteTaxonList
                 .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));          
 
-            getPersonalLists.Execute(null);
+            getLists.Execute(null);
             
         }
 

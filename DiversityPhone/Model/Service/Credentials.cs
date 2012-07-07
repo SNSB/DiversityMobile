@@ -12,21 +12,19 @@ using DiversityPhone.Model;
 
 namespace DiversityPhone.DiversityService
 {
-    public partial class UserCredentials
-    {
-        public UserCredentials()
-        {
+    public static class UserCredentialsMixin
+    {     
 
-        }
-
-        public UserCredentials(AppSettings settings)
+        public static UserCredentials ToCreds(this AppSettings settings)
         {
-            this.AgentName = settings.AgentName;
-            this.AgentURI = settings.AgentURI;
-            this.LoginName = settings.UserName;
-            this.Password = settings.Password;
-            this.ProjectID = settings.CurrentProject;
-            this.Repository = settings.HomeDB;           
+            return new UserCredentials(){
+            AgentName = settings.AgentName,
+            AgentURI = settings.AgentURI,
+            LoginName = settings.UserName,
+            Password = settings.Password,
+            ProjectID = settings.CurrentProject,
+            Repository = settings.HomeDB,
+            };
         }
     }
 }

@@ -32,19 +32,7 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Add.Execute(null);
-        }     
-
-        private void UploadMMO_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.UploadMMO.Execute(null);
-        }
-
-        private void Upload_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.UploadPlain.Execute(null);
-        }
+        }   
 
         private void LoadedMaps_Click(object sender, EventArgs e)
         {
