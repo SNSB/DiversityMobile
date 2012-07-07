@@ -39,7 +39,7 @@ namespace DiversityService
 
         private static IEnumerable<PropertyList> propertyListsForUser(UserCredentials login)
         {
-            return DiversityMobile(login).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
+            return new Diversity(login,CATALOG_DIVERSITYMOBILE).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
         }
 
         private static IEnumerable<Property> getProperties(Diversity db)
@@ -59,16 +59,7 @@ namespace DiversityService
                 .From(String.Format("[dbo].[{0}] AS [{1}]", table, typeof(T).Name))
                 .SQL;
             return db.Page<T>(page, 1000, sql).Items;
-        }
-
-        private static Diversity DiversityMobile(UserCredentials login)
-        {
-            var repo = login.Repository;
-            login.Repository = CATALOG_DIVERSITYMOBILE;
-            var db = new Diversity(login);
-            login.Repository = repo;
-            return db;
-        }
+        }       
 
     }
 }

@@ -162,8 +162,14 @@ namespace DiversityService
         }
       
         public IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login)
-        {            
-            return loadTablePaged<Model.TaxonName>(list.Table, page, DiversityMobile(login));                   
+        {
+            Diversity db;
+            if (list.IsPublicList)
+                db = new Diversity(TNT_Login, Diversity.SERVER_TNT);
+            else
+                db = new Diversity(login, CATALOG_DIVERSITYMOBILE);
+
+            return loadTablePaged<Model.TaxonName>(list.Table, page, db);                   
         }
 
         public IEnumerable<Model.Property> GetPropertiesForUser(UserCredentials login)
@@ -182,7 +188,7 @@ namespace DiversityService
             PropertyList list;
             if (propsForUser.TryGetValue(p.PropertyID, out list))
             {                
-                return loadTablePaged<Model.PropertyName>(list.Table, page, DiversityMobile(login));                
+                return loadTablePaged<Model.PropertyName>(list.Table, page, new Diversity(login, CATALOG_DIVERSITYMOBILE));                
             }
             else
                 return Enumerable.Empty<Model.PropertyName>();
