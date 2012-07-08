@@ -43,7 +43,7 @@ namespace DiversityPhone.Services
         /// State Dictionary, that should be used by the Page to persist custom state
         /// (internal to the Page)
         /// </summary>        
-        public IDictionary<string, string> State { get; set; }
+        public IDictionary<string, string> State { get; private set; }
 
         public PageState(Page p, string context, ReferrerType refType = ReferrerType.None, string referrer = null)
         {

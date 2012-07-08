@@ -30,13 +30,7 @@ namespace DiversityPhone
         {
             if (VM != null)
                 VM.Settings.Execute(null);
-        }
-
-        private void AddSeries_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Add.Execute(null);
-        }    
+        }        
 
         private void LoadedMaps_Click(object sender, EventArgs e)
         {

@@ -20,8 +20,7 @@ using DiversityPhone.ViewModels.Utility;
 namespace DiversityPhone
 {
     public partial class App : Application
-    {
-        private const string STATE_KEY = "StateTracking";
+    {       
         private const string TASK_KEY = "BackgroundTasks";
 
         public static Container IOC { get; private set; }       
@@ -202,16 +201,7 @@ namespace DiversityPhone
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
-        {
-            object savedStates = null;
-
-            if (PhoneApplicationService.Current.State.TryGetValue(STATE_KEY, out savedStates)
-                && savedStates != null
-                && savedStates is IList<PageState>)
-            {
-                var stack = new Stack<PageState>((savedStates as IList<PageState>).Reverse());
-                NavSvc.States = stack;
-            }
+        {     
 
             IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY); // Remove stored Tasks, they will resume automatically            
             BackgroundTasks.resume();    
@@ -224,8 +214,7 @@ namespace DiversityPhone
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
-            // Ensure that required application state is persisted here./
-            PhoneApplicationService.Current.State[STATE_KEY] = NavSvc.States.ToList();
+            // Ensure that required application state is persisted here./          
 
             BackgroundTasks.suspend();
             IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();

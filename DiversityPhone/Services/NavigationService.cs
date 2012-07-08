@@ -15,40 +15,25 @@ namespace DiversityPhone.Services
 {
     public class NavigationService
     {
-        private IMessageBus _messenger;
-        private IList<IDisposable> _subscriptions;
-        private PhoneApplicationFrame _frame;
+        private const string VISIT_KEY = "visit";        
 
-        private Stack<PageState> _States = null;
-        public Stack<PageState> States 
-        {
-            get
-            {
-                if(_States == null)
-                {
-                    _States = new Stack<PageState>();
-                    _States.Push(new PageState()); //Home Page State                    
-                }
-                return _States;
-            }
-            set
-            {
-                if (value != null)
-                    _States = value;
-            }
-        }
+        private IMessageBus _messenger;        
+        private PhoneApplicationFrame _frame;
+        private int visitCounter = 0;
+
+        private IDictionary<string, PageState> States = new Dictionary<string, PageState>();
+        
 
         public NavigationService(IMessageBus messenger)
         {
-            _messenger = messenger;                   
+            _messenger = messenger;               
        
-            _subscriptions = new List<IDisposable>()
-            {
-                _messenger.Listen<Page>()
-                    .Subscribe(p => Navigate(new NavigationMessage(p,null))),
-                _messenger.Listen<NavigationMessage>()
-                    .Subscribe(msg => Navigate(msg)),
-            };            
+            
+            _messenger.Listen<Page>()
+                .Subscribe(p => Navigate(new NavigationMessage(p,null)));
+            _messenger.Listen<NavigationMessage>()
+                .Subscribe(msg => Navigate(msg));
+                       
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {
@@ -56,55 +41,33 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s, args) =>
-                {                    
-                    args.Cancel = NavigationStarted(args.NavigationMode == NavigationMode.Back && args.IsNavigationInitiator);
-                };
-            _frame.Navigated += (s, args) =>
-                {
-                    if (!args.Uri.IsAbsoluteUri || args.Uri.Scheme != "app")
-                        NavigationFinished();
-                };
+            _frame.Navigating += (s, args) => NavigationStarted();
+                
+            _frame.Navigated += (s, args) => NavigationFinished();
         }
 
         void NavigationFinished()
         {
-            var page = _frame.Content as PhoneApplicationPage;       
-
-            if (States.Any() && page != null && page.DataContext is PageViewModel)
+            var page = _frame.Content as PhoneApplicationPage;
+            string visit;
+            PageState visit_info;
+            if (page.NavigationContext.QueryString.TryGetValue(VISIT_KEY, out visit)
+                && States.TryGetValue(visit, out visit_info)
+                && page.DataContext is PageViewModel)
             {
-                var vm = page.DataContext as PageViewModel;
-                var state = States.Peek();
-                vm.SetState(state);
-            }
+                var vm = page.DataContext as PageViewModel;                
+                vm.SetState(visit_info);
+            }           
         }        
-        bool NavigationStarted(bool isInternalBackNavigation)
+        void NavigationStarted()
         {
-            var page = App.RootFrame.Content as PhoneApplicationPage;
+            var page = _frame.Content as PhoneApplicationPage;           
 
             if (page != null && page.DataContext is PageViewModel)
-            {                
-                if(isInternalBackNavigation)
-                {
-                    var thisPage = States.Pop();
-                    if (States.Any())
-                    {
-                        var previousPage = States.Peek();
-
-                        if (thisPage.Page == previousPage.Page)
-                        {
-                            NavigationFinished();
-                            return true;
-                        }
-                    }
-                }
-                else
-                {
-                    var vm = page.DataContext as PageViewModel;
-                    vm.SaveState();                    
-                }
-            }
-            return false;
+            {                 
+                var vm = page.DataContext as PageViewModel;
+                vm.SaveState();               
+            }           
         }
         public void Navigate(NavigationMessage msg)
         {
@@ -117,6 +80,7 @@ namespace DiversityPhone.Services
                     NavigateBack();
                     return;
                 case Page.Home:
+                    States.Clear();                    
                     destination = "/View/Home.xaml";
                     break;
                 case Page.Settings:
@@ -209,36 +173,22 @@ namespace DiversityPhone.Services
                     System.Diagnostics.Debugger.Break();
                     break;
 #endif
-            }
+            }                
+
             if (destination != null && _frame != null)
             {
-                bool onTheSpotNavigation = States.Any() && States.Peek().Page == msg.Destination;               
-
-                var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
-                States.Push(new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer));
-
-                if (!onTheSpotNavigation)
-                {
-                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
-                }
-                else
-                {
-                    //Simulate Navigation (staying on the same Page)
-                    NavigationStarted(false);
-                    NavigationFinished();
-                }
+                States[visitCounter.ToString()] = new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer);
+                var destURI = new Uri(
+                    string.Format("{0}?{1}={2}", destination, VISIT_KEY, visitCounter++),
+                    UriKind.RelativeOrAbsolute);
+                _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));                               
             }
-        }        
-
-        public bool CanNavigateBack()
-        {
-            return App.RootFrame.CanGoBack;
-        }
+        }  
 
         public void NavigateBack()
         {           
 
-            App.RootFrame.GoBack();
+            _frame.GoBack();
         }     
       
     }

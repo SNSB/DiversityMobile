@@ -163,10 +163,10 @@ namespace DiversityPhone.ViewModels.Utility
             RefreshVocabulary
                 .Subscribe(_ => background.startTask<RefreshVocabularyTask>(Settings.getSettings().ToCreds()));
 
-            _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable, x => x.IsBusy);
+            _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable.ObserveOnDispatcher(), x => x.IsBusy);
 
             _BusyMessage = this.ObservableToProperty(
-                refreshVocabularyTask.AsyncProgressMessages, x => x.BusyMessage);
+                refreshVocabularyTask.AsyncProgressMessages.ObserveOnDispatcher(), x => x.BusyMessage);
 
             Messenger.RegisterMessageSource(
             refreshVocabularyTask.AsyncCompletedNotification
