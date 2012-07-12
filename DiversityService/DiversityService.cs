@@ -18,7 +18,7 @@ namespace DiversityService
 {
     public partial class DiversityService : IDiversityService
     {
-        //const string entities_connstr_template = "metadata=res://*/DiversityCollectionEntities.csdl|res://*/DiversityCollectionEntities.ssdl|res://*/DiversityCollectionEntities.msl;provider=System.Data.SqlClient;provider connection string=\"{0}\"";
+        
 
         #region Get
 
