@@ -11,6 +11,8 @@ namespace DiversityPhone.ViewModels
 {
     public abstract class EditElementPageVMBase<T> : ElementPageViewModel<T> where T : IModifyable
     {
+        private ISubject<DialogResult> DeleteSubject = new Subject<DialogResult>();
+
         #region Commands
         public ReactiveCommand Save { get; private set; }
         public ReactiveCommand ToggleEditable { get; private set; }
@@ -106,10 +108,16 @@ namespace DiversityPhone.ViewModels
 
             Messenger.RegisterMessageSource(
                Delete
-               .Where(_ => Current != null)
-               .Select(_ => Current.Model)               
-               .Do(_ => OnDelete()),
-               MessageContracts.DELETE);
+               .Select(_ => new DialogMessage(DialogType.YesNo,"", DiversityResources.Message_ConfirmDelete, DeleteSubject.OnNext))
+               );
+
+            Messenger.RegisterMessageSource(
+                DeleteSubject                
+                .Where(result => result == DialogResult.OKYes && Current != null)
+                .Select(_ => Current.Model)               
+                .Do(_ => OnDelete()),
+                MessageContracts.DELETE
+                );
 
             //On Delete or Save, Navigate Back
             Messenger.RegisterMessageSource(
@@ -118,5 +126,7 @@ namespace DiversityPhone.ViewModels
                .Select(_ => Page.Previous)
                );
         }
+
+      
     }
 }

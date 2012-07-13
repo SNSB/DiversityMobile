@@ -156,6 +156,9 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Message_ConfirmDelete" xml:space="preserve">
+    <value>Do you really want to delete this element and all its children?</value>
+  </data>
   <data name="Message_ServiceUnavailable_Body" xml:space="preserve">
     <value>The service is currently unavailable, please try again later</value>
   </data>
