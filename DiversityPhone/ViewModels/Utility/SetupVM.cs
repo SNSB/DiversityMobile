@@ -172,6 +172,7 @@ namespace DiversityPhone.ViewModels.Utility
             refreshVocabularyTask.AsyncCompletedNotification
                 .Take(1)
                 .Select(_ => Page.Home)
+                .Concat(Observable.Never<Page>())
                 );
 
             clearDatabase.RegisterAsyncAction(_ =>

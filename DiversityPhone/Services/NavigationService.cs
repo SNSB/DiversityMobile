@@ -9,6 +9,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Navigation;
 using DiversityPhone.ViewModels;
+using System.Reactive.Linq;
 
 
 namespace DiversityPhone.Services
@@ -22,16 +23,16 @@ namespace DiversityPhone.Services
         private int visitCounter = 0;
 
         private IDictionary<string, PageState> States = new Dictionary<string, PageState>();
-        
 
+        
         public NavigationService(IMessageBus messenger)
         {
             _messenger = messenger;               
        
             
-            _messenger.Listen<Page>()
-                .Subscribe(p => Navigate(new NavigationMessage(p,null)));
-            _messenger.Listen<NavigationMessage>()
+          _messenger.Listen<Page>()
+                .Select(p => new NavigationMessage(p,null))
+                .Merge(_messenger.Listen<NavigationMessage>())
                 .Subscribe(msg => Navigate(msg));
                        
         }
