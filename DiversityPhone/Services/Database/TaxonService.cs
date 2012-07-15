@@ -129,7 +129,7 @@ namespace DiversityPhone.Services
             if (taxonGroup == null
                 || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == -1)
             {
-                System.Diagnostics.Debugger.Break();
+                //System.Diagnostics.Debugger.Break();
                 //TODO Logging
                 return new List<TaxonName>();
             }

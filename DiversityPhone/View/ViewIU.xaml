@@ -14,7 +14,8 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}"
+    BackKeyPress="PhoneApplicationPage_BackKeyPress">
     <phone:PhoneApplicationPage.Resources>
         <vw:ViewIUPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>

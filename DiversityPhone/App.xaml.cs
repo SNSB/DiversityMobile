@@ -25,8 +25,8 @@ namespace DiversityPhone
 
         public static Container IOC { get; private set; }       
         
-        private static BackgroundService BackgroundTasks = new BackgroundService();
-        private static IMessageBus Messenger = RxApp.MessageBus;
+        private static BackgroundService BackgroundTasks;
+        private static IMessageBus Messenger;
         private static Services.NavigationService NavSvc;
         private static ISettingsService Settings;
         private static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
@@ -46,9 +46,8 @@ namespace DiversityPhone
         {            
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
-
-            Settings = new SettingsService(Messenger);
-            NavSvc = new Services.NavigationService(Messenger);
+            
+            
 
             // Standard Silverlight initialization
             InitializeComponent();
@@ -79,6 +78,8 @@ namespace DiversityPhone
             }
             
         }
+
+       
 
         private static void registerViewModels()
         {
@@ -135,7 +136,14 @@ namespace DiversityPhone
         }
 
         public static void Initialize()
-        {
+        {           
+
+            Messenger = MessageBus.Current;
+            Settings = new SettingsService(Messenger);
+            NavSvc = new Services.NavigationService(Messenger);
+
+            NavSvc.AttachToNavigation(RootFrame);
+
 
             IOC = new Container();
             IOC.DefaultReuse = ReuseScope.None;
@@ -159,14 +167,13 @@ namespace DiversityPhone
             IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             
-
-
+            BackgroundTasks = new BackgroundService();
             BackgroundTasks.registerTask(new DownloadTaxonListTask(IOC));
             BackgroundTasks.registerTask(new RefreshVocabularyTask(IOC));
             BackgroundTasks.registerTask(new UploadEventTask(IOC));
             BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));
-
             IOC.Register<IBackgroundService>(BackgroundTasks);
+            restartBackgroundTasks();
 
             registerViewModels();
 
@@ -181,11 +188,8 @@ namespace DiversityPhone
 
             RxApp.MessageBus.SendMessage(new InitMessage());
         }
-       
 
-        // Code to execute when the application is launching (eg, from Start)
-        // This code will not execute when the application is reactivated
-        private void Application_Launching(object sender, LaunchingEventArgs e)
+        private static void restartBackgroundTasks()
         {
             object savedTasks = null;
             if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(TASK_KEY, out savedTasks)
@@ -197,14 +201,24 @@ namespace DiversityPhone
                 BackgroundTasks.resume();
             }
         }
+       
+
+        // Code to execute when the application is launching (eg, from Start)
+        // This code will not execute when the application is reactivated
+        private void Application_Launching(object sender, LaunchingEventArgs e)
+        {
+           
+        }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
-        {     
-
-            IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY); // Remove stored Tasks, they will resume automatically            
-            BackgroundTasks.resume();    
+        {
+            if (BackgroundTasks != null)
+            {
+                IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY); // Remove stored Tasks, they will resume automatically            
+                BackgroundTasks.resume();
+            }
             
             // Ensure that application state is restored appropriately
             
@@ -215,17 +229,22 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./          
-
-            BackgroundTasks.suspend();
-            IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            if (BackgroundTasks != null)
+            {
+                BackgroundTasks.suspend();
+                IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            }
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            BackgroundTasks.suspend();
-            IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            if (BackgroundTasks != null)
+            {
+                BackgroundTasks.suspend();
+                IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
+            }
         }
 
         // Code to execute if a navigation fails
@@ -261,9 +280,7 @@ namespace DiversityPhone
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();
-
-            NavSvc.AttachToNavigation(RootFrame);
+            RootFrame = new PhoneApplicationFrame();            
 
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 

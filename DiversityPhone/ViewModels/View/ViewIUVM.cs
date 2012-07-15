@@ -29,12 +29,14 @@ namespace DiversityPhone.ViewModels
         #region Commands
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
+        public ReactiveCommand Back { get; private set; }
 
         private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null, 2);
         #endregion
 
         #region Properties
+        Stack<int> unitBackStack = new Stack<int>();
 
         private Pivots _SelectedPivot;
         public Pivots SelectedPivot
@@ -157,11 +159,17 @@ namespace DiversityPhone.ViewModels
                     })
                 .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
             Messenger.RegisterMessageSource(addMessageSource);
+
             Maps = new ReactiveCommand();
             var mapMessageSource =
                 Maps
                 .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
             Messenger.RegisterMessageSource(mapMessageSource);
+
+            Back = new ReactiveCommand();
+            Back
+                .Subscribe(_ => goBack());
+
         }
 
         private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
@@ -215,8 +223,8 @@ namespace DiversityPhone.ViewModels
             {
                 var unit = new IdentificationUnitVM(top, 2);
                 unit.SelectObservable
-                    .Select(vm => vm.Model.UnitID.ToString())
-                    .ToNavigation(Page.ViewIU);
+                    .Select(vm => vm.Model.UnitID)
+                    .Subscribe(id => selectSubUnit(id));
                 subject.OnNext(unit);
             }                
         }
@@ -230,6 +238,25 @@ namespace DiversityPhone.ViewModels
                 .Select(vm => vm.Model.UnitID.ToString())
                 .ToNavigation(Page.EditIU);
             return res;
+        }
+
+        private void selectSubUnit(int unitID)
+        {
+            unitBackStack.Push(Current.Model.UnitID);            
+            this.CurrentState.Context = unitID.ToString();
+            this.SetState(CurrentState);
+        }
+
+        private void goBack()
+        {
+            if (unitBackStack.Any())
+            {
+                var prev = unitBackStack.Pop();
+                this.CurrentState.Context = prev.ToString();
+                this.SetState(CurrentState);
+            }
+            else
+                Messenger.SendMessage(Page.Previous);
         }
     }
 }
