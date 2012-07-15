@@ -28,7 +28,7 @@
         <!--Pivot Control-->
         
 
-        <ScrollViewer Grid.Row="1" Visibility="{Binding IsFirstSetup, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
+        <ScrollViewer Grid.Row="1">
             <StackPanel>
                 <TextBlock TextWrapping="Wrap" Text="Settings" Style="{StaticResource PhoneTextTitle1Style}"/>
                 <TextBlock Text="User" Style="{StaticResource PhoneTextSmallStyle}"/>

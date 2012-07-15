@@ -4,6 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone", "DiversityPhone\DiversityPhone.csproj", "{60F276AA-5A2A-461F-9C63-231C91298428}"
 	ProjectSection(ProjectDependencies) = postProject
 		{99C4E84A-8FE7-456A-BD7C-33561641F204} = {99C4E84A-8FE7-456A-BD7C-33561641F204}
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D} = {783A6ADE-BD39-460E-9802-669E2D3BBC4D}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService", "DiversityService\DiversityService.csproj", "{DEBEAB2D-FA96-4898-B867-A029F134F12E}"

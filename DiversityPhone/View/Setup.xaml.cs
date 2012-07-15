@@ -13,6 +13,8 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels.Utility;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Shell;
+using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.View
 {
@@ -36,6 +38,10 @@ namespace DiversityPhone.View
 
             if (_save == null)
                 _save = new CommandButtonAdapter(VM.Save, ApplicationBar.Buttons[0] as IApplicationBarIconButton);
+
+            VM.ObservableForProperty(x => x.IsBusy)
+                .Value()
+                .Subscribe(busy => this.ApplicationBar.IsVisible = !busy);
         }
     }
 }
