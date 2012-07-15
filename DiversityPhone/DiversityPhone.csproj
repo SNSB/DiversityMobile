@@ -525,6 +525,7 @@
     <Content Include="Images\appbar.feature.audio.rest.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileSmall.png" />
+    <Resource Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileTiny.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_MarketTile.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_Splash.png" />
     <Content Include="Images\AudioIcons\blank.png" />
@@ -537,7 +538,9 @@
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <Content Include="NLog.config" />
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
