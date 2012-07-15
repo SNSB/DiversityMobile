@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.ServiceRefer
 		{99C4E84A-8FE7-456A-BD7C-33561641F204} = {99C4E84A-8FE7-456A-BD7C-33561641F204}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.LogReciever", "DiversityService.LogReciever\DiversityService.LogReciever.csproj", "{783A6ADE-BD39-460E-9802-669E2D3BBC4D}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = DiversityPhone.vsmdi
@@ -170,6 +172,16 @@ Global
 		{5F67B82B-6BE3-4B02-9056-B56F84BDED51}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5F67B82B-6BE3-4B02-9056-B56F84BDED51}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5F67B82B-6BE3-4B02-9056-B56F84BDED51}.Release|x86.ActiveCfg = Release|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{783A6ADE-BD39-460E-9802-669E2D3BBC4D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

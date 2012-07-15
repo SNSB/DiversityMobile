@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="DiversityService.LogReciever.DiversityLogService" CodeBehind="DiversityLogService.svc.cs" %>

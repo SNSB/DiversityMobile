@@ -188,8 +188,7 @@ namespace DiversityPhone
 
             RxApp.MessageBus.SendMessage(new InitMessage());
 
-            NLog.LogManager.Configuration.AddTarget("debug", new NLog.Targets.DebuggerTarget());
-            NLog.LogManager.EnableLogging();
+            
         }
 
         private static void restartBackgroundTasks()
