@@ -39,7 +39,7 @@ namespace DiversityService
 
         private static IEnumerable<PropertyList> propertyListsForUser(UserCredentials login)
         {
-            return new Diversity(login).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
+            return new Diversity(login,CATALOG_DIVERSITYMOBILE).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
         }
 
         private static IEnumerable<Property> getProperties(Diversity db)
