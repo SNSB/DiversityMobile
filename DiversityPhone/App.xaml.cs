@@ -187,6 +187,9 @@ namespace DiversityPhone
             }
 
             RxApp.MessageBus.SendMessage(new InitMessage());
+
+            NLog.LogManager.Configuration.AddTarget("debug", new NLog.Targets.DebuggerTarget());
+            NLog.LogManager.EnableLogging();
         }
 
         private static void restartBackgroundTasks()
@@ -255,6 +258,7 @@ namespace DiversityPhone
                 // A navigation has failed; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
+            
         }
 
         // Code to execute on Unhandled Exceptions
@@ -265,6 +269,11 @@ namespace DiversityPhone
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
+
+            e.Handled = true;
+
+            if(Messenger != null)
+                Messenger.SendMessage(new DialogMessage(DialogType.OK, "", string.Format("{0} {1}", DiversityResources.Message_FatalException, e.ExceptionObject.Message)));
         }
 
         #region Phone application initialization

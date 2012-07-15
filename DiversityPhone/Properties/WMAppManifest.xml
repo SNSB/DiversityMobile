@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{91f2ec9d-1ead-48ee-b95c-e3f58d86572c}" Title="DiversityMobile" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="DiversityPhone author" Description="Sample description" Publisher="DiversityPhone">
-    <IconPath IsRelative="true" IsResource="false">Images\ApplicationIcon.png</IconPath>
+    <IconPath IsRelative="true" IsResource="false">Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
@@ -24,7 +24,7 @@
     <Tokens>
       <PrimaryToken TokenID="DiversityPhoneToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Images\ApplicationIcon.png</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">Images\AppIcons\DivMob_QuadratEnd_s_Splash.png</BackgroundImageURI>
           <Count>0</Count>
           <Title>DiversityMobile</Title>
         </TemplateType5>

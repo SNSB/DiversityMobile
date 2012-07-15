@@ -187,6 +187,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die A fatal Exception has occurred, please report this to your administrator: ähnelt.
+        /// </summary>
+        public static string Message_FatalException {
+            get {
+                return ResourceManager.GetString("Message_FatalException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The service is currently unavailable, please try again later ähnelt.
         /// </summary>
         public static string Message_ServiceUnavailable_Body {

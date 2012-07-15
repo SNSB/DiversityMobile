@@ -523,6 +523,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\appbar.feature.audio.rest.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileSmall.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_MarketTile.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_Splash.png" />
     <Content Include="Images\AudioIcons\blank.png" />
     <Content Include="Images\AudioIcons\microphone.png" />
     <Content Include="Images\AudioIcons\play.png" />
@@ -685,7 +689,6 @@
     <Content Include="Images\appbar.upload.rest.png" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
-    <Content Include="Images\ApplicationIcon.png" />
     <None Include="Service References\MediaService4\MediaService4.disco" />
     <None Include="Service References\MediaService4\configuration91.svcinfo" />
     <None Include="Service References\MediaService4\configuration.svcinfo" />
