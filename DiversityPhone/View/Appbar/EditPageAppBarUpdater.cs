@@ -72,6 +72,7 @@ namespace DiversityPhone.View
                 else
                 {
                     _appbar.Buttons.Add(_edit);
+                    _appbar.Buttons.Add(_delete);
                 }
             }
         }

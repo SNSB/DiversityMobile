@@ -178,6 +178,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Do you really want to delete this element and all its children? ähnelt.
+        /// </summary>
+        public static string Message_ConfirmDelete {
+            get {
+                return ResourceManager.GetString("Message_ConfirmDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die The service is currently unavailable, please try again later ähnelt.
         /// </summary>
         public static string Message_ServiceUnavailable_Body {
