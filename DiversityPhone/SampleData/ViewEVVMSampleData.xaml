@@ -95,7 +95,7 @@
 	<DiversityPhone_ViewModels:ViewEVVM.SpecList>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Hendrerit sit gravida vel litora" Icon="Observation">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Luctus lacus vestibulum himenaeos" CollectionSpecimenID="78" CollectionEventID="27" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Luctus lacus vestibulum himenaeos" SpecimenID="78" CollectionEventID="27" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -103,7 +103,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Lorem magna magnis massa" Icon="Home">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Metus nam" CollectionSpecimenID="91" CollectionEventID="81" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Metus nam" SpecimenID="91" CollectionEventID="81" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -111,7 +111,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Morbi nunc imperdiet mattis" Icon="Observation">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Lobortis mauris sed malesuada odio" CollectionSpecimenID="49" CollectionEventID="70" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Lobortis mauris sed malesuada odio" SpecimenID="49" CollectionEventID="70" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -119,7 +119,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Nascetur iaculis pharetra" Icon="None">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Orci penatibus porttitor lacinia neque" CollectionSpecimenID="47" CollectionEventID="31" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Orci penatibus porttitor lacinia neque" SpecimenID="47" CollectionEventID="31" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -127,7 +127,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Mollis dis tincidunt placerat pede" Icon="Map">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Pulvinar netus montes" CollectionSpecimenID="16" CollectionEventID="65" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Pulvinar netus montes" SpecimenID="16" CollectionEventID="65" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -135,7 +135,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Nulla laoreet" Icon="NoEventSeries">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Sagittis vestibulum" CollectionSpecimenID="13" CollectionEventID="47" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Sagittis vestibulum" SpecimenID="13" CollectionEventID="47" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -143,7 +143,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Quam est tristique" Icon="Analysis">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Quis urna" CollectionSpecimenID="18" CollectionEventID="57" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Quis urna" SpecimenID="18" CollectionEventID="57" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -151,7 +151,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Nostra porta senectus" Icon="None">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Ornare platea" CollectionSpecimenID="25" CollectionEventID="92" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Ornare platea" SpecimenID="25" CollectionEventID="92" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -159,7 +159,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Adipiscing ultricies cras" Icon="Photo">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Primis rutrum venenatis" CollectionSpecimenID="94" CollectionEventID="18" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Primis rutrum venenatis" SpecimenID="94" CollectionEventID="18" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>
@@ -167,7 +167,7 @@
 		</DiversityPhone_ViewModels:SpecimenVM>
 		<DiversityPhone_ViewModels:SpecimenVM Description="Sociosqu duis" Icon="Video">
 			<DiversityPhone_ViewModels:SpecimenVM.Model>
-				<DiversityPhone_Model:Specimen AccessionNumber="Hac leo vulputate mus" CollectionSpecimenID="32" CollectionEventID="42" LogUpdatedWhen="03/24/2012 16:06:32"/>
+				<DiversityPhone_Model:Specimen AccessionNumber="Hac leo vulputate mus" SpecimenID="32" CollectionEventID="42" LogUpdatedWhen="03/24/2012 16:06:32"/>
 			</DiversityPhone_ViewModels:SpecimenVM.Model>
 			<DiversityPhone_ViewModels:SpecimenVM.Select>
 				<ReactiveUI_Xaml:ReactiveCommand/>

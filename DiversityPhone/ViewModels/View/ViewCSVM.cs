@@ -16,6 +16,7 @@ namespace DiversityPhone.ViewModels
 
     public class ViewCSVM : ElementPageViewModel<Specimen>
     {
+        ReactiveCollection<IdentificationUnit> unitPool = new ListeningReactiveCollection<IdentificationUnit>();  
 
         private Container IOC;
         public enum Pivots
@@ -60,7 +61,8 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
 
-        public ViewCSVM(Container ioc)            
+        public ViewCSVM(Container ioc) 
+            :base(false)
         {
             IOC = ioc;
             Add = new ReactiveCommand();
@@ -76,26 +78,28 @@ namespace DiversityPhone.ViewModels
                     }), x => x.UnitList);
                 
             fetchSubunits
-                .RegisterAsyncAction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>));
+                .RegisterAsyncFunction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>))
+                .SelectMany(ius => ius)
+                .Subscribe(unitPool.Add);
 
-            ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Image).Select(im => new ImageVM(im)))
+            ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Image).Select(im => new ImageVM(im)))
              .Do(_ => {if(ImageList != null) ImageList.Clear();})
              .SelectMany(images => images)
-             .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+             .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
              .CreateCollection();
             ValidModel.Subscribe(getImages.Execute);
 
-            AudioList = getAudioFiles.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
+            AudioList = getAudioFiles.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
                 .Do(_ => { if (AudioList != null) AudioList.Clear(); })
                 .SelectMany(audioFiles => audioFiles)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
                 .CreateCollection();
             ValidModel.Subscribe(getAudioFiles.Execute);
 
-            VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).CollectionSpecimenID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
+            VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
                .Do(_ => { if (VideoList != null) VideoList.Clear(); })
                .SelectMany(videoFiles => videoFiles)
-               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
                .CreateCollection();
             ValidModel.Subscribe(getVideos.Execute);    
 
@@ -112,7 +116,7 @@ namespace DiversityPhone.ViewModels
                             return Page.EditIU;
                     }
                 })
-                .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.CollectionSpecimenID.ToString()))
+                .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
                 );
             Maps = new ReactiveCommand();
             var mapMessageSource =
@@ -121,21 +125,25 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(mapMessageSource);
         }
 
-        private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
+        private IEnumerable<IdentificationUnit> fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
         {
-            var toplevel = Storage.getTopLevelIUForSpecimen(Current.Model);
-            foreach(var top in  toplevel)
+            var subunits = Storage.getIUForSpecimen(Current.Model.SpecimenID);
+            var toplevel = Storage.getTopLevelIUForSpecimen(Current.Model.SpecimenID);
+                      
+            foreach(var top in toplevel)
             {
-                var unit = new IdentificationUnitVM(top,2);
+                var unit = new IdentificationUnitVM(top,unitPool);
                 unit.SelectObservable
                     .Select(vm => vm.Model.UnitID.ToString())
                     .ToNavigation(Page.ViewIU);
                 subject.OnNext(unit);
             }
+            return subunits;
         }       
 
         protected override Specimen ModelFromState(PageState s)
-        {
+        { 
+
             if (s.Context != null)
             {
                 int id;
@@ -155,7 +163,7 @@ namespace DiversityPhone.ViewModels
             if (!model.IsObservation())
             {
                 res.SelectObservable
-                    .Select(vm => vm.Model.CollectionSpecimenID.ToString())
+                    .Select(vm => vm.Model.SpecimenID.ToString())
                     .ToNavigation(Page.EditCS);
             }
             else

@@ -36,6 +36,8 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Properties
+
+        ReactiveCollection<IdentificationUnit> unitPool = new ReactiveCollection<IdentificationUnit>();
         Stack<int> unitBackStack = new Stack<int>();
 
         private Pivots _SelectedPivot;
@@ -92,7 +94,9 @@ namespace DiversityPhone.ViewModels
                 }),
                 x => x.Subunits);
             fetchSubunits
-                .RegisterAsyncAction(subject => getSubUnitsImpl(subject as ISubject<IdentificationUnitVM>));
+                .RegisterAsyncFunction(s => fetchSubunitsImpl(s as ISubject<IdentificationUnitVM>))
+                .SelectMany(ius => ius)
+                .Subscribe(unitPool.Add);
 
             _Analyses = this.ObservableToProperty(
                 this.ObservableForProperty(x => x.SelectedPivot)
@@ -171,6 +175,21 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_ => goBack());
 
         }
+        private IEnumerable<IdentificationUnit> fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
+        {
+            var subunits = Storage.getIUForSpecimen(Current.Model.SpecimenID);
+            var toplevel = Storage.getSubUnits(Current.Model);
+
+            foreach (var top in toplevel)
+            {
+                var unit = new IdentificationUnitVM(top, unitPool);
+                unit.SelectObservable
+                    .Select(vm => vm.Model.UnitID.ToString())
+                    .ToNavigation(Page.ViewIU);
+                subject.OnNext(unit);
+            }
+            return subunits;
+        }   
 
         private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
         {
@@ -214,26 +233,14 @@ namespace DiversityPhone.ViewModels
                 }
             }                
             return null;
-        } 
-      
-        private void getSubUnitsImpl(ISubject<IdentificationUnitVM> subject)
-        {
-            var toplevel = Storage.getSubUnits(Current.Model);
-            foreach (var top in toplevel)
-            {
-                var unit = new IdentificationUnitVM(top, 2);
-                unit.SelectObservable
-                    .Select(vm => vm.Model.UnitID)
-                    .Subscribe(id => selectSubUnit(id));
-                subject.OnNext(unit);
-            }                
-        }
+        }     
+       
 
         SerialDisposable model_select = new SerialDisposable();
 
         protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
         {
-            var res = new IdentificationUnitVM(model);
+            var res = new IdentificationUnitVM(model, unitPool);
             model_select.Disposable = res.SelectObservable
                 .Select(vm => vm.Model.UnitID.ToString())
                 .ToNavigation(Page.EditIU);

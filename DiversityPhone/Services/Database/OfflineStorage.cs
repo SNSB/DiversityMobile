@@ -362,7 +362,7 @@
         {
             return singletonQuery(
                 ctx => from spec in ctx.Specimen
-                       where spec.CollectionSpecimenID == id
+                       where spec.SpecimenID == id
                        select spec);
         }
 
@@ -389,12 +389,12 @@
 
         public void deleteSpecimen(Specimen toDeleteSpec)
         {
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Specimen, toDeleteSpec.CollectionSpecimenID);
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Specimen, toDeleteSpec.SpecimenID);
             foreach (MultimediaObject mmo in attachedMMO)
             {
                 this.deleteMMO(mmo);
             }
-            IList<IdentificationUnit> attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec);
+            IList<IdentificationUnit> attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec.SpecimenID);
             foreach (IdentificationUnit topIU in attachedTopLevelIU)
                 this.deleteIU(topIU);
             deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
@@ -406,12 +406,22 @@
 
         #region IdentificationUnit
 
-        public IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec)
+        public IList<IdentificationUnit> getIUForSpecimen(int specimenID)
+        {
+            return uncachedQuery(
+                ctx =>
+                    from iu in ctx.IdentificationUnits
+                    where iu.SpecimenID == specimenID
+                    select iu
+                    );
+        }
+
+        public IList<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID)
         {
             return cachedQuery(IdentificationUnit.Operations,
             ctx =>
                 from iu in ctx.IdentificationUnits
-                where iu.SpecimenID == spec.CollectionSpecimenID && iu.RelatedUnitID == null 
+                where iu.SpecimenID == specimenID && iu.RelatedUnitID == null 
                 select iu
                 );
         }
@@ -864,7 +874,7 @@
                     }
                     IQueryable<IdentificationUnit> clientIUListForSpec =
                         from iu in ctx.IdentificationUnits
-                        where iu.SpecimenID== spec.CollectionSpecimenID
+                        where iu.SpecimenID== spec.SpecimenID
                         select iu;
                     foreach (IdentificationUnit iu in clientIUListForSpec)
                     {
@@ -978,7 +988,7 @@
             {
                 var savedSpecimens =
                     from spec in ctx.Specimen
-                    where spec.CollectionSpecimenID == clientKey
+                    where spec.SpecimenID == clientKey
                     select spec;
                 Specimen clientSpecimen = savedSpecimens.First();//TODO: Check if there is a key valuation
                 clientSpecimen.DiversityCollectionSpecimenID = serverKey;

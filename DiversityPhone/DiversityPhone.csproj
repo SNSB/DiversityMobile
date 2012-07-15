@@ -228,6 +228,7 @@
     <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\ViewVideoVM.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
+    <Compile Include="ViewModels\ReactiveCollectionListener.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SelectMapsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />

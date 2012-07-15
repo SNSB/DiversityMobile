@@ -17,41 +17,56 @@ namespace DiversityPhone.ViewModels
    
     public class IdentificationUnitVM : ElementVMBase<IdentificationUnit>
     {        
-        public override string Description { get { return Model.WorkingName; } }
-        public override Icon Icon { get { return Icon.IdentificationUnit; } }
+        private const int MAX_DISPLAY_DEPTH = 2;
 
+        public override string Description { get { return Model.WorkingName; } }
+        public override Icon Icon { get { return Icon.IdentificationUnit; } }       
 
         public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; }
-        
-        //public bool HasSubUnits { get; private set; }   
-        private ReactiveAsyncCommand getSubUnits;
 
-        public IdentificationUnitVM(IdentificationUnit model, int sublevels = 0)
-            : base(model)
+        public ReactiveCollection<IdentificationUnit> UnitPool { get; private set; }
+
+        private int _Level;
+
+        public int Level
         {
-            if (sublevels > 0)
+            get
             {
-                getSubUnits = new ReactiveAsyncCommand();
-                SubUnits =
-                getSubUnits.RegisterAsyncFunction(_ =>
-                    {
-                        using (var ctx = new DiversityDataContext())
-                        {
-                            return (from iu in ctx.IdentificationUnits
-                                    where iu.RelatedUnitID == model.UnitID
-                                    select new IdentificationUnitVM(SelectSubject, iu, sublevels - 1)).ToList();
-                        }
-                    })
-                    .SelectMany(vms => vms)
-                    .CreateCollection();
-                getSubUnits.Execute(null);
+                return _Level;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Level, ref _Level, value);
             }
         }
+        
+        private IdentificationUnitVM (IdentificationUnit model, int level, ReactiveCollection<IdentificationUnit> unitPool)
+            : base(model)
+	    {
+            Level = level;
+            UnitPool = unitPool;
+            if (UnitPool != null && Level <= MAX_DISPLAY_DEPTH)
+            {
+                SubUnits = UnitPool
+                    .CreateDerivedCollection(iu => new IdentificationUnitVM(iu,this), iu => iu.RelatedUnitID == Model.UnitID, (a,b) => a.Model.UnitID.CompareTo(b.Model.UnitID));
+            }
+            else
+            {
+                SubUnits = new ReactiveCollection<IdentificationUnitVM>();
+            }
+	    }
+                  
 
-        public IdentificationUnitVM(IObserver<ElementVMBase<IdentificationUnit>> selectObserver, IdentificationUnit model, int sublevels = 0)
-            : this(model, sublevels)
+        public IdentificationUnitVM(IdentificationUnit model, ReactiveCollection<IdentificationUnit> unitPool = null)
+            : this(model, 0, unitPool)
         {
-            SelectSubject.Subscribe(selectObserver.OnNext);
+            
+        }
+
+        public IdentificationUnitVM(IdentificationUnit model, IdentificationUnitVM parent)
+            : this(model,parent.Level + 1, parent.UnitPool)
+        {
+            SelectSubject.Subscribe(parent.SelectSubject);
         }      
         
     }

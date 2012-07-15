@@ -11,7 +11,7 @@
     public class Specimen : IModifyable
     {
         [Column(IsPrimaryKey = true)]
-        public int CollectionSpecimenID { get; set; }
+        public int SpecimenID { get; set; }
 
         [Column(CanBeNull = true)]
         public int? DiversityCollectionSpecimenID { get; set; }
@@ -60,15 +60,15 @@
         {
             Operations = new QueryOperations<Specimen>(
                 //Smallerthan
-                          (q, spec) => q.Where(row => row.CollectionSpecimenID < spec.CollectionSpecimenID),
+                          (q, spec) => q.Where(row => row.SpecimenID < spec.SpecimenID),
                 //Equals
-                          (q, spec) => q.Where(row => row.CollectionSpecimenID == spec.CollectionSpecimenID),
+                          (q, spec) => q.Where(row => row.SpecimenID == spec.SpecimenID),
                 //Orderby
-                          (q) => q.OrderBy(spec => spec.CollectionSpecimenID),
+                          (q) => q.OrderBy(spec => spec.SpecimenID),
                 //FreeKey
                           (q, spec) =>
                           {
-                              spec.CollectionSpecimenID = QueryOperations<Specimen>.FindFreeIntKey(q, row => row.CollectionSpecimenID);
+                              spec.SpecimenID = QueryOperations<Specimen>.FindFreeIntKey(q, row => row.SpecimenID);
                           });
         }
 
@@ -81,7 +81,7 @@
             export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
             export.AccessionNumber = spec.AccessionNumber;
             export.CollectionEventID = spec.CollectionEventID;
-            export.CollectionSpecimenID = spec.CollectionSpecimenID;
+            export.CollectionSpecimenID = spec.SpecimenID;
             return export;
         }
 

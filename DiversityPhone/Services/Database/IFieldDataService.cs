@@ -44,7 +44,8 @@ using System;
         void addOrUpdateSpecimen(Specimen spec);
         void updateSpecimenKey(int oldSSpecimenKey, int newSpecimenKey);
 
-        IList<IdentificationUnit> getTopLevelIUForSpecimen(Specimen spec);
+        IList<IdentificationUnit> getIUForSpecimen(int specimenID);
+        IList<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID);
         IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
         IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
