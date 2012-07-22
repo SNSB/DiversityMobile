@@ -47,7 +47,29 @@ namespace DiversityPhone
             {
                 initialized = true;
 
+                var add = 
+                    new ApplicationBarIconButton(new Uri("/Images/appbar.add.rest.png", UriKind.RelativeOrAbsolute))
+                    {
+                        Text = DiversityResources.Home_Header_ButtonAdd                    
+                    };
+                ApplicationBar.Buttons.Add(add);
                 _add = new CommandButtonAdapter(VM.Add, ApplicationBar.Buttons[0] as IApplicationBarIconButton);
+          
+                var settings =
+                    new ApplicationBarIconButton(new Uri("/Images/appbar.feature.settings.rest.png", UriKind.RelativeOrAbsolute))
+                    {
+                        Text = DiversityResources.Home_Header_ButtonSettings                   
+                    };
+                settings.Click += Settings_Click;
+                ApplicationBar.Buttons.Add(settings);
+
+                var maps =
+                    new ApplicationBarIconButton(new Uri("/Images/appbar.globe.rest.png", UriKind.RelativeOrAbsolute))
+                    {
+                        Text = DiversityResources.Home_Header_ButtonMaps                   
+                    };
+                maps.Click += LoadedMaps_Click;
+                ApplicationBar.Buttons.Add(maps);
             }
         }
     }

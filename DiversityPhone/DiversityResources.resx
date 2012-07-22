@@ -147,6 +147,15 @@
   <data name="GeoCoordinates_Suffix_W" xml:space="preserve">
     <value>W</value>
   </data>
+  <data name="Home_Header_ButtonAdd" xml:space="preserve">
+    <value>add series</value>
+  </data>
+  <data name="Home_Header_ButtonMaps" xml:space="preserve">
+    <value>maps</value>
+  </data>
+  <data name="Home_Header_ButtonSettings" xml:space="preserve">
+    <value>settings</value>
+  </data>
   <data name="Home_Info_CantOpenNewSeries" xml:space="preserve">
     <value>Can't open a new Series while there is still an unfinished one.</value>
   </data>
@@ -182,6 +191,9 @@
   </data>
   <data name="RefreshVocabularyTask_State_LoadingVocabulary" xml:space="preserve">
     <value>Loading Vocabulary</value>
+  </data>
+  <data name="Setup_Header_ButtonSave" xml:space="preserve">
+    <value>save</value>
   </data>
   <data name="Setup_Header_Project" xml:space="preserve">
     <value>Project</value>

@@ -1,4 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
+    
     x:Class="DiversityPhone.ViewEV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -20,7 +21,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <StackPanel x:Name="LayoutRoot" Background="Transparent">
+    <StackPanel x:Name="LayoutRoot">
         <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}"
                         Content="{Binding Current}"/>
         <!--Pivot Control-->
@@ -61,8 +62,8 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="Add" Click="Add_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="Map" Click="Map_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add" Click="Add_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="map" Click="Map_Click"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

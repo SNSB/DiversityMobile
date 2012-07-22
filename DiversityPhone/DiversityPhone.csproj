@@ -675,7 +675,9 @@
     <None Include="Service References\MediaService4\MediaService41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
     <None Include="Properties\DataSources\DiversityService.Model.Project.datasource" />
     <None Include="Properties\AppManifest.xml" />
@@ -704,9 +706,6 @@
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

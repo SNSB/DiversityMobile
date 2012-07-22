@@ -70,14 +70,14 @@
             </controls:Pivot>
         </Grid>
 
-        <Grid Background="Black" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
+        <Grid Background="{StaticResource PhoneBackgroundBrush}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
             <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
     </Grid>
  
    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" >
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save"/>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

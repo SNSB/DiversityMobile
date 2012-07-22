@@ -47,11 +47,8 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add series" />            
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.settings.rest.png" Text="userprofile" Click="Settings_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.map.rest.png" Text="maps" Click="LoadedMaps_Click"/>            
-        </shell:ApplicationBar>
-        
+                  
+        </shell:ApplicationBar> 
         
     </phone:PhoneApplicationPage.ApplicationBar>
 

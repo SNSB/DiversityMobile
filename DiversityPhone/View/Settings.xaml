@@ -24,29 +24,32 @@
     
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">                
-        <!--Pivot Control-->
-        
+    <Grid x:Name="LayoutRoot" Background="Transparent">         
+        <StackPanel>
+            <TextBlock TextWrapping="Wrap" Text="Settings" Style="{StaticResource PhoneTextTitle1Style}"/>
 
-        <ScrollViewer Grid.Row="1">
-            <StackPanel>
-                <TextBlock TextWrapping="Wrap" Text="Settings" Style="{StaticResource PhoneTextTitle1Style}"/>
-                <TextBlock Text="User" Style="{StaticResource PhoneTextSmallStyle}"/>
-                <TextBlock Text="{Binding Model.AgentName}" Style="{StaticResource PhoneTextLargeStyle}"/>
-                
-                <TextBlock Text="Repository" Style="{StaticResource PhoneTextSmallStyle}"/>
-                <TextBlock Text="{Binding Model.HomeDBName}" Style="{StaticResource PhoneTextLargeStyle}"/>
-                
-                <TextBlock Text="Project" Style="{StaticResource PhoneTextSmallStyle}"/>
-                <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
-                
-                <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
-                <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
-                <HyperlinkButton Content="Upload Data" Click="Upload_Click"/>
-            </StackPanel>
-        </ScrollViewer>
+            <TextBlock Text="Version" Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Style="{StaticResource PhoneTextLargeStyle}">
+                <Run>
+                    DiversityMobile 
+                </Run>
+                <Run x:Name="version_info"/>
+            </TextBlock>
 
-       
+            <TextBlock Text="User" Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Text="{Binding Model.AgentName}" Style="{StaticResource PhoneTextLargeStyle}"/>
+                
+            <TextBlock Text="Repository" Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Text="{Binding Model.HomeDBName}" Style="{StaticResource PhoneTextLargeStyle}"/>
+                
+            <TextBlock Text="Project" Style="{StaticResource PhoneTextSmallStyle}"/>
+            <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
+                
+            <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
+            <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
+            <HyperlinkButton Content="Upload Data" Click="Upload_Click"/>
+            <HyperlinkButton Content="Contact Administrator" Click="Administrator_Click"/>
+        </StackPanel>         
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>

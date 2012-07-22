@@ -151,6 +151,33 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die add series ähnelt.
+        /// </summary>
+        public static string Home_Header_ButtonAdd {
+            get {
+                return ResourceManager.GetString("Home_Header_ButtonAdd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die maps ähnelt.
+        /// </summary>
+        public static string Home_Header_ButtonMaps {
+            get {
+                return ResourceManager.GetString("Home_Header_ButtonMaps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die settings ähnelt.
+        /// </summary>
+        public static string Home_Header_ButtonSettings {
+            get {
+                return ResourceManager.GetString("Home_Header_ButtonSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Can&apos;t open a new Series while there is still an unfinished one. ähnelt.
         /// </summary>
         public static string Home_Info_CantOpenNewSeries {
@@ -255,6 +282,15 @@ namespace DiversityPhone {
         public static string RefreshVocabularyTask_State_LoadingVocabulary {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingVocabulary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
+        /// </summary>
+        public static string Setup_Header_ButtonSave {
+            get {
+                return ResourceManager.GetString("Setup_Header_ButtonSave", resourceCulture);
             }
         }
         

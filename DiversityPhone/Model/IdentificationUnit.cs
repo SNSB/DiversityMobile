@@ -4,12 +4,14 @@ using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
 using Svc = DiversityPhone.DiversityService;
 using System.Data.Linq;
+using Microsoft.Phone.Data.Linq.Mapping;
 
 
 namespace DiversityPhone.Model
 {
 
     [Table]
+    [Index(Columns="RelatedUnitID", IsUnique=false, Name="relunit_idx")] 
     public class IdentificationUnit : IModifyable, ILocalizable
     {
         public IdentificationUnit()

@@ -27,17 +27,24 @@ namespace DiversityPhone.View
         public Setup()
         {
             InitializeComponent();
+
+            var save = new ApplicationBarIconButton(new Uri("/Images/appbar.save.rest.png", UriKind.RelativeOrAbsolute))
+            {
+                Text = DiversityResources.Setup_Header_ButtonSave
+            };
+            ApplicationBar.Buttons.Add(save);
+            _save = new CommandButtonAdapter(VM.Save, save);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             while (this.NavigationService.BackStack.Any())
                 this.NavigationService.RemoveBackEntry();
+
             if (progress == null)
                 progress = new ProgressBinding<SetupVM>(VM, x => x.IsBusy);
 
-            if (_save == null)
-                _save = new CommandButtonAdapter(VM.Save, ApplicationBar.Buttons[0] as IApplicationBarIconButton);
+            
 
             VM.ObservableForProperty(x => x.IsBusy)
                 .Value()
