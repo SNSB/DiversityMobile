@@ -35,7 +35,7 @@
 
             <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYMOBILE" Style="{StaticResource PhoneTextNormalStyle}" Width="263" HorizontalAlignment="Left" />
             <Grid>
-                <Image Height="100" Margin="0,0,30,6" Name="imageApplication" Width="100" Source="/Images/appbar.map.rest.png" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Center" />
+                <Image Height="100" Margin="0,0,30,6" Name="imageApplication" Width="100" Source="/Images/appbar.globe.rest.png" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Center" />
                 <TextBlock x:Name="PageTitle" Text="maps" Margin="0,0,0,0" Style="{StaticResource PhoneTextTitle1Style}" Width="220" Height="91" HorizontalAlignment="Left"  VerticalAlignment="Center" />
             </Grid>
         </StackPanel>

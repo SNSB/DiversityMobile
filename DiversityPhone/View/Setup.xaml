@@ -70,7 +70,7 @@
             </controls:Pivot>
         </Grid>
 
-        <Grid Background="Black" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
+        <Grid Background="{StaticResource PhoneBackgroundBrush}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
             <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
     </Grid>

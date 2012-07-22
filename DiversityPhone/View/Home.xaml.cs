@@ -64,7 +64,7 @@ namespace DiversityPhone
                 ApplicationBar.Buttons.Add(settings);
 
                 var maps =
-                    new ApplicationBarIconButton(new Uri("/Images/appbar.map.rest.png", UriKind.RelativeOrAbsolute))
+                    new ApplicationBarIconButton(new Uri("/Images/appbar.globe.rest.png", UriKind.RelativeOrAbsolute))
                     {
                         Text = DiversityResources.Home_Header_ButtonMaps                   
                     };
