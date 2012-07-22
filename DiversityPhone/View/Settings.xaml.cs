@@ -16,6 +16,9 @@ using System.Reactive.Linq;
 using ReactiveUI;
 using System.Reactive.Disposables;
 using DiversityPhone.View.Appbar;
+using System.Reflection;
+using Microsoft.Phone.Tasks;
+
 
 namespace DiversityPhone.View
 {
@@ -31,7 +34,9 @@ namespace DiversityPhone.View
 
         public Settings()
         {
-            InitializeComponent();            
+            InitializeComponent();
+
+            version_info.Text = GetVersionNumber();
         }      
 
         private void ManageTaxa_Click(object sender, RoutedEventArgs e)
@@ -42,7 +47,7 @@ namespace DiversityPhone.View
 
         private void Upload_Click(object sender, RoutedEventArgs e)
         {
-            if (VM != null)
+            if (VM != null)                
                 VM.UploadData.Execute(null);
         }
 
@@ -70,6 +75,22 @@ namespace DiversityPhone.View
                 ApplicationBar.Buttons.Add(refreshBtn);
                 toRefresh = new CommandButtonAdapter(VM.RefreshVocabulary, refreshBtn);              
             }            
-        }      
+        }
+
+        private void Administrator_Click(object sender, RoutedEventArgs e)
+        {
+            new EmailComposeTask()
+            {
+                To = "weiss@bsm.mwn.de",
+                Subject = "DiversityMobile"
+            }.Show();
+        }
+
+        private static string GetVersionNumber()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var parts = asm.FullName.Split(',');
+            return parts[1].Split('=')[1];
+        }
     }
 }

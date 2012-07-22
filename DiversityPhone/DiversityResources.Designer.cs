@@ -286,6 +286,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
+        /// </summary>
+        public static string Setup_Header_ButtonSave {
+            get {
+                return ResourceManager.GetString("Setup_Header_ButtonSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Project ähnelt.
         /// </summary>
         public static string Setup_Header_Project {

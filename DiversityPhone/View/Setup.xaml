@@ -77,7 +77,7 @@
  
    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" >
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="save"/>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
