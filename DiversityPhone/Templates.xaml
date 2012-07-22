@@ -154,15 +154,19 @@
             <Image Grid.Column="0" 
                    Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="40" Width="40" HorizontalAlignment="Left"/>
             <TextBlock Grid.Column="1" 
-                       Text="{Binding DisplayText}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12,0,0,0"/>
-            <Image Grid.Column="2" 
-                   Source="/Images/appbar.check.rest.png"
-                   HorizontalAlignment="Right" VerticalAlignment="Center"
-                   Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}"/>
-            <Image Grid.Column="2" 
-                   Source="/Images/appbar.download.rest.png" 
-                   HorizontalAlignment="Right" VerticalAlignment="Center" 
-                   Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"/>
+                       Text="{Binding DisplayText}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12,0,0,0"/>            
+            <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48"
+                       Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}">
+                <Rectangle.OpacityMask>
+                    <ImageBrush ImageSource="/Images/appbar.check.rest.png" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48" 
+                       Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
+                <Rectangle.OpacityMask>
+                    <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
         </Grid> 
     </DataTemplate>
 

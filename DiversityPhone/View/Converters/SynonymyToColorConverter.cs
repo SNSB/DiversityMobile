@@ -11,9 +11,9 @@ namespace DiversityPhone.View
 
     public class SynonymyToColorConverter : IValueConverter
     {
-        private const string ACCEPTED_KEY = "SynonymyAcceptedColor";
-        private const string SYNONYM_KEY = "SynonymySynonymColor";
-        private const string WORKING_KEY = "SynonymyWorkingNameColor";
+        private const string ACCEPTED_KEY = "SynonymyAcceptedBrush";
+        private const string SYNONYM_KEY = "SynonymySynonymBrush";
+        private const string WORKING_KEY = "SynonymyWorkingNameBrush";
 
         ResourceDictionary _Dictionary;
         ResourceDictionary Dictionary

@@ -92,7 +92,7 @@
         
     </Style>
 
-    <SolidColorBrush x:Key="SynonymyAcceptedColor" Color="{StaticResource PhoneForegroundColor}"/>
-    <SolidColorBrush x:Key="SynonymySynonymColor">Red</SolidColorBrush>
-    <SolidColorBrush x:Key="SynonymyWorkingNameColor">White</SolidColorBrush>
+    <SolidColorBrush x:Key="SynonymyAcceptedBrush" Color="Green"/>
+    <SolidColorBrush x:Key="SynonymySynonymBrush">Red</SolidColorBrush>
+    <SolidColorBrush x:Key="SynonymyWorkingNameBrush" Color="{StaticResource PhoneForegroundColor}" />
 </ResourceDictionary>
