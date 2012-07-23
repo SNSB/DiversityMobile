@@ -114,7 +114,7 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(
                 DeleteSubject                
                 .Where(result => result == DialogResult.OKYes && Current != null)
-                .Select(_ => Current.Model)               
+                .Select(_ => Current as IElementVM<T>)               
                 .Do(_ => OnDelete()),
                 MessageContracts.DELETE
                 );

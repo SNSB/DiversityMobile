@@ -77,7 +77,7 @@ namespace DiversityPhone.ViewModels
             UnitList = unitList
                 .CreateCollection();
             fetchSubunits.Execute(unitList);
-            UnitList.ListenToChanges(vm => vm.Model.RelatedUnitID == null);
+            UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);
                 
 
             ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Image).Select(im => new ImageVM(im)))

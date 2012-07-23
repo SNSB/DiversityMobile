@@ -112,7 +112,7 @@ namespace DiversityPhone.ViewModels
                 {
                     select_subscription.Clear();
                     select_subscription.Add(vm.SelectObservable.Subscribe(selectSubUnit));
-                    select_subscription.Add(vm.SubUnits.ListenToChanges());
+                    select_subscription.Add(vm.SubUnits.ListenToChanges<IdentificationUnit, IdentificationUnitVM>());
                 });
 
             _Subunits = this.ObservableToProperty(

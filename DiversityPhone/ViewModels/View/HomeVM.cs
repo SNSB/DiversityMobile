@@ -82,7 +82,7 @@ namespace DiversityPhone.ViewModels
                 (Maps=new ReactiveCommand())
                     .Subscribe(_ =>loadMapPage()),  
                     SeriesList
-                    .ListenToChanges()
+                    .ListenToChanges<EventSeries, EventSeriesVM>()
             };
 
             getSeries.Execute(null);

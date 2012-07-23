@@ -1,17 +1,21 @@
-﻿namespace DiversityPhone.Services
+﻿using System;
+using System.Reactive.Linq;
+using System.Linq;
+using System.Collections.Generic;
+using DiversityPhone.Model;
+using ReactiveUI;
+using DiversityPhone.Messages;
+using DiversityPhone.Common;
+using System.Data.Linq;
+using System.Text;
+using System.Linq.Expressions;
+using Svc = DiversityPhone.DiversityService;
+using System.IO.IsolatedStorage;
+using DiversityPhone.ViewModels;
+
+namespace DiversityPhone.Services
 {
-    using System;
-    using System.Linq;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using ReactiveUI;
-    using DiversityPhone.Messages;
-    using DiversityPhone.Common;
-    using System.Data.Linq;
-    using System.Text;
-    using System.Linq.Expressions;
-    using Svc = DiversityPhone.DiversityService;
-    using System.IO.IsolatedStorage;
+   
 
     public class OfflineStorage : IFieldDataService
     {
@@ -23,12 +27,13 @@
         {
             this._messenger = messenger;
 
+            
+
             _subscriptions = new List<IDisposable>()
             {
-
-                _messenger.Listen<EventSeries>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Model()                        
                     .Subscribe(es => addOrUpdateEventSeries(es)),
-                _messenger.Listen<EventSeries>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()  
                     .Subscribe(es => deleteEventSeries(es)),
 
                 _messenger.Listen<Event>(MessageContracts.SAVE)
@@ -69,6 +74,8 @@
       
             };           
         }
+
+       
 
         #region EventSeries
 

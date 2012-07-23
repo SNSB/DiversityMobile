@@ -12,7 +12,7 @@ namespace DiversityPhone.ViewModels
     /// Base class for all Element ViewModels (VMs, that represent a single item of a Model Class).    /// 
     /// </summary>
     /// <typeparam name="T">The Model class that this VM will encapsulate.</typeparam>
-    public abstract class ElementVMBase<T> : ReactiveObject
+    public abstract class ElementVMBase<T> : ReactiveObject, IElementVM<T>
     {
         /// <summary>
         /// Operation: Select (Go To Target Page)
