@@ -39,7 +39,7 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
 
-        Stack<ElementVMBase<IdentificationUnit>> unitBackStack = new Stack<ElementVMBase<IdentificationUnit>>();
+        Stack<IdentificationUnitVM> unitBackStack = new Stack<IdentificationUnitVM>();
 
         private Pivots _SelectedPivot;
         public Pivots SelectedPivot
@@ -55,9 +55,21 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        public ElementVMBase<IdentificationUnit> Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<ElementVMBase<IdentificationUnit>> _Current;
-        
+        private IdentificationUnitVM _Current;
+
+        public IdentificationUnitVM Current
+        {
+            get
+            {
+                return _Current;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value);
+            }
+        }
+
+        CompositeDisposable select_subscription = new CompositeDisposable();
 
         private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _Subunits;
         public ReactiveCollection<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
@@ -84,18 +96,38 @@ namespace DiversityPhone.ViewModels
         {
             IOC = ioc;
             Vocabulary = ioc.Resolve<IVocabularyService>();
-            Storage = ioc.Resolve<IFieldDataService>();            
+            Storage = ioc.Resolve<IFieldDataService>();
 
-            _Current = Messenger.Listen<ElementVMBase<IdentificationUnit>>(MessageContracts.VIEW)
-                .ToProperty(this, x => x.Current);
+            DistinctStateObservable
+                .Select(s => s.VMContext as IdentificationUnitVM)
+                .Where(ctx => ctx != null)
+                .BindTo(this, x => x.Current);
 
-            var valid_model = _Current.Select(vm => vm.Model).Where(m => m!= null);
+
+            var current = this.ObservableForProperty(x => x.Current).Value().Publish();
+            current.Connect();
+
+            current
+                .Subscribe((vm) => 
+                {
+                    select_subscription.Clear();
+                    select_subscription.Add(vm.SelectObservable.Subscribe(selectSubUnit));
+                    select_subscription.Add(vm.SubUnits.ListenToChanges());
+                });
+
+            _Subunits = this.ObservableToProperty(
+                current
+                .Select(vm => vm.SubUnits),
+                x => x.Subunits
+                );            
+
+            var valid_model = current.Select(vm => vm.Model).Where(m => m!= null);
 
             _Analyses = this.ObservableToProperty(
                 this.ObservableForProperty(x => x.SelectedPivot)
                 .Value()
                 .Merge(
-                    this.ObservableForProperty(x => x.Current) 
+                    current 
                     .Select(_ => SelectedPivot)) //If the page is refreshed on the descriptions pivot
                 .Where(x => x == Pivots.Descriptions)
                 .Select(_ => Current)

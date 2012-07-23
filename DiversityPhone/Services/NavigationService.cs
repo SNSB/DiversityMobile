@@ -58,6 +58,7 @@ namespace DiversityPhone.Services
             {
                 var vm = page.DataContext as PageViewModel;                
                 vm.SetState(visit_info);
+                vm.Activate();
             }           
         }        
         void NavigationStarted()
@@ -67,7 +68,8 @@ namespace DiversityPhone.Services
             if (page != null && page.DataContext is PageViewModel)
             {                 
                 var vm = page.DataContext as PageViewModel;
-                vm.SaveState();               
+                vm.SaveState();
+                vm.Deactivate();
             }           
         }
         public void Navigate(NavigationMessage msg)
@@ -178,7 +180,12 @@ namespace DiversityPhone.Services
 
             if (destination != null && _frame != null)
             {
-                States[visitCounter.ToString()] = new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer);
+                var newState = new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer);
+                if (msg is VMNavigationMessage)
+                    newState.VMContext = (msg as VMNavigationMessage).VM;
+
+                States[visitCounter.ToString()] = newState;
+
                 var destURI = new Uri(
                     string.Format("{0}?{1}={2}", destination, VISIT_KEY, visitCounter++),
                     UriKind.RelativeOrAbsolute);

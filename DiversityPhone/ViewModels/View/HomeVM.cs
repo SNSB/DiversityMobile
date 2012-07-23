@@ -34,7 +34,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Maps { get; private set; }              
         #endregion
 
-        private ReactiveAsyncCommand getSeries;
+        private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
 
         #region Properties              
         public ReactiveCollection<EventSeriesVM> SeriesList

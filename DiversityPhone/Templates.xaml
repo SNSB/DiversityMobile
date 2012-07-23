@@ -70,8 +70,7 @@
 
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationItemSelectTemplate}"
-                     Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
+                     ItemTemplate="{StaticResource IdentificationItemSelectTemplate}"/>
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
@@ -91,8 +90,7 @@
 
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationOneLevelItemTemplate}"
-                     Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
+                     ItemTemplate="{StaticResource IdentificationOneLevelItemTemplate}"/>
         </Grid>
     </DataTemplate>
     

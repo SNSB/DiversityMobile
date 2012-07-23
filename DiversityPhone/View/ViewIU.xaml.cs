@@ -43,5 +43,11 @@ namespace DiversityPhone.View
                 e.Cancel = true;
             }
         }
+
+        private void EditCurrent_Click(object sender, RoutedEventArgs e)
+        {
+            if (VM != null)
+                VM.EditCurrent.Execute(null);
+        }
     }
 }

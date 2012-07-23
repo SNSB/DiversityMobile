@@ -52,8 +52,8 @@ namespace DiversityPhone.Model
         [Column]
         public bool OnlyObserved { get; set; }
 
-        [Column]
         private string _TaxonomicGroup;
+        [Column]        
         public string TaxonomicGroup
         {
             get
@@ -84,10 +84,9 @@ namespace DiversityPhone.Model
         //Identification
         /// <summary>
         /// Names as displayed on the screen
-        /// </summary>
-        [Column]
+        /// </summary>       
         private string _WorkingName;
-
+        [Column]
         public string WorkingName
         {
             get
@@ -99,13 +98,11 @@ namespace DiversityPhone.Model
                 this.RaiseAndSetIfChanged(x => x.WorkingName, ref _WorkingName, value);
             }
         }
-        
 
 
 
-        [Column]
         private string _IdentificationUri;
-
+        [Column]
         public string IdentificationUri
         {
             get

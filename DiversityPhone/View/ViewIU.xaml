@@ -22,8 +22,17 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <StackPanel x:Name="LayoutRoot" Background="Transparent">        
-        <ContentControl Content="{Binding Current}"
-                        ContentTemplate="{StaticResource IdentificationSingleLevelItemTemplate}"/>
+        <ContentControl Content="{Binding Current}">
+            <ContentControl.ContentTemplate>
+                <DataTemplate>
+                    <Button Style="{StaticResource ItemButtonStyle}" Click="EditCurrent_Click">
+                        <ContentControl Content="{Binding}" 
+                                        ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
+                    </Button>
+                </DataTemplate>
+            </ContentControl.ContentTemplate>
+        </ContentControl>
+                        
         <!--Pivot Control-->
         <controls:Pivot VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <!--Pivot item one-->
