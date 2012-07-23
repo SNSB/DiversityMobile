@@ -15,8 +15,7 @@ namespace DiversityPhone.ViewModels
    
 
     public class ViewCSVM : ElementPageViewModel<Specimen>
-    {
-        ReactiveCollection<IdentificationUnit> unitPool = new ListeningReactiveCollection<IdentificationUnit>();  
+    {        
 
         private Container IOC;
         public enum Pivots
@@ -29,6 +28,9 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
 
+
+        private SerialDisposable select_registration = new SerialDisposable();
+        private ISubject<ElementVMBase<IdentificationUnit>> select_subject = new Subject<ElementVMBase<IdentificationUnit>>();
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null);
         #endregion
 
@@ -45,9 +47,10 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
         }
+
+
+        public ReactiveCollection<IdentificationUnitVM> UnitList { get; private set; }
         
-        public ReactiveCollection<IdentificationUnitVM> UnitList { get { return _UnitList.Value; } }
-        private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _UnitList;
         
         public ReactiveCollection<ImageVM> ImageList { get; private set; }
 
@@ -67,20 +70,15 @@ namespace DiversityPhone.ViewModels
             IOC = ioc;
             Add = new ReactiveCommand();
 
-            _UnitList = this.ObservableToProperty(
-                this.CurrentObservable
-                .Select(_ => new Subject<IdentificationUnitVM>())
-                .Select(subject =>
-                    {
-                        var coll = subject.CreateCollection();
-                        fetchSubunits.Execute(subject);
-                        return coll;
-                    }), x => x.UnitList);
-                
             fetchSubunits
-                .RegisterAsyncFunction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>))
-                .SelectMany(ius => ius)
-                .Subscribe(unitPool.Add);
+                .RegisterAsyncAction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>));
+
+            var unitList = new Subject<IdentificationUnitVM>();
+            UnitList = unitList
+                .CreateCollection();
+            fetchSubunits.Execute(unitList);
+            UnitList.ListenToChanges(vm => vm.Model.RelatedUnitID == null);
+                
 
             ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Image).Select(im => new ImageVM(im)))
              .Do(_ => {if(ImageList != null) ImageList.Clear();})
@@ -125,20 +123,34 @@ namespace DiversityPhone.ViewModels
             Messenger.RegisterMessageSource(mapMessageSource);
         }
 
-        private IEnumerable<IdentificationUnit> fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
+        private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> collection)
         {
-            var subunits = Storage.getIUForSpecimen(Current.Model.SpecimenID);
-            var toplevel = Storage.getTopLevelIUForSpecimen(Current.Model.SpecimenID);
-                      
-            foreach(var top in toplevel)
+            var subunits = new Queue<IdentificationUnit>(Storage.getIUForSpecimen(Current.Model.SpecimenID));
+            var collection_index = new Dictionary<int, IdentificationUnitVM>();          
+
+
+            while(subunits.Any())
             {
-                var unit = new IdentificationUnitVM(top,unitPool);
-                unit.SelectObservable
-                    .Select(vm => vm.Model.UnitID.ToString())
-                    .ToNavigation(Page.ViewIU);
-                subject.OnNext(unit);
-            }
-            return subunits;
+                var unit = subunits.Dequeue();
+                if (unit.RelatedUnitID == null)
+                {
+                    var uvm = new IdentificationUnitVM(unit);
+                    uvm.SelectObservable
+                        .Subscribe(select_subject);
+
+                    collection.OnNext(uvm);
+                }
+                else if (collection_index.ContainsKey(unit.RelatedUnitID.Value))
+                {
+                    var parentvm = collection_index[unit.RelatedUnitID.Value];
+
+                    var uvm = new IdentificationUnitVM(unit, parentvm);
+
+                    parentvm.SubUnits.Add(uvm);
+                }
+                else
+                    subunits.Enqueue(unit);
+            }            
         }       
 
         protected override Specimen ModelFromState(PageState s)
@@ -170,6 +182,17 @@ namespace DiversityPhone.ViewModels
                 model_select.Disposable = null;
 
             return res;
+        }
+
+        public override void Activate()
+        {
+            select_registration.Disposable = select_subject.Take(1)
+                .ToNavigation(Page.ViewIU);
+        }
+
+        public override void Deactivate()
+        {
+            select_registration.Disposable = null;
         }
     }
 }

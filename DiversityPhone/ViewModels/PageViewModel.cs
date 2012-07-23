@@ -63,10 +63,10 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.CurrentState, ref _CurrentState, value);
             }
         }
-        
 
-        
 
+        public virtual void Activate() { }
+        public virtual void Deactivate() { }
 
         public void SetState(PageState state)
         {

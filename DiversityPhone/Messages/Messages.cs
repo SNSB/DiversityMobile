@@ -3,6 +3,7 @@ using System;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
 namespace DiversityPhone.Messages
 {
     public enum DialogType
@@ -17,7 +18,9 @@ namespace DiversityPhone.Messages
         public const string DELETE = "Delete";
         public const string USE = "Use";
         public const string START = "Start";
-        public const string STOP = "Stop";        
+        public const string STOP = "Stop";
+
+        public const string VIEW = "View";
     }
 
     public class NavigationMessage
@@ -33,9 +36,18 @@ namespace DiversityPhone.Messages
             this.Context = ctx;
             this.ReferrerType = refType;
             this.Referrer = referrer;
-        }
+        }        
+    }
 
-        
+    public class VMNavigationMessage : NavigationMessage
+    {
+        public object VM { get; private set; }
+
+        public VMNavigationMessage(Page destination, object vm)
+            : base(destination)
+        {
+            VM = vm;
+        }
     }
 
     public class InitMessage { }
@@ -57,6 +69,23 @@ namespace DiversityPhone.Messages
                         );
                     }
                 });
-        }        
+        }
+
+        public static IDisposable ToNavigation<T>(this IObservable<ElementVMBase<T>> This, Page targetPage)
+        {
+            if (This == null)
+                throw new ArgumentNullException("This");
+
+            return This.Subscribe(x =>
+            {
+                var msngr = MessageBus.Current;
+                if (msngr != null)
+                {
+                    msngr.SendMessage(
+                    new VMNavigationMessage(targetPage, x) as NavigationMessage
+                    );
+                }
+            });
+        } 
     }
 }

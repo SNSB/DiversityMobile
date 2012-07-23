@@ -34,7 +34,9 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Maps { get; private set; }              
         #endregion
 
-        #region Properties        
+        private ReactiveAsyncCommand getSeries;
+
+        #region Properties              
         public ReactiveCollection<EventSeriesVM> SeriesList
         {
             get;
@@ -52,27 +54,23 @@ namespace DiversityPhone.ViewModels
 
             NoEventSeries = new EventSeriesVM(EventSeries.NoEventSeries);
             NoEventSeries
-                .SelectObservable
-                .Select(_ => (string)null)
+                .SelectObservable                
                 .ToNavigation(Page.ViewES);
-       
-            var series = StateObservable
-                .Select(_ => storage.getAllEventSeries())
-                .Publish();
-            series.Connect();
 
-            SeriesList =
-                series
-                .Do(_ => SeriesList.Clear())
-                .SelectMany(list => list.Select(s => new EventSeriesVM(s)))
-                .Do(vm => vm.SelectObservable
-                    .Select(sender => sender.Model.SeriesID.ToString())
-                    .ToNavigation(Page.ViewES)
-                    )
-                .CreateCollection();      
+            SeriesList = 
+            getSeries.RegisterAsyncFunction(_ =>
+                storage.getAllEventSeries()
+                .Select(es => new EventSeriesVM(es))
+                )
+                .SelectMany(vm => vm)
+                .CreateCollection();
 
-            var noOpenSeries = series
-                .Select(list => list.Any(s => s.SeriesEnd == null))
+                 
+
+            var noOpenSeries = SeriesList
+                .Changed
+                .Select(_ => SeriesList)
+                .Select(list => list.Any(s => s.Model.SeriesEnd == null))
                 .Select(openseries => !openseries);
 
             _subscriptions = new List<IDisposable>()
@@ -82,8 +80,12 @@ namespace DiversityPhone.ViewModels
                 (Add = new ReactiveCommand(noOpenSeries))
                     .Subscribe(_ => addSeries()),               
                 (Maps=new ReactiveCommand())
-                    .Subscribe(_ =>loadMapPage()),                
-            };            
+                    .Subscribe(_ =>loadMapPage()),  
+                    SeriesList
+                    .ListenToChanges()
+            };
+
+            getSeries.Execute(null);
         }         
 
         private void addSeries()

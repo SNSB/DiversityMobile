@@ -5,6 +5,7 @@ using DiversityPhone.Services;
 using Svc = DiversityPhone.DiversityService;
 using System.Data.Linq;
 using Microsoft.Phone.Data.Linq.Mapping;
+using ReactiveUI;
 
 
 namespace DiversityPhone.Model
@@ -12,7 +13,7 @@ namespace DiversityPhone.Model
 
     [Table]
     [Index(Columns="RelatedUnitID", IsUnique=false, Name="relunit_idx")] 
-    public class IdentificationUnit : IModifyable, ILocalizable
+    public class IdentificationUnit : ReactiveObject, IModifyable, ILocalizable
     {
         public IdentificationUnit()
         {
@@ -28,7 +29,7 @@ namespace DiversityPhone.Model
         }
 
         [Column]
-        public int SpecimenID { get; set; }
+        public int SpecimenID { get; set; }       
 
         [Column(CanBeNull = true)]
         public int? DiversityCollectionSpecimenID { get; set; }
@@ -52,7 +53,19 @@ namespace DiversityPhone.Model
         public bool OnlyObserved { get; set; }
 
         [Column]
-        public string TaxonomicGroup { get; set; }
+        private string _TaxonomicGroup;
+        public string TaxonomicGroup
+        {
+            get
+            {
+                return _TaxonomicGroup;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.TaxonomicGroup, ref _TaxonomicGroup, value);
+            }
+        }
+        
 
         [Column]
         public string RelationType { get; set; } // Only on Non-Toplevel
@@ -73,10 +86,38 @@ namespace DiversityPhone.Model
         /// Names as displayed on the screen
         /// </summary>
         [Column]
-        public string WorkingName { get; set; }
+        private string _WorkingName;
+
+        public string WorkingName
+        {
+            get
+            {
+                return _WorkingName;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.WorkingName, ref _WorkingName, value);
+            }
+        }
+        
+
+
 
         [Column]
-        public string IdentificationUri { get; set; }
+        private string _IdentificationUri;
+
+        public string IdentificationUri
+        {
+            get
+            {
+                return _IdentificationUri;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IdentificationUri, ref _IdentificationUri, value);
+            }
+        }
+        
 
 
         //Georeferenzierung
@@ -151,132 +192,7 @@ namespace DiversityPhone.Model
             export.TaxonomicGroup = iu.TaxonomicGroup;
             export.UnitID = iu.UnitID;
             return export;
-        }
-
-        
-        //#region Associations
-        //private EntitySet<IdentificationUnit> _RelatedUnits;
-        //[Association(Name = "FK_Unit_RelatedUnits",
-        //             Storage = "_RelatedUnits",
-        //             ThisKey = "UnitID",
-        //             OtherKey = "RelatedUnitID",
-        //             IsForeignKey = true,
-        //             DeleteRule = "CASCADE")]
-        //public EntitySet<IdentificationUnit> Units
-        //{
-        //    get { return _RelatedUnits; }
-        //    set { _RelatedUnits.Assign(value); }
-        //}
-
-        //private EntitySet<IdentificationUnitAnalysis> _IUAnalyses;
-        //[Association(Name = "FK_Unit_Analyses",
-        //             Storage = "_IUAnalyses",
-        //             ThisKey = "UnitID",
-        //             OtherKey = "IdentificationUnitID",
-        //             IsForeignKey = true,
-        //             DeleteRule = "CASCADE")]
-        //public EntitySet<IdentificationUnitAnalysis> IUAnalyses
-        //{
-        //    get { return _IUAnalyses; }
-        //    set { _IUAnalyses.Assign(value); }
-        //}
-
-        //private EntityRef<Specimen> _Specimen;
-        //[Association(Name = "FK_Unit_Specimen",
-        //        Storage = "_Specimen",
-        //        ThisKey = "SpecimenID",
-        //        OtherKey = "CollectionSpecimenID",
-        //        IsForeignKey = true)]
-        //public Specimen Specimen
-        //{
-        //    get { return _Specimen.Entity; }
-        //    set
-        //    {
-        //        Specimen previousValue = this._Specimen.Entity;
-        //        if (((previousValue != value) ||
-        //            (this._Specimen.HasLoadedOrAssignedValue
-        //             == false)))
-        //        {
-        //            if ((previousValue != null))
-        //            {
-        //                this._Specimen.Entity = null;
-        //                previousValue.Units.Remove(this);
-        //            }
-        //            this._Specimen.Entity = value;
-        //            if ((value != null))
-        //            {
-        //                value.Units.Add(this);
-        //                this.SpecimenID = value.CollectionSpecimenID;
-        //            }
-        //            else
-        //            {
-        //                this.SpecimenID = default(int);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private EntityRef<IdentificationUnit> _RelatedUnit;
-        //[Association(Name = "FK_RelatedUnit_Unit",
-        //        Storage = "_RelatedUnit",
-        //        ThisKey = "UnitID",
-        //        OtherKey = "RelatedUnitID",
-        //        IsForeignKey = true)]
-        //public IdentificationUnit RelatedUnit
-        //{
-        //    get { return _RelatedUnit.Entity; }
-        //    set
-        //    {
-        //        IdentificationUnit previousValue = this._RelatedUnit.Entity;
-        //        if (((previousValue != value) ||
-        //            (this._RelatedUnit.HasLoadedOrAssignedValue
-        //             == false)))
-        //        {
-        //            if ((previousValue != null))
-        //            {
-        //                this._RelatedUnit.Entity = null;
-        //                previousValue.Units.Remove(this);
-        //            }
-        //            this._RelatedUnit.Entity = value;
-        //            if ((value != null))
-        //            {
-        //                value.Units.Add(this);
-        //                this.RelatedUnitID = value.UnitID;
-        //            }
-        //            else
-        //            {
-        //                this.RelatedUnitID = default(int);
-        //            }
-        //        }
-        //    }
-        //}
-
-        //private void Attach_RelatedUnit(IdentificationUnit entity)
-        //{
-        //    entity.RelatedUnit = this;
-        //}
-
-        //private void Detach_RelatedUnit(IdentificationUnit entity)
-        //{
-        //    entity.RelatedUnit = null;
-        //}
-
-        //private void Attach_Analysis(IdentificationUnitAnalysis entity)
-        //{
-        //    entity.Unit = this;
-        //}
-
-        //private void Detach_Analysis(IdentificationUnitAnalysis entity)
-        //{
-        //    entity.Unit = null;
-        //}
-
-        //#endregion
+        }       
       
-
-        //public static IdentificationUnit Clone(IdentificationUnit iu)
-        //{
-        //    throw new NotImplementedException();
-        //}
     }
 }

@@ -28,6 +28,8 @@ namespace DiversityPhone.Services
         /// </summary>        
         public string Context { get;  set; }
 
+        public object VMContext { get; set; }
+
         /// <summary>
         /// Type of the Referrer (Object that originated the Request)
         /// </summary>        

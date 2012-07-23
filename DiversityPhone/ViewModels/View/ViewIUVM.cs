@@ -14,7 +14,7 @@ using System.Reactive.Disposables;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewIUVM : ElementPageViewModel<IdentificationUnit>
+    public class ViewIUVM : PageViewModel
     {
         public enum Pivots
         {
@@ -25,11 +25,13 @@ namespace DiversityPhone.ViewModels
 
         private Container IOC;
         IVocabularyService Vocabulary;
+        IFieldDataService Storage;
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand Back { get; private set; }
+        public ReactiveCommand EditCurrent { get; private set; }
 
         private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null, 2);
@@ -37,8 +39,7 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
 
-        ReactiveCollection<IdentificationUnit> unitPool = new ReactiveCollection<IdentificationUnit>();
-        Stack<int> unitBackStack = new Stack<int>();
+        Stack<ElementVMBase<IdentificationUnit>> unitBackStack = new Stack<ElementVMBase<IdentificationUnit>>();
 
         private Pivots _SelectedPivot;
         public Pivots SelectedPivot
@@ -51,7 +52,12 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
-        }  
+        }
+
+
+        public ElementVMBase<IdentificationUnit> Current { get { return _Current.Value; } }
+        private ObservableAsPropertyHelper<ElementVMBase<IdentificationUnit>> _Current;
+        
 
         private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _Subunits;
         public ReactiveCollection<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
@@ -78,25 +84,12 @@ namespace DiversityPhone.ViewModels
         {
             IOC = ioc;
             Vocabulary = ioc.Resolve<IVocabularyService>();
+            Storage = ioc.Resolve<IFieldDataService>();            
 
-            _Subunits = this.ObservableToProperty(
-                this.CurrentObservable
-                .Select(_ => new Subject<IdentificationUnitVM>())
-                .Select(subject =>
-                {
-                    var coll = subject
-                        .Do(vm => vm.SelectObservable
-                            .Select(v => v.Model.UnitID.ToString())
-                            .ToNavigation(Page.ViewIU))
-                        .CreateCollection();
-                    fetchSubunits.Execute(subject);
-                    return coll;
-                }),
-                x => x.Subunits);
-            fetchSubunits
-                .RegisterAsyncFunction(s => fetchSubunitsImpl(s as ISubject<IdentificationUnitVM>))
-                .SelectMany(ius => ius)
-                .Subscribe(unitPool.Add);
+            _Current = Messenger.Listen<ElementVMBase<IdentificationUnit>>(MessageContracts.VIEW)
+                .ToProperty(this, x => x.Current);
+
+            var valid_model = _Current.Select(vm => vm.Model).Where(m => m!= null);
 
             _Analyses = this.ObservableToProperty(
                 this.ObservableForProperty(x => x.SelectedPivot)
@@ -128,21 +121,21 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(images => images)
                 .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()))
                 .CreateCollection();
-            ValidModel.Subscribe(getImages.Execute);
+            valid_model.Subscribe(getImages.Execute);
 
             AudioList = getAudioFiles.RegisterAsyncFunction(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (iu as IdentificationUnit).UnitID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
                 .Do(_ => AudioList.Clear())
                 .SelectMany(audioFiles => audioFiles)
                 .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.IdentificationUnit ,Current.Model.UnitID.ToString()))
                 .CreateCollection();
-            ValidModel.Subscribe(getAudioFiles.Execute);
+            valid_model.Subscribe(getAudioFiles.Execute);
 
             VideoList = getVideos.RegisterAsyncFunction(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (iu as IdentificationUnit).UnitID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
                .Do(_ => VideoList.Clear())
                .SelectMany(videoFiles => videoFiles)
                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()))
                .CreateCollection();
-            ValidModel.Subscribe(getVideos.Execute);
+            valid_model.Subscribe(getVideos.Execute);
 
             Add = new ReactiveCommand();
             var addMessageSource = 
@@ -174,22 +167,7 @@ namespace DiversityPhone.ViewModels
             Back
                 .Subscribe(_ => goBack());
 
-        }
-        private IEnumerable<IdentificationUnit> fetchSubunitsImpl(ISubject<IdentificationUnitVM> subject)
-        {
-            var subunits = Storage.getIUForSpecimen(Current.Model.SpecimenID);
-            var toplevel = Storage.getSubUnits(Current.Model);
-
-            foreach (var top in toplevel)
-            {
-                var unit = new IdentificationUnitVM(top, unitPool);
-                unit.SelectObservable
-                    .Select(vm => vm.Model.UnitID.ToString())
-                    .ToNavigation(Page.ViewIU);
-                subject.OnNext(unit);
-            }
-            return subunits;
-        }   
+        }        
 
         private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
         {
@@ -198,60 +176,11 @@ namespace DiversityPhone.ViewModels
                                     .Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
                 collectionSubject.OnNext(iuanVM);
         }
-
-        protected override IdentificationUnit ModelFromState(PageState s)
+        
+        private void selectSubUnit(ElementVMBase<IdentificationUnit> unit)
         {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getIdentificationUnitByID(id);
-                }               
-            }
-            else if (s.Referrer != null)
-            {
-                int parentID;
-                if (int.TryParse(s.Referrer, out parentID))
-                {
-                    if (s.ReferrerType == ReferrerType.IdentificationUnit)
-                    {
-                        var parent = Storage.getIdentificationUnitByID(parentID);
-                        if (parent != null)
-                            return new IdentificationUnit()
-                            {                            
-                                RelatedUnitID = parentID,
-                                SpecimenID = parent.SpecimenID,                            
-                            };
-                    }
-                    else if (s.ReferrerType == ReferrerType.Specimen)
-                        return new IdentificationUnit()
-                        {                        
-                            SpecimenID = parentID
-                        };
-                    
-                }
-            }                
-            return null;
-        }     
-       
-
-        SerialDisposable model_select = new SerialDisposable();
-
-        protected override ElementVMBase<IdentificationUnit> ViewModelFromModel(IdentificationUnit model)
-        {
-            var res = new IdentificationUnitVM(model, unitPool);
-            model_select.Disposable = res.SelectObservable
-                .Select(vm => vm.Model.UnitID.ToString())
-                .ToNavigation(Page.EditIU);
-            return res;
-        }
-
-        private void selectSubUnit(int unitID)
-        {
-            unitBackStack.Push(Current.Model.UnitID);            
-            this.CurrentState.Context = unitID.ToString();
-            this.SetState(CurrentState);
+            unitBackStack.Push(Current);
+            Messenger.SendMessage<ElementVMBase<IdentificationUnit>>(unit, MessageContracts.VIEW);
         }
 
         private void goBack()
@@ -259,8 +188,7 @@ namespace DiversityPhone.ViewModels
             if (unitBackStack.Any())
             {
                 var prev = unitBackStack.Pop();
-                this.CurrentState.Context = prev.ToString();
-                this.SetState(CurrentState);
+                Messenger.SendMessage<ElementVMBase<IdentificationUnit>>(prev, MessageContracts.VIEW);
             }
             else
                 Messenger.SendMessage(Page.Previous);

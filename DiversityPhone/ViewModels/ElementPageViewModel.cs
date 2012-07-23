@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
         public ElementVMBase<T> Current
         {
             get { return _Current; }
-            private set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); }
+            protected set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); }
         }
 
         /// <summary>

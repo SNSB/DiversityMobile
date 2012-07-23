@@ -20,55 +20,21 @@ namespace DiversityPhone.ViewModels
         private const int MAX_DISPLAY_DEPTH = 2;
 
         public override string Description { get { return Model.WorkingName; } }
-        public override Icon Icon { get { return Icon.IdentificationUnit; } }       
+        public override Icon Icon { get { return Icon.IdentificationUnit; } }
 
-        public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; }
+        public IdentificationUnitVM Parent { get; private set; }
 
-        public ReactiveCollection<IdentificationUnit> UnitPool { get; private set; }
-
-        private int _Level;
-
-        public int Level
-        {
-            get
-            {
-                return _Level;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Level, ref _Level, value);
-            }
-        }
+        public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; } 
         
-        private IdentificationUnitVM (IdentificationUnit model, int level, ReactiveCollection<IdentificationUnit> unitPool)
+        public IdentificationUnitVM (IdentificationUnit model, IdentificationUnitVM parent = null)
             : base(model)
 	    {
-            Level = level;
-            UnitPool = unitPool;
-            if (UnitPool != null && Level <= MAX_DISPLAY_DEPTH)
-            {
-                SubUnits = UnitPool
-                    .CreateDerivedCollection(iu => new IdentificationUnitVM(iu,this), iu => iu.RelatedUnitID == Model.UnitID, (a,b) => a.Model.UnitID.CompareTo(b.Model.UnitID));
-            }
-            else
-            {
-                SubUnits = new ReactiveCollection<IdentificationUnitVM>();
-            }
+            model.ObservableForProperty(iu => iu.WorkingName)
+                .Subscribe(_=>this.RaisePropertyChanged(x => x.Description));       
+     
+            if(parent != null)
+                this.SelectSubject.Subscribe(parent.SelectSubject);
 	    }
-                  
-
-        public IdentificationUnitVM(IdentificationUnit model, ReactiveCollection<IdentificationUnit> unitPool = null)
-            : this(model, 0, unitPool)
-        {
-            
-        }
-
-        public IdentificationUnitVM(IdentificationUnit model, IdentificationUnitVM parent)
-            : this(model,parent.Level + 1, parent.UnitPool)
-        {
-            SelectSubject.Subscribe(parent.SelectSubject);
-        }      
-        
     }
 
 }

@@ -40,23 +40,18 @@
                     Command="{Binding Select}"/>
         </StackPanel>
     </DataTemplate>
-    <DataTemplate x:Key="IdentificationSingleLevelItemTemplate">
+    <DataTemplate x:Key="IdentificationItemTemplate">
         <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
+            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
+            <TextBlock Text="{Binding Description}"/>
         </StackPanel>
     </DataTemplate>
     
-    <DataTemplate x:Key="IdentificationItemTemplate">
-        <StackPanel Grid.Column="0" Grid.Row="0"
-						Grid.ColumnSpan="2" Orientation="Horizontal">
-            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
-            <Button Style="{StaticResource ItemButtonStyle}"
-	                    Content="{Binding Description}"
-	                    Command="{Binding Select}"/>
-        </StackPanel>
+    
+    <DataTemplate x:Key="IdentificationItemSelectTemplate">
+        <Button Style="{StaticResource ItemButtonStyle}" Command="{Binding Select}">
+            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
+        </Button>
     </DataTemplate>
     <DataTemplate x:Key="IdentificationOneLevelItemTemplate">
         <Grid>
@@ -70,12 +65,12 @@
             </Grid.RowDefinitions>
             <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
                             HorizontalAlignment="Left"
-                            ContentTemplate="{StaticResource IdentificationItemTemplate}"
+                            ContentTemplate="{StaticResource IdentificationItemSelectTemplate}"
                             Content="{Binding}"/>
 
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationItemTemplate}"
+                     ItemTemplate="{StaticResource IdentificationItemSelectTemplate}"
                      Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}"/>
         </Grid>
     </DataTemplate>
@@ -91,7 +86,7 @@
             </Grid.RowDefinitions>
             <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
                             HorizontalAlignment="Left"
-                            ContentTemplate="{StaticResource IdentificationItemTemplate}"
+                            ContentTemplate="{StaticResource IdentificationItemSelectTemplate}"
                             Content="{Binding}"/>            
 
             <ItemsControl Grid.Column="1" Grid.Row="1" 					 
