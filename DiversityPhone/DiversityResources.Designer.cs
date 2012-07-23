@@ -286,6 +286,33 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die clear database ähnelt.
+        /// </summary>
+        public static string Settings_Header_ButtonClear {
+            get {
+                return ResourceManager.GetString("Settings_Header_ButtonClear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die refresh vocabulary ähnelt.
+        /// </summary>
+        public static string Settings_Header_ButtonRefresh {
+            get {
+                return ResourceManager.GetString("Settings_Header_ButtonRefresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
+        /// </summary>
+        public static string Settings_Header_ButtonSave {
+            get {
+                return ResourceManager.GetString("Settings_Header_ButtonSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
         /// </summary>
         public static string Setup_Header_ButtonSave {
