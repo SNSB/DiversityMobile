@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DiversityPhone.ViewModels
 {
-    public interface IElementVM<out T>
+    public interface IElementVM<T>
     {
         T Model { get; }
     }
