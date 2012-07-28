@@ -207,6 +207,7 @@
     <Compile Include="ViewModels\ElementPageViewModel.cs" />
     <Compile Include="ViewModels\ElementVMBase.cs" />
     <Compile Include="ViewModels\IElementVM.cs" />
+    <Compile Include="ViewModels\ElementPageVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
     <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
