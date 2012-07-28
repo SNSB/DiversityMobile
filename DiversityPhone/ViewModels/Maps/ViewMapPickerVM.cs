@@ -24,7 +24,7 @@ namespace DiversityPhone.ViewModels
             get { return _SavedMaps.Value; }
         }
 
-        private ISubject<ElementVMBase<Map>> MapSelected { get; set; }
+        private ISubject<IElementVM<Map>> select_map = new Subject<IElementVM<Map>>();
 
 
         #endregion
@@ -35,11 +35,10 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         public ViewMapPickerVM(IMapStorageService maps)  
-        {
-            MapSelected = new Subject<ElementVMBase<Map>>();
+        {            
 
             Messenger.RegisterMessageSource(
-            MapSelected
+            select_map
                 .Select(m => m.Model.ServerKey)
                 .Select(uri =>
                     {
@@ -53,7 +52,7 @@ namespace DiversityPhone.ViewModels
                 StateObservable.Select(_ =>
                 {
                     var res = _maps.getAllMaps().Select(m => new MapVM(m)).ToList();
-                    res.ForEach(vm => vm.SelectObservable.Subscribe(MapSelected.OnNext));
+                    res.ForEach(vm => vm.SelectObservable.Subscribe(select_map.OnNext));
                     return res as IList<MapVM>;
                 })
                 ,                

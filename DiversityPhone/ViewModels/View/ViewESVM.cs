@@ -25,7 +25,7 @@ using System.Reactive.Subjects;
 
         private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
         private SerialDisposable model_select = new SerialDisposable();
-        private ISubject<ElementVMBase<Event>> event_selected = new Subject<ElementVMBase<Event>>();
+        private ISubject<IElementVM<Event>> event_selected = new Subject<IElementVM<Event>>();
 
         public ViewESVM()            
         {   

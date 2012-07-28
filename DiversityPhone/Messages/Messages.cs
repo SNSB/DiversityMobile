@@ -71,7 +71,7 @@ namespace DiversityPhone.Messages
                 });
         }
 
-        public static IDisposable ToNavigation<T>(this IObservable<ElementVMBase<T>> This, Page targetPage)
+        public static IDisposable ToNavigation<T>(this IObservable<IElementVM<T>> This, Page targetPage)
         {
             if (This == null)
                 throw new ArgumentNullException("This");

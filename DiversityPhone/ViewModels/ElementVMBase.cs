@@ -40,9 +40,9 @@ namespace DiversityPhone.ViewModels
 
         public ISubject<bool> CanSelect { get; private set; }
 
-        public IObservable<ElementVMBase<T>> SelectObservable { get; private set; }
+        public IObservable<IElementVM<T>> SelectObservable { get; private set; }
 
-        protected ISubject<ElementVMBase<T>> SelectSubject = new Subject<ElementVMBase<T>>();
+        protected ISubject<IElementVM<T>> SelectSubject = new Subject<IElementVM<T>>();
 
         public ElementVMBase(T model)
         {
@@ -57,7 +57,7 @@ namespace DiversityPhone.ViewModels
             SelectObservable = selectPublish;
                 
             Select
-                .Select(_ => this)
+                .Select(_ => this as IElementVM<T>)
                 .Subscribe(SelectSubject);
         }
     }   

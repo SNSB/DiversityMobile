@@ -36,29 +36,29 @@ namespace DiversityPhone.Services
                 _messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()  
                     .Subscribe(es => deleteEventSeries(es)),
 
-                _messenger.Listen<Event>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<Event>>(MessageContracts.SAVE).Model() 
                     .Subscribe(ev => addOrUpdateEvent(ev)),
-                _messenger.Listen<Event>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model() 
                     .Subscribe(ev=>deleteEvent(ev)),
 
-                _messenger.Listen<CollectionEventProperty>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<CollectionEventProperty>>(MessageContracts.SAVE).Model() 
                     .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
-                _messenger.Listen<CollectionEventProperty>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<CollectionEventProperty>>(MessageContracts.DELETE).Model() 
                     .Subscribe(cep => deleteEventProperty(cep)),
 
-                _messenger.Listen<Specimen>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model() 
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
-                _messenger.Listen<Specimen>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<Specimen>>(MessageContracts.DELETE).Model() 
                     .Subscribe(spec=>deleteSpecimen(spec)),
 
-                _messenger.Listen<IdentificationUnit>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.SAVE).Model() 
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
-                _messenger.Listen<IdentificationUnit>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.DELETE).Model() 
                     .Subscribe(iu=>deleteIU(iu)),
 
-                _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.SAVE).Model() 
                     .Subscribe(iua=>addOrUpdateIUA(iua)),
-                 _messenger.Listen<IdentificationUnitAnalysis>(MessageContracts.DELETE)
+                 _messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model() 
                     .Subscribe(iua=>deleteIUA(iua)),
 
                 _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)

@@ -1,21 +1,16 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using DiversityPhone.Messages;
+using DiversityPhone.Model;
+using DiversityPhone.Services;
+using ReactiveUI;
+using ReactiveUI.Xaml;
+
 namespace DiversityPhone.ViewModels
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Reactive.Linq;
-    using Svc = DiversityPhone.DiversityService;
-    using ReactiveUI;
-    using ReactiveUI.Xaml;
-    using DiversityPhone.Services;
-    using DiversityPhone.Model;
-    using DiversityPhone.Messages;
-    using System.IO.IsolatedStorage;
-    using System.IO;
-    using System.Collections.ObjectModel;
-    using GlobalUtility;
-    using System.Windows;
 
 
     public class HomeVM : PageViewModel
@@ -33,6 +28,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Add { get; private set; }       
         public ReactiveCommand Maps { get; private set; }              
         #endregion
+        ISubject<IElementVM<EventSeries>> select_series = new Subject<IElementVM<EventSeries>>();
 
         private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
 
@@ -63,9 +59,12 @@ namespace DiversityPhone.ViewModels
                 .Select(es => new EventSeriesVM(es))
                 )
                 .SelectMany(vm => vm)
+                .Do(esvm => esvm.SelectObservable.Subscribe(select_series.OnNext))
                 .CreateCollection();
 
-                 
+            select_series
+                .ToNavigation(Page.ViewES);
+                
 
             var noOpenSeries = SeriesList
                 .Changed

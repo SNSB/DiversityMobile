@@ -199,20 +199,20 @@ namespace DiversityPhone.ViewModels
             Back
                 .Subscribe(_ => goBack());
 
-        }        
+        }
 
-        private void getAnalysesImpl(ElementVMBase<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
+        private void getAnalysesImpl(IElementVM<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
         {
             foreach (var iuanVM in Storage
                                     .getIUANForIU(iuvm.Model)                                    
                                     .Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
                 collectionSubject.OnNext(iuanVM);
         }
-        
-        private void selectSubUnit(ElementVMBase<IdentificationUnit> unit)
+
+        private void selectSubUnit(IElementVM<IdentificationUnit> unit)
         {
             unitBackStack.Push(Current);
-            Messenger.SendMessage<ElementVMBase<IdentificationUnit>>(unit, MessageContracts.VIEW);
+            Messenger.SendMessage<IElementVM<IdentificationUnit>>(unit, MessageContracts.VIEW);
         }
 
         private void goBack()
@@ -220,7 +220,7 @@ namespace DiversityPhone.ViewModels
             if (unitBackStack.Any())
             {
                 var prev = unitBackStack.Pop();
-                Messenger.SendMessage<ElementVMBase<IdentificationUnit>>(prev, MessageContracts.VIEW);
+                Messenger.SendMessage<IElementVM<IdentificationUnit>>(prev, MessageContracts.VIEW);
             }
             else
                 Messenger.SendMessage(Page.Previous);

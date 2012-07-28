@@ -30,7 +30,7 @@ namespace DiversityPhone.ViewModels
 
 
         private SerialDisposable select_registration = new SerialDisposable();
-        private ISubject<ElementVMBase<IdentificationUnit>> select_subject = new Subject<ElementVMBase<IdentificationUnit>>();
+        private ISubject<IElementVM<IdentificationUnit>> select_specimen = new Subject<IElementVM<IdentificationUnit>>();
         private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null);
         #endregion
 
@@ -137,7 +137,7 @@ namespace DiversityPhone.ViewModels
                 {
                     var uvm = new IdentificationUnitVM(unit);
                     uvm.SelectObservable
-                        .Subscribe(select_subject);
+                        .Subscribe(select_specimen);
 
                     collection.OnNext(uvm);
                 }
@@ -187,7 +187,7 @@ namespace DiversityPhone.ViewModels
 
         public override void Activate()
         {
-            select_registration.Disposable = select_subject.Take(1)
+            select_registration.Disposable = select_specimen.Take(1)
                 .ToNavigation(Page.ViewIU);
         }
 
