@@ -72,8 +72,7 @@ namespace DiversityPhone.ViewModels
 
             var state = (refreshModel) ? StateObservable : DistinctStateObservable;
             var model = state
-               .Select(s => ModelFromState(s))
-               .DistinctUntilChanged()
+               .Select(s => ModelFromState(s))               
                .Publish();
             model.Connect();
             var currentObs = model
