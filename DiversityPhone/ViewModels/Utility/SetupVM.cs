@@ -288,6 +288,8 @@ namespace DiversityPhone.ViewModels.Utility
                 .Merge(Observable.Return(Settings.getSettings()).Where(settings => settings != null)) // just refresh
                 .Do(res => Settings.saveSettings(res))
                 .Subscribe(RefreshVocabulary.Execute);
+
+            clearDatabase.Execute(null);
         }
 
         private void notifySvcUnavailable()
