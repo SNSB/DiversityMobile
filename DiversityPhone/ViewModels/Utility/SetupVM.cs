@@ -79,7 +79,11 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        public ListSelectionHelper<Svc.Repository> Databases { get; private set; }            
+        private Svc.Repository NoRepo = new Repository() { Database = null, DisplayText = DiversityResources.Setup_Item_PleaseChoose };
+
+        public ListSelectionHelper<Svc.Repository> Databases { get; private set; }
+
+        private Svc.Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
 
         public ListSelectionHelper<Svc.Project> Projects { get; private set; }
 
@@ -135,10 +139,10 @@ namespace DiversityPhone.ViewModels.Utility
                                 .Select(change => !string.IsNullOrEmpty(change.Value))
                                 .StartWith(false);
             var homeDB = Databases
-                            .Select(db => db.Database != null)
+                            .Select(db => db != NoRepo)
                             .StartWith(false);
             var project = Projects
-                                .Select(p => p.ProjectID != int.MinValue)
+                                .Select(p => p != NoProject)
                                 .StartWith(false);
 
 
@@ -230,16 +234,14 @@ namespace DiversityPhone.ViewModels.Utility
                 .RegisterAsyncFunction(login => 
                     Repository
                     .GetRepositories(login as Svc.UserCredentials)
-                    .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})
-                    .Timeout(TimeSpan.FromSeconds(5), Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
+                    .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})                    
                     .First())
                 .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
-                .Do(repos => repos.Insert(0,new Svc.Repository() { DisplayText = DiversityResources.Setup_Item_PleaseChoose } ))
-                .ObserveOnDispatcher()
+                .Do(repos => repos.Insert(0,NoRepo))                
                 .Do(repos => 
                 {
                     if (repos.Count > 1) 
-                    {                        
+                    {
                         CurrentPivot = Pivots.Repository; 
                     }
                 })
@@ -260,7 +262,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .OnServiceUnavailable(() => { notifySvcUnavailable(); return new List<Svc.Project>() as IList<Svc.Project>;} )
                     .First())                     
                 .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
-                .Do(projects => projects.Insert(0, new Svc.Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose , ProjectID = int.MinValue } ))
+                .Do(projects => projects.Insert(0, NoProject ))
                 .ObserveOnDispatcher()
                 .Do(projects =>
                 {
@@ -284,12 +286,13 @@ namespace DiversityPhone.ViewModels.Utility
             Save = new ReactiveCommand(settingsValid().ObserveOnDispatcher());
 
             Save
+                .Do(_ => clearDatabase.Execute(null))
                 .Select(_ => createSettings())
                 .Merge(Observable.Return(Settings.getSettings()).Where(settings => settings != null)) // just refresh
                 .Do(res => Settings.saveSettings(res))
                 .Subscribe(RefreshVocabulary.Execute);
 
-            clearDatabase.Execute(null);
+            
         }
 
         private void notifySvcUnavailable()
