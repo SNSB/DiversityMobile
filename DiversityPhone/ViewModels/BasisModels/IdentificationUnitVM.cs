@@ -34,6 +34,8 @@ namespace DiversityPhone.ViewModels
      
             if(parent != null)
                 this.SelectSubject.Subscribe(parent.SelectSubject);
+
+            SubUnits = new ReactiveCollection<IdentificationUnitVM>();
 	    }
     }
 

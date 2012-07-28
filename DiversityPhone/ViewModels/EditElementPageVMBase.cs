@@ -103,7 +103,7 @@ namespace DiversityPhone.ViewModels
                .Where(_ => Current != null)
                .Do(_ => UpdateModel())
                .Do(_ => OnSave())
-               .Select(_ => Current.Model),
+               .Select(_ => Current as IElementVM<T>),
                MessageContracts.SAVE);
 
             Messenger.RegisterMessageSource(

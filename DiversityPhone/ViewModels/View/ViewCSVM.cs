@@ -76,7 +76,8 @@ namespace DiversityPhone.ViewModels
             var unitList = new Subject<IdentificationUnitVM>();
             UnitList = unitList
                 .CreateCollection();
-            fetchSubunits.Execute(unitList);
+
+            ValidModel.Take(1).Subscribe(_ => fetchSubunits.Execute(unitList)); //After Current is set
             UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);
                 
 
