@@ -11,9 +11,12 @@
     using System.Linq;
 
 using System.Reactive.Disposables;
+    using Funq;
 
-    public class ViewEVVM : ElementPageViewModel<Event>
+    public class ViewEVVM : ElementPageVMBase<Event>
     {
+        private IFieldDataService Storage;
+
         public enum Pivots
         {
             Specimen,
@@ -24,6 +27,9 @@ using System.Reactive.Disposables;
         #region Commands
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
+
+        public ReactiveCommand<IElementVM<EventProperty>> SelectProperty { get; private set; }
+        public ReactiveCommand<IElementVM<Specimen>> SelectSpecimen { get; private set; }
         #endregion
 
         #region Properties
@@ -42,13 +48,9 @@ using System.Reactive.Disposables;
 
         public ReactiveCollection<SpecimenVM> SpecList { get; private set; }
 
-        public ReactiveCollection<PropertyVM> Properties { get; private set; }
+        public ReactiveCollection<PropertyVM> PropertyList { get; private set; }
 
-        public ReactiveCollection<ImageVM> ImageList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> AudioList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> VideoList { get; private set; }
+        public ReactiveCollection<MultimediaObjectVM> MultimediaList { get; private set; }       
 
         #endregion
 
@@ -58,21 +60,33 @@ using System.Reactive.Disposables;
         private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
 
-        public ViewEVVM()            
+        public ViewEVVM(Container ioc)            
         {
-            SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))
-                .Do(_ => SpecList.Clear())
-                .SelectMany(specs => specs)
-                .Do( vm => vm.SelectObservable.Select(v => v.Model.SpecimenID.ToString()).ToNavigation(Page.ViewCS))
+            Storage = ioc.Resolve<IFieldDataService>();
+
+            SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))                
+                .SelectMany(specs => specs)                
                 .CreateCollection();
-            ValidModel
+            CurrentModelObservable
+                .Do(_ => SpecList.Clear())
                 .Subscribe(getSpecimen.Execute);
 
-            Properties = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))
-                .Do(_ => Properties.Clear())
-                .SelectMany(props => props)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.PropertyID.ToString()).ToNavigation(Page.EditEventProperty,ReferrerType.Event, Current.Model.EventID.ToString()))
+            SelectSpecimen = new ReactiveCommand<IElementVM<Specimen>>();
+            SelectSpecimen
+                .ToMessage(MessageContracts.VIEW);
+
+            PropertyList = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))                
+                .SelectMany(props => props)                
                 .CreateCollection();
+
+            CurrentModelObservable
+                .Do(_ => PropertyList.Clear())
+                .Subscribe(getProperties.Execute);
+
+            SelectProperty = new ReactiveCommand<IElementVM<EventProperty>>();
+            SelectProperty
+                .ToMessage(MessageContracts.EDIT);
+
             ValidModel
                 .Subscribe(getProperties.Execute);
 
