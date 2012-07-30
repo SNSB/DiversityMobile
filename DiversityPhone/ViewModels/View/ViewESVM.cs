@@ -11,9 +11,12 @@
     using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+    using Funq;
 
-    public class ViewESVM : ElementPageViewModel<EventSeries>
-    { 
+    public class ViewESVM : ViewPageVMBase<EventSeries>
+    {
+        private IFieldDataService Storage;
+
         #region Commands
         public ReactiveCommand AddEvent { get; private set; }        
         public ReactiveCommand Maps { get; private set; }
@@ -27,8 +30,10 @@ using System.Reactive.Subjects;
         private SerialDisposable model_select = new SerialDisposable();
         private ISubject<IElementVM<Event>> select_event = new Subject<IElementVM<Event>>();
 
-        public ViewESVM()            
-        {   
+        public ViewESVM(Container ioc)            
+        {
+            Storage = ioc.Resolve<IFieldDataService>();            
+
             EventList = getEvents.RegisterAsyncFunction(es =>
                 {
                     return Storage.getEventsForSeries(es as EventSeries)
@@ -39,7 +44,7 @@ using System.Reactive.Subjects;
                 .Do(vm => vm.SelectObservable.Subscribe(select_event.OnNext))
                 .CreateCollection();
 
-            ValidModel.Subscribe(getEvents.Execute);
+            CurrentModelObservable.Subscribe(getEvents.Execute);
 
             select_event
                 .Select(vm => vm.Model.EventID.ToString())
@@ -50,7 +55,7 @@ using System.Reactive.Subjects;
             var newEventMessageSource =
                 AddEvent
                 .Timestamp()
-                .CombineLatest(ValidModel, (a, b) => new { Click = a, Model = b })
+                .CombineLatest(CurrentModelObservable, (a, b) => new { Click = a, Model = b })
                 .DistinctUntilChanged(pair => pair.Click.Timestamp)
                 .Select(pair => new NavigationMessage(Page.EditEV, null, ReferrerType.EventSeries,
                               (EventSeries.isNoEventSeries(pair.Model)) ? null : pair.Model.SeriesID.ToString()
@@ -61,37 +66,6 @@ using System.Reactive.Subjects;
                 Maps
                 .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.EventSeries, Current.Model.SeriesID.ToString()));
             Messenger.RegisterMessageSource(mapMessageSource);           
-        }
-
-        protected override EventSeries ModelFromState(PageState s)
-        {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getEventSeriesByID(id);
-                }
-                else
-                    return null;
-            }
-            else
-                return EventSeries.NoEventSeries;
-
-        }
-
-        protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
-        {
-            var res = new EventSeriesVM(model);
-            if (!EventSeries.isNoEventSeries(model))
-            {
-                model_select.Disposable = res.SelectObservable
-                    .Select(vm => vm.Model.SeriesID.ToString())
-                    .ToNavigation(Page.EditES);
-            }
-            else
-                model_select.Disposable = null;
-            return res;
-        }
+        }       
     }
 }

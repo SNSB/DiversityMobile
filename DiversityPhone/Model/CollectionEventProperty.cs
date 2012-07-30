@@ -17,9 +17,9 @@ using System.Data.Linq;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class CollectionEventProperty : IModifyable
+    public class EventProperty : IModifyable
     {
-        public CollectionEventProperty()
+        public EventProperty()
         {
             LogUpdatedWhen = DateTime.Now;
             this.ModificationState = ModificationState.New;
@@ -53,15 +53,15 @@ namespace DiversityPhone.Model
 
 
 
-        public static IQueryOperations<CollectionEventProperty> Operations
+        public static IQueryOperations<EventProperty> Operations
         {
             get;
             private set;
         }
 
-        static CollectionEventProperty()
+        static EventProperty()
         {
-            Operations = new QueryOperations<CollectionEventProperty>(
+            Operations = new QueryOperations<EventProperty>(
                 //Smallerthan
                           (q, cep) => q.Where(row => row.EventID < cep.EventID || row.PropertyID < cep.PropertyID),
                 //Equals
@@ -77,7 +77,7 @@ namespace DiversityPhone.Model
                           });
         }
 
-        public static Svc.CollectionEventProperty ConvertToServiceObject(CollectionEventProperty cep)
+        public static Svc.CollectionEventProperty ConvertToServiceObject(EventProperty cep)
         {
             Svc.CollectionEventProperty export = new Svc.CollectionEventProperty();
             export.DisplayText = cep.DisplayText;

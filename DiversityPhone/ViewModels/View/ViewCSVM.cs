@@ -188,7 +188,7 @@ namespace DiversityPhone.ViewModels
         public override void Activate()
         {
             select_registration.Disposable = select_specimen.Take(1)
-                .ToView(Page.ViewIU);
+                .ToMessage(MessageContracts.EDIT);
         }
 
         public override void Deactivate()

@@ -52,5 +52,15 @@ namespace DiversityPhone.ViewModels
             }
             return This;
         }
+
+        public static IObservable<T> CastNotNull<T>(this IObservable<object> source) where T : class
+        {
+            if (source == null)
+                throw new ArgumentNullException("source");
+
+            return source
+                .Select(x => x as T)
+                .Where(x => x != null);
+        }
     }
 }

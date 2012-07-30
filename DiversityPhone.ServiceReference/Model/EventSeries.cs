@@ -94,7 +94,8 @@
             {
                 Description = "Events",
                 SeriesCode = "No EventSeries",
-                ModificationState = ModificationState.Unmodified
+                ModificationState = ModificationState.Unmodified,
+                SeriesEnd = DateTime.Now,
             };
         }
 

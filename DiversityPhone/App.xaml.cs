@@ -87,16 +87,11 @@ namespace DiversityPhone
 
 
             #region ViewModel Factories
-            IOC.Register<HomeVM>(new HomeVM(
-                IOC.Resolve<IMessageBus>(),
-                IOC.Resolve<IFieldDataService>(),
-                IOC.Resolve<IDiversityServiceClient>(),
-                IOC.Resolve<ISettingsService>()
-                ));
+            IOC.Register<HomeVM>(new HomeVM(IOC));
 
-            IOC.Register<EditESVM>(c => new EditESVM(c.Resolve<ISettingsService>()));
+            IOC.Register<EditESVM>(new EditESVM(IOC));
 
-            IOC.Register<ViewESVM>(container => new ViewESVM());
+            IOC.Register<ViewESVM>(new ViewESVM(IOC));
             IOC.Register<EditEVVM>(c => new EditEVVM(c));
 
 

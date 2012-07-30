@@ -8,6 +8,7 @@ using DiversityPhone.Model;
 using DiversityPhone.Services;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,54 +17,55 @@ namespace DiversityPhone.ViewModels
     public class HomeVM : PageViewModel
     {
         private IList<IDisposable> _subscriptions;
+
+        private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
         
         #region Services        
-        private IFieldDataService _storage;
-        private IDiversityServiceClient _repository;
-        private ISettingsService _settings;       
+        private IFieldDataService Storage;
         #endregion
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }       
-        public ReactiveCommand Maps { get; private set; }              
-        #endregion
-        ISubject<IElementVM<EventSeries>> select_series = new Subject<IElementVM<EventSeries>>();
+        public ReactiveCommand Maps { get; private set; }
 
-        private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
+        public ReactiveCommand<IElementVM<EventSeries>> SelectSeries { get; private set; }
+        public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
+        #endregion        
+
+        
 
         #region Properties              
         public ReactiveCollection<EventSeriesVM> SeriesList
         {
             get;
             private set;
-        }
-
-        public EventSeriesVM NoEventSeries { get; private set; }
+        }       
         #endregion
 
-        public HomeVM(IMessageBus messenger, IFieldDataService storage, IDiversityServiceClient repo, ISettingsService settings)
-            : base(messenger)
-        {            
-            _storage = storage;            
-            _settings = settings;
-
-            NoEventSeries = new EventSeriesVM(EventSeries.NoEventSeries);
-            NoEventSeries
-                .SelectObservable                
-                .ToView(Page.ViewES);
+        public HomeVM(Container ioc)           
+        {
+            Storage = ioc.Resolve<IFieldDataService>();           
 
             SeriesList = 
             getSeries.RegisterAsyncFunction(_ =>
-                storage.getAllEventSeries()
-                .Select(es => new EventSeriesVM(es))
+                    Enumerable.Repeat(EventSeries.NoEventSeries,1)
+                    .Concat(
+                        Storage
+                        .getAllEventSeries()
+                        )                    
+                    .Select(es => new EventSeriesVM(es))
                 )
-                .SelectMany(vm => vm)
-                .Do(esvm => esvm.SelectObservable.Subscribe(select_series.OnNext))
+                .SelectMany(vm => vm)               
                 .CreateCollection();
 
-            select_series
-                .ToView(Page.ViewES);
+           
+
+            (SelectSeries = new ReactiveCommand<IElementVM<EventSeries>>())            
+                .ToMessage(MessageContracts.VIEW);
+
+            (EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => vm.Model != EventSeries.NoEventSeries))
+                .ToMessage(MessageContracts.EDIT);
                 
 
             var noOpenSeries = SeriesList

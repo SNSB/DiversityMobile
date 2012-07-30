@@ -41,9 +41,9 @@ namespace DiversityPhone.Services
                 _messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model() 
                     .Subscribe(ev=>deleteEvent(ev)),
 
-                _messenger.Listen<IElementVM<CollectionEventProperty>>(MessageContracts.SAVE).Model() 
+                _messenger.Listen<IElementVM<EventProperty>>(MessageContracts.SAVE).Model() 
                     .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
-                _messenger.Listen<IElementVM<CollectionEventProperty>>(MessageContracts.DELETE).Model() 
+                _messenger.Listen<IElementVM<EventProperty>>(MessageContracts.DELETE).Model() 
                     .Subscribe(cep => deleteEventProperty(cep)),
 
                 _messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model() 
@@ -285,8 +285,8 @@ namespace DiversityPhone.Services
             {
                 this.deleteSpecimen(spec);
             }
-            IList<CollectionEventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
-            foreach (CollectionEventProperty cep in attachedProperties)
+            IList<EventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
+            foreach (EventProperty cep in attachedProperties)
                 this.deleteEventProperty(cep);
             IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Event, toDeleteEv.EventID);
             foreach (MultimediaObject mmo in attachedMMO)
@@ -302,7 +302,7 @@ namespace DiversityPhone.Services
 
         #region CollectionEventProperties
 
-        public IList<CollectionEventProperty> getPropertiesForEvent(int eventID)
+        public IList<EventProperty> getPropertiesForEvent(int eventID)
         {
             return uncachedQuery(ctx =>
                 from cep in ctx.CollectionEventProperties
@@ -311,7 +311,7 @@ namespace DiversityPhone.Services
                 );
         }
 
-        public CollectionEventProperty getPropertyByID(int eventId, int propertyId)
+        public EventProperty getPropertyByID(int eventId, int propertyId)
         {
             return singletonQuery(ctx => from cep in ctx.CollectionEventProperties
                                          where cep.EventID == eventId &&
@@ -319,21 +319,21 @@ namespace DiversityPhone.Services
                                          select cep);
         }
 
-        public void addOrUpdateCollectionEventProperty(CollectionEventProperty cep)
+        public void addOrUpdateCollectionEventProperty(EventProperty cep)
         {
             Event ev = this.getEventByID(cep.EventID);
             if (ev.DiversityCollectionEventID != null)
                 cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
 
-            addOrUpdateRow(CollectionEventProperty.Operations,
+            addOrUpdateRow(EventProperty.Operations,
                   ctx => ctx.CollectionEventProperties,
                   cep
               );
         }    
 
-        public void deleteEventProperty(CollectionEventProperty toDeleteCep)
+        public void deleteEventProperty(EventProperty toDeleteCep)
         {
-            deleteRow(CollectionEventProperty.Operations, ctx => ctx.CollectionEventProperties, toDeleteCep);
+            deleteRow(EventProperty.Operations, ctx => ctx.CollectionEventProperties, toDeleteCep);
         }
 
         #endregion
@@ -858,13 +858,13 @@ namespace DiversityPhone.Services
             withDataContext(ctx =>
             {
 
-                IQueryable<CollectionEventProperty> clientPropertyList =
+                IQueryable<EventProperty> clientPropertyList =
                     from cep in ctx.CollectionEventProperties
                     where cep.EventID == ev.EventID && cep.ModificationState == ModificationState.Modified
                     select cep;
-                foreach (CollectionEventProperty cep in clientPropertyList)
+                foreach (EventProperty cep in clientPropertyList)
                 {
-                    Svc.CollectionEventProperty serverCep = CollectionEventProperty.ConvertToServiceObject(cep);
+                    Svc.CollectionEventProperty serverCep = EventProperty.ConvertToServiceObject(cep);
                     result.Properties.Add(serverCep);
                 }
 
@@ -980,7 +980,7 @@ namespace DiversityPhone.Services
                     from cep in ctx.CollectionEventProperties
                     where cep.EventID == clientKey
                     select cep;
-                foreach (CollectionEventProperty cep in ceProperties)
+                foreach (EventProperty cep in ceProperties)
                 {
                     cep.DiversityCollectionEventID = serverKey;
                     cep.ModificationState = ModificationState.Unmodified;

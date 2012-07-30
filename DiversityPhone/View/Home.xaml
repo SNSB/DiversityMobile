@@ -16,7 +16,10 @@
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
 	d:DataContext="{d:DesignData /SampleData/HomeVMSampleData.xaml}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
-    Loaded="PhoneApplicationPage_Loaded" >
+    Loaded="PhoneApplicationPage_Loaded"
+    x:Name="currentPage">
+    
+        
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -33,14 +36,20 @@
             <TextBlock x:Name="PageTitle" Text="home" Margin="55,29,193,0" Style="{StaticResource PhoneTextTitle1Style}" Width="220" Height="91" />            
         </Grid>
 
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">            
-            <StackPanel Margin="12,0,0,0">
-                <ctrl:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
-                <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}" 
-                                Content="{Binding NoEventSeries}" HorizontalAlignment="Left"/>
-                <ListBox ItemsSource="{Binding SeriesList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" Height="449" />
-            </StackPanel>
-        </ScrollViewer>
+        
+        <StackPanel Grid.Row="1" Margin="12,0,0,0">
+            <ctrl:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>            
+            <ListBox ItemsSource="{Binding SeriesList}" Height="479" >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{StaticResource ItemButtonStyle}" Command="{Binding DataContext.SelectSeries, ElementName=currentPage}" CommandParameter="{Binding}" >                            
+                            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                            
+                        </Button>                                
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
     </Grid>    
     </Grid>
 

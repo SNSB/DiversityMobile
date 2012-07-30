@@ -18,23 +18,31 @@ namespace DiversityPhone.Services
     {
         private const string VISIT_KEY = "visit";        
 
-        private IMessageBus _messenger;        
+        private IMessageBus Messenger;        
         private PhoneApplicationFrame _frame;
-        private int visitCounter = 0;
 
-        private IDictionary<string, PageState> States = new Dictionary<string, PageState>();
-
-        
         public NavigationService(IMessageBus messenger)
         {
-            _messenger = messenger;               
+            Messenger = messenger;               
        
             
-          _messenger.Listen<Page>()
-                .Select(p => new NavigationMessage(p,null))
-                .Merge(_messenger.Listen<NavigationMessage>())
-                .Subscribe(msg => Navigate(msg));
-                       
+            Messenger.RegisterMessageSource(
+                Observable.Merge(
+                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.VIEW).Select(_ => Page.ViewES),
+                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.EDIT).Select(_ => Page.EditES),
+                    Messenger.Listen<IElementVM<Event>>(MessageContracts.VIEW).Select(_ => Page.ViewEV),
+                    Messenger.Listen<IElementVM<Event>>(MessageContracts.EDIT).Select(_ => Page.EditEV),
+                    Messenger.Listen<IElementVM<Specimen>>(MessageContracts.VIEW).Select(_ => Page.ViewCS),
+                    Messenger.Listen<IElementVM<Specimen>>(MessageContracts.EDIT).Select(_ => Page.EditCS),
+                    Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW).Select(_ => Page.ViewIU),
+                    Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),                    
+                    Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),                   
+                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN)
+                    )
+                );
+
+             Messenger.Listen<Page>()                
+                .Subscribe(NavigateToPage);           
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {
@@ -50,40 +58,35 @@ namespace DiversityPhone.Services
         void NavigationFinished()
         {
             var page = _frame.Content as PhoneApplicationPage;
-            string visit;
-            PageState visit_info;
-            if (page.NavigationContext.QueryString.TryGetValue(VISIT_KEY, out visit)
-                && States.TryGetValue(visit, out visit_info)
-                && page.DataContext is PageViewModel)
+            
+            if (page.DataContext is PageVMBase)
             {
-                var vm = page.DataContext as PageViewModel;                
-                vm.SetState(visit_info);
+                var vm = page.DataContext as PageVMBase;
                 vm.Activate();
             }           
         }        
         void NavigationStarted()
         {
-            var page = _frame.Content as PhoneApplicationPage;           
+            var page = _frame.Content as PhoneApplicationPage;
 
-            if (page != null && page.DataContext is PageViewModel)
-            {                 
-                var vm = page.DataContext as PageViewModel;
-                vm.SaveState();
+            if (page != null && page.DataContext is PageVMBase)
+            {
+                var vm = page.DataContext as PageVMBase;               
                 vm.Deactivate();
             }           
         }
-        public void Navigate(NavigationMessage msg)
+
+        private void NavigateToPage(Page p)
         {
             string destination = null;
-            switch (msg.Destination)
+            switch (p)
             {
                 case Page.Current:
                     return;
                 case Page.Previous:
                     NavigateBack();
                     return;
-                case Page.Home:
-                    States.Clear();                    
+                case Page.Home:                    
                     destination = "/View/Home.xaml";
                     break;
                 case Page.Settings:
@@ -113,12 +116,10 @@ namespace DiversityPhone.Services
                 case Page.ViewCS:
                     destination = "/View/ViewCS.xaml";
                     break;
-
                 case Page.LoadedMaps:
                     destination = "/View/ViewLM.xaml";
                     break;
-                case Page.DownLoadMaps:
-                    //destination = "/View/ViewDLM.xaml";
+                case Page.DownLoadMaps:                    
                     destination = "/View/ViewDownloadMaps.xaml";
                     break;
                 case Page.ViewMap:
@@ -133,7 +134,6 @@ namespace DiversityPhone.Services
                 case Page.ViewMapIU:
                     destination = "/View/ViewMapIU.xaml";
                     break;
-
                 case Page.ViewImage:
                     destination = "/View/ViewImage.xaml";
                     break;
@@ -142,7 +142,7 @@ namespace DiversityPhone.Services
                     break;
                 case Page.ViewVideo:
                     destination = "/View/ViewVideo.xaml";
-                    break; 
+                    break;
                 case Page.SelectNewMMO:
                     destination = "/View/SelectNewMMO.xaml";
                     break;
@@ -176,26 +176,18 @@ namespace DiversityPhone.Services
                     System.Diagnostics.Debugger.Break();
                     break;
 #endif
-            }                
+            }
 
             if (destination != null && _frame != null)
-            {
-                var newState = new PageState(msg.Destination, msg.Context, msg.ReferrerType, msg.Referrer);
-                if (msg is VMNavigationMessage)
-                    newState.VMContext = (msg as VMNavigationMessage).VM;
-
-                States[visitCounter.ToString()] = newState;
-
-                var destURI = new Uri(
-                    string.Format("{0}?{1}={2}", destination, VISIT_KEY, visitCounter++),
-                    UriKind.RelativeOrAbsolute);
-                _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));                               
+            {               
+                var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
+                if(destURI != _frame.CurrentSource)
+                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
             }
-        }  
+        }       
 
         public void NavigateBack()
-        {           
-
+        {
             _frame.GoBack();
         }     
       

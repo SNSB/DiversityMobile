@@ -72,21 +72,17 @@ namespace DiversityPhone.Messages
                 });
         }
 
-        public static IDisposable ToView<T>(this IObservable<IElementVM<T>> This, Page targetPage)
+        public static IDisposable ToMessage<T>(this IObservable<T> This, string messageContract = null)
         {
             if (This == null)
                 throw new ArgumentNullException("This");
 
-            return This.Subscribe(x =>
-            {
-                var msngr = MessageBus.Current;
-                if (msngr != null)
-                {
-                    msngr.SendMessage(
-                    new VMNavigationMessage(targetPage, x) as NavigationMessage
-                    );
-                }
-            });
+            var msngr = MessageBus.Current;
+
+            if (msngr == null) 
+                throw new InvalidOperationException("No default Messenger");
+
+            return This.Subscribe(x => msngr.SendMessage(x, messageContract));
         } 
     }
 }

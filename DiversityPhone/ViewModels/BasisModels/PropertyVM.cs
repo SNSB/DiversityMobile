@@ -8,12 +8,12 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class PropertyVM : ElementVMBase<CollectionEventProperty>
+    public class PropertyVM : ElementVMBase<EventProperty>
     {       
         public override string Description { get { return Model.DisplayText; } }
         public override Icon Icon { get { return ViewModels.Icon.CollectionEventProperty; }  }       
 
-        public PropertyVM(CollectionEventProperty model)
+        public PropertyVM(EventProperty model)
             : base( model)
         {
 

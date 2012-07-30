@@ -13,10 +13,11 @@
     using System.Globalization;
     using System.Threading;
     using System.Windows.Navigation;
+    using Funq;
 
-    public class EditESVM : EditElementPageVMBase<EventSeries>
+    public class EditESVM : EditPageVMBase<EventSeries>
     {
-        private ISettingsService _settings;
+        private ISettingsService Settings;
 
         public ReactiveCommand FinishSeries { get; private set; }
 
@@ -59,38 +60,41 @@
         #endregion
 
 
-        public EditESVM(ISettingsService settings)
+        public EditESVM(Container ioc)
         {
-            _settings = settings;
-        
+            Settings = ioc.Resolve<ISettingsService>();
 
-            ValidModel
+            CurrentModelObservable
                 .Select(es => es.Description ?? String.Empty)
                 .BindTo(this, x => x.Description);
 
-            ValidModel
+            CurrentModelObservable
                 .Select(es => es.SeriesCode)
                 .BindTo(this, x => x.SeriesCode);
 
-            ValidModel
+            CurrentModelObservable
                 .Select(es => es.SeriesEnd)
                 .BindTo(this, x => x.SeriesEnd);
 
             _SeriesStart = this.ObservableToProperty(
-                ValidModel
+                CurrentModelObservable
                 .Select(es => es.SeriesStart)
                 .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString())),
                 x => x.SeriesStart);
 
-            (FinishSeries = new ReactiveCommand()).Subscribe(_ =>finishSeries());
-            FinishSeries
+            (FinishSeries = new ReactiveCommand(CurrentModelObservable.Select(es => es.SeriesEnd == null)))            
                 .Select(_ => DateTime.Now as DateTime?)
                 .BindTo(this, x => x.SeriesEnd);
 
+            Save
+                .Where(_ => _SeriesEnd != null)
+                .Subscribe(_ => Messenger.SendMessage<EventSeries>(null, MessageContracts.STOP));
+
+                 
         }        
 
         //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden        
-        protected override IObservable<bool> CanSave()
+        private IObservable<bool> CanSave()
         {            
             var descriptionNonEmpty = 
                 this.ObservableForProperty(x => x.Description)
@@ -99,7 +103,7 @@
 
             var endsAfterItBegins =
                 this.ObservableForProperty(x => x.SeriesEnd)
-                .CombineLatest(ValidModel, (end, model) => new { SeriesEnd = end, Model = model })
+                .CombineLatest(CurrentModelObservable, (end, model) => new { SeriesEnd = end, Model = model })
                 .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart)
                 .StartWith(true);
             
@@ -113,27 +117,6 @@
             Current.Model.SeriesEnd = SeriesEnd ?? Current.Model.SeriesEnd;
         }
 
-        protected void finishSeries()
-        {
-            Messenger.SendMessage<EventSeries>(Current.Model, MessageContracts.STOP);
-        }
-
-        protected override EventSeries ModelFromState(PageState s)
-        {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getEventSeriesByID(id);
-                }
-            }
-            return new EventSeries();
-        }
-
-        protected override ElementVMBase<EventSeries> ViewModelFromModel(EventSeries model)
-        {
-            return new EventSeriesVM(model);
-        }
+             
     }
 }

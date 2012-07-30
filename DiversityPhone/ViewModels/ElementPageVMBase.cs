@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using DiversityPhone.Messages;
 using ReactiveUI.Xaml;
 using System;
+using ReactiveUI;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,7 +17,7 @@ namespace DiversityPhone.ViewModels
         public IElementVM<T> Current
         {
             get { return _Current; }
-            protected set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); }
+            set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); } //Public for Binding
         }
 
         /// <summary>
@@ -24,6 +25,9 @@ namespace DiversityPhone.ViewModels
         /// if it is valid (i.e. non-null)
         /// </summary>
         protected IObservable<IElementVM<T>> CurrentObservable { get; private set; }
+
+
+        protected IObservable<T> CurrentModelObservable { get; private set; }
 
         public ElementPageVMBase ()
 	    {    
@@ -33,6 +37,15 @@ namespace DiversityPhone.ViewModels
                 .Publish();                
             CurrentObservable = currentObs;
             currentObs.Connect();
+
+            var modelObs =
+                CurrentObservable
+                .SelectMany(vm => vm.ObservableForProperty(x => x.Model))
+                .Value()
+                .Merge(CurrentObservable.Select(vm => vm.Model))
+                .Publish();
+            CurrentModelObservable = modelObs;
+            modelObs.Connect();                
         }
     }
 }

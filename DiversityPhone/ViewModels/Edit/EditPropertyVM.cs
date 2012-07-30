@@ -12,7 +12,7 @@ using Funq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditPropertyVM : EditElementPageVMBase<CollectionEventProperty>
+    public class EditPropertyVM : EditElementPageVMBase<EventProperty>
     {
         
 
@@ -48,7 +48,7 @@ namespace DiversityPhone.ViewModels
             Properties = new ListSelectionHelper<Property>();
             ValidModel                
                 .Subscribe(getProperties.Execute);
-            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as CollectionEventProperty))                
+            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as EventProperty))                
                 .Select(props => props.ToList() as IList<Property>)
                 .Subscribe(Properties);
 
@@ -73,7 +73,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_CanSaveSubject.OnNext);
         }
 
-        private IEnumerable<Property> getPropertiesImpl(CollectionEventProperty cep)
+        private IEnumerable<Property> getPropertiesImpl(EventProperty cep)
         {
             var props = Vocabulary.getAllProperties();
             if (cep.IsNew()) //All remaining Properties
@@ -116,7 +116,7 @@ namespace DiversityPhone.ViewModels
             Current.Model.DisplayText = Values.SelectedItem.DisplayText;
         }
 
-        protected override CollectionEventProperty ModelFromState(PageState s)
+        protected override EventProperty ModelFromState(PageState s)
         {
             if (s.Referrer != null)
             {
@@ -129,7 +129,7 @@ namespace DiversityPhone.ViewModels
                         return Storage.getPropertyByID(evID, propID);
                     }
                     else
-                        return new CollectionEventProperty()
+                        return new EventProperty()
                         {
                             EventID = evID
                         };
@@ -139,7 +139,7 @@ namespace DiversityPhone.ViewModels
             return null;
         }
 
-        protected override ElementVMBase<CollectionEventProperty> ViewModelFromModel(CollectionEventProperty model)
+        protected override ElementVMBase<EventProperty> ViewModelFromModel(EventProperty model)
         {
             return new PropertyVM(model);
         }
