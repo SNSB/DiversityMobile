@@ -25,7 +25,7 @@ using System.Reactive.Subjects;
 
         private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
         private SerialDisposable model_select = new SerialDisposable();
-        private ISubject<IElementVM<Event>> event_selected = new Subject<IElementVM<Event>>();
+        private ISubject<IElementVM<Event>> select_event = new Subject<IElementVM<Event>>();
 
         public ViewESVM()            
         {   
@@ -36,12 +36,12 @@ using System.Reactive.Subjects;
                 })
                 .Do(_ => EventList.Clear())
                 .SelectMany(evs => evs)
-                .Do(vm => vm.SelectObservable.Subscribe(event_selected.OnNext))
+                .Do(vm => vm.SelectObservable.Subscribe(select_event.OnNext))
                 .CreateCollection();
 
             ValidModel.Subscribe(getEvents.Execute);
 
-            event_selected
+            select_event
                 .Select(vm => vm.Model.EventID.ToString())
                 .ToNavigation(Page.ViewEV);
 

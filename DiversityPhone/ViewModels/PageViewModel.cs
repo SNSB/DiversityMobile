@@ -21,6 +21,7 @@ namespace DiversityPhone.ViewModels
     public abstract class PageViewModel : ReactiveObject
     {
         protected IMessageBus Messenger { get; private set; }
+
         private Subject<PageState> _StateObservable;
         /// <summary>
         /// Observable Sequence of incoming PageStates.

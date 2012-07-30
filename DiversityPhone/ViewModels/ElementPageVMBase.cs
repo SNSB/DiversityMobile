@@ -7,7 +7,7 @@ using System;
 
 namespace DiversityPhone.ViewModels
 {
-    public abstract class ElementPageVMBase<T> : PageViewModel
+    public abstract class ElementPageVMBase<T> : PageVMBase
     {
         private IElementVM<T> _Current;
         /// <summary>
@@ -26,17 +26,7 @@ namespace DiversityPhone.ViewModels
         protected IObservable<IElementVM<T>> CurrentObservable { get; private set; }
 
         public ElementPageVMBase ()
-	    {
-            DistinctStateObservable
-                .Select(s => s.VMContext as IElementVM<T>)
-                .Do(ctx =>
-                {
-                    if(ctx == null)
-                        Messenger.SendMessage(Page.Previous);
-                })
-                .Where(ctx => ctx != null)
-                .BindTo(this, x => x.Current);
-	    
+	    {    
             var currentObs =
             this.ObservableForProperty(x => x.Current)
                 .Value()

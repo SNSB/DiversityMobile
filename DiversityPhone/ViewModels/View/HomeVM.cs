@@ -51,7 +51,7 @@ namespace DiversityPhone.ViewModels
             NoEventSeries = new EventSeriesVM(EventSeries.NoEventSeries);
             NoEventSeries
                 .SelectObservable                
-                .ToNavigation(Page.ViewES);
+                .ToView(Page.ViewES);
 
             SeriesList = 
             getSeries.RegisterAsyncFunction(_ =>
@@ -63,7 +63,7 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
 
             select_series
-                .ToNavigation(Page.ViewES);
+                .ToView(Page.ViewES);
                 
 
             var noOpenSeries = SeriesList
@@ -80,7 +80,7 @@ namespace DiversityPhone.ViewModels
                     .Subscribe(_ => addSeries()),               
                 (Maps=new ReactiveCommand())
                     .Subscribe(_ =>loadMapPage()),  
-                    SeriesList
+                SeriesList
                     .ListenToChanges<EventSeries, EventSeriesVM>()
             };
 

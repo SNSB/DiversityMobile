@@ -21,6 +21,7 @@ namespace DiversityPhone.Messages
         public const string STOP = "Stop";
 
         public const string VIEW = "View";
+        public const string EDIT = "Edit";
     }
 
     public class NavigationMessage
@@ -71,7 +72,7 @@ namespace DiversityPhone.Messages
                 });
         }
 
-        public static IDisposable ToNavigation<T>(this IObservable<IElementVM<T>> This, Page targetPage)
+        public static IDisposable ToView<T>(this IObservable<IElementVM<T>> This, Page targetPage)
         {
             if (This == null)
                 throw new ArgumentNullException("This");
