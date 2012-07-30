@@ -17,7 +17,13 @@ namespace DiversityPhone.ViewModels
                 return null;
             else
             {
-                return (arg) => canExecute(arg as U);
+                return (arg) =>
+                {
+                    if (arg != null)
+                        return canExecute(arg as U);
+                    else 
+                        return false;
+                };
             }
         }
 
@@ -33,7 +39,7 @@ namespace DiversityPhone.ViewModels
         }
 
         public bool CanExecute(object parameter)
-        {
+        {            
             return inner_command.CanExecute(parameter as T);
         }
 

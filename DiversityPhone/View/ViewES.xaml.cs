@@ -31,38 +31,10 @@ namespace DiversityPhone
                 VM.AddEvent.Execute(null);
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            IEnumerable<JournalEntry> je= App.RootFrame.BackStack;
-            
-            je = App.RootFrame.BackStack;
-        }
-
-        private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            IEnumerable<JournalEntry> je = App.RootFrame.BackStack;
-            //Hier Backstack anpassen
-        }
-
-        private void PhoneApplicationPage_GotFocus(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Map_Click(object sender, EventArgs e)
         {
             if (VM != null)
                 VM.Maps.Execute(null);
-        }
-
-        private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void PhoneApplicationPage_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-
         }
     }
 }

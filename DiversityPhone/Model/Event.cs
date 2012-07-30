@@ -9,9 +9,10 @@
     using DiversityPhone.Services;
     using System.Data.Linq;
     using Svc = DiversityPhone.DiversityService;
+using ReactiveUI;
 
     [Table]
-    public class Event : IModifyable, ILocalizable
+    public class Event : ReactiveObject, IModifyable, ILocalizable
     {
         public Event()
         {
@@ -39,8 +40,15 @@
         [Column]
         public DateTime CollectionDate { get; set; }
 
+
+        private string _LocalityDescription;      
+
         [Column]
-        public string LocalityDescription { get; set; }
+        public string LocalityDescription
+        {
+            get { return _LocalityDescription; }
+            set { this.RaiseAndSetIfChanged(x => x.LocalityDescription, ref _LocalityDescription, value); }
+        }
 
         [Column]
         public string HabitatDescription { get; set; }

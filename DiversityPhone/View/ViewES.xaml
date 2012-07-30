@@ -12,18 +12,32 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    d:DataContext="{x:Null}"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}" Loaded="PhoneApplicationPage_Loaded" BackKeyPress="PhoneApplicationPage_BackKeyPress">
-
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewES}"
+    x:Name="currentPage">
   
-     <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" DataContext="{Binding}">
+    <Grid Grid.Row="0" Margin="{StaticResource PhoneMargin}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ContentControl Grid.Row="0" ContentTemplate="{StaticResource FieldDataItemTemplate}"
-                            Content="{Binding Current}"/>
-            <ListBox Grid.Row="1" ItemsSource="{Binding EventList}" ItemTemplate="{StaticResource FieldDataItemTemplate}" />        
+        <Button Grid.Row="0" 
+                Style="{StaticResource ItemButtonStyle}" 
+                ContentTemplate="{StaticResource ElementItemTemplate}"
+                Content="{Binding Current}"
+                Command="{Binding EditSeries}"
+                CommandParameter="{Binding Current}"/>
+        <ListBox Grid.Row="1" ItemsSource="{Binding EventList}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button Style="{StaticResource ItemButtonStyle}" 
+                            Command="{Binding DataContext.SelectEvent, ElementName=currentPage}" 
+                            CommandParameter="{Binding}">
+                        <ContentControl Content="{Binding}" 
+                                        ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                    </Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>        
     </Grid>
     
     

@@ -15,57 +15,52 @@ using System.Reactive.Subjects;
 
     public class ViewESVM : ViewPageVMBase<EventSeries>
     {
+        private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();  
+
         private IFieldDataService Storage;
 
         #region Commands
         public ReactiveCommand AddEvent { get; private set; }        
         public ReactiveCommand Maps { get; private set; }
+        public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
+        public ReactiveCommand<IElementVM<Event>> SelectEvent { get; private set; }
         #endregion
-
-        #region Properties
-        public ReactiveCollection<EventVM> EventList { get; private set; }        
-        #endregion
-
-        private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
-        private SerialDisposable model_select = new SerialDisposable();
-        private ISubject<IElementVM<Event>> select_event = new Subject<IElementVM<Event>>();
+        
+        public ReactiveCollection<EventVM> EventList { get; private set; }              
 
         public ViewESVM(Container ioc)            
         {
-            Storage = ioc.Resolve<IFieldDataService>();            
+            Storage = ioc.Resolve<IFieldDataService>();
+
+            EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !EventSeries.isNoEventSeries(vm.Model));
+            EditSeries
+                .ToMessage(MessageContracts.EDIT);
 
             EventList = getEvents.RegisterAsyncFunction(es =>
                 {
                     return Storage.getEventsForSeries(es as EventSeries)
                         .Select(ev => new EventVM(ev));
-                })
-                .Do(_ => EventList.Clear())
-                .SelectMany(evs => evs)
-                .Do(vm => vm.SelectObservable.Subscribe(select_event.OnNext))
+                })                
+                .SelectMany(evs => evs)                
                 .CreateCollection();
 
-            CurrentModelObservable.Subscribe(getEvents.Execute);
+            CurrentModelObservable
+                .Do(_ => EventList.Clear())
+                .Subscribe(getEvents.Execute);
 
-            select_event
-                .Select(vm => vm.Model.EventID.ToString())
-                .ToNavigation(Page.ViewEV);
-
-            //On each Invocation of AddEvent, a new NavigationMessage is generated
+            SelectEvent = new ReactiveCommand<IElementVM<Event>>();
+            SelectEvent
+                .ToMessage(MessageContracts.VIEW);
+            
             AddEvent = new ReactiveCommand();
-            var newEventMessageSource =
-                AddEvent
-                .Timestamp()
-                .CombineLatest(CurrentModelObservable, (a, b) => new { Click = a, Model = b })
-                .DistinctUntilChanged(pair => pair.Click.Timestamp)
-                .Select(pair => new NavigationMessage(Page.EditEV, null, ReferrerType.EventSeries,
-                              (EventSeries.isNoEventSeries(pair.Model)) ? null : pair.Model.SeriesID.ToString()
-                    ));
-            Messenger.RegisterMessageSource(newEventMessageSource);
-            Maps = new ReactiveCommand();
-            var mapMessageSource =
-                Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.EventSeries, Current.Model.SeriesID.ToString()));
-            Messenger.RegisterMessageSource(mapMessageSource);           
+            AddEvent
+                .Select(_ => new EventVM(new Event()) as IElementVM<Event>)
+                .ToMessage(MessageContracts.EDIT);
+
+            Maps = new ReactiveCommand();            
+            Maps
+                .Select(_ => Current)
+                .ToMessage(MessageContracts.MAPS);
         }       
     }
 }
