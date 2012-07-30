@@ -22,14 +22,14 @@ namespace DiversityPhone.View
     public partial class EditEV : PhoneApplicationPage
     {
         private EditEVVM VM { get { return DataContext as EditEVVM; } }
-        private EditPageAppBarUpdater<Event> _appbar;
+        private EditPageAppBarUpdater _appbar;
         private IList<Control> _toStore;
 
         public EditEV()
         {
             InitializeComponent();
 
-            _appbar = new EditPageAppBarUpdater<Event>(this.ApplicationBar, VM);
+            _appbar = new EditPageAppBarUpdater(this.ApplicationBar, VM);
             this._toStore = new List<Control> { this.LocalityTB };
             DPControlBackGround.adjustStoreBackgroundColors(_toStore);
         }      

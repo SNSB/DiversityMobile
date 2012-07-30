@@ -9,11 +9,11 @@ using System.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
-    public abstract class EditPageVMBase<T> : ElementPageVMBase<T> where T : IModifyable
+    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable
     {
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
+        public IReactiveCommand Save { get; private set; }
+        public IReactiveCommand ToggleEditable { get; private set; }
+        public IReactiveCommand Delete { get; private set; }
 
 
         private ObservableAsPropertyHelper<bool> _IsEditable;

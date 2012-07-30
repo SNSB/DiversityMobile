@@ -17,14 +17,14 @@ using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
-    public class EditPageAppBarUpdater<T> where T : IModifyable
+    public class EditPageAppBarUpdater
     {
         IApplicationBar _appbar;
-        EditElementPageVMBase<T> _vm;
+        IEditPageVM _vm;
         ApplicationBarIconButton _save,_edit,_delete;
         CommandButtonAdapter _to_save, _to_edit, _to_delete;
 
-        public EditPageAppBarUpdater(IApplicationBar appbar, EditElementPageVMBase<T> viewmodel )
+        public EditPageAppBarUpdater(IApplicationBar appbar, IEditPageVM viewmodel)
         {
             _appbar = appbar;
             _vm = viewmodel;

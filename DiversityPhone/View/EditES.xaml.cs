@@ -25,7 +25,7 @@ namespace DiversityPhone.View
     {
         private EditESVM VM { get { return this.DataContext as EditESVM; } }
 
-        private EditPageAppBarUpdater<EventSeries> _appbarupd;
+        private EditPageAppBarUpdater _appbarupd;
 
         private IList<Control> _toStore;
        
@@ -35,7 +35,7 @@ namespace DiversityPhone.View
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-De");
             InitializeComponent();
 
-            _appbarupd = new EditPageAppBarUpdater<EventSeries>(this.ApplicationBar, VM);
+            _appbarupd = new EditPageAppBarUpdater(this.ApplicationBar, VM);
             if (VM != null)
             {
                 this._toStore = new List<Control> { this.DescTB };

@@ -9,14 +9,14 @@ using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
-    public abstract class EditElementPageVMBase<T> : ElementPageViewModel<T> where T : IModifyable
+    public abstract class EditElementPageVMBase<T> : ElementPageViewModel<T>, IEditPageVM where T : IModifyable
     {
         private ISubject<DialogResult> DeleteSubject = new Subject<DialogResult>();
 
         #region Commands
-        public ReactiveCommand Save { get; private set; }
-        public ReactiveCommand ToggleEditable { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
+        public IReactiveCommand Save { get; private set; }
+        public IReactiveCommand ToggleEditable { get; private set; }
+        public IReactiveCommand Delete { get; private set; }
         #endregion
 
         private ObservableAsPropertyHelper<bool> _IsEditable;

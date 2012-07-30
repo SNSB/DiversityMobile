@@ -20,12 +20,12 @@ namespace DiversityPhone.View
 
         private ViewImageVM VM { get { return this.DataContext as ViewImageVM; } }
 
-        private EditPageAppBarUpdater<MultimediaObject> _appb;
+        private EditPageAppBarUpdater _appb;
 
         public ViewImage()
         {
             InitializeComponent();
-            _appb = new EditPageAppBarUpdater<MultimediaObject>(this.ApplicationBar, VM);
+            _appb = new EditPageAppBarUpdater(this.ApplicationBar, VM);
         }
     }
 }

@@ -22,14 +22,14 @@ namespace DiversityPhone.View
 
         public EditCSVM VM { get{return DataContext as EditCSVM;} }
 
-        private EditPageAppBarUpdater<Specimen> _appbarupd;
+        private EditPageAppBarUpdater _appbarupd;
         private IList<Control> _toStore;
 
         public EditCS()
         {
             InitializeComponent();
 
-            _appbarupd = new EditPageAppBarUpdater<Specimen>(this.ApplicationBar, VM);
+            _appbarupd = new EditPageAppBarUpdater(this.ApplicationBar, VM);
 
             anBinding =  AN_TB.GetBindingExpression(TextBox.TextProperty);
             this._toStore = new List<Control> { this.AN_TB };
