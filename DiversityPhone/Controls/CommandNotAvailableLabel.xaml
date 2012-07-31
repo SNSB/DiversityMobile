@@ -13,8 +13,8 @@
             <ColumnDefinition Width="40"/>
             <ColumnDefinition Width="Auto" MinWidth="280"/>
         </Grid.ColumnDefinitions>
-        <Rectangle Fill="{StaticResource PhoneForegroundBrush}" Width="40" Height="40" 
-                       Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
+        <Rectangle Fill="{StaticResource PhoneForegroundBrush}" 
+                   Width="40" Height="40">
             <Rectangle.OpacityMask>
                 <ImageBrush ImageSource="/DiversityPhone;component/Images/MetroIcons/white/i.png" />
             </Rectangle.OpacityMask>

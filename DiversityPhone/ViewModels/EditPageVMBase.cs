@@ -53,7 +53,7 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => new DialogMessage(DialogType.YesNo, "", DiversityResources.Message_ConfirmDelete,(res) => {if(res == DialogResult.OKYes) DeleteSubject.OnNext(Unit.Default);}))
                 .ToMessage();
                
-            DeleteSubject                
+            DeleteSubject               
                 .Select(_ => Current)
                 .ToMessage(MessageContracts.DELETE);
 

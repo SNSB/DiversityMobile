@@ -44,6 +44,9 @@ using System.Reactive.Subjects;
                 .SelectMany(evs => evs)                
                 .CreateCollection();
 
+            EventList
+                .ListenToChanges<Event, EventVM>(ev => ev.SeriesID == Current.Model.SeriesID);
+
             CurrentModelObservable
                 .Do(_ => EventList.Clear())
                 .Subscribe(getEvents.Execute);
@@ -54,7 +57,7 @@ using System.Reactive.Subjects;
             
             AddEvent = new ReactiveCommand();
             AddEvent
-                .Select(_ => new EventVM(new Event()) as IElementVM<Event>)
+                .Select(_ => new EventVM(new Event() { SeriesID = Current.Model.SeriesID }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();            
