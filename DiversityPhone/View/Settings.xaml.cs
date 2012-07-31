@@ -56,24 +56,32 @@ namespace DiversityPhone.View
             if (!initialized)
             {
                 initialized = true;
-                saveBtn = ApplicationBar.Buttons[0] as ApplicationBarIconButton;
-                toSave = new CommandButtonAdapter(VM.Save, saveBtn);
 
-                clearBtn = new ApplicationBarIconButton()
+                saveBtn = new ApplicationBarIconButton()
                 {
-                    IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
-                    Text = "reset",
+                    IconUri = new Uri("/Images/appbar.save.rest.png", UriKind.Relative),
+                    Text = DiversityResources.Settings_Header_ButtonSave
                 };
-                ApplicationBar.Buttons.Add(clearBtn);
-                toClear = new CommandButtonAdapter(VM.Reset, clearBtn);
+                ApplicationBar.Buttons.Add(saveBtn);
+                toSave = new CommandButtonAdapter(VM.Save, saveBtn);
 
                 refreshBtn = new ApplicationBarIconButton()
                 {
                     IconUri = new Uri("/Images/appbar.refresh.rest.png", UriKind.Relative),
-                    Text = "refresh vocabulary"
+                    Text = DiversityResources.Settings_Header_ButtonRefresh
                 };
                 ApplicationBar.Buttons.Add(refreshBtn);
-                toRefresh = new CommandButtonAdapter(VM.RefreshVocabulary, refreshBtn);              
+                toRefresh = new CommandButtonAdapter(VM.RefreshVocabulary, refreshBtn);   
+
+                clearBtn = new ApplicationBarIconButton()
+                {
+                    IconUri = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
+                    Text = DiversityResources.Settings_Header_ButtonClear,
+                };
+                ApplicationBar.Buttons.Add(clearBtn);
+                toClear = new CommandButtonAdapter(VM.Reset, clearBtn);
+
+                           
             }            
         }
 

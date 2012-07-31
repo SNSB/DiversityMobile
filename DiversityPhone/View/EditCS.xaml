@@ -24,7 +24,7 @@
         </Grid>
 
         <StackPanel Background="Transparent">
-            <TextBlock Text="Accession Number"/>
+            <TextBlock Text="Field Number"/>
             <TextBox x:Name="AN_TB" Background="#BFFFFFFF" 
                      Text="{Binding AccessionNumber, Mode=TwoWay}" 
                      TextChanged="DescTB_TextChanged" 
