@@ -14,10 +14,13 @@ namespace DiversityPhone.ViewModels
 {
    
 
-    public class ViewCSVM : ElementPageViewModel<Specimen>
-    {        
+    public class ViewCSVM : ViewPageVMBase<Specimen>
+    {
+        private ReactiveAsyncCommand getSubunits = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getMultimedia = new ReactiveAsyncCommand();
 
-        private Container IOC;
+        private IFieldDataService Storage;
+
         public enum Pivots
         {
             Units,
@@ -28,10 +31,9 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
 
-
-        private SerialDisposable select_registration = new SerialDisposable();
-        private ISubject<IElementVM<IdentificationUnit>> select_specimen = new Subject<IElementVM<IdentificationUnit>>();
-        private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null);
+        public ReactiveCommand<IElementVM<Specimen>> EditSpecimen { get; private set; }
+        public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
+        
         #endregion
 
         #region Properties
@@ -50,130 +52,44 @@ namespace DiversityPhone.ViewModels
 
 
         public ReactiveCollection<IdentificationUnitVM> UnitList { get; private set; }
-        
-        
-        public ReactiveCollection<ImageVM> ImageList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> AudioList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> VideoList { get; private set; }
-
         #endregion
-
-        private ReactiveAsyncCommand getImages = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
-
-        public ViewCSVM(Container ioc) 
-            :base(false)
+       
+        public ViewCSVM(Container ioc)             
         {
-            IOC = ioc;
-            Add = new ReactiveCommand();
+            Storage = ioc.Resolve<IFieldDataService>();
 
-            fetchSubunits
-                .RegisterAsyncAction(subject => fetchSubunitsImpl(subject as ISubject<IdentificationUnitVM>));
+            EditSpecimen = new ReactiveCommand<IElementVM<Specimen>>(vm => !vm.Model.IsObservation());
+            EditSpecimen
+                .ToMessage(MessageContracts.EDIT);
 
-            var unitList = new Subject<IdentificationUnitVM>();
-            UnitList = unitList
+            //SubUnits
+            UnitList = getSubunits.RegisterAsyncFunction(spec => Storage.getIUForSpecimen((spec as Specimen).SpecimenID).Select(s => new IdentificationUnitVM(s)))
+                .SelectMany(vms => vms)
                 .CreateCollection();
 
-            ValidModel.Take(1).Subscribe(_ => fetchSubunits.Execute(unitList)); //After Current is set
-            UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);               
+            UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);
 
-            
+            CurrentModelObservable
+                .Do(_ => UnitList.Clear())
+                .Subscribe(getSubunits.Execute);
 
-            Messenger.RegisterMessageSource(
-                Add
-                .Select(_ =>
-                {
-                    switch (SelectedPivot)
-                    {
-                        case Pivots.Multimedia:
-                            return Page.SelectNewMMO;
-                        case Pivots.Units:
-                        default:
-                            return Page.EditIU;
-                    }
-                })
-                .Select(p => new NavigationMessage(p, null, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
-                );
+            SelectUnit = new ReactiveCommand<IElementVM<IdentificationUnit>>();
+            SelectUnit
+                .ToMessage(MessageContracts.VIEW);
+
+
+
+            Add = new ReactiveCommand();
+            Add.Where(_ => SelectedPivot == Pivots.Units)
+                .Select(_ => new IdentificationUnitVM(new IdentificationUnit(){SpecimenID = Current.Model.SpecimenID}) as IElementVM<IdentificationUnit>)
+                .ToMessage(MessageContracts.EDIT);
+               
+               
             Maps = new ReactiveCommand();
             var mapMessageSource =
                 Maps
                 .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Specimen, Current.Model.DiversityCollectionSpecimenID.ToString()));
             Messenger.RegisterMessageSource(mapMessageSource);
-        }
-
-        private void fetchSubunitsImpl(ISubject<IdentificationUnitVM> collection)
-        {
-            var subunits = new Queue<IdentificationUnit>(Storage.getIUForSpecimen(Current.Model.SpecimenID));
-            var collection_index = new Dictionary<int, IdentificationUnitVM>();          
-
-
-            while(subunits.Any())
-            {
-                var unit = subunits.Dequeue();
-                if (unit.RelatedUnitID == null)
-                {
-                    var uvm = new IdentificationUnitVM(unit);
-                    uvm.SelectObservable
-                        .Subscribe(select_specimen);
-
-                    collection.OnNext(uvm);
-                }
-                else if (collection_index.ContainsKey(unit.RelatedUnitID.Value))
-                {
-                    var parentvm = collection_index[unit.RelatedUnitID.Value];
-
-                    var uvm = new IdentificationUnitVM(unit, parentvm);
-
-                    parentvm.SubUnits.Add(uvm);
-                }
-                else
-                    subunits.Enqueue(unit);
-            }            
-        }       
-
-        protected override Specimen ModelFromState(PageState s)
-        { 
-
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getSpecimenByID(id);
-                }
-            }            
-            return null;
-        }
-
-        SerialDisposable model_select = new SerialDisposable();
-
-        protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
-        {
-            var res = new SpecimenVM(model);
-            if (!model.IsObservation())
-            {
-                res.SelectObservable
-                    .Select(vm => vm.Model.SpecimenID.ToString())
-                    .ToNavigation(Page.EditCS);
-            }
-            else
-                model_select.Disposable = null;
-
-            return res;
-        }
-
-        public override void Activate()
-        {
-            select_registration.Disposable = select_specimen.Take(1)
-                .ToMessage(MessageContracts.EDIT);
-        }
-
-        public override void Deactivate()
-        {
-            select_registration.Disposable = null;
         }
     }
 }

@@ -73,7 +73,7 @@ namespace DiversityPhone.Messages
                         );
                     }
                 });
-        }
+        }        
 
         public static IDisposable ToMessage<T>(this IObservable<T> This, string messageContract = null)
         {

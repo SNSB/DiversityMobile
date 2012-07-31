@@ -88,17 +88,17 @@ namespace DiversityPhone
 
             #region ViewModel Factories
             IOC.Register<HomeVM>(new HomeVM(IOC));
-
             IOC.Register<EditESVM>(new EditESVM(IOC));
-
             IOC.Register<ViewESVM>(new ViewESVM(IOC));
             IOC.Register<EditEVVM>(new EditEVVM(IOC));
-
-
             IOC.Register<ViewEVVM>(new ViewEVVM(IOC));
-
-            IOC.Register<ViewCSVM>(new ViewCSVM(IOC));
             IOC.Register<EditCSVM>(new EditCSVM());
+            IOC.Register<ViewCSVM>(new ViewCSVM(IOC));
+            IOC.Register<EditIUVM>(new EditIUVM(IOC));
+            IOC.Register<ViewIUVM>(new ViewIUVM(IOC));
+            IOC.Register<EditPropertyVM>(new EditPropertyVM(IOC));
+            IOC.Register<EditAnalysisVM>(new EditAnalysisVM(IOC));
+
             IOC.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
             IOC.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
             IOC.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
@@ -106,9 +106,8 @@ namespace DiversityPhone
             IOC.Register<ViewMapESVM>(c => new ViewMapESVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             IOC.Register<ViewMapEVVM>(c => new ViewMapEVVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             IOC.Register<ViewMapIUVM>(c => new ViewMapIUVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
-            IOC.Register<EditIUVM>(c => new EditIUVM(c));
-            IOC.Register<ViewIUVM>(c => new ViewIUVM(c));
-            IOC.Register<EditAnalysisVM>(c => new EditAnalysisVM(c));
+            
+            
             IOC.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
             IOC.Register<SelectNewMMOVM>(c => new SelectNewMMOVM());
             IOC.Register<NewImageVM>(c => new NewImageVM());
@@ -117,7 +116,7 @@ namespace DiversityPhone
             IOC.Register<ViewImageVM>(c => new ViewImageVM());
             IOC.Register<ViewAudioVM>(c => new ViewAudioVM());
             IOC.Register<ViewVideoVM>(c => new ViewVideoVM());
-            IOC.Register<EditPropertyVM>(c => new EditPropertyVM(c));
+            
 
             IOC.Register<TaxonManagementVM>(c => new TaxonManagementVM(c));
 

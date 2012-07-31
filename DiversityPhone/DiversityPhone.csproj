@@ -358,7 +358,6 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
-    <Compile Include="ViewModels\VirtualizingViewModelList.cs" />
     <Compile Include="View\ViewLM.xaml.cs">
       <DependentUpon>ViewLM.xaml</DependentUpon>
     </Compile>

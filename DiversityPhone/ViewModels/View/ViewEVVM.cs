@@ -13,7 +13,7 @@
 using System.Reactive.Disposables;
     using Funq;
 
-    public class ViewEVVM : ElementPageVMBase<Event>
+    public class ViewEVVM : ViewPageVMBase<Event>
     {
         private IFieldDataService Storage;
 
@@ -107,12 +107,12 @@ using System.Reactive.Disposables;
 
 
             //Add New
-            Add = new ReactiveCommand();           
+            Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Specimen)
-                .Select(_ => new SpecimenVM(new Specimen()))
+                .Select(_ => new SpecimenVM(new Specimen() { EventID = Current.Model.EventID }) as IElementVM<Specimen>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Descriptions)
-                .Select(_ => new PropertyVM(new EventProperty()))
+                .Select(_ => new PropertyVM(new EventProperty() { EventID = Current.Model.EventID }) as IElementVM<EventProperty>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Select(_ => Current)

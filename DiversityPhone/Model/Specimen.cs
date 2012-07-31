@@ -17,7 +17,7 @@
         public int? DiversityCollectionSpecimenID { get; set; }
 
         [Column]
-        public int CollectionEventID { get; set; }
+        public int EventID { get; set; }
 
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventID { get; set; }
@@ -80,7 +80,7 @@
             else export.DiversityCollectionSpecimenID = Int32.MinValue;
             export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
             export.AccessionNumber = spec.AccessionNumber;
-            export.CollectionEventID = spec.CollectionEventID;
+            export.CollectionEventID = spec.EventID;
             export.CollectionSpecimenID = spec.SpecimenID;
             return export;
         }

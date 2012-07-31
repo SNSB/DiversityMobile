@@ -12,9 +12,8 @@ using Funq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditPropertyVM : EditElementPageVMBase<EventProperty>
-    {
-        
+    public class EditPropertyVM : EditPageVMBase<EventProperty>
+    {      
 
         #region Services        
         private IVocabularyService Vocabulary { get; set; }
@@ -26,10 +25,11 @@ namespace DiversityPhone.ViewModels
 
         public bool IsNew { get { return _IsNew.Value; } }
         private ObservableAsPropertyHelper<bool> _IsNew;
-        
 
+        private Property NoProperty = new Property() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
         public ListSelectionHelper<Property> Properties { get; private set; }
 
+        private PropertyName NoValue = new PropertyName() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
         public ListSelectionHelper<PropertyName> Values { get; private set; }
         #endregion
 
@@ -37,18 +37,17 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand getValues = new ReactiveAsyncCommand();
 
 
-        public EditPropertyVM(Container ioc)      
-            :  base(false)
+        public EditPropertyVM(Container ioc)                  
         {
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Storage = ioc.Resolve<IFieldDataService>();
 
-            _IsNew = this.ObservableToProperty(ValidModel.Select(m => m.IsNew()), x => x.IsNew, false);
+            _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
 
-            Properties = new ListSelectionHelper<Property>();
-            ValidModel                
+            CurrentModelObservable
                 .Subscribe(getProperties.Execute);
-            getProperties.RegisterAsyncFunction(arg => getPropertiesImpl(arg as EventProperty))                
+            Properties = new ListSelectionHelper<Property>();            
+            getProperties.RegisterAsyncFunction(prop => getPropertiesImpl(prop as EventProperty))                
                 .Select(props => props.ToList() as IList<Property>)
                 .Subscribe(Properties);
 
@@ -59,18 +58,17 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Values);
 
 
-            ValidModel
+            CurrentModelObservable
                 .CombineLatest(Properties.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyID == m.PropertyID))
                 .BindTo(Properties, x => x.SelectedItem);
 
-            ValidModel
+            CurrentModelObservable
                 .CombineLatest(Values.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyUri == m.PropertyUri))
                 .BindTo(Values, x => x.SelectedItem);
 
 
             CanSaveObs()
-                .SubscribeOnDispatcher()
-                .Subscribe(_CanSaveSubject.OnNext);
+                .Subscribe(CanSaveSubject.OnNext);
         }
 
         private IEnumerable<Property> getPropertiesImpl(EventProperty cep)
@@ -114,34 +112,6 @@ namespace DiversityPhone.ViewModels
             Current.Model.PropertyID = Properties.SelectedItem.PropertyID;
             Current.Model.PropertyUri = Values.SelectedItem.PropertyUri;
             Current.Model.DisplayText = Values.SelectedItem.DisplayText;
-        }
-
-        protected override EventProperty ModelFromState(PageState s)
-        {
-            if (s.Referrer != null)
-            {
-                int evID;
-                if (int.TryParse(s.Referrer, out evID))
-                {
-                    int propID;
-                    if (s.Context != null && int.TryParse(s.Context, out propID))
-                    {
-                        return Storage.getPropertyByID(evID, propID);
-                    }
-                    else
-                        return new EventProperty()
-                        {
-                            EventID = evID
-                        };
-                         
-                }
-            }
-            return null;
-        }
-
-        protected override ElementVMBase<EventProperty> ViewModelFromModel(EventProperty model)
-        {
-            return new PropertyVM(model);
         }
     }
 }

@@ -9,7 +9,7 @@ using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditCSVM : EditElementPageVMBase<Specimen>
+    public class EditCSVM : EditPageVMBase<Specimen>
     {
         #region Properties
         private string _AccessionNumber;
@@ -20,18 +20,19 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-
         public EditCSVM()
             
         {    
             //Read-Only Eigenschaften direkt ans Model Binden
             //Nur Veränderbare Properties oder abgeleitete so binden
-            ValidModel                    
+            CurrentModelObservable                    
                 .Select(m => m.AccessionNumber != null ? m.AccessionNumber : "")
-                .BindTo(this, x=>x.AccessionNumber);       
+                .BindTo(this, x=>x.AccessionNumber);
+
+            CanSave().Subscribe(CanSaveSubject.OnNext);
         }
 
-        protected override IObservable<bool> CanSave()
+        protected IObservable<bool> CanSave()
         {
             IObservable<bool> accessionNumber = this.ObservableForProperty(x => x.AccessionNumber)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
@@ -44,35 +45,6 @@ namespace DiversityPhone.ViewModels
         {
             //Nur Veränderbare Eigenschaften übernehmen.
             Current.Model.AccessionNumber = AccessionNumber;
-        }
-
-        protected override Specimen ModelFromState(PageState s)
-        {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getSpecimenByID(id);
-                }
-            }
-            else if (s.Referrer != null && s.ReferrerType == ReferrerType.Event)
-            {
-                int parentId;
-                if (int.TryParse(s.Referrer, out parentId))
-                {
-                    return new Specimen()
-                        {
-                            CollectionEventID = parentId,                            
-                        };
-                }
-            }
-            return null;
-        }
-
-        protected override ElementVMBase<Specimen> ViewModelFromModel(Specimen model)
-        {
-            return new SpecimenVM(model);
         }
     }
 }

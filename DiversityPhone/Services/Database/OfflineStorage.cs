@@ -271,7 +271,7 @@ namespace DiversityPhone.Services
             if (wasNewEvent)
             {
                 Specimen observation = new Specimen().MakeObservation();
-                observation.CollectionEventID = ev.EventID;
+                observation.EventID = ev.EventID;
                 addOrUpdateSpecimen(observation);
 
             }
@@ -357,7 +357,7 @@ namespace DiversityPhone.Services
             IList<Specimen> specList= cachedQuery(Specimen.Operations,
             ctx =>
                 from spec in ctx.Specimen                 
-                where spec.CollectionEventID == ev.EventID
+                where spec.EventID == ev.EventID
                 select spec
                 );
            
@@ -378,14 +378,14 @@ namespace DiversityPhone.Services
           return cachedQuery(Specimen.Operations,
             ctx =>
                 from spec in ctx.Specimen
-                where spec.CollectionEventID == null 
+                where spec.EventID == null 
                 select spec
                 );
         }
 
         public void addOrUpdateSpecimen(Specimen spec)
         {
-            Event ev = this.getEventByID(spec.CollectionEventID);
+            Event ev = this.getEventByID(spec.EventID);
             if (ev.DiversityCollectionEventID != null)
                 spec.DiversityCollectionEventID = ev.DiversityCollectionEventID;
             addOrUpdateRow(Specimen.Operations,
@@ -870,7 +870,7 @@ namespace DiversityPhone.Services
 
                 IQueryable<Specimen> clientSpecList =
                     from spec in ctx.Specimen
-                    where spec.CollectionEventID == ev.EventID
+                    where spec.EventID == ev.EventID
                     select spec;
                 foreach (Specimen spec in clientSpecList)
                 {
@@ -966,7 +966,7 @@ namespace DiversityPhone.Services
                 clientEvent.ModificationState = ModificationState.Unmodified;
                 var savedSpecimen =
                     from spec in ctx.Specimen
-                    where spec.CollectionEventID == clientKey
+                    where spec.EventID == clientKey
                     select spec;
                 foreach (Specimen spec in savedSpecimen)
                     spec.DiversityCollectionEventID = serverKey;
