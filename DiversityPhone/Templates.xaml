@@ -51,8 +51,11 @@
     
     
     <DataTemplate x:Key="IdentificationItemSelectTemplate">
-        <Button Style="{StaticResource ItemButtonStyle}" Command="{Binding Select}">
-            <ContentControl Content="{Binding}" ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
+        <Button Style="{StaticResource ItemButtonStyle}" 
+                Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
+                CommandParameter="{Binding}">
+            <ContentControl Content="{Binding}" 
+                            ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
         </Button>
     </DataTemplate>
     <DataTemplate x:Key="IdentificationOneLevelItemTemplate">

@@ -11,11 +11,14 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using Funq;
 using System.Reactive.Disposables;
+using Microsoft.Phone.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewIUVM : PageViewModel
+    public class ViewIUVM : ViewPageVMBase<IdentificationUnit>
     {
+        private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
+
         public enum Pivots
         {
             Subunits,
@@ -24,22 +27,21 @@ namespace DiversityPhone.ViewModels
         }
 
         private Container IOC;
-        IVocabularyService Vocabulary;
-        IFieldDataService Storage;
+        private IVocabularyService Vocabulary;
+        private IFieldDataService Storage;
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand Back { get; private set; }
-        public ReactiveCommand EditCurrent { get; private set; }
 
-        private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand fetchSubunits = new ReactiveAsyncCommand(null, 2);
+        public ReactiveCommand<IElementVM<IdentificationUnit>> EditCurrent { get; private set; }
+        public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
         #endregion
 
         #region Properties
 
-        Stack<IdentificationUnitVM> unitBackStack = new Stack<IdentificationUnitVM>();
+        Stack<IElementVM<IdentificationUnit>> unitBackStack = new Stack<IElementVM<IdentificationUnit>>();
 
         private Pivots _SelectedPivot;
         public Pivots SelectedPivot
@@ -54,43 +56,13 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
-        private IdentificationUnitVM _Current;
-
-        public IdentificationUnitVM Current
-        {
-            get
-            {
-                return _Current;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value);
-            }
-        }
-
-        CompositeDisposable select_subscription = new CompositeDisposable();
-
+        private SerialDisposable _SubunitListener = new SerialDisposable();
         private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _Subunits;
         public ReactiveCollection<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
 
-
-        public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get { return _Analyses.Value; } }
-        private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitAnalysisVM>> _Analyses;
-
-        public ReactiveCollection<ImageVM> ImageList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> AudioList { get; private set; }
-
-        public ReactiveCollection<MultimediaObjectVM> VideoList { get; private set; }
-        
+        public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get; private set; }
 
         #endregion
-
-        private ReactiveAsyncCommand getImages = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
-        
 
         public ViewIUVM(Container ioc)
         {
@@ -98,56 +70,24 @@ namespace DiversityPhone.ViewModels
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Storage = ioc.Resolve<IFieldDataService>();
 
-            DistinctStateObservable
-                .Select(s => s.VMContext as IdentificationUnitVM)
-                .Where(ctx => ctx != null)
-                .BindTo(this, x => x.Current);
+            
 
-
-            var current = this.ObservableForProperty(x => x.Current).Value().Publish();
-            current.Connect();
-
-            current
-                .Subscribe((vm) => 
-                {
-                    select_subscription.Clear();
-                    select_subscription.Add(vm.SelectObservable.Subscribe(selectSubUnit));
-                    select_subscription.Add(vm.SubUnits.ListenToChanges<IdentificationUnit, IdentificationUnitVM>());
-                });
+            
+                
 
             _Subunits = this.ObservableToProperty(
-                current
-                .Select(vm => vm.SubUnits),
-                x => x.Subunits
-                );            
+                CurrentObservable
+                .Select(vm => (vm as IdentificationUnitVM).SubUnits)
+                .Do(units => _SubunitListener.Disposable = units.ListenToChanges<IdentificationUnit,IdentificationUnitVM>(iu => iu.RelatedUnitID == Current.Model.UnitID )),
+                x => x.Subunits); 
 
-            var valid_model = current.Select(vm => vm.Model).Where(m => m!= null);
+            Analyses = getAnalyses.RegisterAsyncFunction(iu => Storage.getIUANForIU(iu as IdentificationUnit).Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
+                .SelectMany(vms => vms)
+                .CreateCollection();
 
-            _Analyses = this.ObservableToProperty(
-                this.ObservableForProperty(x => x.SelectedPivot)
-                .Value()
-                .Merge(
-                    current 
-                    .Select(_ => SelectedPivot)) //If the page is refreshed on the descriptions pivot
-                .Where(x => x == Pivots.Descriptions)
-                .Select(_ => Current)
-                .DistinctUntilChanged()
-                .Select(_ => new Subject<IdentificationUnitAnalysisVM>())
-                .Select(subject =>
-                    {
-                        var coll = subject
-                            .Do(vm => vm.SelectObservable
-                                .Select(v => v.Model.IdentificationUnitAnalysisID.ToString())
-                                .ToNavigation(Page.EditIUAN))
-                            .CreateCollection();
-                        getAnalyses.Execute(subject);
-                        return coll;
-                    }), x => x.Analyses);
-
-            getAnalyses
-                .RegisterAsyncAction(collectionSubject => getAnalysesImpl(Current, collectionSubject as ISubject<IdentificationUnitAnalysisVM>));
-
-
+            CurrentModelObservable
+                .Do(_ => Analyses.Clear())
+                .Subscribe(getAnalyses.Execute);
           
 
             Add = new ReactiveCommand();
@@ -180,14 +120,6 @@ namespace DiversityPhone.ViewModels
             Back
                 .Subscribe(_ => goBack());
 
-        }
-
-        private void getAnalysesImpl(IElementVM<IdentificationUnit> iuvm, ISubject<IdentificationUnitAnalysisVM> collectionSubject)
-        {
-            foreach (var iuanVM in Storage
-                                    .getIUANForIU(iuvm.Model)                                    
-                                    .Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
-                collectionSubject.OnNext(iuanVM);
         }
 
         private void selectSubUnit(IElementVM<IdentificationUnit> unit)
