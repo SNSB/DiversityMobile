@@ -28,11 +28,12 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private ISubject<bool> CanSaveSubject = new Subject<bool>();
+        protected ISubject<bool> CanSaveSubject { get; private set; }
         private ISubject<Unit> DeleteSubject = new Subject<Unit>();
 
         public EditPageVMBase()
         {
+            CanSaveSubject = new Subject<bool>();
             Save = new ReactiveCommand(CanSaveSubject);
             Save
                 .Do(_ => UpdateModel())

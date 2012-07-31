@@ -92,13 +92,13 @@ namespace DiversityPhone
             IOC.Register<EditESVM>(new EditESVM(IOC));
 
             IOC.Register<ViewESVM>(new ViewESVM(IOC));
-            IOC.Register<EditEVVM>(c => new EditEVVM(c));
+            IOC.Register<EditEVVM>(new EditEVVM(IOC));
 
 
-            IOC.Register<ViewEVVM>(c => new ViewEVVM(c));
+            IOC.Register<ViewEVVM>(new ViewEVVM(IOC));
 
-            IOC.Register<ViewCSVM>(c => new ViewCSVM(c));
-            IOC.Register<EditCSVM>(c => new EditCSVM());
+            IOC.Register<ViewCSVM>(new ViewCSVM(IOC));
+            IOC.Register<EditCSVM>(new EditCSVM());
             IOC.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
             IOC.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
             IOC.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));

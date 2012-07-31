@@ -31,6 +31,7 @@ using System.Reactive.Disposables;
         public ReactiveCommand<IElementVM<Event>> EditEvent { get; private set; }
         public ReactiveCommand<IElementVM<EventProperty>> SelectProperty { get; private set; }
         public ReactiveCommand<IElementVM<Specimen>> SelectSpecimen { get; private set; }
+        public ReactiveCommand<IElementVM<MultimediaObject>> SelectMultimedia { get; private set; }
         #endregion
 
         #region Properties
@@ -57,14 +58,13 @@ using System.Reactive.Disposables;
 
         private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getImages = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getAudioFiles = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getVideos = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand getMultimedia = new ReactiveAsyncCommand();
 
         public ViewEVVM(Container ioc)            
         {
             Storage = ioc.Resolve<IFieldDataService>();
 
+            //Specimen
             SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))                
                 .SelectMany(specs => specs)                
                 .CreateCollection();
@@ -76,6 +76,7 @@ using System.Reactive.Disposables;
             SelectSpecimen
                 .ToMessage(MessageContracts.VIEW);
 
+            //Properties
             PropertyList = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))                
                 .SelectMany(props => props)                
                 .CreateCollection();
@@ -89,8 +90,23 @@ using System.Reactive.Disposables;
                 .ToMessage(MessageContracts.EDIT);
 
             CurrentModelObservable
-                .Subscribe(getProperties.Execute);            
+                .Subscribe(getProperties.Execute);    
+        
+            //Multimedia
+            MultimediaList = getMultimedia.RegisterAsyncFunction(ev => Storage.getMultimediaForObject(ReferrerType.Event, (ev as Event).EventID).Select(mmo => new MultimediaObjectVM(mmo)))
+                .SelectMany(vms => vms)
+                .CreateCollection();
 
+            CurrentModelObservable
+                .Do(_ => MultimediaList.Clear())
+                .Subscribe(getMultimedia.Execute);
+
+            SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObject>>();
+            SelectMultimedia
+                .ToMessage(MessageContracts.EDIT);
+
+
+            //Add New
             Add = new ReactiveCommand();           
             Add.Where(_ => SelectedPivot == Pivots.Specimen)
                 .Select(_ => new SpecimenVM(new Specimen()))
@@ -102,7 +118,7 @@ using System.Reactive.Disposables;
                 .Select(_ => Current)
                 .ToMessage(MessageContracts.MULTIMEDIA);
            
-            
+            //Maps
             Maps = new ReactiveCommand();
             Maps.Select(_ => Current)
                 .ToMessage(MessageContracts.MAPS);

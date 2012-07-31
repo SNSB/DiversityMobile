@@ -10,7 +10,7 @@ using Funq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditEVVM : EditElementPageVMBase<Event>
+    public class EditEVVM : EditPageVMBase<Event>
     {
         IGeoLocationService Geolocation;
 
@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
         public string LocalityDescription
         {
             get { return _LocalityDescription; }
-            set { this.RaiseAndSetIfChanged(x=>x.LocalityDescription, ref _LocalityDescription, value); }
+            set { this.RaiseAndSetIfChanged(x => x.LocalityDescription, ref _LocalityDescription, value); }
         }
 
         private string _HabitatDescription;
@@ -34,7 +34,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return  _CollectionDate.Value;
+                return _CollectionDate.Value;
             }
         }
         #endregion
@@ -44,70 +44,32 @@ namespace DiversityPhone.ViewModels
             Geolocation = ioc.Resolve<IGeoLocationService>();
 
             _CollectionDate = this.ObservableToProperty(
-                ValidModel
+                CurrentModelObservable
                 .Select(ev => ev.CollectionDate.ToString()),
                 vm => vm.CollectionDate);
 
-            ValidModel
+            CurrentModelObservable
                 .Select(ev => ev.LocalityDescription)
                 .BindTo(this, x => x.LocalityDescription);
 
-            ValidModel
+            CurrentModelObservable
                 .Select(ev => ev.HabitatDescription)
                 .BindTo(this, x => x.HabitatDescription);
-            
-        }   
-        
+
+            CanSave().Subscribe(CanSaveSubject.OnNext);
+        }
+
         protected override void UpdateModel()
         {
             Current.Model.LocalityDescription = LocalityDescription;
-            Current.Model.HabitatDescription = HabitatDescription;            
+            Current.Model.HabitatDescription = HabitatDescription;
         }
-       
-        protected override IObservable<bool> CanSave()
+
+        protected IObservable<bool> CanSave()
         {
             return this.ObservableForProperty(x => x.LocalityDescription)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
                 .StartWith(false);
-        }
-
-        protected override Event ModelFromState(PageState s)
-        {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getEventByID(id);
-                }                
-            }
-            else if(s.ReferrerType == ReferrerType.EventSeries)
-            {
-                int parent;
-                Event res;
-                if (s.Referrer != null && int.TryParse(s.Referrer, out parent))
-                {
-                    res = new Event()
-                    {
-                        SeriesID = parent
-                    };
-                }
-                else
-                {
-                    res = new Event()
-                    {
-                        SeriesID = null
-                    };
-                }
-                Geolocation.fillGeoCoordinates(res);
-                return res;
-            }
-            return null;
-        }
-
-        protected override ElementVMBase<Event> ViewModelFromModel(Event model)
-        {
-            return new EventVM(model);
         }
     }
 }

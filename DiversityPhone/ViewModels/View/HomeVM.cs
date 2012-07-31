@@ -16,8 +16,6 @@ namespace DiversityPhone.ViewModels
 
     public class HomeVM : PageViewModel
     {
-        private IList<IDisposable> _subscriptions;
-
         private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
         
         #region Services        
@@ -47,6 +45,8 @@ namespace DiversityPhone.ViewModels
         {
             Storage = ioc.Resolve<IFieldDataService>();           
 
+
+            //EventSeries
             SeriesList = 
             getSeries.RegisterAsyncFunction(_ =>
                     Enumerable.Repeat(EventSeries.NoEventSeries,1)
@@ -59,7 +59,8 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(vm => vm)               
                 .CreateCollection();
 
-           
+            SeriesList
+                    .ListenToChanges<EventSeries, EventSeriesVM>();    
 
             (SelectSeries = new ReactiveCommand<IElementVM<EventSeries>>())            
                 .ToMessage(MessageContracts.VIEW);
@@ -74,32 +75,17 @@ namespace DiversityPhone.ViewModels
                 .Select(list => list.Any(s => s.Model.SeriesEnd == null))
                 .Select(openseries => !openseries);
 
-            _subscriptions = new List<IDisposable>()
-            {
-                (Settings = new ReactiveCommand())
-                    .Subscribe(_ => Messenger.SendMessage<Page>(Page.Settings)),                
-                (Add = new ReactiveCommand(noOpenSeries))
-                    .Subscribe(_ => addSeries()),               
-                (Maps=new ReactiveCommand())
-                    .Subscribe(_ =>loadMapPage()),  
-                SeriesList
-                    .ListenToChanges<EventSeries, EventSeriesVM>()
-            };
+            Settings = new ReactiveCommand();
+            Settings.Select(_ => Page.Settings)
+                .ToMessage();
+            Add = new ReactiveCommand(noOpenSeries);
+            Add.Select(_ => new EventSeriesVM(new EventSeries()) as IElementVM<EventSeries>)
+                .ToMessage(MessageContracts.EDIT);
+            Maps=new ReactiveCommand();
+            Maps.Select(_ => Page.LoadedMaps)
+                .ToMessage();
 
             getSeries.Execute(null);
-        }         
-
-        private void addSeries()
-        {
-            Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.EditES,null));
         }
-
-        private void loadMapPage()
-        {
-            Messenger.SendMessage<NavigationMessage>(new NavigationMessage(Page.LoadedMaps, null));
-        }
-
-
-       
     }
 }

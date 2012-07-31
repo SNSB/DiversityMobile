@@ -32,7 +32,7 @@
         <controls:Pivot Margin="0" VerticalAlignment="Top" 
                         SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="specimen">
-                <ListBox ItemsSource="{Binding SpecList}" Height="470">
+                <ListBox ItemsSource="{Binding SpecList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Button Style="{StaticResource ItemButtonStyle}"
@@ -50,13 +50,33 @@
                     <StackPanel>
                         <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
                                         Content="{Binding Current.Model}"/>
-                        <ListBox ItemsSource="{Binding PropertyList}" Height="430"/>
-                    </StackPanel>    
+                    <ListBox ItemsSource="{Binding PropertyList}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource ItemButtonStyle}"
+                                    Command="{Binding DataContext.SelectProperty, ElementName=currentPage}"
+                                    CommandParameter="{Binding}">
+                                    <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>    
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <ListBox Height="450">                    
-                    
+                <ListBox ItemsSource="{Binding MultimediaList}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource ItemButtonStyle}"
+                                    Command="{Binding DataContext.SelectMultimedia, ElementName=currentPage}"
+                                    CommandParameter="{Binding}">
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource MultimediaItemTemplate}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
         </controls:Pivot>
