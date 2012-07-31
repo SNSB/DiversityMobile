@@ -95,7 +95,7 @@ namespace DiversityPhone
             IOC.Register<EditEVVM>(c => new EditEVVM(c));
 
 
-            IOC.Register<ViewEVVM>(c => new ViewEVVM());
+            IOC.Register<ViewEVVM>(c => new ViewEVVM(c));
 
             IOC.Register<ViewCSVM>(c => new ViewCSVM(c));
             IOC.Register<EditCSVM>(c => new EditCSVM());

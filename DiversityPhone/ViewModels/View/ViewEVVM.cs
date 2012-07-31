@@ -28,6 +28,7 @@ using System.Reactive.Disposables;
         public ReactiveCommand Add { get; private set; }
         public ReactiveCommand Maps { get; private set; }
 
+        public ReactiveCommand<IElementVM<Event>> EditEvent { get; private set; }
         public ReactiveCommand<IElementVM<EventProperty>> SelectProperty { get; private set; }
         public ReactiveCommand<IElementVM<Specimen>> SelectSpecimen { get; private set; }
         #endregion
@@ -87,80 +88,24 @@ using System.Reactive.Disposables;
             SelectProperty
                 .ToMessage(MessageContracts.EDIT);
 
-            ValidModel
-                .Subscribe(getProperties.Execute);
+            CurrentModelObservable
+                .Subscribe(getProperties.Execute);            
 
-            ImageList = getImages.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Image).Select(im => new ImageVM(im)))
-                .Do(_ => ImageList.Clear())
-                .SelectMany(images => images)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Event,Current.Model.EventID.ToString()))
-                .CreateCollection();
-            ValidModel.Subscribe(getImages.Execute);
-
-            AudioList = getAudioFiles.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Audio).Select(aud=> new MultimediaObjectVM(aud)))
-                .Do(_ => AudioList.Clear())
-                .SelectMany(audioFiles => audioFiles)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Event, Current.Model.EventID.ToString()))
-                .CreateCollection();
-            ValidModel.Subscribe(getAudioFiles.Execute);
-
-            VideoList = getVideos.RegisterAsyncFunction(ev => Storage.getMultimediaForObjectAndType(ReferrerType.Event, (ev as Event).EventID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
-               .Do(_ => VideoList.Clear())
-               .SelectMany(videoFiles => videoFiles)
-               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Event, Current.Model.EventID.ToString()))
-               .CreateCollection();
-            ValidModel.Subscribe(getVideos.Execute);
-
-            Add = new ReactiveCommand();
-            var addMessageSource =
-                Add
-                .Select(_ =>
-                    {
-                        switch (SelectedPivot)
-                        {
-                            case Pivots.Multimedia:
-                                return Page.SelectNewMMO;
-                            case Pivots.Descriptions:
-                                return Page.EditEventProperty;
-                            case Pivots.Specimen:
-                                return Page.EditCS;
-                            default:
-                                return Page.EditCS;
-                        }
-                    })
-                .Select(p => new NavigationMessage(p, null, ReferrerType.Event, Current.Model.EventID.ToString()));
-            Messenger.RegisterMessageSource(addMessageSource);
+            Add = new ReactiveCommand();           
+            Add.Where(_ => SelectedPivot == Pivots.Specimen)
+                .Select(_ => new SpecimenVM(new Specimen()))
+                .ToMessage(MessageContracts.EDIT);
+            Add.Where(_ => SelectedPivot == Pivots.Descriptions)
+                .Select(_ => new PropertyVM(new EventProperty()))
+                .ToMessage(MessageContracts.EDIT);
+            Add.Where(_ => SelectedPivot == Pivots.Multimedia)
+                .Select(_ => Current)
+                .ToMessage(MessageContracts.MULTIMEDIA);
+           
+            
             Maps = new ReactiveCommand();
-            var mapMessageSource =
-                Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Event, Current.Model.EventID.ToString()));
-            Messenger.RegisterMessageSource(mapMessageSource);
-        }       
-
-       
-
-        protected override Event ModelFromState(PageState s)
-        {
-            if (s.Context != null)
-            {
-                int id;
-                if (int.TryParse(s.Context, out id))
-                {
-                    return Storage.getEventByID(id);
-                }
-            }
-            return null;
-        }
-
-        private SerialDisposable model_select = new SerialDisposable();
-
-        protected override ElementVMBase<Event> ViewModelFromModel(Event model)
-        {
-            var res = new EventVM(model);
-            model_select.Disposable = res.SelectObservable
-                .Select(vm => vm.Model.EventID.ToString())
-                .ToNavigation(Page.EditEV);
-            return res;
-        }
+            Maps.Select(_ => Current)
+                .ToMessage(MessageContracts.MAPS);
+        } 
     }
 }

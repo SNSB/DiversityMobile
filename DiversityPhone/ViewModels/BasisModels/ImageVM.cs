@@ -35,31 +35,8 @@ namespace DiversityPhone.ViewModels
         }
 
         private BitmapImage LoadThumb()
-        {            
-            if (Model.MediaType != MediaType.Image)
-                return null;
-
-            BitmapImage bi = new BitmapImage();
-
-            byte[] data;
-
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(Model.Uri, FileMode.Open, FileAccess.Read))
-                {
-
-                    // Allocate an array large enough for the entire file
-                    data = new byte[isfs.Length];
-                    // Read the entire file and then close it
-                    isfs.Read(data, 0, data.Length);
-                    isfs.Close();
-                }
-
-            }
-            // Create memory stream and bitmap
-            MemoryStream ms = new MemoryStream(data);
-            bi.SetSource(ms);
-            return bi;
+        {
+            return null;
         }
 
          public ImageVM(MultimediaObject model)

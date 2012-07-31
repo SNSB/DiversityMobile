@@ -78,29 +78,9 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
 
             ValidModel.Take(1).Subscribe(_ => fetchSubunits.Execute(unitList)); //After Current is set
-            UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);
-                
+            UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);               
 
-            ImageList = getImages.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Image).Select(im => new ImageVM(im)))
-             .Do(_ => {if(ImageList != null) ImageList.Clear();})
-             .SelectMany(images => images)
-             .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
-             .CreateCollection();
-            ValidModel.Subscribe(getImages.Execute);
-
-            AudioList = getAudioFiles.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
-                .Do(_ => { if (AudioList != null) AudioList.Clear(); })
-                .SelectMany(audioFiles => audioFiles)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
-                .CreateCollection();
-            ValidModel.Subscribe(getAudioFiles.Execute);
-
-            VideoList = getVideos.RegisterAsyncFunction(cs => Storage.getMultimediaForObjectAndType(ReferrerType.Specimen, (cs as Specimen).SpecimenID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
-               .Do(_ => { if (VideoList != null) VideoList.Clear(); })
-               .SelectMany(videoFiles => videoFiles)
-               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.Specimen, Current.Model.SpecimenID.ToString()))
-               .CreateCollection();
-            ValidModel.Subscribe(getVideos.Execute);    
+            
 
             Messenger.RegisterMessageSource(
                 Add

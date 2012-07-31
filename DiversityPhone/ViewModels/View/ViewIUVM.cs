@@ -148,26 +148,7 @@ namespace DiversityPhone.ViewModels
                 .RegisterAsyncAction(collectionSubject => getAnalysesImpl(Current, collectionSubject as ISubject<IdentificationUnitAnalysisVM>));
 
 
-            ImageList = getImages.RegisterAsyncFunction(iu=> Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (iu as IdentificationUnit).UnitID, MediaType.Image).Select(im => new ImageVM(im)))
-                .Do(_ => ImageList.Clear())
-                .SelectMany(images => images)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewImage, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()))
-                .CreateCollection();
-            valid_model.Subscribe(getImages.Execute);
-
-            AudioList = getAudioFiles.RegisterAsyncFunction(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (iu as IdentificationUnit).UnitID, MediaType.Audio).Select(aud => new MultimediaObjectVM(aud)))
-                .Do(_ => AudioList.Clear())
-                .SelectMany(audioFiles => audioFiles)
-                .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewAudio, ReferrerType.IdentificationUnit ,Current.Model.UnitID.ToString()))
-                .CreateCollection();
-            valid_model.Subscribe(getAudioFiles.Execute);
-
-            VideoList = getVideos.RegisterAsyncFunction(iu => Storage.getMultimediaForObjectAndType(ReferrerType.IdentificationUnit, (iu as IdentificationUnit).UnitID, MediaType.Video).Select(vid => new MultimediaObjectVM(vid)))
-               .Do(_ => VideoList.Clear())
-               .SelectMany(videoFiles => videoFiles)
-               .Do(vm => vm.SelectObservable.Select(v => v.Model.Uri.ToString()).ToNavigation(Page.ViewVideo, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()))
-               .CreateCollection();
-            valid_model.Subscribe(getVideos.Execute);
+          
 
             Add = new ReactiveCommand();
             var addMessageSource = 

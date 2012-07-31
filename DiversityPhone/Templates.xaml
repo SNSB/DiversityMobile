@@ -22,30 +22,26 @@
             <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" Text="{Binding Description}"/>
         </StackPanel>
     </DataTemplate>
-    <DataTemplate x:Key="FieldDataItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
-        </StackPanel>
+   
+    <DataTemplate x:Key="MultimediaItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" 
+                   Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" 
+                   Height="40" 
+                   Width="40"/>
+            <Image Grid.Column="0"
+                   Source="{Binding Thumbnail}"
+                   Height="40"
+                   Width="40"/>
+            <TextBlock Grid.Column="1" 
+                       Text="{Binding Description}"/>
+        </Grid>
     </DataTemplate>
-    <DataTemplate x:Key="MMOTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding IconPath, Converter={StaticResource IconUrlConverter}}" Height="50" Width="50"/>
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
-        </StackPanel>
-    </DataTemplate>
-    <DataTemplate x:Key="ImageTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Thumb}" Height="50" Width="50"/>
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
-        </StackPanel>
-    </DataTemplate>
+    
     <DataTemplate x:Key="IdentificationItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>

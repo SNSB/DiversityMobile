@@ -15,44 +15,48 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"	
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}" d:DataContext="{d:DesignData /SampleData/ViewEVVMSampleData.xaml}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}" d:DataContext="{d:DesignData /SampleData/ViewEVVMSampleData.xaml}"
+    x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
         <vw:ViewEVPivotConverter x:Key="PivotConverter"/>
     </phone:PhoneApplicationPage.Resources>
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <StackPanel x:Name="LayoutRoot">
-        <ContentControl ContentTemplate="{StaticResource FieldDataItemTemplate}"
-                        Content="{Binding Current}"/>
-        <!--Pivot Control-->
-        <controls:Pivot Margin="0" VerticalAlignment="Top" SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
-            <!--Pivot item one-->
+    
+    <StackPanel>
+        <Button Style="{StaticResource ItemButtonStyle}"
+                Command="{Binding EditEvent}"
+                CommandParameter="{Binding Current}">
+            <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
+                            Content="{Binding Current}"/>
+        </Button>
+        
+        <controls:Pivot Margin="0" VerticalAlignment="Top" 
+                        SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="specimen">
-                    <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
-                         ItemsSource="{Binding SpecList}" Height="470" />
+                <ListBox ItemsSource="{Binding SpecList}" Height="470">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource ItemButtonStyle}"
+                                    Command="{Binding DataContext.SelectSpecimen, ElementName=currentPage}"
+                                    CommandParameter="{Binding}">
+                                <ContentControl Content="{Binding}"
+                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </controls:PivotItem>
 
-            <!--Pivot item two-->
-            <controls:PivotItem Header="descriptions" >
-                
+            <controls:PivotItem Header="descriptions" >                
                     <StackPanel>
                         <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
-                                    Content="{Binding Current.Model}"/>
-                        <ListBox ItemTemplate="{StaticResource FieldDataItemTemplate}"
-                             ItemsSource="{Binding Properties}" Height="430"/>
-                    </StackPanel>
-    
+                                        Content="{Binding Current.Model}"/>
+                        <ListBox ItemsSource="{Binding PropertyList}" Height="430"/>
+                    </StackPanel>    
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-
-                <ListBox Height="450">
-                    <ListBox ItemTemplate="{StaticResource ImageTemplate}"
-                             ItemsSource="{Binding ImageList}"/>
-                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
-                             ItemsSource="{Binding AudioList}"/>
-                    <ListBox ItemTemplate="{StaticResource MMOTemplate}"
-                             ItemsSource="{Binding VideoList}"/>
+                <ListBox Height="450">                    
+                    
                 </ListBox>
             </controls:PivotItem>
         </controls:Pivot>

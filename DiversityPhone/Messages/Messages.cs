@@ -24,6 +24,7 @@ namespace DiversityPhone.Messages
         public const string EDIT = "Edit";
 
         public const string MAPS = "Maps";
+        public const string MULTIMEDIA = "MMO";
     }
 
     public class NavigationMessage

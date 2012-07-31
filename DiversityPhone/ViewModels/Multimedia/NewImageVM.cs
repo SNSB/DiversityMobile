@@ -143,7 +143,7 @@ namespace DiversityPhone.ViewModels
 
         protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
         {
-            return new MultimediaObjectVM(model);
+            return null;
         }
 
         #endregion
