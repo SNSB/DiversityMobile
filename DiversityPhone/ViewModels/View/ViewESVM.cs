@@ -60,7 +60,7 @@ using System.Reactive.Subjects;
                 .Select(_ => new EventVM(
                     new Event()
                     {
-                        SeriesID = EventSeries.isNoEventSeries(Current.Model) ? null : Current.Model.SeriesID as int?
+                        SeriesID = Current.Model.SeriesID
                     }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 

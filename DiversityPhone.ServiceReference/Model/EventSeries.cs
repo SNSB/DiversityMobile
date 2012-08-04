@@ -39,7 +39,7 @@
         }
 
         [Column(IsPrimaryKey = true)]
-        public int SeriesID { get; set; }
+        public int? SeriesID { get; set; }
 
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventSeriesID { get; set; }
@@ -87,7 +87,7 @@
                 //FreeKey
                           (q, es) =>
                           {
-                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
+                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID.Value);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
                           });
 
             _NoEventSeries = new EventSeries()
@@ -96,13 +96,14 @@
                 SeriesCode = "No EventSeries",
                 ModificationState = ModificationState.Unmodified,
                 SeriesEnd = DateTime.Now,
+                SeriesID = null
             };
         }
 
         public static Svc.EventSeries ToServiceObject(EventSeries es)
         {
             Svc.EventSeries export = new Svc.EventSeries();
-            export.SeriesID = es.SeriesID;
+            export.SeriesID = es.SeriesID.Value;
             if (es.DiversityCollectionEventSeriesID != null)
                 export.DiversityCollectionEventSeriesID = (int)es.DiversityCollectionEventSeriesID;
             else
@@ -114,22 +115,5 @@
             export.LogUpdatedWhen = es.LogUpdatedWhen;
             return export;
         }
-
-
-        //public static EventSeries Clone(EventSeries es)
-        //{
-        //    EventSeries clone = new EventSeries();
-        //    clone.Description = es.Description;
-        //    clone.GeoSource = es.GeoSource;
-        //    clone.LogUpdatedWhen = es.LogUpdatedWhen;
-        //    clone.ModificationState = es.ModificationState;
-        //    clone.SeriesCode = es.SeriesCode;
-        //    clone.SeriesEnd = es.SeriesEnd;
-        //    clone.SeriesID = es.SeriesID;
-        //    clone.SeriesStart = es.SeriesStart;
-        //    return clone;
-
-        //}
     }
-  
 }
