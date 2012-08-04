@@ -71,7 +71,7 @@ namespace DiversityPhone.Services.BackgroundTasks
                 if (series.IsModified())
                 {
                     var collectionKey = Repo.InsertEventSeries(series).First();
-                    Storage.updateSeriesKey(series.SeriesID, collectionKey);
+                    Storage.updateSeriesKey(series.SeriesID.Value, collectionKey);
                 }
 
                 var collectionKeys = loadKeys();

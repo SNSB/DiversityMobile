@@ -81,7 +81,7 @@ namespace DiversityPhone.Services
             _subscriptions = new List<IDisposable>()
             {
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.START)
-                    .Subscribe(es => setTourEventSeriesID(es.SeriesID)),
+                    .Subscribe(es => setTourEventSeriesID(es.SeriesID.Value)),
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.STOP)
                     .Subscribe(es => stopTour()),
             };
