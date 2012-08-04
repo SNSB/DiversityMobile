@@ -30,7 +30,7 @@ namespace DiversityPhone.Services
             var repoSeries = new ObservableCollection<EventSeries>();
             repoSeries.Add(Client.EventSeries.ToServiceObject(series));
             _svc.InsertEventSeriesAsync(repoSeries, this.GetCreds());
-            return res.Select(dict => dict[series.SeriesID]);
+            return res.Select(dict => dict[series.SeriesID.Value]);
         }
 
 

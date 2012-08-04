@@ -128,12 +128,12 @@ namespace DiversityPhone.Services
             {
                 this.deleteEvent(ev);
             }
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.EventSeries, toDeleteEs.SeriesID);
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.EventSeries, toDeleteEs.SeriesID.Value);
             foreach(MultimediaObject mmo in attachedMMO)
             {
                 this.deleteMMO(mmo);
             }
-            IList<GeoPointForSeries> attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID);
+            IList<GeoPointForSeries> attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID.Value);
             foreach (GeoPointForSeries gp in attachedGeoPoints)
             {
                 this.deleteGeoPoint(gp);
