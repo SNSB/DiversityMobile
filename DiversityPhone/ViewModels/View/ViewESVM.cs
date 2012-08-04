@@ -57,7 +57,11 @@ using System.Reactive.Subjects;
             
             AddEvent = new ReactiveCommand();
             AddEvent
-                .Select(_ => new EventVM(new Event() { SeriesID = Current.Model.SeriesID }) as IElementVM<Event>)
+                .Select(_ => new EventVM(
+                    new Event()
+                    {
+                        SeriesID = EventSeries.isNoEventSeries(Current.Model) ? null : Current.Model.SeriesID as int?
+                    }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();            
