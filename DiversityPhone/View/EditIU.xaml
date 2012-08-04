@@ -15,6 +15,29 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Source={StaticResource Locator}, Path=EditIU}" d:DataContext="{d:DesignData /SampleData/EditIUVMSampleData.xaml}">
+    <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="TermListItemTemplate">                
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{Binding Code, Converter={StaticResource TermToImage}}" VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="30" MaxHeight="30"/>
+                    <TextBlock Text="{Binding DisplayText}" TextWrapping="NoWrap" Margin="8,0,0,0"  />
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="TermListPickerItemTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
+                    <TextBlock Text="{Binding DisplayText}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                </StackPanel>
+            </DataTemplate>
+            <DataTemplate x:Key="TaxonNameItemTemplate">
+                <TextBlock Text="{Binding TaxonNameCache}"
+					   Foreground="{Binding Synonymy, Converter={StaticResource SynonymyToColor}}"/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">

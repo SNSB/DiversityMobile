@@ -1,21 +1,12 @@
 ﻿<ResourceDictionary
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    xmlns:vw="clr-namespace:DiversityPhone.View">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    <DataTemplate x:Key="TermListItemTemplate">
-    	<StackPanel Orientation="Horizontal">
-    		<Image Source="{Binding Code, Converter={StaticResource TermToImage}}" VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="30" MaxHeight="30"/>
-    		<TextBlock Text="{Binding DisplayText}" TextWrapping="NoWrap" Margin="8,0,0,0"  />
-    	</StackPanel>
-    </DataTemplate>
-    <DataTemplate x:Key="TermListPickerItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
-            <TextBlock Text="{Binding DisplayText}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
-        </StackPanel>
-    </DataTemplate>
+    
+    
     <DataTemplate x:Key="ElementItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
@@ -42,79 +33,6 @@
         </Grid>
     </DataTemplate>
     
-    <DataTemplate x:Key="IdentificationItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
-            <TextBlock Text="{Binding Description}"/>
-        </StackPanel>
-    </DataTemplate>
-    
-    
-    <DataTemplate x:Key="IdentificationItemSelectTemplate">
-        <Button Style="{StaticResource ItemButtonStyle}" 
-                Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
-                CommandParameter="{Binding}">
-            <ContentControl Content="{Binding}" 
-                            ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
-        </Button>
-    </DataTemplate>
-    <DataTemplate x:Key="IdentificationOneLevelItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            ContentTemplate="{StaticResource IdentificationItemSelectTemplate}"
-                            Content="{Binding}"/>
-
-            <ItemsControl Grid.Column="1" Grid.Row="1" 					 
-                     ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationItemSelectTemplate}"/>
-        </Grid>
-    </DataTemplate>
-    <DataTemplate x:Key="IdentificationTwoLevelItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ContentControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="0"
-                            HorizontalAlignment="Left"
-                            ContentTemplate="{StaticResource IdentificationItemSelectTemplate}"
-                            Content="{Binding}"/>            
-
-            <ItemsControl Grid.Column="1" Grid.Row="1" 					 
-                     ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource IdentificationOneLevelItemTemplate}"/>
-        </Grid>
-    </DataTemplate>
-    
-
-    <DataTemplate x:Key="IdentificationDetailItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image />
-            <Button Style="{StaticResource ItemButtonStyle}"
-                    Content="{Binding Description}"
-                    Command="{Binding Select}"/>
-        </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate x:Key="TaxonNameItemTemplate">         
-            <TextBlock Text="{Binding TaxonNameCache}"
-					   Foreground="{Binding Synonymy, Converter={StaticResource SynonymyToColor}}"/>            	            
-    </DataTemplate>
-
-
     <DataTemplate x:Key="GeoRefItemTemplate">
         <Grid>
         	<Grid.ColumnDefinitions>

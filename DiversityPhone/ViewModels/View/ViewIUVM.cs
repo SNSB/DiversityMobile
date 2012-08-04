@@ -70,9 +70,14 @@ namespace DiversityPhone.ViewModels
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Storage = ioc.Resolve<IFieldDataService>();
 
-            
+            EditCurrent = new ReactiveCommand<IElementVM<IdentificationUnit>>();
+            EditCurrent
+                .ToMessage(MessageContracts.EDIT);
 
-            
+            SelectUnit = new ReactiveCommand<IElementVM<IdentificationUnit>>();
+            SelectUnit
+                .Do(vm => unitBackStack.Push(vm))
+                .ToMessage(MessageContracts.VIEW);            
                 
 
             _Subunits = this.ObservableToProperty(
@@ -91,30 +96,14 @@ namespace DiversityPhone.ViewModels
           
 
             Add = new ReactiveCommand();
-            var addMessageSource = 
-                Add
-                .Select(_ =>
-                    {
-                        switch(SelectedPivot)
-                        {
-                            case Pivots.Descriptions:
-                                return Page.EditIUAN;
-                            case Pivots.Multimedia:
-                                return Page.SelectNewMMO;                           
-                            case Pivots.Subunits:
-                                return Page.EditIU;
-                            default:
-                                return Page.EditIU;
-                        }
-                    })
-                .Select(p => new NavigationMessage(p,null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
-            Messenger.RegisterMessageSource(addMessageSource);
+            Add.Where(_ => SelectedPivot == Pivots.Subunits)
+                .Select(_ => new IdentificationUnitVM( new IdentificationUnit(){ RelatedUnitID = Current.Model.UnitID}) as IElementVM<IdentificationUnit>)
+                .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();
-            var mapMessageSource =
-                Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.IdentificationUnit, Current.Model.UnitID.ToString()));
-            Messenger.RegisterMessageSource(mapMessageSource);
+            Maps.Select(_ => Current)
+                .ToMessage(MessageContracts.MAPS);
+                            
 
             Back = new ReactiveCommand();
             Back
@@ -122,19 +111,10 @@ namespace DiversityPhone.ViewModels
 
         }
 
-        private void selectSubUnit(IElementVM<IdentificationUnit> unit)
-        {
-            unitBackStack.Push(Current);
-            Messenger.SendMessage<IElementVM<IdentificationUnit>>(unit, MessageContracts.VIEW);
-        }
-
         private void goBack()
         {
             if (unitBackStack.Any())
-            {
-                var prev = unitBackStack.Pop();
-                Messenger.SendMessage<IElementVM<IdentificationUnit>>(prev, MessageContracts.VIEW);
-            }
+                Messenger.SendMessage(unitBackStack.Pop(), MessageContracts.VIEW);
             else
                 Messenger.SendMessage(Page.Previous);
         }

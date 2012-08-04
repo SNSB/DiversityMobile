@@ -17,7 +17,13 @@
     DataContext="{Binding ViewCS, Source={StaticResource Locator}}"
     x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
         <vw:ViewCSPivotConverter x:Key="PivotConverter"/>
+        </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
     <StackPanel Background="Transparent">
@@ -43,9 +49,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
-
-
-            <!--Pivot item two-->
+            
             <controls:PivotItem Header="multimedia">
                 <ListBox ItemsSource="{Binding MultimediaList}">
                     <ListBox.ItemTemplate>
