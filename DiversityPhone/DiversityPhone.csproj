@@ -119,6 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Services\IMultimediaOwner.cs" />
+    <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
     <Compile Include="View\Controls\CommandNotAvailableLabel.xaml.cs">
       <DependentUpon>CommandNotAvailableLabel.xaml</DependentUpon>
     </Compile>
@@ -293,9 +295,6 @@
     <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\SelectNewMMO.xaml.cs">
-      <DependentUpon>SelectNewMMO.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -434,10 +433,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\NewVideo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\SelectNewMMO.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

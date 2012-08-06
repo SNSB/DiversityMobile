@@ -7,7 +7,7 @@ namespace DiversityPhone.ViewModels
 {
     public abstract class PageVMBase : ReactiveObject
     {
-        protected IMessageBus Messenger { get; private set; }
+        public IMessageBus Messenger { get; private set; }
 
 
         private ISubject<bool> ActivationSubject = new Subject<bool>();
