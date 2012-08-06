@@ -31,7 +31,6 @@ using System.Reactive.Disposables;
         public ReactiveCommand<IElementVM<Event>> EditEvent { get; private set; }
         public ReactiveCommand<IElementVM<EventProperty>> SelectProperty { get; private set; }
         public ReactiveCommand<IElementVM<Specimen>> SelectSpecimen { get; private set; }
-        public ReactiveCommand<IElementVM<MultimediaObject>> SelectMultimedia { get; private set; }
         #endregion
 
         #region Properties
@@ -52,14 +51,13 @@ using System.Reactive.Disposables;
 
         public ReactiveCollection<PropertyVM> PropertyList { get; private set; }
 
-        public ReactiveCollection<MultimediaObjectVM> MultimediaList { get; private set; }       
+        public ElementMultimediaVM MultimediaList { get; private set; }       
 
         #endregion
 
         private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getMultimedia = new ReactiveAsyncCommand();
-
+        
         public ViewEVVM(Container ioc)            
         {
             Storage = ioc.Resolve<IFieldDataService>();
@@ -100,18 +98,11 @@ using System.Reactive.Disposables;
                 .Subscribe(getProperties.Execute);    
         
             //Multimedia
-            MultimediaList = getMultimedia.RegisterAsyncFunction(ev => Storage.getMultimediaForObject(ReferrerType.Event, (ev as Event).EventID).Select(mmo => new MultimediaObjectVM(mmo)))
-                .SelectMany(vms => vms)
-                .CreateCollection();
+            MultimediaList = new ElementMultimediaVM(ReferrerType.Event, Storage);
 
             CurrentModelObservable
-                .Do(_ => MultimediaList.Clear())
-                .Subscribe(getMultimedia.Execute);
-
-            SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObject>>();
-            SelectMultimedia
-                .ToMessage(MessageContracts.EDIT);
-
+                .Select(m => m.EventID)
+                .Subscribe(MultimediaList);
 
             //Add New
             Add = new ReactiveCommand();
@@ -122,7 +113,7 @@ using System.Reactive.Disposables;
                 .Select(_ => new PropertyVM(new EventProperty() { EventID = Current.Model.EventID }) as IElementVM<EventProperty>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
-                .Select(_ => Current)
+                .Select(_ => Current.Model as IMultimediaOwner)
                 .ToMessage(MessageContracts.MULTIMEDIA);
            
             //Maps

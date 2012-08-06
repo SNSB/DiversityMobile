@@ -11,7 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Data;
 
-namespace DiversityPhone.Controls
+namespace DiversityPhone.View
 {
     public partial class CommandNotAvailableLabel : UserControl
     {

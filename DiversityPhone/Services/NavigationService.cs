@@ -37,7 +37,8 @@ namespace DiversityPhone.Services
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW).Select(_ => Page.ViewIU),
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),                    
                     Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),                   
-                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN)
+                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
+                    Messenger.Listen<IMultimediaOwner>(MessageContracts.MULTIMEDIA).Select(_ => Page.SelectNewMMO)
                     )
                 );
 

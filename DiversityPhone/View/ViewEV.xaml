@@ -66,18 +66,7 @@
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <ListBox ItemsSource="{Binding MultimediaList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Style="{StaticResource ItemButtonStyle}"
-                                    Command="{Binding DataContext.SelectMultimedia, ElementName=currentPage}"
-                                    CommandParameter="{Binding}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource MultimediaItemTemplate}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                
             </controls:PivotItem>
         </controls:Pivot>
         

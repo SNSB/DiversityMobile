@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
-    xmlns:controls="clr-namespace:DiversityPhone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}" 
@@ -32,7 +32,7 @@
             <!--ContentPanel - place additional content here-->
             <ScrollViewer>
                 <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-                    <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                    <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}"/>
                     <TextBlock Text="Description"/>
                     <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding IsEditable}" Background="#BFFFFFFF" />

@@ -12,7 +12,7 @@
 using ReactiveUI;
 
     [Table]
-    public class Event : ReactiveObject, IModifyable, ILocalizable
+    public class Event : ReactiveObject, IModifyable, ILocalizable, IMultimediaOwner
     {
         public Event()
         {
@@ -117,6 +117,17 @@ using ReactiveUI;
             export.Longitude = ev.Longitude;
             export.SeriesID = ev.SeriesID;
             return export;
+        }
+
+        public ReferrerType OwnerType
+        {
+            get { return ReferrerType.Event; }
+        }
+
+
+        public int OwnerID
+        {
+            get { return EventID; }
         }
     }
 }

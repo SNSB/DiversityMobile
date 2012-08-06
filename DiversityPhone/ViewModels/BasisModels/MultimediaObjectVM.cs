@@ -19,15 +19,19 @@ namespace DiversityPhone.ViewModels
     {  
         private static BitmapImage load_thumb(MultimediaObject mmo)
         {
-            using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+            if (mmo.MediaType == MediaType.Image)
             {
-                using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
+                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    var res = new BitmapImage();
-                    res.SetSource(isfs);
-                    return res;
+                    using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
+                    {
+                        var res = new BitmapImage();
+                        res.SetSource(isfs);
+                        return res;
+                    }
                 }
             }
+            return null;
         }
         private static ObservableAsyncMRUCache<MultimediaObject, BitmapImage> thumbnails = new ObservableAsyncMRUCache<MultimediaObject, BitmapImage>(mmo => Observable.Start(() => load_thumb(mmo)), 10);
         

@@ -6,7 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="clr-namespace:DiversityPhone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
@@ -31,7 +31,7 @@
 
         <!--ContentPanel - place additional content here-->
         <StackPanel Grid.Row="1">
-            <controls:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+            <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}" Width="Auto"/>
             <toolkit:ListPicker Name="LP_Type" IsEnabled="{Binding IsNew}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"

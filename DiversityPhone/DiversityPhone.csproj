@@ -119,14 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CommandNotAvailableLabel.xaml.cs">
+    <Compile Include="View\Controls\CommandNotAvailableLabel.xaml.cs">
       <DependentUpon>CommandNotAvailableLabel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\SmallVocabularyValueControl.xaml.cs">
-      <DependentUpon>SmallVocabularyValueControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StringValueControl.xaml.cs">
-      <DependentUpon>StringValueControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="DiversityResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -243,6 +237,7 @@
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
+    <Compile Include="ViewModels\View\ElementMultimediaVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
@@ -295,6 +290,9 @@
       <DependentUpon>NewVideo.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ProgressBinding.cs" />
+    <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
+      <DependentUpon>MultimediaListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\SelectNewMMO.xaml.cs">
       <DependentUpon>SelectNewMMO.xaml</DependentUpon>
     </Compile>
@@ -382,15 +380,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Controls\CommandNotAvailableLabel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\SmallVocabularyValueControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\StringValueControl.xaml">
+    <Page Include="View\Controls\CommandNotAvailableLabel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -402,6 +392,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="View\Controls\MultimediaListControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Resources\Styles.xaml">
       <Generator>MSBuild:Compile</Generator>

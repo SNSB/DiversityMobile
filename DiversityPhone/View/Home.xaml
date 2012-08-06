@@ -6,7 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ctrl="clr-namespace:DiversityPhone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -45,7 +45,7 @@
 
         
         <StackPanel Grid.Row="1" Margin="12,0,0,0">
-            <ctrl:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>            
+            <vw:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>            
             <ListBox ItemsSource="{Binding SeriesList}" Height="479" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
