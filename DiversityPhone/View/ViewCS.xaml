@@ -15,7 +15,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding ViewCS, Source={StaticResource Locator}}"
-    x:Name="currentPage">
+    x:Name="currentPage" d:DataContext="{d:DesignData /SampleData/ViewCSVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -37,7 +37,9 @@
         <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="units">
                 <ListBox ItemsSource="{Binding UnitList}" 
-                         ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"/>
+                         ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
+                         HorizontalAlignment="Left"
+                         HorizontalContentAlignment="Left"/>
             </controls:PivotItem>
             
             <controls:PivotItem Header="multimedia">

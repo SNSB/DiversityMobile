@@ -15,10 +15,10 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" 
-    d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}"
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
-    x:Name="currentPage">
+    x:Name="currentPage" 
+	d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

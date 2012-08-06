@@ -63,7 +63,7 @@ namespace DiversityPhone.ViewModels
                 .ToMessage(MessageContracts.EDIT);
 
             //SubUnits
-            UnitList = getSubunits.RegisterAsyncFunction(spec => Storage.getIUForSpecimen((spec as Specimen).SpecimenID).Select(s => new IdentificationUnitVM(s)))
+            UnitList = getSubunits.RegisterAsyncFunction(spec => buildIUTree(spec as Specimen))
                 .SelectMany(vms => vms)
                 .CreateCollection();
 
@@ -81,7 +81,7 @@ namespace DiversityPhone.ViewModels
 
             Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Units)
-                .Select(_ => new IdentificationUnitVM(new IdentificationUnit(){SpecimenID = Current.Model.SpecimenID}) as IElementVM<IdentificationUnit>)
+                .Select(_ => new IdentificationUnitVM(new IdentificationUnit(){SpecimenID = Current.Model.SpecimenID, RelatedUnitID = null}) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
                
                
@@ -90,6 +90,45 @@ namespace DiversityPhone.ViewModels
                 Maps
                 .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Specimen, Current.Model.DiversityCollectionSpecimenID.ToString()));
             Messenger.RegisterMessageSource(mapMessageSource);
+        }
+
+
+        private IEnumerable<IdentificationUnitVM> buildIUTree(Specimen spec)
+        {
+            IDictionary<int, IdentificationUnitVM> vmMap = new Dictionary<int, IdentificationUnitVM>();
+            IList<IdentificationUnitVM> toplevel = new List<IdentificationUnitVM>();
+
+            Queue<IdentificationUnit> work_left = new Queue<IdentificationUnit>(Storage.getIUForSpecimen(spec.SpecimenID));
+
+            while (work_left.Any())
+            {
+                var unit = work_left.Dequeue();
+                IdentificationUnitVM  vm;
+
+                if (unit.RelatedUnitID.HasValue)
+                {
+                    IdentificationUnitVM parent;
+                    if (vmMap.TryGetValue(unit.RelatedUnitID.Value, out parent))
+                    {
+                        vm = new IdentificationUnitVM(unit);
+                        parent.SubUnits.Add(vm);
+                    }
+                    else
+                    {
+                        work_left.Enqueue(unit);
+                        continue;
+                    }
+                }
+                else
+                {
+                    vm = new IdentificationUnitVM(unit);
+                    toplevel.Add(vm);
+                }
+
+                vmMap.Add(unit.UnitID, vm);
+            }
+
+            return toplevel;
         }
     }
 }

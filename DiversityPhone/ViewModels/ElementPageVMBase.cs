@@ -4,7 +4,6 @@ using System.Reactive.Linq;
 using DiversityPhone.Messages;
 using ReactiveUI.Xaml;
 using System;
-using ReactiveUI;
 
 namespace DiversityPhone.ViewModels
 {

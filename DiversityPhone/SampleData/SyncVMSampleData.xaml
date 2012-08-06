@@ -1,8 +1,0 @@
-﻿<DiversityPhone_ViewModels_Utility:SyncVM xmlns:DiversityPhone_ViewModels_Utility="clr-namespace:DiversityPhone.ViewModels.Utility" xmlns:ReactiveUI_Xaml="clr-namespace:ReactiveUI.Xaml;assembly=ReactiveUI.Xaml_WP7" IsBusy="True">
-	<DiversityPhone_ViewModels_Utility:SyncVM.UploadUnit>
-		<ReactiveUI_Xaml:ReactiveCommand/>
-	</DiversityPhone_ViewModels_Utility:SyncVM.UploadUnit>
-	<DiversityPhone_ViewModels_Utility:SyncVM.SyncUnits>
-		
-	</DiversityPhone_ViewModels_Utility:SyncVM.SyncUnits>
-</DiversityPhone_ViewModels_Utility:SyncVM>

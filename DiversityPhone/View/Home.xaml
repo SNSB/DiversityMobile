@@ -14,7 +14,6 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
-	d:DataContext="{d:DesignData /SampleData/HomeVMSampleData.xaml}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
     Loaded="PhoneApplicationPage_Loaded"
     x:Name="currentPage">

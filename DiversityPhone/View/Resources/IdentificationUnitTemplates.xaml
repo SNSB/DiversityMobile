@@ -2,27 +2,31 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"     
     xmlns:vw="clr-namespace:DiversityPhone.View"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Templates.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-
+    
     <vw:TermToImageConverter x:Key="TermToImage"/>
+    
 
     <DataTemplate x:Key="IdentificationItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  Height="40" Width="40"/>
-            <TextBlock Text="{Binding Description}"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  
+                   Height="40" Width="40"/>
+            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" Text="{Binding Description}"/>
         </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="UnitItemTemplate">       
         <Button Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
-                CommandParameter="{Binding}">
-            <ContentControl Content="{Binding}"
+                CommandParameter="{Binding}"
+                HorizontalAlignment="Left" HorizontalContentAlignment="Left">
+            <ContentControl HorizontalAlignment="Left" HorizontalContentAlignment="Left"
+                            Content="{Binding}"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
         </Button>
     </DataTemplate>
@@ -45,7 +49,8 @@
             <ListBox Grid.Column="1"
                      Grid.Row="1"
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource UnitItemTemplate}"/>
+                     ItemTemplate="{StaticResource UnitItemTemplate}"
+                     HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
         </Grid>
     </DataTemplate>
 
@@ -64,10 +69,20 @@
                             Grid.Row="0"
                             Content="{Binding}"
                             ContentTemplate="{StaticResource UnitItemTemplate}"/>
+            <Rectangle Grid.Column="0"
+                       Grid.Row="1"
+                       Fill="{StaticResource PhoneForegroundBrush}">
+                <Rectangle.OpacityMask>
+                    <ImageBrush ImageSource="/DiversityPhone;component/Images/MetroIcons/whitenocircle/play.png" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+                       
             <ListBox Grid.Column="1"
                      Grid.Row="1"
                      ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"/>
+                     ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"
+                     HorizontalAlignment="Left"
+                     HorizontalContentAlignment="Left"/>
         </Grid>
     </DataTemplate>
 

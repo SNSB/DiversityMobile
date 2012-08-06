@@ -545,6 +545,7 @@
     <Content Include="Images\AudioIcons\record.png" />
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
+    <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -725,28 +726,10 @@
     <WCFMetadataStorage Include="Service References\MediaService4\" />
   </ItemGroup>
   <ItemGroup>
-    <DesignData Include="SampleData\EditAnalysisVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\EditESVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\EditIUVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\HomeVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\SyncVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
     <DesignData Include="SampleData\TaxonManagementVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
-    <DesignData Include="SampleData\ViewESVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\ViewEVVMSampleData.xaml">
+    <DesignData Include="SampleData\ViewCSVMSampleData.xaml">
       <Generator>MSBuild:MarkupCompilePass1</Generator>
     </DesignData>
     <DesignData Include="SampleData\ViewIUVMSampleData.xaml">

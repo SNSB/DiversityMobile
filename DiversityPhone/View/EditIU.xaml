@@ -14,7 +14,7 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=EditIU}" d:DataContext="{d:DesignData /SampleData/EditIUVMSampleData.xaml}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=EditIU}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

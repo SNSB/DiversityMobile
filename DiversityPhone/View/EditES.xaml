@@ -14,7 +14,6 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    d:DataContext="{d:DesignData /SampleData/EditESVMSampleData.xaml}"
     DataContext="{Binding Source={StaticResource Locator}, Path=EditES}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->

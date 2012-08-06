@@ -76,7 +76,7 @@ namespace DiversityPhone.ViewModels
 
             SelectUnit = new ReactiveCommand<IElementVM<IdentificationUnit>>();
             SelectUnit
-                .Do(vm => unitBackStack.Push(vm))
+                .Do(vm => unitBackStack.Push(Current))
                 .ToMessage(MessageContracts.VIEW);            
                 
 

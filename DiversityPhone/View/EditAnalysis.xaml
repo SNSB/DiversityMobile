@@ -13,7 +13,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True" DataContext="{Binding EditAnalysis, Source={StaticResource Locator}}" d:DataContext="{d:DesignData /SampleData/EditAnalysisVMSampleData.xaml}">
+    shell:SystemTray.IsVisible="True" DataContext="{Binding EditAnalysis, Source={StaticResource Locator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
