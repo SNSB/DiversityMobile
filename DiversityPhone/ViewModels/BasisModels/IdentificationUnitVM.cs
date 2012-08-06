@@ -16,26 +16,33 @@ namespace DiversityPhone.ViewModels
 {
    
     public class IdentificationUnitVM : ElementVMBase<IdentificationUnit>
-    {        
-        private const int MAX_DISPLAY_DEPTH = 2;
-
+    {   
         public override string Description { get { return Model.WorkingName; } }
-        public override Icon Icon { get { return Icon.IdentificationUnit; } }
+        public override Icon Icon { get { return Icon.IdentificationUnit; } }        
 
-        public IdentificationUnitVM Parent { get; private set; }
+        public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; }
 
-        public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; } 
+        private bool _HasSubUnits;
+
+        public bool HasSubUnits
+        {
+            get { return _HasSubUnits; }
+            set { this.RaiseAndSetIfChanged(x => x.HasSubUnits, ref _HasSubUnits, value); }
+        }
+
+
         
         public IdentificationUnitVM (IdentificationUnit model, IdentificationUnitVM parent = null)
             : base(model)
 	    {
             model.ObservableForProperty(iu => iu.WorkingName)
-                .Subscribe(_=>this.RaisePropertyChanged(x => x.Description));       
-     
-            if(parent != null)
-                this.SelectSubject.Subscribe(parent.SelectSubject);
+                .Subscribe(_=>this.RaisePropertyChanged(x => x.Description));  
 
             SubUnits = new ReactiveCollection<IdentificationUnitVM>();
+            SubUnits
+                .ObserveCollectionChanged()
+                .Select(_ => SubUnits.Any())
+                .BindTo(this, x => x.HasSubUnits);
 	    }
     }
 

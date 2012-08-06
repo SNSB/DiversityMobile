@@ -10,10 +10,23 @@
     </ResourceDictionary.MergedDictionaries>
     
     <vw:TermToImageConverter x:Key="TermToImage"/>
-    
+
+    <ImageBrush x:Key="LayerArrow" Stretch="Fill" ImageSource="/DiversityPhone;component/Images/MetroIcons/whitenocircle/play.png" />
+    <Style x:Key="LayerArrowStyle" TargetType="Rectangle">
+        <Style.Setters>
+            <Setter Property="Fill" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="OpacityMask" Value="{StaticResource LayerArrow}"/>
+            <Setter Property="Width" Value="40"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="Margin" Value="{StaticResource PhoneMargin}"/>            
+        </Style.Setters>
+    </Style>
+
 
     <DataTemplate x:Key="IdentificationItemTemplate">
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+        <StackPanel Orientation="Horizontal" 
+                    HorizontalAlignment="Left">
             <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  
                    Height="40" Width="40"/>
             <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" Text="{Binding Description}"/>
@@ -24,66 +37,44 @@
         <Button Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
                 CommandParameter="{Binding}"
-                HorizontalAlignment="Left" HorizontalContentAlignment="Left">
-            <ContentControl HorizontalAlignment="Left" HorizontalContentAlignment="Left"
-                            Content="{Binding}"
-                            ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
+                HorizontalAlignment="Left">
+            <ContentControl Content="{Binding}"
+                            ContentTemplate="{StaticResource IdentificationItemTemplate}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"/>
         </Button>
     </DataTemplate>
 
     <DataTemplate x:Key="OneLevelUnitItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ContentControl Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="0"
-                            Content="{Binding}"
-                            ContentTemplate="{StaticResource UnitItemTemplate}"/>
-            <ListBox Grid.Column="1"
-                     Grid.Row="1"
-                     ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource UnitItemTemplate}"
-                     HorizontalAlignment="Left" HorizontalContentAlignment="Left"/>
-        </Grid>
+        <StackPanel Orientation="Vertical">
+            <ContentControl Content="{Binding}"
+                            ContentTemplate="{StaticResource UnitItemTemplate}"
+                            HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left"
+                        Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}">
+                <Rectangle Style="{StaticResource LayerArrowStyle}"/>
+                <ListBox ItemsSource="{Binding SubUnits}"
+                         ItemTemplate="{StaticResource UnitItemTemplate}"
+                         VerticalAlignment="Top"/>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 
     <DataTemplate x:Key="TwoLevelUnitItemTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <ContentControl Grid.Column="0"
-                            Grid.ColumnSpan="2"
-                            Grid.Row="0"
-                            Content="{Binding}"
-                            ContentTemplate="{StaticResource UnitItemTemplate}"/>
-            <Rectangle Grid.Column="0"
-                       Grid.Row="1"
-                       Fill="{StaticResource PhoneForegroundBrush}">
-                <Rectangle.OpacityMask>
-                    <ImageBrush ImageSource="/DiversityPhone;component/Images/MetroIcons/whitenocircle/play.png" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-                       
-            <ListBox Grid.Column="1"
-                     Grid.Row="1"
-                     ItemsSource="{Binding SubUnits}"
-                     ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"
-                     HorizontalAlignment="Left"
-                     HorizontalContentAlignment="Left"/>
-        </Grid>
+        <StackPanel Orientation="Vertical">
+            <ContentControl Content="{Binding}"
+                            ContentTemplate="{StaticResource UnitItemTemplate}"
+                            HorizontalAlignment="Left"/>
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Left"
+                        Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}">
+                <Rectangle Style="{StaticResource LayerArrowStyle}"/>
+                <ListBox ItemsSource="{Binding SubUnits}"
+                         ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"
+                         VerticalAlignment="Top"/>
+            </StackPanel>
+        </StackPanel>
     </DataTemplate>
 
 </ResourceDictionary>
