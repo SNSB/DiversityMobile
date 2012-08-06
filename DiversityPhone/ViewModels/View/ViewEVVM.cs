@@ -73,6 +73,8 @@ using System.Reactive.Disposables;
             SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))                
                 .SelectMany(specs => specs)                
                 .CreateCollection();
+            SpecList.ListenToChanges<Specimen, SpecimenVM>(spec => spec.EventID == Current.Model.EventID);
+
             CurrentModelObservable
                 .Do(_ => SpecList.Clear())
                 .Subscribe(getSpecimen.Execute);
