@@ -20,7 +20,7 @@
 
     <DataTemplate x:Key="UnitItemTemplate">       
         <Button Style="{StaticResource ItemButtonStyle}"
-                Command="{Binding SelectUnit, ElementName=currentPage}"
+                Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
                 CommandParameter="{Binding}">
             <ContentControl Content="{Binding}"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
@@ -33,11 +33,17 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <ContentControl Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Grid.Row="0"
                             Content="{Binding}"
                             ContentTemplate="{StaticResource UnitItemTemplate}"/>
             <ListBox Grid.Column="1"
+                     Grid.Row="1"
                      ItemsSource="{Binding SubUnits}"
                      ItemTemplate="{StaticResource UnitItemTemplate}"/>
         </Grid>
@@ -49,11 +55,17 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
             <ContentControl Grid.Column="0"
                             Grid.ColumnSpan="2"
+                            Grid.Row="0"
                             Content="{Binding}"
                             ContentTemplate="{StaticResource UnitItemTemplate}"/>
             <ListBox Grid.Column="1"
+                     Grid.Row="1"
                      ItemsSource="{Binding SubUnits}"
                      ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"/>
         </Grid>

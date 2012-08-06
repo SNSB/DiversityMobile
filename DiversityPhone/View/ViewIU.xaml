@@ -8,20 +8,22 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vw="clr-namespace:DiversityPhone.View"
+    xmlns:vm="clr-namespace:DiversityPhone.ViewModels"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="728" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}"
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}" 
+    d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}"
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
     x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/> 
-            </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary.MergedDictionaries>            
             <vw:ViewIUPivotConverter x:Key="PivotConverter"/>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
@@ -31,7 +33,7 @@
                 Command="{Binding EditCurrent}"
                 CommandParameter="{Binding Current}">
             <ContentControl Content="{Binding Current}"
-                            ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                            ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
         </Button>
         
         <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">            

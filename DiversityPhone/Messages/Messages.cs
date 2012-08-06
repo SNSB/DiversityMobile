@@ -43,17 +43,6 @@ namespace DiversityPhone.Messages
         }        
     }
 
-    public class VMNavigationMessage : NavigationMessage
-    {
-        public object VM { get; private set; }
-
-        public VMNavigationMessage(Page destination, object vm)
-            : base(destination)
-        {
-            VM = vm;
-        }
-    }
-
     public class InitMessage { }
 
     public static class MessengerMixin

@@ -36,18 +36,8 @@
         
         <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="units">
-                <ListBox ItemsSource="{Binding UnitList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Style="{StaticResource ItemButtonStyle}"
-                                    Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
-                                    CommandParameter="{Binding}">
-                                <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <ListBox ItemsSource="{Binding UnitList}" 
+                         ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"/>
             </controls:PivotItem>
             
             <controls:PivotItem Header="multimedia">

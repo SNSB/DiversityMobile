@@ -97,7 +97,7 @@ namespace DiversityPhone.ViewModels
 
             Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Subunits)
-                .Select(_ => new IdentificationUnitVM( new IdentificationUnit(){ RelatedUnitID = Current.Model.UnitID}) as IElementVM<IdentificationUnit>)
+                .Select(_ => new IdentificationUnitVM( new IdentificationUnit(){ RelatedUnitID = Current.Model.UnitID, SpecimenID = Current.Model.SpecimenID}) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();

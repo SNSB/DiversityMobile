@@ -64,6 +64,11 @@ using System.Reactive.Disposables;
         {
             Storage = ioc.Resolve<IFieldDataService>();
 
+            //Current
+            EditEvent = new ReactiveCommand<IElementVM<Event>>();
+            EditEvent
+                .ToMessage(MessageContracts.EDIT);
+
             //Specimen
             SpecList = getSpecimen.RegisterAsyncFunction(ev => Storage.getSpecimenForEvent(ev as Event).Select(spec => new SpecimenVM(spec)))                
                 .SelectMany(specs => specs)                

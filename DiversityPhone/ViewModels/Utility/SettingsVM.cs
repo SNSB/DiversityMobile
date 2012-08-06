@@ -107,13 +107,13 @@ namespace DiversityPhone.ViewModels.Utility
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 ManageTaxa
-                .Select(_ => new NavigationMessage(Services.Page.TaxonManagement))
+                .Select(_ => Services.Page.TaxonManagement)
                 );
 
             UploadData = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 UploadData
-                .Select(_ => new NavigationMessage(Services.Page.Sync))
+                .Select(_ => Services.Page.Sync)
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
