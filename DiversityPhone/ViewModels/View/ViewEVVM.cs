@@ -98,10 +98,10 @@ using System.Reactive.Disposables;
                 .Subscribe(getProperties.Execute);    
         
             //Multimedia
-            MultimediaList = new ElementMultimediaVM(ReferrerType.Event, Storage);
+            MultimediaList = new ElementMultimediaVM(Storage);
 
             CurrentModelObservable
-                .Select(m => m.EventID)
+                .Select(m => m as IMultimediaOwner)
                 .Subscribe(MultimediaList);
 
             //Add New
@@ -113,8 +113,7 @@ using System.Reactive.Disposables;
                 .Select(_ => new PropertyVM(new EventProperty() { EventID = Current.Model.EventID }) as IElementVM<EventProperty>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
-                .Select(_ => Current.Model as IMultimediaOwner)
-                .ToMessage(MessageContracts.MULTIMEDIA);
+                .Subscribe(MultimediaList.AddMultimedia.Execute);
            
             //Maps
             Maps = new ReactiveCommand();
