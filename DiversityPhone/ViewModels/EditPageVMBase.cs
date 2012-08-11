@@ -6,6 +6,7 @@ using DiversityPhone.Model;
 using System.Reactive.Subjects;
 using DiversityPhone.Services;
 using System.Reactive;
+using System;
 
 namespace DiversityPhone.ViewModels
 {
@@ -31,7 +32,7 @@ namespace DiversityPhone.ViewModels
         protected ISubject<bool> CanSaveSubject { get; private set; }
         private ISubject<Unit> DeleteSubject = new Subject<Unit>();
 
-        public EditPageVMBase()
+        public EditPageVMBase(Predicate<T> filter = null)
         {
             CanSaveSubject = new Subject<bool>();
             Save = new ReactiveCommand(CanSaveSubject);
@@ -66,6 +67,7 @@ namespace DiversityPhone.ViewModels
 
             Messenger.Listen<IElementVM<T>>(MessageContracts.EDIT)
                 .Where(vm => vm != null)
+                .Where(vm => filter == null || filter(vm.Model))
                 .BindTo(this, x => x.Current);
         }
 

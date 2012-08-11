@@ -15,7 +15,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewAudioVM : EditElementPageVMBase<MultimediaObject>
+    public class NewAudioVM : EditPageVMBase<MultimediaObject>
     {
 
       
@@ -101,6 +101,7 @@ namespace DiversityPhone.ViewModels
         #region Constructor
 
         public NewAudioVM()
+            : base( mmo => mmo.MediaType == MediaType.Audio)
         {
             // Timer to simulate the XNA Framework game loop (Microphone is 
             // from the XNA Framework). We also use this timer to monitor the 
@@ -119,6 +120,8 @@ namespace DiversityPhone.ViewModels
             Play.Subscribe(_ => playAudio());
             Stop = new ReactiveCommand();
             Stop.Subscribe(_ => stop());
+
+            CanSave().Subscribe(CanSaveSubject);
         }
 
         #endregion
@@ -130,38 +133,9 @@ namespace DiversityPhone.ViewModels
             saveAudio();
             Current.Model.LogUpdatedWhen = DateTime.Now;
             Current.Model.Uri = Uri;
-        }
+        }       
 
-
-        protected override void OnSave()
-        {
-
-        }
-
-        public override void SaveState()
-        {
-            base.SaveState();
-        }
-
-        protected override MultimediaObject ModelFromState(Services.PageState s)
-        {
-            if (s.Referrer != null)
-            {
-                int parent;
-                if (int.TryParse(s.Referrer, out parent))
-                {
-                    return new MultimediaObject()
-                    {
-                        RelatedId = parent,
-                        OwnerType = s.ReferrerType,
-                        MediaType = MediaType.Audio
-                    };
-                }
-            }
-            return null;
-        }
-
-        protected override IObservable<bool> CanSave()
+        protected IObservable<bool> CanSave()
         {
             var idle = this.ObservableForProperty(x => x.State)
                 .Select(sound => sound.Value==PlayStates.Idle)
@@ -171,13 +145,7 @@ namespace DiversityPhone.ViewModels
                 .Select(buffer => buffer.Value != null)
                 .StartWith(false);
             return idle.BooleanAnd(bufferReady);
-        }
-
-
-        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
-        {
-            return null;
-        }
+        }       
 
         #endregion
 

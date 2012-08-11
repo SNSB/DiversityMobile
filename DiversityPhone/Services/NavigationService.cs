@@ -25,6 +25,8 @@ namespace DiversityPhone.Services
         {
             Messenger = messenger;               
        
+            var new_mmo = Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT).Where(vm => vm.Model.IsNew());
+            var view_mmo = Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW);
             
             Messenger.RegisterMessageSource(
                 Observable.Merge(
@@ -38,7 +40,12 @@ namespace DiversityPhone.Services
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),                    
                     Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),                   
                     Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
-                    Messenger.Listen<IMultimediaOwner>(MessageContracts.MULTIMEDIA).Select(_ => Page.SelectNewMMO)
+                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
+                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
+                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
+                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.ViewAudio),
+                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.ViewImage),
+                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.ViewVideo)
                     )
                 );
 
@@ -143,10 +150,7 @@ namespace DiversityPhone.Services
                     break;
                 case Page.ViewVideo:
                     destination = "/View/ViewVideo.xaml";
-                    break;
-                case Page.SelectNewMMO:
-                    destination = "/View/SelectNewMMO.xaml";
-                    break;
+                    break;                
                 case Page.NewImage:
                     destination = "/View/NewImage.xaml";
                     break;

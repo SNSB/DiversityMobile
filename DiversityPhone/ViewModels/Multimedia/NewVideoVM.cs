@@ -16,7 +16,7 @@ using System.Windows.Controls;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewVideoVM : EditElementPageVMBase<MultimediaObject>
+    public class NewVideoVM : EditPageVMBase<MultimediaObject>
     {
        
 
@@ -83,21 +83,18 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Play { get; private set; }
         public ReactiveCommand Stop { get; private set; }
 
-        #endregion
-
-        #region Constructor
+        #endregion      
 
         public NewVideoVM()
+            : base( mmo => mmo.MediaType == MediaType.Video)
         {
             Record = new ReactiveCommand();
             
             Play = new ReactiveCommand();
             Stop = new ReactiveCommand();
-        }
 
-        #endregion
-
-        #region Inherited
+            CanSave().Subscribe(CanSaveSubject);
+        }        
 
         protected override void UpdateModel()
         {
@@ -106,36 +103,7 @@ namespace DiversityPhone.ViewModels
             Current.Model.Uri = Uri;
         }
 
-
-        protected override void OnSave()
-        {
-
-        }
-
-        public override void SaveState()
-        {
-            base.SaveState();
-        }
-
-        protected override MultimediaObject ModelFromState(Services.PageState s)
-        {
-            if (s.Referrer != null)
-            {
-                int parent;
-                if (int.TryParse(s.Referrer, out parent))
-                {
-                    return new MultimediaObject()
-                    {
-                        RelatedId = parent,
-                        OwnerType = s.ReferrerType,
-                        MediaType = MediaType.Video
-                    };
-                }
-            }
-            return null;
-        }
-
-        protected override IObservable<bool> CanSave()
+        protected IObservable<bool> CanSave()
         {
             var idle = this.ObservableForProperty(x => x.State)
                 .Select(sound => sound.Value == PlayStates.Idle)
@@ -146,14 +114,6 @@ namespace DiversityPhone.ViewModels
                 .StartWith(false);
             return idle.BooleanAnd(recordPresent);
         }
-
-
-        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
-        {
-            return null;
-        }
-
-        #endregion
 
         #region Methods for ReactiveCommands
 

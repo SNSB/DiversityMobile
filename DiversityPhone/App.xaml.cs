@@ -108,8 +108,7 @@ namespace DiversityPhone
             IOC.Register<ViewMapIUVM>(c => new ViewMapIUVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             
             
-            IOC.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));
-            IOC.Register<SelectNewMMOVM>(c => new SelectNewMMOVM());
+            IOC.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));            
             IOC.Register<NewImageVM>(c => new NewImageVM());
             IOC.Register<NewAudioVM>(c => new NewAudioVM());
             IOC.Register<NewVideoVM>(c => new NewVideoVM());

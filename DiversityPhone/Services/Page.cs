@@ -16,8 +16,7 @@ namespace DiversityPhone.Services
         EditCS,
         ViewCS,
         EditIUAN,
-
-        SelectNewMMO,
+        
         NewImage,
         NewAudio,
         NewVideo,

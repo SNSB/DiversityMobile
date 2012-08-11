@@ -19,10 +19,10 @@ namespace DiversityPhone.View
     public class ViewAudioVideoPageAppbarUpdater 
     {
         IApplicationBar _appbar;
-        ViewAudioVideoVM _vm;
+        IAudioVideoPageVM _vm;
         ApplicationBarIconButton  _edit, _delete,_play,_stop;
 
-        public ViewAudioVideoPageAppbarUpdater(IApplicationBar appbar, ViewAudioVideoVM viewmodel)
+        public ViewAudioVideoPageAppbarUpdater(IApplicationBar appbar, IAudioVideoPageVM viewmodel)
         {
             _appbar = appbar;
             _vm = viewmodel;

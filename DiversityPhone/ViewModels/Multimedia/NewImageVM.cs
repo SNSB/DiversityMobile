@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewImageVM : EditElementPageVMBase<MultimediaObject>
+    public class NewImageVM : EditPageVMBase<MultimediaObject>
     {
 
       
@@ -89,13 +89,13 @@ namespace DiversityPhone.ViewModels
 
 
         public NewImageVM()
+            : base( mmo => mmo.MediaType == MediaType.Image)
         {
             Reset = new ReactiveCommand();
             Take = new ReactiveCommand();
-        }
 
-       
-        #region inherited
+            CanSave().Subscribe(CanSaveSubject);
+        }
 
         protected override void UpdateModel()
         {
@@ -103,50 +103,15 @@ namespace DiversityPhone.ViewModels
             Current.Model.LogUpdatedWhen = DateTime.Now;
             Current.Model.Uri = Uri;
         }
-
-
-        protected override void OnSave()
-        {
-            
-        }
-
-        public override void SaveState()
-        {
-            base.SaveState();
-        }
-
-        protected override MultimediaObject ModelFromState(Services.PageState s)
-        {
-            if (s.Referrer != null)
-            {
-                int parent;
-                if (int.TryParse(s.Referrer, out parent))
-                {
-                    return new MultimediaObject()
-                    {
-                        RelatedId = parent,
-                        OwnerType = s.ReferrerType,
-                        MediaType=MediaType.Image,
-                    };
-                }
-            }
-
-            return null;
-        }
-
-        protected override IObservable<bool> CanSave()
+       
+        protected IObservable<bool> CanSave()
         {
             return this.ObservableForProperty(x => x.ActualImage)
                 .Select(image=> image!=null)
                 .StartWith(false);
         }
 
-        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
-        {
-            return null;
-        }
-
-        #endregion
+       
 
        
 

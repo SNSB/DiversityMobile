@@ -21,9 +21,13 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewVideoVM : ViewAudioVideoVM
+    public class ViewVideoVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
+        #region Commands
+        public IReactiveCommand Play { get; protected set; }
+        public IReactiveCommand Stop { get; protected set; }
 
+        #endregion
       
 
         #region Properties
@@ -49,64 +53,15 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public ViewVideoVM()            
+        public ViewVideoVM()   
+            : base(mmo => mmo.MediaType == MediaType.Video)
         {
+            Play = new ReactiveCommand();
+            Stop = new ReactiveCommand();
 
-            ValidModel
+            CurrentModelObservable
               .Select(mmo => mmo.Uri)
               .BindTo(this, x => x.Uri);
         }
-
-        protected override void OnDelete()
-        {            
-          
-        }
-
-        protected override void UpdateModel()
-        {
-            
-        }
-
-
-        protected override MultimediaObject ModelFromState(Services.PageState s)
-        {
-            if (s.Context != null)
-            {
-                MultimediaObject mmo = Storage.getMultimediaByURI(s.Context);
-                return mmo;
-            }
-            else if (s.Referrer != null)
-            {
-                int parent;
-                if (int.TryParse(s.Referrer, out parent))
-                {
-                    return new MultimediaObject()
-                        {
-                            RelatedId = parent,
-                            OwnerType = s.ReferrerType,
-                        };
-                }
-            }
-            return null;
-        }
-
-        public override void SaveState()
-        {
-            base.SaveState();
-
-        }
-
-
-        protected override IObservable<bool> CanSave()
-        {
-            return Observable.Return(false);
-        }
-
-
-        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
-        {
-            return null;
-        }
-
     }
 }

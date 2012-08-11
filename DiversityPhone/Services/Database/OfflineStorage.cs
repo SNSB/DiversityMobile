@@ -61,9 +61,9 @@ namespace DiversityPhone.Services
                  _messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model() 
                     .Subscribe(iua=>deleteIUA(iua)),
 
-                _messenger.Listen<MultimediaObject>(MessageContracts.SAVE)
+                _messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.SAVE).Model()
                     .Subscribe(mmo => addMultimediaObject(mmo)),
-                _messenger.Listen<MultimediaObject>(MessageContracts.DELETE)
+                _messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.DELETE).Model()
                     .Subscribe(mmo=>deleteMMO(mmo)),
 
                 _messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE)

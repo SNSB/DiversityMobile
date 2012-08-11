@@ -22,12 +22,9 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewImageVM : EditElementPageVMBase<MultimediaObject>
+    public class ViewImageVM : EditPageVMBase<MultimediaObject>
     {
  
-        #region Properties
-
-
         #region Properties
         private string _Uri;
         public string Uri
@@ -35,8 +32,6 @@ namespace DiversityPhone.ViewModels
             get { return _Uri; }
             set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
         }
-
-        #endregion
 
         private BitmapImage _savedImage;
 
@@ -53,7 +48,8 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public ViewImageVM()            
+        public ViewImageVM()  
+            : base(mmo => mmo.MediaType == MediaType.Image)
         {
 
 
@@ -83,59 +79,6 @@ namespace DiversityPhone.ViewModels
             BitmapImage bi = new BitmapImage();
             bi.SetSource(ms);
             SavedImage = bi;
-         
-        }
-      
-
-
-        protected override void UpdateModel()
-        {
-            
-        }
-
-      
-
-        protected override MultimediaObject ModelFromState(Services.PageState s)
-        {
-            if (s.Context != null)
-            {
-                MultimediaObject mmo = Storage.getMultimediaByURI(s.Context);
-                if (mmo != null && mmo.MediaType == MediaType.Image)
-                    LoadImage(mmo);
-                return mmo;
-            }
-            else if (s.Referrer != null)
-            {
-                int parent;
-                if (int.TryParse(s.Referrer, out parent))
-                {
-                    return new MultimediaObject()
-                        {
-                            RelatedId = parent,
-                            OwnerType = s.ReferrerType,
-                        };
-                }
-            }
-
-            return null;
-        }
-
-        public override void SaveState()
-        {
-            base.SaveState();
-
-        }
-
-
-        protected override IObservable<bool> CanSave()
-        {
-            return Observable.Return(false);
-        }
-
-        protected override ElementVMBase<MultimediaObject> ViewModelFromModel(MultimediaObject model)
-        {
-            return null;
         }
     }
-    
 }
