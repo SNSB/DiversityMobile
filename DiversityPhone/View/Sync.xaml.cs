@@ -33,7 +33,7 @@ namespace DiversityPhone.View
             if (progress == null && VM != null)
             {
                 progress = new ProgressBinding<SyncVM>(VM, x => x.IsBusy);
-                uploadall = new CommandButtonAdapter(VM.UploadAll, ApplicationBar.Buttons[0] as IApplicationBarIconButton);
+                uploadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.UploadAll);
             }
         }
 

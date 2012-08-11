@@ -19,62 +19,50 @@ namespace DiversityPhone.View
 {
     public class EditPageAppBarUpdater
     {
-        IApplicationBar _appbar;
-        IEditPageVM _vm;
-        ApplicationBarIconButton _save,_edit,_delete;
-        CommandButtonAdapter _to_save, _to_edit, _to_delete;
+        private readonly Uri SAVE_IMAGE = new Uri("/Images/appbar.save.rest.png", UriKind.Relative);
+        private readonly Uri EDIT_IMAGE = new Uri("/Images/appbar.edit.rest.png", UriKind.Relative);
+        private readonly string SAVE_TEXT;
+        private readonly string EDIT_TEXT;
 
-        public EditPageAppBarUpdater(IApplicationBar appbar, IEditPageVM viewmodel)
+        IApplicationBarIconButton _btn;
+        IEditPageVM _vm;
+        CommandButtonAdapter _cmdadapter;
+
+        public EditPageAppBarUpdater(IApplicationBar appbar, IEditPageVM vm)
+            : this(new ApplicationBarIconButton() { IsEnabled = true }, vm)
         {
-            _appbar = appbar;
-            _vm = viewmodel;
+            if(appbar == null)
+                throw new ArgumentNullException("appbar");
+            
+            appbar.Buttons.Add(_cmdadapter.Button);
+        }
+
+        public EditPageAppBarUpdater(IApplicationBarIconButton btn, IEditPageVM vm)
+        {
+            _btn = btn;
+            _vm = vm;
 
             if (_vm == null)
-                return;
+                throw new ArgumentNullException("vm");
+            if (_btn == null)
+                throw new ArgumentNullException("btn");
 
-            _save = new ApplicationBarIconButton()
-            {
-                IconUri = new Uri("/Images/appbar.save.rest.png",UriKind.Relative),
-                Text = "save",
-                IsEnabled = true,
-            };
-            _to_save = new CommandButtonAdapter(_vm.Save, _save);
-            _edit = new ApplicationBarIconButton()
-            {
-                IconUri = new Uri("/Images/appbar.edit.rest.png",UriKind.Relative),
-                Text = "edit",
-                IsEnabled = true,
-            };
-            _to_edit = new CommandButtonAdapter(_vm.ToggleEditable, _edit);
-            _delete = new ApplicationBarIconButton()
-            {
-                IconUri = new Uri("/Images/appbar.delete.rest.png",UriKind.Relative),
-                Text = "delete",
-                IsEnabled = true,
-            };
-            _to_delete = new CommandButtonAdapter(_vm.Delete, _delete);            
+            SAVE_TEXT = "save";
+            EDIT_TEXT = "edit";
+
+            _cmdadapter = new CommandButtonAdapter(_btn);
 
             _vm.ObservableForProperty(x => x.IsEditable)
                 .Value()
                 .StartWith(_vm.IsEditable)
-                .Subscribe(iseditable => adjustApplicationBar(iseditable));                     
+                .Subscribe(iseditable => adjust_button(iseditable));                     
         }
 
-        private void adjustApplicationBar(bool editable)
+        private void adjust_button(bool iseditable)
         {
-            {
-                _appbar.Buttons.Clear();
-                if (editable == true)
-                {                    
-                    _appbar.Buttons.Add(_save);
-                    _appbar.Buttons.Add(_delete);
-                }
-                else
-                {
-                    _appbar.Buttons.Add(_edit);
-                    _appbar.Buttons.Add(_delete);
-                }
-            }
+            _cmdadapter.Command = (iseditable) ? _vm.Save : _vm.ToggleEditable;
+            _btn.IconUri = (iseditable) ? SAVE_IMAGE : EDIT_IMAGE;
+            _btn.Text = (iseditable) ? SAVE_TEXT : EDIT_TEXT;
         }
 
     }

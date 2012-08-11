@@ -119,7 +119,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\IMultimediaOwner.cs" />
+    <Compile Include="Services\IMultimediaOwner.cs" />    
+    <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
     <Compile Include="View\Controls\CommandNotAvailableLabel.xaml.cs">
       <DependentUpon>CommandNotAvailableLabel.xaml</DependentUpon>

@@ -9,52 +9,68 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Shell;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.View.Appbar
 {
     public class CommandButtonAdapter : IDisposable
     {
-        private bool _disposed = false;
-        private ICommand _cmd;
-        private IApplicationBarIconButton _btn;
+        public IApplicationBarIconButton Button { get; private set; }
 
-        public CommandButtonAdapter(ICommand command, IApplicationBarIconButton button)
+        private ICommand _Command;
+        public ICommand Command 
         {
-            if (command == null)
-                throw new ArgumentNullException("command");
+            get
+            {
+                return _Command;
+            }
+            set
+            {
+                if(_Command != value)
+                {
+                    _Command = value;
+                    if (_Command != null && Button != null)
+                    {
+                        _command_handle.Disposable = new CompositeDisposable(
+                            Disposable.Create(() => _Command.CanExecuteChanged -= CanExecuteChanged),
+                            Disposable.Create(() => Button.Click -= Click)
+                            );
+                    }
+                    else
+                        _command_handle.Dispose();
+                }
+            }
+        }
+
+
+        private SerialDisposable _command_handle = new SerialDisposable();
+
+        public CommandButtonAdapter(IApplicationBarIconButton button, ICommand command = null)
+        {           
             if (button == null)
                 throw new ArgumentNullException("button");
-            _cmd = command;
-            _btn = button;
-
-            _cmd.CanExecuteChanged += new EventHandler(CanExecuteChanged);
-            _btn.Click += new EventHandler(Click);
+            Command = command;
+            Button = button;
 
             CanExecuteChanged(null, null);
         }
 
         void Click(object sender, EventArgs e)
         {
-            if (!_disposed && _cmd.CanExecute(null))
-                _cmd.Execute(null);
+            if(Button != null && Command != null && Command.CanExecute(null))
+                Command.Execute(null);
         }
 
         void  CanExecuteChanged(object sender, EventArgs e)
         {
-            if (!_disposed)
-                _btn.IsEnabled = _cmd.CanExecute(null);
+            if(Button != null && Command != null)
+                Button.IsEnabled = Command.CanExecute(null);
         }       
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                _disposed = true;
-                _cmd.CanExecuteChanged -= CanExecuteChanged;
-                _cmd = null;
-                _btn.Click -= Click;
-                _btn = null;
-            }
+            _command_handle.Dispose();
+            Button = null;
         }
     }
 }

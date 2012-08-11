@@ -63,7 +63,7 @@ namespace DiversityPhone.View
                     Text = DiversityResources.Settings_Header_ButtonSave
                 };
                 ApplicationBar.Buttons.Add(saveBtn);
-                toSave = new CommandButtonAdapter(VM.Save, saveBtn);
+                toSave = new CommandButtonAdapter(saveBtn, VM.Save);
 
                 refreshBtn = new ApplicationBarIconButton()
                 {
@@ -71,7 +71,7 @@ namespace DiversityPhone.View
                     Text = DiversityResources.Settings_Header_ButtonRefresh
                 };
                 ApplicationBar.Buttons.Add(refreshBtn);
-                toRefresh = new CommandButtonAdapter(VM.RefreshVocabulary, refreshBtn);   
+                toRefresh = new CommandButtonAdapter(refreshBtn, VM.RefreshVocabulary);   
 
                 clearBtn = new ApplicationBarIconButton()
                 {
@@ -79,7 +79,7 @@ namespace DiversityPhone.View
                     Text = DiversityResources.Settings_Header_ButtonClear,
                 };
                 ApplicationBar.Buttons.Add(clearBtn);
-                toClear = new CommandButtonAdapter(VM.Reset, clearBtn);
+                toClear = new CommandButtonAdapter(clearBtn, VM.Reset);
 
                            
             }            

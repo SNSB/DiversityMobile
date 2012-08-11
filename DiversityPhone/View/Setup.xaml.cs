@@ -33,7 +33,7 @@ namespace DiversityPhone.View
                 Text = DiversityResources.Setup_Header_ButtonSave
             };
             ApplicationBar.Buttons.Add(save);
-            _save = new CommandButtonAdapter(VM.Save, save);
+            _save = new CommandButtonAdapter(save, VM.Save);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
