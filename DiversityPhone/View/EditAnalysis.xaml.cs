@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -19,7 +20,7 @@ namespace DiversityPhone.View
     {
         private EditAnalysisVM VM { get { return DataContext as EditAnalysisVM; } }
 
-        private EditPageAppBarUpdater _appb;
+        private EditPageSaveEditButton _appb;
         private IList<Control> _toStore;
 
         public EditAnalysis()
@@ -27,7 +28,7 @@ namespace DiversityPhone.View
             InitializeComponent();
             _toStore = new List<Control> { TB_CustomResult};
             DPControlBackGround.adjustStoreBackgroundColors(_toStore);      
-            _appb = new EditPageAppBarUpdater(ApplicationBar, VM);
+            _appb = new EditPageSaveEditButton(ApplicationBar, VM);
         }
 
         private void TB_CustomResult_TextChanged(object sender, TextChangedEventArgs e)

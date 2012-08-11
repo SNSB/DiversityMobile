@@ -14,6 +14,7 @@ using DiversityPhone.ViewModels;
 using System.Reactive.Linq;
 using Microsoft.Phone.Shell;
 using DiversityPhone.Model;
+using DiversityPhone.View.Appbar;
 
 
 
@@ -22,14 +23,16 @@ namespace DiversityPhone.View
     public partial class EditEV : PhoneApplicationPage
     {
         private EditEVVM VM { get { return DataContext as EditEVVM; } }
-        private EditPageAppBarUpdater _appbar;
+        private EditPageSaveEditButton _appbar;
         private IList<Control> _toStore;
+        private EditPageDeleteButton _delete;
 
         public EditEV()
         {
             InitializeComponent();
 
-            _appbar = new EditPageAppBarUpdater(this.ApplicationBar, VM);
+            _appbar = new EditPageSaveEditButton(this.ApplicationBar, VM);
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);
             this._toStore = new List<Control> { this.LocalityTB };
             DPControlBackGround.adjustStoreBackgroundColors(_toStore);
         }      

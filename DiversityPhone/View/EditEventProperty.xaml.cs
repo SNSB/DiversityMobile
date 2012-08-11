@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -19,19 +20,17 @@ namespace DiversityPhone.View
     {
         public EditPropertyVM VM { get { return DataContext as EditPropertyVM; } }
 
-        EditPageAppBarUpdater _appb;
+        EditPageSaveEditButton _appb;
         private IList<Control> _toStore;
+        private EditPageDeleteButton _delete;
 
         public EditEventProperty()
         {
             InitializeComponent();
-            _toStore = new List<Control> { LP_Type, LP_Value };
-        }
+            _appb = new EditPageSaveEditButton(ApplicationBar, VM);
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (VM != null)
-                _appb = new EditPageAppBarUpdater(ApplicationBar, VM);
+            _toStore = new List<Control> { LP_Type, LP_Value };
         }
     }
 }

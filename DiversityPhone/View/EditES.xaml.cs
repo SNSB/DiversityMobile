@@ -18,6 +18,7 @@ using System.Threading;
 using System.Globalization;
 using DiversityPhone.Model;
 using ReactiveUI;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -25,7 +26,8 @@ namespace DiversityPhone.View
     {
         private EditESVM VM { get { return this.DataContext as EditESVM; } }
 
-        private EditPageAppBarUpdater _appbarupd;
+        private EditPageSaveEditButton _appbarupd;
+        private EditPageDeleteButton _delete;
 
         private IList<Control> _toStore;
        
@@ -35,7 +37,9 @@ namespace DiversityPhone.View
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-De");
             InitializeComponent();
 
-            _appbarupd = new EditPageAppBarUpdater(this.ApplicationBar, VM);
+            _appbarupd = new EditPageSaveEditButton(this.ApplicationBar, VM);
+
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);
             if (VM != null)
             {
                 this._toStore = new List<Control> { this.DescTB };

@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -19,16 +20,16 @@ namespace DiversityPhone.View
     {
         private EditIUVM VM { get { return DataContext as EditIUVM; } }
 
-        private EditPageAppBarUpdater _appb;
-        private IList<Control> _toStore;
+        private EditPageSaveEditButton _appb;
+        private EditPageDeleteButton _delete;
 
 
         public EditIU()
         {
             InitializeComponent();
 
-            _appb = new EditPageAppBarUpdater(this.ApplicationBar, VM);
-            _toStore = new List<Control> {  };
+            _appb = new EditPageSaveEditButton(this.ApplicationBar, VM);
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);            
         }        
     }
 }

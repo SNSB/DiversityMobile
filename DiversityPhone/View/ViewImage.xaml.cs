@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -20,12 +21,12 @@ namespace DiversityPhone.View
 
         private ViewImageVM VM { get { return this.DataContext as ViewImageVM; } }
 
-        private EditPageAppBarUpdater _appb;
+        private EditPageSaveEditButton _appb;
 
         public ViewImage()
         {
             InitializeComponent();
-            _appb = new EditPageAppBarUpdater(this.ApplicationBar, VM);
+            _appb = new EditPageSaveEditButton(this.ApplicationBar, VM);
         }
     }
 }

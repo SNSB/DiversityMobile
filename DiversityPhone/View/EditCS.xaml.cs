@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using System.Windows.Data;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -22,14 +23,17 @@ namespace DiversityPhone.View
 
         public EditCSVM VM { get{return DataContext as EditCSVM;} }
 
-        private EditPageAppBarUpdater _appbarupd;
+        private EditPageSaveEditButton _appbarupd;
         private IList<Control> _toStore;
+        private EditPageDeleteButton _delete;
 
         public EditCS()
         {
             InitializeComponent();
 
-            _appbarupd = new EditPageAppBarUpdater(this.ApplicationBar, VM);
+            _appbarupd = new EditPageSaveEditButton(this.ApplicationBar, VM);
+
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
             anBinding =  AN_TB.GetBindingExpression(TextBox.TextProperty);
             this._toStore = new List<Control> { this.AN_TB };
