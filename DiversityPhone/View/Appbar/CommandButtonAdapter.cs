@@ -35,6 +35,8 @@ namespace DiversityPhone.View.Appbar
                             Disposable.Create(() => _Command.CanExecuteChanged -= CanExecuteChanged),
                             Disposable.Create(() => Button.Click -= Click)
                             );
+                        _Command.CanExecuteChanged += CanExecuteChanged;
+                        Button.Click += Click;
                     }
                     else
                         _command_handle.Dispose();
@@ -49,8 +51,8 @@ namespace DiversityPhone.View.Appbar
         {           
             if (button == null)
                 throw new ArgumentNullException("button");
-            Command = command;
             Button = button;
+            Command = command;            
 
             CanExecuteChanged(null, null);
         }
