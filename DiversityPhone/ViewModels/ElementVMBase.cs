@@ -18,10 +18,6 @@ namespace DiversityPhone.ViewModels
         /// Operation: Select (Go To Target Page)
         /// </summary>
         public ReactiveCommand Select { get; private set; }
-
-        public ReactiveCommand Edit { get; private set; }
-
-        public ReactiveCommand Delete { get; private set; }
         
         /// <summary>
         /// Encapsulated Model Instance

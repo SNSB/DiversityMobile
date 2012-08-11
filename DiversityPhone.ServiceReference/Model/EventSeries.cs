@@ -6,9 +6,10 @@
     using System.Data.Linq.Mapping;
     using DiversityPhone.Services;
     using Svc = DiversityPhone.DiversityService;
+using ReactiveUI;
 
     [Table]
-    public class EventSeries : IModifyable
+    public class EventSeries : ReactiveObject, IModifyable
     {
         private static EventSeries _NoEventSeries;
 
@@ -44,8 +45,16 @@
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventSeriesID { get; set; }
 
+        private string _Description;
         [Column(CanBeNull = false)]
-        public string Description { get; set; }
+        public string Description 
+        {
+            get { return _Description; }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value);
+            }
+        }
 
         [Column]
         public string SeriesCode { get; set; }

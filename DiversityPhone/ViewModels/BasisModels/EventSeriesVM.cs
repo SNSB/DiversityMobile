@@ -31,7 +31,10 @@
             else
             {
                 _esIcon = ViewModels.Icon.EventSeries;                
-            }            
+            }
+
+            Model.ObservableForProperty(x => x.Description)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
         }        
     }
 }
