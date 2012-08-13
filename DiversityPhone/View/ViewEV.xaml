@@ -18,7 +18,12 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}"
     x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
-        <vw:ViewEVPivotConverter x:Key="PivotConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/GeoRefTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <vw:ViewEVPivotConverter x:Key="PivotConverter"/>
+        </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
     
     <StackPanel>
@@ -50,18 +55,18 @@
                     <StackPanel>
                         <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}"
                                         Content="{Binding Current.Model}"/>
-                    <ListBox ItemsSource="{Binding PropertyList}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Button Style="{StaticResource ItemButtonStyle}"
-                                    Command="{Binding DataContext.SelectProperty, ElementName=currentPage}"
-                                    CommandParameter="{Binding}">
-                                    <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
-                                </Button>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                        <ListBox ItemsSource="{Binding PropertyList}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ItemButtonStyle}"
+                                        Command="{Binding DataContext.SelectProperty, ElementName=currentPage}"
+                                        CommandParameter="{Binding}">
+                                        <ContentControl Content="{Binding}"
+                                                    ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                    </Button>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                 </StackPanel>    
             </controls:PivotItem>
             <!--Pivot item two-->

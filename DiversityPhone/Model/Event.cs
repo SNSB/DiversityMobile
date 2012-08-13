@@ -22,7 +22,6 @@ using ReactiveUI;
             this.ModificationState = ModificationState.New;
             this.DiversityCollectionEventID = null;
             this.DiversityCollectionSeriesID = null;
-
         }
 
         [Column(IsPrimaryKey = true)]

@@ -16,7 +16,6 @@
     		<ResourceDictionary.MergedDictionaries>
     			<ResourceDictionary Source="View/Resources/Templates.xaml"/>                
     		</ResourceDictionary.MergedDictionaries>
-            <sys:String x:Key="AppTitle">DiversityPhone</sys:String>
             <shell:ProgressIndicator x:Key="Progress"/>
     		<vm:ViewModelLocator x:Key="Locator" />
             <local:LocalizedStrings x:Key="LocalizedStrings" />
@@ -24,15 +23,9 @@
             <vw:InvertBooleanConverter x:Key="InvertBoolean"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>
             <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
-            
 			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
-            <vw:GeoCoordinatesConverter x:Key="GeoCoordinates"/>
             <vw:PointToVisibilityConverter x:Key="PointToVis"/>
-           
-
         </ResourceDictionary>        
-        
-		
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

@@ -6,32 +6,11 @@
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
-    
     <DataTemplate x:Key="ElementItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
             <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" Text="{Binding Description}"/>
         </StackPanel>
-    </DataTemplate>
-   
-    
-    
-    <DataTemplate x:Key="GeoRefItemTemplate">
-        <Grid>
-        	<Grid.ColumnDefinitions>
-        		<ColumnDefinition Width="80"/>
-        		<ColumnDefinition Width="Auto"/>
-        	</Grid.ColumnDefinitions>
-    		<Image Margin="0" Width="60" Height="60" HorizontalAlignment="Center" VerticalAlignment="Center" Source="/Images/SNSBIcons/Nord_80.png"/>
-        	<StackPanel Orientation="Vertical" d:LayoutOverrides="Width, Height" Grid.Column="1" VerticalAlignment="Center">
-        		<TextBlock HorizontalAlignment="Center">
-                    <Run Text="{Binding Latitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=LAT}"/>
-                    <Run Text=" "/>
-                    <Run Text="{Binding Longitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=LON}"/>
-                </TextBlock>
-                <TextBlock HorizontalAlignment="Center"><Run Text="{Binding Altitude, Converter={StaticResource GeoCoordinates}, ConverterParameter=ALT}"/></TextBlock>
-        	</StackPanel>
-    	</Grid>
     </DataTemplate>
     
     <DataTemplate x:Key="DisplayTextItemTemplate">
@@ -42,8 +21,7 @@
         <TextBlock Text="{Binding TextAndUnit}"/>
     </DataTemplate>
     
-    <DataTemplate x:Key="TaxonListItemTemplate">
-        
+    <DataTemplate x:Key="TaxonListItemTemplate">        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40"/>
@@ -68,7 +46,6 @@
             </Rectangle>
         </Grid> 
     </DataTemplate>
-
 
     <DataTemplate x:Key="DownloadMapTemplate">
         <Grid>

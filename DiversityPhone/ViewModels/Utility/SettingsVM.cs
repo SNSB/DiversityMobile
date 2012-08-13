@@ -19,8 +19,7 @@ namespace DiversityPhone.ViewModels.Utility
     public partial class SettingsVM : PageViewModel
     {
         
-        ISettingsService Settings;
-        IGeoLocationService GeoLocation;
+        ISettingsService Settings;        
         NavigationService Navigation;
 
         
@@ -59,7 +58,6 @@ namespace DiversityPhone.ViewModels.Utility
         public SettingsVM(Container ioc)            
         {            
             Settings = ioc.Resolve<ISettingsService>();
-            GeoLocation = ioc.Resolve<IGeoLocationService>();
             Navigation = ioc.Resolve<NavigationService>();
 
             _Model = this.ObservableToProperty(
@@ -125,15 +123,7 @@ namespace DiversityPhone.ViewModels.Utility
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-            Settings.saveSettings(Model);
-            if (UseGPS == true)
-            {
-                if (GeoLocation.IsWatching() == false)
-                    GeoLocation.startWatcher();
-            }
-            else
-                if (GeoLocation.IsWatching() == true)
-                    GeoLocation.stopWatcher();
+            Settings.saveSettings(Model);           
         }        
 
         

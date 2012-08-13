@@ -4,6 +4,7 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.Services
 {
@@ -13,6 +14,7 @@ namespace DiversityPhone.Services
 
         IMessageBus Messenger;
         AppSettings _settings;
+        ISubject<AppSettings> _SettingSubject = new Subject<AppSettings>();
         public SettingsService (IMessageBus msg)
 	    {
             Messenger = msg;
@@ -20,10 +22,16 @@ namespace DiversityPhone.Services
                 .Subscribe(s => saveSettings(s));
 
             Messenger.RegisterMessageSource(
+                _SettingSubject
+            );
+            Messenger.RegisterMessageSource(
+                _SettingSubject.Select(settings => settings.ToCreds())
+                );
+
             Messenger.Listen<EventMessage>(MessageContracts.INIT)
                 .Where(_ => _settings != null)
-                .Select(_ => _settings.ToCreds())
-                );
+                .Select(_ => _settings)
+                .Subscribe(_SettingSubject);
             
             if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out _settings))
                 _settings = null;
@@ -37,8 +45,7 @@ namespace DiversityPhone.Services
         public void saveSettings(AppSettings settings)
         {
             _settings = settings;
-            if (settings != null)
-                Messenger.SendMessage(settings.ToCreds());
+            _SettingSubject.OnNext(settings);
             IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
             IsolatedStorageSettings.ApplicationSettings.Save();
         }
