@@ -26,7 +26,7 @@ using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewDownloadMapsVM : PageViewModel
+    public class ViewDownloadMapsVM : PageVMBase
     {
         #region Services
 
@@ -110,7 +110,7 @@ namespace DiversityPhone.ViewModels
             Add.Subscribe(mapName => addMap(mapName as String));
 
             _Keys = this.ObservableToProperty(
-                StateObservable
+                ActivationObservable.Where(activated => activated)
                 .Select(_ => getStorageList()),
                 x => x.Keys);
 

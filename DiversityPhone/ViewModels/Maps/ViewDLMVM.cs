@@ -19,7 +19,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewDLMVM :PageViewModel
+    public class ViewDLMVM : PageVMBase
     {
 
         private IMapStorageService _mapStorage;

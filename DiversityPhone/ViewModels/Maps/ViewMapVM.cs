@@ -147,10 +147,6 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-      
-
-       
-
         #endregion
 
 
