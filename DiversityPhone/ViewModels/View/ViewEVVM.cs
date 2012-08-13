@@ -117,8 +117,9 @@ using System.Reactive.Disposables;
            
             //Maps
             Maps = new ReactiveCommand();
-            Maps.Select(_ => Current)
-                .ToMessage(MessageContracts.MAPS);
+            Maps
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Event, Current.Model.DiversityCollectionEventID.ToString()))
+                .ToMessage();
         } 
     }
 }

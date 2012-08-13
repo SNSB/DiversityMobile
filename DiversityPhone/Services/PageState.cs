@@ -55,9 +55,5 @@ namespace DiversityPhone.Services
             this.Referrer = (ReferrerType != ReferrerType.None) ? referrer : null;
             this.State = new Dictionary<string, string>();
         }
-        public PageState()
-        {
-
-        }
     }
 }

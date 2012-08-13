@@ -64,10 +64,10 @@ using System.Reactive.Subjects;
                     }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 
-            Maps = new ReactiveCommand();            
+            Maps = new ReactiveCommand();
             Maps
-                .Select(_ => Current)
-                .ToMessage(MessageContracts.MAPS);
+                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.EventSeries, Current.Model.DiversityCollectionEventSeriesID.ToString()))
+                .ToMessage();
         }       
     }
 }

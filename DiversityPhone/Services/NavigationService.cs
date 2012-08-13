@@ -21,6 +21,10 @@ namespace DiversityPhone.Services
         private IMessageBus Messenger;        
         private PhoneApplicationFrame _frame;
 
+        //LEGACY
+        private Stack<PageState> _legacy_navigation = new Stack<PageState>();
+        //LEGACY
+
         public NavigationService(IMessageBus messenger)
         {
             Messenger = messenger;               
@@ -50,7 +54,10 @@ namespace DiversityPhone.Services
                 );
 
              Messenger.Listen<Page>()                
-                .Subscribe(NavigateToPage);           
+                .Subscribe(NavigateToPage);
+
+             Messenger.Listen<NavigationMessage>()
+                 .Subscribe(NavigationMessageNavigation);
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {
@@ -71,7 +78,13 @@ namespace DiversityPhone.Services
             {
                 var vm = page.DataContext as PageVMBase;
                 vm.Activate();
-            }           
+            }
+
+            
+            if (page.DataContext is PageViewModel && _legacy_navigation.Any())
+            {
+                (page.DataContext as PageViewModel).SetState(_legacy_navigation.Peek());
+            }
         }        
         void NavigationStarted()
         {
@@ -83,6 +96,28 @@ namespace DiversityPhone.Services
                 vm.Deactivate();
             }           
         }
+
+        //LEGACY///////////////////////////////////////////
+        void NavigationMessageNavigation(NavigationMessage msg)
+        {
+            //Real Nav ?
+            if (msg.Destination != Page.Previous && msg.Destination != Page.Current)
+            {
+                _legacy_navigation.Push(new PageState(
+                        msg.Destination,
+                        msg.Context,
+                        msg.ReferrerType,
+                        msg.Referrer));                
+            }
+            else if (msg.Destination == Page.Previous)
+            {
+                _legacy_navigation.Pop();
+            }
+
+            NavigateToPage(msg.Destination);
+        }        
+        //LEGACY///////////////////////////////////////////
+
 
         private void NavigateToPage(Page p)
         {

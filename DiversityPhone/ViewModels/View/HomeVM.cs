@@ -80,7 +80,9 @@ namespace DiversityPhone.ViewModels
             Add.Select(_ => new EventSeriesVM(new EventSeries()) as IElementVM<EventSeries>)
                 .ToMessage(MessageContracts.EDIT);
             Maps=new ReactiveCommand();
-            Maps.Select(_ => Page.LoadedMaps)
+
+
+            Maps.Select(_ => new NavigationMessage(Page.LoadedMaps))
                 .ToMessage();
 
             Messenger.Listen<EventMessage>(MessageContracts.CLEAN)
