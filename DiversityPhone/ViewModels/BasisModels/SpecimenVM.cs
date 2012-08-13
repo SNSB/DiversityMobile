@@ -31,7 +31,8 @@ using DiversityPhone.Services;
         public SpecimenVM(Specimen model)
             : base( model)
         {
-            
+            model.ObservableForProperty(x => x.AccessionNumber)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
         }
     }
 }
