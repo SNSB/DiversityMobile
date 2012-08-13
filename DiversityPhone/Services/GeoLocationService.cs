@@ -15,6 +15,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Collections.Generic;
 using DiversityPhone.Messages;
+using DiversityPhone.Model;
 
 
 
@@ -79,7 +80,15 @@ namespace DiversityPhone.Services
             this.defaultAccuracy = defaultAccuracy;
             movementTreshhold = DefaultMovementTreshold;
             _subscriptions = new List<IDisposable>()
-            {
+            { 
+                MessageBus.Listen<AppSettings>()
+                .Subscribe(s =>
+                    {
+                        if(s.UseGPS && !IsWatching()) 
+                            this.startWatcher();
+                        else if(!s.UseGPS)
+                            this.stopWatcher();
+                    }),
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.START)
                     .Subscribe(es => setTourEventSeriesID(es.SeriesID.Value)),
                  MessageBus.Listen<Model.EventSeries>(MessageContracts.STOP)
