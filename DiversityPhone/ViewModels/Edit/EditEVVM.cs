@@ -61,6 +61,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
+            Geolocation.fillGeoCoordinates(Current.Model);
             Current.Model.LocalityDescription = LocalityDescription;
             Current.Model.HabitatDescription = HabitatDescription;
         }

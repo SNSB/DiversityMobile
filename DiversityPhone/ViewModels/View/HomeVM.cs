@@ -31,8 +31,6 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
         #endregion        
 
-        
-
         #region Properties              
         public ReactiveCollection<EventSeriesVM> SeriesList
         {

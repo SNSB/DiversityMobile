@@ -215,6 +215,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
+            Geolocation.fillGeoCoordinates(Current.Model);
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache;
             Current.Model.OnlyObserved = this.OnlyObserved;
