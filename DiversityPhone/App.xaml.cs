@@ -179,7 +179,7 @@ namespace DiversityPhone
                     GeoLocation.setTourEventSeriesID((int)settings.CurrentSeriesID);
             }
 
-            RxApp.MessageBus.SendMessage(new InitMessage());
+            RxApp.MessageBus.SendMessage(new EventMessage(), MessageContracts.INIT);
 
             NLog.LogManager.EnableLogging();
         }

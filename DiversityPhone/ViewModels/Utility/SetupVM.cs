@@ -9,6 +9,7 @@ using DiversityPhone.Services;
 using Funq;
 using DiversityPhone.Services.BackgroundTasks;
 using DiversityPhone.DiversityService;
+using DiversityPhone.Messages;
 
 
 namespace DiversityPhone.ViewModels.Utility
@@ -172,12 +173,13 @@ namespace DiversityPhone.ViewModels.Utility
             _BusyMessage = this.ObservableToProperty(
                 refreshVocabularyTask.AsyncProgressMessages.ObserveOnDispatcher(), x => x.BusyMessage);
 
-            Messenger.RegisterMessageSource(
             refreshVocabularyTask.AsyncCompletedNotification
                 .Take(1)
-                .Select(_ => Page.Home)
-                .Concat(Observable.Never<Page>())
-                );
+                .Subscribe(_ =>
+                    {
+                        Messenger.SendMessage<EventMessage>(new EventMessage(), MessageContracts.CLEAN);
+                        Messenger.SendMessage<Page>(Page.Home);
+                    });
 
             clearDatabase.RegisterAsyncAction(_ =>
             {

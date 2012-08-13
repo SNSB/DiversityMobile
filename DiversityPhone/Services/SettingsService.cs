@@ -20,7 +20,7 @@ namespace DiversityPhone.Services
                 .Subscribe(s => saveSettings(s));
 
             Messenger.RegisterMessageSource(
-            Messenger.Listen<InitMessage>()
+            Messenger.Listen<EventMessage>(MessageContracts.INIT)
                 .Where(_ => _settings != null)
                 .Select(_ => _settings.ToCreds())
                 );

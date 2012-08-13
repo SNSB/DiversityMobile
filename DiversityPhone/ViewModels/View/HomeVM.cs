@@ -85,6 +85,9 @@ namespace DiversityPhone.ViewModels
             Maps.Select(_ => Page.LoadedMaps)
                 .ToMessage();
 
+            Messenger.Listen<EventMessage>(MessageContracts.CLEAN)
+                .Subscribe(_ => SeriesList.Clear());
+
             getSeries.Execute(null);
         }
     }

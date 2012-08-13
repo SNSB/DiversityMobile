@@ -29,6 +29,11 @@ namespace DiversityPhone.Messages
         public const string IMAGE = "Image";
         public const string AUDIO = "Audio";
         public const string VIDEO = "Video";
+
+        //Events
+        public const string INIT = "Init";
+        public const string REFRESH = "Refresh";
+        public const string CLEAN = "Clean";
     }
 
     public class NavigationMessage
@@ -47,7 +52,7 @@ namespace DiversityPhone.Messages
         }        
     }
 
-    public class InitMessage { }
+    public class EventMessage { }
 
     public static class MessengerMixin
     {
