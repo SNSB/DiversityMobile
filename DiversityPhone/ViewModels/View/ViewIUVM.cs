@@ -62,6 +62,8 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get; private set; }
 
+        public ElementMultimediaVM MultimediaList { get; private set; }
+
         #endregion
 
         public ViewIUVM(Container ioc)
@@ -86,6 +88,12 @@ namespace DiversityPhone.ViewModels
                 .Do(units => _SubunitListener.Disposable = units.ListenToChanges<IdentificationUnit,IdentificationUnitVM>(iu => iu.RelatedUnitID == Current.Model.UnitID )),
                 x => x.Subunits); 
 
+            //Multimedia
+            MultimediaList = new ElementMultimediaVM(Storage);
+            CurrentModelObservable
+                .Select(m => m as IMultimediaOwner)
+                .Subscribe(MultimediaList);
+
             Analyses = getAnalyses.RegisterAsyncFunction(iu => Storage.getIUANForIU(iu as IdentificationUnit).Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
                 .SelectMany(vms => vms)
                 .CreateCollection();
@@ -99,6 +107,8 @@ namespace DiversityPhone.ViewModels
             Add.Where(_ => SelectedPivot == Pivots.Subunits)
                 .Select(_ => new IdentificationUnitVM( new IdentificationUnit(){ RelatedUnitID = Current.Model.UnitID, SpecimenID = Current.Model.SpecimenID}) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
+            Add.Where(_ => SelectedPivot == Pivots.Multimedia)
+                .Subscribe(MultimediaList.AddMultimedia.Execute);
 
             Maps = new ReactiveCommand();
             Maps.Select(_ => Current)

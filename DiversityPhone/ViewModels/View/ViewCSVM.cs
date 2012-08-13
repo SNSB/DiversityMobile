@@ -17,8 +17,7 @@ namespace DiversityPhone.ViewModels
     public class ViewCSVM : ViewPageVMBase<Specimen>
     {
         private ReactiveAsyncCommand getSubunits = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getMultimedia = new ReactiveAsyncCommand();
-
+        
         private IFieldDataService Storage;
 
         public enum Pivots
@@ -50,6 +49,7 @@ namespace DiversityPhone.ViewModels
             }
         }
 
+        public ElementMultimediaVM MultimediaList { get; private set; }
 
         public ReactiveCollection<IdentificationUnitVM> UnitList { get; private set; }
         #endregion
@@ -77,12 +77,20 @@ namespace DiversityPhone.ViewModels
             SelectUnit
                 .ToMessage(MessageContracts.VIEW);
 
+            //Multimedia
+            MultimediaList = new ElementMultimediaVM(Storage);
+            CurrentModelObservable
+                .Select(m => m as IMultimediaOwner)
+                .Subscribe(MultimediaList);
+
 
 
             Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Units)
                 .Select(_ => new IdentificationUnitVM(new IdentificationUnit(){SpecimenID = Current.Model.SpecimenID, RelatedUnitID = null}) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
+            Add.Where(_ => SelectedPivot == Pivots.Multimedia)
+                .Subscribe(MultimediaList.AddMultimedia.Execute);
                
                
             Maps = new ReactiveCommand();

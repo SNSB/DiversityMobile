@@ -6,9 +6,10 @@
     using DiversityPhone.Services;
     using Svc = DiversityPhone.DiversityService;
     using System.Data.Linq;
+using ReactiveUI;
 
     [Table]
-    public class Specimen : IModifyable
+    public class Specimen : ReactiveObject, IModifyable, IMultimediaOwner
     {
         [Column(IsPrimaryKey = true)]
         public int SpecimenID { get; set; }
@@ -22,8 +23,13 @@
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventID { get; set; }
 
+        private string _AccessionNumber;
         [Column]
-        public string AccessionNumber { get; set; }
+        public string AccessionNumber
+        {
+            get { return _AccessionNumber; }
+            set { this.RaiseAndSetIfChanged(x => x.AccessionNumber, ref _AccessionNumber, value); }
+        }
 
 
         /// <summary>
@@ -151,6 +157,16 @@
         //    throw new NotImplementedException();
         //}
 
+
+        public ReferrerType OwnerType
+        {
+            get { return ReferrerType.Specimen; }
+        }
+
+        public int OwnerID
+        {
+            get { return SpecimenID; }
+        }
     }
 
 

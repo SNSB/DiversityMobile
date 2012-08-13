@@ -54,8 +54,7 @@
             </controls:PivotItem>
             
             <controls:PivotItem Header="multimedia">
-                <ListBox ItemTemplate="{StaticResource MultimediaItemTemplate}"
-                         ItemsSource="{Binding MultimediaList}"/>
+                <vw:MultimediaListControl DataContext="{Binding MultimediaList}" />
             </controls:PivotItem>
         </controls:Pivot>       
     </StackPanel>
