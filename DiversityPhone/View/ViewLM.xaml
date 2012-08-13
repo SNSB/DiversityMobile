@@ -43,7 +43,18 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <ListBox ItemsSource="{Binding SavedMaps}" ItemTemplate="{StaticResource ElementItemTemplate}" Tap="ListBox_Tap" Height="490" />
+                <ListBox ItemsSource="{Binding SavedMaps}" Tap="ListBox_Tap" Height="490" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Button Style="{StaticResource ItemButtonStyle}" 
+                                    Command="{Binding Select}"
+                                    CommandParameter="{Binding}">
+                            <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                            </Button>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </StackPanel>
         </Grid>
     </Grid>

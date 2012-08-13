@@ -317,9 +317,6 @@
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewDLM.xaml.cs">
-      <DependentUpon>ViewDLM.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\ViewDownloadMaps.xaml.cs">
       <DependentUpon>ViewDownloadMaps.xaml</DependentUpon>
     </Compile>
@@ -465,10 +462,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewCS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewDLM.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
