@@ -43,18 +43,7 @@
             </controls:PivotItem>
             
             <controls:PivotItem Header="multimedia">
-                <ListBox ItemsSource="{Binding MultimediaList}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Button Style="{StaticResource ItemButtonStyle}"
-                                        Command="{Binding DataContext.SelectMultimedia, ElementName=currentPage}"
-                                        CommandParameter="{Binding}">
-                                <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MultimediaItemTemplate}"/>
-                            </Button>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <vw:MultimediaListControl DataContext="{Binding MultimediaList}"/>
             </controls:PivotItem>
         </controls:Pivot>
     </StackPanel>
