@@ -13,7 +13,7 @@ namespace DiversityPhone.Model
 
     [Table]
     [Index(Columns="RelatedUnitID", IsUnique=false, Name="relunit_idx")] 
-    public class IdentificationUnit : ReactiveObject, IModifyable, ILocalizable
+    public class IdentificationUnit : ReactiveObject, IModifyable, ILocalizable, IMultimediaOwner
     {
         public IdentificationUnit()
         {
@@ -189,7 +189,17 @@ namespace DiversityPhone.Model
             export.TaxonomicGroup = iu.TaxonomicGroup;
             export.UnitID = iu.UnitID;
             return export;
-        }       
-      
+        }
+
+
+        public ReferrerType OwnerType
+        {
+            get { return ReferrerType.IdentificationUnit; }
+        }
+
+        public int OwnerID
+        {
+            get { return UnitID; }
+        }
     }
 }
