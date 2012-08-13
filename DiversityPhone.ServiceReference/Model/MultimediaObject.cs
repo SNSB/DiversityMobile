@@ -12,11 +12,12 @@ using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
 using Svc = DiversityPhone.DiversityService;
+using ReactiveUI;
 
 namespace DiversityPhone.Model
 {
     [Table]
-    public class MultimediaObject : IModifyable
+    public class MultimediaObject : ReactiveObject, IModifyable
     {
         
         [Column(IsPrimaryKey = true)]
@@ -31,8 +32,13 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public int? DiversityCollectionRelatedID { get; set; }
 
+        String _Uri;
         [Column]
-        public String Uri { get; set; }
+        public String Uri 
+        {
+            get { return _Uri; }
+            set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
+        }
 
         [Column(CanBeNull = true)]
         public String DiversityCollectionUri;

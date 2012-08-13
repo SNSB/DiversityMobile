@@ -11,29 +11,36 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Reactive;
 using System.Reactive.Linq;
+using System;
 
 
 namespace DiversityPhone.ViewModels
 {
     public class MultimediaObjectVM : ReactiveObject, IElementVM<MultimediaObject>
     {  
-        private static BitmapImage load_thumb(MultimediaObject mmo)
+        private static MemoryStream load_thumb(MultimediaObject mmo)
         {
-            if (mmo.MediaType == MediaType.Image)
+            if (mmo.MediaType == MediaType.Image && mmo.Uri != null)
             {
                 using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
+                    if (isf.FileExists(mmo.Uri))
                     {
-                        var res = new BitmapImage();
-                        res.SetSource(isfs);
-                        return res;
+                        using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
+                        {
+                            if(isfs.Length > int.MaxValue)
+                                throw new ArgumentException("file too big");
+
+                            var memory = new MemoryStream((int)isfs.Length);
+                            isfs.CopyTo(memory);
+                            return memory;
+                        }
                     }
                 }
             }
             return null;
         }
-        private static ObservableAsyncMRUCache<MultimediaObject, BitmapImage> thumbnails = new ObservableAsyncMRUCache<MultimediaObject, BitmapImage>(mmo => Observable.Start(() => load_thumb(mmo)), 10);
+        private static ObservableAsyncMRUCache<MultimediaObject, MemoryStream> thumbnails = new ObservableAsyncMRUCache<MultimediaObject, MemoryStream>(mmo => Observable.Start(() => load_thumb(mmo)), 10);
         
 
         public MultimediaObject Model
@@ -76,7 +83,14 @@ namespace DiversityPhone.ViewModels
         public MultimediaObjectVM( MultimediaObject model)
         {
             Model = model;
-            thumbnails.AsyncGet(Model).BindTo(this, x => x.Thumbnail);
+
+            Model.ObservableForProperty(x => x.Uri)
+                .Value()
+                .StartWith(Model.Uri)
+                .SelectMany(_ => thumbnails.AsyncGet(Model))
+                .ObserveOnDispatcher()
+                .Select(thumb => { var img = new BitmapImage(); img.SetSource(thumb); return img; } )                
+                .BindTo(this, x => x.Thumbnail);
         }        
     }
 }

@@ -10,6 +10,7 @@ using DiversityPhone.ViewModels;
 using DiversityPhone.Services;
 using DiversityPhone.Messages;
 using System.Reactive.Disposables;
+using DiversityPhone.Model;
 namespace DiversityPhone.View.Appbar
 {
     public class NewMultimediaAppBarUpdater
@@ -43,11 +44,7 @@ namespace DiversityPhone.View.Appbar
                     IconUri = new Uri("/Images/appbar.feature.camera.rest.png", UriKind.RelativeOrAbsolute),
                     IsEnabled = true,
                     Text = "image"
-                };
-            Observable.FromEventPattern<object, EventArgs>(_image, "Click")
-                .Do(_ => restore_buttons())
-                .Select(_ => _mmowner)
-                .ToMessage(MessageContracts.IMAGE);
+                };            
             _mmobuttons.Add(_image);
 
             _audio =
@@ -57,10 +54,7 @@ namespace DiversityPhone.View.Appbar
                     IsEnabled = true,
                     Text = "audio"
                 };
-            Observable.FromEventPattern<object, EventArgs>(_audio, "Click")
-                .Do(_ => restore_buttons())
-                .Select(_ => _mmowner)
-                .ToMessage(MessageContracts.AUDIO);
+            
             _mmobuttons.Add(_audio);
 
             _video =
@@ -69,12 +63,20 @@ namespace DiversityPhone.View.Appbar
                     IconUri = new Uri("/Images/appbar.feature.video.rest.png", UriKind.RelativeOrAbsolute),
                     IsEnabled = true,
                     Text = "video"
-                };
-            Observable.FromEventPattern<object, EventArgs>(_video, "Click")
-                .Do(_ => restore_buttons())
-                .Select(_ => _mmowner)
-                .ToMessage(MessageContracts.VIDEO);
+                };            
             _mmobuttons.Add(_video);
+
+            Observable.Merge(
+                Observable.FromEventPattern<object, EventArgs>(_image, "Click")
+                    .Select(_ => MediaType.Image),
+                Observable.FromEventPattern<object, EventArgs>(_audio, "Click")
+                    .Select(_ => MediaType.Image),
+                Observable.FromEventPattern<object, EventArgs>(_video, "Click")
+                    .Select(_ => MediaType.Image)
+                    )
+                    .Do(_ => restore_buttons())
+                    .Select(media => new MultimediaObjectVM(new MultimediaObject() { MediaType = media, OwnerType = _mmowner.OwnerType, RelatedId = _mmowner.OwnerID }) as IElementVM<MultimediaObject>)
+                    .ToMessage(MessageContracts.EDIT);
 
             
             _buttons = new List<object>();

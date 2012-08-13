@@ -14,6 +14,8 @@ namespace DiversityPhone.ViewModels
     {        
         IFieldDataService Storage;
         private ISubject<IMultimediaOwner> ownerSubject = new ReplaySubject<IMultimediaOwner>(1);
+        private ObservableAsPropertyHelper<IMultimediaOwner> _Owner;
+        private IMultimediaOwner Owner { get { return _Owner.Value; } }
         private ReactiveAsyncCommand getMultimedia;
 
         public ReactiveCommand<IElementVM<MultimediaObjectVM>> SelectMultimedia { get; private set; }
@@ -37,6 +39,10 @@ namespace DiversityPhone.ViewModels
                 .Where(owner => getMultimedia.CanExecute(owner))                
                 .Do(_ => this.Clear())
                 .Subscribe(getMultimedia.Execute);
+
+            _Owner = new ObservableAsPropertyHelper<IMultimediaOwner>(ownerSubject, (o) => {}, null);
+
+            this.ListenToChanges<MultimediaObject, MultimediaObjectVM>(mmo => Owner != null && mmo.OwnerType == Owner.OwnerType && mmo.RelatedId == Owner.OwnerID);
 
             SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObjectVM>>();
             SelectMultimedia
