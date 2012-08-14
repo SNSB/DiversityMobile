@@ -13,6 +13,7 @@ namespace DiversityPhone.Services
     using System.Reactive.Subjects;
     using ReactiveUI;
     using NLog;
+using System.Reactive.Disposables;
 
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.
@@ -28,15 +29,19 @@ namespace DiversityPhone.Services
         private readonly Logger log;
 
         // Defines the default accuracy to be used.
-        private readonly GeoPositionAccuracy defaultAccuracy;
+        private readonly GeoPositionAccuracy defaultAccuracy = GeoPositionAccuracy.Default;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocationService"/> class.
-        /// </summary>
-        public LocationService() : this(GeoPositionAccuracy.Default)
+        CompositeDisposable location_subscriptions = new CompositeDisposable();
+
+        private bool _IsEnabled = true;
+        public bool IsEnabled 
         {
-            
-        }     
+            get { return _IsEnabled; }
+            set
+            {
+                
+            }
+        }          
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationService"/> class with a default accuracy specified.
@@ -44,9 +49,8 @@ namespace DiversityPhone.Services
         /// The default accuracy to be used for all requests for location information.
         /// </param>
         /// </summary>
-        public LocationService(GeoPositionAccuracy defaultAccuracy) 
-        {
-            this.defaultAccuracy = defaultAccuracy;
+        public LocationService() 
+        {            
             this.log = this.Log();
         }
 
@@ -95,87 +99,6 @@ namespace DiversityPhone.Services
              return this.LocationImpl(this.defaultAccuracy, locationTimeout)
                  .Select(l => l);
         }
-        
-        /// <summary>
-        /// The current location with the specified accuracy.
-        /// </summary
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> Location(GeoPositionAccuracy accuracy)
-        {
-            this.log.Debug("LocationService: Location...");
-            this.log.Debug("LocationService: Accuracy - '{0}'", accuracy);
-            this.log.Debug("LocationService: Timeout (default) - {0} seconds", DefaultLocationTimeout.TotalSeconds);
-
-            return this.LocationImpl(accuracy, DefaultLocationTimeout)
-                .Select(l => l);
-        }
-
-        /// <summary>
-        /// The current location with the specified accuracy.
-        /// </summary>
-        /// <param name="accuracy">
-        /// The geo-location accuracy to be used.
-        /// </param>
-        /// <param name="locationTimeout">
-        /// The location timeout for the geo-location returned, every value has a timestamp and if the timestamp is greater than the location timeout then 
-        /// the value is ignored and we wait for the next value (should be instantieous.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> Location(GeoPositionAccuracy accuracy, TimeSpan locationTimeout)
-        {
-            this.log.Debug("LocationService: Location...");
-            this.log.Debug("LocationService: Accuracy - '{0}'", accuracy);
-            this.log.Debug("LocationService: Timeout - {0} seconds", locationTimeout.TotalSeconds);
-
-            return this.LocationImpl(accuracy, locationTimeout)
-                .Select(l => l);
-        }
-
-        /// <summary>
-        /// The location by time threshold, the location is returned dependent on the frequency and if the current
-        /// location has changed.
-        /// </summary>
-        /// <param name="frequency">
-        /// The frequency at which the current location will be published - frequency in milliseconds.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> LocationByTimeThreshold(int frequency)
-        {
-            this.log.Debug("LocationService: LocationByTimeThreshold...");
-            this.log.Debug("LocationService: Frequency - '{0}'", frequency);
-
-            return this.LocationByTimeImpl(new TimeSpan(0, 0, 0, 0, frequency), this.defaultAccuracy)
-                    .Select(l => l);
-        }
-
-        /// <summary>
-        /// The location by time threshold, the location is returned dependent on the frequency and if the current
-        /// location has changed.
-        /// </summary>
-        /// <param name="frequency">
-        /// The frequency at which the current location will be published - frequency in milliseconds.
-        /// </param>
-        /// <param name="accuracy">
-        /// The accuracy required for the location information.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> LocationByTimeThreshold(int frequency, GeoPositionAccuracy accuracy)
-        {
-            this.log.Debug("LocationService: LocationByTimeThreshold...");
-            this.log.Debug("LocationService: Frequency - '{0}'", frequency);
-            this.log.Debug("LocationService: Accuracy - '{0}'", accuracy);
-
-            return this.LocationByTimeImpl(new TimeSpan(0, 0, 0, 0, frequency), accuracy)
-                .Select(l => l);
-        }
 
         /// <summary>
         /// The location by time threshold, the location is returned dependent on the frequency and if the current
@@ -197,29 +120,6 @@ namespace DiversityPhone.Services
         }
 
         /// <summary>
-        /// The location by time threshold, the location is returned dependent on the frequency and if the current
-        /// location has changed.
-        /// </summary>
-        /// <param name="frequency">
-        /// The frequency at which the current location will be published - timespan value.
-        /// </param>
-        /// <param name="accuracy">
-        /// The accuracy required for the location information.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> LocationByTimeThreshold(TimeSpan frequency, GeoPositionAccuracy accuracy)
-        {
-            this.log.Debug("LocationService: LocationByTimeThreshold...");
-            this.log.Debug("LocationService: Frequency - '{0}'", frequency);
-            this.log.Debug("LocationService: Accuracy - '{0}'", accuracy);
-
-            return this.LocationByTimeImpl(frequency, accuracy)
-               .Select(l => l);
-        }
-
-        /// <summary>
         /// The location by distance threshold, the location is returned dependent on exceeding the distance.
         /// </summary>
         /// <param name="distance">
@@ -232,28 +132,6 @@ namespace DiversityPhone.Services
         {
             this.log.Debug("LocationService: LocationByDistanceThreshold...");
             this.log.Debug("LocationService: Distance - '{0}'", distance);
-
-            return this.LocationByDistanceThresholdImpl(distance, this.defaultAccuracy)
-                .Select(l => l);
-        }
-
-        /// <summary>
-        /// The location by distance threshold, the location is returned dependent on exceeding the distance.
-        /// </summary>
-        /// <param name="distance">
-        /// The distance that has to be exceeeded to trigger the current location being published - distance in metres.
-        /// </param>
-        /// <param name="accuracy">
-        /// The accuracy required for the location information.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        public IObservable<GeoCoordinate> LocationByDistanceThreshold(int distance, GeoPositionAccuracy accuracy)
-        {
-            this.log.Debug("LocationService: LocationByDistanceThreshold...");
-            this.log.Debug("LocationService: Distance - '{0}'", distance);
-            this.log.Debug("LocationService: Accuracy - '{0}'", accuracy);
 
             return this.LocationByDistanceThresholdImpl(distance, this.defaultAccuracy)
                 .Select(l => l);

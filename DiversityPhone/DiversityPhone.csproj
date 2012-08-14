@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\LocalizableMixin.cs" />
     <Compile Include="Services\ILocationService.cs" />
     <Compile Include="Services\IMultimediaOwner.cs" />
     <Compile Include="Services\LocationService.cs" />

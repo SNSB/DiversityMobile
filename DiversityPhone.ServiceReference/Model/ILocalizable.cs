@@ -12,5 +12,5 @@ namespace DiversityPhone.Model
         double? Longitude { get; set; }
 
         
-    }
+    }   
 }
