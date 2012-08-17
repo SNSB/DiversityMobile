@@ -10,6 +10,8 @@ using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
 using DiversityPhone.Model;
 using Funq;
+using System.Device.Location;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.ViewModels
 {
@@ -17,8 +19,11 @@ namespace DiversityPhone.ViewModels
     {
         private ITaxonService Taxa;
         private IVocabularyService Vocabulary;
-        private IGeoLocationService Geolocation;
+        private ILocationService Geolocation;
         private IFieldDataService Storage;
+
+        BehaviorSubject<GeoCoordinate> _latest_location = new BehaviorSubject<GeoCoordinate>(GeoCoordinate.Unknown);
+        IDisposable _location_subscription = Disposable.Empty;
 
         #region Properties
         private ObservableAsPropertyHelper<bool> _IsObservation;
@@ -88,11 +93,25 @@ namespace DiversityPhone.ViewModels
             Storage = ioc.Resolve<IFieldDataService>();
             Taxa = ioc.Resolve<ITaxonService>();
             Vocabulary = ioc.Resolve<IVocabularyService>();
-            Geolocation = ioc.Resolve<IGeoLocationService>();
+            Geolocation = ioc.Resolve<ILocationService>();
 
             TaxonomicGroup = new ListSelectionHelper<Term>();
             RelationshipType = new ListSelectionHelper<Term>();
             Identification = new ListSelectionHelper<TaxonName>();
+
+            ActivationObservable
+                .Subscribe(active =>
+                {
+                    if (active)
+                    {
+                        _latest_location.OnNext(GeoCoordinate.Unknown);
+                        _location_subscription = Geolocation.Location().Subscribe(_latest_location);
+                    }
+                    else
+                    {
+                        _location_subscription.Dispose();
+                    }
+                });
 
             registerCanSave();         
 
@@ -215,7 +234,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            Geolocation.fillGeoCoordinates(Current.Model);
+            Current.Model.SetGeoCoordinates(_latest_location.First());
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache;
             Current.Model.OnlyObserved = this.OnlyObserved;

@@ -7,12 +7,18 @@ using System.Reactive.Linq;
 using DiversityPhone.Services;
 using System.Collections.Generic;
 using Funq;
+using System.Reactive.Subjects;
+using System.Device.Location;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditEVVM : EditPageVMBase<Event>
     {
-        IGeoLocationService Geolocation;
+        ILocationService Geolocation;
+        BehaviorSubject<GeoCoordinate> _latest_location = new BehaviorSubject<GeoCoordinate>(GeoCoordinate.Unknown);
+        IDisposable _location_subscription = Disposable.Empty;
+
 
         #region Properties
         private string _LocalityDescription;
@@ -41,7 +47,21 @@ namespace DiversityPhone.ViewModels
 
         public EditEVVM(Container ioc)
         {
-            Geolocation = ioc.Resolve<IGeoLocationService>();
+            Geolocation = ioc.Resolve<ILocationService>();
+
+            ActivationObservable
+                .Subscribe(active =>
+                    {
+                        if (active)
+                        {
+                            _latest_location.OnNext(GeoCoordinate.Unknown);
+                            _location_subscription = Geolocation.Location().Subscribe(_latest_location);
+                        }
+                        else
+                        {
+                            _location_subscription.Dispose();
+                        }
+                    });
 
             _CollectionDate = this.ObservableToProperty(
                 CurrentModelObservable
@@ -61,7 +81,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            Geolocation.fillGeoCoordinates(Current.Model);
+            Current.Model.SetGeoCoordinates(_latest_location.First());
             Current.Model.LocalityDescription = LocalityDescription;
             Current.Model.HabitatDescription = HabitatDescription;
         }

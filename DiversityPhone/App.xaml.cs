@@ -29,7 +29,7 @@ namespace DiversityPhone
         private static IMessageBus Messenger;
         private static Services.NavigationService NavSvc;
         private static ISettingsService Settings;
-        private static IGeoLocationService GeoLocation { get { return IOC.Resolve<IGeoLocationService>(); } }
+        private static ILocationService GeoLocation { get { return IOC.Resolve<ILocationService>(); } }
         public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
         
         
@@ -157,7 +157,7 @@ namespace DiversityPhone
             
 
             IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IGeoLocationService>(new GeoLocationService(IOC.Resolve<IMessageBus>(), IOC.Resolve<ISettingsService>()));
+            IOC.Register<ILocationService>(new LocationService(IOC));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             
             BackgroundTasks = new BackgroundService();
@@ -169,15 +169,6 @@ namespace DiversityPhone
             restartBackgroundTasks();
 
             registerViewModels();
-
-            var settings = Settings.getSettings();
-
-            if (settings != null && settings.UseGPS == true)
-            {
-                GeoLocation.startWatcher();
-                if (settings.CurrentSeriesID != null)
-                    GeoLocation.setTourEventSeriesID((int)settings.CurrentSeriesID);
-            }
 
             RxApp.MessageBus.SendMessage(new EventMessage(), MessageContracts.INIT);
 

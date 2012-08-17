@@ -52,18 +52,6 @@ namespace DiversityPhone.Services
         /// <returns>
         /// Returns the current location.
         /// </returns>
-        IObservable<GeoCoordinate> Location();
-        
-        /// <summary>
-        /// The current location.
-        /// </summary>
-        /// <param name="locationTimeout">
-        /// The location timeout for the geo-location returned, every value has a timestamp and if the timestamp is greater than the location timeout then 
-        /// the value is ignored and we wait for the next value (should be instantieous.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        IObservable<GeoCoordinate> Location(TimeSpan locationTimeout);
+        IObservable<GeoCoordinate> Location();        
     }
 }
