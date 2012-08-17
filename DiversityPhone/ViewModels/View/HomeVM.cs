@@ -85,10 +85,12 @@ namespace DiversityPhone.ViewModels
             Maps.Select(_ => new NavigationMessage(Page.LoadedMaps))
                 .ToMessage();
 
-            Messenger.Listen<EventMessage>(MessageContracts.CLEAN)
-                .Subscribe(_ => SeriesList.Clear());
-
-            getSeries.Execute(null);
+            Observable.Merge(
+                Messenger.Listen<EventMessage>(MessageContracts.CLEAN),
+                Messenger.Listen<EventMessage>(MessageContracts.INIT)
+                )                
+                .Do(_ => SeriesList.Clear())
+                .Subscribe(_ => getSeries.Execute(null));
         }
     }
 }
