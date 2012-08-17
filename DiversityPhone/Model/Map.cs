@@ -11,7 +11,7 @@ using DiversityPhone.Model.Geometry;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class Map:IModifyable
+    public class Map : IModifyable
     {
 
         [Column(IsPrimaryKey = true)]
@@ -43,6 +43,7 @@ namespace DiversityPhone.Model
 
         [Column]
         public double SWLong { get; set; }
+        
         [Column]
         public double NELat { get; set; }
 
@@ -71,28 +72,13 @@ namespace DiversityPhone.Model
             get;
             private set;
         }
-        
-     
+
+
 
         public Map()
         {
             this.ModificationState = ModificationState.New;
             this.LogUpdatedWhen = DateTime.Now;
-            Operations = new QueryOperations<Map>(
-                //Smallerthan
-                        (q, map) => q.Where(row => row.NWLat < map.NWLat),
-                //Equals
-                        (q, map) => q.Where(row => row.ServerKey == map.ServerKey),
-                //Orderby
-                        (q) => from map in q
-                               orderby map.NWLat, map.NWLong
-                               select map,
-                //FreeKey
-                        (q, cep) =>
-                        {
-                            //Not Applicable
-                        });
-
         }
 
         public static bool isParallelogramm(Map m)

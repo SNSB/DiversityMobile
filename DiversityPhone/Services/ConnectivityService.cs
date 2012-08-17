@@ -9,12 +9,10 @@
     using System.Reactive.Concurrency;
 
     public class ConnectivityService : IConnectivityService
-    {
-        private IDisposable watcher_activation = Disposable.Empty;
-        private RefCountDisposable watcher_refcount = null;
+    {       
         private ISubject<ConnectionStatus> status_subject = new BehaviorSubject<ConnectionStatus>(ConnectionStatus.None);
 
-        public ConnectivityService(Container ioc)
+        public ConnectivityService()
         {
             Observable.FromEventPattern<System.Net.NetworkInformation.NetworkChange, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAdressChanged")
                         .Select(_ =>

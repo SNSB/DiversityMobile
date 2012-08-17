@@ -22,7 +22,7 @@ namespace DiversityPhone.ViewModels
         /// <summary>
         /// Encapsulated Model Instance
         /// </summary>
-        public T Model { get; private set; }
+        public T Model { get; protected set; }
 
         /// <summary>
         /// String to Display for this Object

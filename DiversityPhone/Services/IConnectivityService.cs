@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 namespace DiversityPhone.Services
 {
     public enum ConnectionStatus
@@ -17,7 +18,7 @@ namespace DiversityPhone.Services
     {
         public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
         {
-            throw new NotImplementedException();
+            return svc.Status().Select(s => s == ConnectionStatus.Wifi);
         }
     }
 }

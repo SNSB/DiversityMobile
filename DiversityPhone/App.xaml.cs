@@ -148,12 +148,12 @@ namespace DiversityPhone
             IOC.Register<Services.NavigationService>(NavSvc);
 
             IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
-
+            IOC.Register<IConnectivityService>(new ConnectivityService());
             IOC.Register<IFieldDataService>(new OfflineStorage(IOC.Resolve<IMessageBus>()));
             IOC.Register<ITaxonService>(new TaxonService());
             IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IMapStorageService>(new MapStorageService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IMapTransferService>(new MapTranferService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapTransferService>(new MapTransferService(IOC.Resolve<IMessageBus>()));
             
 
             IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));

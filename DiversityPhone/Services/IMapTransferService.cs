@@ -14,7 +14,6 @@ namespace DiversityPhone.Services
         /// </summary>        
         /// <param name="MapName">serverKey: String which is used to identify the map in the mapServer</param>
         IObservable<Map> downloadMap(String serverKey);
-        
 
         /// <summary>
         /// Retrieves ServerKeys from the mapserver that conform to the query string from the repository
@@ -22,8 +21,5 @@ namespace DiversityPhone.Services
         /// <param name="searchText">substring of the mapNames to search. Minimum Length is 3</param>
         /// <returns></returns>
         IObservable<IEnumerable<String>> GetAvailableMaps(String searchString);
-
-        
-
     }
 }

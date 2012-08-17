@@ -18,7 +18,7 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-    public class MapTranferService: MapStorageService, IMapTransferService
+    public class MapTransferService: MapStorageService, IMapTransferService
     {
 
         private PhoneMediaServiceClient _mapinfo = new PhoneMediaServiceClient();
@@ -26,7 +26,7 @@ namespace DiversityPhone.Services
         private HttpWebRequest _xmlHttp;
 
 
-        public MapTranferService(IMessageBus messenger)
+        public MapTransferService(IMessageBus messenger)
             : base(messenger)
         {
 
