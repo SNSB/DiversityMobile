@@ -20,186 +20,50 @@ using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using DiversityPhone.Model;
 using DiversityPhone.Messages;
+using Funq;
 
 namespace DiversityPhone.ViewModels
 {
-    public class MapManagementVM :PageViewModel
+    public class MapManagementVM : PageVMBase
     {
-        public enum Pivot
-        {
-            Local,
-            Repository
-        }
-
-        #region Services
-        private IMapTransferService MapDownload { get; set; }
-        #endregion
-
-        #region Commands
-
-        public ReactiveCommand Select { get; private set; }
-
-        #endregion
+        private IMessageBus Messenger;
+        private IMapTransferService MapService;
+        private IMapStorageService MapStorage;
+       
+        public ReactiveCommand<MapVM> SelectMap { get; private set; }
+        public ReactiveCommand<MapVM> DeleteMap { get; private set; }
+        public ReactiveCommand SearchOnline { get; set; }
+        public ReactiveCommand<MapVM> DownloadMap { get; private set; }
 
         #region Properties
 
-        private Pivot _CurrentPivot = Pivot.Local;
-        public Pivot CurrentPivot 
-        {
-            get
-            {
-                return _CurrentPivot;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
-            }
-        }
+        public IReactiveCollection<MapVM> MapList { get; private set; }
 
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;
-
-        private String _SearchString;
-        public String SearchString
-        {
-            get { return _SearchString; }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.SearchString, ref _SearchString, value);
-            }
-        }
-
-        public ObservableCollection<ManagedMapVM> LocalMaps { get; private set; }
-        public ObservableCollection<ManagedMapVM> AvailableMaps { get; private set; } 
-     
-        private ReactiveAsyncCommand getAvailableMaps = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getLocalMaps = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand downloadMap = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand deleteMap = new ReactiveAsyncCommand();
-
-        public ReactiveCommand Download { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-
-        
 
         #endregion
 
-        public MapManagementVM(IMessageBus messenger, IMapTransferService maps)
-            : base(messenger)
-        {            
-            MapDownload = maps;
+        private ReactiveAsyncCommand getMaps = new ReactiveAsyncCommand();
+        private ReactiveAsyncCommand downloadMap;
 
-            _IsBusy = this.ObservableToProperty(
-                Observable.Merge(
-                    deleteMap.ItemsInflight.Select(count => count > 0),
-                    downloadMap.ItemsInflight.Select(count => count > 0)
-                ), x => x.IsBusy, false);
-
-            Download = new ReactiveCommand(_IsBusy.Select(x => !x));
-            Download
-                .Where(arg => arg is ManagedMapVM)
-                .Select(arg => arg as ManagedMapVM)
-                .Subscribe(map =>
-                        {
-                                if (downloadMap.CanExecute(map))
-                                {
-                                    AvailableMaps.Remove(map);
-                                    map.IsDownloading = true;
-                                    downloadMap.Execute(map);
-                                    LocalMaps.Add(map);
-                                    CurrentPivot = Pivot.Local;
-                                }
-                        });
-
-            Delete = new ReactiveCommand(_IsBusy.Select(x => !x));
-            Delete
-                .Where(argument => argument is ManagedMapVM)
-                .Select(argument => argument as ManagedMapVM)
-                .Subscribe(map =>
-                    {
-                        if (!map.IsDownloading && deleteMap.CanExecute(map))
-                        {
-                            deleteMap.Execute(map);
-                            LocalMaps.Remove(map);
-                        }
-                    });
-
-            LocalMaps =
-                getLocalMaps
-                .RegisterAsyncFunction(_=> getLocalMapsImpl())
-                .SelectMany(selections => selections)
-                .Select(selection =>
-                    {
-                        return new ManagedMapVM(selection);
-                    }
-                ).CreateCollection();
-             
-
-            AvailableMaps = 
-                getAvailableMaps
-                    .RegisterAsyncFunction(_ => getAvailableMapsImpl(SearchString))
-                    .SelectMany(availableMaps => availableMaps.Select(map => new ManagedMapVM(map) { IsDownloading = false, Uri=null}))
-                    .CreateCollection();
-
-            downloadMap
-                .RegisterAsyncFunction(arg => downloadMapImpl((arg as ManagedMapVM)))           
-                .Subscribe(downloadedMap => 
-                    {
-                        downloadedMap.IsDownloading = false;
-                    });
-
-            deleteMap
-                .RegisterAsyncFunction(arg => deleteMapImpl(arg as ManagedMapVM));               
-                     
-        }
-
-        private ManagedMapVM downloadMapImpl(ManagedMapVM map)
+        public MapManagementVM(Container ioc)
         {
-            throw new NotImplementedException();
-            //Map loadedMap = MapDownload.downloadMap(map.ServerKey).Value;
-            //map.Uri = loadedMap.Uri;
-            //return map;
+            Messenger = ioc.Resolve<IMessageBus>();
+            MapService = ioc.Resolve<IMapTransferService>();
+            MapStorage = ioc.Resolve<IMapStorageService>();
+
+            downloadMap = new ReactiveAsyncCommand();
+
+            this.OnFirstActivation(() => getMaps.Execute(null));
+
+            MapList = getMaps.RegisterAsyncFunction(_ => MapStorage.getAllMaps().Select(m => new MapVM(m)))
+                      .SelectMany(vms => vms)
+                      .CreateCollection();
+
+            SelectMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading);
+            SelectMap.Select(vm => vm as IElementVM<Map>)
+                .ToMessage(MessageContracts.VIEW);
+
+
         }
-
-        private IEnumerable<String> getAvailableMapsImpl(String searchString)
-        {
-            throw new NotImplementedException();
-            //return MapDownload.getAvailableMaps(searchString).Value;
-        }
-
-
-        private IEnumerable<String> getLocalMapsImpl()
-        {
-            IList<Map> maps = MapDownload.getAllMaps();
-            List<String> mapKeys=new List<string>();
-            foreach (Map map in maps)
-                mapKeys.Add(map.ServerKey);
-            return mapKeys;
-        }
-
-        private bool deleteMapImpl(ManagedMapVM manMap)
-        {
-            MapDownload.deleteMap(MapDownload.getMapbyServerKey(manMap.ServerKey));
-            return true;
-        }
-
-        private void selectImpl(ManagedMapVM manMap)
-        {
-            Map map = null;
-            try
-            {
-                map = MapDownload.getMapbyServerKey(manMap.ServerKey);
-            }
-            catch (Exception)
-            {
-                map = null;
-            }
-            if (map != null)
-            {
-                NavigationMessage nav=new NavigationMessage(Page.ViewMap,map.ServerKey,ReferrerType.None,null);
-                Messenger.SendMessage<NavigationMessage>(nav);
-            }
-        }
-
     }
 }

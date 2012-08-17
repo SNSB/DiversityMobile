@@ -201,7 +201,6 @@
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
     <Compile Include="ViewModels\Edit\EditMapVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
-    <Compile Include="ViewModels\BasisModels\MapVM.cs" />
     <Compile Include="ViewModels\BasisModels\MultimediaObjectVM.cs" />
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\SpecimenVM.cs" />
@@ -215,7 +214,7 @@
     <Compile Include="ViewModels\ViewPageVMBase.cs" />
     <Compile Include="ViewModels\PageVMBase.cs" />
     <Compile Include="ViewModels\ListSelectionHelper.cs" />
-    <Compile Include="ViewModels\Maps\ManagedMapVM.cs" />
+    <Compile Include="ViewModels\Maps\MapVM.cs" />
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -355,8 +354,8 @@
     <Compile Include="ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
-    <Compile Include="View\ViewLM.xaml.cs">
-      <DependentUpon>ViewLM.xaml</DependentUpon>
+    <Compile Include="View\MapManagement.xaml.cs">
+      <DependentUpon>MapManagement.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
@@ -496,7 +495,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
-    <Page Include="View\ViewLM.xaml">
+    <Page Include="View\MapManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
