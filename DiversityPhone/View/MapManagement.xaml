@@ -6,57 +6,59 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewLM}">
-
-    <!--LayoutRoot is the root grid where all page content is placed-->
+    x:Name="currentPage"
+    DataContext="{Binding Source={StaticResource Locator}, Path=MapManagement}">
+    <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <vw:MapManagementPivotConverter x:Key="PivotConverter"/>
+        </ResourceDictionary>
+    </phone:PhoneApplicationPage.Resources>
+    
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <toolkit:PerformanceProgressBar VerticalAlignment="Top" x:Name="ProgressBar" Visibility="Collapsed"  />
-            <ProgressBar
-            VerticalAlignment="Top"
-            Background="{x:Null}"
-            Margin="0,10,0,0"
-            x:Name="_standardProgressBar"
-            Foreground="Red"/>
-
-            <TextBlock x:Name="ApplicationTitle" Text="DIVERSITYMOBILE" Style="{StaticResource PhoneTextNormalStyle}" Width="263" HorizontalAlignment="Left" />
-            <Grid>
-                <Image Height="100" Margin="0,0,30,6" Name="imageApplication" Width="100" Source="/Images/appbar.globe.rest.png" Stretch="Fill" HorizontalAlignment="Right" VerticalAlignment="Center" />
-                <TextBlock x:Name="PageTitle" Text="maps" Margin="0,0,0,0" Style="{StaticResource PhoneTextTitle1Style}" Width="220" Height="91" HorizontalAlignment="Left"  VerticalAlignment="Center" />
-            </Grid>
-        </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <ListBox ItemsSource="{Binding SavedMaps}" Tap="ListBox_Tap" Height="490" >
+        <controls:Pivot Margin="{StaticResource PhoneHorizontalMargin}"
+                        SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}"
+                        Title="MAPS">
+            <controls:PivotItem Header="local">
+                <ListBox ItemsSource="{Binding MapList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Button Style="{StaticResource ItemButtonStyle}" 
-                                    Command="{Binding Select}"
-                                    CommandParameter="{Binding}">
-                            <ContentControl Content="{Binding}"
-                                            ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                Command="{Binding DataContext.SelectMap, ElementName=currentPage}"
+                                CommandParameter="{Binding}">
+                                <ContentControl Content="{Binding}"
+                                        ContentTemplate="{StaticResource ElementItemTemplate}"/>
                             </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-            </StackPanel>
-        </Grid>
+            </controls:PivotItem>
+            <controls:PivotItem Header="online"
+                                Visibility="{Binding IsOnlineAvailable, Converter={StaticResource BoolToVis}}">
+                <StackPanel>
+                    <TextBox Text="{Binding QueryString, Mode=TwoWay}"/>
+                    <ListBox ItemsSource="{Binding SearchResults}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Button Style="{StaticResource ItemButtonStyle}" 
+                                    Command="{Binding DataContext.DownloadMap, ElementName=currentPage}"
+                                    CommandParameter="{Binding}">
+                                    <ContentControl Content="{Binding}"
+                                            ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </controls:PivotItem>
+        </controls:Pivot>
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
