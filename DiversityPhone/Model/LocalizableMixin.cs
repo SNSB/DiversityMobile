@@ -14,6 +14,11 @@ namespace DiversityPhone.Model
 {
     public static class LocalizableMixin
     {
+        public static bool IsLocalized(this ILocalizable This)
+        {
+            return This.Latitude.HasValue && This.Longitude.HasValue && This.Altitude.HasValue;
+        }
+
         public static void SetGeoCoordinates(this ILocalizable This, GeoCoordinate coords)
         {
             if (This == null)

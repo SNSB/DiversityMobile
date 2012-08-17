@@ -1,13 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ILocationService.cs" company="XamlNinja">
-//   2011 Richard Griffin and Ollie Riches
-// </copyright>
-// <summary>
-//   Interface defining the location service API.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
     using System;
     using System.Device.Location;

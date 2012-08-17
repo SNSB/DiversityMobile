@@ -1,10 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LocationService.cs" company="XamlNinja">
-//   2011 Richard Griffin and Ollie Riches
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
     using System;
     using System.Device.Location;
@@ -13,9 +7,9 @@ namespace DiversityPhone.Services
     using System.Reactive.Subjects;
     using ReactiveUI;
     using NLog;
-using System.Reactive.Disposables;
-using System.Collections.Generic;
-using Funq;
+    using System.Reactive.Disposables;
+    using System.Collections.Generic;
+    using Funq;
     using DiversityPhone.Model;
 
     /// <summary>
@@ -35,6 +29,7 @@ using Funq;
         IMessageBus Messenger;
 
         private GeoCoordinateWatcher watcher = null;
+        private IDisposable watcher_activation = Disposable.Empty;
         private RefCountDisposable watcher_refcount = null;
         private ISubject<GeoPositionStatus> status_subject = new BehaviorSubject<GeoPositionStatus>(GeoPositionStatus.Disabled);
         private ISubject<GeoPosition<GeoCoordinate>> coordinate_subject = new BehaviorSubject<GeoPosition<GeoCoordinate>>(new GeoPosition<GeoCoordinate>(DateTimeOffset.Now, GeoCoordinate.Unknown));
@@ -48,9 +43,9 @@ using Funq;
                 _IsEnabled = value;
                 lock (this)
                 {
-                    if (!_IsEnabled && watcher_refcount != null)
-                    {
-                        watcher_refcount.Dispose();
+                    if (!_IsEnabled)
+                    {                        
+                        watcher_activation.Dispose();
                         watcher_refcount = null;
                     }
                 }
@@ -158,10 +153,12 @@ using Funq;
             {
                 if (watcher_refcount == null)
                 {
-                    watcher_refcount = new RefCountDisposable(Disposable.Create(() =>
+                    var deactivation = Disposable.Create(() =>
                         {
                             watcher.Stop();
-                        }));
+                        });
+                    watcher_activation = deactivation;
+                    watcher_refcount = new RefCountDisposable(Disposable.Create(() => deactivation.Dispose()));
 
                     Scheduler.ThreadPool.Schedule(() =>
                     {
@@ -174,7 +171,12 @@ using Funq;
                     });
                 }
 
-                return watcher_refcount.GetDisposable();
+                var res = watcher_refcount.GetDisposable();
+
+                if(!watcher_refcount.IsDisposed)
+                    watcher_refcount.Dispose();
+
+                return res;
             }
         }
 

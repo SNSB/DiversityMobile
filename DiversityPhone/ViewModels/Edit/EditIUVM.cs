@@ -99,13 +99,17 @@ namespace DiversityPhone.ViewModels
             RelationshipType = new ListSelectionHelper<Term>();
             Identification = new ListSelectionHelper<TaxonName>();
 
-            ActivationObservable
+            Observable.CombineLatest(
+                CurrentModelObservable.Where(m => m.IsNew()),
+                ActivationObservable,
+                (_, act) => act
+            )
                 .Subscribe(active =>
                 {
                     if (active)
                     {
                         _latest_location.OnNext(GeoCoordinate.Unknown);
-                        _location_subscription = Geolocation.Location().Subscribe(_latest_location);
+                        _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown).Subscribe(_latest_location);
                     }
                     else
                     {
@@ -234,7 +238,8 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            Current.Model.SetGeoCoordinates(_latest_location.First());
+            if (!Current.Model.IsLocalized())
+                Current.Model.SetGeoCoordinates(_latest_location.First());
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache;
             Current.Model.OnlyObserved = this.OnlyObserved;
