@@ -74,12 +74,12 @@
 
         }
 
-        public IObservable<GeoCoordinate> LocationByTimeThreshold(TimeSpan frequency)
+        public IObservable<Coordinate> LocationByTimeThreshold(TimeSpan frequency)
         {
             return LocationByTimeThresholdImpl(frequency);
         }
 
-        public IObservable<GeoCoordinate> LocationByDistanceThreshold(int distance)
+        public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
         {
             return LocationByDistanceThresholdImpl(distance);
         }
@@ -89,12 +89,12 @@
             return StatusImpl();
         }
 
-        public IObservable<GeoCoordinate> Location()
+        public IObservable<Coordinate> Location()
         {
             return LocationImpl();
         }
 
-        private IObservable<GeoCoordinate> LocationByDistanceThresholdImpl(int distance)
+        private IObservable<Coordinate> LocationByDistanceThresholdImpl(int distance)
         {
             var watcher_handle = StartWatcherIfNecessary();
             var comparer = new DistanceThresholdComparer(distance);
@@ -103,36 +103,40 @@
                 .Select(p => p.Location)
                 .DistinctUntilChanged(comparer)
                 .Finally(() => watcher_handle.Dispose())
+                .ToCoordinates()
                 .AsObservable();
         }
 
-        private IObservable<GeoCoordinate> LocationImpl()
+        private IObservable<Coordinate> LocationImpl()
         {
             var watcher_handle = StartWatcherIfNecessary();
 
             return coordinate_subject.Select(p => p.Location)                
                 .Finally(() => watcher_handle.Dispose())
+                .ToCoordinates()
                 .AsObservable();
         }
 
-        private GeoCoordinate CurrentLocationWithTimeoutImpl(TimeSpan timeSpan)
+        private Coordinate CurrentLocationWithTimeoutImpl(TimeSpan timeSpan)
         {
             var watcher_handle = StartWatcherIfNecessary();
 
             return coordinate_subject.Select(p => p.Location).Where(l => !l.IsUnknown)
                 .Timeout(timeSpan, Observable.Return(GeoCoordinate.Unknown))
                 .Finally(() => watcher_handle.Dispose())
+                .ToCoordinates()
                 .First();
-        }      
+        }
 
-        private IObservable<GeoCoordinate> LocationByTimeThresholdImpl(TimeSpan timeSpan)
+        private IObservable<Coordinate> LocationByTimeThresholdImpl(TimeSpan timeSpan)
         {
             var watcher_handle = StartWatcherIfNecessary();
 
             return Observable.Throttle(coordinate_subject.Select(p => p.Location), timeSpan)
                 .Where(c => !c.IsUnknown)
                 .Finally(() => watcher_handle.Dispose())
-                .DistinctUntilChanged();
+                .DistinctUntilChanged()
+                .ToCoordinates();
         }   
 
         private IObservable<GeoPositionStatus> StatusImpl()
@@ -204,5 +208,19 @@
         }
 
         
+        
+    }
+
+    static class CoordinateMixin
+    {
+        public static IObservable<Coordinate> ToCoordinates(this IObservable<GeoCoordinate> This)
+        {
+            return This.Select(g => new Coordinate()
+            {
+                Altitude = g.Altitude,
+                Latitude = g.Latitude,
+                Longitude = g.Longitude
+            });
+        }
     }
 }

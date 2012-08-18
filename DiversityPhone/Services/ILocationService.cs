@@ -2,6 +2,29 @@
 {
     using System;
     using System.Device.Location;
+    using DiversityPhone.Model;
+
+    public class Coordinate : ILocalizable
+    {
+
+        public double? Altitude
+        {
+            get;
+            set;
+        }
+
+        public double? Latitude
+        {
+            get;
+            set;
+        }
+
+        public double? Longitude
+        {
+            get;
+            set;
+        }
+    }
 
     /// <summary>
     /// Interface defining the location service API.
@@ -18,7 +41,7 @@
         /// <returns>
         /// Returns the current location.
         /// </returns>
-        IObservable<GeoCoordinate> LocationByTimeThreshold(TimeSpan frequency);
+        IObservable<Coordinate> LocationByTimeThreshold(TimeSpan frequency);
 
         /// <summary>
         /// The location by distance threshold, the location is returned dependent on exceeding the distance.
@@ -29,7 +52,7 @@
         /// <returns>
         /// Returns the current location.
         /// </returns>
-        IObservable<GeoCoordinate> LocationByDistanceThreshold(int distance);
+        IObservable<Coordinate> LocationByDistanceThreshold(int distance);
 
         /// <summary>
         /// The current status of location services for the device
@@ -43,6 +66,6 @@
         /// <returns>
         /// Returns the current location.
         /// </returns>
-        IObservable<GeoCoordinate> Location();        
+        IObservable<Coordinate> Location();        
     }
 }

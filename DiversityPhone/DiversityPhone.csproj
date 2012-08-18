@@ -123,6 +123,7 @@
     <Compile Include="Services\ILocationService.cs" />
     <Compile Include="Services\IMultimediaOwner.cs" />
     <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\MapProjection.cs" />
     <Compile Include="ViewModels\IAudioVideoPageVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
