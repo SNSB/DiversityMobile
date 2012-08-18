@@ -102,7 +102,7 @@ namespace DiversityPhone
             IOC.Register<ViewMapPickerVM>(c => new ViewMapPickerVM(c.Resolve<IMapStorageService>()));
             IOC.Register<ViewDLMVM>(c => new ViewDLMVM(c.Resolve<IMapTransferService>()));
             IOC.Register<ViewDownloadMapsVM>(c => new ViewDownloadMapsVM(c.Resolve<IMapStorageService>()));
-            IOC.Register<ViewMapVM>(c => new ViewMapVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
+            IOC.Register<OldViewMapVM>(c => new OldViewMapVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             IOC.Register<ViewMapESVM>(c => new ViewMapESVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             IOC.Register<ViewMapEVVM>(c => new ViewMapEVVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));
             IOC.Register<ViewMapIUVM>(c => new ViewMapIUVM(c.Resolve<IMapStorageService>(), c.Resolve<IGeoLocationService>(), c.Resolve<ISettingsService>()));

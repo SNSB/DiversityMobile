@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels.Maps
 {
-    public class ViewMapESVM: ViewMapVM
+    public class ViewMapESVM: OldViewMapVM
     {
         #region Properties
 

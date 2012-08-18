@@ -16,7 +16,7 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels.Maps
 {
-    public class ViewMapEditVM : ViewMapVM
+    public class ViewMapEditVM : OldViewMapVM
     {
         #region Commands
         public ReactiveCommand Save { get; protected set; }

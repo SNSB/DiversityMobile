@@ -21,7 +21,7 @@ namespace DiversityPhone.View
     public partial class ViewMap : PhoneApplicationPage
     {
 
-        private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
+        private OldViewMapVM VM { get { return this.DataContext as OldViewMapVM; } }
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
         private Point percTouchCenter= new Point(0, 0);
