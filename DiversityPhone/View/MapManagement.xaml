@@ -20,6 +20,20 @@
         <ResourceDictionary>
             <vw:MapManagementPivotConverter x:Key="PivotConverter"/>
         </ResourceDictionary>
+        
+        <DataTemplate x:Key="MapTemplate">
+            <StackPanel Orientation="Horizontal">
+                <ContentControl Content="{Binding}"
+                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
+                                                   Fill="{StaticResource PhoneForegroundBrush}" 
+                                                   Width="40" Height="40">
+                    <Rectangle.OpacityMask>
+                        <ImageBrush ImageSource="/DiversityPhone;component/Images/appbar.download.rest.png" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </StackPanel>
+        </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -34,7 +48,7 @@
                                 Command="{Binding DataContext.SelectMap, ElementName=currentPage}"
                                 CommandParameter="{Binding}">
                                 <ContentControl Content="{Binding}"
-                                        ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                                ContentTemplate="{StaticResource MapTemplate}"/>
                             </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -50,17 +64,8 @@
                                 <Button Style="{StaticResource ItemButtonStyle}" 
                                     Command="{Binding DataContext.DownloadMap, ElementName=currentPage}"
                                     CommandParameter="{Binding}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
-                                        <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
-                                                   Fill="{StaticResource PhoneForegroundBrush}" 
-                                                   Width="40" Height="40">
-                                            <Rectangle.OpacityMask>
-                                                <ImageBrush ImageSource="/DiversityPhone;component/Images/appbar.download.rest.png" />
-                                            </Rectangle.OpacityMask>
-                                        </Rectangle>
-                                    </StackPanel>
+                                    <ContentControl Content="{Binding}"
+                                                    ContentTemplate="{StaticResource MapTemplate}"/>
                                 </Button>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

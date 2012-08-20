@@ -124,8 +124,13 @@ namespace DiversityPhone.ViewModels
                     });
 
             SelectMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading);
-            SelectMap.Select(vm => vm as IElementVM<Map>)
+            SelectMap
+                .Select(vm => vm as IElementVM<Map>)
                 .ToMessage(MessageContracts.VIEW);
+
+            SelectMap
+                .Select(_ => Page.Previous)
+                .ToMessage();
 
             DeleteMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading);
             DeleteMap
@@ -160,7 +165,8 @@ namespace DiversityPhone.ViewModels
 
                     return new { Map = MapService.downloadMap(typed.ServerKey).First(), VM = typed };
                 })
-                .Subscribe(tuple => tuple.VM.SetModel(tuple.Map));
+                .Do(tuple => tuple.VM.SetModel(tuple.Map))
+                .Subscribe(tuple => SelectMap.CanExecute(tuple.VM));
         }
 
         private IEnumerable<MapVM> searchMapsImpl(string p)

@@ -43,7 +43,11 @@ namespace DiversityPhone.ViewModels
             return inner_command.CanExecute(parameter as T);
         }
 
-        public event System.EventHandler CanExecuteChanged;
+        public event System.EventHandler CanExecuteChanged
+        {
+            add { inner_command.CanExecuteChanged += value; }
+            remove { inner_command.CanExecuteChanged -= value; }
+        }
 
         public void Execute(object parameter)
         {
