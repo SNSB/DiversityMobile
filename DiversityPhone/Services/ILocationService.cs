@@ -26,6 +26,14 @@
         }
     }
 
+    public static class CoordinateMixin
+    {
+        public static bool IsUnknown(this Coordinate This)
+        {
+            return !This.Latitude.HasValue && !This.Longitude.HasValue && !This.Altitude.HasValue;
+        }
+    }
+
     /// <summary>
     /// Interface defining the location service API.
     /// </summary>

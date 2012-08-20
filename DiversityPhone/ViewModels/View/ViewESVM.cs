@@ -66,8 +66,8 @@ using System.Reactive.Subjects;
 
             Maps = new ReactiveCommand();
             Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.EventSeries, Current.Model.DiversityCollectionEventSeriesID.ToString()))
-                .ToMessage();
+                .Select(_ => Current)
+                .ToMessage(MessageContracts.MAPS);
         }       
     }
 }

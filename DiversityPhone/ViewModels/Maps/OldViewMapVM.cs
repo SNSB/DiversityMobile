@@ -172,7 +172,7 @@ namespace DiversityPhone.ViewModels
         {
             if (lat == null || Double.IsNaN((double) lat) || lon == null || Double.IsNaN((double) lon)|| Map==null)
                 return null;
-            return Map.calculatePercentilePositionForMap((double)lat, (double)lon);
+            return Map.PercentilePositionOnMap((double)lat, (double)lon);
         }
 
 

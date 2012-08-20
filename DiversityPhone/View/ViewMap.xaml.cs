@@ -21,9 +21,8 @@ namespace DiversityPhone.View
     public partial class ViewMap : PhoneApplicationPage
     {
 
-        private OldViewMapVM VM { get { return this.DataContext as OldViewMapVM; } }
-        private const double SCALEMIN = 0.2;
-        private const double SCALEMAX = 3;
+        private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
+        
         private Point percTouchCenter= new Point(0, 0);
         private double initialScale;
         private double offsetFromCenterX = 0;
@@ -56,29 +55,17 @@ namespace DiversityPhone.View
             Point s2 = e.GetPosition(scrollViewer, 1);
             Line s1s2 = new Line(s1, new Vector(s1, s2));
             Point scrollCenter = s1s2.MoveOnLineFromBaseForUnits(0.5);
-            percTouchCenter = VM.calculatePixelToPercentPoint(center);
-            initialScale = transform.ScaleX;
+            percTouchCenter = VM.calculatePixelToPercentPoint(center);            
             offsetFromCenterX =  scrollCenter.X;
             offsetFromCenterY =  scrollCenter.Y;
         }
 
         private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
-            double scale = initialScale * e.DistanceRatio;
-            if (scale < SCALEMIN)
-                scale = SCALEMIN;
-            if (scale > SCALEMAX)
-                scale = SCALEMAX;
-            
-            
-            VM.Zoom = scale;
-            transform.ScaleX = scale;
-            transform.ScaleY = scale;
-            MainCanvas.Height = VM.BaseHeight * VM.Zoom;
-            MainCanvas.Width  = VM.BaseWidth * VM.Zoom;
+            VM.Scale *= e.DistanceRatio;
 
-            Point center = VM.calculatePercentToPixelPoint(percTouchCenter, 0, 0, VM.Zoom);
-            focusOn(center.X-offsetFromCenterX,center.Y-offsetFromCenterY);
+            //Point center = VM.calculatePercentToPixelPoint(percTouchCenter, 0, 0, VM.Zoom);
+            //focusOn(center.X - offsetFromCenterX, center.Y - offsetFromCenterY);
         }
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
@@ -99,9 +86,9 @@ namespace DiversityPhone.View
         private void scrollViewer_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
 
-            if (VM != null && VM.ActualPosPoint != null)
-                if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
-                    focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
+            //if (VM != null && VM.ActualPosPoint != null)
+            //    if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
+            //        focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
 
         }
 

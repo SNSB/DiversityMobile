@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Device.Location;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.Model
 {
@@ -19,7 +20,7 @@ namespace DiversityPhone.Model
             return This.Latitude.HasValue && This.Longitude.HasValue && This.Altitude.HasValue;
         }
 
-        public static void SetGeoCoordinates(this ILocalizable This, GeoCoordinate coords)
+        public static void SetCoordinates(this ILocalizable This, Coordinate coords)
         {
             if (This == null)
                 throw new ArgumentNullException("This");
@@ -27,7 +28,7 @@ namespace DiversityPhone.Model
             if (coords == null)
                 throw new ArgumentNullException("coords");
 
-            if (coords.IsUnknown)
+            if (coords.IsUnknown())
             {
                 This.Altitude = null;
                 This.Longitude = null;

@@ -1,62 +1,88 @@
 ﻿using System;
-using System.Net;
+using ReactiveUI;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.IO;
+using DiversityPhone.Model;
+using DiversityPhone.Messages;
+using Funq;
 
-namespace DiversityPhone.ViewModels.Maps
+namespace DiversityPhone.ViewModels
 {
     public class ViewMapVM : PageVMBase
     {
+        private const double SCALEMIN = 0.2;
+        private const double SCALEMAX = 3;
 
+        public IElementVM<Map> CurrentMap { get { return _Current.Value; } }
+        private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
+        
 
-
-        public ViewMapVM()
+        private MemoryStream _MapImage;
+        public MemoryStream MapImage
         {
-            
-        }
-        public Point? calculateGPSToPercentagePoint(double? lat, double? lon)
-        {
-            if (lat == null || Double.IsNaN((double)lat) || lon == null || Double.IsNaN((double)lon) || Map == null)
-                return null;
-            return Map.calculatePercentilePositionForMap((double)lat, (double)lon);
-        }
-
-
-        public Point calculatePercentToPixelPoint(Point? percPoint, double iconSizeX, double iconSizeY, double zoom)
-        {
-            //Check if Point has a Representation on the current map
-            if (percPoint == null || percPoint.Value.X < 0 || percPoint.Value.X > 1 || percPoint.Value.Y < 0 || percPoint.Value.Y > 1)
-                return new Point(-1, -1);
-            else
+            get
             {
-                try
-                {
-                    int pixelWidth = MapImage.PixelWidth;
-                    int pixelHeight = MapImage.PixelHeight;
-                    double x = percPoint.Value.X * pixelWidth * zoom - iconSizeX / 2;
-                    double y = percPoint.Value.Y * pixelHeight * zoom - iconSizeY / 2;
-                    return new Point(x, y);
-                }
-                catch (Exception e)
-                {
-                    return new Point(-1, -1);
-                }
+                return _MapImage;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.MapImage, ref _MapImage, value);
             }
         }
 
-        public Point calculatePixelToPercentPoint(Point pixelPoint)
+
+        private int _MapHeight;
+        public int MapHeight
         {
-            double width = MapImage.PixelWidth * Zoom;
-            double height = MapImage.PixelHeight * Zoom;
-            double percX = pixelPoint.X / width;
-            double percY = pixelPoint.Y / height;
-            return new Point(percX, percY);
+            get
+            {
+                return _MapHeight;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.MapHeight, ref _MapHeight, value);
+            }
+        }
+
+
+        private int _MapWidth;
+
+        public int MapWidth
+        {
+            get
+            {
+                return _MapWidth;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.MapWidth, ref _MapWidth, value);
+            }
+        }    
+        
+        
+
+        private double _Scale = 1.0;
+        public double Scale 
+        {
+            get { return _Scale; }
+            set
+            {
+                if (_Scale != value)
+                {
+                    if (value > SCALEMAX)
+                        value = SCALEMAX;
+                    else if (value < SCALEMIN)
+                        value = SCALEMIN;
+
+                    _Scale = value;
+                    this.RaisePropertyChanged(x => x.Scale);
+                }
+            }                
+        }
+
+        public ViewMapVM(Container ioc)
+        {
+            this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
         }
     }
 }

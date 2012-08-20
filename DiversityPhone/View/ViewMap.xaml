@@ -15,33 +15,34 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}">
     
-    <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="MapDescription" Text="{Binding Description}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
+        <StackPanel Grid.Row="0" Margin="{StaticResource PhoneHorizontalMargin}">
+            <TextBlock Text="{Binding CurrentMap.Description}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextNormalStyle}"/>
         </StackPanel>
-
-        <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
-            <ScrollViewer Name="scrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.VerticalScrollBarVisibility="Visible" Width="460" Height="620" Tap="scrollViewer_Tap" DoubleTap="scrollViewer_DoubleTap">
+        
+        <StackPanel Grid.Row="1" Margin="{StaticResource PhoneHorizontalMargin}" >
+            <ScrollViewer Name="scrollViewer" 
+                          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+                          ScrollViewer.VerticalScrollBarVisibility="Visible" 
+                          Width="460" Height="620" 
+                          Tap="scrollViewer_Tap" 
+                          DoubleTap="scrollViewer_DoubleTap">
                 <Canvas Name="MainCanvas" Height="2200" Width="2200">
-                    <Image Source="{Binding MapImage}" RenderTransformOrigin="0.5, 0.5" CacheMode="BitmapCache">
+                    <Image Source="{Binding MapImage}" 
+                           RenderTransformOrigin="0.5, 0.5" 
+                           CacheMode="BitmapCache">
                         <Image.RenderTransform>
-                            <CompositeTransform x:Name="transform" />
+                            <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
                         </Image.RenderTransform>
                         <toolkit:GestureService.GestureListener>
                             <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
                         </toolkit:GestureService.GestureListener>
-                    </Image>
-                    <Canvas Top="{Binding ActualPosPoint.Y}" Left="{Binding ActualPosPoint.X}">
-                        <Image Name="PosImage" Height="{Binding ActualIconSize.Y}"  Width="{Binding ActualIconSize.X}" Stretch="Uniform" Source="/Images/GPoint.png" Visibility="{Binding ActualPosPoint, Converter={StaticResource PointToVis}}" />
-                    </Canvas>
+                    </Image>                    
                 </Canvas>
             </ScrollViewer>
         </StackPanel>

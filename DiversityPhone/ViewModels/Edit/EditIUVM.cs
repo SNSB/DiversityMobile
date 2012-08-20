@@ -239,7 +239,7 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             if (!Current.Model.IsLocalized())
-                Current.Model.SetGeoCoordinates(_latest_location.First());
+                Current.Model.SetCoordinates(_latest_location.First());
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache;
             Current.Model.OnlyObserved = this.OnlyObserved;

@@ -16,7 +16,7 @@ namespace DiversityPhone.ViewModels
     public class EditEVVM : EditPageVMBase<Event>
     {
         ILocationService Geolocation;
-        BehaviorSubject<GeoCoordinate> _latest_location = new BehaviorSubject<GeoCoordinate>(GeoCoordinate.Unknown);
+        BehaviorSubject<Coordinate> _latest_location = new BehaviorSubject<Coordinate>(Coordinate.Unknown);
         IDisposable _location_subscription = Disposable.Empty;
 
 
@@ -86,7 +86,7 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             if(!Current.Model.IsLocalized())
-                Current.Model.SetGeoCoordinates(_latest_location.First());
+                Current.Model.SetCoordinates(_latest_location.First());
             Current.Model.LocalityDescription = LocalityDescription;
             Current.Model.HabitatDescription = HabitatDescription;
         }
