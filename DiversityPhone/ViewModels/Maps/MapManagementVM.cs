@@ -125,7 +125,7 @@ namespace DiversityPhone.ViewModels
             }
             catch(Exception)
             {
-
+                return Enumerable.Empty<MapVM>();
             }
         }
     }
