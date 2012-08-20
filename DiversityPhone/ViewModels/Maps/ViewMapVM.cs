@@ -82,7 +82,7 @@ namespace DiversityPhone.ViewModels
 
         public ViewMapVM(Container ioc)
         {
-            this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
+            _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
         }
     }
 }

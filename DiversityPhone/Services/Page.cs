@@ -29,7 +29,7 @@ namespace DiversityPhone.Services
         Settings,
         LoadedMaps,
         DownLoadMaps,
-        SelectMaps,
+        MapManagement,
         ViewMap,
         ViewMapES,
         ViewMapEV,

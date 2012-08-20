@@ -7,6 +7,7 @@
     using Funq;
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
+    
 
     public class ConnectivityService : IConnectivityService
     {       
@@ -14,7 +15,8 @@
 
         public ConnectivityService()
         {
-            Observable.FromEventPattern<System.Net.NetworkInformation.NetworkChange, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAdressChanged")
+
+            Observable.FromEventPattern<object, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAddressChanged")
                         .Select(_ =>
                             {
                                 if (NetworkInterface.GetIsNetworkAvailable())
