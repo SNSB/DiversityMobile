@@ -10,21 +10,24 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
+using Funq;
 
 namespace DiversityPhone.Services
 {
-    public class MapTransferService : IMapTransferService, IEnableLogger
+    public partial class MapTransferService : IMapTransferService, IEnableLogger
     {
-
-        private PhoneMediaServiceClient _mapinfo = new PhoneMediaServiceClient();
+        private IMapStorageService MapStorage;
+        private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
         
 
         private IObservable<GetMapListFilterCompletedEventArgs> GetMapsListCompletedObservable;
         private IObservable<GetMapUrlCompletedEventArgs> GetMapUrlCompletedObservable;
         private IObservable<GetXmlUrlCompletedEventArgs> GetXmlUrlCompletedObservable;
 
-        public MapTransferService()            
+        public MapTransferService(Container ioc)            
         {
+            MapStorage = ioc.Resolve<IMapStorageService>();
+
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 if (!isoStore.DirectoryExists("Maps"))
@@ -33,9 +36,9 @@ namespace DiversityPhone.Services
                 }
             }
 
-            GetMapsListCompletedObservable = Observable.FromEvent<EventHandler<GetMapListFilterCompletedEventArgs>, GetMapListFilterCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetMapListFilterCompleted += d, d => _mapinfo.GetMapListFilterCompleted -= d);
-            GetMapUrlCompletedObservable = Observable.FromEvent<EventHandler<GetMapUrlCompletedEventArgs>, GetMapUrlCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetMapUrlCompleted += d, d => _mapinfo.GetMapUrlCompleted -= d);                
-            GetXmlUrlCompletedObservable = Observable.FromEvent<EventHandler<GetXmlUrlCompletedEventArgs>, GetXmlUrlCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetXmlUrlCompleted += d, d => _mapinfo.GetXmlUrlCompleted -= d);               
+            GetMapsListCompletedObservable = Observable.FromEvent<EventHandler<GetMapListFilterCompletedEventArgs>, GetMapListFilterCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetMapListFilterCompleted += d, d => MapService.GetMapListFilterCompleted -= d);
+            GetMapUrlCompletedObservable = Observable.FromEvent<EventHandler<GetMapUrlCompletedEventArgs>, GetMapUrlCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetMapUrlCompleted += d, d => MapService.GetMapUrlCompleted -= d);                
+            GetXmlUrlCompletedObservable = Observable.FromEvent<EventHandler<GetXmlUrlCompletedEventArgs>, GetXmlUrlCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetXmlUrlCompleted += d, d => MapService.GetXmlUrlCompleted -= d);               
         }
 
         public IObservable<IEnumerable<String>> GetAvailableMaps(String searchString)
@@ -44,7 +47,7 @@ namespace DiversityPhone.Services
                 GetMapsListCompletedObservable
                 .Where(args => Object.ReferenceEquals(searchString, args.UserState))
                 .Select(args => args.Result as IEnumerable<string>));
-            _mapinfo.GetMapListFilterAsync(searchString, searchString);
+            MapService.GetMapListFilterAsync(searchString, searchString);
             return res;
         }
 
@@ -73,16 +76,22 @@ namespace DiversityPhone.Services
                         if (http.StatusCode != HttpStatusCode.OK)
                             return null;
 
+                        String fileName = "Maps\\" + serverKey + ".png";
+
                         var isXML = http.ResponseUri.OriginalString.ToLower().EndsWith(".xml");
 
                         if (isXML)
                         {
-                            return parseXMLtoMap(http.GetResponseStream());
+                            var map = parseXMLtoMap(http.GetResponseStream());
+                            if (map != null)
+                            {
+                                map.ServerKey = serverKey;
+                                map.Uri = fileName;
+                            }
+                            return map;
                         }
                         else
                         {
-                            String fileName = "Maps\\" + serverKey + ".png";
-
                             using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
                             {
                                 if (isoStore.FileExists(fileName))
@@ -100,10 +109,13 @@ namespace DiversityPhone.Services
                     })
                     .Window(2)
                     .Take(1)
-                    .SelectMany(win => win.Where(res => res != null));
+                    .SelectMany(win => win.Where(res => res != null))
+                    .Do(map => MapStorage.addMap(map))
+                    .Publish();
+            obs.Connect();
 
-            _mapinfo.GetMapUrlAsync(serverKey, serverKey);
-            _mapinfo.GetXmlUrlAsync(serverKey, serverKey);
+            MapService.GetMapUrlAsync(serverKey, serverKey);
+            MapService.GetXmlUrlAsync(serverKey, serverKey);
 
             return obs;
         }

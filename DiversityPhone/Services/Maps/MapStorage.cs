@@ -14,15 +14,7 @@ namespace DiversityPhone.Services
 
         public MapStorageService(IMessageBus messenger)
         {
-            this.Messenger = messenger;
-
-
-            Messenger.Listen<Map>(MessageContracts.SAVE)
-                .Subscribe(map => addMap(map));
-            Messenger.Listen<Map>(MessageContracts.DELETE)
-                .Subscribe(map => deleteMap(map));
-
-
+            
         }
 
         private void withDataContext(Action<DiversityDataContext> operation)
