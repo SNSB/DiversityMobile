@@ -157,7 +157,7 @@ namespace DiversityPhone.ViewModels
 
         public void saveMap(Map map)
         {
-            _mapStorage.addOrUpdateMap(map);
+            //_mapStorage.addOrUpdateMap(map);
         }
 
         #endregion

@@ -211,7 +211,7 @@
         
     }
 
-    static class CoordinateMixin
+    static class GeoCoordinateMixin
     {
         public static IObservable<Coordinate> ToCoordinates(this IObservable<GeoCoordinate> This)
         {

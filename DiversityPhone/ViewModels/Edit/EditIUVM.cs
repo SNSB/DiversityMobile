@@ -22,7 +22,7 @@ namespace DiversityPhone.ViewModels
         private ILocationService Geolocation;
         private IFieldDataService Storage;
 
-        BehaviorSubject<GeoCoordinate> _latest_location = new BehaviorSubject<GeoCoordinate>(GeoCoordinate.Unknown);
+        BehaviorSubject<Coordinate> _latest_location = new BehaviorSubject<Coordinate>(Coordinate.Unknown);
         IDisposable _location_subscription = Disposable.Empty;
 
         #region Properties
@@ -108,8 +108,8 @@ namespace DiversityPhone.ViewModels
                 {
                     if (active)
                     {
-                        _latest_location.OnNext(GeoCoordinate.Unknown);
-                        _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown).Subscribe(_latest_location);
+                        _latest_location.OnNext(Coordinate.Unknown);
+                        _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown()).Subscribe(_latest_location);
                     }
                     else
                     {

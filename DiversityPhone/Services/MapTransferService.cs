@@ -90,55 +90,5 @@ namespace DiversityPhone.Services
         }
 
         #endregion
-
-        #region Inherited
-
-
-        public IList<Map> getAllMaps()
-        {
-            return base.getAllMaps();
-        }
-
-        public Map getMapbyServerKey(String serverKey)
-        {
-            return base.getMapbyServerKey(serverKey);
-        }
-
-
-        public Map getMapByURI(string uri)
-        {
-            return base.getMapByURI(uri);
-        }
-
-
-
-        public IList<Map> getMapsForPoint(double latitude, double longitude)
-        {
-            return base.getMapsForPoint(latitude, longitude);
-        }
-
-        bool isPresent(String serverkey)
-        {
-            return base.isPresent(serverkey);
-        }
-
-        void addOrUpdateMap(Map map)
-        {
-            base.addOrUpdateMap(map);
-        }
-
-        void deleteMap(Map map)
-        {
-            base.deleteMap(map);
-        }
-
-        public void deleteAllMaps()
-        {
-            base.deleteAllMaps();
-        }
-
-        #endregion
-
-
     }
 }

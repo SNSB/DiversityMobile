@@ -58,8 +58,8 @@ namespace DiversityPhone.ViewModels
                     {
                         if (active)
                         {
-                            _latest_location.OnNext(GeoCoordinate.Unknown);
-                            _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown).Subscribe(_latest_location);
+                            _latest_location.OnNext(Coordinate.Unknown);
+                            _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown()).Subscribe(_latest_location);
                         }
                         else
                         {

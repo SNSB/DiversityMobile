@@ -72,7 +72,7 @@ namespace DiversityPhone.ViewModels.Maps
             {
                 try
                 {
-                    Map = Maps.getMapbyServerKey(s.Context);
+                    //Map = Maps.getMapbyServerKey(s.Context);
                     if (Map != null)
                     {
                         MapImage = LoadImage(Map.Uri);

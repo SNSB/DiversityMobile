@@ -13,7 +13,7 @@ namespace DiversityPhone.ViewModels
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
 
-        public IElementVM<Map> CurrentMap { get { return _Current.Value; } }
+        public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
         
 

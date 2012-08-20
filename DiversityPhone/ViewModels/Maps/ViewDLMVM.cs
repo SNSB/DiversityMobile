@@ -102,7 +102,7 @@ namespace DiversityPhone.ViewModels
 
         private void saveMap(Map map)
         {
-            _mapStorage.addOrUpdateMap(map);
+            _mapStorage.addMap(map);
         }
     }
 }

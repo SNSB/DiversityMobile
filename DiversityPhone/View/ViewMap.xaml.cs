@@ -55,7 +55,7 @@ namespace DiversityPhone.View
             Point s2 = e.GetPosition(scrollViewer, 1);
             Line s1s2 = new Line(s1, new Vector(s1, s2));
             Point scrollCenter = s1s2.MoveOnLineFromBaseForUnits(0.5);
-            percTouchCenter = VM.calculatePixelToPercentPoint(center);            
+            //percTouchCenter = VM.calculatePixelToPercentPoint(center);            
             offsetFromCenterX =  scrollCenter.X;
             offsetFromCenterY =  scrollCenter.Y;
         }

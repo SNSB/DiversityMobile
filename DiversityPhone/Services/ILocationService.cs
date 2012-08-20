@@ -6,6 +6,8 @@
 
     public class Coordinate : ILocalizable
     {
+        public static readonly Coordinate Unknown = new Coordinate();
+
 
         public double? Altitude
         {

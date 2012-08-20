@@ -7,7 +7,7 @@ using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
 {
-    public interface IMapTransferService:IMapStorageService
+    public interface IMapTransferService
     {
         /// <summary>
         /// Downloads a Map and saves it to isolated storage, and registeres it in the Map Database
