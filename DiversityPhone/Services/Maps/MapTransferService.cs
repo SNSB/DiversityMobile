@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Linq;
 using ReactiveUI;
 using DiversityPhone.MapMediaService;
 using System.IO.IsolatedStorage;
@@ -16,10 +8,12 @@ using DiversityPhone.Model;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
+using System.Xml.Linq;
+using System.Net;
 
 namespace DiversityPhone.Services
 {
-    public class MapTransferService : IMapTransferService
+    public class MapTransferService : IMapTransferService, IEnableLogger
     {
 
         private PhoneMediaServiceClient _mapinfo = new PhoneMediaServiceClient();
@@ -44,49 +38,99 @@ namespace DiversityPhone.Services
             GetXmlUrlCompletedObservable = Observable.FromEvent<EventHandler<GetXmlUrlCompletedEventArgs>, GetXmlUrlCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetXmlUrlCompleted += d, d => _mapinfo.GetXmlUrlCompleted -= d);               
         }
 
-
-
-        #region Load Available Maps
-
         public IObservable<IEnumerable<String>> GetAvailableMaps(String searchString)
         {
             var res = singleResultObservable(
                 GetMapsListCompletedObservable
-                .Where(args => args.UserState == searchString)
+                .Where(args => Object.ReferenceEquals(searchString, args.UserState))
                 .Select(args => args.Result as IEnumerable<string>));
             _mapinfo.GetMapListFilterAsync(searchString, searchString);
             return res;
         }
 
-
-        #endregion
-
-
-        #region downLoadMap
-
         public IObservable<Map> downloadMap(String serverKey)
         {
+            var obs =
             Observable.Merge(
                 GetMapUrlCompletedObservable
-                .Where(args => args.UserState == serverKey)
-                .Select(args => args.Result),                
+                .Where(args => Object.ReferenceEquals(serverKey, args.UserState))
+                .Select(args => args.Result),
                 GetXmlUrlCompletedObservable
-                .Where(args => args.UserState == serverKey)
+                .Where(args => Object.ReferenceEquals(serverKey, args.UserState))
                 .Select(args => args.Result))
-                .SelectMany(uri => WebRequest.CreateHttp(uri).GetResponseAsync().ToObservable())
-                .Window(2)
-                .Select(results => 
+                .SelectMany(uri =>
                     {
-                        
+                        var request = WebRequest.CreateHttp(uri);
+                        string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
+                        request.Headers["Authorization"] = "Basic " + credentials;
+
+                        return request.GetResponseAsync().ToObservable();
                     })
+                .Select(response =>
+                    {
+                        var http = response as HttpWebResponse;
+
+                        if (http.StatusCode != HttpStatusCode.OK)
+                            return null;
+
+                        var isXML = http.ResponseUri.OriginalString.ToLower().EndsWith(".xml");
+
+                        if (isXML)
+                        {
+                            return parseXMLtoMap(http.GetResponseStream());
+                        }
+                        else
+                        {
+                            String fileName = "Maps\\" + serverKey + ".png";
+
+                            using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
+                            {
+                                if (isoStore.FileExists(fileName))
+                                    isoStore.DeleteFile(fileName);
+
+                                using (var isoFileStream = isoStore.CreateFile(fileName))
+                                {
+                                    response.GetResponseStream().CopyTo(isoFileStream);
+                                    isoFileStream.Close();
+                                }
+                            }
+
+                            return null;
+                        }
+                    })
+                    .Window(2)
+                    .Take(1)
+                    .SelectMany(win => win.Where(res => res != null));
 
             _mapinfo.GetMapUrlAsync(serverKey, serverKey);
             _mapinfo.GetXmlUrlAsync(serverKey, serverKey);
 
-           // _imageHttp = (HttpWebRequest)WebRequest.CreateHttp(mapUrl.Value);
+            return obs;
+        }
 
+        private Map parseXMLtoMap(Stream contentStream)
+        {            
+            XDocument load = XDocument.Load(contentStream);
+            var data = from query in load.Descendants("ImageOptions")
+                        select new Map
+                        {
+                            Name = (string)query.Element("Name"),
+                            Description = (string)query.Element("Description"),
+                            NWLat = (double)query.Element("NWLat"),
+                            NWLong = (double)query.Element("NWLong"),
+                            SELat = (double)query.Element("SELat"),
+                            SELong = (double)query.Element("SELong"),
+                            SWLat = (double)query.Element("SWLat"),
+                            SWLong = (double)query.Element("SWLong"),
+                            NELat = (double)query.Element("NELat"),
+                            NELong = (double)query.Element("NELong"),
+                            ZoomLevel = (int?)query.Element("ZommLevel"),
+                            Transparency = (int?)query.Element("Transparency")
+                        };
+            if (data.Count() > 1)
+                this.Log().Debug("Multiple Map XML Elements in content stream");
 
-            throw new NotImplementedException();
+            return data.FirstOrDefault();        
         }
 
         private static IObservable<T> singleResultObservable<T>(IObservable<T> source)

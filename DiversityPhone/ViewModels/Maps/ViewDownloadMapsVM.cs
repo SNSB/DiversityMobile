@@ -143,7 +143,7 @@ namespace DiversityPhone.ViewModels
             string keyXML=keyTrunk+".xml";
             if (Keys.Contains(keyXML)&&Keys.Contains(keyPng))
             {
-                Map newMap = Map.loadMapParameterFromFile(keyXML);
+                Map newMap = null; //Map.loadMapParameterFromFile(keyXML);
                 newMap.Uri = keyPng;
                 newMap.ServerKey = _mapName;
                 saveMap(newMap);
