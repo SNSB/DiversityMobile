@@ -124,6 +124,7 @@
     <Compile Include="Services\IMultimediaOwner.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
+    <Compile Include="Services\Maps\TestMapTransferService.cs" />
     <Compile Include="ViewModels\IAudioVideoPageVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
@@ -176,7 +177,7 @@
     <Compile Include="Services\IConnectivityService.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Services\Maps\IMapStorageService.cs" />
-    <Compile Include="Services\IMapTransferService.cs" />
+    <Compile Include="Services\Maps\IMapTransferService.cs" />
     <Compile Include="Services\IMultiMediaClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\Database\ITaxonService.cs" />
@@ -184,7 +185,7 @@
     <Compile Include="Services\Database\IFieldDataService.cs" />
     <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
-    <Compile Include="Services\MapTransferService.cs" />
+    <Compile Include="Services\Maps\MapTransferService.cs" />
     <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\MultimediaClient.cs" />
     <Compile Include="Services\NavigationService.cs" />
@@ -689,7 +690,7 @@
     <Content Include="Images\appbar.cancel.rest.png" />
     <Content Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.delete.rest.png" />
-    <Content Include="Images\appbar.download.rest.png" />
+    <Resource Include="Images\appbar.download.rest.png" />
     <Content Include="Images\appbar.edit.rest.png" />
     <Content Include="Images\appbar.feature.camera.rest.png" />
     <Content Include="Images\appbar.feature.settings.rest.png" />

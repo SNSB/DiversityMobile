@@ -21,6 +21,7 @@ using System.Collections.ObjectModel;
 using DiversityPhone.Model;
 using DiversityPhone.Messages;
 using Funq;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
@@ -39,8 +40,26 @@ namespace DiversityPhone.ViewModels
        
         public ReactiveCommand<MapVM> SelectMap { get; private set; }
         public ReactiveCommand<MapVM> DeleteMap { get; private set; }        
-        public ReactiveCommand<MapVM> DownloadMap { get; private set; }        
-        #region Properties       
+        public ReactiveCommand<MapVM> DownloadMap { get; private set; }
+
+
+        private IDictionary<string, Unit> _local_map_register = new Dictionary<string, Unit>();
+        #region Properties    
+   
+
+        private Pivot _CurrentPivot;
+        public Pivot CurrentPivot
+        {
+            get
+            {
+                return _CurrentPivot;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
+            }
+        }
+        
 
         public ReactiveCollection<MapVM> MapList { get; private set; }
 
@@ -69,7 +88,7 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand getMaps = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand searchMaps;
 
-        private ReactiveAsyncCommand downloadMap;
+        private ReactiveAsyncCommand downloadMap = new ReactiveAsyncCommand();
 
         public MapManagementVM(Container ioc)
         {
@@ -85,6 +104,24 @@ namespace DiversityPhone.ViewModels
             MapList = getMaps.RegisterAsyncFunction(_ => MapStorage.getAllMaps().Select(m => new MapVM(m)))
                       .SelectMany(vms => vms)
                       .CreateCollection();
+            MapList.ObserveCollectionChanged()
+                .Subscribe(change =>
+                    {
+                        if(change.OldItems != null)
+                            foreach (var item in change.OldItems)
+                            {
+                                var typed = item as MapVM;
+                                if (typed != null)
+                                    _local_map_register.Remove(typed.ServerKey);
+                            }
+                        if(change.NewItems != null)
+                            foreach (var item in change.NewItems)
+                            {
+                                var typed = item as MapVM;
+                                if (typed != null)
+                                    _local_map_register.Add(typed.ServerKey, Unit.Default);
+                            }                       
+                    });
 
             SelectMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading);
             SelectMap.Select(vm => vm as IElementVM<Map>)
@@ -111,17 +148,29 @@ namespace DiversityPhone.ViewModels
                 searchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string)),
                 x => x.SearchResults);
 
-            DownloadMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading && IsOnlineAvailable);
-            // TODO Download
+            DownloadMap = new ReactiveCommand<MapVM>(vm => vm.Model == null && IsOnlineAvailable && downloadMap.CanExecute(vm));
+            DownloadMap
+                .Do(_ => CurrentPivot = Pivot.Local)                
+                .Do(vm => MapList.Add(vm))
+                .Subscribe(downloadMap.Execute);
 
+            downloadMap.RegisterAsyncFunction(vm =>
+                {
+                    var typed = vm as MapVM;
 
+                    return new { Map = MapService.downloadMap(typed.ServerKey).First(), VM = typed };
+                })
+                .Subscribe(tuple => tuple.VM.SetModel(tuple.Map));
         }
 
         private IEnumerable<MapVM> searchMapsImpl(string p)
         {
             try
-            {
-                return MapService.GetAvailableMaps(p).First().Select(mapname => new MapVM(null) { ServerKey = mapname });
+            {                
+                return MapService.GetAvailableMaps(p).First()
+                    .Where(key => !_local_map_register.ContainsKey(key))
+                    .Take(10)
+                    .Select(mapname => new MapVM(null) { ServerKey = mapname });
             }
             catch(Exception)
             {

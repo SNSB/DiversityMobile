@@ -43,10 +43,10 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<String>> GetAvailableMaps(String searchString)
         {
-            var source = Observable.FromEvent<EventHandler<GetMapListCompletedEventArgs>, GetMapListCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetMapListCompleted += d, d => _mapinfo.GetMapListCompleted -= d)
+            var source = Observable.FromEvent<EventHandler<GetMapListFilterCompletedEventArgs>, GetMapListFilterCompletedEventArgs>((a) => (s, args) => a(args), d => _mapinfo.GetMapListFilterCompleted += d, d => _mapinfo.GetMapListFilterCompleted -= d)
                 .Select(args => args.Result as IEnumerable<String>);
             var res = singleResultObservable(source);
-            _mapinfo.GetMapListAsync(searchString);
+            _mapinfo.GetMapListFilterAsync(searchString);
             return res;
         }
 

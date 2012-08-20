@@ -17,7 +17,7 @@ namespace DiversityPhone.ViewModels
         {
             get
             {
-                return _ServerKey;
+                return (Model != null) ? Model.ServerKey : _ServerKey;
             }
             set
             {
@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
             {
                 return _IsDownloading;
             }
-            set
+            private set
             {
                 this.RaiseAndSetIfChanged(x => x.IsDownloading, ref _IsDownloading, value);
             }
@@ -41,15 +41,19 @@ namespace DiversityPhone.ViewModels
         public MapVM(Map model)
             : base(model)
         {
-
+            IsDownloading = Model == null;
         }
 
         public void SetModel(Map model)
         {
+            if (model == null)
+                throw new ArgumentNullException("model");
+
             if (Model != null)
                 throw new InvalidOperationException("Model already set");
 
             Model = model;
+            IsDownloading = false;
 
             this.RaisePropertyChanged(x => x.Model);
             this.RaisePropertyChanged(x => x.Description);
