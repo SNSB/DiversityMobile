@@ -46,15 +46,9 @@ namespace DiversityPhone.ViewModels
         public EditAnalysisVM EditAnalysis { get { return IOC.Resolve<EditAnalysisVM>(); } }
         public EditPropertyVM EditProperty { get { return IOC.Resolve<EditPropertyVM>(); } }
 
-
-        public ViewMapPickerVM ViewLM { get { return IOC.Resolve<ViewMapPickerVM>(); } }
-        public ViewDLMVM ViewDLM{ get { return IOC.Resolve<ViewDLMVM>(); } }
-        public ViewDownloadMapsVM ViewDownloadMaps { get { return IOC.Resolve<ViewDownloadMapsVM>(); } }
+        public MapManagementVM MapManagement { get { return IOC.Resolve<MapManagementVM>(); } }       
         public EditMapVM EditMap { get { return IOC.Resolve<EditMapVM>(); } }
-        public ViewMapVM ViewMap { get { return IOC.Resolve<ViewMapVM>(); } }
-        public ViewMapESVM ViewMapES { get { return IOC.Resolve<ViewMapESVM>(); } }
-        public ViewMapEVVM ViewMapEV { get { return IOC.Resolve<ViewMapEVVM>(); } }
-        public ViewMapIUVM ViewMapIU { get { return IOC.Resolve<ViewMapIUVM>(); } }
+        public ViewMapVM ViewMap { get { return IOC.Resolve<ViewMapVM>(); } }        
         
         public NewImageVM NewImage { get { return IOC.Resolve<NewImageVM>(); } }
         public NewAudioVM NewAudio { get { return IOC.Resolve<NewAudioVM>(); } }

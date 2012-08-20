@@ -119,7 +119,14 @@ namespace DiversityPhone.ViewModels
 
         private IEnumerable<MapVM> searchMapsImpl(string p)
         {
-            return MapService.GetAvailableMaps(p).First().Select(mapname => new MapVM(null) { ServerKey = mapname });
+            try
+            {
+                return MapService.GetAvailableMaps(p).First().Select(mapname => new MapVM(null) { ServerKey = mapname });
+            }
+            catch(Exception)
+            {
+
+            }
         }
     }
 }
