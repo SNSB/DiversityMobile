@@ -21,17 +21,22 @@ namespace DiversityPhone.View
 {
     public partial class MapManagement : PhoneApplicationPage
     {
-        private ViewMapPickerVM VM { get { return DataContext as ViewMapPickerVM; } }  
-        
+        private MapManagementVM VM { get { return DataContext as MapManagementVM; } }
+
         public MapManagement()
         {
             InitializeComponent();
         }
 
-        private void LoadMaps_Click(object sender, EventArgs e)
+        private void QueryString_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (VM != null)
-                VM.AddMaps.Execute(null);
+            var textbox = sender as TextBox;
+            var vm = VM;
+
+            if (textbox != null && vm != null)
+            {
+                vm.QueryString = textbox.Text;
+            }
         }
     }
 }

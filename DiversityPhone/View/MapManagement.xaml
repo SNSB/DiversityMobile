@@ -42,8 +42,8 @@
             </controls:PivotItem>
             <controls:PivotItem Header="online"
                                 Visibility="{Binding IsOnlineAvailable, Converter={StaticResource BoolToVis}}">
-                <StackPanel>
-                    <TextBox Text="{Binding QueryString, Mode=TwoWay}"/>
+                <StackPanel>                    
+                    <TextBox TextChanged="QueryString_TextChanged"/>
                     <ListBox ItemsSource="{Binding SearchResults}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
