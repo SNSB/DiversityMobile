@@ -5,82 +5,126 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
 using System.IO.IsolatedStorage;
+using System.Data.Linq;
+using System.IO;
 
 namespace DiversityPhone.Services
 {
+    class MapDataContext : DataContext
+    {
+        public MapDataContext(string fileOrConnection)
+            : base(fileOrConnection) 
+        {
+            if (!this.DatabaseExists())
+                this.CreateDatabase();
+        }
+
+        public Table<Map> Maps; 
+    }
+
     public class MapStorageService : IMapStorageService
     {
-        protected IMessageBus Messenger;
+        private const string MapFolder = "Maps";
+        private const string MapDB = "Maps.sdf";
 
-        public MapStorageService(IMessageBus messenger)
+        public MapStorageService()
         {
-            
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (!iso.DirectoryExists(MapFolder))
+                    iso.CreateDirectory(MapFolder);
+            }
         }
 
-        private void withDataContext(Action<DiversityDataContext> operation)
+        private string fileNameForMap(Map map)
         {
-            using (var ctx = new DiversityDataContext())
-                operation(ctx);
+            return string.Format("{0}\\{1}.png", MapFolder, map.ServerKey);
         }
 
-        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
+        private MapDataContext getContext()
         {
-            IList<T> result = null;
-            withDataContext(ctx => result = query(ctx).ToList());
-            return result;
+            return new MapDataContext(string.Format("{0}\\{1}", MapFolder, MapDB));
         }
 
         public IList<Map> getAllMaps()
         {
-            return uncachedQuery(ctx => from m in ctx.Maps
-                                        select m);
+            using (var ctx = getContext())
+            {
+                return ctx.Maps.ToList();
+            }
         }
 
-        public bool isPresent(String key)
+        public void addMap(Map map, System.IO.Stream mapContent)
         {
-            bool res = false;
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                var filename = fileNameForMap(map);
+                if (iso.FileExists(filename))
+                    iso.DeleteFile(filename);
 
-            withDataContext(ctx => res = (from map in ctx.Maps
-                                          where map.ServerKey == key
-                                          select map).Any());
-            return res;
-        }
+                using (var file = iso.CreateFile(filename))
+                {
+                    mapContent.CopyTo(file);
+                }
+            }
 
-        public void addMap(Map map)
-        {
-            if (isPresent(map.ServerKey))
-                deleteMap(map);
-            using (var ctx = new DiversityDataContext())
+            using (var ctx = getContext())
             {
                 ctx.Maps.InsertOnSubmit(map);
                 ctx.SubmitChanges();
             }
-
         }
 
-        public void deleteAllMaps()
+        public void clearMaps()
         {
-            IList<Map> maps = getAllMaps();
-            foreach (Map map in maps)
-                deleteMap(map);
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                iso.DeleteDirectory(MapFolder);
+                iso.CreateDirectory(MapFolder);
+            }
+
+            using (var ctx = getContext())
+            {
+                ctx.DeleteDatabase();
+            }
         }
 
         public void deleteMap(Map map)
         {
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(map.Uri))
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                myStore.DeleteFile(map.Uri);
+                var filename = fileNameForMap(map);
+                if (iso.FileExists(filename))
+                    iso.DeleteFile(filename);
             }
-            using (var ctx = new DiversityDataContext())
+
+            using (var ctx = getContext())
             {
-                Map deleteableMap =
-                    (from maps in ctx.Maps
-                     where maps.ServerKey == map.ServerKey
-                     select maps).First();
-                ctx.Maps.DeleteOnSubmit(deleteableMap);
+                ctx.Maps.DeleteOnSubmit(map);
                 ctx.SubmitChanges();
             }
         }
-    } 
+
+        public System.IO.Stream loadMap(Map map)
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                var filename = fileNameForMap(map);
+                if (iso.FileExists(filename))
+                {
+                    using (var file = iso.OpenFile(filename, System.IO.FileMode.Open))
+                    {
+                        if (file.Length > int.MaxValue)
+                            throw new ArgumentException("Map File too big");
+
+                        var res = new MemoryStream((int)file.Length);
+                        file.CopyTo(res);
+                        return res;
+                    }
+                }
+                else
+                    return null;                    
+            }
+        }
+    }        
 }

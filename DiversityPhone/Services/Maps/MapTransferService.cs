@@ -11,6 +11,7 @@ using System.Reactive.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using Funq;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.Services
 {
@@ -69,7 +70,7 @@ namespace DiversityPhone.Services
 
                         return request.GetResponseAsync().ToObservable();
                     })
-                .Select(response =>
+                .Select( response =>
                     {
                         var http = response as HttpWebResponse;
 
@@ -86,39 +87,38 @@ namespace DiversityPhone.Services
                             if (map != null)
                             {
                                 map.ServerKey = serverKey;
-                                map.Uri = fileName;
                             }
-                            return map;
+                            return map as object;
                         }
                         else
                         {
-                            using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
-                            {
-                                if (isoStore.FileExists(fileName))
-                                    isoStore.DeleteFile(fileName);
-
-                                using (var isoFileStream = isoStore.CreateFile(fileName))
-                                {
-                                    response.GetResponseStream().CopyTo(isoFileStream);
-                                    isoFileStream.Close();
-                                }
-                            }
-
-                            return null;
+                            return http.GetResponseStream() as object;
                         }
                     })
                     .Window(2)
                     .Take(1)
-                    .SelectMany(win => win.Where(res => res != null))
-                    .Do(map => MapStorage.addMap(map))
+                    .SelectMany(win =>
+                        {
+                            var map = win.Where(i => i is Map).FirstOrDefault() as Map;
+                            var stream = win.Where(i => i is Stream).FirstOrDefault() as Stream;
+
+                            return Observable.Start(() =>
+                                {
+                                    MapStorage.addMap(map, stream);
+                                    return map;
+                                });
+                        })                    
                     .Publish();
             obs.Connect();
-
+            
             MapService.GetMapUrlAsync(serverKey, serverKey);
             MapService.GetXmlUrlAsync(serverKey, serverKey);
 
             return obs;
         }
+
+       
+
 
         private Map parseXMLtoMap(Stream contentStream)
         {            

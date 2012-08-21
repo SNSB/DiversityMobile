@@ -11,14 +11,11 @@ using DiversityPhone.Model.Geometry;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class Map : IModifyable
+    public class Map
     {
 
         [Column(IsPrimaryKey = true)]
         public String ServerKey { get; set; }
-
-        [Column]
-        public String Uri { get; set; }
 
         [Column]
         public String Name { get; set; }
@@ -55,22 +52,5 @@ namespace DiversityPhone.Model
 
         [Column(CanBeNull = true)]
         public int? ZoomLevel{ get; set; }
-
-      
-
-        /// <summary>
-        /// Tracks modifications to this Object.        
-        /// </summary>
-        [Column]
-        public ModificationState ModificationState { get; set; }
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
-
-        public Map()
-        {
-            this.ModificationState = ModificationState.New;
-            this.LogUpdatedWhen = DateTime.Now;
-        }
     }
 }

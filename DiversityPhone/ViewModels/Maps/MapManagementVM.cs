@@ -32,8 +32,7 @@ namespace DiversityPhone.ViewModels
             Local,
             Online
         }
-
-        private IMessageBus Messenger;
+        
         private IConnectivityService Network;
         private IMapTransferService MapService;
         private IMapStorageService MapStorage;
@@ -91,8 +90,7 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand downloadMap = new ReactiveAsyncCommand();
 
         public MapManagementVM(Container ioc)
-        {
-            Messenger = ioc.Resolve<IMessageBus>();
+        {            
             Network = ioc.Resolve<IConnectivityService>();
             MapService = ioc.Resolve<IMapTransferService>();
             MapStorage = ioc.Resolve<IMapStorageService>();

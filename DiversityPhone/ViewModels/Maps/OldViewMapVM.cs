@@ -268,7 +268,7 @@ namespace DiversityPhone.ViewModels
                     //Map = Maps.getMapbyServerKey(s.Context);
                     if (Map != null)
                     {
-                        MapImage= LoadImage(Map.Uri);
+                        //MapImage= LoadImage(Map.Uri);
                         BaseHeight = MapImage.PixelHeight;
                         BaseWidth = MapImage.PixelWidth;
                         if (ActualPos != null)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DiversityPhone.Model;
+using System.IO;
 namespace DiversityPhone.Services
 {
     public interface IMapStorageService
@@ -10,27 +11,23 @@ namespace DiversityPhone.Services
         IList<Map> getAllMaps();
 
         /// <summary>
-        /// Checks if a map with the same name has already been downloaded
-        /// </summary>
-        /// <param name="serverKey"></param>
-        /// <returns></returns>
-        bool isPresent(string serverkey);
-
-        /// <summary>
         /// Adds an entry with corresponding Data in the MapTable
         /// </summary>
         /// <returns></returns>
-        void addMap(Map map);
+        void addMap(Map map, Stream mapContent);
 
         /// <summary>
         /// Deletes all Maps and derigesteres the entries in the database
         /// </summary>
-        void deleteAllMaps();
+        void clearMaps();
 
         /// <summary>
         /// Removes a Map in isolated storage and deletes the entry from the MapTable 
         /// </summary>
         /// <param name="uri"></param>
         void deleteMap(Map map);
+
+
+        Stream loadMap(Map map);
     }
 }

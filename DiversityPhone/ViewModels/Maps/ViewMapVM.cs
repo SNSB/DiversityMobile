@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using ReactiveUI;
 using System.Windows;
 using System.IO;
@@ -83,6 +84,8 @@ namespace DiversityPhone.ViewModels
         public ViewMapVM(Container ioc)
         {
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
+
+            
         }
     }
 }

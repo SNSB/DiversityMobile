@@ -220,8 +220,6 @@
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\Maps\ViewDLMVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewDownloadMapsVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapEditVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapESVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
@@ -321,9 +319,6 @@
     <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewDownloadMaps.xaml.cs">
-      <DependentUpon>ViewDownloadMaps.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
@@ -467,10 +462,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewCS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewDownloadMaps.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

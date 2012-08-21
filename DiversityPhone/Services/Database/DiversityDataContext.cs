@@ -31,6 +31,5 @@
         public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;        
 
         public Table<MultimediaObject> MultimediaObjects;
-        public Table<Map> Maps; 
     }
 }

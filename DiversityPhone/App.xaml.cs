@@ -146,7 +146,7 @@ namespace DiversityPhone
             IOC.Register<IFieldDataService>(new OfflineStorage(IOC.Resolve<IMessageBus>()));
             IOC.Register<ITaxonService>(new TaxonService());
             IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IMapStorageService>(new MapStorageService(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IMapStorageService>(new MapStorageService());
             IOC.Register<IMapTransferService>(new MapTransferService(IOC));
             
 
