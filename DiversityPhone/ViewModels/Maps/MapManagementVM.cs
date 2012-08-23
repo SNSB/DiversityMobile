@@ -153,7 +153,7 @@ namespace DiversityPhone.ViewModels
 
             DownloadMap = new ReactiveCommand<MapVM>(vm => vm.Model == null && IsOnlineAvailable && downloadMap.CanExecute(vm));
             DownloadMap
-                .Do(_ => CurrentPivot = Pivot.Local)                
+                .Do(_ => CurrentPivot = Pivot.Local)                   
                 .Do(vm => MapList.Add(vm))
                 .Subscribe(downloadMap.Execute);
 

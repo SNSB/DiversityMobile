@@ -38,12 +38,12 @@ namespace DiversityPhone.Services
 
         private string fileNameForMap(Map map)
         {
-            return string.Format("{0}\\{1}.png", MapFolder, map.ServerKey);
+            return string.Format("{0}/{1}.png", MapFolder, map.ServerKey);
         }
 
         private MapDataContext getContext()
         {
-            return new MapDataContext(string.Format("{0}\\{1}", MapFolder, MapDB));
+            return new MapDataContext(string.Format("isostore:/{0}/{1}", MapFolder, MapDB));
         }
 
         public IList<Map> getAllMaps()

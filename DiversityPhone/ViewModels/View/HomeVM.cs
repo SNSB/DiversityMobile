@@ -82,7 +82,7 @@ namespace DiversityPhone.ViewModels
             Maps=new ReactiveCommand();
 
 
-            Maps.Select(_ => Page.MapManagement)
+            Maps.Select(_ => Page.ViewMap)
                 .ToMessage();
 
             Observable.Merge(

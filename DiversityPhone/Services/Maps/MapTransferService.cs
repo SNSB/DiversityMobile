@@ -95,7 +95,7 @@ namespace DiversityPhone.Services
                             return http.GetResponseStream() as object;
                         }
                     })
-                    .Window(2)
+                    .Buffer(2)
                     .Take(1)
                     .SelectMany(win =>
                         {

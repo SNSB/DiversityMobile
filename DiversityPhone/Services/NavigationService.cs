@@ -163,6 +163,9 @@ namespace DiversityPhone.Services
                 case Page.MapManagement:
                     destination = "/View/MapManagement.xaml";
                     break;
+                case Page.ViewMap:
+                    destination = "/View/ViewMap.xaml";
+                    break;
                 case Page.ViewImage:
                     destination = "/View/ViewImage.xaml";
                     break;

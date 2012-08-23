@@ -6,6 +6,8 @@ using System.IO;
 using DiversityPhone.Model;
 using DiversityPhone.Messages;
 using Funq;
+using DiversityPhone.Services;
+using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
@@ -13,6 +15,10 @@ namespace DiversityPhone.ViewModels
     {
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
+
+        private IMapStorageService MapStorage;
+
+        public ReactiveCommand SelectMap { get; private set; }
 
         public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
@@ -83,9 +89,20 @@ namespace DiversityPhone.ViewModels
 
         public ViewMapVM(Container ioc)
         {
+            MapStorage = ioc.Resolve<IMapStorageService>();
+
+            SelectMap = new ReactiveCommand();
+            SelectMap
+                .Select(_ => Page.MapManagement)
+                .ToMessage();
+
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
 
-            
+
+            _CurrentMap
+                .SelectMany(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)).TakeUntil(_CurrentMap))                
+                .ObserveOnDispatcher()
+                .BindTo(this, x => x.MapImage);            
         }
     }
 }
