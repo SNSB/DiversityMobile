@@ -12,9 +12,9 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    mc:Ignorable="d" 
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}">
+    DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
     <phone:PhoneApplicationPage.Resources>
         <vw:StreamToImageConverter x:Key="StreamToImage"/>
     </phone:PhoneApplicationPage.Resources>
@@ -39,18 +39,19 @@
         	ScrollViewer.VerticalScrollBarVisibility="Visible"                                                     
         	Tap="scrollViewer_Tap" 
         	DoubleTap="scrollViewer_DoubleTap">
-            
-        	<Image Name="mapImage" 
-                    Source="{Binding MapImage, Converter={StaticResource StreamToImage}}" 
-        			RenderTransformOrigin="0.5, 0.5" 
-        			CacheMode="BitmapCache">
-        		<Image.RenderTransform>
-        			<CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
-        		</Image.RenderTransform>
-        		<toolkit:GestureService.GestureListener>
-        			<toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
-        		</toolkit:GestureService.GestureListener>
-        	</Image>     
+                <Canvas RenderTransformOrigin="0.5, 0.5"
+                        Height="{Binding MapImage.PixelHeight}" 
+                        Width="{Binding MapImage.PixelWidth}">
+                    <Canvas.RenderTransform>
+                        <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+                    </Canvas.RenderTransform>
+                    <toolkit:GestureService.GestureListener>
+                        <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
+                    </toolkit:GestureService.GestureListener>
+
+                    <Image Source="{Binding MapImage}"
+                           CacheMode="BitmapCache"/>
+                </Canvas>
         </ScrollViewer>
     </Grid>
 

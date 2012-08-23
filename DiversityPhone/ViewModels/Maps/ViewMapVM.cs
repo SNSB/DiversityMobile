@@ -8,6 +8,7 @@ using DiversityPhone.Messages;
 using Funq;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
+using System.Windows.Media.Imaging;
 
 namespace DiversityPhone.ViewModels
 {
@@ -24,8 +25,8 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
         
 
-        private MemoryStream _MapImage;
-        public MemoryStream MapImage
+        private BitmapImage _MapImage;
+        public BitmapImage MapImage
         {
             get
             {
@@ -96,12 +97,24 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => Page.MapManagement)
                 .ToMessage();
 
+            ActivationObservable
+                .Where(active => active && CurrentMap == null)
+                .Select(_ => Page.MapManagement)
+                .ToMessage();
+
+
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
 
-
+            
             _CurrentMap
                 .SelectMany(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)).TakeUntil(_CurrentMap))                
                 .ObserveOnDispatcher()
+                .Select(stream => 
+                    {
+                        var img = new BitmapImage();
+                        img.SetSource(stream);
+                        return img;
+                    })
                 .BindTo(this, x => x.MapImage);            
         }
     }
