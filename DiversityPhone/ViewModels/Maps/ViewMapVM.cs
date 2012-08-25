@@ -18,6 +18,7 @@ namespace DiversityPhone.ViewModels
         private const double SCALEMAX = 3;
 
         private IMapStorageService MapStorage;
+        private ILocationService Location;
 
         public ReactiveCommand SelectMap { get; private set; }
 
@@ -39,8 +40,8 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private Point _CurrentLocation = new Point(0.5,0.5);
-        public Point CurrentLocation
+        private Point? _CurrentLocation = new Point(0.5,0.5);
+        public Point? CurrentLocation
         {
             get
             {
@@ -71,6 +72,7 @@ namespace DiversityPhone.ViewModels
         public ViewMapVM(Container ioc)
         {
             MapStorage = ioc.Resolve<IMapStorageService>();
+            Location = ioc.Resolve<ILocationService>();
 
             SelectMap = new ReactiveCommand();
             SelectMap
@@ -94,7 +96,18 @@ namespace DiversityPhone.ViewModels
                         img.SetSource(stream);
                         return img;
                     })
-                .BindTo(this, x => x.MapImage);            
+                .BindTo(this, x => x.MapImage);
+
+
+            var loc_obs = Location.Location();
+
+            ActivationObservable
+                .Where(a => a)
+                .Where(_ => CurrentMap != null)  
+                .SelectMany(_ => loc_obs.TakeUntil(ActivationObservable.Where(a => !a)))
+                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c.Latitude.Value, c.Longitude.Value))
+                .Subscribe(c => CurrentLocation = c);
+
         }
     }
 }

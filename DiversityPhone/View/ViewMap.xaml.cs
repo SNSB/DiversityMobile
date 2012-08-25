@@ -85,26 +85,31 @@ namespace DiversityPhone.View
                 VM.SelectMap.Execute(null);
         }
 
-        CompositeDisposable subscriptions = new CompositeDisposable();
+        IDisposable subscriptions = Disposable.Empty;
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            subscriptions.Add(
+            var s = new CompositeDisposable();
+            s.Add(
             VM.ObservableForProperty(x => x.Scale).Value()
                 .Subscribe(scale => MainCanvas.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale, CenterX = centerX, CenterY = centerY })
                 );
-            subscriptions.Add(
-                Observable.CombineLatest(
-                    VM.ObservableForProperty(x => x.CurrentLocation).Value(),
-                    VM.ObservableForProperty(x => x.MapImage).Value(),
-                    (loc, img) =>
+            s.Add(
+                    VM.ObservableForProperty(x => x.CurrentLocation).Value().Subscribe(
+                    loc =>
                     {
-                        Canvas.SetLeft(currentPosImg, loc.X * img.PixelWidth);
-                        Canvas.SetTop(currentPosImg, loc.Y * img.PixelHeight);
-                        return Unit.Default;
-                    }).Subscribe(_ => {}));
+                        var img = VM.MapImage;
+                        if (!loc.HasValue || img == null)
+                            currentPosImg.Visibility = System.Windows.Visibility.Collapsed;
+                        else
+                        {
+                            currentPosImg.Visibility = System.Windows.Visibility.Visible;
+                            Canvas.SetLeft(currentPosImg,(loc.Value.X * img.PixelWidth) - 16);
+                            Canvas.SetTop(currentPosImg,(loc.Value.Y * img.PixelHeight) - 16);
+                        }
+                    }));
 
-                
+            subscriptions = s;
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)

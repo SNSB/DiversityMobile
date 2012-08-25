@@ -15,27 +15,24 @@
     mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     x:Name="currentPage"
-    Loaded="currentPage_Loaded"
-    Unloaded="currentPage_Unloaded"
     DataContext="{Binding Source={StaticResource Locator}, Path=MapManagement}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <vw:MapManagementPivotConverter x:Key="PivotConverter"/>
-        </ResourceDictionary>
-        
-        <DataTemplate x:Key="MapTemplate">
-            <StackPanel Orientation="Horizontal">
-                <ContentControl Content="{Binding}"
+            <DataTemplate x:Key="MapTemplate">
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl Content="{Binding}"
                                 ContentTemplate="{StaticResource ElementItemTemplate}"/>
-                <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
+                    <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
                                                    Fill="{StaticResource PhoneForegroundBrush}" 
                                                    Width="40" Height="40">
-                    <Rectangle.OpacityMask>
-                        <ImageBrush ImageSource="/DiversityPhone;component/Images/appbar.download.rest.png" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-            </StackPanel>
-        </DataTemplate>
+                        <Rectangle.OpacityMask>
+                            <ImageBrush ImageSource="/DiversityPhone;component/Images/appbar.download.rest.png" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </DataTemplate>
+        </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -57,8 +54,9 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
-            <controls:PivotItem Name="onlinePivot" Header="online">
-                <StackPanel>                    
+            <controls:PivotItem Header="online" 
+                                IsEnabled="{Binding IsOnlineAvailable}">
+                <StackPanel >                    
                     <TextBox TextChanged="QueryString_TextChanged"/>
                     <ListBox ItemsSource="{Binding SearchResults}">
                         <ListBox.ItemTemplate>

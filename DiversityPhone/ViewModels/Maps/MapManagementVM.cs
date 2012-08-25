@@ -144,7 +144,7 @@ namespace DiversityPhone.ViewModels
 
             this.ObservableForProperty(x => x.QueryString).ValueIfNotDefault()
                 .Throttle(TimeSpan.FromSeconds(.5))
-                .Where(s => s.Length > 3)
+                .Where(s => s.Length > 2)
                 .Where(s => searchMaps.CanExecute(s))
                 .Subscribe(searchMaps.Execute);
 

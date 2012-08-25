@@ -11,6 +11,7 @@
     using System.Collections.Generic;
     using Funq;
     using DiversityPhone.Model;
+    using System.Threading;
 
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.
@@ -30,9 +31,9 @@
 
         private GeoCoordinateWatcher watcher = null;
         private IDisposable watcher_activation = Disposable.Empty;
-        private RefCountDisposable watcher_refcount = null;
-        private ISubject<GeoPositionStatus> status_subject = new BehaviorSubject<GeoPositionStatus>(GeoPositionStatus.Disabled);
-        private ISubject<GeoPosition<GeoCoordinate>> coordinate_subject = new BehaviorSubject<GeoPosition<GeoCoordinate>>(new GeoPosition<GeoCoordinate>(DateTimeOffset.Now, GeoCoordinate.Unknown));
+        private int watcher_refcount = 0;
+        private IObservable<GeoPositionStatus> status_observable;
+        private IObservable<GeoPosition<GeoCoordinate>> coordinate_observable;
 
         private bool _IsEnabled = true;
         public bool IsEnabled 
@@ -44,9 +45,12 @@
                 lock (this)
                 {
                     if (!_IsEnabled)
-                    {                        
-                        watcher_activation.Dispose();
-                        watcher_refcount = null;
+                    {
+                        stopWatcher();
+                    }
+                    else
+                    {
+                        startWatcher();
                     }
                 }
             }
@@ -69,19 +73,21 @@
             this.log = this.Log();
             this.watcher = new GeoCoordinateWatcher(DefaultAccuracy);
 
-            this.watcher.PositionChanged += (s, args) => coordinate_subject.OnNext(args.Position);
-            this.watcher.StatusChanged += (s, args) => status_subject.OnNext(args.Status);
+            
 
+            coordinate_observable = Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher, "PositionChanged").Select(ev => ev.EventArgs.Position);
+
+            status_observable = Observable.FromEventPattern<GeoPositionStatusChangedEventArgs>(watcher, "StatusChanged").Select(ev => ev.EventArgs.Status);
         }
 
         public IObservable<Coordinate> LocationByTimeThreshold(TimeSpan frequency)
         {
-            return LocationByTimeThresholdImpl(frequency);
+            throw new NotImplementedException();
         }
 
         public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
         {
-            return LocationByDistanceThresholdImpl(distance);
+            throw new NotImplementedException();
         }
 
         public IObservable<GeoPositionStatus> Status()
@@ -91,53 +97,10 @@
 
         public IObservable<Coordinate> Location()
         {
-            return LocationImpl();
-        }
-
-        private IObservable<Coordinate> LocationByDistanceThresholdImpl(int distance)
-        {
-            var watcher_handle = StartWatcherIfNecessary();
-            var comparer = new DistanceThresholdComparer(distance);
-
-            return coordinate_subject
-                .Select(p => p.Location)
-                .DistinctUntilChanged(comparer)
-                .Finally(() => watcher_handle.Dispose())
-                .ToCoordinates()
-                .AsObservable();
-        }
-
-        private IObservable<Coordinate> LocationImpl()
-        {
-            var watcher_handle = StartWatcherIfNecessary();
-
-            return coordinate_subject.Select(p => p.Location)                
-                .Finally(() => watcher_handle.Dispose())
-                .ToCoordinates()
-                .AsObservable();
-        }
-
-        private Coordinate CurrentLocationWithTimeoutImpl(TimeSpan timeSpan)
-        {
-            var watcher_handle = StartWatcherIfNecessary();
-
-            return coordinate_subject.Select(p => p.Location).Where(l => !l.IsUnknown)
-                .Timeout(timeSpan, Observable.Return(GeoCoordinate.Unknown))
-                .Finally(() => watcher_handle.Dispose())
-                .ToCoordinates()
-                .First();
-        }
-
-        private IObservable<Coordinate> LocationByTimeThresholdImpl(TimeSpan timeSpan)
-        {
-            var watcher_handle = StartWatcherIfNecessary();
-
-            return Observable.Throttle(coordinate_subject.Select(p => p.Location), timeSpan)
-                .Where(c => !c.IsUnknown)
-                .Finally(() => watcher_handle.Dispose())
-                .DistinctUntilChanged()
-                .ToCoordinates();
-        }   
+            return RefCount(coordinate_observable.Select(p => p.Location)
+                 .ToCoordinates()
+                 .AsObservable());
+        }       
 
         private IObservable<GeoPositionStatus> StatusImpl()
         {     
@@ -145,43 +108,48 @@
 
             var valid_status_seen = false;
 
-            return status_subject
+            return status_observable
                 .TakeWhile(s => (valid_status_seen |= (s != GeoPositionStatus.Initializing && s != GeoPositionStatus.NoData)))
                 .Finally(() => watcher_handle.Dispose())
                 .AsObservable();               
         }
 
-        IDisposable StartWatcherIfNecessary()
+        private void startWatcher()
         {
-            lock (this)
-            {
-                if (watcher_refcount == null)
+            if(IsEnabled && watcher_refcount > 0)
+                Scheduler.ThreadPool.Schedule(() =>
                 {
-                    var deactivation = Disposable.Create(() =>
-                        {
-                            watcher.Stop();
-                        });
-                    watcher_activation = deactivation;
-                    watcher_refcount = new RefCountDisposable(Disposable.Create(() => deactivation.Dispose()));
+                    var started = watcher.TryStart(true, DefaultStartupTimeout);
+                });
+        }
 
-                    Scheduler.ThreadPool.Schedule(() =>
-                    {
-                        var started = watcher.TryStart(true, DefaultStartupTimeout);
-                        if (!started)
-                        {
-                            coordinate_subject.OnError(new Exception("Failed to start GeoCoordinateWatcher!"));
-                            status_subject.OnError(new Exception("Failed to start GeoCoordinateWatcher!"));
-                        }
-                    });
-                }
+        private void stopWatcher()
+        {
+            watcher.Stop();
+        }
 
-                var res = watcher_refcount.GetDisposable();
-
-                if(!watcher_refcount.IsDisposed)
-                    watcher_refcount.Dispose();
-
-                return res;
+        IDisposable StartWatcherIfNecessary()
+        {            
+            if (Interlocked.Increment(ref watcher_refcount) == 1)
+            {
+                startWatcher();
             }
+
+            return Disposable.Create(() =>
+                {
+                    if (Interlocked.Decrement(ref watcher_refcount) == 0)
+                        stopWatcher();
+                });
+        }
+
+        private IObservable<T> RefCount<T>(IObservable<T> source)
+        {
+            return Observable.Create<T>((observer) =>
+                {
+                    var sub = source.Subscribe(observer);
+                    var handle = StartWatcherIfNecessary();
+                    return new CompositeDisposable(sub, handle) as IDisposable;
+                });
         }
 
         private class DistanceThresholdComparer : IEqualityComparer<GeoCoordinate>
