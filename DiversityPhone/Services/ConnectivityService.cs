@@ -7,34 +7,45 @@
     using Funq;
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
+    using System.Reactive;
     
 
     public class ConnectivityService : IConnectivityService
-    {       
-        private ISubject<ConnectionStatus> status_subject = new BehaviorSubject<ConnectionStatus>(ConnectionStatus.None);
+    {
+        private IObservable<ConnectionStatus> status;
 
         public ConnectivityService()
         {
 
-            Observable.FromEventPattern<object, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAddressChanged")
+            
+
+            var s =Observable.Merge(
+                            Observable.FromEventPattern<object, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAddressChanged") 
+                                .Select( _ => 0L),
+                            Observable.Interval(TimeSpan.FromSeconds(30))
+                   )
+                        .StartWith(0)
                         .Select(_ =>
                             {
                                 if (NetworkInterface.GetIsNetworkAvailable())
                                 {
                                     var it = NetworkInterface.NetworkInterfaceType;
 
-                                    if (it == NetworkInterfaceType.Wireless80211)
+                                    if (it == NetworkInterfaceType.Wireless80211 || it == NetworkInterfaceType.Ethernet)
                                         return ConnectionStatus.Wifi;
                                     if (it == NetworkInterfaceType.MobileBroadbandGsm || it == NetworkInterfaceType.MobileBroadbandCdma)
                                         return ConnectionStatus.MobileBroadband;
                                 }
                                 return ConnectionStatus.None;
-                            }).Subscribe(status_subject);
+                            })                        
+                        .Publish();
+            s.Connect();
+            status = s;
         }
 
         public IObservable<ConnectionStatus> Status()
         {
-            return status_subject.AsObservable();
+            return status.AsObservable();
         }
     }
 }

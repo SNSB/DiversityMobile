@@ -97,8 +97,7 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => Page.MapManagement)
                 .ToMessage();
 
-            ActivationObservable
-                .Where(active => active && CurrentMap == null)
+            this.FirstActivation()
                 .Select(_ => Page.MapManagement)
                 .ToMessage();
 

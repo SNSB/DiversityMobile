@@ -2,6 +2,7 @@
 using System;
 using System.Reactive.Subjects;
 using System.Reactive.Linq;
+using System.Reactive;
 
 
 namespace DiversityPhone.ViewModels
@@ -32,16 +33,14 @@ namespace DiversityPhone.ViewModels
 
     public static class VMExtensions
     {
-        public static IDisposable OnFirstActivation(this PageVMBase page, Action action)
+        public static IObservable<Unit> FirstActivation(this PageVMBase page)
         {
             if (page == null)
                 throw new ArgumentNullException("page");
-            if (action == null)
-                throw new ArgumentNullException("action");
 
             return page.ActivationObservable.Where(active => active)
-                .Take(1)
-                .Subscribe(_ => action());
+                .Select(_ => Unit.Default)
+                .Take(1);
         }
     }
 }

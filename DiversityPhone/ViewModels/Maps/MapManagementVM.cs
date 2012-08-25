@@ -97,7 +97,8 @@ namespace DiversityPhone.ViewModels
 
             
 
-            this.OnFirstActivation(() => getMaps.Execute(null));
+            this.FirstActivation()
+                .Subscribe(_ => getMaps.Execute(null));
 
             MapList = getMaps.RegisterAsyncFunction(_ => MapStorage.getAllMaps().Select(m => new MapVM(m)))
                       .SelectMany(vms => vms)

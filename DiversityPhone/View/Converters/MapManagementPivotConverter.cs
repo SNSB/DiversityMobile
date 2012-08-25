@@ -50,8 +50,7 @@ namespace DiversityPhone.View
                     return MapManagementVM.Pivot.Local;
                 case 1:
                     return MapManagementVM.Pivot.Online;             
-                default:
-                    System.Diagnostics.Debugger.Break();
+                default:                    
                     return MapManagementVM.Pivot.Local;                    
             }  
         }

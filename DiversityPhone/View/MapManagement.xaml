@@ -12,9 +12,11 @@
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
-    mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     x:Name="currentPage"
+    Loaded="currentPage_Loaded"
+    Unloaded="currentPage_Unloaded"
     DataContext="{Binding Source={StaticResource Locator}, Path=MapManagement}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
@@ -37,7 +39,8 @@
     </phone:PhoneApplicationPage.Resources>
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <controls:Pivot Margin="{StaticResource PhoneHorizontalMargin}"
+        <controls:Pivot Name="pivotControl" 
+                        Margin="{StaticResource PhoneHorizontalMargin}"
                         SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}"
                         Title="MAPS">
             <controls:PivotItem Header="local">
@@ -54,8 +57,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
-            <controls:PivotItem Header="online"
-                                Visibility="{Binding IsOnlineAvailable, Converter={StaticResource BoolToVis}}">
+            <controls:PivotItem Name="onlinePivot" Header="online">
                 <StackPanel>                    
                     <TextBox TextChanged="QueryString_TextChanged"/>
                     <ListBox ItemsSource="{Binding SearchResults}">

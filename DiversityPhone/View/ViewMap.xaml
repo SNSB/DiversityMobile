@@ -34,24 +34,25 @@
         <ScrollViewer Grid.Row="1"
                       Width="Auto"
                       Height="Auto"
-		    Name="scrollViewer"
-        	ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-        	ScrollViewer.VerticalScrollBarVisibility="Visible"                                                     
-        	Tap="scrollViewer_Tap" 
-        	DoubleTap="scrollViewer_DoubleTap">
-                <Canvas RenderTransformOrigin="0.5, 0.5"
-                        Height="{Binding MapImage.PixelHeight}" 
-                        Width="{Binding MapImage.PixelWidth}">
-                    <Canvas.RenderTransform>
-                        <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
-                    </Canvas.RenderTransform>
-                    <toolkit:GestureService.GestureListener>
-                        <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
-                    </toolkit:GestureService.GestureListener>
+		              Name="scrollViewer"
+        	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
+        	          ScrollViewer.VerticalScrollBarVisibility="Visible"                                                     
+        	          Tap="scrollViewer_Tap" 
+        	          DoubleTap="scrollViewer_DoubleTap">
+            <Canvas Name="MainCanvas"
+                    RenderTransformOrigin="0.5, 0.5"
+                    Height="{Binding MapImage.PixelHeight}" 
+                    Width="{Binding MapImage.PixelWidth}">
+                <Canvas.RenderTransform>
+                    <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
+                </Canvas.RenderTransform>
+                <toolkit:GestureService.GestureListener>
+                    <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
+                </toolkit:GestureService.GestureListener>
 
-                    <Image Source="{Binding MapImage}"
-                           CacheMode="BitmapCache"/>
-                </Canvas>
+                <Image Source="{Binding MapImage}"
+                       CacheMode="BitmapCache"/>
+            </Canvas>
         </ScrollViewer>
     </Grid>
 
