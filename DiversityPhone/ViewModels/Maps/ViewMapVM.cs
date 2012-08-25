@@ -39,34 +39,18 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private int _MapHeight;
-        public int MapHeight
+        private Point _CurrentLocation = new Point(0.5,0.5);
+        public Point CurrentLocation
         {
             get
             {
-                return _MapHeight;
+                return _CurrentLocation;
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.MapHeight, ref _MapHeight, value);
+                this.RaiseAndSetIfChanged(x => x.CurrentLocation, ref _CurrentLocation, value);
             }
         }
-
-
-        private int _MapWidth;
-
-        public int MapWidth
-        {
-            get
-            {
-                return _MapWidth;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.MapWidth, ref _MapWidth, value);
-            }
-        }    
-        
         
 
         private double _Scale = 1.0;
@@ -74,17 +58,13 @@ namespace DiversityPhone.ViewModels
         {
             get { return _Scale; }
             set
-            {
-                if (_Scale != value)
-                {
-                    if (value > SCALEMAX)
-                        value = SCALEMAX;
-                    else if (value < SCALEMIN)
-                        value = SCALEMIN;
-
-                    _Scale = value;
-                    this.RaisePropertyChanged(x => x.Scale);
-                }
+            {                
+                if (value > SCALEMAX)
+                    value = SCALEMAX;
+                else if (value < SCALEMIN)
+                    value = SCALEMIN;
+                
+                this.RaiseAndSetIfChanged(x => x.Scale, ref _Scale, value);                
             }                
         }
 

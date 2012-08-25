@@ -8,6 +8,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"    
     xmlns:vw="clr-namespace:DiversityPhone.View"
+    Loaded="PhoneApplicationPage_Loaded"
+    Unloaded="PhoneApplicationPage_Unloaded"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -17,6 +19,7 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
     <phone:PhoneApplicationPage.Resources>
         <vw:StreamToImageConverter x:Key="StreamToImage"/>
+        <vw:MultiplyConverter x:Key="Multiply"/>
     </phone:PhoneApplicationPage.Resources>
     
     <Grid Background="Transparent">
@@ -40,17 +43,16 @@
         	          Tap="scrollViewer_Tap" 
         	          DoubleTap="scrollViewer_DoubleTap">
             <Canvas Name="MainCanvas"
-                    RenderTransformOrigin="0.5, 0.5"
                     Height="{Binding MapImage.PixelHeight}" 
                     Width="{Binding MapImage.PixelWidth}">
-                <Canvas.RenderTransform>
-                    <CompositeTransform ScaleX="{Binding Scale}" ScaleY="{Binding Scale}" />
-                </Canvas.RenderTransform>
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
                 </toolkit:GestureService.GestureListener>
 
                 <Image Source="{Binding MapImage}"
+                       CacheMode="BitmapCache"/>
+                <Image Source="/Images/GpsPosition.png"
+                       Name="currentPosImg"
                        CacheMode="BitmapCache"/>
             </Canvas>
         </ScrollViewer>

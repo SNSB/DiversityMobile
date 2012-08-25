@@ -254,6 +254,7 @@
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
     <Compile Include="View\Converters\MapManagementPivotConverter.cs" />
+    <Compile Include="View\Converters\MultiplyConverter.cs" />
     <Compile Include="View\Converters\StreamToImageConverter.cs" />
     <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
     <Compile Include="View\Converters\PointToVisibilityConverter.cs" />

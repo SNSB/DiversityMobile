@@ -8,13 +8,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-
+using ReactiveUI;
+using System.Reactive.Linq;
 using Microsoft.Phone.Controls;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using System.Windows.Media.Imaging;
 using System.Collections.Specialized;
 using DiversityPhone.Model.Geometry;
+using System.Reactive.Disposables;
+using System.Reactive;
 
 namespace DiversityPhone.View
 {
@@ -22,8 +25,9 @@ namespace DiversityPhone.View
     {
 
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
+
+        private double currentScale = 1.0, centerX = 0.5, centerY = 0.5;
         
-        private Point percTouchCenter= new Point(0, 0);
        
        
 
@@ -32,7 +36,6 @@ namespace DiversityPhone.View
         public ViewMap()
         {
             InitializeComponent();
-
         }
 
         private void focusOn(double x, double y)
@@ -41,31 +44,24 @@ namespace DiversityPhone.View
             scrollViewer.ScrollToVerticalOffset(y);
         }
 
-        #region OnPinch
-
         private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
         {
             Point t1 = e.GetPosition(MainCanvas, 0);
             Point t2 = e.GetPosition(MainCanvas, 1);
+
             
-            //percTouchCenter = VM.calculatePixelToPercentPoint(center); 
+
+            currentScale = VM.Scale;
         }
 
         private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
-            VM.Scale *= e.DistanceRatio;
-
-            //Point center = VM.calculatePercentToPixelPoint(percTouchCenter, 0, 0, VM.Zoom);
-            //focusOn(center.X - offsetFromCenterX, center.Y - offsetFromCenterY);
+            VM.Scale = currentScale * e.DistanceRatio;
         }
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
         {
         }
-
-        #endregion
-
-        #region Scroll
 
         private void scrollViewer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         { 
@@ -83,12 +79,37 @@ namespace DiversityPhone.View
 
         }
 
-        #endregion
-
         private void SelectMap_Click(object sender, EventArgs e)
         {
             if (VM != null)
                 VM.SelectMap.Execute(null);
+        }
+
+        CompositeDisposable subscriptions = new CompositeDisposable();
+
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            subscriptions.Add(
+            VM.ObservableForProperty(x => x.Scale).Value()
+                .Subscribe(scale => MainCanvas.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale, CenterX = centerX, CenterY = centerY })
+                );
+            subscriptions.Add(
+                Observable.CombineLatest(
+                    VM.ObservableForProperty(x => x.CurrentLocation).Value(),
+                    VM.ObservableForProperty(x => x.MapImage).Value(),
+                    (loc, img) =>
+                    {
+                        Canvas.SetLeft(currentPosImg, loc.X * img.PixelWidth);
+                        Canvas.SetTop(currentPosImg, loc.Y * img.PixelHeight);
+                        return Unit.Default;
+                    }).Subscribe(_ => {}));
+
+                
+        }
+
+        private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            subscriptions.Dispose();
         }
     }
 }
