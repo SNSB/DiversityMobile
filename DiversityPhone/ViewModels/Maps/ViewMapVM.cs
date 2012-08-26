@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewMapVM : PageVMBase
+    public class ViewMapVM : PageVMBase, ISavePageVM
     {
         private const double SCALEMIN = 0.2;
         private const double SCALEMAX = 3;
@@ -21,12 +21,34 @@ namespace DiversityPhone.ViewModels
         private ILocationService Location;
 
         public ReactiveCommand SelectMap { get; private set; }
+        public IReactiveCommand ToggleEditable { get; private set; }
+        public ReactiveCommand SetLocation { get; private set; }
+        public IReactiveCommand Save { get; private set; }
 
         public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
 
         public ILocalizable Current { get { return _Current.Value; } }
         private ObservableAsPropertyHelper<ILocalizable> _Current;
+
+        public bool IsEditable { get { return _IsEditable.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsEditable;
+        
+
+        private double _Scale = 1.0;
+        public double Scale
+        {
+            get { return _Scale; }
+            set
+            {
+                if (value > SCALEMAX)
+                    value = SCALEMAX;
+                else if (value < SCALEMIN)
+                    value = SCALEMIN;
+
+                this.RaiseAndSetIfChanged(x => x.Scale, ref _Scale, value);
+            }
+        }
 
         private BitmapImage _MapImage;
         public BitmapImage MapImage
@@ -64,24 +86,8 @@ namespace DiversityPhone.ViewModels
             }
             private set
             {
-                this.RaiseAndSetIfChanged(x => x.CurrentLocalization, ref _CurrentLocation, value);
+                this.RaiseAndSetIfChanged(x => x.CurrentLocalization, ref _CurrentLocalization, value);
             }
-        }
-        
-
-        private double _Scale = 1.0;
-        public double Scale 
-        {
-            get { return _Scale; }
-            set
-            {                
-                if (value > SCALEMAX)
-                    value = SCALEMAX;
-                else if (value < SCALEMIN)
-                    value = SCALEMIN;
-                
-                this.RaiseAndSetIfChanged(x => x.Scale, ref _Scale, value);                
-            }                
         }
 
         public ViewMapVM(Container ioc)
@@ -112,9 +118,43 @@ namespace DiversityPhone.ViewModels
                 .BindTo(this, x => x.MapImage);
 
             _Current = this.ObservableToProperty(Messenger.Listen<ILocalizable>(MessageContracts.VIEW), x => x.Current);
-            _Current                
-                .Select(c => (CurrentMap != null && c.Latitude.HasValue && c.Longitude.HasValue) ? CurrentMap.Model.PercentilePositionOnMap(c.Latitude.Value, c.Longitude.Value) : null)
+            Observable.CombineLatest(
+                _Current,
+                _CurrentMap,
+                (loc, map) => 
+                    {
+                        if(map == null)
+                            return null;
+                        if(loc != null && loc.Latitude.HasValue && loc.Longitude.HasValue)
+                            return map.Model.PercentilePositionOnMap(loc.Latitude.Value, loc.Longitude.Value);
+                        else
+                            return null;
+                    })                
                 .Subscribe(c => CurrentLocalization = c);
+
+            var current_is_localizable = _Current.Select(c => c != null);
+
+            ToggleEditable = new ReactiveCommand(current_is_localizable);
+
+            _IsEditable = this.ObservableToProperty(
+                                _Current.Select(_ => false)
+                                .Merge(ToggleEditable.Select(_ => true)),
+                                x => x.IsEditable);
+
+            SetLocation = new ReactiveCommand(_IsEditable);
+            SetLocation
+                .Select(loc => loc as Point?)
+                .Where(loc => loc != null)
+                .Subscribe(loc => CurrentLocalization = loc);
+
+            var valid_localization = this.ObservableForProperty(x => x.CurrentLocalization).Value()
+                .Select(loc => loc.HasValue);
+
+            Save = new ReactiveCommand(_IsEditable.BooleanAnd(valid_localization));
+            Save
+                .Select(_ => Current)
+                .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(CurrentLocalization.Value)))
+                .ToMessage(MessageContracts.SAVE);
 
             ActivationObservable
                 .Where(a => a)

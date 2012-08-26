@@ -33,9 +33,9 @@ namespace DiversityPhone.View
                 item.Visibility = System.Windows.Visibility.Collapsed;
             else
             {
-                item.Visibility = System.Windows.Visibility.Visible;                
-                Canvas.SetLeft(item, (loc.Value.X * container.Width) - (item.Width / 2));
-                Canvas.SetTop(item, (loc.Value.Y * container.Height) - (item.Height / 2));
+                item.Visibility = System.Windows.Visibility.Visible;
+                Canvas.SetLeft(item, (loc.Value.X * container.ActualWidth) - (item.ActualWidth / 2));
+                Canvas.SetTop(item, (loc.Value.Y * container.ActualHeight) - (item.ActualHeight / 2));
             }
         }
 

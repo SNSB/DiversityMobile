@@ -15,7 +15,7 @@ namespace DiversityPhone.View.Appbar
 {
     public class EditPageDeleteButton : CommandButtonAdapter
     {
-        public EditPageDeleteButton(IApplicationBar appbar, IEditPageVM vm)
+        public EditPageDeleteButton(IApplicationBar appbar, IDeletePageVM vm)
             : base(
                 new ApplicationBarIconButton() 
                 {

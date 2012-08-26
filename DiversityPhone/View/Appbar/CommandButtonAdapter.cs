@@ -37,6 +37,7 @@ namespace DiversityPhone.View.Appbar
                             );
                         _Command.CanExecuteChanged += CanExecuteChanged;
                         Button.Click += Click;
+                        CanExecuteChanged(null, null);
                     }
                     else
                         _command_handle.Dispose();
@@ -52,9 +53,7 @@ namespace DiversityPhone.View.Appbar
             if (button == null)
                 throw new ArgumentNullException("button");
             Button = button;
-            Command = command;            
-
-            CanExecuteChanged(null, null);
+            Command = command; 
         }
 
         void Click(object sender, EventArgs e)

@@ -17,7 +17,7 @@ using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View.Appbar
 {
-    public class EditPageSaveEditButton
+    public class EditPageSaveEditButton : IDisposable
     {
         private readonly Uri SAVE_IMAGE = new Uri("/Images/appbar.save.rest.png", UriKind.Relative);
         private readonly Uri EDIT_IMAGE = new Uri("/Images/appbar.edit.rest.png", UriKind.Relative);
@@ -25,10 +25,10 @@ namespace DiversityPhone.View.Appbar
         private readonly string EDIT_TEXT;
 
         IApplicationBarIconButton _btn;
-        IEditPageVM _vm;
+        ISavePageVM _vm;
         CommandButtonAdapter _cmdadapter;
 
-        public EditPageSaveEditButton(IApplicationBar appbar, IEditPageVM vm)
+        public EditPageSaveEditButton(IApplicationBar appbar, ISavePageVM vm)
             : this(new ApplicationBarIconButton() { IsEnabled = true }, vm)
         {
             if(appbar == null)
@@ -37,7 +37,7 @@ namespace DiversityPhone.View.Appbar
             appbar.Buttons.Add(_cmdadapter.Button);
         }
 
-        public EditPageSaveEditButton(IApplicationBarIconButton btn, IEditPageVM vm)
+        public EditPageSaveEditButton(IApplicationBarIconButton btn, ISavePageVM vm)
         {
             _btn = btn;
             _vm = vm;
@@ -65,5 +65,13 @@ namespace DiversityPhone.View.Appbar
             _btn.Text = (iseditable) ? SAVE_TEXT : EDIT_TEXT;
         }
 
+
+        public void Dispose()
+        {
+            _cmdadapter.Dispose();
+            _btn = null;
+            _vm = null;
+            _cmdadapter = null;
+        }
     }
 }

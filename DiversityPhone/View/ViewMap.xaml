@@ -25,6 +25,7 @@
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -34,17 +35,17 @@
     		       Style="{StaticResource PhoneTextNormalStyle}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Top"/>
-        <ScrollViewer Grid.Row="1"
+        <vw:InfoLabel Grid.Row="1" Text="Tap to set new location!" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+        <ScrollViewer Grid.Row="2"
                       Width="Auto"
                       Height="Auto"
 		              Name="scrollViewer"
         	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-        	          ScrollViewer.VerticalScrollBarVisibility="Visible"                                                     
-        	          Tap="scrollViewer_Tap" 
-        	          DoubleTap="scrollViewer_DoubleTap">
+        	          ScrollViewer.VerticalScrollBarVisibility="Visible">
             <Canvas Name="MainCanvas"
                     Height="{Binding MapImage.PixelHeight}" 
-                    Width="{Binding MapImage.PixelWidth}">
+                    Width="{Binding MapImage.PixelWidth}"
+                    Tap="MainCanvas_Tap">
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
                 </toolkit:GestureService.GestureListener>

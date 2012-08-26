@@ -123,8 +123,10 @@ namespace DiversityPhone.Services
         }
 
 
-        public static Coordinate GPSFromPercentilePosition(this Map This, double percX, double percY)
+        public static Coordinate GPSFromPercentilePosition(this Map This, Point pos)
         {
+            double percX = pos.X;
+            double percY = pos.Y;
             Point A = new Point(This.NWLong, This.NWLat);
             Point B = new Point(This.NELong, This.NELat);
             Point C = new Point(This.SELong, This.SELat);
@@ -146,11 +148,11 @@ namespace DiversityPhone.Services
 
             if (p != null)
             {
-                Coordinate pos = new Coordinate();
-                pos.Longitude = p.Value.X;
-                pos.Latitude = p.Value.Y;
-                pos.Altitude = Double.NaN;
-                return pos;
+                Coordinate gps = new Coordinate();
+                gps.Longitude = p.Value.X;
+                gps.Latitude = p.Value.Y;
+                gps.Altitude = Double.NaN;
+                return gps;
             }
             else
             {

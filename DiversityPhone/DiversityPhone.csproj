@@ -126,6 +126,8 @@
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\TestMapTransferService.cs" />
     <Compile Include="ViewModels\IAudioVideoPageVM.cs" />
+    <Compile Include="ViewModels\IDeletePageVM.cs" />
+    <Compile Include="ViewModels\ISavePageVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
@@ -249,6 +251,9 @@
     <Compile Include="View\Appbar\NewPhotoAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewVideoAppBarUpdater.cs" />
     <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
+    <Compile Include="View\Controls\InfoLabel.xaml.cs">
+      <DependentUpon>InfoLabel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
@@ -391,6 +396,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
       <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
+    </Page>
+    <Page Include="View\Controls\InfoLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Controls\MultimediaListControl.xaml">
       <SubType>Designer</SubType>

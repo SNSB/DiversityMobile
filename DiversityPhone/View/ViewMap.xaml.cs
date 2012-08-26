@@ -18,6 +18,7 @@ using System.Collections.Specialized;
 using DiversityPhone.Model.Geometry;
 using System.Reactive.Disposables;
 using System.Reactive;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -27,7 +28,8 @@ namespace DiversityPhone.View
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
         private double currentScale = 1.0, centerX = 0.5, centerY = 0.5;
-        
+
+        private EditPageSaveEditButton _btn;
        
        
 
@@ -36,6 +38,8 @@ namespace DiversityPhone.View
         public ViewMap()
         {
             InitializeComponent();
+
+            _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);
         }
 
         private void focusOn(double x, double y)
@@ -61,22 +65,6 @@ namespace DiversityPhone.View
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
         {
-        }
-
-        private void scrollViewer_Tap(object sender, System.Windows.Input.GestureEventArgs e)
-        { 
-            //if (VM != null)
-            //    if(VM.ActualPosPoint.X>0 && VM.ActualPosPoint.Y>0)
-            //            focusOn(VM.ActualPosPoint.X-scrollViewer.Width/2, VM.ActualPosPoint.Y-scrollViewer.Height/2);
-        }
-
-        private void scrollViewer_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
-        {
-
-            //if (VM != null && VM.ActualPosPoint != null)
-            //    if (VM.ActualPosPoint.X > 0 && VM.ActualPosPoint.Y > 0)
-            //        focusOn(VM.ActualPosPoint.X - scrollViewer.Width / 2, VM.ActualPosPoint.Y - scrollViewer.Height / 2);
-
         }
 
         private void SelectMap_Click(object sender, EventArgs e)
@@ -105,6 +93,15 @@ namespace DiversityPhone.View
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)
         {
             subscriptions.Dispose();
+        }
+
+        private void MainCanvas_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            var point = e.GetPosition(MainCanvas);
+            point.X /= MainCanvas.Width;
+            point.Y /= MainCanvas.Height;
+            if(VM != null && VM.SetLocation.CanExecute(point))
+                VM.SetLocation.Execute(point);
         }
     }
 }
