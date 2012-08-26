@@ -50,7 +50,8 @@ namespace DiversityPhone.Services
                     new_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
                     view_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.ViewAudio),
                     view_mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.ViewImage),
-                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.ViewVideo)
+                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.ViewVideo),
+                    Messenger.Listen<ILocalizable>(MessageContracts.VIEW).Select(_ => Page.ViewMap)
                     )
                 );
 

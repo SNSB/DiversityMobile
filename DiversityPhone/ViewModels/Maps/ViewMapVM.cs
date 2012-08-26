@@ -24,7 +24,9 @@ namespace DiversityPhone.ViewModels
 
         public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
-        
+
+        public ILocalizable Current { get { return _Current.Value; } }
+        private ObservableAsPropertyHelper<ILocalizable> _Current;
 
         private BitmapImage _MapImage;
         public BitmapImage MapImage
@@ -40,16 +42,29 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private Point? _CurrentLocation = new Point(0.5,0.5);
+        private Point? _CurrentLocation = null;
         public Point? CurrentLocation
         {
             get
             {
                 return _CurrentLocation;
             }
-            set
+            private set
             {
                 this.RaiseAndSetIfChanged(x => x.CurrentLocation, ref _CurrentLocation, value);
+            }
+        }
+
+        private Point? _CurrentLocalization = null;
+        public Point? CurrentLocalization
+        {
+            get
+            {
+                return _CurrentLocalization;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(x => x.CurrentLocalization, ref _CurrentLocation, value);
             }
         }
         
@@ -85,8 +100,6 @@ namespace DiversityPhone.ViewModels
 
 
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
-
-            
             _CurrentMap
                 .SelectMany(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)).TakeUntil(_CurrentMap))                
                 .ObserveOnDispatcher()
@@ -98,13 +111,15 @@ namespace DiversityPhone.ViewModels
                     })
                 .BindTo(this, x => x.MapImage);
 
-
-            var loc_obs = Location.Location();
+            _Current = this.ObservableToProperty(Messenger.Listen<ILocalizable>(MessageContracts.VIEW), x => x.Current);
+            _Current                
+                .Select(c => (CurrentMap != null && c.Latitude.HasValue && c.Longitude.HasValue) ? CurrentMap.Model.PercentilePositionOnMap(c.Latitude.Value, c.Longitude.Value) : null)
+                .Subscribe(c => CurrentLocalization = c);
 
             ActivationObservable
                 .Where(a => a)
                 .Where(_ => CurrentMap != null)  
-                .SelectMany(_ => loc_obs.TakeUntil(ActivationObservable.Where(a => !a)))
+                .SelectMany(_ => Location.Location().TakeUntil(ActivationObservable.Where(a => !a)))
                 .Select(c => CurrentMap.Model.PercentilePositionOnMap(c.Latitude.Value, c.Longitude.Value))
                 .Subscribe(c => CurrentLocation = c);
 

@@ -82,8 +82,8 @@ namespace DiversityPhone.ViewModels
             Maps=new ReactiveCommand();
 
 
-            Maps.Select(_ => Page.ViewMap)
-                .ToMessage();
+            Maps.Select(_ => null as ILocalizable)
+                .ToMessage(MessageContracts.VIEW);
 
             Observable.Merge(
                 Messenger.Listen<EventMessage>(MessageContracts.CLEAN),

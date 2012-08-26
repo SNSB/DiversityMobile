@@ -112,8 +112,8 @@ namespace DiversityPhone.ViewModels
 
             Maps = new ReactiveCommand();
             Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.IdentificationUnit, Current.Model.DiversityCollectionUnitID.ToString()))
-                .ToMessage();
+                .Select(_ => Current.Model as ILocalizable)
+                .ToMessage(MessageContracts.VIEW);
                             
 
             Back = new ReactiveCommand();

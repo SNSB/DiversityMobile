@@ -296,10 +296,11 @@
     <Compile Include="View\NewVideo.xaml.cs">
       <DependentUpon>NewVideo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ProgressBinding.cs" />
+    <Compile Include="View\Helper\ProgressBinding.cs" />
     <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Helper\RelativeLocationBinding.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

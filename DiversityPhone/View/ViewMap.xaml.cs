@@ -94,20 +94,10 @@ namespace DiversityPhone.View
             VM.ObservableForProperty(x => x.Scale).Value()
                 .Subscribe(scale => MainCanvas.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale, CenterX = centerX, CenterY = centerY })
                 );
-            s.Add(
-                    VM.ObservableForProperty(x => x.CurrentLocation).Value().Subscribe(
-                    loc =>
-                    {
-                        var img = VM.MapImage;
-                        if (!loc.HasValue || img == null)
-                            currentPosImg.Visibility = System.Windows.Visibility.Collapsed;
-                        else
-                        {
-                            currentPosImg.Visibility = System.Windows.Visibility.Visible;
-                            Canvas.SetLeft(currentPosImg,(loc.Value.X * img.PixelWidth) - 16);
-                            Canvas.SetTop(currentPosImg,(loc.Value.Y * img.PixelHeight) - 16);
-                        }
-                    }));
+
+            s.Add(new RelativeLocationBinding(MainCanvas, currentPosImg, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
+
+            s.Add(new RelativeLocationBinding(MainCanvas, currentLocalizationImg, VM.ObservableForProperty(x => x.CurrentLocalization).Value().StartWith(VM.CurrentLocalization)));
 
             subscriptions = s;
         }

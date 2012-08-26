@@ -28,7 +28,6 @@ namespace DiversityPhone.ViewModels
      
         #region Commands
         public ReactiveCommand Add { get; private set; }
-        public ReactiveCommand Maps { get; private set; }
 
         public ReactiveCommand<IElementVM<Specimen>> EditSpecimen { get; private set; }
         public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
@@ -91,13 +90,6 @@ namespace DiversityPhone.ViewModels
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
-               
-               
-            Maps = new ReactiveCommand();
-            var mapMessageSource =
-                Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Specimen, Current.Model.DiversityCollectionSpecimenID.ToString()));
-            Messenger.RegisterMessageSource(mapMessageSource);
         }
 
 

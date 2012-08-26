@@ -118,8 +118,8 @@ using System.Reactive.Disposables;
             //Maps
             Maps = new ReactiveCommand();
             Maps
-                .Select(_ => new NavigationMessage(Page.LoadedMaps, null, ReferrerType.Event, Current.Model.DiversityCollectionEventID.ToString()))
-                .ToMessage();
+                .Select(_ => Current.Model as ILocalizable)
+                .ToMessage(MessageContracts.VIEW);
         } 
     }
 }

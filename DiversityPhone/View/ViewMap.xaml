@@ -19,7 +19,7 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
     <phone:PhoneApplicationPage.Resources>
         <vw:StreamToImageConverter x:Key="StreamToImage"/>
-        <vw:MultiplyConverter x:Key="Multiply"/>
+        <BitmapImage x:Key="GPSPointImage" UriSource="/Images/ItemPoint.png"/>
     </phone:PhoneApplicationPage.Resources>
     
     <Grid Background="Transparent">
@@ -53,6 +53,10 @@
                        CacheMode="BitmapCache"/>
                 <Image Source="/Images/GpsPosition.png"
                        Name="currentPosImg"
+                       CacheMode="BitmapCache"/>
+
+                <Image Source="{StaticResource GPSPointImage}"
+                       Name="currentLocalizationImg"
                        CacheMode="BitmapCache"/>
             </Canvas>
         </ScrollViewer>
