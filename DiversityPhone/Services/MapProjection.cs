@@ -8,15 +8,15 @@ namespace DiversityPhone.Services
     public static class MapProjection
     {
 
-        public static bool IsOnMap(this Map This, double? latitude, double? longitude)
+        public static Point? PercentilePositionOnMap(this Map This, ILocalizable loc)
         {
-            if (This == null || latitude == null || longitude == null)
-                return false;
+            if (This == null || loc == null || !loc.Latitude.HasValue || !loc.Longitude.HasValue)
+                return null;
 
-            Point? p = This.PercentilePositionOnMap((double)latitude, (double)longitude);
+            Point? p = PercentilePositionOnMapImpl(This, loc.Latitude.Value, loc.Longitude.Value);
             if (p == null || p.Value.X < 0 || p.Value.X > 1 || p.Value.Y < 0 || p.Value.Y > 1)
-                return false;
-            return true;
+                return null;
+            return p;
         }
 
 
@@ -27,7 +27,7 @@ namespace DiversityPhone.Services
         //A cohort of lines is definend ny the connection between those lines parametrized by the percentual scale between the cornerpoint of the 2 lines definend in This way.
         //Analogously 2 lines are definend in the y-Direction which also define a cohort of lines between them. The GPS-Value is at a specific intersection of these cohorts.
         //These specific lines of the cohorts can be found by solving a quadratic equation. Theses lines define with their parameters the position of the GPS-Value on the map (On a percentual basis).
-        public static Point? PercentilePositionOnMap(this Map This, double GPSLatitude, double GPSLongitude)
+        private static Point? PercentilePositionOnMapImpl(Map This, double GPSLatitude, double GPSLongitude)
         {
             double a, b, c, d, e, f, g, h; //This-specific values derived form the position of the cornerpoints. a and e are dependent on addtional values and calculated in the position calculation method
             bool specialCase;//Criterion for the special case mu=-b/d (which leads to a division by zero in the lambda calculus)

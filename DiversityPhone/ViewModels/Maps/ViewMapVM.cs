@@ -9,6 +9,7 @@ using Funq;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;
+using System.Collections.Generic;
 
 namespace DiversityPhone.ViewModels
 {
@@ -19,6 +20,7 @@ namespace DiversityPhone.ViewModels
 
         private IMapStorageService MapStorage;
         private ILocationService Location;
+        private IFieldDataService Storage;
 
         public ReactiveCommand SelectMap { get; private set; }
         public IReactiveCommand ToggleEditable { get; private set; }
@@ -125,10 +127,7 @@ namespace DiversityPhone.ViewModels
                     {
                         if(map == null)
                             return null;
-                        if(loc != null && loc.Latitude.HasValue && loc.Longitude.HasValue)
-                            return map.Model.PercentilePositionOnMap(loc.Latitude.Value, loc.Longitude.Value);
-                        else
-                            return null;
+                        return map.Model.PercentilePositionOnMap(loc);                        
                     })                
                 .Subscribe(c => CurrentLocalization = c);
 
@@ -160,7 +159,7 @@ namespace DiversityPhone.ViewModels
                 .Where(a => a)
                 .Where(_ => CurrentMap != null)  
                 .SelectMany(_ => Location.Location().TakeUntil(ActivationObservable.Where(a => !a)))
-                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c.Latitude.Value, c.Longitude.Value))
+                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c))
                 .Subscribe(c => CurrentLocation = c);
 
         }
