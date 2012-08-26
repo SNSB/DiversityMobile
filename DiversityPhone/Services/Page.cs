@@ -27,13 +27,8 @@ namespace DiversityPhone.Services
         EditEventProperty,
         EditUserProfile,
         Settings,
-        LoadedMaps,
-        DownLoadMaps,
         MapManagement,
         ViewMap,
-        ViewMapES,
-        ViewMapEV,
-        ViewMapIU,
         TaxonManagement,
         Sync,
         Setup

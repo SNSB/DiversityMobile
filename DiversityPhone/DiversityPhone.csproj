@@ -173,17 +173,14 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Database\DiversityDataContext.cs" />
     <Compile Include="Services\DiversityServiceExtensions.cs" />
-    <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
     <Compile Include="Services\IConnectivityService.cs" />
-    <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Services\Maps\IMapStorageService.cs" />
     <Compile Include="Services\Maps\IMapTransferService.cs" />
     <Compile Include="Services\IMultiMediaClient.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\Database\ITaxonService.cs" />
-    <Compile Include="Services\MapParameter.cs" />
     <Compile Include="Services\Database\IFieldDataService.cs" />
     <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
@@ -222,11 +219,6 @@
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\Maps\ViewMapEditVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewMapESVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewMapEVVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewMapIUVM.cs" />
-    <Compile Include="ViewModels\Maps\OldViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\NewAudioVM.cs" />
     <Compile Include="ViewModels\Multimedia\NewImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\NewVideoVM.cs" />
@@ -241,7 +233,6 @@
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
     <Compile Include="ViewModels\Utility\SyncVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewMapPickerVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\View\ElementMultimediaVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
@@ -250,7 +241,6 @@
     <Compile Include="View\Appbar\NewAudioAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewPhotoAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewVideoAppBarUpdater.cs" />
-    <Compile Include="View\Appbar\ViewMapEditableAppbar.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
     </Compile>
@@ -365,15 +355,6 @@
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewMapES.xaml.cs">
-      <DependentUpon>ViewMapES.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewMapEV.xaml.cs">
-      <DependentUpon>ViewMapEV.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewMapIU.xaml.cs">
-      <DependentUpon>ViewMapIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewVideo.xaml.cs">
       <DependentUpon>ViewVideo.xaml</DependentUpon>
@@ -506,18 +487,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewMap.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewMapES.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewMapEV.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewMapIU.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

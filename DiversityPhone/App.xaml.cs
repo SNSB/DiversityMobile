@@ -13,7 +13,6 @@ using System.Device.Location;
 using System;
 using DiversityPhone.Messages;
 using DiversityPhone.ViewModels;
-using DiversityPhone.ViewModels.Maps;
 using DiversityPhone.ViewModels.Utility;
 
 

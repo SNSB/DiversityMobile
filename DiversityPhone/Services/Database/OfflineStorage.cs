@@ -71,7 +71,17 @@ namespace DiversityPhone.Services
                 _messenger.Listen<GeoPointForSeries>(MessageContracts.DELETE)
                     .Subscribe(gp => deleteGeoPoint(gp)),
 
-      
+                _messenger.Listen<ILocalizable>(MessageContracts.SAVE)
+                    .Subscribe(loc => 
+                        {
+                            if (loc is Event)
+                                addOrUpdateEvent(loc as Event);
+                            else if (loc is IdentificationUnit)
+                                addOrUpdateIUnit(loc as IdentificationUnit);
+                            else if (loc is GeoPointForSeries)
+                                addOrUpdateGeoPoint(loc as GeoPointForSeries);
+                        })
+                   
             };           
         }
 

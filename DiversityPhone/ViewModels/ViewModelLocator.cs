@@ -13,7 +13,6 @@ using DiversityPhone.Services;
 using ReactiveUI;
 using DiversityPhone.DiversityService;
 using DiversityPhone.ViewModels.Utility;
-using DiversityPhone.ViewModels.Maps;
 
 namespace DiversityPhone.ViewModels
 {
