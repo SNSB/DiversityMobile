@@ -57,7 +57,6 @@ namespace DiversityPhone.View
                 default:
                     System.Diagnostics.Debugger.Break();
                     return ViewCSVM.Pivots.Units;
-                    break;
             }  
         }
     }

@@ -16,7 +16,7 @@
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
     DataContext="{Binding Source={StaticResource Locator}, Path=Home}"
     Loaded="PhoneApplicationPage_Loaded"
-    x:Name="currentPage">
+    x:Name="currentPage"> 
     
         
 

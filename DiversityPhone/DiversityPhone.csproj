@@ -131,9 +131,6 @@
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
-    <Compile Include="View\Controls\CommandNotAvailableLabel.xaml.cs">
-      <DependentUpon>CommandNotAvailableLabel.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DiversityResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -241,6 +238,7 @@
     <Compile Include="View\Appbar\NewAudioAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewPhotoAppbarUpdater.cs" />
     <Compile Include="View\Appbar\NewVideoAppBarUpdater.cs" />
+    <Compile Include="View\Controls\CommandNotAvailableLabel.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
     </Compile>
@@ -365,10 +363,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="View\Controls\CommandNotAvailableLabel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Resource Include="View\Resources\IdentificationUnitTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

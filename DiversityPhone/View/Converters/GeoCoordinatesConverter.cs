@@ -22,9 +22,7 @@ namespace DiversityPhone.View
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (!(value is double && parameter != null))
-            {
-                if (parameter == ALTITUDE)
-                    return "No Position";
+            {                
                 return null;
             }
 

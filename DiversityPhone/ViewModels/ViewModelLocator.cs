@@ -21,8 +21,6 @@ namespace DiversityPhone.ViewModels
         private const string OFFLINE_STORAGE = "OfflineStorage";
         private static Container IOC { get { return App.IOC; } }   
 
-        private static HomeVM _homeVM;        
-
         public ViewModelLocator()
         {
         }

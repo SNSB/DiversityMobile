@@ -28,16 +28,12 @@ namespace DiversityPhone.View
             {
                 case ViewIUVM.Pivots.Subunits:
                     return 0;
-                    break;
                 case ViewIUVM.Pivots.Descriptions:
-                    return 1;
-                    break;                
+                    return 1;            
                 case ViewIUVM.Pivots.Multimedia:
                     return 2;
-                    break;
                 default:
                     return 0;
-                    break;
             }
 
             

@@ -30,15 +30,12 @@ namespace DiversityPhone.View
                  return 0;                 
                 case ViewEVVM.Pivots.Descriptions:
                  return 1;
-                 break;
                 case ViewEVVM.Pivots.Multimedia:
                  return 2;
-                 break;
                 default:
                  System.Diagnostics.Debugger.Break();
 
                  return 0;
-                 break;
 	        }  
 
             
