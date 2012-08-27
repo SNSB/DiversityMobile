@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:vw="clr-namespace:DiversityPhone.View"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -49,6 +50,14 @@
                                 CommandParameter="{Binding}">
                                 <ContentControl Content="{Binding}"
                                                 ContentTemplate="{StaticResource MapTemplate}"/>
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="delete" 
+                                                              Command="{Binding ElementName=currentPage, Path=DataContext.DeleteMap}" 
+                                                              CommandParameter="{Binding}"
+                                                              IsEnabled="{Binding IsDownloaded}"/>
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
                             </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
@@ -65,7 +74,7 @@
                                     Command="{Binding DataContext.DownloadMap, ElementName=currentPage}"
                                     CommandParameter="{Binding}">
                                     <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MapTemplate}"/>
+                                                    ContentTemplate="{StaticResource MapTemplate}"/>                                    
                                 </Button>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

@@ -19,6 +19,7 @@ using DiversityPhone.Model.Geometry;
 using System.Reactive.Disposables;
 using System.Reactive;
 using DiversityPhone.View.Appbar;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.View
 {
@@ -27,7 +28,26 @@ namespace DiversityPhone.View
 
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
-        private double currentScale = 1.0, centerX = 0.5, centerY = 0.5;
+        private BehaviorSubject<double> scale_subject = new BehaviorSubject<double>(1.0f);
+        private double _CurrentScale = 1.0f;
+        public double CurrentScale 
+        {
+            get { return _CurrentScale; }
+            set
+            {
+                if (value < 0.2f)
+                    value = 0.2f;
+                else if (value > 3.0f)
+                    value = 3.0f;
+
+                if (_CurrentScale != value)
+                {
+                    _CurrentScale = value;
+                    scale_subject.OnNext(_CurrentScale);
+                }
+            }
+        }
+        
 
         private EditPageSaveEditButton _btn;
        
@@ -50,17 +70,12 @@ namespace DiversityPhone.View
 
         private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
         {
-            Point t1 = e.GetPosition(MainCanvas, 0);
-            Point t2 = e.GetPosition(MainCanvas, 1);
-
             
-
-            currentScale = VM.Scale;
         }
 
         private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
-            VM.Scale = currentScale * e.DistanceRatio;
+            CurrentScale *= e.DistanceRatio;
         }
 
         private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
@@ -79,13 +94,13 @@ namespace DiversityPhone.View
         {
             var s = new CompositeDisposable();
             s.Add(
-            VM.ObservableForProperty(x => x.Scale).Value()
-                .Subscribe(scale => MainCanvas.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale, CenterX = centerX, CenterY = centerY })
+            scale_subject
+                .Subscribe(scale => mapImg.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale})
                 );
 
             s.Add(new RelativeLocationBinding(MainCanvas, currentPosImg, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
 
-            s.Add(new RelativeLocationBinding(MainCanvas, currentLocalizationImg, VM.ObservableForProperty(x => x.CurrentLocalization).Value().StartWith(VM.CurrentLocalization)));
+            s.Add(new RelativeLocationBinding(MainCanvas, currentLocalizationImg, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
 
             subscriptions = s;
         }

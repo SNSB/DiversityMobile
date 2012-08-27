@@ -43,14 +43,15 @@
         	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
         	          ScrollViewer.VerticalScrollBarVisibility="Visible">
             <Canvas Name="MainCanvas"
-                    Height="{Binding MapImage.PixelHeight}" 
-                    Width="{Binding MapImage.PixelWidth}"
+                    Height="{Binding ActualHeight, ElementName=mapImg}" 
+                    Width="{Binding ActualWidth, ElementName=mapImg}"
                     Tap="MainCanvas_Tap">
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
                 </toolkit:GestureService.GestureListener>
 
                 <Image Source="{Binding MapImage}"
+                       Name="mapImg"
                        CacheMode="BitmapCache"/>
                 <Image Source="/Images/GpsPosition.png"
                        Name="currentPosImg"
@@ -64,10 +65,10 @@
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized">
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem Text="select map" Click="SelectMap_Click" />
-            </shell:ApplicationBar.MenuItems>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Mode="Minimized">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="select map" Click="SelectMap_Click"/>
+            </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

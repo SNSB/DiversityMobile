@@ -35,22 +35,15 @@ namespace DiversityPhone.ViewModels
 
         public bool IsEditable { get { return _IsEditable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsEditable;
-        
 
-        private double _Scale = 1.0;
-        public double Scale
+        private string _MapUri;
+        public string MapUri
         {
-            get { return _Scale; }
-            set
-            {
-                if (value > SCALEMAX)
-                    value = SCALEMAX;
-                else if (value < SCALEMIN)
-                    value = SCALEMIN;
-
-                this.RaiseAndSetIfChanged(x => x.Scale, ref _Scale, value);
-            }
+            get { return _MapUri; }
+            set { this.RaiseAndSetIfChanged(x => x.MapUri, ref _MapUri, value); }
         }
+
+        
 
         private BitmapImage _MapImage;
         public BitmapImage MapImage
@@ -79,16 +72,29 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private Point? _CurrentLocalization = null;
-        public Point? CurrentLocalization
+        private Point? _PrimaryLocalization = null;
+        public Point? PrimaryLocalization
         {
             get
             {
-                return _CurrentLocalization;
+                return _PrimaryLocalization;
             }
             private set
             {
-                this.RaiseAndSetIfChanged(x => x.CurrentLocalization, ref _CurrentLocalization, value);
+                this.RaiseAndSetIfChanged(x => x.PrimaryLocalization, ref _PrimaryLocalization, value);
+            }
+        }
+
+        private IEnumerable<Point> _AdditionalLocalizations = null;
+        public IEnumerable<Point> AdditionalLocalizations
+        {
+            get
+            {
+                return _AdditionalLocalizations;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(x => x.AdditionalLocalizations, ref _AdditionalLocalizations, value);
             }
         }
 
@@ -129,7 +135,7 @@ namespace DiversityPhone.ViewModels
                             return null;
                         return map.Model.PercentilePositionOnMap(loc);                        
                     })                
-                .Subscribe(c => CurrentLocalization = c);
+                .Subscribe(c => PrimaryLocalization = c);
 
             var current_is_localizable = _Current.Select(c => c != null);
 
@@ -144,15 +150,15 @@ namespace DiversityPhone.ViewModels
             SetLocation
                 .Select(loc => loc as Point?)
                 .Where(loc => loc != null)
-                .Subscribe(loc => CurrentLocalization = loc);
+                .Subscribe(loc => PrimaryLocalization = loc);
 
-            var valid_localization = this.ObservableForProperty(x => x.CurrentLocalization).Value()
+            var valid_localization = this.ObservableForProperty(x => x.PrimaryLocalization).Value()
                 .Select(loc => loc.HasValue);
 
             Save = new ReactiveCommand(_IsEditable.BooleanAnd(valid_localization));
             Save
                 .Select(_ => Current)
-                .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(CurrentLocalization.Value)))
+                .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(PrimaryLocalization.Value)))
                 .ToMessage(MessageContracts.SAVE);
 
             ActivationObservable
