@@ -19,7 +19,7 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
     <phone:PhoneApplicationPage.Resources>
         <vw:StreamToImageConverter x:Key="StreamToImage"/>
-        <BitmapImage x:Key="GPSPointImage" UriSource="/Images/ItemPoint.png"/>
+        <BitmapImage x:Key="GPSPointImage" UriSource="/Images/BlackPoint.png"/>
     </phone:PhoneApplicationPage.Resources>
     
     <Grid Background="Transparent">

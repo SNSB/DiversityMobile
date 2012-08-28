@@ -160,9 +160,9 @@ namespace DiversityPhone.ViewModels
 
             ActivationObservable
                 .Where(a => a)
-                .Where(_ => CurrentMap != null)  
+                .Where(_ => CurrentMap != null)
                 .SelectMany(_ => Location.Location().TakeUntil(ActivationObservable.Where(a => !a)))
-                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c))
+                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c))                
                 .Subscribe(c => CurrentLocation = c);
 
         }

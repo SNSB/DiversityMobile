@@ -117,7 +117,7 @@ namespace DiversityPhone.View
                     MainCanvas.Children.Add(img);
                 }));
 
-
+            s.Add(VM.AdditionalLocalizations.IsEmpty.DistinctUntilChanged().Where(empty => empty).Subscribe(_ => additionallocalization_images.Dispose()));
 
             subscriptions = s;
         }
