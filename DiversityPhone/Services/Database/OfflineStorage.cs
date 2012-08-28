@@ -143,7 +143,7 @@ namespace DiversityPhone.Services
             {
                 this.deleteMMO(mmo);
             }
-            IList<GeoPointForSeries> attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID.Value);
+            var attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID.Value);
             foreach (GeoPointForSeries gp in attachedGeoPoints)
             {
                 this.deleteGeoPoint(gp);
@@ -160,21 +160,24 @@ namespace DiversityPhone.Services
 
         public IList<GeoPointForSeries> getAllGeoPoints()
         {
-            return cachedQuery(GeoPointForSeries.Operations,
+            return uncachedQuery(
             ctx =>
                 from gt in ctx.GeoTour
                 select gt
                 );
         }
 
-        public IList<GeoPointForSeries>  getGeoPointsForSeries(int SeriesID)
-        {
-            return cachedQuery(GeoPointForSeries.Operations,
-            ctx =>
-                from gt in ctx.GeoTour
-                where gt.SeriesID==SeriesID
-                select gt
-                );
+        public IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
+        {           
+            using (var ctx = new DiversityDataContext())
+            {
+                var query = from gt in ctx.GeoTour
+                            where gt.SeriesID == SeriesID
+                            select gt;
+
+                foreach (var gp in query)
+                    yield return gp;
+            }
         }
 
         public void addOrUpdateGeoPoint(GeoPointForSeries gp)
@@ -192,23 +195,12 @@ namespace DiversityPhone.Services
 
         public String convertGeoPointsToString(int seriesID)
         {
-            IList<GeoPointForSeries> pointsForSeries = getGeoPointsForSeries(seriesID);
-            if (pointsForSeries.Count > 0)
+            var pointsForSeries = getGeoPointsForSeries(seriesID);
+            if (pointsForSeries.Any())
             {
-                StringBuilder sb = new StringBuilder("geography::STGeomFromText('LINESTRING(");
-                for (int i = 0; i < pointsForSeries.Count; i++)
-                {
-                    GeoPointForSeries gp = pointsForSeries[i];
-                    if (i + 1 < pointsForSeries.Count)
-                    {
-                        sb.Append(gp.Longitude + " " + gp.Latitude + ", ");
-                    }
-                    else //Last GeoPoint
-                    {
-                        sb.Append(")', 4326)");
-                    }
-                }
-                return sb.ToString();
+                return string.Format("geography::STGeomFromText('LINESTRING({0})', 4326)",
+                        string.Join(", ", pointsForSeries.Select(gp => string.Format("{0} {1}", gp.Longitude, gp.Latitude)))
+                    );
             }
             else return String.Empty;
         }

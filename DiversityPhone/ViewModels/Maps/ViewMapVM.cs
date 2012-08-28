@@ -10,6 +10,7 @@ using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;
 using System.Collections.Generic;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -122,7 +123,26 @@ namespace DiversityPhone.ViewModels
                     })
                 .BindTo(this, x => x.MapImage);
 
-            _Current = this.ObservableToProperty(Messenger.Listen<ILocalizable>(MessageContracts.VIEW), x => x.Current);
+            var series_obs = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS);
+
+            _Current = this.ObservableToProperty(
+                            Messenger.Listen<ILocalizable>(MessageContracts.VIEW)
+                            .Merge(series_obs.Select(_ => null as ILocalizable))
+                            , x => x.Current);
+
+            series_obs
+                .Do(_ => _AdditionalLocalizations.Clear())
+                .SelectMany(vm => 
+                    Storage.getGeoPointsForSeries(vm.Model.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
+                    .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == vm.Model.SeriesID.Value))
+                    .TakeUntil(series_obs)
+                    )                
+                .CombineLatest(_CurrentMap.Where(x => x != null), (gp, vm) => vm.Model.PercentilePositionOnMap(gp))
+                .Where(pos => pos.HasValue)
+                .Select(pos => pos.Value)
+                .ObserveOnDispatcher()               
+                .Subscribe(_AdditionalLocalizations.Add);
+
             Observable.CombineLatest(
                 _Current,
                 _CurrentMap,
@@ -140,7 +160,8 @@ namespace DiversityPhone.ViewModels
 
             _IsEditable = this.ObservableToProperty(
                                 _Current.Select(_ => false)
-                                .Merge(ToggleEditable.Select(_ => true)),
+                                .Merge(ToggleEditable.Select(_ => true))
+                                .Merge(_CurrentMap.Select(_ => false)),
                                 x => x.IsEditable);
 
             SetLocation = new ReactiveCommand(_IsEditable);
