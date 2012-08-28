@@ -121,6 +121,7 @@ namespace DiversityPhone.ViewModels
                     {
                         var img = new BitmapImage();
                         img.SetSource(stream);
+                        stream.Close();
                         return img;
                     })
                 .BindTo(this, x => x.MapImage);

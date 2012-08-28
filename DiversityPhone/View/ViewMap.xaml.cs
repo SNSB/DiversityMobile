@@ -93,14 +93,27 @@ namespace DiversityPhone.View
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             var s = new CompositeDisposable();
-            s.Add(
-            scale_subject
-                .Subscribe(scale => mapImg.RenderTransform = new ScaleTransform() { ScaleY = scale, ScaleX = scale})
+
+            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);                    
+                    
+
+            var size_obs = Observable.CombineLatest(
+                    scale_subject,
+                    image_obs,
+                    (scale, img) => new Point() { X = scale * img.PixelWidth, Y = scale * img.PixelHeight});
+            
+            s.Add(image_obs.Subscribe(img => mapImg.Source = img));
+
+            s.Add(size_obs
+                    .Subscribe(size => { mapImg.Height = size.Y; mapImg.Width = size.X; })
+                );
+            s.Add(size_obs
+                    .Subscribe(size => { MainCanvas.Height = size.Y; MainCanvas.Width = size.X; })
                 );
 
-            s.Add(new RelativeLocationBinding(MainCanvas, currentPosImg, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
+            s.Add(new RelativeLocationBinding(currentPosImg, size_obs, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
 
-            s.Add(new RelativeLocationBinding(MainCanvas, currentLocalizationImg, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
+            s.Add(new RelativeLocationBinding(currentLocalizationImg, size_obs, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
 
             subscriptions = s;
         }

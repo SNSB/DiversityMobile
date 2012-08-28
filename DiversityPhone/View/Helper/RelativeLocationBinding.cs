@@ -8,22 +8,24 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.View
 {
     public class RelativeLocationBinding : IDisposable
-    {
-        Canvas container;
+    {        
         FrameworkElement item;        
         IDisposable subscription;
 
-        public RelativeLocationBinding(Canvas container, FrameworkElement item, IObservable<Point?> locations)
-        {
-            this.container = container;
+        public RelativeLocationBinding(FrameworkElement item,IObservable<Point> container_sizes, IObservable<Point?> locations)
+        {   
             this.item = item;
             item.Visibility = Visibility.Collapsed;
-            this.subscription = locations.Subscribe(updateLocation);
-
+            this.subscription = Observable.CombineLatest(
+                container_sizes,
+                locations,
+                (size, loc) => (loc.HasValue) ? new Point(size.X * loc.Value.X, size.Y * loc.Value.Y) as Point? : null)
+                .Subscribe(updateLocation);
             
         }
 
@@ -34,8 +36,8 @@ namespace DiversityPhone.View
             else
             {
                 item.Visibility = System.Windows.Visibility.Visible;
-                Canvas.SetLeft(item, (loc.Value.X * container.ActualWidth) - (item.ActualWidth / 2));
-                Canvas.SetTop(item, (loc.Value.Y * container.ActualHeight) - (item.ActualHeight / 2));
+                Canvas.SetLeft(item, (loc.Value.X ) - (item.ActualWidth / 2));
+                Canvas.SetTop(item, (loc.Value.Y ) - (item.ActualHeight / 2));
             }
         }
 

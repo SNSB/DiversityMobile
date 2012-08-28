@@ -43,15 +43,14 @@
         	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
         	          ScrollViewer.VerticalScrollBarVisibility="Visible">
             <Canvas Name="MainCanvas"
-                    Height="{Binding ActualHeight, ElementName=mapImg}" 
-                    Width="{Binding ActualWidth, ElementName=mapImg}"
                     Tap="MainCanvas_Tap">
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener PinchStarted="OnPinchStarted" PinchDelta="OnPinchDelta" PinchCompleted="OnPinchCompleted" />
                 </toolkit:GestureService.GestureListener>
 
-                <Image Source="{Binding MapImage}"
-                       Name="mapImg"
+                <Image Name="mapImg"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
                        CacheMode="BitmapCache"/>
                 <Image Source="/Images/GpsPosition.png"
                        Name="currentPosImg"
