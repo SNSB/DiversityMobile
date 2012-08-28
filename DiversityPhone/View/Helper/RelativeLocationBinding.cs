@@ -9,35 +9,73 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Reactive.Linq;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.View
 {
     public class RelativeLocationBinding : IDisposable
-    {        
-        FrameworkElement item;        
-        IDisposable subscription;
+    {
+        private Point? _RelativeLocation = null;
+        public Point? RelativeLocation 
+        {
+            get { return _RelativeLocation; }
+            set
+            {
+                if (_RelativeLocation != value)
+                {
+                    _RelativeLocation = value;
+                    updateLocation();
+                }
+            }                
+        }
 
-        public RelativeLocationBinding(FrameworkElement item,IObservable<Point> container_sizes, IObservable<Point?> locations)
-        {   
+        private Point _TargetSize = new Point(0,0);
+        public Point TargetSize
+        {
+            get { return _TargetSize; }
+            set
+            {
+                if (_TargetSize != value)
+                {
+                    _TargetSize = value;
+                    updateLocation();
+                }
+            }
+        }
+
+        FrameworkElement item;        
+        CompositeDisposable subscription = new CompositeDisposable();
+
+        public RelativeLocationBinding(FrameworkElement item, IObservable<Point> container_sizes, IObservable<Point?> locations = null)
+        {  
+            if(item == null)
+                throw new ArgumentNullException("item");
+            if(container_sizes == null)
+                throw new ArgumentNullException("container_sizes");
+
             this.item = item;
             item.Visibility = Visibility.Collapsed;
-            this.subscription = Observable.CombineLatest(
-                container_sizes,
-                locations,
-                (size, loc) => (loc.HasValue) ? new Point(size.X * loc.Value.X, size.Y * loc.Value.Y) as Point? : null)
-                .Subscribe(updateLocation);
+
+            
+
+
+            this.subscription.Add(container_sizes.Subscribe(size => TargetSize = size));
+
+            if (locations != null)
+                this.subscription.Add(locations.Subscribe(loc => RelativeLocation = loc));
             
         }
 
-        private void updateLocation(Point? loc)
-        {            
-            if (!loc.HasValue)
+        private void updateLocation()
+        {     
+            var result = (RelativeLocation.HasValue) ? new Point(TargetSize.X * RelativeLocation.Value.X, TargetSize.Y * RelativeLocation.Value.Y) as Point? : null;
+            if (!result.HasValue)
                 item.Visibility = System.Windows.Visibility.Collapsed;
             else
             {
                 item.Visibility = System.Windows.Visibility.Visible;
-                Canvas.SetLeft(item, (loc.Value.X ) - (item.ActualWidth / 2));
-                Canvas.SetTop(item, (loc.Value.Y ) - (item.ActualHeight / 2));
+                Canvas.SetLeft(item, (result.Value.X) - (item.ActualWidth / 2));
+                Canvas.SetTop(item, (result.Value.Y) - (item.ActualHeight / 2));
             }
         }
 

@@ -68,18 +68,9 @@ namespace DiversityPhone.View
             scrollViewer.ScrollToVerticalOffset(y);
         }
 
-        private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
-        {
-            
-        }
-
         private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
             CurrentScale *= e.DistanceRatio;
-        }
-
-        private void OnPinchCompleted(object sender, PinchGestureEventArgs e)
-        {
         }
 
         private void SelectMap_Click(object sender, EventArgs e)
@@ -89,9 +80,12 @@ namespace DiversityPhone.View
         }
 
         IDisposable subscriptions = Disposable.Empty;
+        CompositeDisposable additionallocalization_images;
+
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
+            additionallocalization_images = new CompositeDisposable(clear_additional_locs());
             var s = new CompositeDisposable();
 
             var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);                    
@@ -115,7 +109,29 @@ namespace DiversityPhone.View
 
             s.Add(new RelativeLocationBinding(currentLocalizationImg, size_obs, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
 
+            s.Add(VM.AdditionalLocalizations.ItemsAdded.Subscribe(it =>
+                {
+                    var img = new Image() { Source = this.Resources["GPSPointImage"] as BitmapImage };
+                    var binding = new RelativeLocationBinding(img, size_obs) { RelativeLocation = it };
+                    additionallocalization_images.Add(binding);
+                    MainCanvas.Children.Add(img);
+                }));
+
+
+
             subscriptions = s;
+        }
+
+        private IDisposable clear_additional_locs()
+        {
+            return Disposable.Create(() =>
+                {                    
+                    MainCanvas.Children.Clear();
+                    MainCanvas.Children.Add(mapImg);
+                    MainCanvas.Children.Add(currentPosImg);
+                    MainCanvas.Children.Add(currentLocalizationImg);
+                    additionallocalization_images = new CompositeDisposable(clear_additional_locs());
+                });
         }
 
         private void PhoneApplicationPage_Unloaded(object sender, RoutedEventArgs e)

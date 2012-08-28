@@ -85,17 +85,13 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private IEnumerable<Point> _AdditionalLocalizations = null;
-        public IEnumerable<Point> AdditionalLocalizations
+        private ReactiveCollection<Point> _AdditionalLocalizations = new ReactiveCollection<Point>();
+        public IReactiveCollection<Point> AdditionalLocalizations
         {
             get
             {
                 return _AdditionalLocalizations;
-            }
-            private set
-            {
-                this.RaiseAndSetIfChanged(x => x.AdditionalLocalizations, ref _AdditionalLocalizations, value);
-            }
+            }           
         }
 
         public ViewMapVM(Container ioc)
