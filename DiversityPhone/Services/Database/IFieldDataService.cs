@@ -22,7 +22,7 @@ using System;
         void updateSeriesKey(int clientSeriesKey, int serverSeriesKey);
 
         IList<GeoPointForSeries> getAllGeoPoints();
-        IList<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
+        IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
         void addOrUpdateGeoPoint(GeoPointForSeries gp);
         void deleteGeoPoint(GeoPointForSeries gp);
         String convertGeoPointsToString(int seriesID);
