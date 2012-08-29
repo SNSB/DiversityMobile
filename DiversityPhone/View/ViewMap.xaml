@@ -56,7 +56,7 @@
                        Name="currentPosImg"
                        CacheMode="BitmapCache"/>
 
-                <Image Source="{StaticResource GPSPointImage}"
+                <Image Source="/Images/ItemPoint.png"
                        Name="currentLocalizationImg"
                        CacheMode="BitmapCache"/>
             </Canvas>

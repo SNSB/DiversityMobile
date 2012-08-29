@@ -99,6 +99,7 @@ namespace DiversityPhone.ViewModels
         {
             MapStorage = ioc.Resolve<IMapStorageService>();
             Location = ioc.Resolve<ILocationService>();
+            Storage = ioc.Resolve<IFieldDataService>();
 
             SelectMap = new ReactiveCommand();
             SelectMap

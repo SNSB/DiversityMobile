@@ -109,7 +109,9 @@ namespace DiversityPhone.View
 
             s.Add(new RelativeLocationBinding(currentLocalizationImg, size_obs, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
 
-            s.Add(VM.AdditionalLocalizations.ItemsAdded.Subscribe(it =>
+            s.Add(VM.AdditionalLocalizations.ToObservable()
+                .Merge(VM.AdditionalLocalizations.ItemsAdded)
+                .Subscribe(it =>
                 {
                     var img = new Image() { Source = this.Resources["GPSPointImage"] as BitmapImage };
                     var binding = new RelativeLocationBinding(img, size_obs) { RelativeLocation = it };

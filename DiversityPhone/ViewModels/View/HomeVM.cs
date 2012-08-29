@@ -9,6 +9,8 @@ using DiversityPhone.Services;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using Funq;
+using System.Reactive.Disposables;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
@@ -17,10 +19,9 @@ namespace DiversityPhone.ViewModels
     public class HomeVM : PageViewModel
     {
         private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
-        
-        #region Services        
+                  
         private IFieldDataService Storage;
-        #endregion
+        private ILocationService Location;
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
@@ -41,7 +42,8 @@ namespace DiversityPhone.ViewModels
 
         public HomeVM(Container ioc)           
         {
-            Storage = ioc.Resolve<IFieldDataService>();           
+            Storage = ioc.Resolve<IFieldDataService>();
+            Location = ioc.Resolve<ILocationService>();
 
 
             //EventSeries
@@ -56,6 +58,7 @@ namespace DiversityPhone.ViewModels
                 )
                 .SelectMany(vm => vm)               
                 .CreateCollection();
+            SeriesList.ChangeTrackingEnabled = true;
 
             SeriesList
                     .ListenToChanges<EventSeries, EventSeriesVM>();    
@@ -65,23 +68,41 @@ namespace DiversityPhone.ViewModels
 
             (EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => vm.Model != EventSeries.NoEventSeries))
                 .ToMessage(MessageContracts.EDIT);
+
+            
+
+            var openSeries = SeriesList.Changed.Select(_ => Unit.Default)
+                .Merge(Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Select(_ => Unit.Default))
+                .Select(_ => SeriesList.Where(s => s.Model.SeriesEnd == null))
+                .Select(list => list.FirstOrDefault());
+
+            openSeries
+                .SelectMany(series => (series != null) ?
+                    Location.LocationByDistanceThreshold(20)
+                    .Select(c =>
+                        {
+                            var gp = new GeoPointForSeries() { SeriesID = series.Model.SeriesID.Value };
+                            gp.SetCoordinates(c);
+                            return gp;
+                        })
+                    .TakeUntil(openSeries) : Observable.Empty<GeoPointForSeries>())
+                .ObserveOnDispatcher()
+                .ToMessage(MessageContracts.SAVE);
                 
 
-            var noOpenSeries = SeriesList
-                .Changed
-                .Select(_ => SeriesList)
-                .Select(list => list.Any(s => s.Model.SeriesEnd == null))
-                .Select(openseries => !openseries);
+            var noOpenSeries = 
+                openSeries
+                .Select(openseries => openseries == null);
 
             Settings = new ReactiveCommand();
             Settings.Select(_ => Page.Settings)
                 .ToMessage();
+
             Add = new ReactiveCommand(noOpenSeries);
             Add.Select(_ => new EventSeriesVM(new EventSeries()) as IElementVM<EventSeries>)
                 .ToMessage(MessageContracts.EDIT);
-            Maps=new ReactiveCommand();
 
-
+            Maps = new ReactiveCommand();
             Maps.Select(_ => null as ILocalizable)
                 .ToMessage(MessageContracts.VIEW);
 

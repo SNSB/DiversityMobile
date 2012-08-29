@@ -87,7 +87,12 @@
 
         public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
         {
-            throw new NotImplementedException();
+            var comparer = new DistanceThresholdComparer(distance);
+
+            return RefCount(coordinate_observable.Select(p => p.Location)
+                .DistinctUntilChanged(comparer)
+                .ToCoordinates()
+                .AsObservable());                
         }
 
         public IObservable<GeoPositionStatus> Status()

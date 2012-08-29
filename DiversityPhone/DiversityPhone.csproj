@@ -511,7 +511,6 @@
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="DiversityPhone_2012_08_27_14_50_26.sap" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
