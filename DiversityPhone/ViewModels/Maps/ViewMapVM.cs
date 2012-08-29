@@ -131,17 +131,23 @@ namespace DiversityPhone.ViewModels
                             .Merge(series_obs.Select(_ => null as ILocalizable))
                             , x => x.Current);
 
+            var series_and_map =
             series_obs
                 .Do(_ => _AdditionalLocalizations.Clear())
-                .SelectMany(vm => 
-                    Storage.getGeoPointsForSeries(vm.Model.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
-                    .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == vm.Model.SeriesID.Value))
-                    .TakeUntil(series_obs)
-                    )                
-                .CombineLatest(_CurrentMap.Where(x => x != null), (gp, vm) => vm.Model.PercentilePositionOnMap(gp))
+                .CombineLatest(_CurrentMap.Where(x => x != null), (vm, map) =>
+                    new { Map = map.Model, Series = vm.Model });
+
+            series_and_map
+                .SelectMany(pair => 
+                    {
+                        return Storage.getGeoPointsForSeries(pair.Series.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
+                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.SeriesID.Value))
+                        .Select(gp => pair.Map.PercentilePositionOnMap(gp))
+                        .TakeUntil(series_and_map);
+                    })
                 .Where(pos => pos.HasValue)
                 .Select(pos => pos.Value)
-                .ObserveOnDispatcher()               
+                .ObserveOnDispatcher()
                 .Subscribe(_AdditionalLocalizations.Add);
 
             Observable.CombineLatest(
