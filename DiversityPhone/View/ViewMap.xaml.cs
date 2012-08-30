@@ -94,7 +94,9 @@ namespace DiversityPhone.View
             var size_obs = Observable.CombineLatest(
                     scale_subject,
                     image_obs,
-                    (scale, img) => new Point() { X = scale * img.PixelWidth, Y = scale * img.PixelHeight});
+                    (scale, img) => new Point() { X = scale * img.PixelWidth, Y = scale * img.PixelHeight})
+                    .Replay(1);
+            s.Add(size_obs.Connect());
             
             s.Add(image_obs.Subscribe(img => mapImg.Source = img));
 

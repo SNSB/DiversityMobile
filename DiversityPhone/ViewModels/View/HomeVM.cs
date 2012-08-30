@@ -57,8 +57,7 @@ namespace DiversityPhone.ViewModels
                     .Select(es => new EventSeriesVM(es))
                 )
                 .SelectMany(vm => vm)               
-                .CreateCollection();
-            SeriesList.ChangeTrackingEnabled = true;
+                .CreateCollection();            
 
             SeriesList
                     .ListenToChanges<EventSeries, EventSeriesVM>();    
