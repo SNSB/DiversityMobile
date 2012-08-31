@@ -88,7 +88,7 @@ namespace DiversityPhone.ViewModels
                         taxonlist.IsSelected = true;
                     });
 
-            Download = new ReactiveCommand<TaxonListVM>(vm => vm.IsDownloading);
+            Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Download
                 .Subscribe(taxonlist =>
                         {
