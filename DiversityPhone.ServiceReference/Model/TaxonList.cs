@@ -15,7 +15,7 @@ using System.Linq;
 namespace DiversityPhone.Model
 {
     [Table]    
-    public class TaxonList
+    public class TaxonList : IEquatable<TaxonList>
     {
         public TaxonList()
         {
@@ -47,6 +47,11 @@ namespace DiversityPhone.Model
             {
                 return Enumerable.Range(0, 100);
             }
+        }
+
+        public bool Equals(TaxonList other)
+        {
+            return this.TableName == other.TableName && this.TaxonomicGroup == other.TaxonomicGroup;
         }
     }
 }

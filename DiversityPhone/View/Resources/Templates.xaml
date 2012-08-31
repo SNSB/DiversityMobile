@@ -20,46 +20,4 @@
     <DataTemplate x:Key="TextAndUnitItemTemplate">
         <TextBlock Text="{Binding TextAndUnit}"/>
     </DataTemplate>
-    
-    <DataTemplate x:Key="TaxonListItemTemplate">        
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="48"/>
-            </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" 
-                   Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="40" Width="40" HorizontalAlignment="Left"/>
-            <TextBlock Grid.Column="1" 
-                       Text="{Binding DisplayText}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12,0,0,0"/>            
-            <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48"
-                       Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}">
-                <Rectangle.OpacityMask>
-                    <ImageBrush ImageSource="/Images/appbar.check.rest.png" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-            <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48" 
-                       Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
-                <Rectangle.OpacityMask>
-                    <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
-                </Rectangle.OpacityMask>
-            </Rectangle>
-        </Grid> 
-    </DataTemplate>
-
-    <DataTemplate x:Key="DownloadMapTemplate">
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="80"/>
-            </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <TextBlock Text="{Binding AvailableMaps}" Tag="{Binding AvailableMaps}" TextWrapping="Wrap" HorizontalAlignment="Left" VerticalAlignment="Center" Tap="mapText_Tap"/>
-            </Grid>
-            <Grid Grid.Column="1">
-                <Button Tag="{Binding AvailableMaps}" Content="Add" Height="72" HorizontalAlignment="Right"  VerticalAlignment="Center" Width="80" FontSize="15" Click="addButton_Click"/>
-            </Grid>
-        </Grid>
-    </DataTemplate>
-
 </ResourceDictionary>

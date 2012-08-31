@@ -20,10 +20,12 @@ using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using DiversityPhone.Services.BackgroundTasks;
 using Funq;
+using System.Reactive.Concurrency;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
-    public partial class TaxonManagementVM : PageViewModel
+    public partial class TaxonManagementVM : PageVMBase
     {
         public enum Pivot
         {
@@ -32,11 +34,11 @@ namespace DiversityPhone.ViewModels
             Public
         }
 
-        #region Services
-        private ITaxonService Taxa { get; set; }        
-        private IDiversityServiceClient Service { get; set; }
-        private IBackgroundService Background { get; set; }
-        #endregion
+        private IConnectivityService Connectivity;
+        private ITaxonService Taxa;
+        private IDiversityServiceClient Service;
+        private IBackgroundService Background;
+        
 
         #region Properties
 
@@ -56,58 +58,38 @@ namespace DiversityPhone.ViewModels
         public bool IsBusy { get { return _IsBusy.Value; } }
         private ObservableAsPropertyHelper<bool> _IsBusy;       
         
-        public ObservableCollection<TaxonListVM> LocalLists { get; private set; }
-        public ObservableCollection<TaxonListVM> PersonalLists { get; private set; }
-        public ObservableCollection<TaxonListVM> PublicLists { get; private set; } 
-     
-        private ReactiveAsyncCommand getLists = new ReactiveAsyncCommand();
-        private IBackgroundTask downloadTaxonList;
-        private ReactiveAsyncCommand deleteTaxonList = new ReactiveAsyncCommand();
+        public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
-        public ReactiveCommand Select { get; private set; }
-        public ReactiveCommand Download { get; private set; }
-        public ReactiveCommand DownloadAll { get; private set; }
-        public ReactiveCommand Delete { get; private set; }
-        public ReactiveCommand Refresh { get; private set; }
+        private ObservableAsPropertyHelper<IList<TaxonListVM>> _PersonalLists;
+        public IList<TaxonListVM> PersonalLists { get { return _PersonalLists.Value; } }
+
+        private ObservableAsPropertyHelper<IList<TaxonListVM>> _PublicLists;
+        public IList<TaxonListVM> PublicLists { get { return _PublicLists.Value; } }
+
+        public ReactiveCommand<TaxonListVM> Select { get; private set; }
+        public ReactiveCommand<TaxonListVM> Download { get; private set; }
+        public ReactiveCommand<TaxonListVM> Delete { get; private set; }
+        public ReactiveCommand<TaxonListVM> Refresh { get; private set; }
         
 
         #endregion
 
         public TaxonManagementVM(Container ioc)
-            : base(ioc.Resolve<IMessageBus>())
         {            
             Taxa = ioc.Resolve<ITaxonService>();
             Service = ioc.Resolve<IDiversityServiceClient>();
             Background = ioc.Resolve<IBackgroundService>();
+            Connectivity = ioc.Resolve<IConnectivityService>();
 
-            downloadTaxonList = Background.getTaskObject<DownloadTaxonListTask>();
-
-            _IsBusy = this.ObservableToProperty(
-                Observable.CombineLatest(
-                    deleteTaxonList.ItemsInflight.Select(count => count > 0).StartWith(false),
-                    downloadTaxonList.BusyObservable.StartWith(false),
-                    (del, download) => del || download
-                ), x => x.IsBusy, false);
-
-            Select = new ReactiveCommand(_IsBusy.Select(x => !x));
-            Select
-                .Where(argument => argument is TaxonListVM)
-                .Select(argument => argument as TaxonListVM)
-                .Subscribe(taxonlist =>
+            Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
+            Select.Subscribe(taxonlist =>
                     {
-                        if (!taxonlist.IsDownloading) //Local list
-                        {
-                            if (!taxonlist.IsSelected)
-                            {
-                                Taxa.selectTaxonList(taxonlist.Model);
-                                taxonlist.IsSelected = true;
-                            }
-                        }                        
+                        Taxa.selectTaxonList(taxonlist.Model);
+                        taxonlist.IsSelected = true;
                     });
-            Download = new ReactiveCommand(_IsBusy.Select(x => !x));
+
+            Download = new ReactiveCommand<TaxonListVM>(vm => vm.IsDownloading);
             Download
-                .Where(arg => arg is TaxonListVM)
-                .Select(arg => arg as TaxonListVM)
                 .Subscribe(taxonlist =>
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
@@ -119,197 +101,53 @@ namespace DiversityPhone.ViewModels
                             else
                                 Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
                         });
-        
-            Delete = new ReactiveCommand(_IsBusy.Select(x => !x));
-            Delete
-                .Where(argument => argument is TaxonListVM)
-                .Select(argument => argument as TaxonListVM)
+
+            Delete = new ReactiveCommand<TaxonListVM>();
+            Delete               
                 .Subscribe(taxonlist =>
                     {
-                        if (!taxonlist.IsDownloading && deleteTaxonList.CanExecute(taxonlist))
-                        {
-                            deleteTaxonList.Execute(taxonlist);                                                        
-                            taxonlist.IsSelected = false;
-                            LocalLists.Remove(taxonlist);
-                            if (taxonlist.Model.IsPublicList)
-                                PublicLists.Add(taxonlist);
-                            else
-                                PersonalLists.Add(taxonlist);
-                        }
+                        Taxa.deleteTaxonList(taxonlist.Model);
+                        LocalLists.Remove(taxonlist);
                     });
 
-            Refresh = new ReactiveCommand(_IsBusy.Select(x => !x));
+            Refresh = new ReactiveCommand<TaxonListVM>();
             Refresh
-                .Where(arg => arg is TaxonListVM)
-                .Select(arg => arg as TaxonListVM)
                 .Subscribe(taxonlist =>
                 {
-                    if (Delete.CanExecute(taxonlist))
-                    {
-                        Observable.Zip(
-                            deleteTaxonList.ItemsInflight.Skip(1), //most recent value
-                            deleteTaxonList.ItemsInflight,//value before that
-                            (last,before) => last == 0 && before == 1)
-                            .Where(x => x)
-                            .Take(1)
-                            .Subscribe(_ => Download.Execute(taxonlist));
-                        Delete.Execute(taxonlist);
-                    }
+                    
                 });
 
-            DownloadAll = new ReactiveCommand(_IsBusy.Select(x => !x));
-            DownloadAll
-                .Subscribe(_ =>
-                    {
-                        var repLists = new List<TaxonListVM>(PersonalLists).ToObservable();
-                        
-                        downloadTaxonList
-                            .AsyncCompletedNotification
-                            .StartWith(new object[]{null}) // start first download
-                            .Zip(repLists, (_2,listvm) => listvm)
-                            .Subscribe(Download.Execute);                  
-                    });
-
-
-            var localLists = DistinctStateObservable
-                .Take(1)
-                .Select(_ => Taxa.getTaxonSelections())                
-                .Where(selections => selections != null)
-                .Select(selections =>
-                    {
-                        var currentDownload = downloadTaxonList.CurrentArguments as TaxonList;
-                        string downloadingTable = null;
-                        if (currentDownload != null)
-                            downloadingTable = currentDownload.TableName;
-
-
-                        return selections
-                            .Select(selection =>
-                            {
-                                return new TaxonListVM(selection)
-                                {
-                                    IsDownloading = (selection.TableName == downloadingTable),
-                                    IsSelected = selection.IsSelected
-                                };
-                            });
-                    })
+            var local_lists =
+            this.FirstActivation()
+                .SelectMany(_ => Taxa.getTaxonSelections().ToObservable(Scheduler.ThreadPool)
+                                .Select(list => new TaxonListVM(list)))
                 .Publish();
-            localLists.Connect();
 
-            localLists
-                .Where(selections => selections == null || !selections.Any())
-                .Subscribe(_ => CurrentPivot = Pivot.Personal);
-
-            LocalLists =            
-                localLists              
-                .SelectMany(selections => selections)    
+            LocalLists = local_lists
+                .ObserveOnDispatcher()
                 .CreateCollection();
 
-            var repoLists =
-               getLists
-                   .RegisterAsyncFunction(_ => getRepoListsImpl())
-                   .CombineLatest(localLists, (repolists, localselections) =>
-                       repolists.Where(repolist => !localselections.Any(selection => selection.Model.TableName == repolist.TableName)) //Filter Lists that have already been downloaded
-                       )
-                   .SelectMany(repolists => repolists.Select(list => new TaxonListVM(list) { IsDownloading = false, IsSelected = false }))
-                   .Publish();
-            repoLists.Connect();
+            local_lists.Connect();
 
-            PersonalLists = 
-                repoLists
-                    .Where(vm => !vm.Model.IsPublicList)
-                    .CreateCollection();
 
-            PublicLists =
-                repoLists
-                    .Where(vm => vm.Model.IsPublicList)
-                    .CreateCollection();
+            var local_lists_with_wifi = 
+            local_lists.ToList()
+                .CombineLatest(Connectivity.WifiAvailable().Where(wifi => wifi), (lists, _2) => lists)
+                .Take(1);
 
-            downloadTaxonList
-                .AsyncStartedNotification
-                .Subscribe(list => startDownload(list as TaxonList));
-            downloadTaxonList
-                .AsyncErrorNotification
-                .Subscribe(list => abortDownload(list as TaxonList));
+            var online_lists =
+            local_lists_with_wifi.SelectMany(local => 
+                    Service.GetTaxonLists()
+                    .Select(online => online.Select(l => local.Where(vm => vm.Model == l).FirstOrDefault() ?? new TaxonListVM(l)).ToList())
+                )
+                .Retry()    
+                .ObserveOnDispatcher()                
+                .Publish();
 
-            downloadTaxonList
-                .AsyncCompletedNotification           
-                .Subscribe(downloadedList => 
-                    {
-                        finishDownload(downloadedList as TaxonList);                       
-                    });
+            _PersonalLists = this.ObservableToProperty(online_lists.Select(lists => lists.Where(l => !l.Model.IsPublicList).ToList() as IList<TaxonListVM>), x => x.PersonalLists);
+            _PublicLists = this.ObservableToProperty(online_lists.Select(lists => lists.Where(l => l.Model.IsPublicList).ToList() as IList<TaxonListVM>), x => x.PublicLists);
 
-            deleteTaxonList
-                .RegisterAsyncFunction(arg => deleteListImpl(arg as TaxonListVM));          
-
-            getLists.Execute(null);
-            
+            online_lists.Connect();
         }
-
-        private void abortDownload(TaxonList taxonList)
-        {
-            if (taxonList != null)
-            {
-                var listVM = LocalLists.Where(vm => vm.Model.TableName == taxonList.TableName).FirstOrDefault();
-                if (listVM != null)
-                {
-                    LocalLists.Remove(listVM);
-                    if (listVM.Model.IsPublicList)
-                        PublicLists.Add(listVM);
-                    else
-                        PersonalLists.Add(listVM);
-                    listVM.IsDownloading = false;
-                    listVM.IsSelected = false;
-                }
-            }
-        }
-
-        private void startDownload(TaxonList list)
-        {
-            if (list != null)
-            {
-                var catalogue = (list.IsPublicList) ? PublicLists : PersonalLists;
-                var listVM = catalogue.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
-                if (listVM != null)
-                {
-                    catalogue.Remove(listVM);
-                    LocalLists.Add(listVM);
-                }
-                else
-                    listVM = LocalLists.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
-                if (listVM != null)
-                {                    
-                    listVM.IsDownloading = true;                    
-                }
-            }
-        }
-     
-        private void finishDownload(TaxonList list)
-        {
-            if (list != null)
-            {
-                var listVM = LocalLists.Where(vm => vm.Model.TableName == list.TableName).FirstOrDefault();
-                if (listVM != null)
-                {
-                    listVM.IsDownloading = false;
-                    listVM.IsSelected = list.IsSelected;
-                }
-            }
-        }
-
-       
-
-        private IEnumerable<TaxonList> getRepoListsImpl()
-        {
-            return Service.GetTaxonLists().First();
-        }
-
-        private TaxonListVM deleteListImpl(TaxonListVM list)
-        {
-            Taxa.deleteTaxonList(list.Model);
-            return list;
-        }
-
-        
     }
 }

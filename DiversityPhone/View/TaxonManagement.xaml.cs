@@ -28,8 +28,6 @@ namespace DiversityPhone.View
             {
                 _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);                
             }
-
-
         } 
     }
 }

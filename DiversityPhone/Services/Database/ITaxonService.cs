@@ -35,7 +35,7 @@ namespace DiversityPhone.Services
         /// Gets all defined Taxon Selections
         /// </summary>
         /// <returns></returns>
-        IList<TaxonList> getTaxonSelections();
+        IEnumerable<TaxonList> getTaxonSelections();
         /// <summary>
         /// Removes a Taxon Selection and empties its Taxon Table
         /// </summary>

@@ -20,6 +20,32 @@
     x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
     <phone:PhoneApplicationPage.Resources>
         <vw:TaxonManagementPivotConverter x:Key="PivotConverter"/>
+        <vw:TermToImageConverter x:Key="TermToImage"/>
+        <DataTemplate x:Key="TaxonListItemTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="48"/>
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0" 
+                   Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="40" Width="40" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="1" 
+                       Text="{Binding DisplayText}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextWrapping="Wrap" Margin="12,0,0,0"/>
+                <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48"
+                       Visibility="{Binding IsSelected, Converter={StaticResource BoolToVis}}">
+                    <Rectangle.OpacityMask>
+                        <ImageBrush ImageSource="/Images/appbar.check.rest.png" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+                <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48" 
+                       Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
+                    <Rectangle.OpacityMask>
+                        <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Grid>
+        </DataTemplate>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
@@ -57,7 +83,7 @@
                 </StackPanel>
             </controls:PivotItem>
 
-            <!--Pivotelement zwei-->
+            
             <controls:PivotItem Header="personal">
                 <StackPanel>
                     <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>

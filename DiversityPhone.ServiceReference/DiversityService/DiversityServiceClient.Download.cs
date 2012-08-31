@@ -11,6 +11,8 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceObservableClient : IDiversityServiceClient
     {
+        IObservable<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUser;
+
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         IMessageBus Messenger;
         ObservableAsPropertyHelper<UserCredentials> LatestCreds;
@@ -20,7 +22,9 @@ namespace DiversityPhone.Services
         public DiversityServiceObservableClient(IMessageBus messenger)
         {
             Messenger = messenger;
-            LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });           
+            LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
+
+            GetTaxonListsForUser = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
         }
 
         private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
@@ -63,8 +67,10 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
         {
-            var source = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d)
-                .Select(args => args.Result
+            var requestToken = new object();
+            var source = 
+            GetTaxonListsForUser.Where(args => args.UserState == requestToken).Select(args => args.Result ?? Enumerable.Empty<TaxonList>())
+                .Select(res => res
                     .Select(svcList => new Client.TaxonList()
                     {
                         IsPublicList = svcList.IsPublicList,
@@ -73,9 +79,9 @@ namespace DiversityPhone.Services
                         TaxonomicGroup =svcList.TaxonomicGroup
                     }
                     ));
-            var res = singleResultObservable(source);
-            _svc.GetTaxonListsForUserAsync(GetCreds());
-            return res;
+            var obs = singleResultObservable(source);
+            _svc.GetTaxonListsForUserAsync(GetCreds(), requestToken);
+            return obs;
         }
 
         public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)

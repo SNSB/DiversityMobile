@@ -144,7 +144,6 @@
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
-    <Compile Include="Model\Localizable.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\Service\Credentials.cs" />
     <Compile Include="Model\Specimen.cs" />

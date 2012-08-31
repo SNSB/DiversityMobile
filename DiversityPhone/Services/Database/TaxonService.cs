@@ -54,14 +54,13 @@ namespace DiversityPhone.Services
             }
         }
 
-        public IList<TaxonList> getTaxonSelections()
+        public IEnumerable<TaxonList> getTaxonSelections()
         {
-            IList<TaxonList> result = null;
-            withSelections(ctx =>
+            using (var ctx = new TaxonSelectionDataContext())
             {
-                result = (ctx.TaxonLists.ToList());
-            });
-            return result;
+                foreach (var list in ctx.TaxonLists)
+                    yield return list;
+            }
         }
 
         public void selectTaxonList(TaxonList list)
