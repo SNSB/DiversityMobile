@@ -45,7 +45,7 @@
             <Canvas Name="MainCanvas"
                     Tap="MainCanvas_Tap">
                 <toolkit:GestureService.GestureListener>
-                    <toolkit:GestureListener PinchDelta="OnPinchDelta" />
+                    <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="GestureListener_PinchStarted" />
                 </toolkit:GestureService.GestureListener>
 
                 <Image Name="mapImg"

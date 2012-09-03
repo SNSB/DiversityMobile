@@ -28,6 +28,8 @@ namespace DiversityPhone.View
 
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
+        private Point relativeOffsets = new Point(0, 0);
+
         private BehaviorSubject<double> scale_subject = new BehaviorSubject<double>(1.0f);
         private double _CurrentScale = 1.0f;
         public double CurrentScale 
@@ -101,12 +103,19 @@ namespace DiversityPhone.View
             s.Add(image_obs.Subscribe(img => mapImg.Source = img));
 
             s.Add(size_obs
-                    .Subscribe(size => { mapImg.Height = size.Y; mapImg.Width = size.X; })
-                );
-            s.Add(size_obs
-                    .Subscribe(size => { MainCanvas.Height = size.Y; MainCanvas.Width = size.X; })
-                );
+                    .Subscribe(size => 
+                    { 
+                        mapImg.Height = size.Y; mapImg.Width = size.X;
+                        MainCanvas.Height = size.Y; MainCanvas.Width = size.X;
 
+                        double horOffset = relativeOffsets.X - (scrollViewer.ViewportWidth / (2 * size.X));
+                        scrollViewer.ScrollToHorizontalOffset(horOffset);
+
+                        double vertOffset = relativeOffsets.Y - (scrollViewer.ViewportHeight / (2 * size.Y));
+                        scrollViewer.ScrollToVerticalOffset(vertOffset);
+                    })
+                );
+           
             s.Add(new RelativeLocationBinding(currentPosImg, size_obs, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
 
             s.Add(new RelativeLocationBinding(currentLocalizationImg, size_obs, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization)));
@@ -150,6 +159,14 @@ namespace DiversityPhone.View
             point.Y /= MainCanvas.Height;
             if(VM != null && VM.SetLocation.CanExecute(point))
                 VM.SetLocation.Execute(point);
+        }
+
+        private void GestureListener_PinchStarted(object sender, PinchStartedGestureEventArgs e)
+        {
+            relativeOffsets = new Point(
+                (scrollViewer.HorizontalOffset + scrollViewer.ViewportWidth / 2) / ((double.IsNaN(MainCanvas.Width)) ? 1.0 : MainCanvas.Width),
+                (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight) / ((double.IsNaN(MainCanvas.Height)) ? 1.0 : MainCanvas.Height)
+                );
         }
     }
 }
