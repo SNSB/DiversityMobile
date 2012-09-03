@@ -11,6 +11,8 @@ namespace DiversityService.Model
         public String Description { get; set; }
         public String MediaType { get; set; }
         public DateTime LogUpdatedWhen { get; set; }
+        private const String IMAGE="image";
+        private const String PHOTO = "photograph";
 
         public static CollectionEventSeriesImage ToSeriesImage(MultimediaObject mmo)
         {
@@ -21,28 +23,34 @@ namespace DiversityService.Model
             CollectionEventSeriesImage export = new CollectionEventSeriesImage();
             export.SeriesID = mmo.RelatedId;
             export.ImageType = mmo.MediaType.ToString().ToLower();
+            if (mmo.MediaType.ToLower().Equals(IMAGE))
+                export.ImageType = PHOTO;
             export.Uri = mmo.Uri;
             export.LogUpdatedWhen = mmo.LogUpdatedWhen;
+            export.Notes = "Generated via DiversityMobile";
             return export;
         }
 
         public static CollectionEventImage ToEventImage(MultimediaObject mmo)
         {
-            if (!mmo.OwnerType.Equals("EventSeries"))
+            if (!mmo.OwnerType.Equals("Event"))
                 throw new Exception("Related type mismatch");
             if (mmo.Uri == null)
                 throw new Exception("image not uploaded");
             CollectionEventImage export = new CollectionEventImage();
             export.CollectionEventID = mmo.RelatedId;
             export.ImageType = mmo.MediaType.ToString().ToLower();
+            if (mmo.MediaType.ToLower().Equals(IMAGE))
+                export.ImageType = PHOTO;
             export.Uri = mmo.Uri;
             export.LogUpdatedWhen = mmo.LogUpdatedWhen;
+            export.Notes = "Generated via DiversityMobile";
             return export;
         }
       
         public static CollectionSpecimenImage ToSpecimenImage(MultimediaObject mmo, IdentificationUnit iu)
         {
-            if (!(mmo.OwnerType.Equals("Specimen") || mmo.OwnerType.Equals("IU")))
+            if (!(mmo.OwnerType.Equals("Specimen") || mmo.OwnerType.Equals("IdentificationUnit")))
                 throw new Exception("Related type mismatch");
             if (mmo.Uri == null)
                 throw new Exception("image not uploaded");
@@ -57,6 +65,8 @@ namespace DiversityService.Model
                 export.IdentificationUnitID = (int)mmo.RelatedId;
             }
             export.ImageType = mmo.MediaType.ToString().ToLower();
+            if (mmo.MediaType.ToLower().Equals(IMAGE))
+                export.ImageType = PHOTO;
             export.Uri = mmo.Uri;
             export.Description = mmo.Description;
             export.Notes="Generated via DiversityMobile";

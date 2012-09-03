@@ -145,6 +145,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_BaseTestEntities.datasource" />
+    <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_MonitoringEntities.datasource" />
     <None Include="Properties\DataSources\DiversityMobileEntities.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

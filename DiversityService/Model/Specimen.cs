@@ -17,6 +17,7 @@ namespace DiversityService.Model
 
         [Column("CollectionEventID")]
         public int? DiversityCollectionEventID { get; set; }
+        [Column("DepositorsAccessionNumber")]
         public string AccessionNumber { get; set; }
 
         [Ignore]

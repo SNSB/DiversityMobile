@@ -62,6 +62,7 @@ namespace DiversityPhone.Services.BackgroundTasks
                 var sinkUri = MMOSink.UploadMultiMediaObjectRawData(mmo).First();
                 if (String.IsNullOrWhiteSpace(sinkUri))
                     throw new Exception("No value returned");
+                mmo.DiversityCollectionUri = sinkUri;
                 Storage.updateMMOUri(mmo.Uri, sinkUri);
                 var success= Repository.InsertMultimediaObject(mmo).First();
                 Storage.updateMMOSuccessfullUpload(mmo.Uri,sinkUri,success);

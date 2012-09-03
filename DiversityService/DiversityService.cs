@@ -234,7 +234,7 @@ namespace DiversityService
                             CollectionSpecimenImage csi=MultimediaObject.ToSpecimenImage(mmo,null);
                             db.Insert(csi);
                             break;
-                        case "IU":
+                        case "IdentificationUnit":
                             IdentificationUnit iu = db.Single<IdentificationUnit>(mmo.RelatedId);
                             CollectionSpecimenImage ciui = MultimediaObject.ToSpecimenImage(mmo, iu);
                             db.Insert(ciui);
@@ -245,7 +245,7 @@ namespace DiversityService
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return false;
             }
