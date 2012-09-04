@@ -96,6 +96,16 @@ namespace DiversityPhone.ViewModels.Utility
                 .Do(_ => search = new CancellationTokenSource())
                 .Do(_ => SyncUnits.Clear())
                 .Subscribe(collectModifications.Execute);
+
+            this.OnDeactivation()
+                .Subscribe(_ =>
+                    {
+                        if (search != null)
+                        {
+                            search.Cancel();
+                            search = null;
+                        }
+                    });
             collectModifications.RegisterAsyncObservable(_ =>
                 {
                     var res = new ReplaySubject<ModifiedEventVM>();
@@ -195,15 +205,6 @@ namespace DiversityPhone.ViewModels.Utility
         {
             public int? Unit { get; set; }
             public int Increment { get; set; }
-        }
-
-        public override void SaveState()
-        {
-            if(search != null)
-            {
-                search.Cancel();
-                search = null;
-            }
         }
 
         private void collectModificationsImpl(ISubject<ModifiedEventVM> outputSubject, CancellationToken cancellation)

@@ -93,16 +93,33 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(taxonlist =>
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
-                            {                                
+                            {
+                                var task = Background.getTaskObject<DownloadTaxonListTask>();
+                                task.AsyncCompletedNotification
+                                    .Where(arg => arg == taxonlist.Model)
+                                    .Take(1)
+                                    .ObserveOnDispatcher()
+                                    .Subscribe(_ => taxonlist.IsDownloading = false);
+
+                                task.AsyncErrorNotification
+                                    .Where(arg => arg == taxonlist.Model)
+                                    .Take(1)
+                                    .ObserveOnDispatcher()
+                                    .Subscribe(_ => { Taxa.deleteTaxonList(taxonlist.Model); LocalLists.Remove(taxonlist); });
+                                     
                                 CurrentPivot = Pivot.Local;
+                                taxonlist.IsDownloading = true;
+                                LocalLists.Add(taxonlist);
                                 Taxa.addTaxonList(taxonlist.Model);
                                 Background.startTask<DownloadTaxonListTask>(taxonlist.Model);
+
+
                             }
                             else
                                 Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
                         });
 
-            Delete = new ReactiveCommand<TaxonListVM>();
+            Delete = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Delete               
                 .Subscribe(taxonlist =>
                     {
@@ -110,11 +127,15 @@ namespace DiversityPhone.ViewModels
                         LocalLists.Remove(taxonlist);
                     });
 
-            Refresh = new ReactiveCommand<TaxonListVM>();
+            Refresh = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Refresh
                 .Subscribe(taxonlist =>
                 {
-                    
+                    if (Delete.CanExecute(taxonlist)) //Deletes synchronously
+                        Delete.Execute(taxonlist);
+
+                    if (Download.CanExecute(taxonlist))
+                        Download.Execute(taxonlist);
                 });
 
             var local_lists =

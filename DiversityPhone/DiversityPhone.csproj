@@ -128,7 +128,6 @@
     <Compile Include="ViewModels\IAudioVideoPageVM.cs" />
     <Compile Include="ViewModels\IDeletePageVM.cs" />
     <Compile Include="ViewModels\ISavePageVM.cs" />
-    <Compile Include="ViewModels\Maps\SeriesMapVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
