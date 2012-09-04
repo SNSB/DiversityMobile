@@ -11,6 +11,8 @@ using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;
 using System.Collections.Generic;
 using System.Reactive.Concurrency;
+using System.Reactive;
+using System.Linq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -30,10 +32,7 @@ namespace DiversityPhone.ViewModels
 
         public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
-
-        public ILocalizable Current { get { return _Current.Value; } }
-        private ObservableAsPropertyHelper<ILocalizable> _Current;
-
+        
         public bool IsEditable { get { return _IsEditable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsEditable;
 
@@ -124,24 +123,28 @@ namespace DiversityPhone.ViewModels
                     })
                 .BindTo(this, x => x.MapImage);
 
-            var series_obs = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS);
+            var current_series = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS);
 
-            _Current = this.ObservableToProperty(
-                            Messenger.Listen<ILocalizable>(MessageContracts.VIEW)
-                            .Merge(series_obs.Select(_ => null as ILocalizable))
-                            , x => x.Current);
+            var current_localizable = Messenger.Listen<ILocalizable>(MessageContracts.VIEW);
 
-            var series_and_map =
-            series_obs
-                .Do(_ => _AdditionalLocalizations.Clear())
+            var current_series_if_not_localizable = current_series.Merge(current_localizable.Select(_ => null as IElementVM<EventSeries>));
+
+            var current_localizable_if_not_series = current_localizable.Merge(current_series.Select(_ => null as ILocalizable));
+
+            
+
+
+            var series_and_map = 
+            current_series_if_not_localizable                
                 .CombineLatest(_CurrentMap.Where(x => x != null), (vm, map) =>
                     new { Map = map.Model, Series = vm.Model });
 
             series_and_map
+                .Do(_ => _AdditionalLocalizations.Clear()) //Needs to be on the Dispatcher
                 .SelectMany(pair => 
                     {
                         return Storage.getGeoPointsForSeries(pair.Series.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
-                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.SeriesID.Value))
+                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.SeriesID.Value)) //Listen to new Geopoints that are added to the current tour
                         .Select(gp => pair.Map.PercentilePositionOnMap(gp))
                         .TakeUntil(series_and_map);
                     })
@@ -151,7 +154,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_AdditionalLocalizations.Add);
 
             Observable.CombineLatest(
-                _Current,
+                current_localizable_if_not_series,
                 _CurrentMap,
                 (loc, map) => 
                     {
@@ -161,14 +164,13 @@ namespace DiversityPhone.ViewModels
                     })                
                 .Subscribe(c => PrimaryLocalization = c);
 
-            var current_is_localizable = _Current.Select(c => c != null);
+            
 
-            ToggleEditable = new ReactiveCommand(current_is_localizable);
+            ToggleEditable = new ReactiveCommand(current_localizable_if_not_series.Select(l => l != null));
 
             _IsEditable = this.ObservableToProperty(
-                                _Current.Select(_ => false)
-                                .Merge(ToggleEditable.Select(_ => true))
-                                .Merge(_CurrentMap.Select(_ => false)),
+                                current_localizable_if_not_series.Select(_ => false)
+                                .Merge(ToggleEditable.Select(_ => true)),
                                 x => x.IsEditable);
 
             SetLocation = new ReactiveCommand(_IsEditable);
@@ -180,9 +182,12 @@ namespace DiversityPhone.ViewModels
             var valid_localization = this.ObservableForProperty(x => x.PrimaryLocalization).Value()
                 .Select(loc => loc.HasValue);
 
+
+            var most_recent_localizable = current_localizable_if_not_series.MostRecent(null);
             Save = new ReactiveCommand(_IsEditable.BooleanAnd(valid_localization));
             Save
-                .Select(_ => Current)
+                .Select(_ => most_recent_localizable.FirstOrDefault())
+                .Where(loc => loc != null)
                 .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(PrimaryLocalization.Value)))
                 .ToMessage(MessageContracts.SAVE);
 
