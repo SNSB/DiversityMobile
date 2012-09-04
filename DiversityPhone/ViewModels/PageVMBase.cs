@@ -35,12 +35,26 @@ namespace DiversityPhone.ViewModels
     {
         public static IObservable<Unit> FirstActivation(this PageVMBase page)
         {
+            return page.OnActivation()
+                .Take(1);
+        }
+
+        public static IObservable<Unit> OnActivation(this PageVMBase page)
+        {
             if (page == null)
                 throw new ArgumentNullException("page");
 
             return page.ActivationObservable.Where(active => active)
-                .Select(_ => Unit.Default)
-                .Take(1);
+                .Select(_ => Unit.Default);                
+        }
+
+        public static IObservable<Unit> OnDeactivation(this PageVMBase page)
+        {
+            if (page == null)
+                throw new ArgumentNullException("page");
+
+            return page.ActivationObservable.Where(active => !active)
+                .Select(_ => Unit.Default);
         }
     }
 }

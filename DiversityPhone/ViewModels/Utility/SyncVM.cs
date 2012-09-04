@@ -91,7 +91,8 @@ namespace DiversityPhone.ViewModels.Utility
         {
             Storage = ioc.Resolve<IFieldDataService>();
             SyncUnits = new ReactiveCollection<ModifiedEventVM>();
-            ActivationObservable.Where(a => a).Select(_ => null as object)
+            this.OnActivation()
+                .Select(_ => null as object)
                 .Do(_ => search = new CancellationTokenSource())
                 .Do(_ => SyncUnits.Clear())
                 .Subscribe(collectModifications.Execute);
