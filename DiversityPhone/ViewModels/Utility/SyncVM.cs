@@ -14,7 +14,7 @@ using DiversityPhone.Services.BackgroundTasks;
 
 namespace DiversityPhone.ViewModels.Utility
 {
-    public class SyncVM : PageViewModel
+    public class SyncVM : PageVMBase
     {
         public enum Pivots
         {
@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels.Utility
         {
             Storage = ioc.Resolve<IFieldDataService>();
             SyncUnits = new ReactiveCollection<ModifiedEventVM>();
-            StateObservable
+            ActivationObservable.Where(a => a).Select(_ => null as object)
                 .Do(_ => search = new CancellationTokenSource())
                 .Do(_ => SyncUnits.Clear())
                 .Subscribe(collectModifications.Execute);
