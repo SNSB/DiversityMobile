@@ -137,10 +137,11 @@ namespace DiversityPhone.ViewModels
             var series_and_map = 
             current_series_if_not_localizable                
                 .CombineLatest(_CurrentMap.Where(x => x != null), (vm, map) =>
-                    new { Map = map.Model, Series = vm.Model });
+                    new { Map = map.Model, Series = (vm != null) ? vm.Model : null });
 
             series_and_map
                 .Do(_ => _AdditionalLocalizations.Clear()) //Needs to be on the Dispatcher
+                .Where(pair => pair.Series != null)
                 .SelectMany(pair => 
                     {
                         return Storage.getGeoPointsForSeries(pair.Series.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
