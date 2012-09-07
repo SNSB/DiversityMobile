@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using Funq;
 using System.Reactive.Disposables;
 using Microsoft.Phone.Reactive;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -98,17 +99,40 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(vms => vms)
                 .CreateCollection();
 
+            Analyses.ListenToChanges<IdentificationUnitAnalysis, IdentificationUnitAnalysisVM>(iuan => iuan.IdentificationUnitID == Current.Model.UnitID);
+
             CurrentModelObservable
                 .Do(_ => Analyses.Clear())
                 .Subscribe(getAnalyses.Execute);
-          
 
-            Add = new ReactiveCommand();
+            var has_analyses_observable = 
+            CurrentModelObservable
+                .SelectMany(current =>
+                    Observable.Return(Enumerable.Empty<Analysis>().ToList() as IList<Analysis>) // first clear last analyses
+                    .Concat(
+                        // Then Load possible Analyses in the background
+                    Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup), Scheduler.ThreadPool)
+                    .TakeUntil(CurrentModelObservable)
+                    ))
+                .Select(list =>
+                    {
+                        var hasAnalyses = list.Any();
+                        Messenger.SendMessage<IList<Analysis>>(list); //Broadcast Analyses to editVM
+                        return hasAnalyses;
+                    })
+                .ObserveOnDispatcher();
+            var can_add_observable = this.ObservableForProperty(x => x.SelectedPivot).Value().Select(p => p != Pivots.Descriptions)
+                .BooleanOr(has_analyses_observable);
+
+            Add = new ReactiveCommand(can_add_observable);
             Add.Where(_ => SelectedPivot == Pivots.Subunits)
                 .Select(_ => new IdentificationUnitVM( new IdentificationUnit(){ RelatedUnitID = Current.Model.UnitID, SpecimenID = Current.Model.SpecimenID}) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
+            Add.Where(_ => SelectedPivot == Pivots.Descriptions)
+                .Select(_ => new IdentificationUnitAnalysisVM(new IdentificationUnitAnalysis() { IdentificationUnitID = Current.Model.UnitID }) as IElementVM<IdentificationUnitAnalysis>)
+                .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();
             Maps

@@ -162,6 +162,9 @@
   <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
     <value>Identification</value>
   </data>
+  <data name="IdentificationUnit_Info_NoAnalyses" xml:space="preserve">
+    <value>No Analyses available.</value>
+  </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>

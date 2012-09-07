@@ -1,40 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
+﻿
 using DiversityPhone.ViewModels;
+using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
     public partial class ViewIU : PhoneApplicationPage
     {
+        private CommandButtonAdapter _add, _maps;
+
         private ViewIUVM VM { get { return DataContext as ViewIUVM; } }
 
         public ViewIU()
         {
             InitializeComponent();
-        }
 
-        private void Add_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Add.Execute(null);
+            _add = new CommandButtonAdapter(ApplicationBar.Buttons[0] as ApplicationBarIconButton, VM.Add);
+            _maps = new CommandButtonAdapter(ApplicationBar.Buttons[1] as ApplicationBarIconButton, VM.Maps);
         }
-
-        private void Map_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Maps.Execute(null);
-        }
-
+       
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (VM != null)
@@ -42,12 +27,6 @@ namespace DiversityPhone.View
                 VM.Back.Execute(null);
                 e.Cancel = true;
             }
-        }
-
-        private void EditCurrent_Click(object sender, RoutedEventArgs e)
-        {
-            if (VM != null)
-                VM.EditCurrent.Execute(null);
         }
     }
 }

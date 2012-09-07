@@ -196,6 +196,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die No Analyses available. ähnelt.
+        /// </summary>
+        public static string IdentificationUnit_Info_NoAnalyses {
+            get {
+                return ResourceManager.GetString("IdentificationUnit_Info_NoAnalyses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die This item can not be changed, it has already been uploaded. ähnelt.
         /// </summary>
         public static string Info_CantEditItem {
