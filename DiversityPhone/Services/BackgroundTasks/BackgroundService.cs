@@ -105,8 +105,11 @@ namespace DiversityPhone.Services
 
         private void taskFailed()
         {
-            registry[runningTask.Type].CleanupAfter(runningTask);
-            taskFinished();
+            if (runningTask != null)
+            {
+                registry[runningTask.Type].CleanupAfter(runningTask);
+                taskFinished();
+            }
         }
 
         private void taskFinished()
