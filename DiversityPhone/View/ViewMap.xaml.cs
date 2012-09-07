@@ -88,7 +88,8 @@ namespace DiversityPhone.View
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             additionallocalization_images = new CompositeDisposable(clear_additional_locs());
-            var s = new CompositeDisposable();
+
+            var s = new CompositeDisposable(additionallocalization_images as IDisposable);
 
             var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);                    
                     
@@ -133,8 +134,6 @@ namespace DiversityPhone.View
                         MainCanvas.Children.Add(img);
                     }
                 }));
-
-            s.Add(VM.AdditionalLocalizations.IsEmpty.DistinctUntilChanged().Where(empty => empty).Subscribe(_ => additionallocalization_images.Dispose()));
 
             subscriptions = s;
         }
