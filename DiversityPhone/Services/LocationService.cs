@@ -67,6 +67,7 @@
             Messenger = ioc.Resolve<IMessageBus>();
 
             Messenger.Listen<AppSettings>()
+                .Where(s => s != null)
                 .Select(s => s.UseGPS)
                 .Subscribe(gps => IsEnabled = gps);
 
