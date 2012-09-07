@@ -123,21 +123,19 @@ namespace DiversityPhone.ViewModels
                     })
                 .BindTo(this, x => x.MapImage);
 
-            var current_series = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS);
+            var current_series = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS).Model();
 
             var current_localizable = Messenger.Listen<ILocalizable>(MessageContracts.VIEW);
 
-            var current_series_if_not_localizable = current_series.Merge(current_localizable.Select(_ => null as IElementVM<EventSeries>));
+            var current_series_if_not_localizable = current_series.Merge(current_localizable.Select(_ => null as EventSeries));
 
             var current_localizable_if_not_series = current_localizable.Merge(current_series.Select(_ => null as ILocalizable));
 
-            
-
-
             var series_and_map = 
             current_series_if_not_localizable                
-                .CombineLatest(_CurrentMap.Where(x => x != null), (vm, map) =>
-                    new { Map = map.Model, Series = (vm != null) ? vm.Model : null });
+                .CombineLatest(_CurrentMap.Where(x => x != null), (es, map) =>
+                    new { Map = map.Model, Series = es })
+                .Publish();
 
             series_and_map
                 .Do(_ => _AdditionalLocalizations.Clear()) //Needs to be on the Dispatcher
@@ -153,6 +151,8 @@ namespace DiversityPhone.ViewModels
                 .Select(pos => pos.Value)
                 .ObserveOnDispatcher()
                 .Subscribe(_AdditionalLocalizations.Add);
+
+            series_and_map.Connect();
 
             Observable.CombineLatest(
                 current_localizable_if_not_series,
