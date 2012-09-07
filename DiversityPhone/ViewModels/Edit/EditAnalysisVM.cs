@@ -8,25 +8,25 @@ using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using Funq;
 using DiversityPhone.Messages;
+using System.Reactive.Concurrency;
 
 
 
 namespace DiversityPhone.ViewModels
 {
-    public class EditAnalysisVM : EditElementPageVMBase<IdentificationUnitAnalysis>
-    { 
-        #region Properties
-        private Container IOC;
-        private IVocabularyService Vocabulary { get; set; }
+    public class EditAnalysisVM : EditPageVMBase<IdentificationUnitAnalysis>
+    {           
+        private readonly IVocabularyService Vocabulary;
+        private readonly IFieldDataService Storage;
 
-        private ObservableAsPropertyHelper<IdentificationUnitVM> _Parent;
-        public IdentificationUnitVM Parent { get { return _Parent.Value; } }
+        private ObservableAsPropertyHelper<IElementVM<IdentificationUnit>> _Parent;
+        public IElementVM<IdentificationUnit> Parent { get { return _Parent.Value; } }
 
-        private ObservableAsPropertyHelper<IdentificationUnitAnalysis> _Model;
-        public IdentificationUnitAnalysis Model { get { return _Model.Value; } }
-
+        private readonly Analysis NoAnalysis = new Analysis() { DisplayText = DiversityResources.Analysis_NoAnalysis };
         public ListSelectionHelper<Analysis> Analyses { get; private set; }
 
+
+        private readonly AnalysisResult NoResult = new AnalysisResult() { DisplayText = DiversityResources.Analysis_Result_NoResult };
         private ListSelectionHelper<AnalysisResult> _Results = new ListSelectionHelper<AnalysisResult>();
         public ListSelectionHelper<AnalysisResult> Results { get { return _Results; } }
 
@@ -55,32 +55,27 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.AnalysisDate, value);
             }
         }
-        #endregion
 
         ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
 
 
         public EditAnalysisVM(Container ioc)
-            : base(false)
         {
-            IOC = ioc;
+            Storage = ioc.Resolve<IFieldDataService>();
             Vocabulary = ioc.Resolve<IVocabularyService>();
             
             _Parent = this.ObservableToProperty(
-                ValidModel
-                .Select(iuan => Storage.getIdentificationUnitByID(iuan.IdentificationUnitID))
-                .Select(parent => new IdentificationUnitVM(parent)),
+                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW),
                 vm => vm.Parent);
 
-            _Model = this.ObservableToProperty(ValidModel, x => x.Model);
+            
 
             Analyses = new ListSelectionHelper<Analysis>();
-            _Parent
-                .Select(parent => Vocabulary.getPossibleAnalyses(parent.Model.TaxonomicGroup))
+            Messenger.Listen<IList<Analysis>>()
                 .Subscribe(Analyses);
 
-            Analyses.ItemsObservable
-                .CombineLatest(ValidModel, (analyses, iuan) =>
+            Analyses.ItemsObservable.Where(items => items != null)
+                .CombineLatest(CurrentModelObservable, (analyses, iuan) =>
                             analyses
                             .Where(an => an.AnalysisID == iuan.AnalysisID)
                             .FirstOrDefault())
@@ -88,41 +83,58 @@ namespace DiversityPhone.ViewModels
                 .BindTo(Analyses, x => x.SelectedItem);
                         
             Analyses
-                .Select(selectedAN => (selectedAN != null) ? Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) : null)
+                .Where(an => an != null)
+                .SelectMany(selectedAN =>
+                    {
+                        if(selectedAN != NoAnalysis) 
+                            return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID), Scheduler.ThreadPool);
+                        else
+                            return Observable.Return(Enumerable.Empty<AnalysisResult>().ToList() as IList<AnalysisResult>);
+                    })
+                .Do(list => list.Insert(0, NoResult))
+                .ObserveOnDispatcher()
                 .Subscribe(Results);
 
             Results.ItemsObservable
-                .CombineLatest(ValidModel, (results, iuan) =>
+                .Where(results => results != null)
+                .CombineLatest(CurrentModelObservable, (results, iuan) =>
                     results
                     .Where(res => res.Result == iuan.AnalysisResult)
                     .FirstOrDefault())
                 .Where(x => x != null)
                 .BindTo(Results, x => x.SelectedItem);
 
-            ValidModel
-                .Select(iuan => iuan.AnalysisResult)
-                .BindTo(this, x => x.CustomResult);
+            
 
             _IsCustomResult = this.ObservableToProperty(
                 Results.ItemsObservable
                 .Where(res => res != null)
-                .Select(results => results.Count == 0),
-                vm => vm.IsCustomResult);          
-            _IsCustomResult
-                .Where(custom => !custom)
-                .Select(_ => String.Empty)
+                .Select(results => !results.Any(res => res != NoResult))
+                //Don't allow Custom Results until we checked the DB
+                .Merge(Analyses.Select(_ => false)), 
+                vm => vm.IsCustomResult);
+
+            CurrentModelObservable                
+                .Select(iuan => iuan.AnalysisResult)
+                .Merge(
+                    _IsCustomResult
+                    .Where(custom => !custom)
+                    .Select(_ => String.Empty)
+                )
                 .BindTo(this, x => x.CustomResult);
 
             Messenger.RegisterMessageSource(
               Save
               .Select(_ => Analyses.SelectedItem),
               MessageContracts.USE);
+
+            CanSave().StartWith(false).Subscribe(CanSaveSubject);
         }
 
-        protected override IObservable<bool> CanSave()
+        protected IObservable<bool> CanSave()
         {
             var vocabularyResultValid = Results
-                .Select(result => result != null);
+                .Select(result => result != NoResult);
 
             var customResultValid = this.ObservableForProperty(x => x.CustomResult)
                 .Select(change => !string.IsNullOrWhiteSpace(change.Value));
@@ -139,37 +151,6 @@ namespace DiversityPhone.ViewModels
             Current.Model.AnalysisID = Analyses.SelectedItem.AnalysisID;
             Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : Results.SelectedItem.Result;
             Current.Model.DisplayText = String.Format("{0} : {1}{2}", Analyses.SelectedItem.DisplayText, (IsCustomResult) ? CustomResult : Results.SelectedItem.DisplayText, Analyses.SelectedItem.MeasurementUnit);
-        }
-        
-        protected override IdentificationUnitAnalysis ModelFromState(PageState s)
-        {
-            //Existing IUAN
-            if (s.Context != null)
-            {
-                int anID;
-                if (int.TryParse(s.Context, out anID))
-                {
-                    return Storage.getIUANByID(anID);
-                }                        
-            }
-            //New IUAN
-            if (s.ReferrerType == ReferrerType.IdentificationUnit && s.Referrer != null)
-            {
-                int unitID;
-                if (int.TryParse(s.Referrer, out unitID))
-                {
-                    return new IdentificationUnitAnalysis()
-                    {
-                        IdentificationUnitID = unitID,
-                    };
-                }
-            }
-            return null;
-        }
-
-        protected override ElementVMBase<IdentificationUnitAnalysis> ViewModelFromModel(IdentificationUnitAnalysis model)
-        {
-            return new IdentificationUnitAnalysisVM(model);
         }
     }
 }

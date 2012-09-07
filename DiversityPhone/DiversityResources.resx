@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Analysis_NoAnalysis" xml:space="preserve">
+    <value>No Analysis</value>
+  </data>
+  <data name="Analysis_Result_NoResult" xml:space="preserve">
+    <value>No Result</value>
+  </data>
   <data name="EventProperty_Header_Property" xml:space="preserve">
     <value>Property</value>
   </data>

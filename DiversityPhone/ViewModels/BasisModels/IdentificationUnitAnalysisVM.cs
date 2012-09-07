@@ -6,7 +6,7 @@ using DiversityPhone.Services;
 namespace DiversityPhone.ViewModels
 {
     public class IdentificationUnitAnalysisVM : ElementVMBase<IdentificationUnitAnalysis>
-    {        
+    {
         public IdentificationUnitAnalysisVM(IdentificationUnitAnalysis model)
             : base(model)
         {

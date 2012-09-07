@@ -14,6 +14,17 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True" DataContext="{Binding EditAnalysis, Source={StaticResource Locator}}">
+    <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="TextAndUnitItemTemplate">
+                <TextBlock Text="{Binding TextAndUnit}"/>
+            </DataTemplate>
+        </ResourceDictionary>
+    </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -27,10 +38,12 @@
             <TextBlock x:Name="PageTitle" Text="analysis" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
         <StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1" >
-            <ContentControl Content="{Binding Parent}" ContentTemplate="{StaticResource IdentificationSingleLevelItemTemplate}" HorizontalContentAlignment="Left"/>
+            <ContentControl Content="{Binding Parent}" 
+                            ContentTemplate="{StaticResource UnitItemTemplate}" 
+                            HorizontalContentAlignment="Left"/>
             <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}"/>
-            <toolkit:ListPicker Name="LP_Type" Header="Analysis" 
+            <toolkit:ListPicker Header="Analysis" 
                                 IsEnabled="{Binding IsEditable}"                                
                                 ItemsSource="{Binding Analyses.Items}"
 								SelectedIndex="{Binding Analyses.SelectedIndex, Mode=TwoWay}"
