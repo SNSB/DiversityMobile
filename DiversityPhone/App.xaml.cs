@@ -153,8 +153,7 @@ namespace DiversityPhone
             IOC.Register<ILocationService>(new LocationService(IOC));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             
-            BackgroundTasks = new BackgroundService();
-            BackgroundTasks.registerTask(new DownloadTaxonListTask(IOC));
+            BackgroundTasks = new BackgroundService();            
             BackgroundTasks.registerTask(new RefreshVocabularyTask(IOC));
             BackgroundTasks.registerTask(new UploadEventTask(IOC));
             BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));

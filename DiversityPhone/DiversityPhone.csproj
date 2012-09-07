@@ -158,7 +158,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Services\BackgroundTasks\BackgroundService.cs" />
-    <Compile Include="Services\BackgroundTasks\DownloadTaxonListTask.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
