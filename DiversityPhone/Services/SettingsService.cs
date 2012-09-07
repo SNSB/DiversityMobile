@@ -25,7 +25,9 @@ namespace DiversityPhone.Services
                 _SettingSubject
             );
             Messenger.RegisterMessageSource(
-                _SettingSubject.Select(settings => settings.ToCreds())
+                _SettingSubject
+                .Where(settings => settings != null)
+                .Select(settings => settings.ToCreds())
                 );
 
             Messenger.Listen<EventMessage>(MessageContracts.INIT)
