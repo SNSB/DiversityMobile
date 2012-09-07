@@ -124,10 +124,14 @@ namespace DiversityPhone.View
                 .Merge(VM.AdditionalLocalizations.ItemsAdded)
                 .Subscribe(it =>
                 {
-                    var img = new Image() { Source = this.Resources["GPSPointImage"] as BitmapImage };
-                    var binding = new RelativeLocationBinding(img, size_obs) { RelativeLocation = it };
-                    additionallocalization_images.Add(binding);
-                    MainCanvas.Children.Add(img);
+                    var source = this.Resources["GPSPointImage"] as BitmapImage;
+                    if(source != null)
+                    {
+                        var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
+                        var binding = new RelativeLocationBinding(img, size_obs) { RelativeLocation = it };
+                        additionallocalization_images.Add(binding);
+                        MainCanvas.Children.Add(img);
+                    }
                 }));
 
             s.Add(VM.AdditionalLocalizations.IsEmpty.DistinctUntilChanged().Where(empty => empty).Subscribe(_ => additionallocalization_images.Dispose()));
