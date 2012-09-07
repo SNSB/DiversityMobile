@@ -27,6 +27,7 @@
                     <ColumnDefinition Width="40"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="48"/>
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0" 
                    Source="{Binding TaxonomicGroup, Converter={StaticResource TermToImage}}" Height="40" Width="40" HorizontalAlignment="Left"/>
@@ -38,7 +39,7 @@
                         <ImageBrush ImageSource="/Images/appbar.check.rest.png" />
                     </Rectangle.OpacityMask>
                 </Rectangle>
-                <Rectangle Grid.Column="2" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48" 
+                <Rectangle Grid.Column="3" Fill="{StaticResource PhoneForegroundBrush}" Width="48" Height="48" 
                        Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}">
                     <Rectangle.OpacityMask>
                         <ImageBrush ImageSource="/Images/appbar.download.rest.png" />

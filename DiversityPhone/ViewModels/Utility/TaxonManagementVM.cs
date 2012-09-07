@@ -84,8 +84,7 @@ namespace DiversityPhone.ViewModels
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
             Select.Subscribe(taxonlist =>
                     {
-                        Taxa.selectTaxonList(taxonlist.Model);
-                        taxonlist.IsSelected = true;
+                        Taxa.selectTaxonList(taxonlist.Model);                        
                     });
 
             Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
@@ -94,26 +93,22 @@ namespace DiversityPhone.ViewModels
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
                             {
-                                var task = Background.getTaskObject<DownloadTaxonListTask>();
-                                task.AsyncCompletedNotification
-                                    .Where(arg => arg == taxonlist.Model)
-                                    .Take(1)
-                                    .ObserveOnDispatcher()
-                                    .Subscribe(_ => taxonlist.IsDownloading = false);
-
-                                task.AsyncErrorNotification
-                                    .Where(arg => arg == taxonlist.Model)
-                                    .Take(1)
-                                    .ObserveOnDispatcher()
-                                    .Subscribe(_ => { Taxa.deleteTaxonList(taxonlist.Model); LocalLists.Remove(taxonlist); });
-                                     
                                 CurrentPivot = Pivot.Local;
                                 taxonlist.IsDownloading = true;
                                 LocalLists.Add(taxonlist);
-                                Taxa.addTaxonList(taxonlist.Model);
-                                Background.startTask<DownloadTaxonListTask>(taxonlist.Model);
 
-
+                                DownloadTaxonList(taxonlist)
+                                    .ObserveOnDispatcher()
+                                    .Subscribe(_ => { },
+                                        _ => //Download Failed
+                                        {
+                                            LocalLists.Remove(taxonlist);
+                                            taxonlist.IsDownloading = false;
+                                        },
+                                        () => //Download Succeeded
+                                        {
+                                            taxonlist.IsDownloading = false;
+                                        });
                             }
                             else
                                 Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
@@ -169,6 +164,16 @@ namespace DiversityPhone.ViewModels
             _PublicLists = this.ObservableToProperty(online_lists.Select(lists => lists.Where(l => l.Model.IsPublicList).ToList() as IList<TaxonListVM>), x => x.PublicLists);
 
             online_lists.Connect();
+        }
+
+        private IObservable<Unit> DownloadTaxonList(TaxonListVM vm)
+        {
+            Taxa.addTaxonList(vm.Model);
+            return
+            Service.DownloadTaxonListChunked(vm.Model)
+            .Do(chunk => Taxa.addTaxonNames(chunk, vm.Model), (Exception ex) => Taxa.deleteTaxonList(vm.Model))
+            .IgnoreElements()
+            .Select(_ => Unit.Default);
         }
     }
 }

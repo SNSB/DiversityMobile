@@ -12,6 +12,7 @@ namespace DiversityPhone.Services
     public partial class DiversityServiceObservableClient : IDiversityServiceClient
     {
         IObservable<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUser;
+        IObservable<DownloadTaxonListCompletedEventArgs> DownloadTaxonList;
 
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         IMessageBus Messenger;
@@ -25,6 +26,7 @@ namespace DiversityPhone.Services
             LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
 
             GetTaxonListsForUser = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
+            DownloadTaxonList = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);                                
         }
 
         private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
@@ -86,38 +88,41 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)
         {
-            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };
+            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };            
 
-            var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
-            int chunk = 1; //First Chunk is 1, not 0!
-
-            var res = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadTaxonListCompleted += d, d => localclient.DownloadTaxonListCompleted -= d)                                
-                .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
-                .Select(taxa => taxa.Select(
-                    taxon => new Client.TaxonName()
-                    {
-                        GenusOrSupragenic = taxon.GenusOrSupragenic,
-                        InfraspecificEpithet = taxon.InfraspecificEpithet,
-                        SpeciesEpithet = taxon.SpeciesEpithet,
-                        Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy),taxon.Synonymy,true),
-                        TaxonNameCache = taxon.TaxonNameCache,
-                        TaxonNameSinAuth = taxon.TaxonNameSinAuth,
-                        URI = taxon.URI
-                    }))
-                .TakeWhile(taxonChunk => 
-                    {
-                        if(taxonChunk.Any())
+            return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
+                {
+                    int chunk = 1; //First Chunk is 1, not 0!
+                    var subscription =
+                    DownloadTaxonList
+                    .Where(args => args.UserState == list)
+                    .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
+                    .Select(taxa => taxa.Select(
+                        taxon => new Client.TaxonName()
                         {
-                            //There might still be more Taxa -> request next chunk
-                            localclient.DownloadTaxonListAsync(serviceList, ++chunk, GetCreds());
-                            return true;
-                        }
-                        else //Transfer finished
-                            return false;
-                    });
-            //Request first chunk
-            localclient.DownloadTaxonListAsync(serviceList, chunk, GetCreds());
-            return res;
+                            GenusOrSupragenic = taxon.GenusOrSupragenic,
+                            InfraspecificEpithet = taxon.InfraspecificEpithet,
+                            SpeciesEpithet = taxon.SpeciesEpithet,
+                            Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy), taxon.Synonymy, true),
+                            TaxonNameCache = taxon.TaxonNameCache,
+                            TaxonNameSinAuth = taxon.TaxonNameSinAuth,
+                            URI = taxon.URI
+                        }))
+                    .TakeWhile(taxonChunk =>
+                        {
+                            if (taxonChunk.Any())
+                            {
+                                //There might still be more Taxa -> request next chunk
+                                _svc.DownloadTaxonListAsync(serviceList, ++chunk, GetCreds(), list);
+                                return true;
+                            }
+                            else //Transfer finished
+                                return false;
+                        }).Subscribe(observer);
+                    //Request first chunk
+                    _svc.DownloadTaxonListAsync(serviceList, chunk, GetCreds(), list);
+                    return subscription;
+                });
         }
 
         public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)

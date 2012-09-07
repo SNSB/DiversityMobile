@@ -11,15 +11,16 @@ using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
 using System.Collections.Generic;
 using System.Linq;
+using ReactiveUI;
 
 namespace DiversityPhone.Model
 {
     [Table]    
-    public class TaxonList : IEquatable<TaxonList>
+    public class TaxonList : ReactiveObject, IEquatable<TaxonList>
     {
         public TaxonList()
         {
-            TableID = -1;
+            TableID = InvalidTableID;
         }
 
         [Column(IsPrimaryKey = true)]
@@ -37,8 +38,13 @@ namespace DiversityPhone.Model
         [Column]
         public bool IsPublicList { get; set; }
 
+        private bool _IsSelected;
         [Column]
-        public bool IsSelected { get; set; }
+        public bool IsSelected
+        {
+            get { return _IsSelected; }
+            set { this.RaiseAndSetIfChanged(x => x.IsSelected, ref _IsSelected, value); }
+        }
 
 
         public static IEnumerable<int> ValidTableIDs
@@ -48,6 +54,8 @@ namespace DiversityPhone.Model
                 return Enumerable.Range(0, 100);
             }
         }
+
+        public const int InvalidTableID = -1;
 
         public bool Equals(TaxonList other)
         {

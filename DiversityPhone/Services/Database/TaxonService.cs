@@ -108,7 +108,8 @@ namespace DiversityPhone.Services
                 }
                 ctx.TaxonLists.Attach(list);
                 ctx.TaxonLists.DeleteOnSubmit(list);
-                ctx.SubmitChanges();               
+                ctx.SubmitChanges();
+                list.TableID = TaxonList.InvalidTableID;
             });
         }
 
@@ -126,7 +127,7 @@ namespace DiversityPhone.Services
         {
             int tableID;
             if (taxonGroup == null
-                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == -1)
+                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == TaxonList.InvalidTableID)
             {
                 //System.Diagnostics.Debugger.Break();
                 //TODO Logging
@@ -202,7 +203,7 @@ namespace DiversityPhone.Services
 
         private int getTaxonTableIDForGroup(string taxonGroup)
         {
-            int id = -1;
+            int id = TaxonList.InvalidTableID;
             if (taxonGroup != null)
                 withSelections(ctx =>
                 {

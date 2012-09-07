@@ -31,18 +31,12 @@ namespace DiversityPhone.ViewModels
                 return _model.TableDisplayName;
             }
         }
-
-
-        private bool _IsSelected;
+        
         public bool IsSelected 
         {
             get
             {
-                return _IsSelected;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.IsSelected, ref _IsSelected, value);
+                return Model.IsSelected;
             }
         }
 
@@ -65,7 +59,10 @@ namespace DiversityPhone.ViewModels
 
         public TaxonListVM(TaxonList model)
         {
-            _model = model;           
+            _model = model;
+
+            _model.ObservableForProperty(x => x.IsSelected)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.IsSelected));
         }        
     }
 }
