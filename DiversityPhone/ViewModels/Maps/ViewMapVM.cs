@@ -184,12 +184,17 @@ namespace DiversityPhone.ViewModels
                 .Select(loc => loc.HasValue);
 
 
-            var most_recent_localizable = current_localizable_if_not_series.MostRecent(null);
+            
             Save = new ReactiveCommand(_IsEditable.BooleanAnd(valid_localization));
-            Save
-                .Select(_ => most_recent_localizable.FirstOrDefault())
+            current_localizable_if_not_series
                 .Where(loc => loc != null)
+                .SelectMany(loc => 
+                    Save
+                    .Select(_ => loc)                
+                    .TakeUntil(current_localizable_if_not_series)
+                    )
                 .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(PrimaryLocalization.Value)))
+                .Do(_ => Messenger.SendMessage(Page.Previous))
                 .ToMessage(MessageContracts.SAVE);
 
             ActivationObservable
