@@ -12,6 +12,8 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using System.Windows.Navigation;
+using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone
 {
@@ -20,21 +22,16 @@ namespace DiversityPhone
 
         private ViewESVM VM { get { return DataContext as ViewESVM; } }
 
+        private CommandButtonAdapter _add, _map;
+
         public ViewES()
         {
             InitializeComponent();
+
+            _add = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.AddEvent);
+            _map = new CommandButtonAdapter(ApplicationBar.Buttons[1] as IApplicationBarIconButton, VM.Maps);
         }
 
-        private void Add_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.AddEvent.Execute(null);
-        }
-
-        private void Map_Click(object sender, EventArgs e)
-        {
-            if (VM != null)
-                VM.Maps.Execute(null);
-        }
+        
     }
 }

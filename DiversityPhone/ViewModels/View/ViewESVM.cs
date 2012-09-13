@@ -9,8 +9,8 @@
     using DiversityPhone.Model;
     using DiversityPhone.Messages;
     using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Subjects;
+    using System.Reactive.Disposables;
+    using System.Reactive.Subjects;
     using Funq;
 
     public class ViewESVM : ViewPageVMBase<EventSeries>
@@ -64,7 +64,7 @@ using System.Reactive.Subjects;
                     }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 
-            Maps = new ReactiveCommand();
+            Maps = new ReactiveCommand(CurrentModelObservable.Select(es => !EventSeries.isNoEventSeries(es)));
             Maps
                 .Select(_ => Current)
                 .ToMessage(MessageContracts.MAPS);

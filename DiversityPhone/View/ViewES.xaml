@@ -43,8 +43,8 @@
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add" Click="Add_Click"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="Map" Click="Map_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="Map" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
