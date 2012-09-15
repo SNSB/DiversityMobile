@@ -43,11 +43,14 @@ namespace DiversityPhone.ViewModels
 
             ToggleEditable = new ReactiveCommand(CurrentModelObservable.Select(m=> !m.IsUnmodified()));
             _IsEditable = this.ObservableToProperty(
-                    Observable.Merge(
-                    ActivationObservable.Where(activated => activated) //Check if object is new
-                    .CombineLatest(
-                        CurrentModelObservable, (_, model) => model
-                        ).Select(m => m.IsNew()),
+                    Observable.Merge(                    
+                        CurrentModelObservable
+                        .SelectMany(m => 
+                            m.ObservableForProperty(x => x.ModificationState)
+                            .Select(_ => Unit.Default)
+                            .StartWith(Unit.Default)
+                            .Select(_ => m.IsNew())
+                            .TakeUntil(CurrentModelObservable)),
                     ToggleEditable.Select(_ => !IsEditable)
                     ),
                 x => x.IsEditable);

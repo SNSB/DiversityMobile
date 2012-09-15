@@ -65,13 +65,15 @@ using ReactiveUI;
         [Column(CanBeNull = true)]
         public DateTime? SeriesEnd { get; set; }
 
-       
 
-        /// <summary>
-        /// Tracks modifications to this Object      
-        /// </summary>
+
+        ModificationState _ModificationState;
         [Column]
-        public ModificationState ModificationState { get; set; }
+        public ModificationState ModificationState 
+        {
+            get { return _ModificationState; }
+            set { this.RaiseAndSetIfChanged(x => x.ModificationState, ref _ModificationState, value); }
+        }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

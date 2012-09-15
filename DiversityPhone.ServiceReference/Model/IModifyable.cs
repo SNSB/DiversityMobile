@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ReactiveUI;
 
 namespace DiversityPhone.Model
 {
     public enum ModificationState
     {
-        New,
-        Unmodified,
-        Modified
+        New, // Persisted Nowhere
+        Unmodified, // Persisted Remotely & Locally
+        Modified // Persisted Locally
     }
-    public interface IModifyable
+    public interface IModifyable : IReactiveNotifyPropertyChanged
     {
         /// <summary>
         /// Tracks the persistance status of an object.
-        /// null - Newly created, not yet persisted
-        /// false - persisted remotely, local copy unchanged
-        /// true - persisted only locally OR the local copy has been changed
         /// </summary>
         ModificationState ModificationState { get; set; }
     }

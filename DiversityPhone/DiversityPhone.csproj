@@ -138,7 +138,7 @@
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AppSettings.cs" />
-    <Compile Include="Model\CollectionEventProperty.cs" />
+    <Compile Include="Model\EventProperty.cs" />
     <Compile Include="Model\Geometry\Line.cs" />
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />

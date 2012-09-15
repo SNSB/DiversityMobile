@@ -32,12 +32,13 @@ using ReactiveUI;
         }
 
 
-        /// <summary>
-        /// Tracks modifications to this Object.
-        /// is null for newly created Objects
-        /// </summary>
+        ModificationState _ModificationState;
         [Column]
-        public ModificationState ModificationState { get; set; }
+        public ModificationState ModificationState
+        {
+            get { return _ModificationState; }
+            set { this.RaiseAndSetIfChanged(x => x.ModificationState, ref _ModificationState, value); }
+        }
 
         [Column]
         public DateTime LogUpdatedWhen { get; set; }

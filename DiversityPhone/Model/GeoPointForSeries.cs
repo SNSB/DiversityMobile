@@ -8,9 +8,10 @@ namespace DiversityPhone.Model
     using System.Data.Linq.Mapping;
     using DiversityPhone.Services;
     using Svc = DiversityPhone.DiversityService;
+    using ReactiveUI;
 
     [Table]
-    public class GeoPointForSeries :IModifyable,ILocalizable
+    public class GeoPointForSeries : ReactiveObject, IModifyable, ILocalizable
     {
         //Stores Geocoordinates assiciated with an EventSeries. Only one tour per series are allowed. Sequence of points is given by the id.
 
