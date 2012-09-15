@@ -85,6 +85,7 @@ using System.Reactive.Disposables;
             PropertyList = getProperties.RegisterAsyncFunction(ev => Storage.getPropertiesForEvent((ev as Event).EventID).Select(prop => new PropertyVM(prop)))                
                 .SelectMany(props => props)                
                 .CreateCollection();
+            PropertyList.ListenToChanges<EventProperty, PropertyVM>(p => p.EventID == Current.Model.EventID);
 
             CurrentModelObservable
                 .Do(_ => PropertyList.Clear())
@@ -93,9 +94,6 @@ using System.Reactive.Disposables;
             SelectProperty = new ReactiveCommand<IElementVM<EventProperty>>();
             SelectProperty
                 .ToMessage(MessageContracts.EDIT);
-
-            CurrentModelObservable
-                .Subscribe(getProperties.Execute);    
         
             //Multimedia
             MultimediaList = new ElementMultimediaVM(Storage);

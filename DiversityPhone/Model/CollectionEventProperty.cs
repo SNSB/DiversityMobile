@@ -13,11 +13,12 @@ using System.Data.Linq.Mapping;
 using DiversityPhone.Services;
 using Svc = DiversityPhone.DiversityService;
 using System.Data.Linq;
+using ReactiveUI;
 
 namespace DiversityPhone.Model
 {
     [Table]
-    public class EventProperty : IModifyable
+    public class EventProperty : ReactiveObject, IModifyable
     {
         public EventProperty()
         {
@@ -34,8 +35,13 @@ namespace DiversityPhone.Model
         [Column(CanBeNull = true)]
         public int? DiversityCollectionEventID { get; set; }
 
+        private string _DisplayText;
         [Column]
-        public String DisplayText { get; set; }
+        public String DisplayText 
+        {
+            get { return _DisplayText; }
+            set { this.RaiseAndSetIfChanged(x => x.DisplayText, ref _DisplayText, value); }
+        }
 
         [Column]
         public String PropertyUri { get; set; }

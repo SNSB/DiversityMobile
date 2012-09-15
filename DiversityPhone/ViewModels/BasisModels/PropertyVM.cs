@@ -5,6 +5,7 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
+using System;
 
 namespace DiversityPhone.ViewModels
 {
@@ -16,7 +17,7 @@ namespace DiversityPhone.ViewModels
         public PropertyVM(EventProperty model)
             : base( model)
         {
-
+            model.ObservableForProperty(x => x.DisplayText).Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
         }
     }
 }
