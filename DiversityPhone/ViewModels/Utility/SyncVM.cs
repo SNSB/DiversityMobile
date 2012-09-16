@@ -70,20 +70,13 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
         public class MultimediaVM : MultimediaObjectVM
-        { 
-            public object Image { get; private set; }
-
+        {
             public object Owner { get; private set; }           
 
             public MultimediaVM(MultimediaObject obj, object owner)
-                :base(obj)
+                : base(obj)
             {
                 Owner = owner;
-
-                if (obj.MediaType == MediaType.Image)
-                {
-                    Image =  new ImageVM(obj);
-                }
             }
         }
 

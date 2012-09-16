@@ -18,10 +18,10 @@ namespace DiversityPhone.View.Appbar
     public class NewVideoAppBarUpdater
     {
         IApplicationBar _appbar;
-        NewVideoVM _vm;
+        VideoVM _vm;
         ApplicationBarIconButton _record,_play,_stop, _save;
 
-        public NewVideoAppBarUpdater(IApplicationBar appbar, NewVideoVM viewmodel)
+        public NewVideoAppBarUpdater(IApplicationBar appbar, VideoVM viewmodel)
         {
             _appbar = appbar;
             _vm = viewmodel;

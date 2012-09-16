@@ -191,11 +191,9 @@
     <Compile Include="Services\Database\TaxonService.cs" />
     <Compile Include="Services\Database\VocabularyService.cs" />
     <Compile Include="ViewModels\BasisModels\IdentificationUnitAnalysisVM.cs" />
-    <Compile Include="ViewModels\BasisModels\ImageVM.cs" />
     <Compile Include="ViewModels\EditElementPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
-    <Compile Include="ViewModels\Edit\EditMapVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
     <Compile Include="ViewModels\BasisModels\MultimediaObjectVM.cs" />
     <Compile Include="ViewModels\BasisModels\PropertyVM.cs" />
@@ -214,13 +212,10 @@
     <Compile Include="ViewModels\Maps\MapManagementVM.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ViewModels\Multimedia\NewAudioVM.cs" />
-    <Compile Include="ViewModels\Multimedia\NewImageVM.cs" />
-    <Compile Include="ViewModels\Multimedia\NewVideoVM.cs" />
+    <Compile Include="ViewModels\Multimedia\AudioVM.cs" />
+    <Compile Include="ViewModels\Multimedia\ImageVM.cs" />
+    <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
-    <Compile Include="ViewModels\Multimedia\ViewAudioVM.cs" />
-    <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
-    <Compile Include="ViewModels\Multimedia\ViewVideoVM.cs" />
     <Compile Include="ViewModels\PageViewModel.cs" />
     <Compile Include="ViewModels\ReactiveCollectionListener.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
@@ -278,14 +273,14 @@
     <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
     <Compile Include="View\Converters\IconToImageConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
-    <Compile Include="View\NewAudio.xaml.cs">
-      <DependentUpon>NewAudio.xaml</DependentUpon>
+    <Compile Include="View\Audio.xaml.cs">
+      <DependentUpon>Audio.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NewImage.xaml.cs">
-      <DependentUpon>NewImage.xaml</DependentUpon>
+    <Compile Include="View\Image.xaml.cs">
+      <DependentUpon>Image.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\NewVideo.xaml.cs">
-      <DependentUpon>NewVideo.xaml</DependentUpon>
+    <Compile Include="View\Video.xaml.cs">
+      <DependentUpon>Video.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Helper\ProgressBinding.cs" />
     <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
@@ -307,15 +302,9 @@
     <Compile Include="View\TaxonManagement.xaml.cs">
       <DependentUpon>TaxonManagement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ViewAudio.xaml.cs">
-      <DependentUpon>ViewAudio.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewImage.xaml.cs">
-      <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewIU.xaml.cs">
       <DependentUpon>ViewIU.xaml</DependentUpon>
@@ -351,9 +340,6 @@
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewVideo.xaml.cs">
-      <DependentUpon>ViewVideo.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -410,15 +396,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NewAudio.xaml">
+    <Page Include="View\Audio.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NewImage.xaml">
+    <Page Include="View\Image.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\NewVideo.xaml">
+    <Page Include="View\Video.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -442,15 +428,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ViewAudio.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\ViewCS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewImage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -479,10 +457,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewMap.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewVideo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -99,16 +99,11 @@ namespace DiversityPhone
             IOC.Register<EditAnalysisVM>(new EditAnalysisVM(IOC));
 
             IOC.Register<MapManagementVM>(new MapManagementVM(IOC));
-            IOC.Register<ViewMapVM>(new ViewMapVM(IOC));
-            
-            IOC.Register<EditMapVM>(c => new EditMapVM(c.Resolve<IMessageBus>()));            
-            IOC.Register<NewImageVM>(new NewImageVM());
-            IOC.Register<NewAudioVM>(new NewAudioVM());
-            IOC.Register<NewVideoVM>(new NewVideoVM());
-            IOC.Register<ViewImageVM>(new ViewImageVM());
-            IOC.Register<ViewAudioVM>(new ViewAudioVM());
-            IOC.Register<ViewVideoVM>(new ViewVideoVM());
-            
+            IOC.Register<ViewMapVM>(new ViewMapVM(IOC));           
+                      
+            IOC.Register<ImageVM>(new ImageVM());
+            IOC.Register<AudioVM>(new AudioVM());
+            IOC.Register<VideoVM>(new VideoVM());
 
             IOC.Register<TaxonManagementVM>(c => new TaxonManagementVM(c));
 

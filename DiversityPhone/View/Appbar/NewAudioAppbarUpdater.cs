@@ -8,10 +8,10 @@ namespace DiversityPhone.View.Appbar
     public class NewAudioAppBarUpdater
     {
         IApplicationBar _appbar;
-        NewAudioVM _vm;
+        AudioVM _vm;
         ApplicationBarIconButton _record,_play,_stop, _save;
 
-        public NewAudioAppBarUpdater(IApplicationBar appbar, NewAudioVM viewmodel)
+        public NewAudioAppBarUpdater(IApplicationBar appbar, AudioVM viewmodel)
         {
             _appbar = appbar;
             _vm = viewmodel;

@@ -27,11 +27,11 @@ namespace DiversityPhone.View
         private FileSink fileSink;
 
 
-        private NewVideoVM VM
+        private VideoVM VM
         {
             get
             {
-                return DataContext as NewVideoVM;
+                return DataContext as VideoVM;
             }
         }
 

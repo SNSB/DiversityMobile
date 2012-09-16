@@ -43,16 +43,12 @@ namespace DiversityPhone.ViewModels
         public EditAnalysisVM EditAnalysis { get { return IOC.Resolve<EditAnalysisVM>(); } }
         public EditPropertyVM EditProperty { get { return IOC.Resolve<EditPropertyVM>(); } }
 
-        public MapManagementVM MapManagement { get { return IOC.Resolve<MapManagementVM>(); } }       
-        public EditMapVM EditMap { get { return IOC.Resolve<EditMapVM>(); } }
+        public MapManagementVM MapManagement { get { return IOC.Resolve<MapManagementVM>(); } }               
         public ViewMapVM ViewMap { get { return IOC.Resolve<ViewMapVM>(); } }        
         
-        public NewImageVM NewImage { get { return IOC.Resolve<NewImageVM>(); } }
-        public NewAudioVM NewAudio { get { return IOC.Resolve<NewAudioVM>(); } }
-        public NewVideoVM NewVideo { get { return IOC.Resolve<NewVideoVM>(); } }
-        public ViewImageVM ViewImage { get { return IOC.Resolve<ViewImageVM>(); } }
-        public ViewAudioVM ViewAudio { get { return IOC.Resolve<ViewAudioVM>(); } }
-        public ViewVideoVM ViewVideo { get { return IOC.Resolve<ViewVideoVM>(); } }
+        public ImageVM NewImage { get { return IOC.Resolve<ImageVM>(); } }
+        public AudioVM NewAudio { get { return IOC.Resolve<AudioVM>(); } }
+        public VideoVM NewVideo { get { return IOC.Resolve<VideoVM>(); } }
 
         public TaxonManagementVM TaxonManagement { get { return IOC.Resolve<TaxonManagementVM>(); } }
         public SettingsVM Settings { get { return IOC.Resolve<SettingsVM>(); } }

@@ -46,7 +46,7 @@ namespace DiversityPhone.ViewModels
 
             SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObjectVM>>();
             SelectMultimedia
-                .ToMessage(MessageContracts.EDIT);
+                .ToMessage(MessageContracts.VIEW);
 
             AddMultimedia = new ReactiveCommand();
             var newmmo =

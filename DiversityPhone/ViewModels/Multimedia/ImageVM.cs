@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewImageVM : EditPageVMBase<MultimediaObject>
+    public class ImageVM : EditPageVMBase<MultimediaObject>
     {
 
       
@@ -88,7 +88,7 @@ namespace DiversityPhone.ViewModels
         #endregion
 
 
-        public NewImageVM()
+        public ImageVM()
             : base( mmo => mmo.MediaType == MediaType.Image)
         {
             Reset = new ReactiveCommand();

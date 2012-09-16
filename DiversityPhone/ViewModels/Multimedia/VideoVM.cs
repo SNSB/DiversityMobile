@@ -16,7 +16,7 @@ using System.Windows.Controls;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewVideoVM : EditPageVMBase<MultimediaObject>
+    public class VideoVM : EditPageVMBase<MultimediaObject>
     {
        
 
@@ -85,7 +85,7 @@ namespace DiversityPhone.ViewModels
 
         #endregion      
 
-        public NewVideoVM()
+        public VideoVM()
             : base( mmo => mmo.MediaType == MediaType.Video)
         {
             Record = new ReactiveCommand();

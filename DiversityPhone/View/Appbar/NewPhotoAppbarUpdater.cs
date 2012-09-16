@@ -20,10 +20,10 @@ namespace DiversityPhone.View
     public class NewImageAppBarUpdater
     {
         IApplicationBar _appbar;
-        NewImageVM _vm;
+        ImageVM _vm;
         ApplicationBarIconButton _take,_refresh, _save,_settings;//_crop
 
-        public NewImageAppBarUpdater(IApplicationBar appbar, NewImageVM viewmodel)
+        public NewImageAppBarUpdater(IApplicationBar appbar, ImageVM viewmodel)
         {
             _appbar = appbar;
             _vm = viewmodel;

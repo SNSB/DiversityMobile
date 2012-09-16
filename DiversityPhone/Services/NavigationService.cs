@@ -27,10 +27,12 @@ namespace DiversityPhone.Services
 
         public NavigationService(IMessageBus messenger)
         {
-            Messenger = messenger;               
-       
-            var new_mmo = Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT).Where(vm => vm.Model.IsNew());
-            var view_mmo = Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW);
+            Messenger = messenger;
+
+            var mmo = Observable.Merge(
+                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT),
+                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW)
+                );
             
             Messenger.RegisterMessageSource(
                 Observable.Merge(
@@ -45,12 +47,9 @@ namespace DiversityPhone.Services
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),                    
                     Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),                   
                     Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
-                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
-                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
-                    new_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
-                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.ViewAudio),
-                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.ViewImage),
-                    view_mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.ViewVideo),
+                    mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
+                    mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
+                    mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
                     Messenger.Listen<ILocalizable>(MessageContracts.VIEW).Select(_ => Page.ViewMap)
                     )
                 );
@@ -167,15 +166,6 @@ namespace DiversityPhone.Services
                 case Page.ViewMap:
                     destination = "/View/ViewMap.xaml";
                     break;
-                case Page.ViewImage:
-                    destination = "/View/ViewImage.xaml";
-                    break;
-                case Page.ViewAudio:
-                    destination = "/View/ViewAudio.xaml";
-                    break;
-                case Page.ViewVideo:
-                    destination = "/View/ViewVideo.xaml";
-                    break;                
                 case Page.NewImage:
                     destination = "/View/NewImage.xaml";
                     break;

@@ -15,7 +15,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class NewAudioVM : EditPageVMBase<MultimediaObject>
+    public class AudioVM : EditPageVMBase<MultimediaObject>
     {
 
       
@@ -100,7 +100,7 @@ namespace DiversityPhone.ViewModels
 
         #region Constructor
 
-        public NewAudioVM()
+        public AudioVM()
             : base( mmo => mmo.MediaType == MediaType.Audio)
         {
             // Timer to simulate the XNA Framework game loop (Microphone is 

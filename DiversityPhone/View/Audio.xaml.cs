@@ -13,11 +13,11 @@ namespace DiversityPhone.View
     public partial class NewAudio : PhoneApplicationPage
     {
 
-        private NewAudioVM VM
+        private AudioVM VM
         {
             get
             {
-                return DataContext as NewAudioVM;
+                return DataContext as AudioVM;
             }
         }
 

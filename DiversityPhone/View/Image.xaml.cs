@@ -20,11 +20,11 @@ namespace DiversityPhone.View
         private PhotoCamera Camera { get; set; }
 
 
-        private NewImageVM VM
+        private ImageVM VM
         {
             get
             {
-                return DataContext as NewImageVM;
+                return DataContext as ImageVM;
             }
         }
         private NewImageAppBarUpdater _appbar;
