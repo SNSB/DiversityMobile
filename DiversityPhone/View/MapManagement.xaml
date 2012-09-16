@@ -28,7 +28,7 @@
                                                    Fill="{StaticResource PhoneForegroundBrush}" 
                                                    Width="40" Height="40">
                         <Rectangle.OpacityMask>
-                            <ImageBrush ImageSource="/DiversityPhone;component/Images/appbar.download.rest.png" />
+                            <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
                 </StackPanel>
