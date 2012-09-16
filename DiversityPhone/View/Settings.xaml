@@ -46,9 +46,12 @@
             <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
                 
             <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
-            <HyperlinkButton Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
-            <HyperlinkButton Content="Upload Data" Click="Upload_Click"/>
-            <HyperlinkButton Content="Contact Administrator" Click="Administrator_Click"/>
+            <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
+                             Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
+            <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
+                             Content="Upload Data" Click="Upload_Click"/>
+            <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
+                             Content="Contact Administrator" Click="Administrator_Click"/>
         </StackPanel>         
     </Grid>
     
