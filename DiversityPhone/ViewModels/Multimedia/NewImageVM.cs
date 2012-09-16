@@ -99,8 +99,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            saveImage();
-            Current.Model.LogUpdatedWhen = DateTime.Now;
+            saveImage();            
             Current.Model.Uri = Uri;
         }
        

@@ -17,7 +17,7 @@ using ReactiveUI;
 namespace DiversityPhone.Model
 {
     [Table]
-    public class MultimediaObject : ReactiveObject, IModifyable
+    public class MultimediaObject : ReactiveObject, IModifyable, IEquatable<MultimediaObject>
     {
         
         [Column(IsPrimaryKey = true)]
@@ -41,7 +41,7 @@ namespace DiversityPhone.Model
         }
 
         [Column(CanBeNull = true)]
-        public String DiversityCollectionUri;
+        public String DiversityCollectionUri { get; set; }
 
         [Column]
         public MediaType MediaType { get; set; }
@@ -54,14 +54,20 @@ namespace DiversityPhone.Model
             get { return _ModificationState; }
             set { this.RaiseAndSetIfChanged(x => x.ModificationState, ref _ModificationState, value); }
         }
-        
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }
 
         public static IQueryOperations<MultimediaObject> Operations
         {
             get;
             private set;
+        }
+
+        public override int GetHashCode()
+        {
+            return MMOID.GetHashCode() ^
+                OwnerType.GetHashCode() ^
+                RelatedId.GetHashCode() ^
+                (Uri ?? "").GetHashCode() ^
+                MediaType.GetHashCode();
         }
 
         static MultimediaObject()
@@ -86,14 +92,25 @@ namespace DiversityPhone.Model
         {
             if (mmo.DiversityCollectionRelatedID == null)
                 throw new Exception("Partner not synced");
-            Svc.MultimediaObject export = new Svc.MultimediaObject();
-            export.LogUpdatedWhen = mmo.LogUpdatedWhen;
+            Svc.MultimediaObject export = new Svc.MultimediaObject();            
             export.MediaType = mmo.MediaType.ToString().ToLower();
             export.OwnerType = mmo.OwnerType.ToString();
             export.RelatedId = (int) mmo.DiversityCollectionRelatedID;
             export.Uri = mmo.DiversityCollectionUri;
             return export;
         }
-        
+
+
+        public bool Equals(MultimediaObject other)
+        {
+            return base.Equals(other) ||
+               (this.MediaType == other.MediaType &&
+                this.MMOID == other.MMOID &&
+                this.OwnerType == other.OwnerType &&
+                this.RelatedId == other.RelatedId &&
+                this.Uri == other.Uri &&
+                this.DiversityCollectionRelatedID == other.DiversityCollectionRelatedID &&
+                this.ModificationState == other.ModificationState);
+        }
     }
 }

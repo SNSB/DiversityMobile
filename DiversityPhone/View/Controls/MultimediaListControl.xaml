@@ -28,6 +28,7 @@
                        Height="40"
                        Width="40"/>
                     <TextBlock Grid.Column="1" 
+                               Margin="{StaticResource PhoneHorizontalMargin}"
                                Text="{Binding Description}"/>
                 </Grid>
             </Button>

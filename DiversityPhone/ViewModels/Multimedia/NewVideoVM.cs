@@ -98,8 +98,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            saveVideo();
-            Current.Model.LogUpdatedWhen = DateTime.Now;
+            saveVideo();            
             Current.Model.Uri = Uri;
         }
 

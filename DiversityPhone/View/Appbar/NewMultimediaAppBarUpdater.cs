@@ -70,9 +70,9 @@ namespace DiversityPhone.View.Appbar
                 Observable.FromEventPattern<object, EventArgs>(_image, "Click")
                     .Select(_ => MediaType.Image),
                 Observable.FromEventPattern<object, EventArgs>(_audio, "Click")
-                    .Select(_ => MediaType.Image),
+                    .Select(_ => MediaType.Audio),
                 Observable.FromEventPattern<object, EventArgs>(_video, "Click")
-                    .Select(_ => MediaType.Image)
+                    .Select(_ => MediaType.Video)
                     )
                     .Do(_ => restore_buttons())
                     .Select(media => new MultimediaObjectVM(new MultimediaObject() { MediaType = media, OwnerType = _mmowner.OwnerType, RelatedId = _mmowner.OwnerID }) as IElementVM<MultimediaObject>)

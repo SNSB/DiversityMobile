@@ -130,8 +130,7 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            saveAudio();
-            Current.Model.LogUpdatedWhen = DateTime.Now;
+            saveAudio();            
             Current.Model.Uri = Uri;
         }       
 
