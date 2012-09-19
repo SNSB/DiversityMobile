@@ -167,13 +167,13 @@ namespace DiversityPhone.Services
                     destination = "/View/ViewMap.xaml";
                     break;
                 case Page.NewImage:
-                    destination = "/View/NewImage.xaml";
+                    destination = "/View/Image.xaml";
                     break;
                 case Page.NewAudio:
-                    destination = "/View/NewAudio.xaml";
+                    destination = "/View/Audio.xaml";
                     break;
                 case Page.NewVideo:
-                    destination = "/View/NewVideo.xaml";
+                    destination = "/View/Video.xaml";
                     break;
                 case Page.EditIUAN:
                     destination = "/View/EditAnalysis.xaml";

@@ -278,7 +278,7 @@ namespace DiversityService
                         }
                         foreach (Specimen spec in hierarchy.Specimen)
                         {
-                            spec.DiversityCollectionSpecimenID = ev.DiversityCollectionEventID;
+                            spec.DiversityCollectionEventID = ev.DiversityCollectionEventID;
                         }
                         var newLocalisations = PetaPocoProjection.ToLocalisations(ev, login);
                         foreach (CollectionEventLocalisation loc in newLocalisations)
