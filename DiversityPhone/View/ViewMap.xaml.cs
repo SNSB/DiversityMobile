@@ -107,6 +107,7 @@ namespace DiversityPhone.View
                     .Subscribe(size => 
                     { 
                         mapImg.Height = size.Y; mapImg.Width = size.X;
+                        MapGrid.Height = size.Y; MapGrid.Width = size.X;
                         MainCanvas.Height = size.Y; MainCanvas.Width = size.X;
 
                         double horOffset = relativeOffsets.X - (scrollViewer.ViewportWidth / (2 * size.X));
@@ -142,8 +143,7 @@ namespace DiversityPhone.View
         {
             return Disposable.Create(() =>
                 {                    
-                    MainCanvas.Children.Clear();
-                    MainCanvas.Children.Add(mapImg);
+                    MainCanvas.Children.Clear();                    
                     MainCanvas.Children.Add(currentPosImg);
                     MainCanvas.Children.Add(currentLocalizationImg);
                     additionallocalization_images = new CompositeDisposable(clear_additional_locs());
@@ -155,7 +155,7 @@ namespace DiversityPhone.View
             subscriptions.Dispose();
         }
 
-        private void MainCanvas_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+        private void MapGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
             var point = e.GetPosition(MainCanvas);
             point.X /= MainCanvas.Width;
@@ -170,6 +170,15 @@ namespace DiversityPhone.View
                 (scrollViewer.HorizontalOffset + scrollViewer.ViewportWidth / 2) / ((double.IsNaN(MainCanvas.Width)) ? 1.0 : MainCanvas.Width),
                 (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight) / ((double.IsNaN(MainCanvas.Height)) ? 1.0 : MainCanvas.Height)
                 );
+        }
+
+        private void MapGrid_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
+        {
+            double x = (Canvas.GetLeft(currentPosImg) + currentPosImg.ActualWidth / 2) - scrollViewer.ViewportWidth / 2;
+            double y = (Canvas.GetTop(currentPosImg) + currentPosImg.ActualHeight / 2) - scrollViewer.ViewportHeight / 2;
+
+            scrollViewer.ScrollToHorizontalOffset(x);
+            scrollViewer.ScrollToVerticalOffset(y);
         }
     }
 }

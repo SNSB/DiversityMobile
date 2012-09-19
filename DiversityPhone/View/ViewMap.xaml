@@ -42,24 +42,24 @@
 		              Name="scrollViewer"
         	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
         	          ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <Canvas Name="MainCanvas"
-                    Tap="MainCanvas_Tap">
+            <Grid Name="MapGrid"
+                  Tap="MapGrid_Tap" DoubleTap="MapGrid_DoubleTap">
                 <toolkit:GestureService.GestureListener>
                     <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="GestureListener_PinchStarted" />
                 </toolkit:GestureService.GestureListener>
+                <Image Name="mapImg"                       
+                       Stretch="Fill"/>                
+                <Canvas Name="MainCanvas">
+                    
+                    <Image Source="/Images/GpsPosition.png"
+                           Name="currentPosImg"
+                           CacheMode="BitmapCache"/>
 
-                <Image Name="mapImg"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-                       CacheMode="BitmapCache"/>
-                <Image Source="/Images/GpsPosition.png"
-                       Name="currentPosImg"
-                       CacheMode="BitmapCache"/>
-
-                <Image Source="/Images/ItemPoint.png"
-                       Name="currentLocalizationImg"
-                       CacheMode="BitmapCache"/>
-            </Canvas>
+                    <Image Source="/Images/ItemPoint.png"
+                           Name="currentLocalizationImg"
+                           CacheMode="BitmapCache"/>
+                </Canvas>
+            </Grid>
         </ScrollViewer>
     </Grid>
 
