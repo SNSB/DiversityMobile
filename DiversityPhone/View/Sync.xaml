@@ -24,7 +24,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent">
+    <Grid x:Name="LayoutRoot" Background="Transparent" Height="696">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -36,11 +36,13 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <controls:Pivot Grid.Row="1" Margin="12,0,12,0" SelectedIndex="{Binding CurrentPivot, Mode=TwoWay, Converter={StaticResource PivotConverter}}">
+        <controls:Pivot Grid.Row="1" 
+                        Margin="12,0" 
+                        SelectedIndex="{Binding CurrentPivot, Mode=TwoWay, Converter={StaticResource PivotConverter}}">
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Data, Source={StaticResource LocalizedStrings}}">
-            <StackPanel Orientation="Vertical" >
+            <StackPanel Orientation="Vertical" Margin="0" >
                 <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                <ListBox ItemsSource="{Binding SyncUnits}" >
+                <ListBox ItemsSource="{Binding SyncUnits}" Height="509">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid>
@@ -81,7 +83,7 @@
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Multimedia, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical" >
                     <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                    <ListBox ItemsSource="{Binding Multimedia}" >
+                    <ListBox ItemsSource="{Binding Multimedia}" Height="509">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
