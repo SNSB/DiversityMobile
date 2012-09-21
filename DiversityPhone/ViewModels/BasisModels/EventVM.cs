@@ -25,7 +25,8 @@ namespace DiversityPhone.ViewModels
         public EventVM(Event model)
             : base(model)
         {
-
+            model.ObservableForProperty(x => x.LocalityDescription)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
         }
     }
 }
