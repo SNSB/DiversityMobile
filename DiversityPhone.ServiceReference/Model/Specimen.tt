@@ -14,7 +14,7 @@ using Svc = DiversityPhone.DiversityService;
 namespace DiversityPhone.Model
 {	
 	[Table]
-	public class Specimen : ReactiveObject, IModifyable
+	public class Specimen : ReactiveObject, IModifyable, IMultimediaOwner
 	{
 <# Row("int", "SpecimenID", RowKind.Key); #>
 <# Row("int", "EventID"); #>
