@@ -1,0 +1,101 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ include file="ReactiveModel.ttinclude" #>
+<#@ import namespace="System" #>
+
+
+using System;
+using System.Linq;
+using ReactiveUI;
+using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq.Mapping;
+using Svc = DiversityPhone.DiversityService;
+
+namespace DiversityPhone.Model
+{	
+	[Table]
+	public class Specimen : ReactiveObject, IModifyable
+	{
+<# Row("int", "SpecimenID", RowKind.Key); #>
+<# Row("int", "EventID"); #>
+
+<# Row("string", "AccessionNumber"); #>
+ 
+<# Row("ModificationState", "ModificationState"); #>
+ 
+<# Row("int?", "DiversityCollectionSpecimenID", RowKind.Nullable); #>   
+<# Row("int?", "DiversityCollectionEventID", RowKind.Nullable); #>   
+       
+
+
+
+        public Specimen()
+        {
+            this.AccessionNumber = null;            
+            this.ModificationState = ModificationState.New;
+            this.DiversityCollectionSpecimenID = null;
+        }
+
+
+        public static IQueryOperations<Specimen> Operations
+        {
+            get;
+            private set;
+        }
+
+        static Specimen()
+        {
+            Operations = new QueryOperations<Specimen>(
+                //Smallerthan
+                          (q, spec) => q.Where(row => row.SpecimenID < spec.SpecimenID),
+                //Equals
+                          (q, spec) => q.Where(row => row.SpecimenID == spec.SpecimenID),
+                //Orderby
+                          (q) => q.OrderBy(spec => spec.SpecimenID),
+                //FreeKey
+                          (q, spec) =>
+                          {
+                              spec.SpecimenID = QueryOperations<Specimen>.FindFreeIntKey(q, row => row.SpecimenID);
+                          });
+        }
+
+        public static Svc.Specimen ConvertToServiceObject(Specimen spec)
+        {
+            Svc.Specimen export = new Svc.Specimen();
+            if (spec.DiversityCollectionSpecimenID != null)
+                export.DiversityCollectionSpecimenID = (int)spec.DiversityCollectionSpecimenID;
+            else export.DiversityCollectionSpecimenID = Int32.MinValue;
+            export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
+            export.AccessionNumber = spec.AccessionNumber;
+            export.CollectionEventID = spec.EventID;
+            export.CollectionSpecimenID = spec.SpecimenID;
+            return export;
+        }
+
+        public ReferrerType OwnerType
+        {
+            get { return ReferrerType.Specimen; }
+        }
+
+        public int OwnerID
+        {
+            get { return SpecimenID; }
+        }
+    }
+
+
+    public static class SpecimenMixin
+    {
+        public static bool IsObservation(this Specimen spec)
+        {
+            return spec.AccessionNumber == null
+                && !spec.IsNew();
+        }
+
+        public static Specimen MakeObservation(this Specimen spec)
+        {
+            spec.AccessionNumber = null;
+            return spec;
+        }
+    }
+} 
