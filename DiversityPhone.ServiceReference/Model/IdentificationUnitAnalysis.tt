@@ -1,65 +1,42 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Data.Linq.Mapping;
-using DiversityPhone.Services;
-using Svc = DiversityPhone.DiversityService;
-using System.Data.Linq;
-using ReactiveUI;
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ include file="ReactiveModel.ttinclude" #>
+<#@ import namespace="System" #>
+<#
+   
+#>
 
+using System;
+using System.Linq;
+using ReactiveUI;
+using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq.Mapping;
+using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
-{
-    [Table]
-    public class IdentificationUnitAnalysis : ReactiveObject, IModifyable
-    {
-        [Column]
-        public int IdentificationUnitID { get; set; }
+{	
+	[Table]
+	public class IdentificationUnitAnalysis : ReactiveObject, IModifyable
+	{
+<# Row("int", "IdentificationUnitAnalysisID", RowKind.Key); #>  
 
-        [Column]
-        public int AnalysisID { get; set; }
+<# Row("int", "IdentificationUnitID"); #>   
+<# Row("int", "AnalysisID"); #> 
 
-        [Column(IsPrimaryKey = true)]
-        public int IdentificationUnitAnalysisID { get; set; }
+<# Row("string", "DisplayText"); #>
+<# Row("string", "AnalysisResult"); #>
 
-        [Column(CanBeNull = true)]
-        public int? DiversityCollectionUnitID { get; set; }
+<# Row("DateTime", "AnalysisDate"); #>
+  
+<# Row("ModificationState", "ModificationState"); #>
 
-        [Column]
-        public string AnalysisResult { get; set; }
-
-        [Column]
-        public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
-
-        [Column]
-        public string DisplayText { get; set; }
-
-        ModificationState _ModificationState;
-        [Column]
-        public ModificationState ModificationState
-        {
-            get { return _ModificationState; }
-            set { this.RaiseAndSetIfChanged(x => x.ModificationState, ref _ModificationState, value); }
-        }
-
-        [Column]
-        public DateTime LogUpdatedWhen { get; set; }        
+<# Row("int?", "DiversityCollectionUnitID", RowKind.Nullable); #> 
 
         public IdentificationUnitAnalysis()
         {
-            this.ModificationState = ModificationState.New;
-            this.LogUpdatedWhen = DateTime.Now;
+            this.ModificationState = ModificationState.New;            
             this.AnalysisDate = DateTime.Now;
-            this.DiversityCollectionUnitID = null;
-            //_Unit = default(EntityRef<IdentificationUnit>);
+            this.DiversityCollectionUnitID = null;            
         }
 
         public static IQueryOperations<IdentificationUnitAnalysis> Operations
@@ -103,3 +80,4 @@ namespace DiversityPhone.Model
 
     }
 }
+ 

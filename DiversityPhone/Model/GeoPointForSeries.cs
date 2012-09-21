@@ -11,7 +11,7 @@ namespace DiversityPhone.Model
     using ReactiveUI;
 
     [Table]
-    public class GeoPointForSeries : ReactiveObject, IModifyable, ILocalizable
+    public class GeoPointForSeries : IModifyable, ILocalizable
     {
         //Stores Geocoordinates assiciated with an EventSeries. Only one tour per series are allowed. Sequence of points is given by the id.
 
