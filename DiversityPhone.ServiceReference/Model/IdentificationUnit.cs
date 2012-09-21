@@ -333,7 +333,6 @@ namespace DiversityPhone.Model
 		public IdentificationUnit()
         {
             this.ModificationState = ModificationState.New;
-            this.LogUpdatedWhen = DateTime.Now;
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;

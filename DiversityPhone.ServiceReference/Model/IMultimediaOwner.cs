@@ -1,6 +1,4 @@
-﻿using DiversityPhone.Model;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Model
 {
     public interface IMultimediaOwner
     {

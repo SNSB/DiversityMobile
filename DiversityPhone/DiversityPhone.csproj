@@ -121,7 +121,6 @@
     </Compile>
     <Compile Include="Model\LocalizableMixin.cs" />
     <Compile Include="Services\ILocationService.cs" />
-    <Compile Include="Services\IMultimediaOwner.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\TestMapTransferService.cs" />
@@ -138,14 +137,11 @@
     </Compile>
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AppSettings.cs" />
-    <Compile Include="Model\EventProperty.cs" />
     <Compile Include="Model\Geometry\Line.cs" />
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
-    <Compile Include="Model\IdentificationUnitAnalysis.cs" />
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\Service\Credentials.cs" />
-    <Compile Include="Model\Specimen.cs" />
     <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Service References\MapMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -318,7 +314,6 @@
       <DependentUpon>ViewEV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\Messages.cs" />
-    <Compile Include="Model\IdentificationUnit.cs" />
     <Compile Include="ViewModels\Edit\EditEVVM.cs" />
     <Compile Include="ViewModels\Edit\EditIUVM.cs" />
     <Compile Include="ViewModels\BasisModels\EventSeriesVM.cs" />

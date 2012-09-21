@@ -16,7 +16,7 @@ using Svc = DiversityPhone.DiversityService;
 namespace DiversityPhone.Model
 {	
 	[Table]
-	public class EventProperty : ReactiveObject, ILocalizable, IModifyable
+	public class EventProperty : ReactiveObject, IModifyable
 	{
 <# Row("int", "EventID", RowKind.Key); #>   
 <# Row("int", "PropertyID", RowKind.Key); #> 

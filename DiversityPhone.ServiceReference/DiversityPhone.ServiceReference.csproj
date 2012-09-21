@@ -92,16 +92,46 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Event.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\EventSeries.cs" />
+    <Compile Include="Model\EventProperty.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventProperty.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\EventSeries.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EventSeries.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IdentificationUnit.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdentificationUnit.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\IdentificationUnitAnalysis.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>IdentificationUnitAnalysis.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\ILocalizable.cs" />
     <Compile Include="Model\IModifyable.cs" />
+    <Compile Include="Model\IMultimediaOwner.cs" />
     <Compile Include="Model\IQueryOperations.cs" />
+    <Compile Include="Model\Localization.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\MediaType.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyName.cs" />
     <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\ReferrerType.cs" />
+    <Compile Include="Model\Specimen.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Specimen.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonList.cs" />
     <Compile Include="Model\TaxonName.cs" />
@@ -121,7 +151,31 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Event.cs</LastGenOutput>
     </None>
+    <None Include="Model\EventProperty.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EventProperty.cs</LastGenOutput>
+    </None>
+    <None Include="Model\EventSeries.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>EventSeries.cs</LastGenOutput>
+    </None>
+    <None Include="Model\IdentificationUnit.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IdentificationUnit.cs</LastGenOutput>
+    </None>
+    <None Include="Model\IdentificationUnitAnalysis.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IdentificationUnitAnalysis.cs</LastGenOutput>
+    </None>
+    <None Include="Model\Localization.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Localization.cs</LastGenOutput>
+    </None>
     <None Include="Model\ReactiveModel.ttinclude" />
+    <None Include="Model\Specimen.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Specimen.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>

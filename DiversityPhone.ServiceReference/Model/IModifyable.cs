@@ -12,7 +12,7 @@ namespace DiversityPhone.Model
         Unmodified, // Persisted Remotely & Locally
         Modified // Persisted Locally
     }
-    public interface IModifyable : IReactiveNotifyPropertyChanged
+    public interface IModifyable
     {
         /// <summary>
         /// Tracks the persistance status of an object.

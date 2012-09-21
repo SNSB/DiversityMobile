@@ -10,7 +10,7 @@ using System;
 
 namespace DiversityPhone.ViewModels
 {
-    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable
+    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable, IReactiveNotifyPropertyChanged
     {
         public IReactiveCommand Save { get; private set; }
         public IReactiveCommand ToggleEditable { get; private set; }

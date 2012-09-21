@@ -1,0 +1,32 @@
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ include file="ReactiveModel.ttinclude" #>
+<#@ import namespace="System" #>
+<#
+   
+#>
+
+using System;
+using System.Linq;
+using ReactiveUI;
+using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq.Mapping;
+using Svc = DiversityPhone.DiversityService;
+
+namespace DiversityPhone.Model
+{	
+	[Table]
+	public class Localization : ReactiveObject, IModifyable, ILocalizable
+	{
+<# Row("int", "LocalizationID", RowKind.Key); #>   
+
+<# Row("int", "RelatedID"); #>
+
+<# Row("double?", "Altitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
+<# Row("double?", "Latitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
+<# Row("double?", "Longitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>   
+  
+<# Row("ModificationState", "ModificationState"); #>
+	}
+}
+ 

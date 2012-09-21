@@ -10,7 +10,7 @@ using Svc = DiversityPhone.DiversityService;
 namespace DiversityPhone.Model
 {	
 	[Table]
-	public class EventProperty : ReactiveObject, ILocalizable, IModifyable
+	public class EventProperty : ReactiveObject, IModifyable
 	{
 		
 		private int _EventID;
@@ -151,7 +151,7 @@ namespace DiversityPhone.Model
             Svc.CollectionEventProperty export = new Svc.CollectionEventProperty();
             export.DisplayText = cep.DisplayText;
             export.EventID = cep.EventID;
-            export.LogUpdatedWhen = cep.LogUpdatedWhen;
+
             export.PropertyID = cep.PropertyID;
             export.PropertyUri = cep.PropertyUri;
             export.DiversityCollectionEventID = cep.DiversityCollectionEventID;
