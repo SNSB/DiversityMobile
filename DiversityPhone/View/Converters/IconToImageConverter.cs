@@ -38,7 +38,7 @@ namespace DiversityPhone.View
                 case Icon.Photo:
                     return "/Images/appbar.feature.camera.rest.png";
                 case Icon.Audio:
-                    return "/Images/appbar.feature.audio.rest80.png";
+                    return "/Images/appbar.feature.audio.rest.png";
                 case Icon.Video:
                     return "/Images/appbar.feature.video.rest.png";
                 case Icon.None: 
