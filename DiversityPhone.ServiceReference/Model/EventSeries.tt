@@ -1,4 +1,7 @@
-﻿
+﻿<#@ template debug="true" hostSpecific="true" #>
+<#@ output extension=".cs" #>
+<#@ include file="ReactiveModel.ttinclude" #>
+<#@ import namespace="System" #>
 
 
 using System;
@@ -13,125 +16,16 @@ namespace DiversityPhone.Model
 	[Table]
 	public class EventSeries : ReactiveObject, IModifyable
 	{
-		
-		private int? _SeriesID;
-		[Column(IsPrimaryKey=true)]
-		public int? SeriesID
-		{
-			get { return _SeriesID; }
-			set 
-			{
-				if (_SeriesID != value)
-				{
-					this.raisePropertyChanging("SeriesID");
-					_SeriesID = value;
-					this.raisePropertyChanged("SeriesID");
-				}  
-			}
-		}
-		
-		
-		private DateTime _SeriesStart;
-		[Column]
-		public DateTime SeriesStart
-		{
-			get { return _SeriesStart; }
-			set 
-			{
-				if (_SeriesStart != value)
-				{
-					this.raisePropertyChanging("SeriesStart");
-					_SeriesStart = value;
-					this.raisePropertyChanged("SeriesStart");
-				}  
-			}
-		}
-		  
-		
-		private DateTime? _SeriesEnd;
-		[Column(CanBeNull=true,UpdateCheck=UpdateCheck.Never)]
-		public DateTime? SeriesEnd
-		{
-			get { return _SeriesEnd; }
-			set 
-			{
-				if (_SeriesEnd != value)
-				{
-					this.raisePropertyChanging("SeriesEnd");
-					_SeriesEnd = value;
-					this.raisePropertyChanged("SeriesEnd");
-				}  
-			}
-		}
-		     
-		
-		private string _Description;
-		[Column]
-		public string Description
-		{
-			get { return _Description; }
-			set 
-			{
-				if (_Description != value)
-				{
-					this.raisePropertyChanging("Description");
-					_Description = value;
-					this.raisePropertyChanged("Description");
-				}  
-			}
-		}
-				
-		private string _SeriesCode;
-		[Column]
-		public string SeriesCode
-		{
-			get { return _SeriesCode; }
-			set 
-			{
-				if (_SeriesCode != value)
-				{
-					this.raisePropertyChanging("SeriesCode");
-					_SeriesCode = value;
-					this.raisePropertyChanged("SeriesCode");
-				}  
-			}
-		}
-		   
+<# Row("int?", "SeriesID", RowKind.Key); #>
+
+<# Row("DateTime", "SeriesStart"); #>  
+<# Row("DateTime?", "SeriesEnd", RowKind.Nullable | RowKind.NoUpdateCheck); #>     
+<# Row("string", "Description"); #>
+<# Row("string", "SeriesCode"); #>   
  
-		
-		private ModificationState _ModificationState;
-		[Column]
-		public ModificationState ModificationState
-		{
-			get { return _ModificationState; }
-			set 
-			{
-				if (_ModificationState != value)
-				{
-					this.raisePropertyChanging("ModificationState");
-					_ModificationState = value;
-					this.raisePropertyChanged("ModificationState");
-				}  
-			}
-		}
-		 
-		
-		private int? _DiversityCollectionEventSeriesID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionEventSeriesID
-		{
-			get { return _DiversityCollectionEventSeriesID; }
-			set 
-			{
-				if (_DiversityCollectionEventSeriesID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionEventSeriesID");
-					_DiversityCollectionEventSeriesID = value;
-					this.raisePropertyChanged("DiversityCollectionEventSeriesID");
-				}  
-			}
-		}
-		   
+<# Row("ModificationState", "ModificationState"); #>
+ 
+<# Row("int?", "DiversityCollectionEventSeriesID", RowKind.Nullable); #>   
   
 		private static EventSeries _NoEventSeries;
 
