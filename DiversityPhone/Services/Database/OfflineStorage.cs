@@ -966,6 +966,7 @@ namespace DiversityPhone.Services
                 Event clientEvent = savedEvents.First();//TODO: Check if there is a key valuation
                 clientEvent.DiversityCollectionEventID = serverKey;
                 clientEvent.ModificationState = ModificationState.Unmodified;
+                ctx.SubmitChanges();
                 var savedSpecimen =
                     from spec in ctx.Specimen
                     where spec.EventID == clientKey

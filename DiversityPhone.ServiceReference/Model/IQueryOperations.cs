@@ -5,7 +5,7 @@ using System.Text;
 using System.Linq.Expressions;
 using System.Data.Linq;
 
-namespace DiversityPhone.Services
+namespace DiversityPhone.Model
 {
     public interface IQueryOperations<T>
     {

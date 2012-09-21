@@ -180,7 +180,6 @@
     <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
     <Compile Include="Services\Maps\MapTransferService.cs" />
-    <Compile Include="Services\ModelProjection.cs" />
     <Compile Include="Services\MultimediaClient.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />
@@ -319,7 +318,6 @@
       <DependentUpon>ViewEV.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\Messages.cs" />
-    <Compile Include="Model\Event.cs" />
     <Compile Include="Model\IdentificationUnit.cs" />
     <Compile Include="ViewModels\Edit\EditEVVM.cs" />
     <Compile Include="ViewModels\Edit\EditIUVM.cs" />
