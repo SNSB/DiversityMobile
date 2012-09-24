@@ -1,25 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using ReactiveUI;
-using System.Reactive.Linq;
-using Microsoft.Phone.Controls;
-using DiversityPhone.Model;
-using DiversityPhone.ViewModels;
 using System.Windows.Media.Imaging;
-using System.Collections.Specialized;
-using DiversityPhone.Model.Geometry;
-using System.Reactive.Disposables;
-using System.Reactive;
 using DiversityPhone.View.Appbar;
-using System.Reactive.Subjects;
+using DiversityPhone.ViewModels;
+using Microsoft.Phone.Controls;
+using ReactiveUI;
 
 namespace DiversityPhone.View
 {
@@ -28,10 +18,13 @@ namespace DiversityPhone.View
 
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
-        private Point relativeOffsets = new Point(0, 0);
+        private Point touchcenteroffsets;
 
-        private BehaviorSubject<double> scale_subject = new BehaviorSubject<double>(1.0f);
-        private double _CurrentScale = 1.0f;
+        private Point absoluteOffsets = new Point(0, 0);
+
+        private double _PreviousScale = 1.0;
+        private BehaviorSubject<double> scale_subject = new BehaviorSubject<double>(1.0);
+        private double _CurrentScale = 1.0;
         public double CurrentScale 
         {
             get { return _CurrentScale; }
@@ -61,19 +54,16 @@ namespace DiversityPhone.View
         {
             InitializeComponent();
 
-            _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);
+            _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);           
         }
+
+        
 
         private void focusOn(double x, double y)
         {
             scrollViewer.ScrollToHorizontalOffset(x);
             scrollViewer.ScrollToVerticalOffset(y);
-        }
-
-        private void OnPinchDelta(object sender, PinchGestureEventArgs e)
-        {
-            CurrentScale *= e.DistanceRatio;
-        }
+        }       
 
         private void SelectMap_Click(object sender, EventArgs e)
         {
@@ -91,7 +81,7 @@ namespace DiversityPhone.View
 
             var s = new CompositeDisposable(additionallocalization_images as IDisposable);
 
-            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);                    
+            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);     
                     
 
             var size_obs = Observable.CombineLatest(
@@ -100,23 +90,10 @@ namespace DiversityPhone.View
                     (scale, img) => new Point() { X = scale * img.PixelWidth, Y = scale * img.PixelHeight})
                     .Replay(1);
             s.Add(size_obs.Connect());
+
+            s.Add(size_obs.Subscribe(size => { MapGrid.Width = size.X; MapGrid.Height = size.Y; }));
             
-            s.Add(image_obs.Subscribe(img => mapImg.Source = img));
-
-            s.Add(size_obs
-                    .Subscribe(size => 
-                    { 
-                        mapImg.Height = size.Y; mapImg.Width = size.X;
-                        MapGrid.Height = size.Y; MapGrid.Width = size.X;
-                        MainCanvas.Height = size.Y; MainCanvas.Width = size.X;
-
-                        double horOffset = relativeOffsets.X - (scrollViewer.ViewportWidth / (2 * size.X));
-                        scrollViewer.ScrollToHorizontalOffset(horOffset);
-
-                        double vertOffset = relativeOffsets.Y - (scrollViewer.ViewportHeight / (2 * size.Y));
-                        scrollViewer.ScrollToVerticalOffset(vertOffset);
-                    })
-                );
+            s.Add(image_obs.Subscribe(img => mapImg.Source = img));           
            
             s.Add(new RelativeLocationBinding(currentPosImg, size_obs, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation)));
 
@@ -157,19 +134,42 @@ namespace DiversityPhone.View
 
         private void MapGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var point = e.GetPosition(MainCanvas);
-            point.X /= MainCanvas.Width;
-            point.Y /= MainCanvas.Height;
+            var point = e.GetPosition(mapImg);
+            point.X /= mapImg.ActualWidth;
+            point.Y /= mapImg.ActualHeight;
             if(VM != null && VM.SetLocation.CanExecute(point))
                 VM.SetLocation.Execute(point);
         }
 
-        private void GestureListener_PinchStarted(object sender, PinchStartedGestureEventArgs e)
+        private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
+        {            
+            _PreviousScale = CurrentScale;
+
+            Point t1 = e.GetPosition(mapImg, 0);
+            Point t2 = e.GetPosition(mapImg, 1);
+
+            absoluteOffsets = new Point(
+                (t1.X + t2.X) / (2 * CurrentScale),
+                (t1.Y + t2.Y) / (2 * CurrentScale));
+
+            Point s1 = e.GetPosition(scrollViewer, 0);
+            Point s2 = e.GetPosition(scrollViewer, 1);
+            touchcenteroffsets = new Point(
+                (s1.X + s2.X) / 2,
+                (s1.Y + s2.Y) / 2);         
+        }
+
+        private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
-            relativeOffsets = new Point(
-                (scrollViewer.HorizontalOffset + scrollViewer.ViewportWidth / 2) / ((double.IsNaN(MainCanvas.Width)) ? 1.0 : MainCanvas.Width),
-                (scrollViewer.VerticalOffset + scrollViewer.ViewportHeight) / ((double.IsNaN(MainCanvas.Height)) ? 1.0 : MainCanvas.Height)
-                );
+            var scale = _PreviousScale * e.DistanceRatio;
+
+            mapTransform.ScaleX = scale;
+            mapTransform.ScaleY = scale;
+
+            CurrentScale = scale;
+
+            Point center = new Point(absoluteOffsets.X * CurrentScale, absoluteOffsets.Y * CurrentScale);
+            focusOn(center.X - this.touchcenteroffsets.X, center.Y - touchcenteroffsets.Y);
         }
 
         private void MapGrid_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)

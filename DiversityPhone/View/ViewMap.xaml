@@ -45,13 +45,18 @@
             <Grid Name="MapGrid"
                   Tap="MapGrid_Tap" DoubleTap="MapGrid_DoubleTap">
                 <toolkit:GestureService.GestureListener>
-                    <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="GestureListener_PinchStarted" />
+                    <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="OnPinchStarted" />
                 </toolkit:GestureService.GestureListener>
                 <Image Name="mapImg"   
                        Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
-                       Stretch="Fill"/>                
-                <Canvas Name="MainCanvas">
-                    
+                       Stretch="None"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top">
+                    <Image.RenderTransform>
+                        <ScaleTransform x:Name="mapTransform"/>
+                    </Image.RenderTransform>
+                </Image>
+                <Canvas Name="MainCanvas">                    
                     <Image Source="/Images/GpsPosition.png"
                            Name="currentPosImg"
                            CacheMode="BitmapCache"/>
