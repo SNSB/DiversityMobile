@@ -37,8 +37,8 @@
                                         return ConnectionStatus.MobileBroadband;
                                 }
                                 return ConnectionStatus.None;
-                            })                        
-                        .Publish();
+                            })  
+                        .Replay(1);
             s.Connect();
             status = s;
         }
