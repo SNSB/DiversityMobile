@@ -76,7 +76,11 @@
 
             
 
-            coordinate_observable = Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher, "PositionChanged").Select(ev => ev.EventArgs.Position);
+            var coordinates = Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher, "PositionChanged").Select(ev => ev.EventArgs.Position)
+                .Replay(1);
+            coordinate_observable = coordinates;
+            coordinates.Connect();
+
 
             status_observable = Observable.FromEventPattern<GeoPositionStatusChangedEventArgs>(watcher, "StatusChanged").Select(ev => ev.EventArgs.Status);
         }
