@@ -1,59 +1,155 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Data.Linq.Mapping;
-using DiversityPhone.Services;
-using Svc = DiversityPhone.DiversityService;
+﻿
+
 using ReactiveUI;
+using System.Data.Linq.Mapping;
+using System;
+using System.Linq;
+using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
 {
     [Table]
     public class MultimediaObject : ReactiveObject, IModifyable, IEquatable<MultimediaObject>
     {
+		
+		private int _MMOID;
+		[Column(IsPrimaryKey=true)]
+		public int MMOID
+		{
+			get { return _MMOID; }
+			set 
+			{
+				if (_MMOID != value)
+				{
+					this.raisePropertyChanging("MMOID");
+					_MMOID = value;
+					this.raisePropertyChanged("MMOID");
+				}  
+			}
+		}
+		   
+		
+		private ReferrerType _OwnerType;
+		[Column]
+		public ReferrerType OwnerType
+		{
+			get { return _OwnerType; }
+			set 
+			{
+				if (_OwnerType != value)
+				{
+					this.raisePropertyChanging("OwnerType");
+					_OwnerType = value;
+					this.raisePropertyChanged("OwnerType");
+				}  
+			}
+		}
+		   
+		
+		private int _RelatedId;
+		[Column]
+		public int RelatedId
+		{
+			get { return _RelatedId; }
+			set 
+			{
+				if (_RelatedId != value)
+				{
+					this.raisePropertyChanging("RelatedId");
+					_RelatedId = value;
+					this.raisePropertyChanged("RelatedId");
+				}  
+			}
+		}
+		    
+		
+		private string _Uri;
+		[Column]
+		public string Uri
+		{
+			get { return _Uri; }
+			set 
+			{
+				if (_Uri != value)
+				{
+					this.raisePropertyChanging("Uri");
+					_Uri = value;
+					this.raisePropertyChanged("Uri");
+				}  
+			}
+		}
+		
+		
+		private MediaType _MediaType;
+		[Column]
+		public MediaType MediaType
+		{
+			get { return _MediaType; }
+			set 
+			{
+				if (_MediaType != value)
+				{
+					this.raisePropertyChanging("MediaType");
+					_MediaType = value;
+					this.raisePropertyChanged("MediaType");
+				}  
+			}
+		}
+		    
+
+		
+		private ModificationState _ModificationState;
+		[Column]
+		public ModificationState ModificationState
+		{
+			get { return _ModificationState; }
+			set 
+			{
+				if (_ModificationState != value)
+				{
+					this.raisePropertyChanging("ModificationState");
+					_ModificationState = value;
+					this.raisePropertyChanged("ModificationState");
+				}  
+			}
+		}
+		
+		
+		private int? _DiversityCollectionRelatedID;
+		[Column(CanBeNull=true)]
+		public int? DiversityCollectionRelatedID
+		{
+			get { return _DiversityCollectionRelatedID; }
+			set 
+			{
+				if (_DiversityCollectionRelatedID != value)
+				{
+					this.raisePropertyChanging("DiversityCollectionRelatedID");
+					_DiversityCollectionRelatedID = value;
+					this.raisePropertyChanged("DiversityCollectionRelatedID");
+				}  
+			}
+		}
+		  
+		
+		private string _DiversityCollectionUri;
+		[Column]
+		public string DiversityCollectionUri
+		{
+			get { return _DiversityCollectionUri; }
+			set 
+			{
+				if (_DiversityCollectionUri != value)
+				{
+					this.raisePropertyChanging("DiversityCollectionUri");
+					_DiversityCollectionUri = value;
+					this.raisePropertyChanged("DiversityCollectionUri");
+				}  
+			}
+		}
+		   
+
         
-        [Column(IsPrimaryKey = true)]
-        public int MMOID { get; set; }
-
-        [Column]
-        public ReferrerType OwnerType { get; set; }
-
-        [Column]
-        public int RelatedId { get; set; }
-
-        [Column(CanBeNull = true)]
-        public int? DiversityCollectionRelatedID { get; set; }
-
-        String _Uri;
-        [Column]
-        public String Uri 
-        {
-            get { return _Uri; }
-            set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
-        }
-
-        [Column(CanBeNull = true)]
-        public String DiversityCollectionUri { get; set; }
-
-        [Column]
-        public MediaType MediaType { get; set; }
-
-
-        ModificationState _ModificationState;
-        [Column]
-        public ModificationState ModificationState
-        {
-            get { return _ModificationState; }
-            set { this.RaiseAndSetIfChanged(x => x.ModificationState, ref _ModificationState, value); }
-        }
 
         public static IQueryOperations<MultimediaObject> Operations
         {
@@ -114,3 +210,4 @@ namespace DiversityPhone.Model
         }
     }
 }
+ 
