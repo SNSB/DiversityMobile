@@ -138,11 +138,7 @@ namespace DiversityPhone.Services
             {
                 this.deleteEvent(ev);
             }
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.EventSeries, toDeleteEs.SeriesID.Value);
-            foreach(MultimediaObject mmo in attachedMMO)
-            {
-                this.deleteMMO(mmo);
-            }
+           
             var attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID.Value);
             foreach (GeoPointForSeries gp in attachedGeoPoints)
             {
