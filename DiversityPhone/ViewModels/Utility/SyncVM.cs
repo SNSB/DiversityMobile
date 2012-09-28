@@ -11,6 +11,7 @@ using System.Threading;
 using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using DiversityPhone.Services.BackgroundTasks;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -111,15 +112,10 @@ namespace DiversityPhone.ViewModels.Utility
             this.ObservableForProperty(x => x.CurrentPivot)
                 .Value()
                 .Where(p => p == Pivots.multimedia)
-                //.Take(1)
-                .Subscribe(_ => collectMultimedia.Execute(null));
-            collectMultimedia.RegisterAsyncObservable(_ =>
-                {
-                    var res = new ReplaySubject<MultimediaVM>();
-                    new Task(() => collectMultimediaImpl(res, search.Token)).Start();
-                    return res;
-                })
-                .Subscribe(mvm => Multimedia.Add(mvm));
+                .Do(_ => Multimedia.Clear())
+                .SelectMany(_ => enumerateModifiedMMOs().ToObservable(Scheduler.ThreadPool))
+                .ObserveOnDispatcher()
+                .Subscribe(Multimedia.Add);            
 
            
             _IsBusy = this.ObservableToProperty(collectModifications.ItemsInflight.Select(i => i > 0),x => x.IsBusy, false);
@@ -225,37 +221,33 @@ namespace DiversityPhone.ViewModels.Utility
             }            
         }
 
-        private void collectMultimediaImpl(ISubject<MultimediaVM> outputSubject, CancellationToken cancellation)
+        private IEnumerable<MultimediaVM> enumerateModifiedMMOs()
         {
             var mmos = Storage.getMultimediaObjectsForUpload();
 
             foreach (var mmo in mmos)
-            {
-                if (!cancellation.IsCancellationRequested)
-                {                    
-                    object ownerVM;
-                    switch (mmo.OwnerType)
-                    {                        
-                        case ReferrerType.EventSeries:
-                            ownerVM = new EventSeriesVM(Storage.getEventSeriesByID(mmo.RelatedId));
-                            break;
-                        case ReferrerType.Event:
-                            ownerVM = new EventVM(Storage.getEventByID(mmo.RelatedId));
-                            break;
-                        case ReferrerType.Specimen:
-                            ownerVM = new SpecimenVM(Storage.getSpecimenByID(mmo.RelatedId));
-                            break;
-                        case ReferrerType.IdentificationUnit:
-                            ownerVM = new IdentificationUnitVM(Storage.getIdentificationUnitByID(mmo.RelatedId));
-                            break;
-                        default:
-                            continue;
-                    }
-
-                    outputSubject.OnNext(new MultimediaVM(mmo, ownerVM));
+            {                                  
+                object ownerVM;
+                switch (mmo.OwnerType)
+                {                        
+                    case ReferrerType.EventSeries:
+                        ownerVM = new EventSeriesVM(Storage.getEventSeriesByID(mmo.RelatedId));
+                        break;
+                    case ReferrerType.Event:
+                        ownerVM = new EventVM(Storage.getEventByID(mmo.RelatedId));
+                        break;
+                    case ReferrerType.Specimen:
+                        ownerVM = new SpecimenVM(Storage.getSpecimenByID(mmo.RelatedId));
+                        break;
+                    case ReferrerType.IdentificationUnit:
+                        ownerVM = new IdentificationUnitVM(Storage.getIdentificationUnitByID(mmo.RelatedId));
+                        break;
+                    default:
+                        continue;
                 }
-            }
 
+                yield return new MultimediaVM(mmo, ownerVM);                
+            }
         }
 
         private void uploadAllMultimedia(UploadMultimediaTask task)
