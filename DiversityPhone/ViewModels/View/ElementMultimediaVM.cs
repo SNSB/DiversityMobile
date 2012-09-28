@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
                     var owner = own as IMultimediaOwner;
                     if (owner == null)
                         return Enumerable.Empty<MultimediaObjectVM>();
-                    return storage.getMultimediaForObject(owner.OwnerType, owner.OwnerID)
+                    return storage.getMultimediaForObject(owner)
                         .Select(mmo => new MultimediaObjectVM(mmo))
                         .ToList();
                 }).SelectMany(vms => vms)

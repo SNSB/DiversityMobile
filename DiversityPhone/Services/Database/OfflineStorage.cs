@@ -286,7 +286,7 @@ namespace DiversityPhone.Services
             IList<EventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
             foreach (EventProperty cep in attachedProperties)
                 this.deleteEventProperty(cep);
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Event, toDeleteEv.EventID);
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteEv);
             foreach (MultimediaObject mmo in attachedMMO)
             {
                 this.deleteMMO(mmo);
@@ -394,7 +394,7 @@ namespace DiversityPhone.Services
 
         public void deleteSpecimen(Specimen toDeleteSpec)
         {
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.Specimen, toDeleteSpec.SpecimenID);
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteSpec);
             foreach (MultimediaObject mmo in attachedMMO)
             {
                 this.deleteMMO(mmo);
@@ -472,7 +472,7 @@ namespace DiversityPhone.Services
 
         public void deleteIU(IdentificationUnit toDeleteIU)
         {
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(ReferrerType.IdentificationUnit, toDeleteIU.UnitID);
+            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteIU);
             foreach (MultimediaObject mmo in attachedMMO)
             {
                 this.deleteMMO(mmo);
@@ -532,34 +532,29 @@ namespace DiversityPhone.Services
             return uncachedQuery(ctx => ctx.MultimediaObjects);
         }
 
-        public IList<MultimediaObject> getMultimediaForObject(ReferrerType refType, int key)
+        public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner)
         {
              IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == refType
-                                                && mm.RelatedId == key
+                                        where mm.OwnerType == owner.OwnerType
+                                                && mm.RelatedId == owner.OwnerID
                                         select mm);
              return objects;
 
         }
 
-        public IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType refType, int key, MediaType type)
+        public IEnumerable<MultimediaObject> getMultimediaObjectsForUpload()
         {
-            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                                                   where mm.OwnerType == refType
-                                                                           && mm.RelatedId == key
-                                                                           && mm.MediaType == type
-                                                                   select mm);
-            return objects;
-
-        }
-
-        public IList<MultimediaObject> getMultimediaObjectsForUpload()
-        {
-            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                                                   where mm.DiversityCollectionRelatedID!=null
-                                                                           && mm.ModificationState==ModificationState.Modified
-                                                                   select mm);
-            return objects;
+            using (var ctx = new DiversityDataContext())
+            {
+                var q = from mm in ctx.MultimediaObjects
+                        where mm.DiversityCollectionRelatedID != null
+                        && mm.ModificationState == ModificationState.Modified
+                        select mm;
+                foreach (var mmo in q)
+                {
+                    yield return mmo;
+                }
+            }
         }
 
         public MultimediaObject getMultimediaByID(int id)

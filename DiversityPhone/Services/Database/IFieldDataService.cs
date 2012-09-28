@@ -54,11 +54,9 @@ using System;
         IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu);
         IdentificationUnitAnalysis getIUANByID(int analysisID);
         void addOrUpdateIUA(IdentificationUnitAnalysis iua);
-
-        IList<MultimediaObject> getAllMultimediaObjects();
-        IList<MultimediaObject> getMultimediaObjectsForUpload();
-        IList<MultimediaObject> getMultimediaForObject(ReferrerType objectType, int id);
-        IList<MultimediaObject> getMultimediaForObjectAndType(ReferrerType objectType, int id,MediaType type);
+        
+        IEnumerable<MultimediaObject> getMultimediaObjectsForUpload();
+        IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner);        
         MultimediaObject getMultimediaByID(int id);    
         MultimediaObject getMultimediaByURI(string uri);        
         void addMultimediaObject(MultimediaObject mmo);
