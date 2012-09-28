@@ -141,7 +141,7 @@
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
     <Compile Include="Model\Map.cs" />
-    <Compile Include="Model\Service\Credentials.cs" />
+    <Compile Include="Model\Credentials.cs" />
     <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Service References\MapMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
