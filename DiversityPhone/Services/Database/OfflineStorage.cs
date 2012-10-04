@@ -133,7 +133,7 @@ namespace DiversityPhone.Services
 
         public void deleteEventSeries(EventSeries toDeleteEs)
         {
-            IList<Event> attachedEvents = this.getEventsForSeries(toDeleteEs);
+            var attachedEvents = this.getEventsForSeries(toDeleteEs);
             foreach (Event ev in attachedEvents)
             {
                 this.deleteEvent(ev);
@@ -217,28 +217,21 @@ namespace DiversityPhone.Services
         }
 
 
-        public IList<Event> getEventsForSeries(EventSeries es)
+        public IEnumerable<Event> getEventsForSeries(EventSeries es)
         {
-            if (EventSeries.isNoEventSeries(es))
-                return getEventsWithoutSeries();
+            //Workaround for the fact, that ev.SeriesID == es.SeriesID doesn't work for null values
+            if (EventSeries.isNoEventSeries(es)) 
+                return enumerateQuery(
+                    ctx => from ev in ctx.Events
+                           where ev.SeriesID == null
+                           select ev);
 
-            return cachedQuery(Event.Operations,
-            ctx =>
-                from ev in ctx.Events
-                where ev.SeriesID == es.SeriesID 
-                select ev
-                );
+            return enumerateQuery(
+                ctx => from ev in ctx.Events
+                       where ev.SeriesID == es.SeriesID.Value
+                       select ev);
         }
-
-        private IList<Event> getEventsWithoutSeries()
-        {
-            return cachedQuery(Event.Operations,
-            ctx =>
-                from ev in ctx.Events
-                where ev.SeriesID == null
-                select ev
-                );
-        }     
+         
 
         public Event getEventByID(int id)
         {
@@ -778,6 +771,19 @@ namespace DiversityPhone.Services
             return result;
         }
 
+
+        private IEnumerable<T> enumerateQuery<T>(QueryProvider<T> query)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                var q = query(ctx);
+
+                foreach (var res in q)
+                {
+                    yield return res;
+                }
+            }
+        }
 
         private class QueryCacheSource<T> : ICacheSource<T>
         {

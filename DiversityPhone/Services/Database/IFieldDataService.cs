@@ -28,7 +28,7 @@ using System;
         String convertGeoPointsToString(int seriesID);
 
         IList<Event> getAllEvents();        
-        IList<Event> getEventsForSeries(EventSeries es);        
+        IEnumerable<Event> getEventsForSeries(EventSeries es);        
         Event getEventByID(int id);
         void addOrUpdateEvent(Event ev);
         void updateEventKey(int oldEventKey, int newEventKey);

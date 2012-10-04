@@ -12,6 +12,7 @@
     using System.Reactive.Disposables;
     using System.Reactive.Subjects;
     using Funq;
+    using System.Reactive.Concurrency;
 
     public class ViewESVM : ViewPageVMBase<EventSeries>
     {
@@ -36,20 +37,25 @@
             EditSeries
                 .ToMessage(MessageContracts.EDIT);
 
-            EventList = getEvents.RegisterAsyncFunction(es =>
-                {
-                    return Storage.getEventsForSeries(es as EventSeries)
-                        .Select(ev => new EventVM(ev));
-                })                
-                .SelectMany(evs => evs)                
-                .CreateCollection();
-
+            EventList = new ReactiveCollection<EventVM>();
             EventList
                 .ListenToChanges<Event, EventVM>(ev => ev.SeriesID == Current.Model.SeriesID);
 
             CurrentModelObservable
+                .Merge(
+                    from refresh in Messenger.Listen<EventMessage>(MessageContracts.REFRESH)
+                    from activation in this.OnActivation().TakeUntil(CurrentModelObservable)                    
+                    select Current.Model
+                    )
                 .Do(_ => EventList.Clear())
-                .Subscribe(getEvents.Execute);
+                .SelectMany(m => 
+                    Storage.getEventsForSeries(m)
+                    .Select(ev => new EventVM(ev))
+                    .ToObservable(Scheduler.ThreadPool)
+                    .TakeUntil(CurrentModelObservable)
+                    )
+                .ObserveOnDispatcher()
+                .Subscribe(EventList.Add);
 
             SelectEvent = new ReactiveCommand<IElementVM<Event>>();
             SelectEvent
