@@ -107,7 +107,8 @@ namespace DiversityPhone.ViewModels
 
             Observable.Merge(
                 Messenger.Listen<EventMessage>(MessageContracts.CLEAN),
-                Messenger.Listen<EventMessage>(MessageContracts.INIT)
+                Messenger.Listen<EventMessage>(MessageContracts.INIT),
+                Messenger.Listen<EventMessage>(MessageContracts.REFRESH)
                 )                
                 .Do(_ => SeriesList.Clear())
                 .Subscribe(_ => getSeries.Execute(null));

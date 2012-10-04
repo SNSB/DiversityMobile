@@ -12,6 +12,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using DiversityPhone.Services.BackgroundTasks;
 using System.Reactive.Concurrency;
+using DiversityPhone.Messages;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -186,8 +187,10 @@ namespace DiversityPhone.ViewModels.Utility
                                 uploadAllMultimedia(multimediaUpload); 
                         }))
                );
-               
-                
+
+            this.OnDeactivation()
+                .Select(_ => EventMessage.Default)
+                .ToMessage(MessageContracts.INIT);
         }
 
         private struct SyncUnitIncrement

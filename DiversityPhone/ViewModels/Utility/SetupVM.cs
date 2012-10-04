@@ -177,7 +177,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Take(1)
                 .Subscribe(_ =>
                     {
-                        Messenger.SendMessage<EventMessage>(new EventMessage(), MessageContracts.CLEAN);
+                        Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
                         Messenger.SendMessage<Page>(Page.Home);
                     });
 

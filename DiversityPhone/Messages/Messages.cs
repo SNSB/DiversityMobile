@@ -52,7 +52,16 @@ namespace DiversityPhone.Messages
         }        
     }
 
-    public class EventMessage { }
+    public class EventMessage 
+    {
+        public static EventMessage Default = new EventMessage();
+
+        private EventMessage()
+        {
+
+        }
+    
+    }
 
     public static class MessengerMixin
     {

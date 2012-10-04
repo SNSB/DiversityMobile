@@ -157,7 +157,7 @@ namespace DiversityPhone
 
             registerViewModels();
 
-            RxApp.MessageBus.SendMessage(new EventMessage(), MessageContracts.INIT);
+            RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);
 
             NLog.LogManager.EnableLogging();
         }
