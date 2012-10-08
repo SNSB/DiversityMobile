@@ -39,7 +39,7 @@ namespace DiversityPhone.ViewModels
 
             var modelObs =
                 CurrentObservable
-                .SelectMany(vm => vm.ObservableForProperty(x => x.Model))
+                .SelectMany(vm => vm.ObservableForProperty(x => x.Model).TakeUntil(CurrentObservable))
                 .Value()
                 .Merge(CurrentObservable.Select(vm => vm.Model))
                 .Publish();
@@ -49,7 +49,8 @@ namespace DiversityPhone.ViewModels
 
             //If the current element has been deleted in the meantime, navigate back.
             Observable.CombineLatest(
-                ActivationObservable.Where(activated => activated).Select(_ => Current),
+                this.OnActivation()
+                .Select(_ => Current),
                 Messenger.Listen<IElementVM<T>>(MessageContracts.DELETE),
                 (current, deleted) => current == deleted
             )
