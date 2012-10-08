@@ -13,12 +13,7 @@ namespace DiversityPhone.ViewModels
     /// </summary>
     /// <typeparam name="T">The Model class that this VM will encapsulate.</typeparam>
     public abstract class ElementVMBase<T> : ReactiveObject, IElementVM<T>
-    {
-        /// <summary>
-        /// Operation: Select (Go To Target Page)
-        /// </summary>
-        public ReactiveCommand Select { get; private set; }
-        
+    { 
         /// <summary>
         /// Encapsulated Model Instance
         /// </summary>
@@ -34,27 +29,9 @@ namespace DiversityPhone.ViewModels
         /// </summary>
         public abstract Icon Icon { get; }
 
-        public ISubject<bool> CanSelect { get; private set; }
-
-        public IObservable<IElementVM<T>> SelectObservable { get; private set; }
-
-        protected ISubject<IElementVM<T>> SelectSubject = new Subject<IElementVM<T>>();
-
         public ElementVMBase(T model)
         {
             this.Model = model;
-            this.CanSelect = new Subject<bool>();              
-            this.Select = new ReactiveCommand(CanSelect); 
-       
-            var selectPublish =
-                SelectSubject
-                    .Publish();
-            selectPublish.Connect();
-            SelectObservable = selectPublish;
-                
-            Select
-                .Select(_ => this as IElementVM<T>)
-                .Subscribe(SelectSubject);
         }
     }   
 }
