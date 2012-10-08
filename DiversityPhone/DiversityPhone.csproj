@@ -315,7 +315,7 @@
     <Compile Include="ViewModels\Elements\EventSeriesVM.cs" />
     <Compile Include="ViewModels\Elements\EventVM.cs" />
     <Compile Include="Helper\Extensions.cs" />
-    <Compile Include="ViewModels\Icon.cs" />
+    <Compile Include="ViewModels\Base\Icon.cs" />
     <Compile Include="ViewModels\Elements\IdentificationUnitVM.cs" />
     <Compile Include="ViewModels\Edit\EditESVM.cs" />
     <Compile Include="ViewModels\View\HomeVM.cs" />

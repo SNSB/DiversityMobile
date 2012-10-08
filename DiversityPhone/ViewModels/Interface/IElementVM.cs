@@ -7,7 +7,13 @@ using ReactiveUI;
 
 namespace DiversityPhone.ViewModels
 {
-    public interface IElementVM<T> : IReactiveNotifyPropertyChanged
+    public interface IElementVM
+    {
+        string Description { get; }
+        Icon Icon { get; }
+    }
+
+    public interface IElementVM<T> : IElementVM, IReactiveNotifyPropertyChanged
     {
         T Model { get; }
     }
