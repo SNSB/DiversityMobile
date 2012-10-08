@@ -16,7 +16,7 @@ namespace DiversityPhone.ViewModels
 {
 
 
-    public class HomeVM : PageViewModel
+    public class HomeVM : PageVMBase
     {
         private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
                   

@@ -80,12 +80,6 @@ namespace DiversityPhone.Services
                 var vm = page.DataContext as PageVMBase;
                 vm.Activate();
             }
-
-            
-            if (page.DataContext is PageViewModel && _legacy_navigation.Any())
-            {
-                (page.DataContext as PageViewModel).SetState(_legacy_navigation.Peek());
-            }
         }        
         void NavigationStarted()
         {

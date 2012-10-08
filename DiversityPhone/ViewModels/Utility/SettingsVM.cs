@@ -16,7 +16,7 @@ using DiversityPhone.DiversityService;
 
 namespace DiversityPhone.ViewModels.Utility
 {
-    public partial class SettingsVM : PageViewModel
+    public partial class SettingsVM : PageVMBase
     {
         
         ISettingsService Settings;        
