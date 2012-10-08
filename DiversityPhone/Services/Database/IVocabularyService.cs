@@ -23,11 +23,9 @@ namespace DiversityPhone.Services
         void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups);        
 
         void addPropertyNames(IEnumerable<PropertyName> properties);
-        IList<PropertyName> getPropertyNames(Property prop);
-        PropertyName getPropertyNameByURI(string uri);
+        IEnumerable<PropertyName> getPropertyNames(int propertyID);        
 
-        IList<Property> getAllProperties();
-        Property getPropertyByID(int id);
+        IEnumerable<Property> getAllProperties();        
         void addProperties(IEnumerable<Property> props);
     }
 }

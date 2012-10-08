@@ -33,7 +33,7 @@ using System;
         void addOrUpdateEvent(Event ev);
         void updateEventKey(int oldEventKey, int newEventKey);
 
-        IList<EventProperty> getPropertiesForEvent(int eventID);
+        IEnumerable<EventProperty> getPropertiesForEvent(int eventID);
         EventProperty getPropertyByID(int eventId, int propertyId);
         void addOrUpdateCollectionEventProperty(EventProperty cep);
 

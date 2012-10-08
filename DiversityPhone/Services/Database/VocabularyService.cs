@@ -187,35 +187,16 @@ namespace DiversityPhone.Services
             
         }
 
-        public IList<PropertyName> getPropertyNames(Property prop)
+        public IEnumerable<PropertyName> getPropertyNames(int propertyID)
         {
-            if (prop == null)
-                return new List<PropertyName>();
-            else                
-                return queryDataContext(ctx => from pn in ctx.PropertyNames
-                                        where pn.PropertyID == prop.PropertyID
-                                        select pn);
+            return enumerateQuery(ctx => from name in ctx.PropertyNames
+                                         where name.PropertyID == propertyID
+                                         select name);
         }
 
-        public PropertyName getPropertyNameByURI(string uri)
+        public IEnumerable<Property> getAllProperties()
         {
-            return singleDataContext(ctx => from pn in ctx.PropertyNames
-                          where pn.PropertyUri == uri
-                          select pn);
-            
-        }
-
-        public IList<Property> getAllProperties()
-        {
-            return queryDataContext(ctx => ctx.Properties);
-        }
-
-        public Property getPropertyByID(int id)
-        {
-            return singleDataContext(ctx =>
-                from p in ctx.Properties
-                where p.PropertyID == id
-                select p);
+            return enumerateQuery(ctx => ctx.Properties);
         }
 
         public void addProperties(IEnumerable<Property> props)
@@ -233,6 +214,19 @@ namespace DiversityPhone.Services
             using (var ctx = new VocabularyDataContext())
             {
                 operation(ctx);
+            }
+        }
+
+        private IEnumerable<T> enumerateQuery<T>(Func<VocabularyDataContext, IQueryable<T>> query)
+        {
+            using (var ctx = new VocabularyDataContext())
+            {
+                var q = query(ctx);
+
+                foreach (var res in q)
+                {
+                    yield return res;
+                }
             }
         }
 

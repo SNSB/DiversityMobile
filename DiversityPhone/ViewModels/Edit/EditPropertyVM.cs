@@ -9,6 +9,7 @@ using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 using Funq;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -31,10 +32,7 @@ namespace DiversityPhone.ViewModels
 
         private PropertyName NoValue = new PropertyName() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
         public ListSelectionHelper<PropertyName> Values { get; private set; }
-        #endregion
-
-        private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand getValues = new ReactiveAsyncCommand();
+        #endregion      
 
 
         public EditPropertyVM(Container ioc)                  
@@ -43,67 +41,79 @@ namespace DiversityPhone.ViewModels
             Storage = ioc.Resolve<IFieldDataService>();
 
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
-
-            CurrentModelObservable
-                .Subscribe(getProperties.Execute);
+            
+            
             Properties = new ListSelectionHelper<Property>();            
-            getProperties.RegisterAsyncFunction(prop => getPropertiesImpl(prop as EventProperty))                
-                .Select(props => props.ToList() as IList<Property>)
+            CurrentModelObservable
+                .Select(evprop => 
+                    {
+                        var isNew = evprop.IsNew();
+
+                        return
+                        Vocabulary
+                            .getAllProperties()
+                            .ToObservable(Scheduler.ThreadPool)
+                            .Where(p => isNew || p.PropertyID == evprop.PropertyID) //Cannot change property type only value
+                            .TakeUntil(CurrentModelObservable)
+                            .ObserveOnDispatcher()  
+                            .StartWith(NoProperty)
+                            .CreateCollection();
+                    })      
+                //Select first property automatically after adding it
+                .Do(props => props
+                    .ItemsAdded
+                    .Where(item => item != NoProperty)
+                    .Take(1)
+                    .Subscribe(item => Properties.SelectedItem = item)
+                    )
+                .Select(coll => coll as IList<Property>)
                 .Subscribe(Properties);
 
             Values = new ListSelectionHelper<PropertyName>();
-            Properties                
-                .Subscribe(getValues.Execute);
-            getValues.RegisterAsyncFunction(prop => getValuesImpl(prop as Property))                
+            Properties                  
+                .Select(prop => 
+                    {
+                        var values = 
+                            (prop == null || prop == NoProperty) 
+                            ? Observable.Empty<PropertyName>() 
+                            : Vocabulary
+                                .getPropertyNames(prop.PropertyID)
+                                .ToObservable(Scheduler.ThreadPool)
+                                .TakeUntil(Properties);
+
+                        return
+                            values
+                            .StartWith(NoValue)
+                            .ObserveOnDispatcher()
+                            .CreateCollection();
+                    })
+                    //Reselect value that was selected
+                    .Do(values => 
+                        values
+                        .ItemsAdded
+                        .Where(item => item.PropertyUri == Current.Model.PropertyUri)
+                        .Subscribe(value => Values.SelectedItem = value)
+                        )
+                    .Select(coll => coll as IList<PropertyName>)
                 .Subscribe(Values);
-
-
-            CurrentModelObservable
-                .CombineLatest(Properties.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyID == m.PropertyID))
-                .BindTo(Properties, x => x.SelectedItem);
-
-            CurrentModelObservable
-                .CombineLatest(Values.ItemsObservable, (m, p) => p.FirstOrDefault(prop => prop.PropertyUri == m.PropertyUri))
-                .BindTo(Values, x => x.SelectedItem);
-
+          
 
             CanSaveObs()
                 .Subscribe(CanSaveSubject.OnNext);
         }
 
-        private IEnumerable<Property> getPropertiesImpl(EventProperty cep)
-        {
-            var props = Vocabulary.getAllProperties();
-            if (cep.IsNew()) //All remaining Properties
-            {
-                var otherCEPs = Storage.getPropertiesForEvent(cep.EventID).ToDictionary(x => x.PropertyID);
-                return props.Where(prop => !otherCEPs.ContainsKey(prop.PropertyID));
-            }
-            else //Only this Property
-            {
-                return props.Where(prop => prop.PropertyID == cep.PropertyID);
-            }
-        }
-
-        private IList<PropertyName> getValuesImpl(Property p)
-        {
-            return Vocabulary.getPropertyNames(p);           
-        }
-
+       
         private IObservable<bool> CanSaveObs()
         {            
             var propSelected = Properties
-                .Select(x => x!=null)
+                .Select(x => x!=NoProperty)
                 .StartWith(false);
 
-            var valuesLoaded = getValues.ItemsInflight.Select(items => items == 0).StartWith(false);
-
-
             var valueSelected = Values
-                 .Select(x => x != null)
+                 .Select(x => x != NoValue)
                  .StartWith(false);
 
-            return Extensions.BooleanAnd(propSelected, valueSelected, valuesLoaded);
+            return Extensions.BooleanAnd(propSelected, valueSelected);
         }         
 
 

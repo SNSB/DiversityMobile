@@ -276,7 +276,7 @@ namespace DiversityPhone.Services
             {
                 this.deleteSpecimen(spec);
             }
-            IList<EventProperty> attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
+            var attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
             foreach (EventProperty cep in attachedProperties)
                 this.deleteEventProperty(cep);
             IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteEv);
@@ -293,9 +293,9 @@ namespace DiversityPhone.Services
 
         #region CollectionEventProperties
 
-        public IList<EventProperty> getPropertiesForEvent(int eventID)
+        public IEnumerable<EventProperty> getPropertiesForEvent(int eventID)
         {
-            return uncachedQuery(ctx =>
+            return enumerateQuery(ctx =>
                 from cep in ctx.CollectionEventProperties
                 where cep.EventID == eventID 
                 select cep
