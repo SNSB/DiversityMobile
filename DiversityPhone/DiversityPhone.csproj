@@ -464,6 +464,8 @@
     <Content Include="Images\AudioIcons\speaker.png" />
     <Content Include="Images\AudioIcons\stop.png" />
     <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
+    <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
+    <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
