@@ -18,7 +18,7 @@ namespace DiversityPhone.ViewModels
         private IMultimediaOwner Owner { get { return _Owner.Value; } }
         private ReactiveAsyncCommand getMultimedia;
 
-        public ReactiveCommand<IElementVM<MultimediaObjectVM>> SelectMultimedia { get; private set; }
+        public ReactiveCommand<IElementVM<MultimediaObject>> SelectMultimedia { get; private set; }
         public ReactiveCommand AddMultimedia { get; private set; }
         public IObservable<IMultimediaOwner> NewMultimediaObservable { get; private set; }
 
@@ -46,7 +46,7 @@ namespace DiversityPhone.ViewModels
 
             this.ListenToChanges<MultimediaObject, MultimediaObjectVM>(mmo => Owner != null && mmo.OwnerType == Owner.OwnerType && mmo.RelatedId == Owner.OwnerID);
 
-            SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObjectVM>>();
+            SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObject>>();
             SelectMultimedia
                 .ToMessage(MessageContracts.VIEW);
 
