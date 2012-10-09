@@ -108,9 +108,12 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            var uri = getImageUri();
-            saveImage(uri);            
-            Current.Model.Uri = uri;
+            var newURI = saveImageAndGetURI();
+            var previousURI = Current.Model.Uri;
+
+            Current.Model.Uri = newURI;
+
+            deleteImageIfExists(previousURI);           
         }
        
         protected IObservable<bool> CanSave()
@@ -122,35 +125,32 @@ namespace DiversityPhone.ViewModels
 
 
         private string getImageUri()
-        {
-            string uri;
-
-            if (string.IsNullOrWhiteSpace(Current.Model.Uri))
-            {
-                //Create filename for JPEG in isolated storage as a Guid and filename for thumb
-                uri = string.Format("{0}.jpg",Guid.NewGuid());
-            }
-            else
-            {
-                uri = Current.Model.Uri;
-            }
-
-            return uri;
+        {                        
+            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
+            return string.Format("{0}.jpg",Guid.NewGuid()); 
         }
-       
 
-        private void saveImage(string uri)
-        { 
+        private string saveImageAndGetURI()
+        {
+            var newURI = getImageUri();
+            using (IsolatedStorageFileStream myFileStream = IsolatedStorageFile.GetUserStoreForApplication().CreateFile(newURI))
+            {
+                //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
+                System.Windows.Media.Imaging.Extensions.SaveJpeg(new WriteableBitmap(this.CurrentImage), myFileStream, this.CurrentImage.PixelWidth, this.CurrentImage.PixelHeight, 0, 85);
+            }
+
+            return newURI;
+        }
+
+        private void deleteImageIfExists(string uri)
+        {
+            var previousURI = Current.Model.Uri;
             //Create virtual store and file stream. Check for duplicate tempJPEG files.
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(uri))
+            if (string.IsNullOrWhiteSpace(previousURI) && myStore.FileExists(previousURI))
             {
-                myStore.DeleteFile(uri);
+                myStore.DeleteFile(previousURI);
             }
-            IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
-            //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
-            System.Windows.Media.Imaging.Extensions.SaveJpeg(new WriteableBitmap(this.CurrentImage), myFileStream, this.CurrentImage.PixelWidth, this.CurrentImage.PixelHeight, 0, 85);
-            myFileStream.Close();
         }
     }
 }
