@@ -16,14 +16,8 @@ namespace DiversityPhone.Services
 {
     public class NavigationService
     {
-        private const string VISIT_KEY = "visit";        
-
         private IMessageBus Messenger;        
         private PhoneApplicationFrame _frame;
-
-        //LEGACY
-        private Stack<PageState> _legacy_navigation = new Stack<PageState>();
-        //LEGACY
 
         public NavigationService(IMessageBus messenger)
         {
@@ -63,9 +57,9 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s, args) => NavigationStarted();
-                
-            _frame.Navigated += (s, args) => NavigationFinished();
+            _frame.Navigating += (s, args) => { if (args.IsNavigationInitiator) NavigationStarted(); };
+
+            _frame.Navigated += (s, args) => { if (args.IsNavigationInitiator) NavigationFinished(); };
         }
 
         void NavigationFinished()

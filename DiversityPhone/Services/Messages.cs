@@ -17,18 +17,12 @@ namespace DiversityPhone.Messages
         public const string SAVE = "Save";
         public const string DELETE = "Delete";
         public const string USE = "Use";
+
         public const string START = "Start";
         public const string STOP = "Stop";
 
         public const string VIEW = "View";
         public const string EDIT = "Edit";
-
-        public const string MAPS = "Maps";
-
-        public const string MULTIMEDIA = "MMO";
-        public const string IMAGE = "Image";
-        public const string AUDIO = "Audio";
-        public const string VIDEO = "Video";
 
         //Events
         public const string INIT = "Init";
