@@ -56,9 +56,6 @@ namespace DiversityPhone.Services
 
              Messenger.Listen<Page>()                
                 .Subscribe(NavigateToPage);
-
-             Messenger.Listen<NavigationMessage>()
-                 .Subscribe(NavigationMessageNavigation);
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {
@@ -91,28 +88,6 @@ namespace DiversityPhone.Services
                 vm.Deactivate();
             }           
         }
-
-        //LEGACY///////////////////////////////////////////
-        void NavigationMessageNavigation(NavigationMessage msg)
-        {
-            //Real Nav ?
-            if (msg.Destination != Page.Previous && msg.Destination != Page.Current)
-            {
-                _legacy_navigation.Push(new PageState(
-                        msg.Destination,
-                        msg.Context,
-                        msg.ReferrerType,
-                        msg.Referrer));                
-            }
-            else if (msg.Destination == Page.Previous)
-            {
-                _legacy_navigation.Pop();
-            }
-
-            NavigateToPage(msg.Destination);
-        }        
-        //LEGACY///////////////////////////////////////////
-
 
         private void NavigateToPage(Page p)
         {
