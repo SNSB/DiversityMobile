@@ -46,7 +46,7 @@ namespace DiversityPhone.ViewModels
         public MapManagementVM MapManagement { get { return IOC.Resolve<MapManagementVM>(); } }               
         public ViewMapVM ViewMap { get { return IOC.Resolve<ViewMapVM>(); } }        
         
-        public ImageVM NewImage { get { return IOC.Resolve<ImageVM>(); } }
+        public ImageVM Image { get { return IOC.Resolve<ImageVM>(); } }
         public AudioVM NewAudio { get { return IOC.Resolve<AudioVM>(); } }
         public VideoVM NewVideo { get { return IOC.Resolve<VideoVM>(); } }
 

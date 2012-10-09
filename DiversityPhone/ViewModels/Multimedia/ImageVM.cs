@@ -12,122 +12,135 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using Microsoft.Devices;
 using System.Windows;
+using Microsoft.Phone.Tasks;
+using System.Reactive;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
     public class ImageVM : EditPageVMBase<MultimediaObject>
     {
+        private BitmapImage _CurrentImage;
 
-      
-        #region Properties
-
-        private string _Uri;
-        public string Uri
-        {
-            get { return _Uri; }
-            set { this.RaiseAndSetIfChanged(x => x.Uri, ref _Uri, value); }
-        }
-
-
-        private BitmapImage _oldImage;
-
-        public BitmapImage OldImage
+        public BitmapImage CurrentImage
         {
             get
             {
-                return _oldImage;
+                return _CurrentImage;
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.OldImage, ref _oldImage, value);
+                this.RaiseAndSetIfChanged(x => x.CurrentImage, ref _CurrentImage, value);
             }
         }
 
-        private BitmapImage _actualImage;
-
-        public BitmapImage ActualImage
-        {
-            get
-            {
-                return _actualImage;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.ActualImage, ref _actualImage, value);
-            }
-        }
-
-        private bool _shootingEnabled = true;
-        public bool ShootingEnabled //Converter for image and videoBrush in View needed
-        {
-            get
-            {
-                return _shootingEnabled;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.ShootingEnabled, ref _shootingEnabled, value);
-                this.raisePropertyChanged("ShootingDisabled");
-            }
-        }
-        public bool ShootingDisabled //For DataBinding
-        {
-            get
-            {
-                return !_shootingEnabled;
-            }
-        }
-
-        #endregion 
-
-        #region Commands
-
-        public ReactiveCommand Reset { get; private set; }
         public ReactiveCommand Take { get; private set; } 
  
-        #endregion
+        
 
 
         public ImageVM()
             : base( mmo => mmo.MediaType == MediaType.Image)
         {
-            Reset = new ReactiveCommand();
+            Messenger
+                .Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW)
+                .Where(vm => vm.Model.MediaType == MediaType.Image)
+                .BindTo(this, x => x.Current);
+
             Take = new ReactiveCommand();
 
             CanSave().Subscribe(CanSaveSubject);
+            //New ImagePage
+            this.OnActivation()                
+                .Where(_ => Current.Model.IsNew())
+                .Merge(Take.Select(_ => Unit.Default))
+                .Select(_ => new CameraCaptureTask())
+                .SelectMany(capture =>
+                    {
+                        var results =
+                            Observable.FromEventPattern<PhotoResult>(h => capture.Completed += h, h => capture.Completed -= h)
+                            .Select(ev => ev.EventArgs)
+                            .Take(1)
+                            .Catch(Observable.Empty<PhotoResult>())
+                            .Replay(1);
+                        results.Connect();
+                        try
+                        {
+                            capture.Show();
+                        }
+                        catch (InvalidOperationException ex)
+                        {
+                            return Observable.Empty<PhotoResult>();
+                        }
+                        return results;
+                    })
+                .Where(photo => photo.TaskResult == TaskResult.OK)
+                .Select(res =>
+                    {
+                        var img = new BitmapImage();
+                        img.SetSource(res.ChosenPhoto);
+                        return img;
+                    })
+                .Merge(
+                    //View Old image
+                    CurrentModelObservable                        
+                        .Where(mmo => !mmo.IsNew())
+                        .Select(mmo =>
+                            {
+                                var img = new BitmapImage();
+                                try
+                                {
+                                    using(var file = IsolatedStorageFile.GetUserStoreForApplication().OpenFile(mmo.Uri, FileMode.Open))
+                                    {
+                                        img.SetSource(file);
+                                        return img;
+                                    }
+                                }
+                                catch(Exception)
+                                {
+                                    return null;
+                                }
+                            })   
+                 )
+                .ObserveOnDispatcher()
+                .Subscribe(img => CurrentImage = img);
         }
 
         protected override void UpdateModel()
         {
-            saveImage();            
-            Current.Model.Uri = Uri;
+            var uri = getImageUri();
+            saveImage(uri);            
+            Current.Model.Uri = uri;
         }
        
         protected IObservable<bool> CanSave()
         {
-            return this.ObservableForProperty(x => x.ActualImage)
+            return this.ObservableForProperty(x => x.CurrentImage)
                 .Select(image=> image!=null)
                 .StartWith(false);
         }
 
-       
 
-       
-
-        private void saveImage()
+        private string getImageUri()
         {
-            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
-            String uri;
+            string uri;
 
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
+            if (string.IsNullOrWhiteSpace(Current.Model.Uri))
             {
-                Guid g = Guid.NewGuid();
-                uri = g.ToString() + ".jpg";
+                //Create filename for JPEG in isolated storage as a Guid and filename for thumb
+                uri = string.Format("{0}.jpg",Guid.NewGuid());
             }
             else
             {
                 uri = Current.Model.Uri;
             }
+
+            return uri;
+        }
+       
+
+        private void saveImage(string uri)
+        { 
             //Create virtual store and file stream. Check for duplicate tempJPEG files.
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
             if (myStore.FileExists(uri))
@@ -136,15 +149,8 @@ namespace DiversityPhone.ViewModels
             }
             IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
             //Encode the WriteableBitmap into JPEG stream and place into isolated storage.
-            System.Windows.Media.Imaging.Extensions.SaveJpeg(new WriteableBitmap(this.ActualImage), myFileStream, this.ActualImage.PixelWidth, this.ActualImage.PixelHeight, 0, 85);
+            System.Windows.Media.Imaging.Extensions.SaveJpeg(new WriteableBitmap(this.CurrentImage), myFileStream, this.CurrentImage.PixelWidth, this.CurrentImage.PixelHeight, 0, 85);
             myFileStream.Close();
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
-            {
-                this.Uri = uri;
-
-            }
-            
         }
-
     }
 }
