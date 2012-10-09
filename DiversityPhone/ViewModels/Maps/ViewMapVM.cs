@@ -123,11 +123,11 @@ namespace DiversityPhone.ViewModels
                     })
                 .BindTo(this, x => x.MapImage);
 
-            var current_series = Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS).Model();
+            var current_series = Messenger.Listen<ILocationOwner>(MessageContracts.VIEW);
 
             var current_localizable = Messenger.Listen<ILocalizable>(MessageContracts.VIEW);
 
-            var current_series_if_not_localizable = current_series.Merge(current_localizable.Select(_ => null as EventSeries));
+            var current_series_if_not_localizable = current_series.Merge(current_localizable.Select(_ => null as ILocationOwner));
 
             var current_localizable_if_not_series = current_localizable.Merge(current_series.Select(_ => null as ILocalizable));
 
@@ -142,8 +142,8 @@ namespace DiversityPhone.ViewModels
                 .Where(pair => pair.Series != null)
                 .SelectMany(pair => 
                     {
-                        return Storage.getGeoPointsForSeries(pair.Series.SeriesID.Value).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
-                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.SeriesID.Value)) //Listen to new Geopoints that are added to the current tour
+                        return Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
+                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.OwnerID)) //Listen to new Geopoints that are added to the current tour
                         .Select(gp => pair.Map.PercentilePositionOnMap(gp))
                         .TakeUntil(series_and_map);
                     })

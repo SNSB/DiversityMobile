@@ -37,8 +37,7 @@ namespace DiversityPhone.Services
             Messenger.RegisterMessageSource(
                 Observable.Merge(
                     Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.VIEW).Select(_ => Page.ViewES),
-                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.EDIT).Select(_ => Page.EditES),
-                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.MAPS).Select(_ => Page.ViewMap),
+                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.EDIT).Select(_ => Page.EditES),                    
                     Messenger.Listen<IElementVM<Event>>(MessageContracts.VIEW).Select(_ => Page.ViewEV),
                     Messenger.Listen<IElementVM<Event>>(MessageContracts.EDIT).Select(_ => Page.EditEV),
                     Messenger.Listen<IElementVM<Specimen>>(MessageContracts.VIEW).Select(_ => Page.ViewCS),
@@ -50,12 +49,13 @@ namespace DiversityPhone.Services
                     mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
                     mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
                     mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
-                    Messenger.Listen<ILocalizable>(MessageContracts.VIEW).Select(_ => Page.ViewMap)
+                    Messenger.Listen<ILocalizable>(MessageContracts.VIEW).Select(_ => Page.ViewMap),
+                    Messenger.Listen<ILocationOwner>(MessageContracts.VIEW).Select(_ => Page.ViewMap)
                     )
                 );
 
              Messenger.Listen<Page>()                
-                .Subscribe(NavigateToPage);
+                .Subscribe(NavigateToPage);   
         }
         public void AttachToNavigation(PhoneApplicationFrame frame)
         {

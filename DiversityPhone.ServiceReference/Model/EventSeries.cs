@@ -11,7 +11,7 @@ using Svc = DiversityPhone.DiversityService;
 namespace DiversityPhone.Model
 {	
 	[Table]
-	public class EventSeries : ReactiveObject, IModifyable
+	public class EventSeries : ReactiveObject, IModifyable, ILocationOwner
 	{
 		
 		private int? _SeriesID;
@@ -206,5 +206,15 @@ namespace DiversityPhone.Model
             return export;
         }
        
+
+		public ReferrerType OwnerType
+        {
+            get { return ReferrerType.EventSeries; }
+        }
+
+        public int OwnerID
+        {
+            get { return SeriesID.Value; }
+        }
     }	
 } 

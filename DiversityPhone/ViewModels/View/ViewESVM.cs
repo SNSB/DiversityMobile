@@ -72,8 +72,8 @@
 
             Maps = new ReactiveCommand(CurrentModelObservable.Select(es => !EventSeries.isNoEventSeries(es)));
             Maps
-                .Select(_ => Current)
-                .ToMessage(MessageContracts.MAPS);
+                .Select(_ => Current.Model as ILocationOwner)
+                .ToMessage(MessageContracts.VIEW);
         }       
     }
 }
