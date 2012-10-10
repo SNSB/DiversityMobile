@@ -180,9 +180,20 @@ namespace DiversityPhone.Services
         public void addPropertyNames(IEnumerable<PropertyName> properties)
         {
             withDataContext(ctx =>
-                {
-                    ctx.PropertyNames.InsertAllOnSubmit(properties);
-                    ctx.SubmitChanges();
+                {                    
+                    try 
+	                {
+                        
+                            ctx.PropertyNames.InsertAllOnSubmit(properties);
+                            ctx.SubmitChanges();
+                        	                
+	                }
+	                catch (Exception ex)
+	                {
+		                
+		                throw;
+	                }
+                   
                 });
             
         }

@@ -10,7 +10,12 @@ namespace DiversityPhone.Messages
     {
         OK,
         YesNo
-    }  
+    }
+
+    public static class VMMessages
+    {
+        public const string USED_EVENTPROPERTY_IDS = "UEID";
+    }
 
     public static class MessageContracts
     {

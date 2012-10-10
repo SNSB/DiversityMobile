@@ -89,6 +89,7 @@ using System.Reactive.Disposables;
 
             CurrentModelObservable
                 .Do(_ => PropertyList.Clear())
+                .Do(_ => Messenger.SendMessage(PropertyList.Select(vm => vm.Model.PropertyID), VMMessages.USED_EVENTPROPERTY_IDS))
                 .Subscribe(getProperties.Execute);
 
             SelectProperty = new ReactiveCommand<IElementVM<EventProperty>>();

@@ -10,11 +10,16 @@ using System.Collections.Generic;
 using DiversityPhone.Services;
 using Funq;
 using System.Reactive.Concurrency;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditPropertyVM : EditPageVMBase<EventProperty>
-    {      
+    {
+        private ObservableAsyncMRUCache<int, IReactiveCollection<PropertyName>> _PropertyNamesCache;
+        private ReactiveCollection<Property> _Properties;
+        private BehaviorSubject<IEnumerable<int>> _UsedProperties;
+
 
         #region Services        
         private IVocabularyService Vocabulary { get; set; }
@@ -40,24 +45,44 @@ namespace DiversityPhone.ViewModels
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Storage = ioc.Resolve<IFieldDataService>();
 
+            _UsedProperties = new BehaviorSubject<IEnumerable<int>>(Enumerable.Empty<int>());
+            Messenger.Listen<IEnumerable<int>>(VMMessages.USED_EVENTPROPERTY_IDS)
+                .Subscribe(_UsedProperties);
+
+            _Properties = this.FirstActivation()
+                .SelectMany(_ => 
+                    Vocabulary.getAllProperties()
+                    .ToObservable(Scheduler.ThreadPool)
+                    )
+                    .ObserveOnDispatcher()
+                    .CreateCollection();
+
+            _PropertyNamesCache = new ObservableAsyncMRUCache<int, IReactiveCollection<PropertyName>>(
+                propertyID => 
+                    Observable.Start(
+                    () => Vocabulary
+                    .getPropertyNames(propertyID)
+                    .ToObservable(Scheduler.ThreadPool)
+                    .ObserveOnDispatcher()
+                    .CreateCollection() as IReactiveCollection<PropertyName>), 3);
+
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
             
             
-            Properties = new ListSelectionHelper<Property>();            
+            Properties = new ListSelectionHelper<Property>();  
             CurrentModelObservable
                 .Select(evprop => 
                     {
                         var isNew = evprop.IsNew();
+                        var usedProps = _UsedProperties.First();
 
                         return
-                        Vocabulary
-                            .getAllProperties()
-                            .ToObservable(Scheduler.ThreadPool)
-                            .Where(p => isNew || p.PropertyID == evprop.PropertyID) //Cannot change property type only value
-                            .TakeUntil(CurrentModelObservable)
-                            .ObserveOnDispatcher()  
-                            .StartWith(NoProperty)
-                            .CreateCollection();
+                        _Properties                                                                                 
+                            .CreateDerivedCollection(p => p, p => 
+                                p.PropertyID == evprop.PropertyID //Editing property -> can't change type
+                                || (isNew && !usedProps.Contains(p.PropertyID)),//New Property, only show unused ones
+                                (p1,p2) => p1.PropertyID.CompareTo(p2.PropertyID)
+                                );                            
                     })      
                 //Select first property automatically after adding it
                 .Do(props => props
@@ -71,21 +96,12 @@ namespace DiversityPhone.ViewModels
 
             Values = new ListSelectionHelper<PropertyName>();
             Properties                  
-                .Select(prop => 
+                .SelectMany(prop => 
                     {
-                        var values = 
-                            (prop == null || prop == NoProperty) 
-                            ? Observable.Empty<PropertyName>() 
-                            : Vocabulary
-                                .getPropertyNames(prop.PropertyID)
-                                .ToObservable(Scheduler.ThreadPool)
-                                .TakeUntil(Properties);
-
                         return
-                            values
-                            .StartWith(NoValue)
-                            .ObserveOnDispatcher()
-                            .CreateCollection();
+                            (prop == null || prop == NoProperty)
+                            ? Observable.Return(new ReactiveCollection<PropertyName>(Enumerable.Repeat(NoValue, 1)) as IReactiveCollection<PropertyName>)
+                            : _PropertyNamesCache.AsyncGet(prop.PropertyID);
                     })
                     //Reselect value that was selected
                     .Do(values => 
@@ -95,6 +111,7 @@ namespace DiversityPhone.ViewModels
                         .Subscribe(value => Values.SelectedItem = value)
                         )
                     .Select(coll => coll as IList<PropertyName>)
+                    .ObserveOnDispatcher()
                 .Subscribe(Values);
           
 

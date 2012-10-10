@@ -50,7 +50,7 @@ namespace DiversityPhone.ViewModels
             Take = new ReactiveCommand();
 
             CanSave().Subscribe(CanSaveSubject);
-            //New ImagePage
+            //New Image
             this.OnActivation()                
                 .Where(_ => Current.Model.IsNew())
                 .Merge(Take.Select(_ => Unit.Default))
