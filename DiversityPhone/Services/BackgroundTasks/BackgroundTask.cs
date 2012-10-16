@@ -95,6 +95,7 @@ namespace DiversityPhone.Services
 
 
         private ISubject<string> _progressMessageSubject = new ReplaySubject<string>(1);
+        private ISubject<Exception> _ErrorSubject;
 
         public BackgroundTask()
         {
@@ -115,7 +116,10 @@ namespace DiversityPhone.Services
             complete.Connect();
             _CompletedObs = complete;
 
+
+            _ErrorSubject = new Subject<Exception>();
             var error = Executor.ThrownExceptions
+                .Merge(_ErrorSubject)
                 .Do(_ => _IsBusy = false)
                 .Select(_ => Invocation.Argument)
                 .Publish();
@@ -128,12 +132,19 @@ namespace DiversityPhone.Services
             if (Executor.CanExecute(null))
             {                
                 Invocation = inv;
-                if (inv.Argument != null)
-                    saveArgumentToState(inv.Argument);
-                else
-                    inv.Argument = getArgumentFromState();
+                try
+                {
+                    if (inv.Argument != null)
+                        saveArgumentToState(inv.Argument);
+                    else
+                        inv.Argument = getArgumentFromState();
 
-                Executor.Execute(inv.Argument);                
+                    Executor.Execute(inv.Argument);
+                }
+                catch (Exception ex) 
+                {
+                    _ErrorSubject.OnNext(ex);
+                } 
             }            
         }
 
@@ -146,11 +157,18 @@ namespace DiversityPhone.Services
         public void CleanupAfter(BackgroundTaskInvocation inv)
         {
             Invocation = inv;
-            if (inv.Argument != null)
-                saveArgumentToState(inv.Argument);
-            else
-                inv.Argument = getArgumentFromState();
-            Cleanup(inv.Argument);            
+            try
+            {
+                if (inv.Argument != null)
+                    saveArgumentToState(inv.Argument);
+                else
+                    inv.Argument = getArgumentFromState();
+                Cleanup(inv.Argument);
+            }
+            catch (Exception ex)
+            {
+                //Ignore (assumed to be cleaned up)
+            }
         }
 
         

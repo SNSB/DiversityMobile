@@ -84,7 +84,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                 Password = State[KEY_PASSWORD],
                 Repository = State[KEY_REPOSITORY],
                 ProjectID = int.Parse(State[KEY_PROJECT])
-            };
+            };           
+
         }
 
         protected override void Run(object arg)
