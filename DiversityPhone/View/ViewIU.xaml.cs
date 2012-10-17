@@ -10,6 +10,8 @@ namespace DiversityPhone.View
     {
         private CommandButtonAdapter _add, _maps;
 
+        NewMultimediaAppBarUpdater _mmo;
+
         private ViewIUVM VM { get { return DataContext as ViewIUVM; } }
 
         public ViewIU()
@@ -18,6 +20,7 @@ namespace DiversityPhone.View
 
             _add = new CommandButtonAdapter(ApplicationBar.Buttons[0] as ApplicationBarIconButton, VM.Add);
             _maps = new CommandButtonAdapter(ApplicationBar.Buttons[1] as ApplicationBarIconButton, VM.Maps);
+            _mmo = new NewMultimediaAppBarUpdater(this, VM.MultimediaList);
         }
        
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
