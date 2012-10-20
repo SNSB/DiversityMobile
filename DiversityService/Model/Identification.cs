@@ -19,6 +19,7 @@ namespace DiversityService.Model
         public String IdentificationCategory{get;set;}
         public String ResponsibleName{get;set;}
         public String ResponsibleAgentURI{get;set;}
+        public string IdentificationQualifier { get; set; }
 
     }
 }

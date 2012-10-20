@@ -82,6 +82,7 @@ namespace DiversityService
             export.IdentificationCategory = "determination";
             export.ResponsibleName = profile.AgentName;
             export.ResponsibleAgentURI = profile.AgentURI;
+            export.IdentificationQualifier = iu.Qualification;
             return export;
         }
 
