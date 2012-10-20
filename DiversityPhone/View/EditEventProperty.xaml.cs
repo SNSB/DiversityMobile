@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using DiversityPhone.View.Appbar;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.View
 {
@@ -21,7 +22,6 @@ namespace DiversityPhone.View
         public EditPropertyVM VM { get { return DataContext as EditPropertyVM; } }
 
         EditPageSaveEditButton _appb;
-        private IList<Control> _toStore;
         private EditPageDeleteButton _delete;
 
         public EditEventProperty()
@@ -30,7 +30,11 @@ namespace DiversityPhone.View
             _appb = new EditPageSaveEditButton(ApplicationBar, VM);
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
-            _toStore = new List<Control> { LP_Type, LP_Value };
+            Observable.FromEventPattern(tbFilterString, "TextChanged")                
+                .Select(_ => tbFilterString.Text)                                
+                .Subscribe(filter => VM.FilterString = filter);
         }
+
+        
     }
 }

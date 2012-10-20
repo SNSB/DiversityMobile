@@ -33,6 +33,22 @@ namespace DiversityPhone.ViewModels
         public bool IsNew { get { return _IsNew.Value; } }
         private ObservableAsPropertyHelper<bool> _IsNew;
 
+
+        private string _FilterString;
+
+        public string FilterString
+        {
+            get
+            {
+                return _FilterString;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.FilterString, ref _FilterString, value);
+            }
+        }
+        
+
         private Property NoProperty = new Property() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
         public ListSelectionHelper<Property> Properties { get; private set; }
 
@@ -103,8 +119,24 @@ namespace DiversityPhone.ViewModels
                             (prop == null || prop == NoProperty)
                             ? Observable.Return(new ReactiveCollection<PropertyName>(Enumerable.Repeat(NoValue, 1)) as IReactiveCollection<PropertyName>)
                             : _PropertyNamesCache.AsyncGet(prop.PropertyID);
-                    })
-                    //Reselect value that was selected
+                    })                    
+                    .CombineLatest(
+                        this.ObservableForProperty(x => x.FilterString).Value()
+                        .StartWith(string.Empty)
+                        .Select(filter => (filter ?? string.Empty).ToLowerInvariant())
+                        .Throttle(TimeSpan.FromMilliseconds(500))
+                        .DistinctUntilChanged(),
+                        (props, filter) => 
+                        {
+                            const int max_values = 10;
+                            int itemcount = 0;
+                            return props.CreateDerivedCollection(
+                                x => x, 
+                                //show only selected value and matching values, and only up to max_values
+                                x => (x.PropertyUri == Current.Model.PropertyUri || x.DisplayText.ToLowerInvariant().Contains(filter)) && itemcount++ < max_values, 
+                                (x,y) => x.PropertyID.CompareTo(y.PropertyID));
+                        })
+                        //Reselect value that was selected
                     .Do(values => 
                         values
                         .ItemsAdded

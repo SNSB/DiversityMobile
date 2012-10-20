@@ -32,19 +32,19 @@
         <StackPanel Grid.Row="1">
             <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}" Width="Auto"/>
-            <toolkit:ListPicker Name="LP_Type" IsEnabled="{Binding IsNew}"
-                                Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
-                                FullModeHeader="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"
-                                ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                ItemsSource="{Binding Properties.Items}"
-                                SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"
-                                />
-            <toolkit:LongListSelector Name="LP_Value" IsEnabled="{Binding IsEditable}"                                
+            <toolkit:ListPicker IsEnabled="{Binding IsNew}"
+                                Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"                                
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
-                                ItemsSource="{Binding Values.Items}"
-                                IsFlatList="True"
+                                ItemsSource="{Binding Properties.Items}"
+                                SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"                                
                                 />
+
+            <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/> 
+            <TextBox Name="tbFilterString"/>
+            <TextBlock Text="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+            <ListBox ItemTemplate="{StaticResource DisplayTextItemTemplate}" 
+                     ItemsSource="{Binding Values.Items}"
+                     SelectedIndex="{Binding Values.SelectedIndex, Mode=TwoWay}"/>
         </StackPanel>
     </Grid>
  
