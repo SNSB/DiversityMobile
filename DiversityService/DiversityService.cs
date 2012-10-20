@@ -129,7 +129,7 @@ namespace DiversityService
             {
                 using (var db = new DiversityORM.Diversity(login))
                 {
-                    return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single(); ;
+                    return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single();
                 }
             }
             catch
@@ -192,6 +192,23 @@ namespace DiversityService
             }
             else
                 return Enumerable.Empty<Model.PropertyName>();
+        }
+
+        public IEnumerable<Qualification> GetQualifications(UserCredentials login)
+        {
+            using (var db = new Diversity(login))
+            {
+                return getQualifications(db)
+                    .Select(q => 
+                        {
+                            if(string.IsNullOrWhiteSpace(q.DisplayText))
+                            {
+                                q.DisplayText = "no qualification";
+                            }
+                            return q;
+                        })
+                    .ToList();
+            }
         }
 
        
@@ -518,6 +535,9 @@ namespace DiversityService
             return result;
         }
         #endregion
+
+
+
 
 
 

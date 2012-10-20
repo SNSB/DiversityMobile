@@ -98,6 +98,7 @@
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyList.cs" />
     <Compile Include="Model\PropertyName.cs" />
+    <Compile Include="Model\Qualification.cs" />
     <Compile Include="Model\Repository.cs" />
     <Compile Include="Model\ServerInfo.cs" />
     <Compile Include="Model\Specimen.cs" />

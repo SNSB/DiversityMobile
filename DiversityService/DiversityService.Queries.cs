@@ -47,6 +47,11 @@ namespace DiversityService
             return db.Query<Property>("FROM [Property] AS [Property]");
         }
 
+        private static IEnumerable<Qualification> getQualifications(Diversity db)
+        {
+            return db.Query<Qualification>("FROM [DiversityMobile_IdentificationQualifiers]() AS [Qualification]");
+        }
+
         private static IEnumerable<T> loadTablePaged<T>(string table, int page, Diversity db)
         {
             //TODO Improve SQL Sanitation

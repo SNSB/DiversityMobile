@@ -40,6 +40,8 @@ namespace DiversityService.Model
         public string OrderCache { get; set; }
         [Ignore]
         public string IdentificationUri { get; set; }
+        [Ignore]
+        public string Qualification { get; set; }
 
         //Georeferenzierung anstelle der IdentificationUnitGeoAnalysis
         [Ignore]

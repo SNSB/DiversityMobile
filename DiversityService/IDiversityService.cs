@@ -24,6 +24,9 @@ namespace DiversityService
         IEnumerable<Repository> GetRepositories(UserCredentials login);
 
         [OperationContract]
+        IEnumerable<Qualification> GetQualifications(UserCredentials login);
+
+        [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserCredentials login);
         
         [OperationContract]
