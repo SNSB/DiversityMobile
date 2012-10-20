@@ -13,6 +13,7 @@ namespace DiversityPhone.Services
     {
         IObservable<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUser;
         IObservable<DownloadTaxonListCompletedEventArgs> DownloadTaxonList;
+        IObservable<GetQualificationsCompletedEventArgs> GetQualificationsCompleted;
 
         DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
         IMessageBus Messenger;
@@ -26,7 +27,8 @@ namespace DiversityPhone.Services
             LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
 
             GetTaxonListsForUser = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
-            DownloadTaxonList = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);                                
+            DownloadTaxonList = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);
+            GetQualificationsCompleted = Observable.FromEvent<EventHandler<GetQualificationsCompletedEventArgs>, GetQualificationsCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d);
         }
 
         private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
@@ -256,6 +258,21 @@ namespace DiversityPhone.Services
             var res = singleResultObservable(source);
 
             _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login);
+            return res;
+        }
+
+
+        public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
+        {
+            var request = new object();
+            var res = singleResultObservable(
+                GetQualificationsCompleted.Where(args => args.UserState == request)
+                .Select(args => args.Result.Select(q => new Client.Qualification()
+                    {
+                        Code = q.Code,
+                        DisplayText = q.DisplayText
+                    })));
+            _svc.GetQualificationsAsync(credentials, request);
             return res;
         }
     }

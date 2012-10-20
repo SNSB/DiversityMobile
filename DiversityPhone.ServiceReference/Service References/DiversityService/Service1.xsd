@@ -72,6 +72,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Repository" nillable="true" type="tns:Repository" />
+  <xs:complexType name="ArrayOfQualification">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Qualification" nillable="true" type="tns:Qualification" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQualification" nillable="true" type="tns:ArrayOfQualification" />
+  <xs:complexType name="Qualification">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Qualification" nillable="true" type="tns:Qualification" />
   <xs:complexType name="ArrayOfProject">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Project" nillable="true" type="tns:Project" />
@@ -205,6 +218,7 @@
       <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="OnlyObserved" type="xs:boolean" />
       <xs:element minOccurs="0" name="OrderCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Qualification" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="RelatedUnitID" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="RelationType" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SpecimenID" type="xs:int" />

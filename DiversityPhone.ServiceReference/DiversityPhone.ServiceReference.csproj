@@ -129,6 +129,7 @@
     <Compile Include="Model\MediaType.cs" />
     <Compile Include="Model\Property.cs" />
     <Compile Include="Model\PropertyName.cs" />
+    <Compile Include="Model\Qualification.cs" />
     <Compile Include="Model\QueryOperations.cs" />
     <Compile Include="Model\ReferrerType.cs" />
     <Compile Include="Model\Specimen.cs">
@@ -206,6 +207,9 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Qualification.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -221,15 +225,21 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\Service1.disco" />
+    <None Include="Service References\DiversityService\configuration91.svcinfo" />
+    <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\configuration91.svcinfo" />
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="ServiceReferences.ClientConfig" />
+    <None Include="Service References\DiversityService\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Service12.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -238,18 +248,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DiversityService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\DiversityService\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\DiversityService\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

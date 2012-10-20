@@ -1,6 +1,4 @@
-﻿<#@ template hostspecific="True" debug="True" #>
-<#@ output extension="cs" #>
-<#@ assembly name="System.Core" #>
+﻿<#@ assembly name="System.Core" #>
 <#@ import namespace="System.Linq" #>
 <#+ 
 	[Flags]

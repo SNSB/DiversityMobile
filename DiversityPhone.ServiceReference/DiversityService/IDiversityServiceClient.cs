@@ -23,6 +23,7 @@ namespace DiversityPhone.Services
 
         IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, Svc.UserCredentials login);
 
+        IObservable<IEnumerable<Qualification>> GetQualifications(Svc.UserCredentials credentials);
         #endregion
         #region Upload
         IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
@@ -46,5 +47,7 @@ namespace DiversityPhone.Services
 
 
 
+
+        
     }
 }

@@ -25,9 +25,7 @@ namespace DiversityPhone.Model
 <# Row("bool", "OnlyObserved"); #>    
 <# Row("string", "TaxonomicGroup"); #>
 <# Row("string", "RelationType"); #>
-<# Row("string", "ColonisedSubstratePart"); #>
-<# Row("string", "LifeStage"); #>
-<# Row("string", "Gender"); #>
+<# Row("string", "Qualification"); #>
 <# Row("string", "WorkingName"); #>
 <# Row("string", "IdentificationUri"); #>
 <# Row("DateTime", "AnalysisDate"); #>
@@ -43,8 +41,7 @@ namespace DiversityPhone.Model
 <# Row("int?", "DiversityCollectionRelatedUnitID", RowKind.Nullable); #>   
 		public IdentificationUnit()
         {
-            this.ModificationState = ModificationState.New;
-            this.LogUpdatedWhen = DateTime.Now;
+            this.ModificationState = ModificationState.New;            
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
@@ -87,13 +84,14 @@ namespace DiversityPhone.Model
             export.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
             export.Altitude = iu.Altitude;
             export.AnalysisDate = iu.AnalysisDate;
-            export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
+            //export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
             //export.FamilyCache=iu. Is not supported on clientModel
-            export.Gender = iu.Gender;
+            //export.Gender = iu.Gender;
             export.IdentificationUri = iu.IdentificationUri;
             export.LastIdentificationCache = iu.WorkingName;
+			export.Qualification = iu.Qualification;
             export.Latitude = iu.Latitude;
-            export.LifeStage = iu.LifeStage;            
+            //export.LifeStage = iu.LifeStage;            
             export.Longitude = iu.Longitude;
             export.OnlyObserved = iu.OnlyObserved;
             //export.OrderCache=iu.Is not supported on clientModel

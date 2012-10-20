@@ -114,50 +114,18 @@ namespace DiversityPhone.Model
 			}
 		}
 				
-		private string _ColonisedSubstratePart;
+		private string _Qualification;
 		[Column]
-		public string ColonisedSubstratePart
+		public string Qualification
 		{
-			get { return _ColonisedSubstratePart; }
+			get { return _Qualification; }
 			set 
 			{
-				if (_ColonisedSubstratePart != value)
+				if (_Qualification != value)
 				{
-					this.raisePropertyChanging("ColonisedSubstratePart");
-					_ColonisedSubstratePart = value;
-					this.raisePropertyChanged("ColonisedSubstratePart");
-				}  
-			}
-		}
-				
-		private string _LifeStage;
-		[Column]
-		public string LifeStage
-		{
-			get { return _LifeStage; }
-			set 
-			{
-				if (_LifeStage != value)
-				{
-					this.raisePropertyChanging("LifeStage");
-					_LifeStage = value;
-					this.raisePropertyChanged("LifeStage");
-				}  
-			}
-		}
-				
-		private string _Gender;
-		[Column]
-		public string Gender
-		{
-			get { return _Gender; }
-			set 
-			{
-				if (_Gender != value)
-				{
-					this.raisePropertyChanging("Gender");
-					_Gender = value;
-					this.raisePropertyChanged("Gender");
+					this.raisePropertyChanging("Qualification");
+					_Qualification = value;
+					this.raisePropertyChanged("Qualification");
 				}  
 			}
 		}
@@ -332,7 +300,7 @@ namespace DiversityPhone.Model
 		   
 		public IdentificationUnit()
         {
-            this.ModificationState = ModificationState.New;
+            this.ModificationState = ModificationState.New;            
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
@@ -375,13 +343,14 @@ namespace DiversityPhone.Model
             export.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
             export.Altitude = iu.Altitude;
             export.AnalysisDate = iu.AnalysisDate;
-            export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
+            //export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
             //export.FamilyCache=iu. Is not supported on clientModel
-            export.Gender = iu.Gender;
+            //export.Gender = iu.Gender;
             export.IdentificationUri = iu.IdentificationUri;
             export.LastIdentificationCache = iu.WorkingName;
+			export.Qualification = iu.Qualification;
             export.Latitude = iu.Latitude;
-            export.LifeStage = iu.LifeStage;            
+            //export.LifeStage = iu.LifeStage;            
             export.Longitude = iu.Longitude;
             export.OnlyObserved = iu.OnlyObserved;
             //export.OrderCache=iu.Is not supported on clientModel
