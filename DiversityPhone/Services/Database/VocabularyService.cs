@@ -221,6 +221,28 @@ namespace DiversityPhone.Services
         }
         #endregion
 
+        public IEnumerable<Qualification> getQualifications()
+        {
+            return enumerateQuery(ctx => ctx.Qualifications);
+        }
+
+        public void addQualifications(IEnumerable<Qualification> qualis)
+        {
+            withDataContext(ctx =>
+                {
+                    ctx.Qualifications.InsertAllOnSubmit(qualis);
+                    try
+                    {
+                        ctx.SubmitChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debugger.Break();
+                    }
+                });
+        }
+
+
         private void withDataContext(Action<VocabularyDataContext> operation)
         {
             using (var ctx = new VocabularyDataContext())
@@ -257,7 +279,7 @@ namespace DiversityPhone.Services
                 return operation(ctx).SingleOrDefault();
             }
         }
-
+        
         private class VocabularyDataContext : DataContext
         {
             private static string connStr = "isostore:/vocabularyDB.sdf";
@@ -274,14 +296,11 @@ namespace DiversityPhone.Services
             public Table<AnalysisTaxonomicGroup> AnalysisTaxonomicGroups;
             public Table<Term> Terms;
 
-            //Alle PropertyNames werden in derslben Tabelle gespeichert, da die Gesamtzahl in Vergleich zu TaxonNames gering ist.
+            //Alle PropertyNames werden in derselben Tabelle gespeichert, da die Gesamtzahl in Vergleich zu TaxonNames gering ist.
             public Table<PropertyName> PropertyNames;
             public Table<Property> Properties;
+
+            public Table<Qualification> Qualifications;
         }
-
-
-
-
-       
     }
 }

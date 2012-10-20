@@ -27,5 +27,8 @@ namespace DiversityPhone.Services
 
         IEnumerable<Property> getAllProperties();        
         void addProperties(IEnumerable<Property> props);
+
+        IEnumerable<Qualification> getQualifications();
+        void addQualifications(IEnumerable<Qualification> qualis);
     }
 }

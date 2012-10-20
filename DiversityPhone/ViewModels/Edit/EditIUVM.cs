@@ -81,6 +81,8 @@ namespace DiversityPhone.ViewModels
 
         public ListSelectionHelper<TaxonName> Identification { get; private set; }
 
+        public ListSelectionHelper<Qualification> Qualifications { get; private set; }
+
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
         
@@ -98,6 +100,7 @@ namespace DiversityPhone.ViewModels
             TaxonomicGroup = new ListSelectionHelper<Term>();
             RelationshipType = new ListSelectionHelper<Term>();
             Identification = new ListSelectionHelper<TaxonName>();
+            Qualifications = new ListSelectionHelper<Model.Qualification>();
 
             Observable.CombineLatest(
                 CurrentModelObservable.Where(m => m.IsNew()),
@@ -176,11 +179,14 @@ namespace DiversityPhone.ViewModels
                 })
             .Subscribe(Identification);
 
-
             ActivationObservable                
                 .Take(1)
                 .Select(_ => Vocabulary.getTerms(Svc.TermList.TaxonomicGroups))                
                 .Subscribe(TaxonomicGroup);
+
+            this.FirstActivation()
+                .Select(_ => Vocabulary.getQualifications().ToList() as IList<Qualification>)
+                .Subscribe(Qualifications);
 
             _IsToplevel
                 .Where(isToplevel => !isToplevel)
@@ -210,6 +216,13 @@ namespace DiversityPhone.ViewModels
                 (rels,m) => rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
                 .Where(x => x != null)
                 .BindTo(RelationshipType, x => x.SelectedItem);
+
+            Qualifications.ItemsObservable
+                .Where(x => x != null)
+                .CombineLatest(CurrentModelObservable.Where(m => m.Qualification != null),
+                (qualis, m) => qualis.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
+                .Where(x => x != null)
+                .BindTo(Qualifications, x => x.SelectedItem);
             #endregion          
 
             Messenger.RegisterMessageSource(
@@ -245,6 +258,7 @@ namespace DiversityPhone.ViewModels
             Current.Model.OnlyObserved = this.OnlyObserved;
             Current.Model.IdentificationUri = Identification.SelectedItem.URI;
             Current.Model.RelationType = (RelationshipType.SelectedItem != null) ? RelationshipType.SelectedItem.Code : null;
+            Current.Model.Qualification = (Qualifications.SelectedItem != null) ? Qualifications.SelectedItem.Code : null;
         }
     }
 }

@@ -39,7 +39,8 @@ namespace DiversityPhone.Services.BackgroundTasks
         private const string STATE_VOCABULARY_DONE = "2";
         private const string STATE_ANALYSES_DONE = "3";
         private const string STATE_RESULTS_DONE = "4";
-        private const string STATE_ALL_DONE = "5";
+        private const string STATE_QUALIFICATIONS_DONE = "5";
+        private const string STATE_ALL_DONE = "6";
 
         private bool stepFinished;
 
@@ -126,6 +127,13 @@ namespace DiversityPhone.Services.BackgroundTasks
                             CurrentStep = STATE_RESULTS_DONE;
                             break;
                         case STATE_RESULTS_DONE:
+                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingQualifications);
+                            var qualifications = retryOnException(() => Repository.GetQualifications(credentials).First());
+                            Vocabulary.addQualifications(qualifications);
+
+                            CurrentStep = STATE_QUALIFICATIONS_DONE;
+                            break;
+                        case STATE_QUALIFICATIONS_DONE:
                             reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingProperties);
                             var properties = retryOnException(() => Repository.GetPropertiesForUser(credentials).First());
                             Vocabulary.addProperties(properties);

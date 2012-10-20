@@ -19,6 +19,7 @@ namespace DiversityPhone.Services
                 this.CreateDatabase();
         }
 
+        
         public Table<Map> Maps; 
     }
 

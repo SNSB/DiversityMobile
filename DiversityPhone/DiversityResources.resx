@@ -168,6 +168,21 @@
   <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
     <value>Identification</value>
   </data>
+  <data name="IdentificationUnit_Header_NameQuery" xml:space="preserve">
+    <value>Name Query</value>
+  </data>
+  <data name="IdentificationUnit_Header_OnlyObserved" xml:space="preserve">
+    <value>Only observed</value>
+  </data>
+  <data name="IdentificationUnit_Header_Qualification" xml:space="preserve">
+    <value>Qualification</value>
+  </data>
+  <data name="IdentificationUnit_Header_RelationshipType" xml:space="preserve">
+    <value>Relationship Type</value>
+  </data>
+  <data name="IdentificationUnit_Header_TaxonomicGroup" xml:space="preserve">
+    <value>Taxonomic Group</value>
+  </data>
   <data name="IdentificationUnit_Info_NoAnalyses" xml:space="preserve">
     <value>No Analyses available.</value>
   </data>
@@ -194,6 +209,9 @@
   </data>
   <data name="RefreshVocabularyTask_State_LoadingProperties" xml:space="preserve">
     <value>Loading Event Properties</value>
+  </data>
+  <data name="RefreshVocabularyTask_State_LoadingQualifications" xml:space="preserve">
+    <value>Loading Qualifications</value>
   </data>
   <data name="RefreshVocabularyTask_State_LoadingResults" xml:space="preserve">
     <value>Loading Analysis Results</value>
