@@ -202,6 +202,7 @@ namespace DiversityPhone.Services
         {
             return enumerateQuery(ctx => from name in ctx.PropertyNames
                                          where name.PropertyID == propertyID
+                                         orderby name.DisplayText ascending
                                          select name);
         }
 

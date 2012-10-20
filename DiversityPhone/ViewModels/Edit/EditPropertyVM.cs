@@ -15,7 +15,8 @@ using System.Reactive.Subjects;
 namespace DiversityPhone.ViewModels
 {
     public class EditPropertyVM : EditPageVMBase<EventProperty>
-    {
+    {        
+
         private ObservableAsyncMRUCache<int, IReactiveCollection<PropertyName>> _PropertyNamesCache;
         private ReactiveCollection<Property> _Properties;
         private BehaviorSubject<IEnumerable<int>> _UsedProperties;

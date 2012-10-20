@@ -9,10 +9,12 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Data.Linq.Mapping;
+using Microsoft.Phone.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {
-     [Table]
+    [Table]
+    [Index(Columns="DisplayText", IsUnique=false, Name="text_idx")]
     public class PropertyName
     {
          //Read-Only

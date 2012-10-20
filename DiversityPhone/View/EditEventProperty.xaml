@@ -40,13 +40,10 @@
                                 ItemsSource="{Binding Properties.Items}"
                                 SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"
                                 />
-            <toolkit:ListPicker Name="LP_Value" IsEnabled="{Binding IsEditable}"
-                                Header="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}"
-                                FullModeHeader="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}"
-                                ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
+            <toolkit:LongListSelector Name="LP_Value" IsEnabled="{Binding IsEditable}"                                
+                                ItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
                                 ItemsSource="{Binding Values.Items}"
-                                SelectedIndex="{Binding Values.SelectedIndex, Mode=TwoWay}"
+                                IsFlatList="True"
                                 />
         </StackPanel>
     </Grid>
