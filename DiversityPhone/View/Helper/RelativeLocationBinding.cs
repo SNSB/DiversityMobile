@@ -13,7 +13,7 @@ using System.Reactive.Disposables;
 
 namespace DiversityPhone.View
 {
-    public class RelativeLocationBinding : IDisposable
+    public sealed class RelativeLocationBinding : IDisposable
     {
         private Point? _RelativeLocation = null;
         public Point? RelativeLocation 
@@ -82,6 +82,6 @@ namespace DiversityPhone.View
         public void Dispose()
         {
             subscription.Dispose();
-        }
+        }        
     }
 }

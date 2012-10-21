@@ -129,9 +129,9 @@ namespace DiversityPhone.Services.BackgroundTasks
                 }
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {                
-                throw ex ;
+                throw;
             }
         }
 

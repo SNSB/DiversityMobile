@@ -40,9 +40,7 @@ namespace DiversityPhone.Services.BackgroundTasks
         private const string STATE_ANALYSES_DONE = "3";
         private const string STATE_RESULTS_DONE = "4";
         private const string STATE_QUALIFICATIONS_DONE = "5";
-        private const string STATE_ALL_DONE = "6";
-
-        private bool stepFinished;
+        private const string STATE_ALL_DONE = "6";        
 
         private string CurrentStep
         {

@@ -55,8 +55,37 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;       
+
+        private bool _IsBusy;
+
+        public bool IsBusy
+        {
+            get
+            {
+                return _IsBusy;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value);
+            }
+        }
+
+        private int _DownloadCount;
+
+        public int DownloadCount
+        {
+            get { return _DownloadCount; }
+            set 
+            {
+                _DownloadCount = value;
+                if (_DownloadCount == 0)
+                    IsBusy = false;
+                else
+                    IsBusy = true;
+            }
+        }
+
+             
         
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
@@ -99,15 +128,17 @@ namespace DiversityPhone.ViewModels
 
                                 DownloadTaxonList(taxonlist)
                                     .ObserveOnDispatcher()
-                                    .Subscribe(_ => { },
+                                    .Subscribe(_ => { DownloadCount++; },
                                         _ => //Download Failed
                                         {
                                             LocalLists.Remove(taxonlist);
                                             taxonlist.IsDownloading = false;
+                                            DownloadCount--;
                                         },
                                         () => //Download Succeeded
                                         {
                                             taxonlist.IsDownloading = false;
+                                            DownloadCount--;
                                         });
                             }
                             else

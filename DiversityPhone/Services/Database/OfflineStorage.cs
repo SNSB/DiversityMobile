@@ -206,14 +206,9 @@ namespace DiversityPhone.Services
 
         #region Event
 
-        public IList<Event> getAllEvents()
+        public IEnumerable<Event> getAllEvents()
         {
-            return cachedQuery(Event.Operations,
-            ctx =>
-                from ev in ctx.Events                
-                select ev
-                );
-
+            return enumerateQuery(ctx => ctx.Events);
         }
 
 
@@ -680,7 +675,7 @@ namespace DiversityPhone.Services
                         {
                             ctx.SubmitChanges();                            
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             System.Diagnostics.Debugger.Break();
                             
@@ -704,7 +699,7 @@ namespace DiversityPhone.Services
                                     {
                                         ctx2.SubmitChanges();
                                     }
-                                    catch (Exception ex)
+                                    catch (Exception)
                                     {
                                         System.Diagnostics.Debugger.Break();
                                     }
@@ -730,7 +725,7 @@ namespace DiversityPhone.Services
                             {
                                 ctx.SubmitChanges();
                             }
-                            catch (Exception ex)
+                            catch (Exception)
                             {
                                 System.Diagnostics.Debugger.Break();
                                 //TODO Log
@@ -954,7 +949,7 @@ namespace DiversityPhone.Services
 
         public void updateEventKey(int clientKey, int serverKey)
         {
-            using (DiversityDataContext ctx = new DiversityDataContext())
+            using (var ctx = new DiversityDataContext())
             {
                 var savedEvents =
                     from ev in ctx.Events
@@ -1018,7 +1013,7 @@ namespace DiversityPhone.Services
 
         public void updateIUKey(int clientKey, int serverKey) 
         {
-            using (DiversityDataContext ctx = new DiversityDataContext())
+            using (var ctx = new DiversityDataContext())
             {
                 var savedIUs =
                     from iu in ctx.IdentificationUnits

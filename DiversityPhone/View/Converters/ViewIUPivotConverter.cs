@@ -56,8 +56,7 @@ namespace DiversityPhone.View
                     return ViewIUVM.Pivots.Multimedia;
                 default:
                     System.Diagnostics.Debugger.Break();
-                    return ViewIUVM.Pivots.Subunits;
-                    break;
+                    return ViewIUVM.Pivots.Subunits;                    
             }  
         }
     }

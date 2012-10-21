@@ -217,7 +217,7 @@ namespace DiversityService
 
         public static DB.Identification ToIdentification(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
-            if (iu.DiversityCollectionUnitID == null || iu.DiversityCollectionSpecimenID == null)
+            if (iu.DiversityCollectionSpecimenID == null)
                 throw new KeyNotFoundException();
             DB.Identification export = new DB.Identification();
             export.CollectionSpecimenID = (int) iu.DiversityCollectionSpecimenID;
@@ -247,7 +247,7 @@ namespace DiversityService
 
         public static DB.IdentificationUnitGeoAnalysis ToGeoAnalysis(this Model.IdentificationUnit iu, Model.UserCredentials profile)
         {
-            if (iu.DiversityCollectionUnitID == null || iu.DiversityCollectionSpecimenID == null)
+            if (iu.DiversityCollectionSpecimenID == null)
                 throw new KeyNotFoundException();
             DB.IdentificationUnitGeoAnalysis export=new DB.IdentificationUnitGeoAnalysis();
             export.AnalysisDate = iu.AnalysisDate;

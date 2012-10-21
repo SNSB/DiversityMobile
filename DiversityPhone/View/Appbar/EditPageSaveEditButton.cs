@@ -17,7 +17,7 @@ using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View.Appbar
 {
-    public class EditPageSaveEditButton : IDisposable
+    public sealed class EditPageSaveEditButton : IDisposable
     {
         private readonly Uri SAVE_IMAGE = new Uri("/Images/appbar.save.rest.png", UriKind.Relative);
         private readonly Uri EDIT_IMAGE = new Uri("/Images/appbar.edit.rest.png", UriKind.Relative);

@@ -59,7 +59,7 @@ namespace DiversityPhone.View
                 default:
                     System.Diagnostics.Debugger.Break();
                     return ViewEVVM.Pivots.Specimen;
-                    break;
+                    
             }  
         }
     }

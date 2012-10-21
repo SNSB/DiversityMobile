@@ -101,13 +101,12 @@ namespace DiversityPhone.ViewModels.Utility
                             search = null;
                         }
                     });
-            collectModifications.RegisterAsyncObservable(_ =>
-                {
-                    var res = new ReplaySubject<ModifiedEventVM>();
-                    new Task(() => collectModificationsImpl(res, search.Token)).Start();
-                    return res;
-                })
-               .Subscribe(ev => SyncUnits.Add(ev));
+            collectModifications.RegisterAsyncObservable(_ =>                                    
+                        collectModificationsImpl()
+                        .ToObservable(Scheduler.ThreadPool)
+                        )
+                        .ObserveOnDispatcher()
+                        .Subscribe(ev => SyncUnits.Add(ev));
             Multimedia = new ReactiveCollection<MultimediaVM>();
             //Needs to be cleared?
             this.ObservableForProperty(x => x.CurrentPivot)
@@ -199,7 +198,7 @@ namespace DiversityPhone.ViewModels.Utility
             public int Increment { get; set; }
         }
 
-        private void collectModificationsImpl(ISubject<ModifiedEventVM> outputSubject, CancellationToken cancellation)
+        private IEnumerable<ModifiedEventVM> collectModificationsImpl()
         {
             var events = Storage.getAllEvents();
 
@@ -219,7 +218,7 @@ namespace DiversityPhone.ViewModels.Utility
                 {
                     var series = Storage.getEventSeriesByID(ev.SeriesID);
 
-                    outputSubject.OnNext(new ModifiedEventVM(ev,series));
+                    yield return new ModifiedEventVM(ev,series);
                 }                    
             }            
         }

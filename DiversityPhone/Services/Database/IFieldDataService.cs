@@ -27,7 +27,7 @@ using System;
         void deleteGeoPoint(GeoPointForSeries gp);
         String convertGeoPointsToString(int seriesID);
 
-        IList<Event> getAllEvents();        
+        IEnumerable<Event> getAllEvents();        
         IEnumerable<Event> getEventsForSeries(EventSeries es);        
         Event getEventByID(int id);
         void addOrUpdateEvent(Event ev);

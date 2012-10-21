@@ -70,6 +70,12 @@ namespace DiversityPhone.View.Appbar
 
         public void Dispose()
         {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected void Dispose(bool disposing)
+        {
             _command_handle.Dispose();
             Button = null;
         }

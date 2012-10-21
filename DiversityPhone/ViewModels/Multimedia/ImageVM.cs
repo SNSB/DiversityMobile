@@ -68,7 +68,7 @@ namespace DiversityPhone.ViewModels
                         {
                             capture.Show();
                         }
-                        catch (InvalidOperationException ex)
+                        catch (InvalidOperationException)
                         {
                             return Observable.Empty<PhotoResult>();
                         }

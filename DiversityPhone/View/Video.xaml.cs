@@ -113,7 +113,7 @@ namespace DiversityPhone.View
             }
 
             // If recording fails, display an error.
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Recording error");
             }
@@ -137,7 +137,7 @@ namespace DiversityPhone.View
                 }
                 VM.State = PlayStates.Idle;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 MessageBox.Show("Recording error");
                 VM.State = PlayStates.Idle;
@@ -160,7 +160,7 @@ namespace DiversityPhone.View
                     captureSource.Start();
                 }
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 MessageBox.Show("Preview Error");
             }

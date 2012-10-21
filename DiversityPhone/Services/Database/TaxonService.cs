@@ -46,7 +46,7 @@ namespace DiversityPhone.Services
                 {
                     taxctx.SubmitChanges();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     System.Diagnostics.Debugger.Break();
                     //TODO Log

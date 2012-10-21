@@ -42,12 +42,10 @@ namespace DiversityPhone.Services
 
                 using (IsolatedStorageFileStream isfs = isf.OpenFile(mmo.Uri, FileMode.Open, FileAccess.Read))
                 {
-
                     // Allocate an array large enough for the entire file
                     data = new byte[isfs.Length];
                     // Read the entire file and then close it
-                    isfs.Read(data, 0, data.Length);
-                    isfs.Close();
+                    isfs.Read(data, 0, data.Length);                    
                 }
 
             }

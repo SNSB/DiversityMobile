@@ -262,7 +262,7 @@ namespace DiversityService
                 }
                 return true;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return false;
             }
@@ -313,14 +313,14 @@ namespace DiversityService
                                     this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
                             }
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
-                            String s = e.Message;
+                            
                         }
                     }
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                    
                     if (!(hierarchy.Event != null && hierarchy.Event.DiversityCollectionEventID > Int32.MinValue))
@@ -417,7 +417,7 @@ namespace DiversityService
                     String geoString = null;
                     try
                     {
-                        if (iu.Latitude != null && iu.Longitude != null && iu.DiversityCollectionUnitID != null)
+                        if (iu.Latitude != null && iu.Longitude != null)
                         {
                             geoString = GlobalUtility.GeographySerialzier.SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
                             this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int)iu.DiversityCollectionUnitID, geoString, login);

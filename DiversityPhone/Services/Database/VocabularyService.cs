@@ -86,7 +86,7 @@ namespace DiversityPhone.Services
                 {
                     ctx.SubmitChanges();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     System.Diagnostics.Debugger.Break();
                 }
@@ -115,7 +115,7 @@ namespace DiversityPhone.Services
                  {
                      ctx.SubmitChanges();
                  }
-                 catch (Exception ex)
+                 catch (Exception)
                  {
                      System.Diagnostics.Debugger.Break();
                      //TODO Log
@@ -188,7 +188,7 @@ namespace DiversityPhone.Services
                             ctx.SubmitChanges();
                         	                
 	                }
-	                catch (Exception ex)
+	                catch (Exception)
 	                {
 		                
 		                throw;
@@ -235,7 +235,7 @@ namespace DiversityPhone.Services
                     {
                         ctx.SubmitChanges();
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         System.Diagnostics.Debugger.Break();
                     }
