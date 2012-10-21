@@ -40,11 +40,18 @@ namespace DiversityPhone.View
         public NewVideo()
         {
             InitializeComponent();
-            initializeVideoRecorder();
+           
             VM.Record.Subscribe(_ => record());
             VM.Play.Subscribe(_ => play());
             VM.Stop.Subscribe(_ => stop());
             _appbar = new NewVideoAppBarUpdater(this.ApplicationBar, VM);          
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            initializeVideoRecorder();
+
+            base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
