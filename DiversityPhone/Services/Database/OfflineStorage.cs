@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.Messages;
-using DiversityPhone.Common;
 using System.Data.Linq;
 using System.Text;
 using System.Linq.Expressions;
@@ -266,7 +265,7 @@ namespace DiversityPhone.Services
         public void deleteEvent(Event toDeleteEv)
         {
 
-            IList<Specimen> attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
+            var attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
             foreach (Specimen spec in attachedSpecimen)
             {
                 this.deleteSpecimen(spec);
@@ -327,27 +326,19 @@ namespace DiversityPhone.Services
 
         #region Specimen        
         
-        public IList<Specimen> getAllSpecimen()
-        {
-            
-            return cachedQuery(Specimen.Operations,
-            ctx =>            
-				from spec in ctx.Specimen
-                select spec
-            );
+        public IEnumerable<Specimen> getAllSpecimen()
+        {   
+            return enumerateQuery(ctx => ctx.Specimen);
         }
-        
 
-        public IList<Specimen> getSpecimenForEvent(Event ev)
+
+        public IEnumerable<Specimen> getSpecimenForEvent(Event ev)
         {
-            IList<Specimen> specList= cachedQuery(Specimen.Operations,
-            ctx =>
+            return enumerateQuery(ctx =>
                 from spec in ctx.Specimen                 
                 where spec.EventID == ev.EventID
                 select spec
                 );
-           
-            return specList;
         }
       
 
@@ -359,10 +350,9 @@ namespace DiversityPhone.Services
                        select spec);
         }
 
-        public IList<Specimen> getSpecimenWithoutEvent()
+        public IEnumerable<Specimen> getSpecimenWithoutEvent()
         {
-          return cachedQuery(Specimen.Operations,
-            ctx =>
+          return enumerateQuery(ctx =>
                 from spec in ctx.Specimen
                 where spec.EventID == null 
                 select spec
@@ -387,7 +377,7 @@ namespace DiversityPhone.Services
             {
                 this.deleteMMO(mmo);
             }
-            IList<IdentificationUnit> attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec.SpecimenID);
+            var attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec.SpecimenID);
             foreach (IdentificationUnit topIU in attachedTopLevelIU)
                 this.deleteIU(topIU);
             deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
@@ -409,10 +399,9 @@ namespace DiversityPhone.Services
                     );
         }
 
-        public IList<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID)
+        public IEnumerable<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID)
         {
-            return cachedQuery(IdentificationUnit.Operations,
-            ctx =>
+            return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
                 where iu.SpecimenID == specimenID && iu.RelatedUnitID == null 
                 select iu
@@ -420,10 +409,9 @@ namespace DiversityPhone.Services
         }
 
 
-        public IList<IdentificationUnit> getSubUnits(IdentificationUnit unit)
+        public IEnumerable<IdentificationUnit> getSubUnits(IdentificationUnit unit)
         {
-            return cachedQuery(IdentificationUnit.Operations,
-            ctx =>
+            return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
                 where iu.RelatedUnitID == unit.UnitID 
                 select iu
@@ -465,7 +453,7 @@ namespace DiversityPhone.Services
             {
                 this.deleteMMO(mmo);
             }
-            IList<IdentificationUnit> attachedUnits = this.getSubUnits(toDeleteIU);
+            var attachedUnits = this.getSubUnits(toDeleteIU);
             foreach (IdentificationUnit iu in attachedUnits)
                 this.deleteIU(iu);
             IList<IdentificationUnitAnalysis> attachedAnalyses = this.getIUANForIU(toDeleteIU);
@@ -753,12 +741,7 @@ namespace DiversityPhone.Services
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
-
-        private IList<T> cachedQuery<T>(IQueryOperations<T> operations, QueryProvider<T> queryProvider) where T : class
-        {
-            return new RotatingCache<T>(new QueryCacheSource<T>(operations, queryProvider));
-        }
-
+       
         private IList<T> uncachedQuery<T>(QueryProvider<T> query)
         {
             IList<T> result = null;
@@ -778,53 +761,7 @@ namespace DiversityPhone.Services
                     yield return res;
                 }
             }
-        }
-
-        private class QueryCacheSource<T> : ICacheSource<T>
-        {
-            IQueryOperations<T> operations;
-            QueryProvider<T> queryProvider;
-
-            public QueryCacheSource(IQueryOperations<T> operations, QueryProvider<T> queryProvider)
-            {
-                this.operations = operations;
-                this.queryProvider = queryProvider;
-            }
-
-            public IEnumerable<T> retrieveItems(int count, int offset)
-            {
-                using (var ctx = new DiversityDataContext())
-                {
-                    return queryProvider(ctx)                        
-                        .Skip(offset)
-                        .Take(count)
-                        .ToList();
-                }
-            }
-
-            public int Count
-            {
-                get
-                {
-                    using (var ctx = new DiversityDataContext())
-                    {
-                        return queryProvider(ctx)
-                            .Count();
-                    }
-                }
-            }
-
-
-            public int IndexOf(T item)
-            {
-                using (var ctx = new DiversityDataContext())
-                {
-                    return operations.WhereKeySmallerThan(queryProvider(ctx), item)
-                        .Count();
-                }
-            }
-
-        }
+        }      
 
         private delegate Table<T> TableProvider<T>(DiversityDataContext ctx) where T : class;
 

@@ -12,7 +12,7 @@ using System.Windows.Shapes;
 
 namespace GlobalUtility
 {
-    public static class GeographySerialzier
+    public static class GeographySerializer
     {
         public static String SerializeGeography(double latitude, double longitude, double? altitude)
         {

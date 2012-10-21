@@ -659,10 +659,6 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiversityPhone.Common\DiversityPhone.Common.csproj">
-      <Project>{6EF1160E-5902-4E9C-A471-13DED3718AB5}</Project>
-      <Name>DiversityPhone.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj">
       <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>
       <Name>DiversityPhone.ServiceReference</Name>

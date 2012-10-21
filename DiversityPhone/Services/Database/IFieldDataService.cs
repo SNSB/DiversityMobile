@@ -37,16 +37,16 @@ using System;
         EventProperty getPropertyByID(int eventId, int propertyId);
         void addOrUpdateCollectionEventProperty(EventProperty cep);
 
-        IList<Specimen> getAllSpecimen();
-        IList<Specimen> getSpecimenForEvent(Event ev);
-        IList<Specimen> getSpecimenWithoutEvent();
+        IEnumerable<Specimen> getAllSpecimen();
+        IEnumerable<Specimen> getSpecimenForEvent(Event ev);
+        IEnumerable<Specimen> getSpecimenWithoutEvent();
         Specimen getSpecimenByID(int id);
         void addOrUpdateSpecimen(Specimen spec);
         void updateSpecimenKey(int oldSSpecimenKey, int newSpecimenKey);
 
         IList<IdentificationUnit> getIUForSpecimen(int specimenID);
-        IList<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID);
-        IList<IdentificationUnit> getSubUnits(IdentificationUnit iu);
+        IEnumerable<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID);
+        IEnumerable<IdentificationUnit> getSubUnits(IdentificationUnit iu);
         IdentificationUnit getIdentificationUnitByID(int id);
         void addOrUpdateIUnit(IdentificationUnit iu);
         void updateIUKey(int oldIUKey, int newIUKey);

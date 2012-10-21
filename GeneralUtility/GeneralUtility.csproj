@@ -49,7 +49,7 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GeographySerialzier.cs" />
+    <Compile Include="GeographySerializer.cs" />
     <Compile Include="ObservableConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -307,7 +307,7 @@ namespace DiversityService
                         {
                             if (ev.Latitude != null && ev.Longitude != null)
                             {
-                                geoString = GlobalUtility.GeographySerialzier.SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
+                                geoString = GlobalUtility.GeographySerializer.SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
                                 this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 8, geoString, login);
                                 if (ev.Altitude != null)
                                     this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
@@ -419,7 +419,7 @@ namespace DiversityService
                     {
                         if (iu.Latitude != null && iu.Longitude != null)
                         {
-                            geoString = GlobalUtility.GeographySerialzier.SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
+                            geoString = GlobalUtility.GeographySerializer.SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
                             this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int)iu.DiversityCollectionUnitID, geoString, login);
                         }
                     }
