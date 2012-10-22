@@ -220,7 +220,7 @@ namespace DiversityPhone.ViewModels
             Qualifications.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.Qualification != null),
-                (qualis, m) => qualis.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
+                (qualis, m) => qualis.FirstOrDefault(q => q.Code == Current.Model.Qualification))
                 .Where(x => x != null)
                 .BindTo(Qualifications, x => x.SelectedItem);
             #endregion          
