@@ -86,8 +86,8 @@ namespace DiversityPhone.ViewModels
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
             
             
-            Properties = new ListSelectionHelper<Property>();  
-            CurrentModelObservable
+            Properties = new ListSelectionHelper<Property>();
+            ModelByVisitObservable
                 .Select(evprop => 
                     {
                         var isNew = evprop.IsNew();

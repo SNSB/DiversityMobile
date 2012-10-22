@@ -25,8 +25,16 @@ namespace DiversityPhone.ViewModels
         /// </summary>
         protected IObservable<IElementVM<T>> CurrentObservable { get; private set; }
 
-
+        /// <summary>
+        /// Fires whenever the current model Instance changes.
+        /// Doesn't fire, of the page was deactivated and activated again, with the same model instance
+        /// </summary>
         protected IObservable<T> CurrentModelObservable { get; private set; }
+
+        /// <summary>
+        /// Fires on every Page Activation, providing the current model Instance even if it hasn't changed from last time
+        /// </summary>
+        protected IObservable<T> ModelByVisitObservable { get; private set; }
 
         public ElementPageVMBase ()
 	    {    
@@ -41,10 +49,16 @@ namespace DiversityPhone.ViewModels
                 CurrentObservable
                 .SelectMany(vm => vm.ObservableForProperty(x => x.Model).TakeUntil(CurrentObservable))
                 .Value()
-                .Merge(CurrentObservable.Select(vm => vm.Model))
+                .Merge(CurrentObservable.Select(vm => vm.Model))                
                 .Publish();
             CurrentModelObservable = modelObs;
             modelObs.Connect();
+
+            var modelByVisit = this.OnActivation()
+                .Select(_ => Current.Model)
+                .Publish();
+            ModelByVisitObservable = modelByVisit;
+            modelByVisit.Connect();
 
 
             //If the current element has been deleted in the meantime, navigate back.

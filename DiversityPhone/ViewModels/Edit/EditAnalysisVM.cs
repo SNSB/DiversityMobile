@@ -75,7 +75,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Analyses);
 
             Analyses.ItemsObservable.Where(items => items != null)
-                .CombineLatest(CurrentModelObservable, (analyses, iuan) =>
+                .CombineLatest(ModelByVisitObservable, (analyses, iuan) =>
                             analyses
                             .Where(an => an.AnalysisID == iuan.AnalysisID)
                             .FirstOrDefault())
@@ -97,7 +97,7 @@ namespace DiversityPhone.ViewModels
 
             Results.ItemsObservable
                 .Where(results => results != null)
-                .CombineLatest(CurrentModelObservable, (results, iuan) =>
+                .CombineLatest(ModelByVisitObservable, (results, iuan) =>
                     results
                     .Where(res => res.Result == iuan.AnalysisResult)
                     .FirstOrDefault())
@@ -114,7 +114,7 @@ namespace DiversityPhone.ViewModels
                 .Merge(Analyses.Select(_ => false)), 
                 vm => vm.IsCustomResult);
 
-            CurrentModelObservable                
+            ModelByVisitObservable                
                 .Select(iuan => iuan.AnalysisResult)
                 .Merge(
                     _IsCustomResult

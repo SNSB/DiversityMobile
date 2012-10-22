@@ -72,11 +72,11 @@ namespace DiversityPhone.ViewModels
                 .Select(ev => ev.CollectionDate.ToString()),
                 vm => vm.CollectionDate);
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(ev => ev.LocalityDescription)
                 .BindTo(this, x => x.LocalityDescription);
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(ev => ev.HabitatDescription)
                 .BindTo(this, x => x.HabitatDescription);
 

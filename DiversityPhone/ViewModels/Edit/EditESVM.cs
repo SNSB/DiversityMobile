@@ -64,15 +64,15 @@
         {
             Settings = ioc.Resolve<ISettingsService>();
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(es => es.Description ?? String.Empty)
                 .BindTo(this, x => x.Description);
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(es => es.SeriesCode)
                 .BindTo(this, x => x.SeriesCode);
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(es => es.SeriesEnd)
                 .BindTo(this, x => x.SeriesEnd);
 

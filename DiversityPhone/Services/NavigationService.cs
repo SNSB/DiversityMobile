@@ -18,6 +18,7 @@ namespace DiversityPhone.Services
     {
         private IMessageBus Messenger;        
         private PhoneApplicationFrame _frame;
+        private bool _IsNavigating;
 
         public NavigationService(IMessageBus messenger)
         {
@@ -57,9 +58,9 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s, args) => { if (args.IsNavigationInitiator) NavigationStarted(); };
+            _frame.Navigating += (s, args) => { if (args.IsNavigationInitiator && args.NavigationMode == NavigationMode.Back) NavigationStarted(); };
 
-            _frame.Navigated += (s, args) => { if (args.IsNavigationInitiator) NavigationFinished(); };
+            _frame.Navigated += (s, args) => { if (_IsNavigating) NavigationFinished(); };
         }
 
         void NavigationFinished()
@@ -71,6 +72,8 @@ namespace DiversityPhone.Services
                 var vm = page.DataContext as PageVMBase;
                 vm.Activate();
             }
+
+            _IsNavigating = false;
         }        
         void NavigationStarted()
         {
@@ -80,11 +83,16 @@ namespace DiversityPhone.Services
             {
                 var vm = page.DataContext as PageVMBase;               
                 vm.Deactivate();
-            }           
+            }
+
+            _IsNavigating = true;
         }
 
         private void NavigateToPage(Page p)
         {
+            if (_IsNavigating)
+                return;
+
             string destination = null;
             switch (p)
             {
@@ -164,8 +172,11 @@ namespace DiversityPhone.Services
             if (destination != null && _frame != null)
             {               
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
-                if(destURI != _frame.CurrentSource)
+                if (destURI != _frame.CurrentSource)
+                {
                     _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
+                    NavigationStarted();
+                }
             }
         }       
 

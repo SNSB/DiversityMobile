@@ -136,7 +136,7 @@ namespace DiversityPhone.ViewModels
 
             isObservation
                 .CombineLatest(
-                    CurrentModelObservable
+                    ModelByVisitObservable
                     .Select(m => m.OnlyObserved)
                     .StartWith(false),
                     (isobs, onlyobs) => isobs || onlyobs)
@@ -145,7 +145,7 @@ namespace DiversityPhone.ViewModels
             _IsObservation = this.ObservableToProperty(
                 isObservation, vm => vm.IsObservation);
 
-            CurrentModelObservable
+            ModelByVisitObservable
                 .Select(m => m.WorkingName)
                 .Where(wn => !string.IsNullOrWhiteSpace(wn))
                 .BindTo(this, x => x.QueryString);
@@ -198,28 +198,28 @@ namespace DiversityPhone.ViewModels
             
             Identification.ItemsObservable               
                 .Where(x => x != null)
-                .CombineLatest(CurrentModelObservable.Where(m => m.IdentificationUri != null),
+                .CombineLatest(ModelByVisitObservable.Where(m => m.IdentificationUri != null),
                 (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())                
                 .BindTo(Identification, x => x.SelectedItem);
             
             
             TaxonomicGroup.ItemsObservable                
                 .Where(x => x != null)
-                .CombineLatest(CurrentModelObservable.Where(m => m.TaxonomicGroup != null),
+                .CombineLatest(ModelByVisitObservable.Where(m => m.TaxonomicGroup != null),
                 (tgs,m) => tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup))
                 .BindTo(TaxonomicGroup, x => x.SelectedItem);
 
             
             RelationshipType.ItemsObservable                
                 .Where(x => x != null)
-                .CombineLatest(CurrentModelObservable.Where(m => m.RelationType != null),
+                .CombineLatest(ModelByVisitObservable.Where(m => m.RelationType != null),
                 (rels,m) => rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
                 .Where(x => x != null)
                 .BindTo(RelationshipType, x => x.SelectedItem);
 
             Qualifications.ItemsObservable
                 .Where(x => x != null)
-                .CombineLatest(CurrentModelObservable.Where(m => m.Qualification != null),
+                .CombineLatest(ModelByVisitObservable.Where(m => m.Qualification != null),
                 (qualis, m) => qualis.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
                 .Where(x => x != null)
                 .BindTo(Qualifications, x => x.SelectedItem);
