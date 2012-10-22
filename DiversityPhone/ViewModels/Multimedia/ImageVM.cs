@@ -142,12 +142,11 @@ namespace DiversityPhone.ViewModels
             return newURI;
         }
 
-        private void deleteImageIfExists(string uri)
-        {
-            var previousURI = Current.Model.Uri;
+        private void deleteImageIfExists(string previousURI)
+        {            
             //Create virtual store and file stream. Check for duplicate tempJPEG files.
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (string.IsNullOrWhiteSpace(previousURI) && myStore.FileExists(previousURI))
+            if (!string.IsNullOrWhiteSpace(previousURI) && myStore.FileExists(previousURI))
             {
                 myStore.DeleteFile(previousURI);
             }
