@@ -663,10 +663,6 @@
       <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>
       <Name>DiversityPhone.ServiceReference</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GeneralUtility\GeneralUtility.csproj">
-      <Project>{4FCC7037-A444-4AFD-892B-371383839CBC}</Project>
-      <Name>GeneralUtility</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DiversityResources.resx">

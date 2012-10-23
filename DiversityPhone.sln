@@ -23,8 +23,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.TestClient
 		{99C4E84A-8FE7-456A-BD7C-33561641F204} = {99C4E84A-8FE7-456A-BD7C-33561641F204}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneralUtility", "GeneralUtility\GeneralUtility.csproj", "{4FCC7037-A444-4AFD-892B-371383839CBC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityService.ConsoleHost", "DiversityService.ConsoleHost\DiversityService.ConsoleHost.csproj", "{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5FEEE018-79D9-4A44-A235-FDC0D75ECD6B}"
@@ -117,16 +115,6 @@ Global
 		{BB596FB3-5CFD-4306-A727-E0BFEB87E3D5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BB596FB3-5CFD-4306-A727-E0BFEB87E3D5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BB596FB3-5CFD-4306-A727-E0BFEB87E3D5}.Release|x86.ActiveCfg = Release|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4FCC7037-A444-4AFD-892B-371383839CBC}.Release|x86.ActiveCfg = Release|Any CPU
 		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{BA880926-1BA8-4DEE-9648-7AD10D1AF4DA}.Debug|Mixed Platforms.Build.0 = Debug|x86

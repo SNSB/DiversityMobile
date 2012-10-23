@@ -307,7 +307,7 @@ namespace DiversityService
                         {
                             if (ev.Latitude != null && ev.Longitude != null)
                             {
-                                geoString = GlobalUtility.GeographySerializer.SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
+                                geoString = SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
                                 this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 8, geoString, login);
                                 if (ev.Altitude != null)
                                     this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
@@ -419,7 +419,7 @@ namespace DiversityService
                     {
                         if (iu.Latitude != null && iu.Longitude != null)
                         {
-                            geoString = GlobalUtility.GeographySerializer.SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
+                            geoString = SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
                             this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int)iu.DiversityCollectionUnitID, geoString, login);
                         }
                     }
@@ -540,7 +540,30 @@ namespace DiversityService
 
 
 
+        private static String SerializeGeography(double latitude, double longitude, double? altitude)
+        {
+            if (Double.IsNaN(latitude) || Double.IsNaN(longitude))
+                return String.Empty;
+            String longitudeStr = longitude.ToString();
+            longitudeStr = longitudeStr.Replace(',', '.');
+            String latStr = latitude.ToString();
+            latStr = latStr.Replace(',', '.');
 
+            StringBuilder builder = new StringBuilder("geography::STGeomFromText('POINT(");
+            builder.Append(longitudeStr);
+            builder.Append(" ");
+            builder.Append(latStr);
+            if (altitude != null && Double.IsNaN((double)altitude) == false)
+            {
+                String altStr = altitude.ToString();
+                altStr = altStr.Replace(',', '.');
+                builder.Append(" ");
+                builder.Append(altStr);
+            }
+            builder.Append(")', 4326)");
+            String s = builder.ToString();
+            return builder.ToString();
+        }
 
        
     }
