@@ -13,6 +13,7 @@ using DiversityPhone.View.Appbar;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows;
+using System.Reactive.Disposables;
 
 namespace DiversityPhone.View
 {
@@ -25,6 +26,8 @@ namespace DiversityPhone.View
         private CaptureSource captureSource;
         private VideoCaptureDevice videoCaptureDevice;
         private FileSink fileSink;
+
+        private IDisposable _subscriptions;
 
 
         private VideoVM VM
@@ -41,9 +44,7 @@ namespace DiversityPhone.View
         {
             InitializeComponent();
            
-            VM.Record.Subscribe(_ => record());
-            VM.Play.Subscribe(_ => play());
-            VM.Stop.Subscribe(_ => stop());
+            
             _appbar = new NewVideoAppBarUpdater(this.ApplicationBar, VM);          
         }
 
@@ -51,12 +52,20 @@ namespace DiversityPhone.View
         {
             initializeVideoRecorder();
 
+            _subscriptions = new CompositeDisposable()
+            {
+                VM.Record.Subscribe(_ => record()),
+                VM.Play.Subscribe(_ => play()),
+                VM.Stop.Subscribe(_ => stop())
+            };
+
             base.OnNavigatedTo(e);
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             // Dispose of camera and media objects.
+            _subscriptions.Dispose();
             disposeVideoRecorder();
             disposeVideoPlayer();
 
