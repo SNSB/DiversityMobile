@@ -28,6 +28,7 @@ namespace DiversityPhone.View
 
         private CommandButtonAdapter _takeButton;
         private EditPageSaveEditButton _editSaveButton;
+        private EditPageDeleteButton _deleteButton;
 
         public ImagePage()
         {
@@ -35,6 +36,7 @@ namespace DiversityPhone.View
 
             _takeButton = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Take);
             _editSaveButton = new EditPageSaveEditButton(ApplicationBar, VM);
+            _deleteButton = new EditPageDeleteButton(ApplicationBar, VM);
         }
 
 
