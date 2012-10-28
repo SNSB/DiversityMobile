@@ -77,7 +77,7 @@ namespace DiversityPhone.ViewModels
             get { return _DownloadCount; }
             set 
             {
-                _DownloadCount = value;
+                _DownloadCount = (value <= 0) ? 0 : value;
                 if (_DownloadCount == 0)
                     IsBusy = false;
                 else
@@ -99,7 +99,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand<TaxonListVM> Download { get; private set; }
         public ReactiveCommand<TaxonListVM> Delete { get; private set; }
         public ReactiveCommand<TaxonListVM> Refresh { get; private set; }
-        
+        public IReactiveCommand DownloadAll { get; private set; }
 
         #endregion
 
@@ -132,7 +132,7 @@ namespace DiversityPhone.ViewModels
                                         _ => //Download Failed
                                         {
                                             LocalLists.Remove(taxonlist);
-                                            taxonlist.IsDownloading = false;
+                                            taxonlist.IsDownloading = false;                                            
                                             DownloadCount--;
                                         },
                                         () => //Download Succeeded
@@ -163,6 +163,13 @@ namespace DiversityPhone.ViewModels
                     if (Download.CanExecute(taxonlist))
                         Download.Execute(taxonlist);
                 });
+
+            //Download all only on Personal pivot
+            DownloadAll = new ReactiveCommand(this.ObservableForProperty(x => x.CurrentPivot).Value().Select(p => p == Pivot.Personal));
+            DownloadAll
+                .SelectMany(_ => PersonalLists)
+                .Where(vm => Download.CanExecute(vm))
+                .Subscribe(Download.Execute);
 
             var local_lists =
             this.FirstActivation()
@@ -197,14 +204,17 @@ namespace DiversityPhone.ViewModels
             online_lists.Connect();
         }
 
-        private IObservable<Unit> DownloadTaxonList(TaxonListVM vm)
+        private IObservable<TaxonListVM> DownloadTaxonList(TaxonListVM vm)
         {
             Taxa.addTaxonList(vm.Model);
             return
             Service.DownloadTaxonListChunked(vm.Model)
             .Do(chunk => Taxa.addTaxonNames(chunk, vm.Model), (Exception ex) => Taxa.deleteTaxonList(vm.Model))
             .IgnoreElements()
-            .Select(_ => Unit.Default);
+            .Select(_ => vm)
+            .StartWith(vm);
         }
+
+        
     }
 }

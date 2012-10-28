@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Shell;
+using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View
 {
@@ -20,13 +21,17 @@ namespace DiversityPhone.View
         private TaxonManagementVM VM { get { return DataContext as TaxonManagementVM; } }
 
         private ProgressBinding<TaxonManagementVM> _progress;
+
+        private CommandButtonAdapter _downloadall;
         public TaxonManagement()
         {
             InitializeComponent();
 
             if (VM != null)
             {
-                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);                
+                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);
+                _downloadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.DownloadAll);
+
             }
         } 
     }
