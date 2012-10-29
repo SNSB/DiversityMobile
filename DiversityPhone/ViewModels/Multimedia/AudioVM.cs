@@ -15,7 +15,7 @@ using ReactiveUI.Xaml;
 
 namespace DiversityPhone.ViewModels
 {
-    public class AudioVM : EditPageVMBase<MultimediaObject>
+    public class AudioVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
 
       
@@ -92,9 +92,9 @@ namespace DiversityPhone.ViewModels
         #region Commands
 
 
-        public ReactiveCommand Record { get; private set; }
-        public ReactiveCommand Play { get; private set; }
-        public ReactiveCommand Stop { get; private set; }
+        public IReactiveCommand Record { get; private set; }
+        public IReactiveCommand Play { get; private set; }
+        public IReactiveCommand Stop { get; private set; }
 
         #endregion
 
@@ -114,7 +114,7 @@ namespace DiversityPhone.ViewModels
             // Event handler for getting audio data when the buffer is full
             microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
 
-            Record = new ReactiveCommand();
+            Record = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
             Record.Subscribe(_ => recordAudio());
             Play = new ReactiveCommand();
             Play.Subscribe(_ => playAudio());

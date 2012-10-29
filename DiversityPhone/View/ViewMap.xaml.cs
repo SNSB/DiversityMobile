@@ -10,6 +10,7 @@ using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using ReactiveUI;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {

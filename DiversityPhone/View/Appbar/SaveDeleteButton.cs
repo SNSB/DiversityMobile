@@ -12,18 +12,16 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.ViewModels;
 using ReactiveUI;
 using System.Reactive.Linq;
-using DiversityPhone.Model;
-using DiversityPhone.View.Appbar;
 
 namespace DiversityPhone.View.Appbar
 {
-    public class EditPageSaveEditButton : SwitchingCommandButtonAdapter, IDisposable
+    public class SaveDeleteButton : SwitchingCommandButtonAdapter
     {
-        private readonly ButtonState SAVE, EDIT;
+        private readonly ButtonState SAVE, DELETE;
         private IDisposable _subscription;
 
-        public EditPageSaveEditButton(IApplicationBar appbar, ISavePageVM vm)
-            : base(appbar)
+        public SaveDeleteButton(IApplicationBar appbar, IEditPageVM vm)
+            :base(appbar)
         {
             SAVE = new ButtonState()
             {
@@ -32,25 +30,25 @@ namespace DiversityPhone.View.Appbar
                 Command = vm.Save
             };
 
-            EDIT = new ButtonState()
+            DELETE = new ButtonState()
             {
-                URI = new Uri("/Images/appbar.edit.rest.png", UriKind.Relative),
-                Text = DiversityResources.Button_Edit,
-                Command = vm.ToggleEditable
+                URI = new Uri("/Images/appbar.delete.rest.png", UriKind.Relative),
+                Text = DiversityResources.Button_Delete,
+                Command = vm.Delete
             };
 
-            _subscription = 
+            _subscription =
             vm.ObservableForProperty(x => x.IsEditable)
-                .Value()
-                .StartWith(false)
-                .Select(editable => (editable) ? SAVE : EDIT)
-                .Subscribe(state => this.CurrentState = state);
+            .Value()
+            .StartWith(vm.IsEditable)
+            .Select(editable => (editable) ? SAVE : DELETE)
+            .Subscribe(s => this.CurrentState = s);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-                _subscription.Dispose();
+                this._subscription.Dispose();
             base.Dispose(disposing);
         }
     }

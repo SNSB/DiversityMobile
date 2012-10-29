@@ -79,6 +79,51 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die delete ähnelt.
+        /// </summary>
+        public static string Button_Delete {
+            get {
+                return ResourceManager.GetString("Button_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die edit ähnelt.
+        /// </summary>
+        public static string Button_Edit {
+            get {
+                return ResourceManager.GetString("Button_Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die play ähnelt.
+        /// </summary>
+        public static string Button_Play {
+            get {
+                return ResourceManager.GetString("Button_Play", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die save ähnelt.
+        /// </summary>
+        public static string Button_Save {
+            get {
+                return ResourceManager.GetString("Button_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die stop ähnelt.
+        /// </summary>
+        public static string Button_Stop {
+            get {
+                return ResourceManager.GetString("Button_Stop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Property ähnelt.
         /// </summary>
         public static string EventProperty_Header_Property {

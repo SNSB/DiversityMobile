@@ -13,6 +13,7 @@ using Microsoft.Phone.Controls;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {

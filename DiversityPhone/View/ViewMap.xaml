@@ -72,7 +72,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Mode="Minimized">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="select map" Click="SelectMap_Click"/>
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="select map" Click="SelectMap_Click"/>                
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>

@@ -50,7 +50,7 @@ namespace DiversityPhone.ViewModels
                     ),
                 x => x.IsEditable);
 
-            Delete = new ReactiveCommand();            
+            Delete = new ReactiveCommand(ModelByVisitObservable.Select(m => !m.IsNew()));            
             Delete
                 .Select(_ => new DialogMessage(DialogType.YesNo, "", DiversityResources.Message_ConfirmDelete,(res) => {if(res == DialogResult.OKYes) DeleteSubject.OnNext(Unit.Default);}))
                 .ToMessage();

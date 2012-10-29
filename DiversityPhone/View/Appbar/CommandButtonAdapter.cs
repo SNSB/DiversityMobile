@@ -48,6 +48,12 @@ namespace DiversityPhone.View.Appbar
 
         private SerialDisposable _command_handle = new SerialDisposable();
 
+        public CommandButtonAdapter(IApplicationBar appbar, ICommand command = null)
+            : this(new ApplicationBarIconButton() { IconUri = new Uri("/Images/appbar.add.rest.png", UriKind.RelativeOrAbsolute), Text = "test" }, command)
+        {
+            appbar.Buttons.Add(this.Button);
+        }
+
         public CommandButtonAdapter(IApplicationBarIconButton button, ICommand command = null)
         {           
             if (button == null)
@@ -74,7 +80,7 @@ namespace DiversityPhone.View.Appbar
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             _command_handle.Dispose();
             Button = null;

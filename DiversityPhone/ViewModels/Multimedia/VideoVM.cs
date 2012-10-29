@@ -16,7 +16,7 @@ using System.Windows.Controls;
 
 namespace DiversityPhone.ViewModels
 {
-    public class VideoVM : EditPageVMBase<MultimediaObject>
+    public class VideoVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
        
 
@@ -61,35 +61,22 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        //private Brush _Fill = null;
-        //public Brush Fill
-        //{
-        //    get
-        //    {
-        //        return _Fill;
-        //    }
-        //    set
-        //    {
-        //        this.RaiseAndSetIfChanged(x => x.Fill, ref _Fill, value);
-        //    }
-        //}
 
         #endregion
 
         #region Commands
 
 
-        public ReactiveCommand Record { get; private set; }
-        public ReactiveCommand Play { get; private set; }
-        public ReactiveCommand Stop { get; private set; }
+        public IReactiveCommand Record { get; private set; }
+        public IReactiveCommand Play { get; private set; }
+        public IReactiveCommand Stop { get; private set; }
 
         #endregion      
 
         public VideoVM()
             : base( mmo => mmo.MediaType == MediaType.Video)
         {
-            Record = new ReactiveCommand();
-            
+            Record = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
             Play = new ReactiveCommand();
             Stop = new ReactiveCommand();
 
@@ -113,8 +100,6 @@ namespace DiversityPhone.ViewModels
                 .StartWith(false);
             return idle.BooleanAnd(recordPresent);
         }
-
-        #region Methods for ReactiveCommands
 
         private void saveVideo()
         {
@@ -143,36 +128,5 @@ namespace DiversityPhone.ViewModels
                 Uri = uri;
             }
         }
-        #endregion
-
-        #region Video
-
-        #region Recording
-
-       
-
-        #endregion
-
-
-       
-
-        //public void initializeVideoPlayer()
-        //{
-        //    videoPlayer = new MediaElement();
-        //    videoPlayer.Width=656;
-        //    videoPlayer.Height=480;
-        //    videoPlayer.AutoPlay=true;
-        //    videoPlayer.RenderTransformOrigin=new Point(0.5,0.5);
-        //    videoPlayer.VerticalAlignment=VerticalAlignment.Center;
-        //    videoPlayer.HorizontalAlignment=HorizontalAlignment.Center;
-        //    videoPlayer.Stretch=Stretch.Fill;
-        //}
-
-      
-
-
-        #endregion
-
-
     }
 }

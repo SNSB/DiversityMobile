@@ -22,7 +22,8 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.camera.rest.png" Text="take picture"/>            
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.camera.rest.png" Text="take picture"/>
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

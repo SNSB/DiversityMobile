@@ -219,8 +219,9 @@
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
-    <Compile Include="View\Appbar\NewAudioAppbarUpdater.cs" />
-    <Compile Include="View\Appbar\NewVideoAppBarUpdater.cs" />
+    <Compile Include="View\Appbar\PlayStopButton.cs" />
+    <Compile Include="View\Appbar\SaveDeleteButton.cs" />
+    <Compile Include="View\Appbar\SwitchingCommandButtonAdapter.cs" />
     <Compile Include="View\Controls\CommandNotAvailableLabel.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>

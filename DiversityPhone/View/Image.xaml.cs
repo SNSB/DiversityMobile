@@ -26,17 +26,15 @@ namespace DiversityPhone.View
             }
         }
 
-        private CommandButtonAdapter _takeButton;
-        private EditPageSaveEditButton _editSaveButton;
-        private EditPageDeleteButton _deleteButton;
+        private CommandButtonAdapter _takeButton;        
+        private SaveDeleteButton _savedelete;
 
         public ImagePage()
         {
             this.InitializeComponent();
 
             _takeButton = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Take);
-            _editSaveButton = new EditPageSaveEditButton(ApplicationBar, VM);
-            _deleteButton = new EditPageDeleteButton(ApplicationBar, VM);
+            _savedelete = new SaveDeleteButton(ApplicationBar, VM);
         }
 
 

@@ -55,7 +55,7 @@ namespace DiversityPhone.ViewModels
             modelObs.Connect();
 
             var modelByVisit = this.OnActivation()
-                .Select(_ => Current.Model)
+                .CombineLatest(CurrentModelObservable, (_, m) => m)
                 .Publish();
             ModelByVisitObservable = modelByVisit;
             modelByVisit.Connect();

@@ -14,6 +14,7 @@ using System.IO.IsolatedStorage;
 using System.IO;
 using System.Windows;
 using System.Reactive.Disposables;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
@@ -38,14 +39,19 @@ namespace DiversityPhone.View
             }
         }
 
-        private NewVideoAppBarUpdater _appbar;
+        private CommandButtonAdapter _record;
+        private PlayStopButton _playstop;
+        private SaveDeleteButton _savedelete;
+        
+         
 
         public NewVideo()
         {
             InitializeComponent();
            
-            
-            _appbar = new NewVideoAppBarUpdater(this.ApplicationBar, VM);          
+            _record = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Record);
+            _playstop = new PlayStopButton(ApplicationBar, VM);
+            _savedelete = new SaveDeleteButton(ApplicationBar, VM);
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -56,7 +62,10 @@ namespace DiversityPhone.View
             {
                 VM.Record.Subscribe(_ => record()),
                 VM.Play.Subscribe(_ => play()),
-                VM.Stop.Subscribe(_ => stop())
+                VM.Stop.Subscribe(_ => stop()),
+                _record,
+                _playstop,
+                _savedelete
             };
 
             base.OnNavigatedTo(e);
@@ -90,8 +99,6 @@ namespace DiversityPhone.View
                 stopVideoRecording();
             else if (VM.State == PlayStates.Playing)
                 this.stopPlayback();
-            else
-                MessageBox.Show("Status error");
         }
 
         #endregion
@@ -191,10 +198,12 @@ namespace DiversityPhone.View
             // Start the video for the first time.
             else
             {
+                var filename = (VM.IsEditable) ? VM.TempFileName : VM.Current.Model.Uri;
+
                 captureSource.Stop();
                 // Remove VideoBrush from the tree.
                 viewfinderRectangle.Fill = null;
-                isoVideoFile = new IsolatedStorageFileStream(VM.TempFileName,
+                isoVideoFile = new IsolatedStorageFileStream(filename,
                                         FileMode.Open, FileAccess.Read,
                                         IsolatedStorageFile.GetUserStoreForApplication());
 
@@ -208,7 +217,8 @@ namespace DiversityPhone.View
         private void stopPlayback()
         {
             disposeVideoPlayer();
-            startVideoPreview();
+            if(VM.IsEditable)
+                startVideoPreview();
         }
 
 
@@ -221,14 +231,15 @@ namespace DiversityPhone.View
 
         private void OnCaptureFailed(object sender, ExceptionRoutedEventArgs e)
         {
-            MessageBox.Show("No VideoRecording device foiund:" + e.ErrorException.Message);
+            MessageBox.Show("No VideoRecording device found:" + e.ErrorException.Message);
         }
 
         // Display the viewfinder when playback ends.
         public void VideoPlayerMediaEnded(object sender, RoutedEventArgs e)
         {
             disposeVideoPlayer();
-            startVideoPreview();
+            if (VM.IsEditable)
+                startVideoPreview();
         }
 
         #endregion

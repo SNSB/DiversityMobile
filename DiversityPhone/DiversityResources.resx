@@ -123,6 +123,21 @@
   <data name="Analysis_Result_NoResult" xml:space="preserve">
     <value>No Result</value>
   </data>
+  <data name="Button_Delete" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="Button_Edit" xml:space="preserve">
+    <value>edit</value>
+  </data>
+  <data name="Button_Play" xml:space="preserve">
+    <value>play</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>save</value>
+  </data>
+  <data name="Button_Stop" xml:space="preserve">
+    <value>stop</value>
+  </data>
   <data name="EventProperty_Header_Property" xml:space="preserve">
     <value>Property</value>
   </data>

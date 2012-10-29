@@ -53,7 +53,7 @@ namespace DiversityPhone
                         Text = DiversityResources.Home_Header_ButtonAdd                    
                     };
                 ApplicationBar.Buttons.Add(add);
-                _add = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Add);
+                _add = new CommandButtonAdapter(add, VM.Add);
           
                 var settings =
                     new ApplicationBarIconButton(new Uri("/Images/appbar.feature.settings.rest.png", UriKind.RelativeOrAbsolute))

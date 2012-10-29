@@ -11,5 +11,6 @@ namespace DiversityPhone.ViewModels
     {
         IReactiveCommand Play { get; }
         IReactiveCommand Stop { get; }
+        PlayStates State { get; }
     }
 }

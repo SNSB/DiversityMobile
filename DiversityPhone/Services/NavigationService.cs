@@ -25,8 +25,7 @@ namespace DiversityPhone.Services
             Messenger = messenger;
 
             var mmo = Observable.Merge(
-                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT),
-                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW)
+                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT)
                 );
             
             Messenger.RegisterMessageSource(

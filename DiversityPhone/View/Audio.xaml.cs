@@ -7,6 +7,7 @@ using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using System.Windows.Data;
 using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
@@ -21,12 +22,17 @@ namespace DiversityPhone.View
             }
         }
 
-        private NewAudioAppBarUpdater _appbar;
+        private CommandButtonAdapter _record;
+        private PlayStopButton _playstop;
+        private SaveDeleteButton _savedelete;
 
         public NewAudio()
         {
             InitializeComponent();
-            _appbar = new NewAudioAppBarUpdater(this.ApplicationBar, VM);
+
+            _record = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Record);
+            _playstop = new PlayStopButton(ApplicationBar, VM);
+            _savedelete = new SaveDeleteButton(ApplicationBar, VM);
         }
     }
 }

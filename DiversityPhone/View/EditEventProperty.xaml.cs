@@ -14,6 +14,7 @@ using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using DiversityPhone.View.Appbar;
 using System.Reactive.Linq;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
@@ -27,7 +28,7 @@ namespace DiversityPhone.View
         public EditEventProperty()
         {
             InitializeComponent();
-            _appb = new EditPageSaveEditButton(ApplicationBar, VM);
+            _appb = new EditPageSaveEditButton(this.ApplicationBar, VM);
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
             Observable.FromEventPattern(tbFilterString, "TextChanged")                

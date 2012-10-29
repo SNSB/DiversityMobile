@@ -16,18 +16,10 @@ namespace DiversityPhone.View.Appbar
     public class EditPageDeleteButton : CommandButtonAdapter
     {
         public EditPageDeleteButton(IApplicationBar appbar, IDeletePageVM vm)
-            : base(
-                new ApplicationBarIconButton() 
-                {
-                    IconUri = new Uri("/Images/appbar.delete.rest.png",UriKind.Relative),
-                    Text = "delete",
-                    IsEnabled = true,
-                }, vm.Delete)
+            : base(appbar, vm.Delete)
         {
-            if (appbar == null)
-                throw new ArgumentNullException("appbar");
-
-            appbar.Buttons.Add(Button);
+            this.Button.IconUri = new Uri("/Images/appbar.delete.rest.png",UriKind.Relative);
+            this.Button.Text = "delete";            
         }
     }
 }

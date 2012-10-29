@@ -14,6 +14,7 @@ using System.Windows.Data;
 using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
+using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {

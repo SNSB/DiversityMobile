@@ -117,8 +117,7 @@
  
    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            
-            
+                 
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
