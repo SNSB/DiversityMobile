@@ -47,7 +47,7 @@ namespace DiversityPhone.ViewModels
                 .Where(vm => vm.Model.MediaType == MediaType.Image)
                 .BindTo(this, x => x.Current);
 
-            Take = new ReactiveCommand();
+            Take = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
 
             CanSave().Subscribe(CanSaveSubject);
             //New Image
