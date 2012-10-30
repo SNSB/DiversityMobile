@@ -13,7 +13,7 @@ namespace DiversityPhone.Services
             return This
                 .Catch((Exception ex) =>
                 {
-                    if (ex is ServerTooBusyException || ex is EndpointNotFoundException)
+                    if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
                     {
                         if (onException != null)
                             return Observable.Return(onException());
