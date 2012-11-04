@@ -16,6 +16,7 @@ using Microsoft.Phone.Shell;
 using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
 using System.Windows.Data;
+using DiversityPhone.View.Helper;
 
 
 
@@ -26,7 +27,7 @@ namespace DiversityPhone.View
         private EditEVVM VM { get { return DataContext as EditEVVM; } }
         private EditPageSaveEditButton _appbar;        
         private EditPageDeleteButton _delete;
-        private BindingExpression _LocalityBinding;
+        private INPCBindingTrigger _LocalityBinding, _HabitatBinding;
        
 
         public EditEV()
@@ -35,14 +36,14 @@ namespace DiversityPhone.View
 
             _appbar = new EditPageSaveEditButton(this.ApplicationBar, VM);
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
-            _LocalityBinding = LocalityTB.GetBindingExpression(TextBox.TextProperty);
+            _LocalityBinding = new INPCBindingTrigger(LocalityTB);
+            _HabitatBinding = new INPCBindingTrigger(HabitatTB);
 
             DPControlBackGround.setTBBackgroundColor(LocalityTB);
         }      
 
         private void LocalityTB_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            _LocalityBinding.UpdateSource();
+        {            
             DPControlBackGround.setTBBackgroundColor(LocalityTB);            
         }
     }

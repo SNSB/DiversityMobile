@@ -15,17 +15,18 @@ using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Shell;
+using DiversityPhone.View.Helper;
 
 namespace DiversityPhone.View
 {
     public partial class EditCS : PhoneApplicationPage
     {
-        BindingExpression anBinding;
-
         public EditCSVM VM { get{return DataContext as EditCSVM;} }
 
         private EditPageSaveEditButton _SaveEditBtn;        
         private EditPageDeleteButton _delete;
+
+        private INPCBindingTrigger _AccessionNumberBinding;
 
         public EditCS()
         {
@@ -35,13 +36,12 @@ namespace DiversityPhone.View
 
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
-            anBinding =  AN_TB.GetBindingExpression(TextBox.TextProperty);
+            _AccessionNumberBinding = new INPCBindingTrigger(AN_TB);
             DPControlBackGround.setTBBackgroundColor(AN_TB);        
         }
 
         private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            anBinding.UpdateSource();
+        {            
             DPControlBackGround.setTBBackgroundColor(AN_TB);
         }      
     }

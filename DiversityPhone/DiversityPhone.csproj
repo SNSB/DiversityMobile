@@ -262,6 +262,7 @@
     <Compile Include="View\Audio.xaml.cs">
       <DependentUpon>Audio.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Helper\INPCBindingTrigger.cs" />
     <Compile Include="View\Image.xaml.cs">
       <DependentUpon>Image.xaml</DependentUpon>
     </Compile>
