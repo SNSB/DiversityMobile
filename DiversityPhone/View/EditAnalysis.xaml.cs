@@ -21,14 +21,12 @@ namespace DiversityPhone.View
     {
         private EditAnalysisVM VM { get { return DataContext as EditAnalysisVM; } }
 
-        private EditPageSaveEditButton _appb;
-        private IList<Control> _toStore;
+        private EditPageSaveEditButton _appb;        
 
         public EditAnalysis()
         {
-            InitializeComponent();
-            _toStore = new List<Control> { TB_CustomResult};
-            DPControlBackGround.adjustStoreBackgroundColors(_toStore);      
+            InitializeComponent();            
+            DPControlBackGround.setTBBackgroundColor(TB_CustomResult);      
             _appb = new EditPageSaveEditButton(ApplicationBar, VM);
         }
 

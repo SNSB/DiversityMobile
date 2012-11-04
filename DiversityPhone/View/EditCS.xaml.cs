@@ -37,8 +37,7 @@ namespace DiversityPhone.View
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
             anBinding =  AN_TB.GetBindingExpression(TextBox.TextProperty);
-            this._toStore = new List<Control> { this.AN_TB };
-            DPControlBackGround.adjustStoreBackgroundColors(_toStore);  
+            DPControlBackGround.setTBBackgroundColor(AN_TB);        
         }
 
         private void DescTB_TextChanged(object sender, TextChangedEventArgs e)

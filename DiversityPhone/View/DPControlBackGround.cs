@@ -14,21 +14,6 @@ namespace DiversityPhone.View
 {
     public class DPControlBackGround
     {
-        public static void adjustStoreBackgroundColors(IList<Control> toStore)
-        {
-            if (toStore != null)
-            {
-                foreach (Control c in toStore)
-                {
-                    if (c.GetType().Equals(typeof(TextBox)))
-                    {
-                        TextBox tb = (TextBox)c;
-                        setTBBackgroundColor(tb);
-                    }
-                }
-            }
-        }
-
         public static void setTBBackgroundColor(TextBox tb)
         {
             if (tb.Text == String.Empty || tb.Text == null)
