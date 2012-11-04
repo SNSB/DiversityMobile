@@ -1,6 +1,8 @@
 <MarketplaceDetails>
-  <SmallAppTile>DivMob_QuadratEnd_s_AppTileSmall.png</SmallAppTile>
+  <SmallAppTile>DivMob_QuadratEnd_s_MarketTile.png</SmallAppTile>
   <LargeAppTile>DivMob_QuadratEnd_s_AppTileLarge.png</LargeAppTile>
   <PCAppTile>DivMob_QuadratEnd_s_MarketTile.png</PCAppTile>
   <ScreenShots>Splash.png;;;;;;;;</ScreenShots>
+  <ScreenShotsWXGA>;;;;;;;;</ScreenShotsWXGA>
+  <ScreenShots720P>;;;;;;;;</ScreenShots720P>
 </MarketplaceDetails>
