@@ -11,14 +11,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReactiveUI;
 using ReactiveUI.Xaml;
+using System.Reactive.Threading.Tasks;
 
 
 namespace DiversityPhone.ViewModels
 {
     public class AudioVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
-    {
-
-      
+    {     
 
         
 
@@ -108,8 +107,7 @@ namespace DiversityPhone.ViewModels
             // state of audio playback so we can update the UI appropriately.
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Start();
+            timer.Tick += new EventHandler(timer_Tick);            
 
             // Event handler for getting audio data when the buffer is full
             microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
@@ -122,6 +120,34 @@ namespace DiversityPhone.ViewModels
             Stop.Subscribe(_ => stop());
 
             CanSave().Subscribe(CanSaveSubject);
+
+            this.OnActivation()
+                .Subscribe(_ =>
+                    {
+                        timer.Start();
+                        if (!Current.Model.IsNew())
+                        {
+                            using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                            {
+                                if (store.FileExists(Current.Model.Uri))
+                                {
+                                    using (var file = store.OpenFile(Current.Model.Uri, FileMode.Open))
+                                    {
+                                        file.CopyTo(audioStream);
+                                    }
+                                }
+                            }
+                        }                        
+                    });
+
+            this.OnDeactivation()
+                .Subscribe(_ =>
+                    {
+                        timer.Stop();
+                        stop();
+                        audioStream.SetLength(0);
+                    });
+
         }
 
         #endregion
@@ -290,7 +316,7 @@ namespace DiversityPhone.ViewModels
                 // Play the audio in a new thread so the UI can update.
                 Thread soundThread = new Thread(new ThreadStart(playSound));
                 soundThread.Start();
-            }
+            }            
         }
 
 

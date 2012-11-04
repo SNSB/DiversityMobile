@@ -592,7 +592,14 @@ namespace DiversityPhone.Services
             var myStore = IsolatedStorageFile.GetUserStoreForApplication();
             if (myStore.FileExists(toDeleteMMO.Uri))
             {
-                myStore.DeleteFile(toDeleteMMO.Uri);
+                try
+                {
+                    myStore.DeleteFile(toDeleteMMO.Uri);
+                }
+                catch (Exception)
+                {
+                    System.Diagnostics.Debugger.Break();
+                }               
             }
             deleteRow(MultimediaObject.Operations, ctx => ctx.MultimediaObjects, toDeleteMMO);
         }
