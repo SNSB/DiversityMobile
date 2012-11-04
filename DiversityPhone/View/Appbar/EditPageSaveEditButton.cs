@@ -42,7 +42,7 @@ namespace DiversityPhone.View.Appbar
             _subscription = 
             vm.ObservableForProperty(x => x.IsEditable)
                 .Value()
-                .StartWith(false)
+                .StartWith(vm.IsEditable)
                 .Select(editable => (editable) ? SAVE : EDIT)
                 .Subscribe(state => this.CurrentState = state);
         }
