@@ -51,7 +51,7 @@
                 .SelectMany(m => 
                     Storage.getEventsForSeries(m)
                     .Select(ev => new EventVM(ev))
-                    .ToObservable(Scheduler.ThreadPool)
+                    .ToObservable(ThreadPoolScheduler.Instance)
                     .TakeUntil(CurrentModelObservable)
                     )
                 .ObserveOnDispatcher()

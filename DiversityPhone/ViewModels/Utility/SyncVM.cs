@@ -9,7 +9,6 @@ using DiversityPhone.Model;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
 using DiversityPhone.Services.BackgroundTasks;
 using System.Reactive.Concurrency;
 using DiversityPhone.Messages;
@@ -103,7 +102,7 @@ namespace DiversityPhone.ViewModels.Utility
                     });
             collectModifications.RegisterAsyncObservable(_ =>                                    
                         collectModificationsImpl()
-                        .ToObservable(Scheduler.ThreadPool)
+                        .ToObservable(ThreadPoolScheduler.Instance)
                         )
                         .ObserveOnDispatcher()
                         .Subscribe(ev => SyncUnits.Add(ev));
@@ -113,7 +112,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Value()
                 .Where(p => p == Pivots.multimedia)
                 .Do(_ => Multimedia.Clear())
-                .SelectMany(_ => enumerateModifiedMMOs().ToObservable(Scheduler.ThreadPool))
+                .SelectMany(_ => enumerateModifiedMMOs().ToObservable(ThreadPoolScheduler.Instance))
                 .ObserveOnDispatcher()
                 .Subscribe(Multimedia.Add);            
 

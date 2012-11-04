@@ -8,7 +8,6 @@ using DiversityPhone.Services;
 using System.Windows.Media.Imaging;
 using System.IO.IsolatedStorage;
 using System.IO;
-using System.Threading.Tasks;
 using System.Reactive;
 using System.Reactive.Linq;
 using System;

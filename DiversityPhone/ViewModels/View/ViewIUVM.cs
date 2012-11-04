@@ -11,7 +11,6 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using Funq;
 using System.Reactive.Disposables;
-using Microsoft.Phone.Reactive;
 using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
@@ -111,7 +110,7 @@ namespace DiversityPhone.ViewModels
                     Observable.Return(Enumerable.Empty<Analysis>().ToList() as IList<Analysis>) // first clear last analyses
                     .Concat(
                         // Then Load possible Analyses in the background
-                    Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup), Scheduler.ThreadPool)
+                    Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup), ThreadPoolScheduler.Instance)
                     .TakeUntil(CurrentModelObservable)
                     ))
                 .Select(list =>

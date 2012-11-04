@@ -70,7 +70,7 @@ namespace DiversityPhone.ViewModels
             _Properties = this.FirstActivation()
                 .SelectMany(_ => 
                     Vocabulary.getAllProperties()
-                    .ToObservable(Scheduler.ThreadPool)
+                    .ToObservable(ThreadPoolScheduler.Instance)
                     )
                     .ObserveOnDispatcher()
                     .CreateCollection();
@@ -80,7 +80,7 @@ namespace DiversityPhone.ViewModels
                     Observable.Start(
                     () => Vocabulary
                     .getPropertyNames(propertyID)
-                    .ToObservable(Scheduler.ThreadPool)
+                    .ToObservable(ThreadPoolScheduler.Instance)
                     .ObserveOnDispatcher()
                     .Replay())
                     .Do(s => s.Connect())

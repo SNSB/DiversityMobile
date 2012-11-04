@@ -103,24 +103,11 @@ namespace DiversityPhone.ViewModels
             MapList = getMaps.RegisterAsyncFunction(_ => MapStorage.getAllMaps().Select(m => new MapVM(m)))
                       .SelectMany(vms => vms)
                       .CreateCollection();
-            MapList.ObserveCollectionChanged()
-                .Subscribe(change =>
-                    {
-                        if(change.OldItems != null)
-                            foreach (var item in change.OldItems)
-                            {
-                                var typed = item as MapVM;
-                                if (typed != null)
-                                    _local_map_register.Remove(typed.ServerKey);
-                            }
-                        if(change.NewItems != null)
-                            foreach (var item in change.NewItems)
-                            {
-                                var typed = item as MapVM;
-                                if (typed != null)
-                                    _local_map_register.Add(typed.ServerKey, Unit.Default);
-                            }                       
-                    });
+            MapList.ItemsAdded
+                .Subscribe(item => _local_map_register.Add(item.ServerKey, Unit.Default));
+
+            MapList.ItemsRemoved
+                .Subscribe(item => _local_map_register.Remove(item.ServerKey));
 
             SelectMap = new ReactiveCommand<MapVM>(vm => !vm.IsDownloading);
             SelectMap

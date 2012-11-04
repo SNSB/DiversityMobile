@@ -55,7 +55,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncCtpLibrary_Phone">
-      <HintPath>..\Lib\AsyncCTP\AsyncCtpLibrary_Phone.dll</HintPath>
+      <HintPath>..\packages\AsyncCTP.0.3\lib\sl4-wp71\AsyncCtpLibrary_Phone.dll</HintPath>
     </Reference>
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
@@ -63,47 +63,43 @@
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <HintPath>..\packages\SilverlightToolkitWP.4.2012.6.25\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.Reactive.Testing, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx_Experimental-Testing.1.1.11111\lib\SL3-WP\Microsoft.Reactive.Testing.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="NLog">
-      <HintPath>..\packages\NLog.2.0.0.2000\lib\sl4-windowsphone71\NLog.dll</HintPath>
+    <Reference Include="ReactiveUI.Blend_WP7">
+      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Blend_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Routing_WP7">
+      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Routing_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI.Xaml_WP7">
+      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
     </Reference>
-    <Reference Include="ReactiveUI.Testing_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-testing.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Testing_WP7.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI.Xaml_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-xaml.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
-    </Reference>
-    <Reference Include="ReactiveUI_WP7, Version=3.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\reactiveui-core.3.2.0\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
+    <Reference Include="ReactiveUI_WP7">
+      <HintPath>..\packages\reactiveui-core.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx_Experimental-Main.1.1.11111\lib\SL3-WP\System.Reactive.dll</HintPath>
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading, Version=1.1.11111.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rx_Experimental-Xaml.1.1.11111\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\packages\Rx-Xaml.2.0.21030\lib\SL4-WindowsPhone71\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -454,6 +450,11 @@
     <Content Include="Images\appbar.feature.audio.rest.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileSmall.png" />
+    <Content Include="README_FIRST.txt" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Resource Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileTiny.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_MarketTile.png" />
     <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_Splash.png" />
@@ -466,13 +467,10 @@
     <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
+    <None Include="packages.config" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
     <None Include="Service References\MapMediaService\configuration.svcinfo" />
@@ -604,9 +602,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\MediaService4\MediaService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />

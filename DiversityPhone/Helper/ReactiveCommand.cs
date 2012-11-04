@@ -54,7 +54,7 @@ namespace DiversityPhone.ViewModels
             inner_command.Execute(parameter as T);
         }
 
-        public override IDisposable SubscribeCore(IObserver<T> observer)
+        protected override IDisposable SubscribeCore(IObserver<T> observer)
         {
             return inner_observable.Subscribe(observer);
         }

@@ -6,7 +6,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
     using ReactiveUI;
-    using NLog;
     using System.Reactive.Disposables;
     using System.Collections.Generic;
     using Funq;
@@ -20,15 +19,11 @@
     {
         private static readonly TimeSpan DefaultStartupTimeout = TimeSpan.FromSeconds(5);
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
-        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;
-
-        /// <summary>
-        /// The logger used to capture diagnostics information.
-        /// </summary>
-        private readonly Logger log;
+        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;       
 
         IMessageBus Messenger;
 
+        private IScheduler threadpool = ThreadPoolScheduler.Instance;
         private GeoCoordinateWatcher watcher = null;
         private IDisposable watcher_activation = Disposable.Empty;
         private int watcher_refcount = 0;
@@ -71,7 +66,6 @@
                 .Select(s => s.UseGPS)
                 .Subscribe(gps => IsEnabled = gps);
 
-            this.log = this.Log();
             this.watcher = new GeoCoordinateWatcher(DefaultAccuracy);
 
             
@@ -127,7 +121,7 @@
         private void startWatcher()
         {
             if(IsEnabled && watcher_refcount > 0)
-                Scheduler.ThreadPool.Schedule(() =>
+                threadpool.Schedule(() =>
                 {
                     var started = watcher.TryStart(true, DefaultStartupTimeout);
                 });

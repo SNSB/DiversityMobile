@@ -9,7 +9,6 @@ using DiversityPhone.Services;
 using System.Reactive.Subjects;
 using System.Linq;
 using Funq;
-using System.Threading.Tasks;
 
 
 namespace DiversityPhone.ViewModels
@@ -40,9 +39,9 @@ namespace DiversityPhone.ViewModels
 
             SubUnits = new ReactiveCollection<IdentificationUnitVM>();
             SubUnits
-                .ObserveCollectionChanged()
-                .Select(_ => SubUnits.Any())
-                .BindTo(this, x => x.HasSubUnits);
+                .CollectionCountChanged
+                .Select(c => c > 0)
+                .Subscribe(x => HasSubUnits = x);
 	    }
     }
 

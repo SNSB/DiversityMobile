@@ -7,11 +7,10 @@ using System.IO;
 using DiversityPhone.Model;
 using System.Collections.Generic;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Xml.Linq;
 using System.Net;
 using Funq;
-using System.Threading.Tasks;
+using System.Reactive.Threading.Tasks;
 
 namespace DiversityPhone.Services
 {

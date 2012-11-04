@@ -173,7 +173,7 @@ namespace DiversityPhone.ViewModels
 
             var local_lists =
             this.FirstActivation()
-                .SelectMany(_ => Taxa.getTaxonSelections().ToObservable(Scheduler.ThreadPool)
+                .SelectMany(_ => Taxa.getTaxonSelections().ToObservable(ThreadPoolScheduler.Instance)
                                 .Select(list => new TaxonListVM(list)))
                 .Publish();
 

@@ -70,7 +70,7 @@ namespace DiversityPhone.ViewModels
 
             
 
-            var openSeries = SeriesList.Changed.Select(_ => Unit.Default)
+            var openSeries = SeriesList.CollectionCountChanged.Select(_ => Unit.Default)
                 .Merge(Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Select(_ => Unit.Default))
                 .Select(_ => SeriesList.Where(s => s.Model.SeriesEnd == null))
                 .Select(list => list.FirstOrDefault());
