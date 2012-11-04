@@ -24,15 +24,14 @@ namespace DiversityPhone.View
 
         public EditCSVM VM { get{return DataContext as EditCSVM;} }
 
-        private EditPageSaveEditButton _appbarupd;
-        private IList<Control> _toStore;
+        private EditPageSaveEditButton _SaveEditBtn;        
         private EditPageDeleteButton _delete;
 
         public EditCS()
         {
             InitializeComponent();
 
-            _appbarupd = new EditPageSaveEditButton(this.ApplicationBar, VM);
+            _SaveEditBtn = new EditPageSaveEditButton(this.ApplicationBar, VM);
 
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
