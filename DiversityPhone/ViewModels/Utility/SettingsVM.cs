@@ -88,7 +88,7 @@ namespace DiversityPhone.ViewModels.Utility
             var setting_changed =
             this.ObservableForProperty(x => x.UseGPS).Select(_ => Unit.Default)
             .Merge(_Model.Select(_ => Unit.Default))
-            .Merge(Save.Select(_ => Unit.Default))                                
+            .Merge(_ModelSubject.Select(_ => Unit.Default))                                
                 .Where(_ => Model != null)
                 .Select(_ => Model.UseGPS != UseGPS);
              
