@@ -12,6 +12,8 @@
     SupportedOrientations="Landscape" Orientation="Landscape"
     mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="656"
     shell:SystemTray.IsVisible="True"
+    Loaded="PageLoaded"
+    Unloaded="PageUnloaded"
     DataContext="{Binding NewVideo,Source={StaticResource Locator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->

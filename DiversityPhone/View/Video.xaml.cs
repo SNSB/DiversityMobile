@@ -54,7 +54,7 @@ namespace DiversityPhone.View
             _savedelete = new SaveDeleteButton(ApplicationBar, VM);
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void PageLoaded(object sender, RoutedEventArgs e)
         {
             initializeVideoRecorder();
 
@@ -68,17 +68,19 @@ namespace DiversityPhone.View
                 _savedelete
             };
 
-            base.OnNavigatedTo(e);
+            if (VM.Current.Model.IsNew())
+                startVideoPreview();
+            else
+                startPlayback();
+
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        private void PageUnloaded(object sender, RoutedEventArgs e)
         {
             // Dispose of camera and media objects.
             _subscriptions.Dispose();
             disposeVideoRecorder();
-            disposeVideoPlayer();
-
-            base.OnNavigatedFrom(e);
+            disposeVideoPlayer();            
         }
 
         #region Methods for Reactive Commands
@@ -102,9 +104,6 @@ namespace DiversityPhone.View
         }
 
         #endregion
-
-
-        #region Recording
 
         private void startVideoRecording()
         {
@@ -166,7 +165,8 @@ namespace DiversityPhone.View
         public void startVideoPreview()
         {
             try
-            {
+            {              
+
                 // Display the video on the viewfinder.
                 if (captureSource.VideoCaptureDevice != null
                 && captureSource.State == CaptureState.Stopped)
@@ -180,9 +180,7 @@ namespace DiversityPhone.View
             {
                 MessageBox.Show("Preview Error");
             }
-        }
-
-        #endregion
+        }        
 
         #region Playback
 
@@ -200,16 +198,24 @@ namespace DiversityPhone.View
             {
                 var filename = (VM.IsEditable) ? VM.TempFileName : VM.Current.Model.Uri;
 
-                captureSource.Stop();
-                // Remove VideoBrush from the tree.
-                viewfinderRectangle.Fill = null;
-                isoVideoFile = new IsolatedStorageFileStream(filename,
-                                        FileMode.Open, FileAccess.Read,
-                                        IsolatedStorageFile.GetUserStoreForApplication());
+                using(var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (store.FileExists(filename))
+                    {
+                        captureSource.Stop();
+                        // Remove VideoBrush from the tree.
+                        viewfinderRectangle.Fill = null;
+                        isoVideoFile = new IsolatedStorageFileStream(filename,
+                                                FileMode.Open, FileAccess.Read,
+                                                store);
 
-                videoPlayer.SetSource(isoVideoFile);
-                videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
-                videoPlayer.Play();
+                        videoPlayer.SetSource(isoVideoFile);
+                        videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
+                        videoPlayer.Play();
+                    }
+                    else
+                        return;
+                }                
             }
             VM.State = PlayStates.Playing;
         }
@@ -255,13 +261,10 @@ namespace DiversityPhone.View
                 videoCaptureDevice = CaptureDeviceConfiguration.GetDefaultVideoCaptureDevice();
 
                 // Add eventhandlers for captureSource.
-                captureSource.CaptureFailed += new EventHandler<ExceptionRoutedEventArgs>(OnCaptureFailed);
+                captureSource.CaptureFailed += new EventHandler<ExceptionRoutedEventArgs>(OnCaptureFailed);                
                 if (videoCaptureDevice != null)
                 {
-                    videoRecorderBrush = new VideoBrush();
-                    videoRecorderBrush.SetSource(captureSource);
-                    viewfinderRectangle.Fill = videoRecorderBrush;
-                    captureSource.Start();
+                    videoRecorderBrush = new VideoBrush();                    
                 }
             }
         }
@@ -301,6 +304,9 @@ namespace DiversityPhone.View
         }
 
         #endregion
+
+        
+        
 
       
 

@@ -80,6 +80,14 @@ namespace DiversityPhone.ViewModels
             Play = new ReactiveCommand();
             Stop = new ReactiveCommand();
 
+            ModelByVisitObservable                
+                .Subscribe(m =>
+                    {
+                        RecordPresent = false;
+                        State = PlayStates.Idle;
+                        Uri = m.Uri;
+                    });                
+
             CanSave().Subscribe(CanSaveSubject);
         }        
 
