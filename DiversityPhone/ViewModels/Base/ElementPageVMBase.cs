@@ -58,19 +58,7 @@ namespace DiversityPhone.ViewModels
                 .CombineLatest(CurrentModelObservable, (_, m) => m)
                 .Publish();
             ModelByVisitObservable = modelByVisit;
-            modelByVisit.Connect();
-
-
-            //If the current element has been deleted in the meantime, navigate back.
-            Observable.CombineLatest(
-                this.OnActivation()
-                .Select(_ => Current),
-                Messenger.Listen<IElementVM<T>>(MessageContracts.DELETE),
-                (current, deleted) => current == deleted
-            )
-                .Where(current_deleted => current_deleted)
-                .Select(_ => Page.Previous)
-                .ToMessage(); 
+            modelByVisit.Connect();            
         }
     }
 }

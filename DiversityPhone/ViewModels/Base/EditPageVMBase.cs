@@ -67,6 +67,17 @@ namespace DiversityPhone.ViewModels
                 .Where(vm => vm != null)
                 .Where(vm => filter == null || filter(vm.Model))
                 .BindTo(this, x => x.Current);
+
+            //If the current element has been deleted in the meantime, navigate back.
+            Observable.CombineLatest(
+                this.OnActivation()
+                .Select(_ => Current),
+                Messenger.Listen<IElementVM<T>>(MessageContracts.DELETE),
+                (current, deleted) => current == deleted
+            )
+                .Where(current_deleted => current_deleted)
+                .Select(_ => Page.Previous)
+                .ToMessage(); 
         }
 
         protected virtual void UpdateModel() {}
