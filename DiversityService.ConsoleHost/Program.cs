@@ -11,7 +11,7 @@ namespace DiversityService.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Uri baseAddress = new Uri("http://132.180.195.58:1111/Service1.svc");
+            Uri baseAddress = new Uri("http://169.254.80.80:7091/Service1.svc");
             // Create the ServiceHost.
             using (ServiceHost host = new ServiceHost(typeof(DiversityService), baseAddress))
             {
@@ -25,14 +25,25 @@ namespace DiversityService.ConsoleHost
                 // no endpoints are explicitly configured, the runtime will create
                 // one endpoint per base address for each service contract implemented
                 // by the service.
-                host.Open();
 
-                Console.WriteLine("The service is ready at {0}", baseAddress);
-                Console.WriteLine("Press <Enter> to stop the service.");
-                Console.ReadLine();
+                try
+                {
+                    host.Open();
+                    Console.WriteLine("The service is ready at {0}", baseAddress);
+                    Console.WriteLine("Press <Enter> to stop the service.");
+                    Console.ReadLine();
 
-                // Close the ServiceHost.
-                host.Close();
+                    // Close the ServiceHost.
+                    host.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    Console.ReadLine();
+                }
+                
+
+                
             }
 
         }
