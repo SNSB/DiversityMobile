@@ -165,7 +165,7 @@ namespace DiversityPhone.Services
                     inv.Argument = getArgumentFromState();
                 Cleanup(inv.Argument);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //Ignore (assumed to be cleaned up)
             }

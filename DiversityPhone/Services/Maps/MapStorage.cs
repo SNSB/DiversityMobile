@@ -19,8 +19,9 @@ namespace DiversityPhone.Services
                 this.CreateDatabase();
         }
 
-        
-        public Table<Map> Maps; 
+#pragma warning disable 0649
+        public Table<Map> Maps;
+#pragma warning restore 0649    
     }
 
     public class MapStorageService : IMapStorageService

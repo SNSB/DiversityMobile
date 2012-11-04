@@ -245,7 +245,9 @@ namespace DiversityPhone.Services
                 if (!this.DatabaseExists())
                     this.CreateDatabase();
             }
+#pragma warning disable 0649
             public Table<TaxonList> TaxonLists;
+#pragma warning restore 0649
         }
 
         private class TaxonDataContext : DataContext
@@ -258,7 +260,9 @@ namespace DiversityPhone.Services
                 if (!this.DatabaseExists())
                     this.CreateDatabase();
             }
+#pragma warning disable 0649
             public Table<TaxonName> TaxonNames;
+#pragma warning restore 0649
         }
 
 

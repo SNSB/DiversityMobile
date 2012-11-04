@@ -290,7 +290,8 @@ namespace DiversityPhone.Services
                 if (!this.DatabaseExists())
                     this.CreateDatabase();
             }
-            
+
+            #pragma warning disable 0649
             public Table<Analysis> Analyses;
             public Table<AnalysisResult> AnalysisResults;
             public Table<AnalysisTaxonomicGroup> AnalysisTaxonomicGroups;
@@ -301,6 +302,7 @@ namespace DiversityPhone.Services
             public Table<Property> Properties;
 
             public Table<Qualification> Qualifications;
+            #pragma warning restore 0649
         }
     }
 }
