@@ -19,6 +19,7 @@ using System.Globalization;
 using DiversityPhone.Model;
 using ReactiveUI;
 using DiversityPhone.View.Appbar;
+using System.Windows.Data;
 
 namespace DiversityPhone.View
 {
@@ -29,7 +30,7 @@ namespace DiversityPhone.View
         private EditPageSaveEditButton _appbarupd;
         private EditPageDeleteButton _delete;
 
-        private IList<Control> _toStore;
+        private BindingExpression _DescriptionBinding;
        
         public EditES()
         {
@@ -40,26 +41,15 @@ namespace DiversityPhone.View
             _appbarupd = new EditPageSaveEditButton(this.ApplicationBar, VM);
 
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
-            if (VM != null)
-            {
-                this._toStore = new List<Control> { this.DescTB };
-                DPControlBackGround.adjustStoreBackgroundColors(_toStore);               
-                                
-            }          
-        }
-        private void SeriesCodeTB_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (VM != null)
-                VM.SeriesCode = SeriesCodeTB.Text;
-        }
+
+            _DescriptionBinding = DescTB.GetBindingExpression(TextBox.TextProperty);
+            DPControlBackGround.setTBBackgroundColor(DescTB);         
+        }       
 
         private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (VM != null)
-            {
-                VM.Description = DescTB.Text;
-                DPControlBackGround.setTBBackgroundColor(DescTB);
-            }
+            _DescriptionBinding.UpdateSource();
+            DPControlBackGround.setTBBackgroundColor(DescTB);
         }
 
        

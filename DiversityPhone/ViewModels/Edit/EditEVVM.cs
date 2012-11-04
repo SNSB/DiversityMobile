@@ -74,11 +74,11 @@ namespace DiversityPhone.ViewModels
 
             ModelByVisitObservable
                 .Select(ev => ev.LocalityDescription)
-                .BindTo(this, x => x.LocalityDescription);
+                .Subscribe(x => LocalityDescription = x);
 
             ModelByVisitObservable
                 .Select(ev => ev.HabitatDescription)
-                .BindTo(this, x => x.HabitatDescription);
+                .Subscribe(x => HabitatDescription = x);
 
             CanSave().Subscribe(CanSaveSubject.OnNext);
         }

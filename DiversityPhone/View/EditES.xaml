@@ -37,7 +37,7 @@
                     <TextBlock Text="Description"/>
                     <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding IsEditable}" Background="#BFFFFFFF" />
                     <TextBlock Text="SeriesCode"/>
-                    <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}" TextChanged="SeriesCodeTB_TextChanged" IsEnabled="{Binding IsEditable}" />
+                    <TextBox x:Name="SeriesCodeTB" Text="{Binding SeriesCode, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
                     <TextBlock Text="Series Start"/>
                     <TextBox IsReadOnly="True" Text="{Binding SeriesStart, Mode=OneWay}" IsEnabled="{Binding IsEditable}"/>
                     <Grid Height="71">

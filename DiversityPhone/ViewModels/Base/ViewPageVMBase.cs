@@ -12,7 +12,7 @@ namespace DiversityPhone.ViewModels
             Messenger.Listen<IElementVM<T>>(MessageContracts.VIEW)
                 .Where(vm => vm != null && vm.Model != null)
                 .Where(vm => filter == null || filter(vm.Model))
-                .BindTo(this, x => x.Current);
+                .Subscribe(x => Current = x);
         }
     }
 }

@@ -66,15 +66,15 @@
 
             ModelByVisitObservable
                 .Select(es => es.Description ?? String.Empty)
-                .BindTo(this, x => x.Description);
+                .Subscribe(x => Description = x);
 
             ModelByVisitObservable
                 .Select(es => es.SeriesCode)
-                .BindTo(this, x => x.SeriesCode);
+                .Subscribe(x => SeriesCode = x);
 
             ModelByVisitObservable
                 .Select(es => es.SeriesEnd)
-                .BindTo(this, x => x.SeriesEnd);
+                .Subscribe(x => SeriesEnd = x);
 
             _SeriesStart = this.ObservableToProperty(
                 CurrentModelObservable
@@ -84,7 +84,7 @@
 
             (FinishSeries = new ReactiveCommand(CurrentModelObservable.Select(es => es.SeriesEnd == null)))            
                 .Select(_ => DateTime.Now as DateTime?)
-                .BindTo(this, x => x.SeriesEnd);
+                .Subscribe(x => SeriesEnd = x);
 
             Save
                 .Where(_ => _SeriesEnd != null)

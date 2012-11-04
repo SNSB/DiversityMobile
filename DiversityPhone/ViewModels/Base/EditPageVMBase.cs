@@ -66,7 +66,7 @@ namespace DiversityPhone.ViewModels
             Messenger.Listen<IElementVM<T>>(MessageContracts.EDIT)
                 .Where(vm => vm != null)
                 .Where(vm => filter == null || filter(vm.Model))
-                .BindTo(this, x => x.Current);
+                .Subscribe(x => Current = x);
 
             //If the current element has been deleted in the meantime, navigate back.
             Observable.CombineLatest(

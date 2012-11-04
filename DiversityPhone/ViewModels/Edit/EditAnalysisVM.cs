@@ -80,14 +80,14 @@ namespace DiversityPhone.ViewModels
                             .Where(an => an.AnalysisID == iuan.AnalysisID)
                             .FirstOrDefault())
                 .Where(x => x != null)
-                .BindTo(Analyses, x => x.SelectedItem);
+                .Subscribe(x => Analyses.SelectedItem = x);
                         
             Analyses
                 .Where(an => an != null)
                 .SelectMany(selectedAN =>
                     {
-                        if(selectedAN != NoAnalysis) 
-                            return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID), Scheduler.ThreadPool);
+                        if(selectedAN != NoAnalysis)
+                            return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID), ThreadPoolScheduler.Instance);
                         else
                             return Observable.Return(Enumerable.Empty<AnalysisResult>().ToList() as IList<AnalysisResult>);
                     })
@@ -102,7 +102,7 @@ namespace DiversityPhone.ViewModels
                     .Where(res => res.Result == iuan.AnalysisResult)
                     .FirstOrDefault())
                 .Where(x => x != null)
-                .BindTo(Results, x => x.SelectedItem);
+                .Subscribe(x => Results.SelectedItem = x);
 
             
 
@@ -121,7 +121,7 @@ namespace DiversityPhone.ViewModels
                     .Where(custom => !custom)
                     .Select(_ => String.Empty)
                 )
-                .BindTo(this, x => x.CustomResult);
+                .Subscribe(x => CustomResult = x);
 
             Messenger.RegisterMessageSource(
               Save

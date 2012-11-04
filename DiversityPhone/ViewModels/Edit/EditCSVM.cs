@@ -27,7 +27,7 @@ namespace DiversityPhone.ViewModels
             //Nur Veränderbare Properties oder abgeleitete so binden
             ModelByVisitObservable                    
                 .Select(m => m.AccessionNumber != null ? m.AccessionNumber : "")
-                .BindTo(this, x=>x.AccessionNumber);
+                .Subscribe(x => AccessionNumber = x);
 
             CanSave().Subscribe(CanSaveSubject.OnNext);
         }

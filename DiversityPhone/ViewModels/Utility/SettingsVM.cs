@@ -68,7 +68,7 @@ namespace DiversityPhone.ViewModels.Utility
             _ModelSubject
                 .Where(x => x != null)
                 .Select(m => m.UseGPS)
-                .BindTo(this, x => x.UseGPS);                      
+                .Subscribe(x => UseGPS = x);                      
 
             Reset = new ReactiveCommand();
             Messenger.RegisterMessageSource(

@@ -121,7 +121,7 @@ namespace DiversityPhone.ViewModels
                         stream.Close();
                         return img;
                     })
-                .BindTo(this, x => x.MapImage);
+                .Subscribe(x => MapImage = x);
 
             var current_series = Messenger.Listen<ILocationOwner>(MessageContracts.VIEW);
 
@@ -142,7 +142,7 @@ namespace DiversityPhone.ViewModels
                 .Where(pair => pair.Series != null)
                 .SelectMany(pair => 
                     {
-                        return Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(Scheduler.ThreadPool) //Fetch geopoints asynchronously on Threadpool thread
+                        return Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
                         .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.OwnerID)) //Listen to new Geopoints that are added to the current tour
                         .Select(gp => pair.Map.PercentilePositionOnMap(gp))
                         .TakeUntil(series_and_map);

@@ -140,7 +140,7 @@ namespace DiversityPhone.ViewModels
                     .Select(m => m.OnlyObserved)
                     .StartWith(false),
                     (isobs, onlyobs) => isobs || onlyobs)
-                .BindTo(this, vm => vm.OnlyObserved);
+                .Subscribe(x => OnlyObserved = x);
 
             _IsObservation = this.ObservableToProperty(
                 isObservation, vm => vm.IsObservation);
@@ -148,7 +148,7 @@ namespace DiversityPhone.ViewModels
             ModelByVisitObservable
                 .Select(m => m.WorkingName)
                 .Where(wn => !string.IsNullOrWhiteSpace(wn))
-                .BindTo(this, x => x.QueryString);
+                .Subscribe(x => QueryString = x);
             #endregion
 
             #region Vocabulary
@@ -199,15 +199,15 @@ namespace DiversityPhone.ViewModels
             Identification.ItemsObservable               
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.IdentificationUri != null),
-                (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())                
-                .BindTo(Identification, x => x.SelectedItem);
+                (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())
+                .Subscribe(x => Identification.SelectedItem = x);
             
             
             TaxonomicGroup.ItemsObservable                
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.TaxonomicGroup != null),
                 (tgs,m) => tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup))
-                .BindTo(TaxonomicGroup, x => x.SelectedItem);
+                .Subscribe(x => TaxonomicGroup.SelectedItem = x);
 
             
             RelationshipType.ItemsObservable                
@@ -215,14 +215,14 @@ namespace DiversityPhone.ViewModels
                 .CombineLatest(ModelByVisitObservable.Where(m => m.RelationType != null),
                 (rels,m) => rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
                 .Where(x => x != null)
-                .BindTo(RelationshipType, x => x.SelectedItem);
+                .Subscribe(x => RelationshipType.SelectedItem = x);
 
             Qualifications.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.Qualification != null),
                 (qualis, m) => qualis.FirstOrDefault(q => q.Code == Current.Model.Qualification))
                 .Where(x => x != null)
-                .BindTo(Qualifications, x => x.SelectedItem);
+                .Subscribe(x => Qualifications.SelectedItem = x);
             #endregion          
 
             Messenger.RegisterMessageSource(

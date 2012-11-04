@@ -37,7 +37,7 @@
                      TextChanged="LocalityTB_TextChanged" IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Habitat Description"/>
             <TextBox x:Name="HabitatTB" Text="{Binding HabitatDescription, Mode=TwoWay}" 
-                     TextChanged="HabitatTB_TextChanged" IsEnabled="{Binding IsEditable}"/>
+                     IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Collection Date"/>
             <TextBox IsReadOnly="True" Text="{Binding CollectionDate, Mode=OneWay}"/>            
         </StackPanel>

@@ -45,7 +45,7 @@ namespace DiversityPhone.ViewModels
             Messenger
                 .Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW)
                 .Where(vm => vm.Model.MediaType == MediaType.Image)
-                .BindTo(this, x => x.Current);
+                .Subscribe(x => Current = x);
 
             Take = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
 
