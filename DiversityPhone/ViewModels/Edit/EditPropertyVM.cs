@@ -11,13 +11,14 @@ using DiversityPhone.Services;
 using Funq;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditPropertyVM : EditPageVMBase<EventProperty>
-    {        
+    {
 
-        private ObservableAsyncMRUCache<int, IReactiveCollection<PropertyName>> _PropertyNamesCache;
+        private ObservableAsyncMRUCache<int, IObservable<PropertyName>> _PropertyNamesCache;
         private ReactiveCollection<Property> _Properties;
         private BehaviorSubject<IEnumerable<int>> _UsedProperties;
 
@@ -74,14 +75,17 @@ namespace DiversityPhone.ViewModels
                     .ObserveOnDispatcher()
                     .CreateCollection();
 
-            _PropertyNamesCache = new ObservableAsyncMRUCache<int, IReactiveCollection<PropertyName>>(
+            _PropertyNamesCache = new ObservableAsyncMRUCache<int, IObservable<PropertyName>>(
                 propertyID => 
                     Observable.Start(
                     () => Vocabulary
                     .getPropertyNames(propertyID)
                     .ToObservable(Scheduler.ThreadPool)
                     .ObserveOnDispatcher()
-                    .CreateCollection() as IReactiveCollection<PropertyName>), 3);
+                    .Replay())
+                    .Do(s => s.Connect())
+                    .Select(s => s as IObservable<PropertyName>)
+                    , 3);
 
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
             
@@ -117,7 +121,7 @@ namespace DiversityPhone.ViewModels
                     {
                         return
                             (prop == null || prop == NoProperty)
-                            ? Observable.Return(new ReactiveCollection<PropertyName>(Enumerable.Repeat(NoValue, 1)) as IReactiveCollection<PropertyName>)
+                            ? Observable.Return(Observable.Return(NoValue))
                             : _PropertyNamesCache.AsyncGet(prop.PropertyID);
                     })                    
                     .CombineLatest(
@@ -128,23 +132,25 @@ namespace DiversityPhone.ViewModels
                         .DistinctUntilChanged(),
                         (props, filter) => 
                         {
+                            var separators = new char[]{' ', '-'};
                             const int max_values = 10;
-                            int itemcount = 0;
-                            return props.CreateDerivedCollection(
-                                x => x, 
-                                //show only selected value and matching values, and only up to max_values
-                                x => (x.PropertyUri == Current.Model.PropertyUri || x.DisplayText.ToLowerInvariant().Contains(filter)) && itemcount++ < max_values, 
-                                (x,y) => x.PropertyID.CompareTo(y.PropertyID));
+                            return (from x in props
+                                    where x.PropertyUri == Current.Model.PropertyUri  //Always show currently selected value
+                                         || (from word in x.DisplayText.ToLowerInvariant().Split(separators) //And all matching ones
+                                             select word.StartsWith(filter)).Any(v => v)
+                                    select x)
+                                    .Take(max_values)
+                                    .ToList()
+                                    .First();
                         })
-                        //Reselect value that was selected
-                    .Do(values => 
-                        values
-                        .ItemsAdded
-                        .Where(item => item.PropertyUri == Current.Model.PropertyUri)
-                        .Subscribe(value => Values.SelectedItem = value)
-                        )
+                        //Reselect value that was selected                    
                     .Select(coll => coll as IList<PropertyName>)
                     .ObserveOnDispatcher()
+                    .Do(values => Values.SelectedItem =
+                        values
+                            .Where(item => item.PropertyUri == Current.Model.PropertyUri)
+                            .FirstOrDefault()
+                        )
                 .Subscribe(Values);
           
 
