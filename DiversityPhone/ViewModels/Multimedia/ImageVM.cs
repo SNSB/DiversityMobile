@@ -61,7 +61,7 @@ namespace DiversityPhone.ViewModels
                             Observable.FromEventPattern<PhotoResult>(h => capture.Completed += h, h => capture.Completed -= h)
                             .Select(ev => ev.EventArgs)
                             .Take(1)
-                            .Catch(Observable.Empty<PhotoResult>())
+                            .Catch(Observable.Return<PhotoResult>(null))
                             .Replay(1);
                         results.Connect();
                         try
@@ -70,13 +70,15 @@ namespace DiversityPhone.ViewModels
                         }
                         catch (InvalidOperationException)
                         {
-                            return Observable.Empty<PhotoResult>();
+                            return Observable.Return<PhotoResult>(null);
                         }
                         return results;
-                    })
-                .Where(photo => photo.TaskResult == TaskResult.OK)
+                    })                
                 .Select(res =>
                     {
+                        if( res == null || res.TaskResult != TaskResult.OK)
+                            return null;
+
                         var img = new BitmapImage();
                         img.SetSource(res.ChosenPhoto);
                         return img;
