@@ -13,6 +13,7 @@ using System.Reactive.Disposables;
 using Funq;
 using DiversityPhone.Services.BackgroundTasks;
 using DiversityPhone.DiversityService;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -82,9 +83,16 @@ namespace DiversityPhone.ViewModels.Utility
                         if (res == DialogResult.OKYes)
                             OnReset();
                     }
-                    )));            
+                    )));
+
+            var setting_changed =
+            this.ObservableForProperty(x => x.UseGPS).Select(_ => Unit.Default)
+            .Merge(_Model.Select(_ => Unit.Default))
+            .Merge(Save.Select(_ => Unit.Default))                                
+                .Where(_ => Model != null)
+                .Select(_ => Model.UseGPS != UseGPS);
              
-            Save = new ReactiveCommand();
+            Save = new ReactiveCommand(setting_changed);
             Messenger.RegisterMessageSource(
                 Save
                 .Do(_ => saveModel())
