@@ -21,24 +21,38 @@ namespace DiversityPhone.View
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
         private EditPageSaveEditButton _btn;
-        private RelativeLocationBinding _currentLoc, _currentPos;
+        private RelativeLocationBinding _currentLoc, _currentPos;       
 
-        // these two fully define the zoom state:
-        private double TotalImageScale = 1d;
-        private Point ImagePosition = new Point(0, 0);
 
+        // these two fields fully define the zoom state:
+        private double TotalImageScale
+        {
+            get { return VM.ImageScale; }
+            set { VM.ImageScale = value; }
+        }
+        private Point ImagePosition
+        {
+            get { return VM.ImageOffset; }
+            set { VM.ImageOffset = value; }
+        }
+
+
+        private const double MAX_IMAGE_ZOOM = 10;
         private Point _oldFinger1;
         private Point _oldFinger2;
         private double _oldScaleFactor;
 
-        private void OnPinchStarted(object s, PinchStartedGestureEventArgs e)
-        {
-            _oldFinger1 = e.GetPosition(mapImg, 0);
-            _oldFinger2 = e.GetPosition(mapImg, 1);
-            _oldScaleFactor = 1;
 
-            currentLocalizationImg.Visibility = Visibility.Collapsed;
-            currentPosImg.Visibility = Visibility.Collapsed;
+        #region Event handlers
+
+        /// <summary>
+        /// Initializes the zooming operation
+        /// </summary>
+        private void OnPinchStarted(object sender, PinchStartedGestureEventArgs e)
+        {
+            _oldFinger1 = e.GetPosition(ImgZoom, 0);
+            _oldFinger2 = e.GetPosition(ImgZoom, 1);
+            _oldScaleFactor = 1;
         }
 
         private void OnPinchCompleted(object s, PinchGestureEventArgs args)
@@ -49,15 +63,17 @@ namespace DiversityPhone.View
                 _currentPos.updateLocation();
         }
 
-        private void OnPinchDelta(object s, PinchGestureEventArgs e)
+        /// <summary>
+        /// Computes the scaling and translation to correctly zoom around your fingers.
+        /// </summary>
+        private void OnPinchDelta(object sender, PinchGestureEventArgs e)
         {
             var scaleFactor = e.DistanceRatio / _oldScaleFactor;
-
-            if (scaleFactor > 3.0f || scaleFactor < 0.5f) 
+            if (!IsScaleValid(scaleFactor))
                 return;
 
-            var currentFinger1 = e.GetPosition(mapImg, 0);
-            var currentFinger2 = e.GetPosition(mapImg, 1);
+            var currentFinger1 = e.GetPosition(ImgZoom, 0);
+            var currentFinger2 = e.GetPosition(ImgZoom, 1);
 
             var translationDelta = GetTranslationDelta(
                 currentFinger1,
@@ -71,33 +87,48 @@ namespace DiversityPhone.View
             _oldFinger2 = currentFinger2;
             _oldScaleFactor = e.DistanceRatio;
 
-            UpdateImage(scaleFactor, translationDelta);
+            UpdateImageScale(scaleFactor);
+            UpdateImagePosition(translationDelta);
         }
 
-        private void UpdateImage(double scaleFactor, Point delta)
+        /// <summary>
+        /// Moves the image around following your finger.
+        /// </summary>
+        private void OnDragDelta(object sender, DragDeltaGestureEventArgs e)
         {
-            TotalImageScale *= scaleFactor;
-            ImagePosition = new Point(ImagePosition.X + delta.X, ImagePosition.Y + delta.Y);
+            var translationDelta = new Point(e.HorizontalChange, e.VerticalChange);
 
-            var transform = (CompositeTransform)mapImg.RenderTransform;
-            transform.ScaleX = TotalImageScale;
-            transform.ScaleY = TotalImageScale;
-            transform.TranslateX = ImagePosition.X;
-            transform.TranslateY = ImagePosition.Y;
+            if (IsDragValid(1, translationDelta))
+                UpdateImagePosition(translationDelta);
         }
 
+        /// <summary>
+        /// Resets the image scaling and position
+        /// </summary>
+        private void OnDoubleTap(object sender, GestureEventArgs e)
+        {
+            ResetImagePosition();
+        }
+
+        #endregion
+
+        #region Utils
+
+        /// <summary>
+        /// Computes the translation needed to keep the image centered between your fingers.
+        /// </summary>
         private Point GetTranslationDelta(
             Point currentFinger1, Point currentFinger2,
             Point oldFinger1, Point oldFinger2,
             Point currentPosition, double scaleFactor)
         {
             var newPos1 = new Point(
-                currentFinger1.X + (currentPosition.X - oldFinger1.X) * scaleFactor,
-                currentFinger1.Y + (currentPosition.Y - oldFinger1.Y) * scaleFactor);
+             currentFinger1.X + (currentPosition.X - oldFinger1.X) * scaleFactor,
+             currentFinger1.Y + (currentPosition.Y - oldFinger1.Y) * scaleFactor);
 
             var newPos2 = new Point(
-                currentFinger2.X + (currentPosition.X - oldFinger2.X) * scaleFactor,
-                currentFinger2.Y + (currentPosition.Y - oldFinger2.Y) * scaleFactor);
+             currentFinger2.X + (currentPosition.X - oldFinger2.X) * scaleFactor,
+             currentFinger2.Y + (currentPosition.Y - oldFinger2.Y) * scaleFactor);
 
             var newPos = new Point(
                 (newPos1.X + newPos2.X) / 2,
@@ -107,13 +138,103 @@ namespace DiversityPhone.View
                 newPos.X - currentPosition.X,
                 newPos.Y - currentPosition.Y);
         }
-        
+
+        /// <summary>
+        /// Updates the scaling factor by multiplying the delta.
+        /// </summary>
+        private void UpdateImageScale(double scaleFactor)
+        {
+            TotalImageScale *= scaleFactor;
+            ApplyScale();
+        }
+
+        /// <summary>
+        /// Applies the computed scale to the image control.
+        /// </summary>
+        private void ApplyScale()
+        {
+            ((CompositeTransform)ImgZoom.RenderTransform).ScaleX = TotalImageScale;
+            ((CompositeTransform)ImgZoom.RenderTransform).ScaleY = TotalImageScale;
+        }
+
+        /// <summary>
+        /// Updates the image position by applying the delta.
+        /// Checks that the image does not leave empty space around its edges.
+        /// </summary>
+        private void UpdateImagePosition(Point delta)
+        {
+            var newPosition = new Point(ImagePosition.X + delta.X, ImagePosition.Y + delta.Y);
+
+            if (newPosition.X > 0) newPosition.X = 0;
+            if (newPosition.Y > 0) newPosition.Y = 0;
+
+            if ((ImgZoom.ActualWidth * TotalImageScale) + newPosition.X < ImgZoom.ActualWidth)
+                newPosition.X = ImgZoom.ActualWidth - (ImgZoom.ActualWidth * TotalImageScale);
+
+            if ((ImgZoom.ActualHeight * TotalImageScale) + newPosition.Y < ImgZoom.ActualHeight)
+                newPosition.Y = ImgZoom.ActualHeight - (ImgZoom.ActualHeight * TotalImageScale);
+
+            ImagePosition = newPosition;
+
+            ApplyPosition();
+        }
+
+        /// <summary>
+        /// Applies the computed position to the image control.
+        /// </summary>
+        private void ApplyPosition()
+        {
+            ((CompositeTransform)ImgZoom.RenderTransform).TranslateX = ImagePosition.X;
+            ((CompositeTransform)ImgZoom.RenderTransform).TranslateY = ImagePosition.Y;
+            if(_currentLoc != null)
+                _currentLoc.updateLocation();
+            if(_currentPos != null)
+                _currentPos.updateLocation();
+        }
+
+        /// <summary>
+        /// Resets the zoom to its original scale and position
+        /// </summary>
+        private void ResetImagePosition()
+        {
+            TotalImageScale = 1;
+            ImagePosition = new Point(0, 0);
+            ApplyScale();
+            ApplyPosition();
+        }
+
+        /// <summary>
+        /// Checks that dragging by the given amount won't result in empty space around the image
+        /// </summary>
+        private bool IsDragValid(double scaleDelta, Point translateDelta)
+        {
+            if (ImagePosition.X + translateDelta.X > 0 || ImagePosition.Y + translateDelta.Y > 0)
+                return false;
+
+            if (((ImgZoom.ActualWidth * TotalImageScale * scaleDelta) + (ImagePosition.X + translateDelta.X) < ImgZoom.ActualWidth) ^
+                ((ImgZoom.ActualHeight * TotalImageScale * scaleDelta) + (ImagePosition.Y + translateDelta.Y) < ImgZoom.ActualHeight))
+                return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Tells if the scaling is inside the desired range
+        /// </summary>
+        private bool IsScaleValid(double scaleDelta)
+        {
+            return (TotalImageScale * scaleDelta >= 1) && (TotalImageScale * scaleDelta <= MAX_IMAGE_ZOOM);
+        }
+
+        #endregion     
+
+       
         public ViewMap()
         {
             InitializeComponent();
 
             _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);
-            mapImg.RenderTransform = new CompositeTransform();
+            ImgZoom.RenderTransform = new CompositeTransform() { CenterX = 0, CenterY = 0 };
         }
 
         private void SelectMap_Click(object sender, EventArgs e)
@@ -131,7 +252,7 @@ namespace DiversityPhone.View
                 (img, p) =>
                 {
                     if (p.HasValue && img != null)
-                        return new Point() { X = p.Value.X * img.PixelWidth, Y = p.Value.Y * img.PixelHeight } as Point?;
+                        return new Point() { X = p.Value.X * ImgZoom.ActualWidth, Y = p.Value.Y * ImgZoom.ActualHeight } as Point?;
                     else
                         return null;
                 });     
@@ -144,17 +265,18 @@ namespace DiversityPhone.View
 
             var s = new CompositeDisposable(additionallocalization_images as IDisposable);
 
-            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value().StartWith(VM.MapImage).Where(img => img != null);        
-
-            
-            
-            s.Add(image_obs.Subscribe(img => mapImg.Source = img));
+            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value()              
+                .StartWith(VM.MapImage).Where(img => img != null);
 
 
-            _currentPos = new RelativeLocationBinding(currentPosImg, mapImg, ScaleToImage(VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation), image_obs));
+
+            s.Add(image_obs.Subscribe(img => { ImgZoom.Source = img; }));
+
+
+            _currentPos = new RelativeLocationBinding(currentPosImg, ImgZoom, ScaleToImage(VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation), image_obs));
             s.Add(_currentPos);
 
-            _currentLoc = new RelativeLocationBinding(currentLocalizationImg, mapImg, ScaleToImage( VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization), image_obs));
+            _currentLoc = new RelativeLocationBinding(currentLocalizationImg, ImgZoom, ScaleToImage(VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization), image_obs));
             s.Add(_currentLoc);
 
             s.Add(VM.AdditionalLocalizations.ToObservable()
@@ -165,7 +287,7 @@ namespace DiversityPhone.View
                     if(source != null)
                     {
                         var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
-                        var binding = new RelativeLocationBinding(img, mapImg) { RelativeLocation = it };
+                        var binding = new RelativeLocationBinding(img, ImgZoom) { RelativeLocation = it };
                         additionallocalization_images.Add(binding);
                         MainCanvas.Children.Add(img);
                     }
@@ -192,20 +314,19 @@ namespace DiversityPhone.View
 
         private void MapGrid_Tap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            var point = e.GetPosition(mapImg);
-            point.X /= mapImg.ActualWidth;
-            point.Y /= mapImg.ActualHeight;
+            var point = e.GetPosition(ImgZoom);
+            point.X /= ImgZoom.ActualWidth;
+            point.Y /= ImgZoom.ActualHeight;
             if(VM != null && VM.SetLocation.CanExecute(point))
                 VM.SetLocation.Execute(point);
         }
 
         private void MapGrid_DoubleTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            double x = (Canvas.GetLeft(currentPosImg) + currentPosImg.ActualWidth / 2) - scrollViewer.ViewportWidth / 2;
-            double y = (Canvas.GetTop(currentPosImg) + currentPosImg.ActualHeight / 2) - scrollViewer.ViewportHeight / 2;
+            double x = (Canvas.GetLeft(currentPosImg) + currentPosImg.ActualWidth / 2);
+            double y = (Canvas.GetTop(currentPosImg) + currentPosImg.ActualHeight / 2);
 
-            scrollViewer.ScrollToHorizontalOffset(x);
-            scrollViewer.ScrollToVerticalOffset(y);
+            
         }
     }
 }

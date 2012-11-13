@@ -13,7 +13,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}" 
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}" 
-    SupportedOrientations="Portrait" Orientation="Portrait"
+    SupportedOrientations="Portrait" Orientation="Portrait" 
     mc:Ignorable="d" 
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
@@ -23,46 +23,50 @@
     </phone:PhoneApplicationPage.Resources>
     
     <Grid Background="Transparent">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Image Name="ImgZoom"
+                Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"                 
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Stretch="Uniform" 
+                Width = "480" Height = "696" RenderTransformOrigin="0,0"/>
 
-        <TextBlock Grid.Row="0" 
-			       Text="{Binding CurrentMap.Description}" 
-    		       Margin="{StaticResource PhoneHorizontalMargin}" 
-    		       Style="{StaticResource PhoneTextNormalStyle}"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Top"/>
-        <vw:InfoLabel Grid.Row="1" Text="Tap to set new location!" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
-        <ScrollViewer Grid.Row="2"
-                      Width="Auto"
-                      Height="Auto"
-		              Name="scrollViewer"
-                      Tap="MapGrid_Tap" DoubleTap="MapGrid_DoubleTap"
-        	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-        	          ScrollViewer.VerticalScrollBarVisibility="Visible">            
+        <Grid  Background="Transparent" Tap="MapGrid_Tap" >
             <toolkit:GestureService.GestureListener>
-                <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="OnPinchStarted" PinchCompleted="OnPinchCompleted"/>
+                <toolkit:GestureListener 
+                    PinchDelta="OnPinchDelta" 
+                    PinchStarted="OnPinchStarted" 
+                    PinchCompleted="OnPinchCompleted"
+                    DragDelta="OnDragDelta"
+                    DoubleTap="OnDoubleTap"/>
             </toolkit:GestureService.GestureListener>
-            <Grid Name="ImageGrid">
-                <Image Name="mapImg" 
-                    Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
-                    Stretch="None"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"/>
-                <Canvas Name="MainCanvas" Background="Transparent">
-                    <Image Source="/Images/GpsPosition.png"
+            
+            <Canvas Name="MainCanvas">
+
+                <Image Source="/Images/GpsPosition.png"
+                            Height="32" Width="32"
                             Name="currentPosImg"
                             CacheMode="BitmapCache"/>
 
-                    <Image Source="/Images/ItemPoint.png"
-                            Name="currentLocalizationImg"
-                            CacheMode="BitmapCache"/>
-                </Canvas>
-            </Grid>
-        </ScrollViewer>
+                <Image Source="/Images/ItemPoint.png"
+                        Name="currentLocalizationImg"
+                        Height="32" Width="32"
+                        CacheMode="BitmapCache"/>
+            </Canvas>
+        </Grid>
+
+        <Grid Background="Black" 
+              Height="Auto"
+              VerticalAlignment="Top">
+            <TextBlock Text="{Binding CurrentMap.Description}"
+    		            Style="{StaticResource PhoneTextNormalStyle}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+            <vw:InfoLabel Text="Tap to set new location!" 
+                      Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
+                      Height="Auto"
+                      VerticalAlignment="Top"/>
+        </Grid>
+        
         
     </Grid>
 

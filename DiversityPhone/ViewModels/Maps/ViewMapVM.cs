@@ -18,9 +18,6 @@ namespace DiversityPhone.ViewModels
 {
     public class ViewMapVM : PageVMBase, ISavePageVM
     {
-        private const double SCALEMIN = 0.2;
-        private const double SCALEMAX = 3;
-
         private IMapStorageService MapStorage;
         private ILocationService Location;
         private IFieldDataService Storage;
@@ -32,6 +29,10 @@ namespace DiversityPhone.ViewModels
 
         public IElementVM<Map> CurrentMap { get { return _CurrentMap.Value; } }
         private ObservableAsPropertyHelper<IElementVM<Map>> _CurrentMap;
+
+        public double ImageScale { get; set; }
+
+        public Point ImageOffset { get; set; }
         
         public bool IsEditable { get { return _IsEditable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsEditable;
@@ -99,6 +100,9 @@ namespace DiversityPhone.ViewModels
             MapStorage = ioc.Resolve<IMapStorageService>();
             Location = ioc.Resolve<ILocationService>();
             Storage = ioc.Resolve<IFieldDataService>();
+
+            ImageScale = 1.0;
+            ImageOffset = new Point();
 
             SelectMap = new ReactiveCommand();
             SelectMap

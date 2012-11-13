@@ -66,7 +66,7 @@ namespace DiversityPhone.Services
         {
             var page = _frame.Content as PhoneApplicationPage;
             
-            if (page.DataContext is PageVMBase)
+            if (page.DataContext is PageVMBase && _IsNavigating)
             {
                 var vm = page.DataContext as PageVMBase;
                 vm.Activate();

@@ -23,6 +23,8 @@ namespace DiversityPhone.View
             {
                 if (_RelativeLocation != value)
                 {
+                    if (subscription.IsDisposed)
+                        return;
                     _RelativeLocation = value;
                     updateLocation();
                 }
@@ -61,7 +63,8 @@ namespace DiversityPhone.View
             if (subscription.IsDisposed)
                 return;
 
-            var transform = canvas_item.RenderTransform ?? new TranslateTransform() { X = 0, Y = 0 };           
+            var transform = canvas_item.RenderTransform ?? new TranslateTransform() { X = 0, Y = 0 }; 
+            
 
             var result = (RelativeLocation.HasValue) ?  transform.Transform(RelativeLocation.Value) as Point? : null;
             if (!result.HasValue)

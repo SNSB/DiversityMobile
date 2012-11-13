@@ -38,7 +38,7 @@
           <!--endpoint address="http://169.254.80.80:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" /-->
-          <endpoint address="http://192.168.237.218:7091/Service1.svc" binding="basicHttpBinding"
+          <endpoint address="http://192.168.1.8:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
