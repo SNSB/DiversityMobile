@@ -10,9 +10,9 @@
     xmlns:vw="clr-namespace:DiversityPhone.View"
     Loaded="PhoneApplicationPage_Loaded"
     Unloaded="PhoneApplicationPage_Unloaded"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}" 
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"
+    Foreground="{StaticResource PhoneForegroundBrush}" 
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" 
     shell:SystemTray.IsVisible="True"
@@ -40,33 +40,30 @@
                       Width="Auto"
                       Height="Auto"
 		              Name="scrollViewer"
+                      Tap="MapGrid_Tap" DoubleTap="MapGrid_DoubleTap"
         	          ScrollViewer.HorizontalScrollBarVisibility="Visible" 
-        	          ScrollViewer.VerticalScrollBarVisibility="Visible">
-            <Grid Name="MapGrid"
-                  Tap="MapGrid_Tap" DoubleTap="MapGrid_DoubleTap">
-                <toolkit:GestureService.GestureListener>
-                    <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="OnPinchStarted" />
-                </toolkit:GestureService.GestureListener>
-                <Image Name="mapImg"   
-                       Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
-                       Stretch="None"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top">
-                    <Image.RenderTransform>
-                        <ScaleTransform x:Name="mapTransform"/>
-                    </Image.RenderTransform>
-                </Image>
-                <Canvas Name="MainCanvas">                    
+        	          ScrollViewer.VerticalScrollBarVisibility="Visible">            
+            <toolkit:GestureService.GestureListener>
+                <toolkit:GestureListener PinchDelta="OnPinchDelta" PinchStarted="OnPinchStarted" PinchCompleted="OnPinchCompleted"/>
+            </toolkit:GestureService.GestureListener>
+            <Grid Name="ImageGrid">
+                <Image Name="mapImg" 
+                    Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
+                    Stretch="None"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"/>
+                <Canvas Name="MainCanvas" Background="Transparent">
                     <Image Source="/Images/GpsPosition.png"
-                           Name="currentPosImg"
-                           CacheMode="BitmapCache"/>
+                            Name="currentPosImg"
+                            CacheMode="BitmapCache"/>
 
                     <Image Source="/Images/ItemPoint.png"
-                           Name="currentLocalizationImg"
-                           CacheMode="BitmapCache"/>
+                            Name="currentLocalizationImg"
+                            CacheMode="BitmapCache"/>
                 </Canvas>
             </Grid>
         </ScrollViewer>
+        
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>

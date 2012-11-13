@@ -29,46 +29,41 @@ namespace DiversityPhone.View
             }                
         }
 
-        private Point _TargetSize = new Point(0,0);
-        public Point TargetSize
-        {
-            get { return _TargetSize; }
-            set
-            {
-                if (_TargetSize != value)
-                {
-                    _TargetSize = value;
-                    updateLocation();
-                }
-            }
-        }
-
-        FrameworkElement item;        
+        FrameworkElement item, canvas_item;
         CompositeDisposable subscription = new CompositeDisposable();
 
-        public RelativeLocationBinding(FrameworkElement item, IObservable<Point> container_sizes, IObservable<Point?> locations = null)
+        public RelativeLocationBinding(FrameworkElement item, FrameworkElement canvas_item, IObservable<Point?> locations = null)
         {  
             if(item == null)
-                throw new ArgumentNullException("item");
-            if(container_sizes == null)
-                throw new ArgumentNullException("container_sizes");
+                throw new ArgumentNullException("item");   
+            if(canvas_item == null)
+                throw new ArgumentNullException("canvas_item");   
 
             this.item = item;
             item.Visibility = Visibility.Collapsed;
 
-            
-
-
-            this.subscription.Add(container_sizes.Subscribe(size => TargetSize = size));
+            this.canvas_item = canvas_item;
+            canvas_item.SizeChanged += item_SizeChanged;
+            this.subscription.Add(Disposable.Create(() => canvas_item.SizeChanged -= item_SizeChanged));
 
             if (locations != null)
                 this.subscription.Add(locations.Subscribe(loc => RelativeLocation = loc));
             
         }
 
-        private void updateLocation()
-        {     
-            var result = (RelativeLocation.HasValue) ? new Point(TargetSize.X * RelativeLocation.Value.X, TargetSize.Y * RelativeLocation.Value.Y) as Point? : null;
+        void item_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            updateLocation();
+        }
+
+        public void updateLocation()
+        {
+            if (subscription.IsDisposed)
+                return;
+
+            var transform = canvas_item.RenderTransform ?? new TranslateTransform() { X = 0, Y = 0 };           
+
+            var result = (RelativeLocation.HasValue) ?  transform.Transform(RelativeLocation.Value) as Point? : null;
             if (!result.HasValue)
                 item.Visibility = System.Windows.Visibility.Collapsed;
             else
@@ -82,6 +77,7 @@ namespace DiversityPhone.View
         public void Dispose()
         {
             subscription.Dispose();
+            item = canvas_item = null;
         }        
     }
 }

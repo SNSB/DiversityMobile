@@ -11,7 +11,7 @@ namespace DiversityService.ConsoleHost
     {
         static void Main(string[] args)
         {
-            Uri baseAddress = new Uri("http://169.254.80.80:7091/Service1.svc");
+            Uri baseAddress = new Uri("http://192.168.237.218:7091/Service1.svc");
             // Create the ServiceHost.
             using (ServiceHost host = new ServiceHost(typeof(DiversityService), baseAddress))
             {

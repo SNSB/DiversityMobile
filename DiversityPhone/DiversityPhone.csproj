@@ -467,10 +467,6 @@
     <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
-    <Content Include="NLog.config">
-      <SubType>Designer</SubType>
-    </Content>
-    <None Include="DiversityPhone_2012_11_04_20_33_38.sap" />
     <None Include="packages.config" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />

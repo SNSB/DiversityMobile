@@ -16,7 +16,9 @@ namespace DiversityPhone.Services
             : base(fileOrConnection) 
         {
             if (!this.DatabaseExists())
+            {
                 this.CreateDatabase();
+            }
         }
 
 #pragma warning disable 0649
@@ -109,8 +111,14 @@ namespace DiversityPhone.Services
 
         public System.IO.Stream loadMap(Map map)
         {
+#if false   
+            var splash = "Images/AppIcons/DivMob_QuadratEnd_s_Splash.png";
+            var resource = App.GetResourceStream(new Uri(splash, UriKind.Relative));
+            if (resource != null) return resource.Stream;       
+#endif
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
+
                 var filename = fileNameForMap(map);
                 if (iso.FileExists(filename))
                 {

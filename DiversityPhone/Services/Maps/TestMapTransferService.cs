@@ -19,7 +19,7 @@ namespace DiversityPhone.Services
 
         public IObservable<Model.Map> downloadMap(string serverKey)
         {
-            return Observable.Return(new Map() { Description = "TestMap" });
+            return Observable.Return(new Map() { Description = "TestMap"});
         }
 
         public IObservable<System.Collections.Generic.IEnumerable<string>> GetAvailableMaps(string searchString)

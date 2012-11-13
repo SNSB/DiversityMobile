@@ -141,7 +141,11 @@ namespace DiversityPhone
             IOC.Register<ITaxonService>(new TaxonService());
             IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IMapStorageService>(new MapStorageService());
+#if false
+            IOC.Register<IMapTransferService>(new TestMapTransferService());
+#else
             IOC.Register<IMapTransferService>(new MapTransferService(IOC));
+#endif
             
 
             IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));
