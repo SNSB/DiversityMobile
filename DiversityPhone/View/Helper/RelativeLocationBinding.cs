@@ -31,22 +31,34 @@ namespace DiversityPhone.View
             }                
         }
 
-        FrameworkElement item, canvas_item;
+        private Transform _Transform;
+
+        public Transform Transform
+        {
+            get { return _Transform; }
+            set 
+            { 
+                _Transform = value;
+                updateLocation();
+            }
+        }
+
+
+        FrameworkElement item;
+        Transform latestTransform;
         CompositeDisposable subscription = new CompositeDisposable();
 
-        public RelativeLocationBinding(FrameworkElement item, FrameworkElement canvas_item, IObservable<Point?> locations = null)
+        public RelativeLocationBinding(FrameworkElement item, IObservable<Transform> transforms, IObservable<Point?> locations = null)
         {  
             if(item == null)
-                throw new ArgumentNullException("item");   
-            if(canvas_item == null)
-                throw new ArgumentNullException("canvas_item");   
+                throw new ArgumentNullException("item");
+            if (transforms == null)
+                throw new ArgumentNullException("transforms");   
 
             this.item = item;
             item.Visibility = Visibility.Collapsed;
 
-            this.canvas_item = canvas_item;
-            canvas_item.SizeChanged += item_SizeChanged;
-            this.subscription.Add(Disposable.Create(() => canvas_item.SizeChanged -= item_SizeChanged));
+            subscription.Add(transforms.Subscribe(t => Transform = t));
 
             if (locations != null)
                 this.subscription.Add(locations.Subscribe(loc => RelativeLocation = loc));
@@ -58,15 +70,12 @@ namespace DiversityPhone.View
             updateLocation();
         }
 
-        public void updateLocation()
+        private void updateLocation()
         {
             if (subscription.IsDisposed)
                 return;
 
-            var transform = canvas_item.RenderTransform ?? new TranslateTransform() { X = 0, Y = 0 }; 
-            
-
-            var result = (RelativeLocation.HasValue) ?  transform.Transform(RelativeLocation.Value) as Point? : null;
+            var result = (RelativeLocation.HasValue && Transform != null) ? Transform.Transform(RelativeLocation.Value) as Point? : null;
             if (!result.HasValue)
                 item.Visibility = System.Windows.Visibility.Collapsed;
             else
@@ -80,7 +89,7 @@ namespace DiversityPhone.View
         public void Dispose()
         {
             subscription.Dispose();
-            item = canvas_item = null;
+            item = null;
         }        
     }
 }

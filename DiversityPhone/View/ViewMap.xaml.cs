@@ -12,6 +12,7 @@ using Microsoft.Phone.Controls;
 using ReactiveUI;
 using Microsoft.Phone.Shell;
 using System.Windows.Media;
+using System.Reactive;
 
 namespace DiversityPhone.View
 {
@@ -21,7 +22,10 @@ namespace DiversityPhone.View
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
         private EditPageSaveEditButton _btn;
-        private RelativeLocationBinding _currentLoc, _currentPos;       
+        private RelativeLocationBinding _currentLoc, _currentPos;
+
+        private ISubject<Transform> transform_subject = new Subject<Transform>();
+        private IObservable<Transform> update_transform;
 
 
         // these two fields fully define the zoom state:
@@ -57,10 +61,7 @@ namespace DiversityPhone.View
 
         private void OnPinchCompleted(object s, PinchGestureEventArgs args)
         {
-            if (_currentLoc != null)
-                _currentLoc.updateLocation();
-            if (_currentPos != null)
-                _currentPos.updateLocation();
+            
         }
 
         /// <summary>
@@ -155,6 +156,7 @@ namespace DiversityPhone.View
         {
             ((CompositeTransform)ImgZoom.RenderTransform).ScaleX = TotalImageScale;
             ((CompositeTransform)ImgZoom.RenderTransform).ScaleY = TotalImageScale;
+            transform_subject.OnNext(ImgZoom.RenderTransform);
         }
 
         /// <summary>
@@ -186,10 +188,7 @@ namespace DiversityPhone.View
         {
             ((CompositeTransform)ImgZoom.RenderTransform).TranslateX = ImagePosition.X;
             ((CompositeTransform)ImgZoom.RenderTransform).TranslateY = ImagePosition.Y;
-            if(_currentLoc != null)
-                _currentLoc.updateLocation();
-            if(_currentPos != null)
-                _currentPos.updateLocation();
+            transform_subject.OnNext(ImgZoom.RenderTransform);
         }
 
         /// <summary>
@@ -235,6 +234,12 @@ namespace DiversityPhone.View
 
             _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);
             ImgZoom.RenderTransform = new CompositeTransform() { CenterX = 0, CenterY = 0 };
+
+            var transforms = transform_subject.Replay(1);
+            transforms.Connect();
+            update_transform = transforms;
+
+            transform_subject.OnNext(ImgZoom.RenderTransform);
         }
 
         private void SelectMap_Click(object sender, EventArgs e)
@@ -246,16 +251,12 @@ namespace DiversityPhone.View
         IDisposable subscriptions = Disposable.Empty;
         CompositeDisposable additionallocalization_images;
 
-        private IObservable<Point?> ScaleToImage(IObservable<Point?> points, IObservable<BitmapImage> images)
+        private Point? ScaleToImage(Point? p)
         {
-            return images.CombineLatest(points,
-                (img, p) =>
-                {
-                    if (p.HasValue && img != null)
-                        return new Point() { X = p.Value.X * ImgZoom.ActualWidth, Y = p.Value.Y * ImgZoom.ActualHeight } as Point?;
-                    else
-                        return null;
-                });     
+            if (p.HasValue)
+                return new Point() { X = p.Value.X * ImgZoom.ActualWidth, Y = p.Value.Y * ImgZoom.ActualHeight } as Point?;
+            else
+                return null;                   
         }
 
 
@@ -273,25 +274,30 @@ namespace DiversityPhone.View
             s.Add(image_obs.Subscribe(img => { ImgZoom.Source = img; }));
 
 
-            _currentPos = new RelativeLocationBinding(currentPosImg, ImgZoom, ScaleToImage(VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation), image_obs));
+            _currentPos = new RelativeLocationBinding(currentPosImg, update_transform, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation).Select(ScaleToImage));
             s.Add(_currentPos);
 
-            _currentLoc = new RelativeLocationBinding(currentLocalizationImg, ImgZoom, ScaleToImage(VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization), image_obs));
+            _currentLoc = new RelativeLocationBinding(currentLocalizationImg, update_transform, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization).Select(ScaleToImage));
             s.Add(_currentLoc);
 
-            s.Add(VM.AdditionalLocalizations.ToObservable()
-                .Merge(VM.AdditionalLocalizations.ItemsAdded)
-                .Subscribe(it =>
-                {
-                    var source = this.Resources["GPSPointImage"] as BitmapImage;
-                    if(source != null)
-                    {
-                        var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
-                        var binding = new RelativeLocationBinding(img, ImgZoom) { RelativeLocation = it };
-                        additionallocalization_images.Add(binding);
-                        MainCanvas.Children.Add(img);
-                    }
-                }));
+            s.Add(
+                VM.AdditionalLocalizations
+                .ObserveOnDispatcher()
+                .Do(_ => additionallocalization_images.Dispose())
+                .SelectMany(p => p)
+                .ObserveOnDispatcher()
+                .Subscribe(p =>
+                    {                        
+                        var it = ScaleToImage(p);
+                        var source = this.Resources["GPSPointImage"] as BitmapImage;
+                        if(source != null)
+                        {
+                            var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
+                            var binding = new RelativeLocationBinding(img, update_transform) { RelativeLocation = it };
+                            additionallocalization_images.Add(binding);
+                            MainCanvas.Children.Add(img);
+                        }
+                    }));
 
             subscriptions = s;
         }

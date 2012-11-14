@@ -86,8 +86,8 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private ReactiveCollection<Point> _AdditionalLocalizations = new ReactiveCollection<Point>();
-        public IReactiveCollection<Point> AdditionalLocalizations
+        private IObservable<IObservable<Point?>> _AdditionalLocalizations;
+        public IObservable<IObservable<Point?>> AdditionalLocalizations
         {
             get
             {
@@ -141,20 +141,27 @@ namespace DiversityPhone.ViewModels
                     new { Map = map.Model, Series = es })
                 .Publish();
 
+            
+            var add_locs =
             series_and_map
-                .Do(_ => _AdditionalLocalizations.Clear()) //Needs to be on the Dispatcher
-                .Where(pair => pair.Series != null)
-                .SelectMany(pair => 
+                .Select(pair =>
                     {
-                        return Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
-                        .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.OwnerID)) //Listen to new Geopoints that are added to the current tour
-                        .Select(gp => pair.Map.PercentilePositionOnMap(gp))
-                        .TakeUntil(series_and_map);
-                    })
-                .Where(pos => pos.HasValue)
-                .Select(pos => pos.Value)
-                .ObserveOnDispatcher()
-                .Subscribe(_AdditionalLocalizations.Add);
+                        if (pair.Series != null)
+                        {
+                            var stream = Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
+                                    .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.OwnerID)) //Listen to new Geopoints that are added to the current tour
+                                    .Select(gp => pair.Map.PercentilePositionOnMap(gp))
+                                    .TakeUntil(series_and_map)
+                                    .Replay();
+                            stream.Connect();
+                            return stream as IObservable<Point?>;
+                        }
+                        else
+                            return Observable.Empty<Point?>();
+                    }).Replay(1);
+
+            _AdditionalLocalizations = add_locs;
+            add_locs.Connect();
 
             series_and_map.Connect();
 
