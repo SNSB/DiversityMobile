@@ -35,13 +35,11 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.HabitatDescription, ref _HabitatDescription, value); }
         }
 
-        private ObservableAsPropertyHelper<string> _CollectionDate;
-        public string CollectionDate
+        private DateTime _CollectionDate;
+        public DateTime CollectionDate
         {
-            get
-            {
-                return _CollectionDate.Value;
-            }
+            get { return _CollectionDate; }
+            set { this.RaiseAndSetIfChanged(x => x.CollectionDate, ref _CollectionDate, value); }
         }
         #endregion
 
@@ -67,10 +65,9 @@ namespace DiversityPhone.ViewModels
                         }
                     });
 
-            _CollectionDate = this.ObservableToProperty(
-                CurrentModelObservable
-                .Select(ev => ev.CollectionDate.ToString()),
-                vm => vm.CollectionDate);
+            ModelByVisitObservable
+                .Select(ev => ev.CollectionDate)
+                .Subscribe(date => CollectionDate = date);            
 
             ModelByVisitObservable
                 .Select(ev => ev.LocalityDescription)
@@ -89,6 +86,7 @@ namespace DiversityPhone.ViewModels
                 Current.Model.SetCoordinates(_latest_location.First());
             Current.Model.LocalityDescription = LocalityDescription;
             Current.Model.HabitatDescription = HabitatDescription;
+            Current.Model.CollectionDate = CollectionDate;
         }
 
         protected IObservable<bool> CanSave()

@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vw="clr-namespace:DiversityPhone.View"
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -39,7 +40,8 @@
             <TextBox x:Name="HabitatTB" Text="{Binding HabitatDescription, Mode=TwoWay}" 
                      IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Collection Date"/>
-            <TextBox IsReadOnly="True" Text="{Binding CollectionDate, Mode=OneWay}"/>            
+            <toolkit:DatePicker Value="{Binding CollectionDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+            <toolkit:TimePicker Value="{Binding CollectionDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />                     
         </StackPanel>
     </Grid>
  

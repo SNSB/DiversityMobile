@@ -85,6 +85,15 @@ namespace DiversityPhone.ViewModels
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
         private ObservableAsPropertyHelper<bool> _IsToplevel;
+
+        private DateTime _AnalysisDate;
+
+        public DateTime AnalysisDate
+        {
+            get { return _AnalysisDate; }
+            set { this.RaiseAndSetIfChanged(x => x.AnalysisDate, ref _AnalysisDate, value); }
+        }
+
         
         #endregion
 
@@ -149,6 +158,10 @@ namespace DiversityPhone.ViewModels
                 .Select(m => m.WorkingName)
                 .Where(wn => !string.IsNullOrWhiteSpace(wn))
                 .Subscribe(x => QueryString = x);
+
+            ModelByVisitObservable
+                .Select(iu => iu.AnalysisDate)
+                .Subscribe(date => AnalysisDate = date);
             #endregion
 
             #region Vocabulary
@@ -259,6 +272,7 @@ namespace DiversityPhone.ViewModels
             Current.Model.IdentificationUri = Identification.SelectedItem.URI;
             Current.Model.RelationType = (RelationshipType.SelectedItem != null) ? RelationshipType.SelectedItem.Code : null;
             Current.Model.Qualification = (Qualifications.SelectedItem != null) ? Qualifications.SelectedItem.Code : null;
+            Current.Model.AnalysisDate = AnalysisDate;
         }
     }
 }

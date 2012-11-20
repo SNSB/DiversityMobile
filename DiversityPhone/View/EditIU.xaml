@@ -53,65 +53,67 @@
 
         <!--ContentPanel - place additional content here-->
 		<ScrollViewer Grid.Row="1">
-        <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">
-            <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                         Command="{Binding ToggleEditable}"/>
+            <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">
+                <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                                                Command="{Binding ToggleEditable}"/>
 
-            <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
-                            SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
-                            ItemTemplate="{StaticResource TermListItemTemplate}"                                
-                            FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
-                            Header="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
-                            FullModeHeader="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
+                <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
+                                SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
+                                ItemTemplate="{StaticResource TermListItemTemplate}"                                
+                                FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
+                                Header="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
+                                FullModeHeader="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
+                                IsEnabled="{Binding IsEditable}"/>
+
+                    <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+                <TextBox Text="{Binding QueryString, Mode=TwoWay}" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+
+                <StackPanel Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}, ConverterParameter=True}" Orientation="Vertical">
+                    <TextBlock Text="{Binding Resources.IdentificationUnit_Header_Identification, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <TextBox  Text="{Binding Current.Description}" IsEnabled="False"/>
+                </StackPanel>
+
+                <ListBox MaxHeight="300" BorderThickness="3"  
+                        ItemsSource="{Binding Identification.Items}"                     
+                        SelectedIndex="{Binding Identification.SelectedIndex, Mode=TwoWay}"
+                        ItemTemplate="{StaticResource TaxonNameItemTemplate}"
+					    Style="{StaticResource ListBoxWhiteStyle}" 
+                        Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
+                        IsEnabled="{Binding IsEditable}">
+            	    <ListBox.BorderBrush>
+            		    <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
+            	    </ListBox.BorderBrush>
+                </ListBox>
+
+                <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
+                                SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"
+                                ItemTemplate="{StaticResource DisplayTextItemTemplate}"             
+                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                Header="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
+                                FullModeHeader="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
+                                IsEnabled="{Binding IsEditable}"
+                                />
+                <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
+                    <toolkit:ListPicker ItemsSource="{Binding RelationshipType.Items}" 
+                        SelectedIndex="{Binding RelationshipType.SelectedIndex, Mode=TwoWay}"
+                        ItemTemplate="{StaticResource TermListItemTemplate}"                                
+                        FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
+                        Header="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
+                        FullModeHeader="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
+                        IsEnabled="{Binding IsEditable}" />
+                </StackPanel>
+
+                <CheckBox IsChecked="{Binding OnlyObserved, Mode=TwoWay}" 
+					        Content="{Binding Resources.IdentificationUnit_Header_OnlyObserved, Source={StaticResource LocalizedStrings}}" 
+					        Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"
                             IsEnabled="{Binding IsEditable}"/>
-
-                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
-            <TextBox Text="{Binding QueryString, Mode=TwoWay}" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
-
-            <StackPanel Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}, ConverterParameter=True}" Orientation="Vertical">
-                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_Identification, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />
-                <TextBox  Text="{Binding Current.Description}" IsEnabled="False"/>
-            </StackPanel>
-
-            <ListBox MaxHeight="300" BorderThickness="3"  
-                    ItemsSource="{Binding Identification.Items}"                     
-                    SelectedIndex="{Binding Identification.SelectedIndex, Mode=TwoWay}"
-                    ItemTemplate="{StaticResource TaxonNameItemTemplate}"
-					Style="{StaticResource ListBoxWhiteStyle}" 
-                    Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
-                    IsEnabled="{Binding IsEditable}">
-            	<ListBox.BorderBrush>
-            		<SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
-            	</ListBox.BorderBrush>
-            </ListBox>
-
-            <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
-                            SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"
-                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"             
-                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                            Header="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
-                            FullModeHeader="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
-                            IsEnabled="{Binding IsEditable}"
-                            />
-            <StackPanel Visibility="{Binding IsToplevel, Converter={StaticResource BoolToVis}, ConverterParameter=True}">
-                <toolkit:ListPicker ItemsSource="{Binding RelationshipType.Items}" 
-                    SelectedIndex="{Binding RelationshipType.SelectedIndex, Mode=TwoWay}"
-                    ItemTemplate="{StaticResource TermListItemTemplate}"                                
-                    FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
-                    Header="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
-                    FullModeHeader="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
-                    IsEnabled="{Binding IsEditable}" />
-            </StackPanel>
-
-            <CheckBox IsChecked="{Binding OnlyObserved, Mode=TwoWay}" 
-					  Content="{Binding Resources.IdentificationUnit_Header_OnlyObserved, Source={StaticResource LocalizedStrings}}" 
-					  Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"
-                      IsEnabled="{Binding IsEditable}"/>
             
-            <ListBox ItemsSource="{Binding Circumstances}" 
-                     SelectedItem="{Binding Circumstance, Mode=TwoWay}"
-                     IsEnabled="{Binding IsEditable}"/>
-        </StackPanel>
+                <ListBox ItemsSource="{Binding Circumstances}" 
+                            SelectedItem="{Binding Circumstance, Mode=TwoWay}"
+                            IsEnabled="{Binding IsEditable}"/>
+                <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+                <toolkit:TimePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+            </StackPanel>
 		</ScrollViewer>
     </Grid>
  
