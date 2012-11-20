@@ -18,7 +18,24 @@ namespace DiversityPhone.Services
     {
         private IMessageBus Messenger;        
         private PhoneApplicationFrame _frame;
-        private bool _IsNavigating;
+
+        private PageVMBase _CurrentVM;
+        public PageVMBase CurrentVM
+        {
+            get { return _CurrentVM; }
+            set 
+            {
+                if (value != null && _CurrentVM != value)
+                {
+                    if (_CurrentVM != null)
+                        _CurrentVM.Deactivate();
+                    _CurrentVM = value;
+                    _CurrentVM.Activate();
+                }
+                
+            }
+        }
+
 
         public NavigationService(IMessageBus messenger)
         {
@@ -57,41 +74,19 @@ namespace DiversityPhone.Services
                 throw new ArgumentNullException("frame");
 
             _frame = frame;
-            _frame.Navigating += (s, args) => { if (args.IsNavigationInitiator && args.NavigationMode == NavigationMode.Back) NavigationStarted(); };
 
-            _frame.Navigated += (s, args) => { if (_IsNavigating) NavigationFinished(); };
+            _frame.Navigated += (s, args) => { NavigationFinished(); };
         }
 
         void NavigationFinished()
         {
             var page = _frame.Content as PhoneApplicationPage;
-            
-            if (page.DataContext is PageVMBase && _IsNavigating)
-            {
-                var vm = page.DataContext as PageVMBase;
-                vm.Activate();
-            }
-
-            _IsNavigating = false;
-        }        
-        void NavigationStarted()
-        {
-            var page = _frame.Content as PhoneApplicationPage;
-
-            if (page != null && page.DataContext is PageVMBase)
-            {
-                var vm = page.DataContext as PageVMBase;               
-                vm.Deactivate();
-            }
-
-            _IsNavigating = true;
-        }
+            if(page != null)          
+                CurrentVM = page.DataContext as PageVMBase;            
+        } 
 
         private void NavigateToPage(Page p)
-        {
-            if (_IsNavigating)
-                return;
-
+        {            
             string destination = null;
             switch (p)
             {
@@ -173,8 +168,7 @@ namespace DiversityPhone.Services
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
                 if (destURI != _frame.CurrentSource)
                 {
-                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
-                    NavigationStarted();
+                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));                    
                 }
             }
         }       
