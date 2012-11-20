@@ -1,4 +1,4 @@
-﻿
+﻿using System;
 using ReactiveUI;
 using DiversityPhone.Model;
 using DiversityPhone.Services;
@@ -10,7 +10,8 @@ namespace DiversityPhone.ViewModels
         public IdentificationUnitAnalysisVM(IdentificationUnitAnalysis model)
             : base(model)
         {
-            
+            model.ObservableForProperty(x => x.DisplayText)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
         }
         
         public override string Description

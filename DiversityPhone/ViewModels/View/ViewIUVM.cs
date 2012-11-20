@@ -37,6 +37,7 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCommand<IElementVM<IdentificationUnit>> EditCurrent { get; private set; }
         public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
+        public ReactiveCommand<IElementVM<IdentificationUnitAnalysis>> EditAnalysis { get; private set; }
         #endregion
 
         #region Properties
@@ -79,7 +80,11 @@ namespace DiversityPhone.ViewModels
             SelectUnit = new ReactiveCommand<IElementVM<IdentificationUnit>>();
             SelectUnit
                 .Do(vm => unitBackStack.Push(Current))
-                .ToMessage(MessageContracts.VIEW);            
+                .ToMessage(MessageContracts.VIEW);
+
+            EditAnalysis = new ReactiveCommand<IElementVM<IdentificationUnitAnalysis>>();
+            EditAnalysis
+                .ToMessage(MessageContracts.EDIT);
                 
 
             _Subunits = this.ObservableToProperty(

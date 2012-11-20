@@ -18,7 +18,7 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewIU}"
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
     x:Name="currentPage" 
-	d:DataContext="{d:DesignData /SampleData/ViewIUVMSampleData.xaml}">
+	>
     <phone:PhoneApplicationPage.Resources>        
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -26,6 +26,14 @@
                 <ResourceDictionary Source="Resources/GeoRefTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>            
             <vw:ViewIUPivotConverter x:Key="PivotConverter"/>
+            <DataTemplate x:Key="AnalysisItemTemplate">
+                <Button Style="{StaticResource ItemButtonStyle}"                
+                        Command="{Binding DataContext.EditAnalysis, ElementName=currentPage}"
+                        CommandParameter="{Binding}">
+                    <ContentControl Content="{Binding}"
+                                    ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                </Button>
+            </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
     
@@ -50,9 +58,10 @@
                                                  Text="{Binding Resources.IdentificationUnit_Info_NoAnalyses, Source={StaticResource LocalizedStrings}}"/>
                     <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
                                     Content="{Binding Current.Model}"/>                    
-                    <ListBox ItemsSource="{Binding Analyses}"
-                             ItemTemplate="{StaticResource ElementItemTemplate}" 
-                             Height="470"/>
+                    <ItemsControl ItemsSource="{Binding Analyses}"
+                                  ItemTemplate="{StaticResource AnalysisItemTemplate}"
+                                  HorizontalContentAlignment="Left"
+                                  />
                 </StackPanel>                
             </controls:PivotItem>
             
