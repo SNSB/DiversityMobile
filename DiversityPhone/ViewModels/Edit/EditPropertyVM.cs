@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
     {
 
         private ObservableAsyncMRUCache<int, IObservable<PropertyName>> _PropertyNamesCache;
-        private ReactiveCollection<Property> _Properties;
+        private IObservable<Property> _Properties;
         private BehaviorSubject<IEnumerable<int>> _UsedProperties;
 
 
@@ -67,24 +67,25 @@ namespace DiversityPhone.ViewModels
             Messenger.Listen<IEnumerable<int>>(VMMessages.USED_EVENTPROPERTY_IDS)
                 .Subscribe(_UsedProperties);
 
-            _Properties = this.FirstActivation()
-                .SelectMany(_ => 
-                    Vocabulary.getAllProperties()
+
+            var properties = Vocabulary.getAllProperties()
                     .ToObservable(ThreadPoolScheduler.Instance)
-                    )
-                    .ObserveOnDispatcher()
-                    .CreateCollection();
+                    .Replay(ThreadPoolScheduler.Instance);
+
+           this.FirstActivation()
+               .Subscribe(_ => properties.Connect());
+
+           _Properties = properties;
 
             _PropertyNamesCache = new ObservableAsyncMRUCache<int, IObservable<PropertyName>>(
                 propertyID => 
                     Observable.Start(
                     () => Vocabulary
                     .getPropertyNames(propertyID)
-                    .ToObservable(ThreadPoolScheduler.Instance)
-                    .ObserveOnDispatcher()
-                    .Replay())
+                    .ToObservable(ThreadPoolScheduler.Instance)                    
+                    .Replay(ThreadPoolScheduler.Instance))
                     .Do(s => s.Connect())
-                    .Select(s => s as IObservable<PropertyName>)
+                    .Select(s => s as IObservable<PropertyName>)                    
                     , 3);
 
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
@@ -92,28 +93,26 @@ namespace DiversityPhone.ViewModels
             
             Properties = new ListSelectionHelper<Property>();
             ModelByVisitObservable
-                .Select(evprop => 
+                .SelectMany(evprop =>
                     {
                         var isNew = evprop.IsNew();
                         var usedProps = _UsedProperties.First();
 
-                        return
-                        _Properties                                                                                 
-                            .CreateDerivedCollection(p => p, p => 
+                       return 
+                        _Properties
+                            .Where(p =>
                                 p.PropertyID == evprop.PropertyID //Editing property -> can't change type
-                                || (isNew && !usedProps.Contains(p.PropertyID)),//New Property, only show unused ones
-                                (p1,p2) => p1.PropertyID.CompareTo(p2.PropertyID)
-                                );                            
-                    })      
-                //Select first property automatically after adding it
-                .Do(props => props
-                    .ItemsAdded
-                    .Where(item => item != NoProperty)
-                    .Take(1)
-                    .Subscribe(item => Properties.SelectedItem = item)
-                    )
+                                || (isNew && !usedProps.Contains(p.PropertyID)))//New Property, only show unused ones                            
+                            .ToList();                        
+                    })     
                 .Select(coll => coll as IList<Property>)
+                .ObserveOnDispatcher()
                 .Subscribe(Properties);
+
+            Properties.ItemsObservable
+                .Where(items => items.Count > 0)
+                .Select(items => items[0])
+                .Subscribe(i => Properties.SelectedItem = i);
 
             Values = new ListSelectionHelper<PropertyName>();
             Properties                  
@@ -133,11 +132,11 @@ namespace DiversityPhone.ViewModels
                         (props, filter) => 
                         {
                             var separators = new char[]{' ', '-'};
-                            const int max_values = 10;
+                            int max_values = 10;
                             return (from x in props
                                     where x.PropertyUri == Current.Model.PropertyUri  //Always show currently selected value
                                          || (from word in x.DisplayText.ToLowerInvariant().Split(separators) //And all matching ones
-                                             select word.StartsWith(filter)).Any(v => v)
+                                             select word.StartsWith(filter)).Any(v => v)                                             
                                     select x)
                                     .Take(max_values)
                                     .ToList()
@@ -162,11 +161,11 @@ namespace DiversityPhone.ViewModels
         private IObservable<bool> CanSaveObs()
         {            
             var propSelected = Properties
-                .Select(x => x!=NoProperty)
+                .Select(x => x != NoProperty && x != null)
                 .StartWith(false);
 
             var valueSelected = Values
-                 .Select(x => x != NoValue)
+                 .Select(x => x != NoValue && x != null)
                  .StartWith(false);
 
             return Extensions.BooleanAnd(propSelected, valueSelected);

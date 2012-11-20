@@ -32,19 +32,20 @@
         <StackPanel Grid.Row="1">
             <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
                                                    Command="{Binding ToggleEditable}" Width="Auto"/>
-            <toolkit:ListPicker IsEnabled="{Binding IsNew}"
+            <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"                                
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
                                 ItemsSource="{Binding Properties.Items}"
                                 SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"                                
                                 />
 
-            <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/> 
-            <TextBox Name="tbFilterString" Text="{Binding FilterString, Mode=TwoWay}"/>
+            <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/>
+            <TextBox Name="tbFilterString" Text="{Binding FilterString, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
             <ListBox ItemTemplate="{StaticResource DisplayTextItemTemplate}" 
                      ItemsSource="{Binding Values.Items}"
-                     SelectedIndex="{Binding Values.SelectedIndex, Mode=TwoWay}"/>
+                     SelectedIndex="{Binding Values.SelectedIndex, Mode=TwoWay}"
+                     IsEnabled="{Binding IsEditable}"/>
         </StackPanel>
     </Grid>
  
