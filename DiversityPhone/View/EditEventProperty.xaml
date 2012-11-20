@@ -40,7 +40,7 @@
                                 />
 
             <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/> 
-            <TextBox Name="tbFilterString"/>
+            <TextBox Name="tbFilterString" Text="{Binding FilterString, Mode=TwoWay}"/>
             <TextBlock Text="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
             <ListBox ItemTemplate="{StaticResource DisplayTextItemTemplate}" 
                      ItemsSource="{Binding Values.Items}"
