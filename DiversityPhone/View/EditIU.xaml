@@ -111,6 +111,7 @@
                 <ListBox ItemsSource="{Binding Circumstances}" 
                             SelectedItem="{Binding Circumstance, Mode=TwoWay}"
                             IsEnabled="{Binding IsEditable}"/>
+                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_AnalysisDate}" Style="{StaticResource PhoneTextSubtleStyle}"/>
                 <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
                 <toolkit:TimePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
             </StackPanel>

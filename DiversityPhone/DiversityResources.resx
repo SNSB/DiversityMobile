@@ -180,6 +180,9 @@
   <data name="Home_Info_CantOpenNewSeries" xml:space="preserve">
     <value>Can't open a new Series while there is still an unfinished one.</value>
   </data>
+  <data name="IdentificationUnit_Header_AnalysisDate" xml:space="preserve">
+    <value>Collection Date</value>
+  </data>
   <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
     <value>Identification</value>
   </data>
