@@ -45,7 +45,7 @@ namespace DiversityPhone.View
 
 
         FrameworkElement item;
-        Transform latestTransform;
+        
         CompositeDisposable subscription = new CompositeDisposable();
 
         public RelativeLocationBinding(FrameworkElement item, IObservable<Transform> transforms, IObservable<Point?> locations = null)
