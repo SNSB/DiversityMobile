@@ -467,7 +467,9 @@
     <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
-    <None Include="DiversityPhone_2012_11_13_19_34_56.sap" />
+    <None Include="DiversityPhone_2012_11_20_09_40_18.sap" />
+    <None Include="DiversityPhone_2012_11_20_10_08_55.sap" />
+    <None Include="DiversityPhone_2012_11_20_15_46_57.sap" />
     <None Include="packages.config" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />
@@ -637,17 +639,6 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\MapMediaService\" />
     <WCFMetadataStorage Include="Service References\MediaService4\" />
-  </ItemGroup>
-  <ItemGroup>
-    <DesignData Include="SampleData\TaxonManagementVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\ViewCSVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
-    <DesignData Include="SampleData\ViewIUVMSampleData.xaml">
-      <Generator>MSBuild:MarkupCompilePass1</Generator>
-    </DesignData>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
