@@ -139,7 +139,7 @@ namespace DiversityService
 
         }
 
-        private static readonly UserCredentials TNT_Login = new UserCredentials() { LoginName = "GBOL", Password = "DWB_2012", Repository="DiversityMobile" };
+        private static readonly UserCredentials TNT_Login = new UserCredentials() { LoginName = "TNT", Password = "mu7idSwg", Repository="DiversityMobile" };
 
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
