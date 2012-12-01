@@ -129,7 +129,7 @@ namespace DiversityPhone
             IOC = new Container();
             IOC.DefaultReuse = ReuseScope.None;
 
-            
+            IOC.Register<INotificationService>(new NotificationService(RootFrame));
 
             IOC.Register<IMessageBus>(Messenger);
             IOC.Register<ISettingsService>(Settings);

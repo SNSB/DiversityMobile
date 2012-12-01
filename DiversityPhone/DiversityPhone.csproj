@@ -119,6 +119,7 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\TestMapTransferService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
     <Compile Include="ViewModels\Interface\IAudioVideoPageVM.cs" />
     <Compile Include="ViewModels\Interface\IDeletePageVM.cs" />
