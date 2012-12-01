@@ -17,6 +17,7 @@ namespace DiversityPhone.Services
     interface INotificationService
     {
         IDisposable showNotification(string text);
+        void showNotification(string text, TimeSpan duration);
         void showProgress(IObservable<string> text);
     }    
 
@@ -27,7 +28,7 @@ namespace DiversityPhone.Services
     {
         private readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromSeconds(3);
 
-        ProgressIndicator _Progress = new ProgressIndicator() { IsIndeterminate = true, IsVisible = true };
+        ProgressIndicator _Progress = new ProgressIndicator() { IsVisible = true };
 
         int _ProgressCount = 0;
         ISubject<int> _ProgressCountSubject = new Subject<int>();
@@ -36,16 +37,17 @@ namespace DiversityPhone.Services
         int _CurrentNotificationIdx = -1;
         SerialDisposable _CurrentNotificationSubscription = new SerialDisposable();        
 
-        public NotificationService(PhoneApplicationFrame rootFrame)
+        public NotificationService(Container ioc)
         {
+            var rootFrame = ioc.Resolve<PhoneApplicationFrame>();
             rootFrame.Navigated += OnFrameNavigated;
 
 
-            _Dispatcher = DispatcherScheduler.Current;
+            _Dispatcher = ioc.ResolveNamed<IScheduler>(NamedServices.DISPATCHER);
 
             _ProgressCountSubject
                 .Select(c => c > 0)
-                .ObserveOnDispatcher()
+                .ObserveOn(_Dispatcher)
                 .Subscribe(setProgressindicator);
         }
 
@@ -58,14 +60,22 @@ namespace DiversityPhone.Services
 
         private void setProgressindicator(bool show)
         {
-            _Progress.Value = (show) ? 1.0 : 0.0;
+            if (show)
+            {
+                _Progress.IsIndeterminate = true;                
+            }
+            else
+            {
+                _Progress.IsIndeterminate = false;
+            }
             if (!_Progress.IsVisible)
                 _Progress.IsVisible = true;
         }
 
         private void setNotification(string text)
         {
-            _Progress.Text = text;
+            var header = (_Notifications.Count > 1) ? string.Format("{0}/{1} ", _CurrentNotificationIdx + 1, _Notifications.Count) : "";
+            _Progress.Text = string.Format("{0}{1}", header, text);
         }
 
         private void updateNotification()
@@ -78,9 +88,15 @@ namespace DiversityPhone.Services
                     _CurrentNotificationSubscription.Disposable =
                         new CompositeDisposable(
                             new[] { 
-                                _Notifications[_CurrentNotificationIdx].Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotificationIdx)),
+                                _Notifications[_CurrentNotificationIdx].ObserveOn(_Dispatcher)
+                                    .Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotificationIdx)),
                                 _Dispatcher.Schedule(UPDATE_INTERVAL, updateNotification)
                             });
+                }
+                else
+                {
+                    _CurrentNotificationSubscription.Disposable = null;
+                    setNotification("");
                 }
             }
         }
@@ -91,7 +107,7 @@ namespace DiversityPhone.Services
             replays.Connect();
             lock (this)
             {
-                _Notifications.Add(replays.ObserveOnDispatcher());                  
+                _Notifications.Add(replays);                  
             }
             updateNotification();
         }
@@ -120,6 +136,14 @@ namespace DiversityPhone.Services
             var observable = new BehaviorSubject<string>(text);
             addNotification(observable);
             return Disposable.Create(observable.OnCompleted);
+        }
+
+        public void showNotification(string text, TimeSpan duration)
+        {
+            var obs = Observable.Delay(Observable.Empty<string>(), duration)
+                .StartWith(text);
+
+            addNotification(obs);
         }
 
         public void showProgress(IObservable<string> text)

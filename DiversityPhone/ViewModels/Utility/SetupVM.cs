@@ -10,6 +10,7 @@ using Funq;
 using DiversityPhone.Services.BackgroundTasks;
 using DiversityPhone.DiversityService;
 using DiversityPhone.Messages;
+using System.Reactive;
 
 
 namespace DiversityPhone.ViewModels.Utility
@@ -19,6 +20,7 @@ namespace DiversityPhone.ViewModels.Utility
         IDiversityServiceClient Repository;
         ISettingsService Settings;
         IMessageBus Messenger;
+        INotificationService Notifications;
 
 
         #region Setup Properties
@@ -90,17 +92,19 @@ namespace DiversityPhone.ViewModels.Utility
 
         private ObservableAsPropertyHelper<Svc.UserProfile> _Profile;           
 
-        public bool GettingProjects { get { return _GettingProjects.Value; } }
-        private ObservableAsPropertyHelper<bool> _GettingProjects;
+        private bool _IsBusy = true;
 
-        public bool GettingRepositories { get { return _GettingRepositories.Value; } }
-        private ObservableAsPropertyHelper<bool> _GettingRepositories;
-
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;
-
-        public string BusyMessage { get { return _BusyMessage.Value; } }
-        private ObservableAsPropertyHelper<string> _BusyMessage;
+        public bool IsBusy
+        {
+            get
+            {
+                return _IsBusy;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value);
+            }
+        }
 
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
@@ -161,25 +165,26 @@ namespace DiversityPhone.ViewModels.Utility
             Repository = ioc.Resolve<IDiversityServiceClient>();
             Messenger = ioc.Resolve<IMessageBus>();
             Settings = ioc.Resolve<ISettingsService>();
-            var background = ioc.Resolve<IBackgroundService>();
-            var refreshVocabularyTask = background.getTaskObject<RefreshVocabularyTask>();
+            Notifications = ioc.Resolve<INotificationService>();
 
             RefreshVocabulary = new ReactiveCommand();
-            RefreshVocabulary
-                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(Settings.getSettings().ToCreds()));
-
-            _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable.ObserveOnDispatcher(), x => x.IsBusy);
-
-            _BusyMessage = this.ObservableToProperty(
-                refreshVocabularyTask.AsyncProgressMessages.ObserveOnDispatcher(), x => x.BusyMessage);
-
-            refreshVocabularyTask.AsyncCompletedNotification
-                .Take(1)
-                .Subscribe(_ =>
+            RefreshVocabulary                
+                .Subscribe(settings => 
                     {
-                        Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
-                        Messenger.SendMessage<Page>(Page.Home);
+                        if( settings == null || !(settings is AppSettings))
+                            return;
+
+                        var login = (settings as AppSettings).ToCreds();
+
+                        RefreshVocabularyTask.Start(ioc, login )                            
+                            .StartWith(Unit.Default)
+                            .Subscribe(_ => { IsBusy = true; }, () =>
+                            {
+                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
+                                Messenger.SendMessage<Page>(Page.Home);
+                            });
                     });
+                                  
 
             clearDatabase.RegisterAsyncAction(_ =>
             {
@@ -225,12 +230,24 @@ namespace DiversityPhone.ViewModels.Utility
 
             creds                    
                 .Subscribe(login => getRepositories.Execute(login));
-            _GettingRepositories = this.ObservableToProperty(
-                getRepositories
+            
+            IDisposable gettingRepos = null;
+            getRepositories
                 .ItemsInflight
                 .Select(items => items > 0)
-                .ObserveOnDispatcher(),
-                x => x.GettingRepositories);
+                .Subscribe(busy =>
+                    {
+                        if (busy && gettingRepos == null)
+                        {
+                            gettingRepos = Notifications.showNotification(DiversityResources.Setup_Info_GettingRepositories);
+                        }
+                        else if (!busy && gettingRepos != null)
+                        {
+                            gettingRepos.Dispose();
+                            gettingRepos = null;
+                        }
+                    });
+                
 
             getRepositories                    
                 .RegisterAsyncFunction(login => 
@@ -250,12 +267,24 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(Databases);                
 
             credsWithRepo.Subscribe(login => getProjects.Execute(login));
-            _GettingProjects = this.ObservableToProperty(
-                getProjects
+
+            IDisposable gettingProjects = null;            
+            getProjects
                 .ItemsInflight
                 .Select(items => items > 0)
-                .ObserveOnDispatcher(),
-                x => x.GettingProjects);
+                .Subscribe(busy =>
+                    {
+                        if (busy && gettingProjects == null)
+                        {
+                            gettingProjects = Notifications.showNotification(DiversityResources.Setup_Info_GettingProjects);
+                        }
+                        else if (!busy && gettingProjects != null)
+                        {
+                            gettingProjects.Dispose();
+                            gettingProjects = null;
+                        }
+                            
+                    });
                 
             getProjects
                 .RegisterAsyncFunction(login => 
@@ -287,10 +316,16 @@ namespace DiversityPhone.ViewModels.Utility
 
             Save = new ReactiveCommand(settingsValid().ObserveOnDispatcher());
 
+            var existingSettings = Observable.Return(Settings.getSettings());
+
+            existingSettings
+                .Where(settings => settings == null)
+                .Subscribe(_ => { IsBusy = false; });
+
             Save
                 .Do(_ => clearDatabase.Execute(null))
                 .Select(_ => createSettings())
-                .Merge(Observable.Return(Settings.getSettings()).Where(settings => settings != null)) // just refresh
+                .Merge(existingSettings.Where(settings => settings != null)) // just refresh
                 .Do(res => Settings.saveSettings(res))
                 .Subscribe(RefreshVocabulary.Execute);
 

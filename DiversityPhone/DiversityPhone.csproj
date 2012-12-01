@@ -119,6 +119,7 @@
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\TestMapTransferService.cs" />
+    <Compile Include="Services\NamedServices.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
     <Compile Include="ViewModels\Interface\IAudioVideoPageVM.cs" />
@@ -468,9 +469,6 @@
     <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
-    <None Include="DiversityPhone_2012_11_20_09_40_18.sap" />
-    <None Include="DiversityPhone_2012_11_20_10_08_55.sap" />
-    <None Include="DiversityPhone_2012_11_20_15_46_57.sap" />
     <None Include="packages.config" />
     <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
     <None Include="Service References\MapMediaService\configuration91.svcinfo" />

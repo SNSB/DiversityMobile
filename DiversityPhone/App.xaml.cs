@@ -14,6 +14,7 @@ using System;
 using DiversityPhone.Messages;
 using DiversityPhone.ViewModels;
 using DiversityPhone.ViewModels.Utility;
+using System.Reactive.Concurrency;
 
 
 namespace DiversityPhone
@@ -82,7 +83,7 @@ namespace DiversityPhone
 
         private static void registerViewModels()
         {
-
+            
 
 
             #region ViewModel Factories
@@ -129,7 +130,10 @@ namespace DiversityPhone
             IOC = new Container();
             IOC.DefaultReuse = ReuseScope.None;
 
-            IOC.Register<INotificationService>(new NotificationService(RootFrame));
+            IOC.Register<IScheduler>(NamedServices.DISPATCHER, DispatcherScheduler.Current);
+            IOC.Register<PhoneApplicationFrame>(RootFrame);
+
+            IOC.Register<INotificationService>(new NotificationService(IOC));
 
             IOC.Register<IMessageBus>(Messenger);
             IOC.Register<ISettingsService>(Settings);
@@ -152,8 +156,7 @@ namespace DiversityPhone
             IOC.Register<ILocationService>(new LocationService(IOC));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             
-            BackgroundTasks = new BackgroundService();            
-            BackgroundTasks.registerTask(new RefreshVocabularyTask(IOC));
+            BackgroundTasks = new BackgroundService();                        
             BackgroundTasks.registerTask(new UploadEventTask(IOC));
             BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));
             IOC.Register<IBackgroundService>(BackgroundTasks);

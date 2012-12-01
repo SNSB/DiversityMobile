@@ -475,6 +475,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting Projects.
+        /// </summary>
+        public static string Setup_Info_GettingProjects {
+            get {
+                return ResourceManager.GetString("Setup_Info_GettingProjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting Repositories.
+        /// </summary>
+        public static string Setup_Info_GettingRepositories {
+            get {
+                return ResourceManager.GetString("Setup_Info_GettingRepositories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Choose.
         /// </summary>
         public static string Setup_Item_PleaseChoose {

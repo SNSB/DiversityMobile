@@ -255,6 +255,12 @@
   <data name="Setup_Header_Repository" xml:space="preserve">
     <value>Repository</value>
   </data>
+  <data name="Setup_Info_GettingProjects" xml:space="preserve">
+    <value>Getting Projects</value>
+  </data>
+  <data name="Setup_Info_GettingRepositories" xml:space="preserve">
+    <value>Getting Repositories</value>
+  </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
   </data>
