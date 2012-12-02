@@ -243,7 +243,7 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         if (busy && gettingRepos == null)
                         {
-                            gettingRepos = Notifications.showNotification(DiversityResources.Setup_Info_GettingRepositories);
+                            gettingRepos = Notifications.showProgress(DiversityResources.Setup_Info_GettingRepositories);
                         }
                         else if (!busy && gettingRepos != null)
                         {
@@ -280,7 +280,7 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         if (busy && gettingProjects == null)
                         {
-                            gettingProjects = Notifications.showNotification(DiversityResources.Setup_Info_GettingProjects);
+                            gettingProjects = Notifications.showProgress(DiversityResources.Setup_Info_GettingProjects);
                         }
                         else if (!busy && gettingProjects != null)
                         {

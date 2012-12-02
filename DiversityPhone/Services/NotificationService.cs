@@ -16,7 +16,7 @@ namespace DiversityPhone.Services
 
     interface INotificationService
     {
-        IDisposable showNotification(string text);
+        IDisposable showProgress(string text);
         void showNotification(string text, TimeSpan duration);
         void showProgress(IObservable<string> text);
     }    
@@ -131,10 +131,10 @@ namespace DiversityPhone.Services
             _ProgressCountSubject.OnNext(_ProgressCount);
         }
 
-        public IDisposable showNotification(string text)
+        public IDisposable showProgress(string text)
         {
             var observable = new BehaviorSubject<string>(text);
-            addNotification(observable);
+            showProgress(observable);
             return Disposable.Create(observable.OnCompleted);
         }
 
