@@ -134,7 +134,7 @@ namespace DiversityPhone.ViewModels.Utility
                     t.Task
                     .ObserveOnDispatcher()
                     .Finally(() => canUpload.OnNext(true))
-                    .Subscribe( _ => {}, _ => SyncUnits.Remove(t.Unit))
+                    .Subscribe( _ => {}, () => SyncUnits.Remove(t.Unit))
                     );
 
             UploadMultimedia = new ReactiveCommand<MultimediaVM>(canUpload);
@@ -145,7 +145,7 @@ namespace DiversityPhone.ViewModels.Utility
                     t.Task
                     .ObserveOnDispatcher()
                     .Finally(() => canUpload.OnNext(true))
-                    .Subscribe(_ => { }, _ => Multimedia.Remove(t.Unit))
+                    .Subscribe(_ => { }, () => Multimedia.Remove(t.Unit))
                     );
 
             UploadAll = new ReactiveCommand(canUpload);
