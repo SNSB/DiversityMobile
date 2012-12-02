@@ -315,7 +315,6 @@
     <None Include="Images\Screenshots\Thumbs.db" />
     <None Include="Images\SNSBIcons\Taxa\Thumbs.db" />
     <None Include="Images\SNSBIcons\Thumbs.db" />
-    <None Include="Images\Thumbs.db" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
@@ -496,7 +495,7 @@
     <Content Include="Images\MetroIcons\white\flag.png" />
     <Content Include="Images\MetroIcons\white\folder.png" />
     <Content Include="Images\MetroIcons\white\heart.png" />
-    <Content Include="Images\MetroIcons\white\i.png" />
+    <Resource Include="Images\MetroIcons\white\i.png" />
     <Content Include="Images\MetroIcons\white\mail.png" />
     <Content Include="Images\MetroIcons\white\minus.png" />
     <Content Include="Images\MetroIcons\white\next.png" />
