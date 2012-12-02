@@ -14,7 +14,8 @@
     <Application.Resources>
     	<ResourceDictionary>
     		<ResourceDictionary.MergedDictionaries>
-    			<ResourceDictionary Source="View/Resources/Templates.xaml"/>                
+                <ResourceDictionary Source="View/Resources/Styles.xaml"/>
+                <ResourceDictionary Source="View/Resources/Templates.xaml"/>                
     		</ResourceDictionary.MergedDictionaries>
             <shell:ProgressIndicator x:Key="Progress"/>
     		<vm:ViewModelLocator x:Key="Locator" />
@@ -25,6 +26,8 @@
             <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
 			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
             <vw:PointToVisibilityConverter x:Key="PointToVis"/>
+            
+            
         </ResourceDictionary>        
     </Application.Resources>
 

@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
-using DiversityPhone.MediaService4;
+using DiversityPhone.MultimediaService;
 using System.IO.IsolatedStorage;
 using System.IO;
 using DiversityPhone.DiversityService;

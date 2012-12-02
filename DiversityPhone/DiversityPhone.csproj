@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{60F276AA-5A2A-461F-9C63-231C91298428}</ProjectGuid>
+    <ProjectGuid>{6F554274-E7F8-420A-A8F5-6956C18A97EB}</ProjectGuid>
     <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -16,7 +16,8 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>en</SupportedCultures>
+    <SupportedCultures>
+    </SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>DiversityPhone.xap</XapFilename>
@@ -24,10 +25,6 @@
     <SilverlightAppEntry>DiversityPhone.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
-    <Utf8Output>true</Utf8Output>
-    <ExpressionBlendVersion>4.0.30816.0</ExpressionBlendVersion>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\DiversityPhone\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,8 +36,6 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <RunCodeAnalysis>true</RunCodeAnalysis>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -59,16 +54,17 @@
     <Reference Include="Funq">
       <HintPath>..\Lib\Funq\Funq.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Devices.Sensors" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
-    <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Microsoft.Phone.Controls.Toolkit">
       <HintPath>..\packages\WPtoolkit.4.2012.10.30\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.10\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Blend_WP7">
       <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
@@ -85,23 +81,23 @@
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Core.dll</HintPath>
+    <Reference Include="System.Reactive.Core, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Core.2.0.21114\lib\SL4-WindowsPhone71\System.Reactive.Core.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Interfaces.dll</HintPath>
+    <Reference Include="System.Reactive.Interfaces, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Interfaces.2.0.21114\lib\SL4-WindowsPhone71\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Linq.dll</HintPath>
+    <Reference Include="System.Reactive.Linq, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Linq.2.0.21114\lib\SL4-WindowsPhone71\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.PlatformServices.dll</HintPath>
+    <Reference Include="System.Reactive.PlatformServices, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-PlatformServices.2.0.21114\lib\SL4-WindowsPhone71\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
+    <Reference Include="System.Reactive.Windows.Threading, Version=2.0.20823.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Xaml.2.0.21030\lib\SL4-WindowsPhone71\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Servicemodel" />
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -114,128 +110,137 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\LocalizableMixin.cs" />
-    <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
-    <Compile Include="Services\ILocationService.cs" />
-    <Compile Include="Services\LocationService.cs" />
-    <Compile Include="Services\MapProjection.cs" />
-    <Compile Include="Services\Maps\TestMapTransferService.cs" />
-    <Compile Include="Services\NamedServices.cs" />
-    <Compile Include="Services\NotificationService.cs" />
-    <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
-    <Compile Include="ViewModels\Interface\IAudioVideoPageVM.cs" />
-    <Compile Include="ViewModels\Interface\IDeletePageVM.cs" />
-    <Compile Include="ViewModels\Interface\ISavePageVM.cs" />
-    <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
-    <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
-    <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
-    <Compile Include="DiversityResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityResources.resx</DependentUpon>
-    </Compile>
+    <Compile Include="DiversityResources.Designer.cs" />
+    <Compile Include="Helper\Extensions.cs" />
+    <Compile Include="Helper\ListSelectionHelper.cs" />
+    <Compile Include="Helper\ReactiveCollectionListener.cs" />
+    <Compile Include="Helper\ReactiveCommand.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\AppSettings.cs" />
+    <Compile Include="Model\Credentials.cs" />
     <Compile Include="Model\Geometry\Line.cs" />
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
+    <Compile Include="Model\LocalizableMixin.cs" />
     <Compile Include="Model\Map.cs" />
-    <Compile Include="Model\Credentials.cs" />
     <Compile Include="Model\SyncUnit.cs" />
-    <Compile Include="Service References\MapMediaService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\MediaService4\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BackgroundTasks\BackgroundService.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
+    <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
     <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
-    <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadEventTask.cs" />
+    <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
-    <Compile Include="Services\DialogMessage.cs" />
-    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\Database\DiversityDataContext.cs" />
-    <Compile Include="Services\DiversityServiceExtensions.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
-    <Compile Include="Services\Maps\IMapStorageService.cs" />
-    <Compile Include="Services\Maps\IMapTransferService.cs" />
-    <Compile Include="Services\IMultiMediaClient.cs" />
-    <Compile Include="Services\Database\ITaxonService.cs" />
     <Compile Include="Services\Database\IFieldDataService.cs" />
+    <Compile Include="Services\Database\ITaxonService.cs" />
     <Compile Include="Services\Database\IVocabularyService.cs" />
-    <Compile Include="Services\Maps\MapStorage.cs" />
-    <Compile Include="Services\Maps\MapTransferService.cs" />
-    <Compile Include="Services\MultimediaClient.cs" />
-    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />
-    <Compile Include="Services\Page.cs" />
-    <Compile Include="Services\SettingsService.cs" />
     <Compile Include="Services\Database\TaxonDataContext.cs" />
     <Compile Include="Services\Database\TaxonService.cs" />
     <Compile Include="Services\Database\VocabularyService.cs" />
-    <Compile Include="ViewModels\Elements\IdentificationUnitAnalysisVM.cs" />
+    <Compile Include="Services\DialogMessage.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\DiversityServiceExtensions.cs" />
+    <Compile Include="Services\ILocationService.cs" />
+    <Compile Include="Services\IMultiMediaClient.cs" />
+    <Compile Include="Services\LocationService.cs" />
+    <Compile Include="Services\MapProjection.cs" />
+    <Compile Include="Services\Maps\IMapStorageService.cs" />
+    <Compile Include="Services\Maps\IMapTransferService.cs" />
+    <Compile Include="Services\Maps\MapStorage.cs" />
+    <Compile Include="Services\Maps\MapTransferService.cs" />
+    <Compile Include="Services\Maps\TestMapTransferService.cs" />
+    <Compile Include="Services\Messages.cs" />
+    <Compile Include="Services\MultimediaClient.cs" />
+    <Compile Include="Services\NamedServices.cs" />
+    <Compile Include="Services\NavigationService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
+    <Compile Include="Services\Page.cs" />
+    <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="ViewModels\Base\EditPageVMBase.cs" />
+    <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
+    <Compile Include="ViewModels\Base\ElementVMBase.cs" />
+    <Compile Include="ViewModels\Base\Icon.cs" />
+    <Compile Include="ViewModels\Base\PageVMBase.cs" />
+    <Compile Include="ViewModels\Base\ViewPageVMBase.cs" />
     <Compile Include="ViewModels\Edit\EditAnalysisVM.cs" />
     <Compile Include="ViewModels\Edit\EditCSVM.cs" />
+    <Compile Include="ViewModels\Edit\EditESVM.cs" />
+    <Compile Include="ViewModels\Edit\EditEVVM.cs" />
+    <Compile Include="ViewModels\Edit\EditIUVM.cs" />
     <Compile Include="ViewModels\Edit\EditPropertyVM.cs" />
+    <Compile Include="ViewModels\Elements\EventSeriesVM.cs" />
+    <Compile Include="ViewModels\Elements\EventVM.cs" />
+    <Compile Include="ViewModels\Elements\IdentificationUnitAnalysisVM.cs" />
+    <Compile Include="ViewModels\Elements\IdentificationUnitVM.cs" />
     <Compile Include="ViewModels\Elements\MultimediaObjectVM.cs" />
     <Compile Include="ViewModels\Elements\PropertyVM.cs" />
     <Compile Include="ViewModels\Elements\SpecimenVM.cs" />
-    <Compile Include="ViewModels\Base\ElementVMBase.cs" />
+    <Compile Include="ViewModels\Interface\IAudioVideoPageVM.cs" />
+    <Compile Include="ViewModels\Interface\IDeletePageVM.cs" />
     <Compile Include="ViewModels\Interface\IEditPageVM.cs" />
     <Compile Include="ViewModels\Interface\IElementVM.cs" />
-    <Compile Include="ViewModels\Base\EditPageVMBase.cs" />
-    <Compile Include="Helper\ReactiveCommand.cs" />
-    <Compile Include="ViewModels\Base\ViewPageVMBase.cs" />
-    <Compile Include="ViewModels\Base\PageVMBase.cs" />
-    <Compile Include="Helper\ListSelectionHelper.cs" />
+    <Compile Include="ViewModels\Interface\ISavePageVM.cs" />
+    <Compile Include="ViewModels\Maps\MapManagementVM.cs" />
     <Compile Include="ViewModels\Maps\MapVM.cs" />
-    <Compile Include="ViewModels\Maps\MapManagementVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\AudioVM.cs" />
     <Compile Include="ViewModels\Multimedia\ImageVM.cs" />
-    <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
-    <Compile Include="Helper\ReactiveCollectionListener.cs" />
+    <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
     <Compile Include="ViewModels\Utility\SyncVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
     <Compile Include="ViewModels\View\ElementMultimediaVM.cs" />
+    <Compile Include="ViewModels\View\HomeVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
+    <Compile Include="ViewModels\View\ViewESVM.cs" />
+    <Compile Include="ViewModels\View\ViewEVVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
+    <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
+    <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
+    <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
     <Compile Include="View\Appbar\PlayStopButton.cs" />
     <Compile Include="View\Appbar\SaveDeleteButton.cs" />
     <Compile Include="View\Appbar\SwitchingCommandButtonAdapter.cs" />
+    <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
+    <Compile Include="View\Audio.xaml.cs">
+      <DependentUpon>Audio.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\CommandNotAvailableLabel.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
+      <DependentUpon>MultimediaListControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
+    <Compile Include="View\Converters\IconToImageConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
     <Compile Include="View\Converters\MapManagementPivotConverter.cs" />
     <Compile Include="View\Converters\MultiplyConverter.cs" />
+    <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\StreamToImageConverter.cs" />
     <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
-    <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
-    <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
-    <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
+    <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
+    <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
     <Compile Include="View\DPColors.cs" />
     <Compile Include="View\DPControlBackGround.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
@@ -250,30 +255,24 @@
     <Compile Include="View\EditEV.xaml.cs">
       <DependentUpon>EditEV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\EditIU.xaml.cs">
-      <DependentUpon>EditIU.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\EditEventProperty.xaml.cs">
       <DependentUpon>EditEventProperty.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
-    <Compile Include="View\Converters\IconToImageConverter.cs" />
-    <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
-    <Compile Include="View\Audio.xaml.cs">
-      <DependentUpon>Audio.xaml</DependentUpon>
+    <Compile Include="View\EditIU.xaml.cs">
+      <DependentUpon>EditIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Helper\INPCBindingTrigger.cs" />
+    <Compile Include="View\Helper\ProgressBinding.cs" />
+    <Compile Include="View\Helper\RelativeLocationBinding.cs" />
+    <Compile Include="View\Home.xaml.cs">
+      <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Image.xaml.cs">
       <DependentUpon>Image.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Video.xaml.cs">
-      <DependentUpon>Video.xaml</DependentUpon>
+    <Compile Include="View\MapManagement.xaml.cs">
+      <DependentUpon>MapManagement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Helper\ProgressBinding.cs" />
-    <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
-      <DependentUpon>MultimediaListControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Helper\RelativeLocationBinding.cs" />
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
@@ -289,235 +288,260 @@
     <Compile Include="View\TaxonManagement.xaml.cs">
       <DependentUpon>TaxonManagement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Appbar\ViewAudioPageAppbar.cs" />
+    <Compile Include="View\Video.xaml.cs">
+      <DependentUpon>Video.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewCS.xaml.cs">
       <DependentUpon>ViewCS.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ViewIU.xaml.cs">
-      <DependentUpon>ViewIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewES.xaml.cs">
       <DependentUpon>ViewES.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\ViewEV.xaml.cs">
       <DependentUpon>ViewEV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Services\Messages.cs" />
-    <Compile Include="ViewModels\Edit\EditEVVM.cs" />
-    <Compile Include="ViewModels\Edit\EditIUVM.cs" />
-    <Compile Include="ViewModels\Elements\EventSeriesVM.cs" />
-    <Compile Include="ViewModels\Elements\EventVM.cs" />
-    <Compile Include="Helper\Extensions.cs" />
-    <Compile Include="ViewModels\Base\Icon.cs" />
-    <Compile Include="ViewModels\Elements\IdentificationUnitVM.cs" />
-    <Compile Include="ViewModels\Edit\EditESVM.cs" />
-    <Compile Include="ViewModels\View\HomeVM.cs" />
-    <Compile Include="ViewModels\View\ViewESVM.cs" />
-    <Compile Include="ViewModels\View\ViewEVVM.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
-    <Compile Include="View\MapManagement.xaml.cs">
-      <DependentUpon>MapManagement.xaml</DependentUpon>
+    <Compile Include="View\ViewIU.xaml.cs">
+      <DependentUpon>ViewIU.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewMap.xaml.cs">
       <DependentUpon>ViewMap.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </ApplicationDefinition>
-    <Resource Include="View\Resources\IdentificationUnitTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
-    </Page>
-    <Page Include="View\Controls\InfoLabel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Controls\MultimediaListControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Resource Include="View\Resources\GeoRefTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Page Include="View\Resources\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\EditAnalysis.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditCS.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\EditES.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditEV.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditIU.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\EditEventProperty.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Audio.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Image.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Video.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Settings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Setup.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Splash.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Sync.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\TaxonManagement.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewCS.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewIU.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewES.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\Home.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewEV.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Resource Include="View\Resources\Templates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Resource>
-    <Page Include="View\MapManagement.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ViewMap.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\appbar.feature.audio.rest.png" />
-    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png" />
-    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileSmall.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
-    <Resource Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileTiny.png" />
-    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_MarketTile.png" />
-    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_Splash.png" />
-    <Content Include="Images\AudioIcons\blank.png" />
-    <Content Include="Images\AudioIcons\microphone.png" />
-    <Content Include="Images\AudioIcons\play.png" />
-    <Content Include="Images\AudioIcons\record.png" />
-    <Content Include="Images\AudioIcons\speaker.png" />
-    <Content Include="Images\AudioIcons\stop.png" />
-    <Resource Include="Images\MetroIcons\whitenocircle\play.png" />
-    <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
-    <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
+    <None Include="Images\AppIcons\Thumbs.db" />
+    <None Include="Images\AudioIcons\Thumbs.db" />
+    <None Include="Images\MetroIcons\Thumbs.db" />
+    <None Include="Images\Screenshots\Thumbs.db" />
+    <None Include="Images\SNSBIcons\Taxa\Thumbs.db" />
+    <None Include="Images\SNSBIcons\Thumbs.db" />
+    <None Include="Images\Thumbs.db" />
     <None Include="packages.config" />
-    <None Include="Service References\MapMediaService\PhoneMediaService.disco" />
-    <None Include="Service References\MapMediaService\configuration91.svcinfo" />
-    <None Include="Service References\MapMediaService\configuration.svcinfo" />
-    <None Include="Service References\MapMediaService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Resource Include="Images\MetroIcons\white\i.png" />
-    <Content Include="Images\BlackPoint.png" />
-    <Content Include="Images\GPoint.png" />
-    <Content Include="Images\GpsPoint.png" />
-    <Content Include="Images\GpsPoint32.png" />
-    <Content Include="Images\GpsPosition.png" />
-    <Content Include="Images\ItemPoint.png" />
-    <Content Include="Images\SNSBIcons\Analysis.png" />
-    <Content Include="Images\SNSBIcons\Beleg_80.png" />
-    <Content Include="Images\SNSBIcons\Event_80.png" />
-    <Content Include="Images\SNSBIcons\Habitat_80.png" />
-    <Content Include="Images\SNSBIcons\Nord_80.png" />
-    <Content Include="Images\SNSBIcons\Observation_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\plant_80.png" />
-    <Content Include="Images\SNSBIcons\Series_80.png" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml" />
+    <Content Include="ServiceReferences.ClientConfig" />
+    <None Include="ViewModels\Utility\app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\appbar.add.rest.png" />
+    <Content Include="Images\appbar.back.rest.png" />
+    <Content Include="Images\appbar.basecircle.rest.png" />
+    <Content Include="Images\appbar.cancel.rest.png" />
+    <Content Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.close.rest.png" />
+    <Content Include="Images\appbar.delete.rest.png" />
+    <Content Include="Images\appbar.download.rest.png" />
+    <Content Include="Images\appbar.edit.rest.png" />
+    <Content Include="Images\appbar.favs.addto.rest.png" />
+    <Content Include="Images\appbar.favs.rest.png" />
+    <Content Include="Images\appbar.feature.audio.rest.png" />
+    <Content Include="Images\appbar.feature.camera.rest.png" />
+    <Content Include="Images\appbar.feature.email.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
+    <Content Include="Images\appbar.feature.settings.rest.png" />
+    <Content Include="Images\appbar.feature.video.rest.png" />
+    <Content Include="Images\appbar.folder.rest.png" />
     <Content Include="Images\appbar.globe.rest.png" />
     <Content Include="Images\appbar.globus.rest.png" />
     <Content Include="Images\appbar.map.rest.png" />
-    <Content Include="Images\SNSBIcons\Taxa\alga_40.png" />
-    <Content Include="Images\SNSBIcons\Taxa\alga_80.png" />
-    <Content Include="Images\appbar.back.rest.png" />
-    <Content Include="Images\appbar.basecircle.rest.png" />
-    <Content Include="Images\appbar.close.rest.png" />
-    <Content Include="Images\appbar.favs.addto.rest.png" />
-    <Content Include="Images\appbar.favs.rest.png" />
-    <Content Include="Images\appbar.feature.email.rest.png" />
-    <Content Include="Images\appbar.feature.search.rest.png" />
-    <Content Include="Images\appbar.feature.video.rest.png" />
-    <Content Include="Images\appbar.folder.rest.png" />
     <Content Include="Images\appbar.minus.rest.png" />
     <Content Include="Images\appbar.new.rest.png" />
     <Content Include="Images\appbar.next.rest.png" />
     <Content Include="Images\appbar.overflowdots.png" />
     <Content Include="Images\appbar.questionmark.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
+    <Content Include="Images\appbar.save.rest.png" />
+    <Content Include="Images\appbar.sync.rest.png" />
+    <Content Include="Images\appbar.upload.rest.png" />
+    <Content Include="Images\AppIcons\Diversity_allein_s.png" />
+    <Content Include="Images\AppIcons\Diversity_allein_tr.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd.jpg" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileLarge.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileSmall.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_AppTileTiny.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_MarketTile.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_s_Splash.png" />
+    <Content Include="Images\AppIcons\DivMob_QuadratEnd_tr.png" />
+    <Content Include="Images\AppIcons\DivWor_QuadratEnd.jpg" />
+    <Content Include="Images\AppIcons\DivWor_QuadratEnd.png" />
+    <Content Include="Images\AppIcons\DivWor_QuadratEnd_s.png" />
+    <Content Include="Images\AppIcons\DivWor_QuadratEnd_tr.png" />
+    <Content Include="Images\AppIcons\DWB_nurLogoQuadrat.jpg" />
+    <Content Include="Images\AppIcons\DWB_nurLogoQuadrat2.jpg" />
+    <Content Include="Images\AudioIcons\blank.png" />
+    <Content Include="Images\AudioIcons\microphone.png" />
+    <Content Include="Images\AudioIcons\play.png" />
+    <Content Include="Images\AudioIcons\record.png" />
+    <Content Include="Images\AudioIcons\speaker.png" />
+    <Content Include="Images\AudioIcons\stop.png" />
+    <Content Include="Images\BlackPoint.png" />
+    <Content Include="Images\DivMob_QuadratEnd_s_AppTileLarge.png" />
+    <Content Include="Images\GPoint.png" />
+    <Content Include="Images\GpsPoint.png" />
+    <Content Include="Images\GpsPoint32.png" />
+    <Content Include="Images\GpsPosition.png" />
+    <Content Include="Images\ItemPoint.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\add.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\back.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\camera.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\cancel.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\check.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\delete.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\download.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\edit.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\favs.addto.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\favs.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\ff.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\flag.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\folder.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\heart.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\i.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\mail.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\minus.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\next.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\overflowdots.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\parent.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\pause.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\phone.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\play.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\questionmark.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\refresh.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\rew.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\save.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\search.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\settings.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\share.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\upload.png" />
+    <Content Include="Images\MetroIcons\blacknocircle\video.png" />
+    <Content Include="Images\MetroIcons\black\add.png" />
+    <Content Include="Images\MetroIcons\black\back.png" />
+    <Content Include="Images\MetroIcons\black\basecircle.png" />
+    <Content Include="Images\MetroIcons\black\camera.png" />
+    <Content Include="Images\MetroIcons\black\cancel.png" />
+    <Content Include="Images\MetroIcons\black\check.png" />
+    <Content Include="Images\MetroIcons\black\delete.png" />
+    <Content Include="Images\MetroIcons\black\download.png" />
+    <Content Include="Images\MetroIcons\black\edit.png" />
+    <Content Include="Images\MetroIcons\black\favs.addto.png" />
+    <Content Include="Images\MetroIcons\black\favs.png" />
+    <Content Include="Images\MetroIcons\black\ff.png" />
+    <Content Include="Images\MetroIcons\black\flag.png" />
+    <Content Include="Images\MetroIcons\black\folder.png" />
+    <Content Include="Images\MetroIcons\black\heart.png" />
+    <Content Include="Images\MetroIcons\black\i.png" />
+    <Content Include="Images\MetroIcons\black\mail.png" />
+    <Content Include="Images\MetroIcons\black\minus.png" />
+    <Content Include="Images\MetroIcons\black\next.png" />
+    <Content Include="Images\MetroIcons\black\overflowdots.png" />
+    <Content Include="Images\MetroIcons\black\parent.png" />
+    <Content Include="Images\MetroIcons\black\pause.png" />
+    <Content Include="Images\MetroIcons\black\phone.png" />
+    <Content Include="Images\MetroIcons\black\play.png" />
+    <Content Include="Images\MetroIcons\black\questionmark.png" />
+    <Content Include="Images\MetroIcons\black\refresh.png" />
+    <Content Include="Images\MetroIcons\black\rew.png" />
+    <Content Include="Images\MetroIcons\black\save.png" />
+    <Content Include="Images\MetroIcons\black\search.png" />
+    <Content Include="Images\MetroIcons\black\settings.png" />
+    <Content Include="Images\MetroIcons\black\share.png" />
+    <Content Include="Images\MetroIcons\black\upload.png" />
+    <Content Include="Images\MetroIcons\black\video.png" />
+    <Content Include="Images\MetroIcons\metro icon pack.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\add.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\back.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\camera.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\cancel.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\check.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\delete.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\download.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\edit.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\favs.addto.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\favs.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\ff.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\flag.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\folder.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\heart.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\i.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\mail.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\minus.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\next.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\overflowdots.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\parent.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\pause.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\phone.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\play.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\questionmark.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\refresh.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\rew.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\save.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\search.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\settings.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\share.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\upload.png" />
+    <Content Include="Images\MetroIcons\whitenocircle\video.png" />
+    <Content Include="Images\MetroIcons\white\add.png" />
+    <Content Include="Images\MetroIcons\white\back.png" />
+    <Content Include="Images\MetroIcons\white\basecircle.png" />
+    <Content Include="Images\MetroIcons\white\camera.png" />
+    <Content Include="Images\MetroIcons\white\cancel.png" />
+    <Content Include="Images\MetroIcons\white\check.png" />
+    <Content Include="Images\MetroIcons\white\delete.png" />
+    <Content Include="Images\MetroIcons\white\download.png" />
+    <Content Include="Images\MetroIcons\white\edit.png" />
+    <Content Include="Images\MetroIcons\white\favs.addto.png" />
+    <Content Include="Images\MetroIcons\white\favs.png" />
+    <Content Include="Images\MetroIcons\white\ff.png" />
+    <Content Include="Images\MetroIcons\white\flag.png" />
+    <Content Include="Images\MetroIcons\white\folder.png" />
+    <Content Include="Images\MetroIcons\white\heart.png" />
+    <Content Include="Images\MetroIcons\white\i.png" />
+    <Content Include="Images\MetroIcons\white\mail.png" />
+    <Content Include="Images\MetroIcons\white\minus.png" />
+    <Content Include="Images\MetroIcons\white\next.png" />
+    <Content Include="Images\MetroIcons\white\overflowdots.png" />
+    <Content Include="Images\MetroIcons\white\parent.png" />
+    <Content Include="Images\MetroIcons\white\pause.png" />
+    <Content Include="Images\MetroIcons\white\phone.png" />
+    <Content Include="Images\MetroIcons\white\play.png" />
+    <Content Include="Images\MetroIcons\white\questionmark.png" />
+    <Content Include="Images\MetroIcons\white\refresh.png" />
+    <Content Include="Images\MetroIcons\white\rew.png" />
+    <Content Include="Images\MetroIcons\white\save.png" />
+    <Content Include="Images\MetroIcons\white\search.png" />
+    <Content Include="Images\MetroIcons\white\settings.png" />
+    <Content Include="Images\MetroIcons\white\share.png" />
+    <Content Include="Images\MetroIcons\white\upload.png" />
+    <Content Include="Images\MetroIcons\white\video.png" />
+    <Content Include="Images\Screenshots\Splash.png" />
+    <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Analysis_40.png" />
     <Content Include="Images\SNSBIcons\Analysis_80.png" />
     <Content Include="Images\SNSBIcons\ApplicationIcon.png" />
+    <Content Include="Images\SNSBIcons\Beleg_40.png" />
+    <Content Include="Images\SNSBIcons\Beleg_80.png" />
+    <Content Include="Images\SNSBIcons\Event_40.png" />
+    <Content Include="Images\SNSBIcons\Event_80.png" />
+    <Content Include="Images\SNSBIcons\Habitat_40.png" />
+    <Content Include="Images\SNSBIcons\Habitat_80.png" />
+    <Content Include="Images\SNSBIcons\Nord_40.png" />
+    <Content Include="Images\SNSBIcons\Nord_80.png" />
+    <Content Include="Images\SNSBIcons\Observation_40.png" />
+    <Content Include="Images\SNSBIcons\Observation_80.png" />
+    <Content Include="Images\SNSBIcons\Series.png" />
+    <Content Include="Images\SNSBIcons\Series_40.png" />
+    <Content Include="Images\SNSBIcons\Series_80.png" />
+    <Content Include="Images\SNSBIcons\Taxa\alga_40.png" />
+    <Content Include="Images\SNSBIcons\Taxa\alga_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\arthropod_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\arthropod_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\bacterium_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bacterium_80.png" />
-    <Content Include="Images\SNSBIcons\Beleg_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bird.png" />
     <Content Include="Images\SNSBIcons\Taxa\bird_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bird_80.png" />
@@ -527,14 +551,14 @@
     <Content Include="Images\SNSBIcons\Taxa\cnidaria_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\echinoderm_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\echinoderm_80.png" />
-    <Content Include="Images\SNSBIcons\Event_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\evertebrate_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\evertebrate_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\fish_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\fish_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\fungus_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\fungus_80.png" />
-    <Content Include="Images\SNSBIcons\Habitat_40.png" />
+    <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
+    <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\insect_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\insect_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\lichen_40.png" />
@@ -545,114 +569,149 @@
     <Content Include="Images\SNSBIcons\Taxa\mollusc_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\myxomycete_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\myxomycete_80.png" />
-    <Content Include="Images\SNSBIcons\Nord_40.png" />
-    <Content Include="Images\SNSBIcons\Observation_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\other_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\other_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\plant_40.png" />
+    <Content Include="Images\SNSBIcons\Taxa\plant_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\reptile_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\reptile_80.png" />
-    <Content Include="Images\SNSBIcons\Series.png" />
-    <Content Include="Images\SNSBIcons\Series_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\vertebrate_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\vertebrate_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\virus_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\virus_80.png" />
     <Content Include="Images\SNSBIcons\WGS84.png" />
-    <BlendEmbeddedFont Include="Fonts\segoesc.ttf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <BlendEmbeddedFont Include="Fonts\segoescb.ttf">
-      <IsSystemFont>True</IsSystemFont>
-      <All>True</All>
-      <AutoFill>True</AutoFill>
-      <Characters>
-      </Characters>
-      <Uppercase>True</Uppercase>
-      <Lowercase>True</Lowercase>
-      <Numbers>True</Numbers>
-      <Punctuation>True</Punctuation>
-    </BlendEmbeddedFont>
-    <None Include="app.config">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapMediaService\PhoneMediaService.wsdl" />
-    <None Include="Service References\MapMediaService\PhoneMediaService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapMediaService\PhoneMediaService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapMediaService\PhoneMediaService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MediaService4\MediaService4.wsdl" />
-    <None Include="Service References\MediaService4\MediaService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MediaService4\MediaService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\DataSources\DiversityService.Model.EventSeries.datasource" />
-    <None Include="Properties\DataSources\DiversityService.Model.Project.datasource" />
-    <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\DataSources\DiversityService.Model.TaxonName.datasource" />
-    <None Include="Properties\DataSources\DiversityService.Model.Term.datasource" />
-    <None Include="Properties\DataSources\DiversityService.Model.TermList.datasource" />
-    <None Include="Properties\WMAppManifest.xml" />
-    <Content Include="Images\appbar.cancel.rest.png" />
-    <Content Include="Images\appbar.check.rest.png" />
-    <Content Include="Images\appbar.delete.rest.png" />
-    <Content Include="Images\appbar.download.rest.png" />
-    <Content Include="Images\appbar.edit.rest.png" />
-    <Content Include="Images\appbar.feature.camera.rest.png" />
-    <Content Include="Images\appbar.feature.settings.rest.png" />
-    <Content Include="Images\appbar.sync.rest.png" />
-    <Content Include="Images\appbar.upload.rest.png" />
-    <Content Include="Images\appbar.add.rest.png" />
-    <Content Include="Images\appbar.save.rest.png" />
-    <None Include="Service References\MediaService4\MediaService4.disco" />
-    <None Include="Service References\MediaService4\configuration91.svcinfo" />
-    <None Include="Service References\MediaService4\configuration.svcinfo" />
-    <None Include="Service References\MediaService4\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Content Include="ServiceReferences.ClientConfig">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Page Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Audio.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Controls\InfoLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Controls\MultimediaListControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditAnalysis.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditCS.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditEV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditEventProperty.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditIU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Home.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Image.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\MapManagement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Resources\GeoRefTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Resources\IdentificationUnitTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Resources\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Resources\Templates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Settings.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Setup.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Splash.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Sync.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\TaxonManagement.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Video.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewCS.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewES.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewEV.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewIU.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ViewMap.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\MapMediaService\" />
-    <WCFMetadataStorage Include="Service References\MediaService4\" />
+    <EmbeddedResource Include="DiversityResources.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">
+      <Project>{89D2571F-5F5B-4BCB-8F34-73F03B982512}</Project>
+      <Name>DiversityPhone.MapService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
+      <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
+      <Name>DiversityPhone.MultimediaService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj">
       <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>
       <Name>DiversityPhone.ServiceReference</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DiversityResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -663,5 +722,4 @@
   </Target>
   -->
   <ProjectExtensions />
-  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Expression\Blend\WindowsPhone\v7.1\Microsoft.Expression.Blend.WindowsPhone.targets" />
 </Project>

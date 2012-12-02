@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using ReactiveUI;
-using DiversityPhone.MapMediaService;
+using DiversityPhone.MapService;
 using System.IO.IsolatedStorage;
 using System.IO;
 using DiversityPhone.Model;
