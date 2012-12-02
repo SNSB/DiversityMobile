@@ -188,11 +188,10 @@ namespace DiversityPhone.ViewModels.Utility
 
             clearDatabase.RegisterAsyncAction(_ =>
             {
-                var taxa = ioc.Resolve<ITaxonService>();
-                var vocabulary = ioc.Resolve<IVocabularyService>();
+                var taxa = ioc.Resolve<ITaxonService>();                
                 var storage = ioc.Resolve<IFieldDataService>();
 
-                if (taxa == null || vocabulary == null || storage == null)
+                if (taxa == null  || storage == null)
                 {
 #if DEBUG
                     throw new ArgumentNullException("services");
@@ -201,8 +200,7 @@ namespace DiversityPhone.ViewModels.Utility
 #endif
                 }
 
-                taxa.clearTaxonLists();
-                vocabulary.clearVocabulary();
+                taxa.clearTaxonLists();                
                 storage.clearDatabase();
             });
 
