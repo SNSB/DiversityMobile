@@ -103,13 +103,15 @@ namespace DiversityPhone.Services
 
         private void addNotification(IObservable<string> notification)
         {
+            
+
             var replays = notification.Replay(1);                
             replays.Connect();
             lock (this)
             {
                 _Notifications.Add(replays);                  
             }
-            updateNotification();
+            _Dispatcher.Schedule(updateNotification);
         }
 
         private void removeNotification(int idx)
