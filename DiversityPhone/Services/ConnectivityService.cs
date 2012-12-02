@@ -39,14 +39,12 @@
 
             
 
-            var s =Observable.Merge(
-                            Observable.FromEventPattern<object, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAddressChanged") 
-                                .Select( _ => 0L),
-                            Observable.Interval(TimeSpan.FromSeconds(30))
+            var s =Observable.Merge(                            
+                            Observable.Interval(TimeSpan.FromSeconds(1))
                    )
                         .StartWith(0)
                         .Select(_ =>
-                            {
+                            {                                
                                 if (NetworkInterface.GetIsNetworkAvailable())
                                 {
                                     var it = NetworkInterface.NetworkInterfaceType;

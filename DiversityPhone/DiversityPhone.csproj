@@ -110,7 +110,11 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DiversityResources.Designer.cs" />
+    <Compile Include="DiversityResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\ListSelectionHelper.cs" />
     <Compile Include="Helper\ReactiveCollectionListener.cs" />
@@ -696,7 +700,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DiversityResources.resx" />
+    <EmbeddedResource Include="DiversityResources.resx">
+      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">

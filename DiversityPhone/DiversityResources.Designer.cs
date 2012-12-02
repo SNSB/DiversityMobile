@@ -22,7 +22,7 @@ namespace DiversityPhone {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class DiversityResources {
+    internal class DiversityResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace DiversityPhone {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DiversityPhone.DiversityResources", typeof(DiversityResources).Assembly);
@@ -51,7 +51,7 @@ namespace DiversityPhone {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Analysis.
         /// </summary>
-        public static string Analysis_NoAnalysis {
+        internal static string Analysis_NoAnalysis {
             get {
                 return ResourceManager.GetString("Analysis_NoAnalysis", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Result.
         /// </summary>
-        public static string Analysis_Result_NoResult {
+        internal static string Analysis_Result_NoResult {
             get {
                 return ResourceManager.GetString("Analysis_Result_NoResult", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to delete.
         /// </summary>
-        public static string Button_Delete {
+        internal static string Button_Delete {
             get {
                 return ResourceManager.GetString("Button_Delete", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to edit.
         /// </summary>
-        public static string Button_Edit {
+        internal static string Button_Edit {
             get {
                 return ResourceManager.GetString("Button_Edit", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to play.
         /// </summary>
-        public static string Button_Play {
+        internal static string Button_Play {
             get {
                 return ResourceManager.GetString("Button_Play", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to save.
         /// </summary>
-        public static string Button_Save {
+        internal static string Button_Save {
             get {
                 return ResourceManager.GetString("Button_Save", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to stop.
         /// </summary>
-        public static string Button_Stop {
+        internal static string Button_Stop {
             get {
                 return ResourceManager.GetString("Button_Stop", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Property.
         /// </summary>
-        public static string EventProperty_Header_Property {
+        internal static string EventProperty_Header_Property {
             get {
                 return ResourceManager.GetString("EventProperty_Header_Property", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Value.
         /// </summary>
-        public static string EventProperty_Header_Value {
+        internal static string EventProperty_Header_Value {
             get {
                 return ResourceManager.GetString("EventProperty_Header_Value", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Altitude.
         /// </summary>
-        public static string GeoCoordinates_NoAltitude {
+        internal static string GeoCoordinates_NoAltitude {
             get {
                 return ResourceManager.GetString("GeoCoordinates_NoAltitude", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Latitude.
         /// </summary>
-        public static string GeoCoordinates_NoLatitude {
+        internal static string GeoCoordinates_NoLatitude {
             get {
                 return ResourceManager.GetString("GeoCoordinates_NoLatitude", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Longitude.
         /// </summary>
-        public static string GeoCoordinates_NoLongitude {
+        internal static string GeoCoordinates_NoLongitude {
             get {
                 return ResourceManager.GetString("GeoCoordinates_NoLongitude", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to E.
         /// </summary>
-        public static string GeoCoordinates_Suffix_E {
+        internal static string GeoCoordinates_Suffix_E {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_E", resourceCulture);
             }
@@ -180,7 +180,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to m.
         /// </summary>
-        public static string GeoCoordinates_Suffix_Meter {
+        internal static string GeoCoordinates_Suffix_Meter {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_Meter", resourceCulture);
             }
@@ -189,7 +189,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to N.
         /// </summary>
-        public static string GeoCoordinates_Suffix_N {
+        internal static string GeoCoordinates_Suffix_N {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_N", resourceCulture);
             }
@@ -198,7 +198,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to S.
         /// </summary>
-        public static string GeoCoordinates_Suffix_S {
+        internal static string GeoCoordinates_Suffix_S {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_S", resourceCulture);
             }
@@ -207,7 +207,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to W.
         /// </summary>
-        public static string GeoCoordinates_Suffix_W {
+        internal static string GeoCoordinates_Suffix_W {
             get {
                 return ResourceManager.GetString("GeoCoordinates_Suffix_W", resourceCulture);
             }
@@ -216,7 +216,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to add series.
         /// </summary>
-        public static string Home_Header_ButtonAdd {
+        internal static string Home_Header_ButtonAdd {
             get {
                 return ResourceManager.GetString("Home_Header_ButtonAdd", resourceCulture);
             }
@@ -225,7 +225,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to maps.
         /// </summary>
-        public static string Home_Header_ButtonMaps {
+        internal static string Home_Header_ButtonMaps {
             get {
                 return ResourceManager.GetString("Home_Header_ButtonMaps", resourceCulture);
             }
@@ -234,7 +234,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
-        public static string Home_Header_ButtonSettings {
+        internal static string Home_Header_ButtonSettings {
             get {
                 return ResourceManager.GetString("Home_Header_ButtonSettings", resourceCulture);
             }
@@ -243,7 +243,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t open a new Series while there is still an unfinished one..
         /// </summary>
-        public static string Home_Info_CantOpenNewSeries {
+        internal static string Home_Info_CantOpenNewSeries {
             get {
                 return ResourceManager.GetString("Home_Info_CantOpenNewSeries", resourceCulture);
             }
@@ -252,7 +252,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Collection Date.
         /// </summary>
-        public static string IdentificationUnit_Header_AnalysisDate {
+        internal static string IdentificationUnit_Header_AnalysisDate {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_AnalysisDate", resourceCulture);
             }
@@ -261,7 +261,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Identification.
         /// </summary>
-        public static string IdentificationUnit_Header_Identification {
+        internal static string IdentificationUnit_Header_Identification {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_Identification", resourceCulture);
             }
@@ -270,7 +270,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Name Query.
         /// </summary>
-        public static string IdentificationUnit_Header_NameQuery {
+        internal static string IdentificationUnit_Header_NameQuery {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_NameQuery", resourceCulture);
             }
@@ -279,7 +279,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Only observed.
         /// </summary>
-        public static string IdentificationUnit_Header_OnlyObserved {
+        internal static string IdentificationUnit_Header_OnlyObserved {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_OnlyObserved", resourceCulture);
             }
@@ -288,7 +288,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Qualification.
         /// </summary>
-        public static string IdentificationUnit_Header_Qualification {
+        internal static string IdentificationUnit_Header_Qualification {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_Qualification", resourceCulture);
             }
@@ -297,7 +297,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Relationship Type.
         /// </summary>
-        public static string IdentificationUnit_Header_RelationshipType {
+        internal static string IdentificationUnit_Header_RelationshipType {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_RelationshipType", resourceCulture);
             }
@@ -306,7 +306,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Taxonomic Group.
         /// </summary>
-        public static string IdentificationUnit_Header_TaxonomicGroup {
+        internal static string IdentificationUnit_Header_TaxonomicGroup {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Header_TaxonomicGroup", resourceCulture);
             }
@@ -315,7 +315,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to No Analyses available..
         /// </summary>
-        public static string IdentificationUnit_Info_NoAnalyses {
+        internal static string IdentificationUnit_Info_NoAnalyses {
             get {
                 return ResourceManager.GetString("IdentificationUnit_Info_NoAnalyses", resourceCulture);
             }
@@ -324,7 +324,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to This item can not be changed, it has already been uploaded..
         /// </summary>
-        public static string Info_CantEditItem {
+        internal static string Info_CantEditItem {
             get {
                 return ResourceManager.GetString("Info_CantEditItem", resourceCulture);
             }
@@ -333,16 +333,25 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Deleting Objects ....
         /// </summary>
-        public static string Info_DeletingObjects {
+        internal static string Info_DeletingObjects {
             get {
                 return ResourceManager.GetString("Info_DeletingObjects", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Internet Connectivity.
+        /// </summary>
+        internal static string Info_NoInternet {
+            get {
+                return ResourceManager.GetString("Info_NoInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this element and all its children?.
         /// </summary>
-        public static string Message_ConfirmDelete {
+        internal static string Message_ConfirmDelete {
             get {
                 return ResourceManager.GetString("Message_ConfirmDelete", resourceCulture);
             }
@@ -351,7 +360,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to A fatal Exception has occurred, please report this to your administrator:.
         /// </summary>
-        public static string Message_FatalException {
+        internal static string Message_FatalException {
             get {
                 return ResourceManager.GetString("Message_FatalException", resourceCulture);
             }
@@ -360,7 +369,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to The service is currently unavailable, please try again later.
         /// </summary>
-        public static string Message_ServiceUnavailable_Body {
+        internal static string Message_ServiceUnavailable_Body {
             get {
                 return ResourceManager.GetString("Message_ServiceUnavailable_Body", resourceCulture);
             }
@@ -369,7 +378,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Sorry.
         /// </summary>
-        public static string Message_SorryHeader {
+        internal static string Message_SorryHeader {
             get {
                 return ResourceManager.GetString("Message_SorryHeader", resourceCulture);
             }
@@ -378,7 +387,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Cleaning the Database.
         /// </summary>
-        public static string RefreshVocabularyTask_State_Cleaning {
+        internal static string RefreshVocabularyTask_State_Cleaning {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_Cleaning", resourceCulture);
             }
@@ -387,7 +396,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Loading Analyses.
         /// </summary>
-        public static string RefreshVocabularyTask_State_LoadingAnalyses {
+        internal static string RefreshVocabularyTask_State_LoadingAnalyses {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingAnalyses", resourceCulture);
             }
@@ -396,7 +405,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Loading Event Properties.
         /// </summary>
-        public static string RefreshVocabularyTask_State_LoadingProperties {
+        internal static string RefreshVocabularyTask_State_LoadingProperties {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingProperties", resourceCulture);
             }
@@ -405,7 +414,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Loading Qualifications.
         /// </summary>
-        public static string RefreshVocabularyTask_State_LoadingQualifications {
+        internal static string RefreshVocabularyTask_State_LoadingQualifications {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingQualifications", resourceCulture);
             }
@@ -414,7 +423,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Loading Analysis Results.
         /// </summary>
-        public static string RefreshVocabularyTask_State_LoadingResults {
+        internal static string RefreshVocabularyTask_State_LoadingResults {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingResults", resourceCulture);
             }
@@ -423,7 +432,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Loading Vocabulary.
         /// </summary>
-        public static string RefreshVocabularyTask_State_LoadingVocabulary {
+        internal static string RefreshVocabularyTask_State_LoadingVocabulary {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingVocabulary", resourceCulture);
             }
@@ -432,7 +441,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to clear database.
         /// </summary>
-        public static string Settings_Header_ButtonClear {
+        internal static string Settings_Header_ButtonClear {
             get {
                 return ResourceManager.GetString("Settings_Header_ButtonClear", resourceCulture);
             }
@@ -441,7 +450,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to refresh vocabulary.
         /// </summary>
-        public static string Settings_Header_ButtonRefresh {
+        internal static string Settings_Header_ButtonRefresh {
             get {
                 return ResourceManager.GetString("Settings_Header_ButtonRefresh", resourceCulture);
             }
@@ -450,7 +459,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to save.
         /// </summary>
-        public static string Settings_Header_ButtonSave {
+        internal static string Settings_Header_ButtonSave {
             get {
                 return ResourceManager.GetString("Settings_Header_ButtonSave", resourceCulture);
             }
@@ -459,7 +468,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to save.
         /// </summary>
-        public static string Setup_Header_ButtonSave {
+        internal static string Setup_Header_ButtonSave {
             get {
                 return ResourceManager.GetString("Setup_Header_ButtonSave", resourceCulture);
             }
@@ -468,7 +477,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Project.
         /// </summary>
-        public static string Setup_Header_Project {
+        internal static string Setup_Header_Project {
             get {
                 return ResourceManager.GetString("Setup_Header_Project", resourceCulture);
             }
@@ -477,7 +486,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Repository.
         /// </summary>
-        public static string Setup_Header_Repository {
+        internal static string Setup_Header_Repository {
             get {
                 return ResourceManager.GetString("Setup_Header_Repository", resourceCulture);
             }
@@ -486,7 +495,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Getting Projects.
         /// </summary>
-        public static string Setup_Info_GettingProjects {
+        internal static string Setup_Info_GettingProjects {
             get {
                 return ResourceManager.GetString("Setup_Info_GettingProjects", resourceCulture);
             }
@@ -495,7 +504,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Getting Repositories.
         /// </summary>
-        public static string Setup_Info_GettingRepositories {
+        internal static string Setup_Info_GettingRepositories {
             get {
                 return ResourceManager.GetString("Setup_Info_GettingRepositories", resourceCulture);
             }
@@ -504,7 +513,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Please Choose.
         /// </summary>
-        public static string Setup_Item_PleaseChoose {
+        internal static string Setup_Item_PleaseChoose {
             get {
                 return ResourceManager.GetString("Setup_Item_PleaseChoose", resourceCulture);
             }
@@ -513,7 +522,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to You can only use the application once it&apos;s been initialized.
         /// </summary>
-        public static string Setup_Message_CantGoBack_Body {
+        internal static string Setup_Message_CantGoBack_Body {
             get {
                 return ResourceManager.GetString("Setup_Message_CantGoBack_Body", resourceCulture);
             }
@@ -522,7 +531,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to upload all.
         /// </summary>
-        public static string Sync_Dialog_UploadAll_Caption {
+        internal static string Sync_Dialog_UploadAll_Caption {
             get {
                 return ResourceManager.GetString("Sync_Dialog_UploadAll_Caption", resourceCulture);
             }
@@ -531,7 +540,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Do you want to upload all new Multimedia? Only do this if the Phone is charging and connected via Wifi..
         /// </summary>
-        public static string Sync_Dialog_UploadAll_Text {
+        internal static string Sync_Dialog_UploadAll_Text {
             get {
                 return ResourceManager.GetString("Sync_Dialog_UploadAll_Text", resourceCulture);
             }
@@ -540,7 +549,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to data.
         /// </summary>
-        public static string Sync_Header_Data {
+        internal static string Sync_Header_Data {
             get {
                 return ResourceManager.GetString("Sync_Header_Data", resourceCulture);
             }
@@ -549,7 +558,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to multimedia.
         /// </summary>
-        public static string Sync_Header_Multimedia {
+        internal static string Sync_Header_Multimedia {
             get {
                 return ResourceManager.GetString("Sync_Header_Multimedia", resourceCulture);
             }
@@ -558,7 +567,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Can&apos;t download another taxon list..
         /// </summary>
-        public static string TaxonManagement_Message_CantDownload {
+        internal static string TaxonManagement_Message_CantDownload {
             get {
                 return ResourceManager.GetString("TaxonManagement_Message_CantDownload", resourceCulture);
             }
@@ -567,7 +576,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
-        public static string TaxonManagement_Message_Error {
+        internal static string TaxonManagement_Message_Error {
             get {
                 return ResourceManager.GetString("TaxonManagement_Message_Error", resourceCulture);
             }
@@ -576,7 +585,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to download all.
         /// </summary>
-        public static string TaxonManagement_Title_DownloadAll {
+        internal static string TaxonManagement_Title_DownloadAll {
             get {
                 return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
             }
@@ -585,7 +594,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Uploading Event and children ....
         /// </summary>
-        public static string UploadEventTask_State_UploadingEvent {
+        internal static string UploadEventTask_State_UploadingEvent {
             get {
                 return ResourceManager.GetString("UploadEventTask_State_UploadingEvent", resourceCulture);
             }
@@ -594,7 +603,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Uploading EventSeries ....
         /// </summary>
-        public static string UploadEventTask_State_UploadingSeries {
+        internal static string UploadEventTask_State_UploadingSeries {
             get {
                 return ResourceManager.GetString("UploadEventTask_State_UploadingSeries", resourceCulture);
             }
@@ -603,7 +612,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Uploading Multimedia ....
         /// </summary>
-        public static string UploadMultimediaTask_State_Uploading {
+        internal static string UploadMultimediaTask_State_Uploading {
             get {
                 return ResourceManager.GetString("UploadMultimediaTask_State_Uploading", resourceCulture);
             }

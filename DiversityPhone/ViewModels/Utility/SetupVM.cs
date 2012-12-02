@@ -17,10 +17,14 @@ namespace DiversityPhone.ViewModels.Utility
 {    
     public class SetupVM : ReactiveObject
     {
+        private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);
+
+
         IDiversityServiceClient Repository;
         ISettingsService Settings;
         IMessageBus Messenger;
         INotificationService Notifications;
+        IConnectivityService Connectivity;
 
 
         #region Setup Properties
@@ -166,6 +170,7 @@ namespace DiversityPhone.ViewModels.Utility
             Messenger = ioc.Resolve<IMessageBus>();
             Settings = ioc.Resolve<ISettingsService>();
             Notifications = ioc.Resolve<INotificationService>();
+            Connectivity = ioc.Resolve<IConnectivityService>();
 
             RefreshVocabulary = new ReactiveCommand();
             RefreshVocabulary                
@@ -226,7 +231,8 @@ namespace DiversityPhone.ViewModels.Utility
                     return usercreds;
                 });                
 
-            creds                    
+            creds  
+                .Where(_ => checkInternetConnection())  
                 .Subscribe(login => getRepositories.Execute(login));
             
             IDisposable gettingRepos = null;
@@ -249,7 +255,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             getRepositories                    
                 .RegisterAsyncFunction(login => 
-                    Repository
+                    Repository                    
                     .GetRepositories(login as Svc.UserCredentials)
                     .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})                    
                     .First())
@@ -330,12 +336,20 @@ namespace DiversityPhone.ViewModels.Utility
             
         }
 
+        private bool checkInternetConnection()
+        {
+            if (Connectivity.WifiAvailable().First())
+                return true;
+            else
+            {
+                Notifications.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION);
+                return false;
+            }
+        }
+
         private void notifySvcUnavailable()
         {
-            Messenger.SendMessage(
-                new DialogMessage( Messages.DialogType.OK,
-                    DiversityResources.Message_SorryHeader,
-                    DiversityResources.Message_ServiceUnavailable_Body));
+            Notifications.showNotification(DiversityResources.Message_ServiceUnavailable_Body, NOTIFICATION_DURATION);
         }
             
     }

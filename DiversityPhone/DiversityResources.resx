@@ -210,6 +210,9 @@
   <data name="Info_DeletingObjects" xml:space="preserve">
     <value>Deleting Objects ...</value>
   </data>
+  <data name="Info_NoInternet" xml:space="preserve">
+    <value>No Internet Connectivity</value>
+  </data>
   <data name="Message_ConfirmDelete" xml:space="preserve">
     <value>Do you really want to delete this element and all its children?</value>
   </data>
