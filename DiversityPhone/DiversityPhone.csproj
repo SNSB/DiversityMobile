@@ -129,11 +129,6 @@
     <Compile Include="Model\Map.cs" />
     <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundService.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTask.cs" />
-    <Compile Include="Services\BackgroundTasks\BackgroundTaskInvocation.cs" />
-    <Compile Include="Services\BackgroundTasks\IBackgroundService.cs" />
-    <Compile Include="Services\BackgroundTasks\IBackgroundTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadEventTask.cs" />
     <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
@@ -583,10 +578,10 @@
     <Content Include="Images\SNSBIcons\WGS84.png" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="App.xaml">
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
+    </ApplicationDefinition>
     <Page Include="View\Audio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

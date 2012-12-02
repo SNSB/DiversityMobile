@@ -565,6 +565,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collecting Modifications.
+        /// </summary>
+        internal static string Sync_Info_CollectingModifications {
+            get {
+                return ResourceManager.GetString("Sync_Info_CollectingModifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collecting Multimedia.
+        /// </summary>
+        internal static string Sync_Info_CollectingMultimedia {
+            get {
+                return ResourceManager.GetString("Sync_Info_CollectingMultimedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t download another taxon list..
         /// </summary>
         public static string TaxonManagement_Message_CantDownload {

@@ -285,6 +285,12 @@
   <data name="Sync_Header_Multimedia" xml:space="preserve">
     <value>multimedia</value>
   </data>
+  <data name="Sync_Info_CollectingModifications" xml:space="preserve">
+    <value>Collecting Modifications</value>
+  </data>
+  <data name="Sync_Info_CollectingMultimedia" xml:space="preserve">
+    <value>Collecting Multimedia</value>
+  </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>
   </data>

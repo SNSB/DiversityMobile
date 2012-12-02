@@ -36,8 +36,7 @@ namespace DiversityPhone.ViewModels
 
         private IConnectivityService Connectivity;
         private ITaxonService Taxa;
-        private IDiversityServiceClient Service;
-        private IBackgroundService Background;
+        private IDiversityServiceClient Service;       
         
 
         #region Properties
@@ -106,8 +105,7 @@ namespace DiversityPhone.ViewModels
         public TaxonManagementVM(Container ioc)
         {            
             Taxa = ioc.Resolve<ITaxonService>();
-            Service = ioc.Resolve<IDiversityServiceClient>();
-            Background = ioc.Resolve<IBackgroundService>();
+            Service = ioc.Resolve<IDiversityServiceClient>();            
             Connectivity = ioc.Resolve<IConnectivityService>();
 
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
