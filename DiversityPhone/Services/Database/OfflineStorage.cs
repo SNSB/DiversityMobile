@@ -11,6 +11,8 @@ using System.Linq.Expressions;
 using Svc = DiversityPhone.DiversityService;
 using System.IO.IsolatedStorage;
 using DiversityPhone.ViewModels;
+using Funq;
+using System.Reactive;
 
 namespace DiversityPhone.Services
 {
@@ -20,11 +22,13 @@ namespace DiversityPhone.Services
     {
         private IList<IDisposable> _subscriptions;
         private IMessageBus _messenger;
+        private INotificationService _Notifications;
      
 
-        public OfflineStorage(IMessageBus messenger)
+        public OfflineStorage(Container ioc)
         {
-            this._messenger = messenger;
+            this._messenger = ioc.Resolve<IMessageBus>();
+            _Notifications = ioc.Resolve<INotificationService>();
 
             
 
@@ -84,6 +88,15 @@ namespace DiversityPhone.Services
             };           
         }
 
+        public void deleteAndNotifyAsync<T>(T detachedRow) where T : class
+        {
+            _Notifications.showProgress(
+                CascadingDelete.deleteCascadingAsync(detachedRow)
+                .StartWith(Unit.Default)
+                .Select(_ => DiversityResources.Info_DeletingObjects)
+                );
+        }
+
        
 
         #region EventSeries
@@ -134,7 +147,7 @@ namespace DiversityPhone.Services
         {
                       
             
-            CascadingDelete.deleteCascadingAsync(toDeleteEs);
+            deleteAndNotifyAsync(toDeleteEs);
         }
 
 
@@ -176,7 +189,7 @@ namespace DiversityPhone.Services
 
         public void deleteGeoPoint(GeoPointForSeries toDeleteGp)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteGp);
+            deleteAndNotifyAsync(toDeleteGp);
         }
 
         public String convertGeoPointsToString(int seriesID)
@@ -255,7 +268,7 @@ namespace DiversityPhone.Services
 
         public void deleteEvent(Event toDeleteEv)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteEv);
+            deleteAndNotifyAsync(toDeleteEv);
         }
 
         
@@ -295,7 +308,7 @@ namespace DiversityPhone.Services
 
         public void deleteEventProperty(EventProperty toDeleteCep)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteCep);
+            deleteAndNotifyAsync(toDeleteCep);
         }
 
         #endregion
@@ -349,7 +362,7 @@ namespace DiversityPhone.Services
 
         public void deleteSpecimen(Specimen toDeleteSpec)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteSpec);
+            deleteAndNotifyAsync(toDeleteSpec);
         }
 
 
@@ -417,7 +430,7 @@ namespace DiversityPhone.Services
 
         public void deleteIU(IdentificationUnit toDeleteIU)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteIU);
+            deleteAndNotifyAsync(toDeleteIU);
         }
 
 
@@ -454,7 +467,7 @@ namespace DiversityPhone.Services
 
         public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteIUA);
+            deleteAndNotifyAsync(toDeleteIUA);
         }
 
         #endregion
@@ -542,7 +555,7 @@ namespace DiversityPhone.Services
 
         public void deleteMMO(MultimediaObject toDeleteMMO)
         {
-            CascadingDelete.deleteCascadingAsync(toDeleteMMO);            
+            deleteAndNotifyAsync(toDeleteMMO);            
         }
 
 

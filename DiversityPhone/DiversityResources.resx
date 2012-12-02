@@ -207,6 +207,9 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Info_DeletingObjects" xml:space="preserve">
+    <value>Deleting Objects ...</value>
+  </data>
   <data name="Message_ConfirmDelete" xml:space="preserve">
     <value>Do you really want to delete this element and all its children?</value>
   </data>

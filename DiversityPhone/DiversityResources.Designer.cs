@@ -331,6 +331,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting Objects ....
+        /// </summary>
+        public static string Info_DeletingObjects {
+            get {
+                return ResourceManager.GetString("Info_DeletingObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this element and all its children?.
         /// </summary>
         public static string Message_ConfirmDelete {
