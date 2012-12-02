@@ -291,4 +291,13 @@
   <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
     <value>download all</value>
   </data>
+  <data name="UploadEventTask_State_UploadingEvent" xml:space="preserve">
+    <value>Uploading Event and children ...</value>
+  </data>
+  <data name="UploadEventTask_State_UploadingSeries" xml:space="preserve">
+    <value>Uploading EventSeries ...</value>
+  </data>
+  <data name="UploadMultimediaTask_State_Uploading" xml:space="preserve">
+    <value>Uploading Multimedia ...</value>
+  </data>
 </root>

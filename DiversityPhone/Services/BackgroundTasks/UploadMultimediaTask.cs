@@ -13,6 +13,7 @@ using Funq;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
@@ -22,12 +23,14 @@ namespace DiversityPhone.Services.BackgroundTasks
         private IFieldDataService Storage;
         private IDiversityServiceClient Repository;
         private IMultiMediaClient MMOSink;
+        private INotificationService Notifications;
 
         public UploadMultimediaTask(Container ioc)
         {
             Storage = ioc.Resolve<IFieldDataService>();
             Repository = ioc.Resolve<IDiversityServiceClient>();
             MMOSink = ioc.Resolve<IMultiMediaClient>();
+            Notifications = ioc.Resolve<INotificationService>();
         }
 
 
@@ -59,6 +62,10 @@ namespace DiversityPhone.Services.BackgroundTasks
             var mmo = arg as MultimediaObject;
             if (mmo != null)
             {
+                var progress = new BehaviorSubject<string>("");
+                Notifications.showProgress(progress);
+                progress.OnNext(DiversityResources.UploadMultimediaTask_State_Uploading);
+
                 var sinkUri = MMOSink.UploadMultiMediaObjectRawData(mmo).First();
                 if (String.IsNullOrWhiteSpace(sinkUri))
                     throw new Exception("No value returned");
@@ -66,6 +73,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                 Storage.updateMMOUri(mmo.Uri, sinkUri);
                 var success= Repository.InsertMultimediaObject(mmo).First();
                 Storage.updateMMOSuccessfullUpload(mmo.Uri,sinkUri,success);
+
+                progress.OnCompleted();
             }
         }
 

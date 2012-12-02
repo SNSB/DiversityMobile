@@ -18,6 +18,7 @@ using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using Newtonsoft.Json;
+using System.Reactive.Subjects;
 
 
 namespace DiversityPhone.Services.BackgroundTasks
@@ -29,11 +30,14 @@ namespace DiversityPhone.Services.BackgroundTasks
 
         IDiversityServiceClient Repo;
         IFieldDataService Storage;
+        INotificationService Notifications;
 
         public UploadEventTask(Container ioc)
         {
             Repo = ioc.Resolve<IDiversityServiceClient>();
             Storage = ioc.Resolve<IFieldDataService>();
+            Notifications = ioc.Resolve<INotificationService>();
+
         }
 
 
@@ -67,6 +71,10 @@ namespace DiversityPhone.Services.BackgroundTasks
             var unit = arg as Event;
             if (unit != null)
             {
+                var progress = new BehaviorSubject<string>("");
+                Notifications.showProgress(progress);
+
+                progress.OnNext(DiversityResources.UploadEventTask_State_UploadingSeries);
                 var series = Storage.getEventSeriesByID(unit.SeriesID);
                 if (series.IsModified())
                 {
@@ -75,6 +83,7 @@ namespace DiversityPhone.Services.BackgroundTasks
                     Storage.updateSeriesKey(series.SeriesID.Value, collectionKey);
                 }
 
+                progress.OnNext(DiversityResources.UploadEventTask_State_UploadingEvent);
                 var collectionKeys = loadKeys();
                 if (collectionKeys == null)
                 {
@@ -110,6 +119,8 @@ namespace DiversityPhone.Services.BackgroundTasks
                         Storage.updateIUKey(iuKey.Key, iuKey.Value);
                     }
                 }
+
+                progress.OnCompleted();
             }
         }
 

@@ -581,5 +581,32 @@ namespace DiversityPhone {
                 return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Event and children ....
+        /// </summary>
+        public static string UploadEventTask_State_UploadingEvent {
+            get {
+                return ResourceManager.GetString("UploadEventTask_State_UploadingEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading EventSeries ....
+        /// </summary>
+        public static string UploadEventTask_State_UploadingSeries {
+            get {
+                return ResourceManager.GetString("UploadEventTask_State_UploadingSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Multimedia ....
+        /// </summary>
+        public static string UploadMultimediaTask_State_Uploading {
+            get {
+                return ResourceManager.GetString("UploadMultimediaTask_State_Uploading", resourceCulture);
+            }
+        }
     }
 }
