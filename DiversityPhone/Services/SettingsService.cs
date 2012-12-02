@@ -8,6 +8,12 @@ using System.Reactive.Subjects;
 
 namespace DiversityPhone.Services
 {
+    public interface ISettingsService
+    {
+        DiversityPhone.Model.AppSettings getSettings();
+        void saveSettings(DiversityPhone.Model.AppSettings settings);
+    }
+
     public class SettingsService : ISettingsService
     {
         private const string SETTINGS_KEY = "Settings";

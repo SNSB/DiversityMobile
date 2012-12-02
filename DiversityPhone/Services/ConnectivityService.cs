@@ -8,6 +8,26 @@
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive;
+
+    public enum ConnectionStatus
+    {
+        Wifi,
+        MobileBroadband,
+        None
+    }
+
+    public interface IConnectivityService
+    {
+        IObservable<ConnectionStatus> Status();
+    }
+
+    public static class ConnectivityMixin
+    {
+        public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
+        {
+            return svc.Status().Select(s => s == ConnectionStatus.Wifi);
+        }
+    }
     
 
     public class ConnectivityService : IConnectivityService
