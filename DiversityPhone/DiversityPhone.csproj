@@ -150,8 +150,6 @@
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\DiversityServiceExtensions.cs" />
-    <Compile Include="Services\ILocationService.cs" />
-    <Compile Include="Services\IMultiMediaClient.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\IMapStorageService.cs" />
@@ -203,7 +201,6 @@
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.Phone.cs" />
     <Compile Include="ViewModels\View\ElementMultimediaVM.cs" />
     <Compile Include="ViewModels\View\HomeVM.cs" />
     <Compile Include="ViewModels\View\ViewCSVM.cs" />
