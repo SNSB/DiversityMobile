@@ -699,7 +699,7 @@
   <ItemGroup>
     <EmbeddedResource Include="DiversityResources.resx">
       <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

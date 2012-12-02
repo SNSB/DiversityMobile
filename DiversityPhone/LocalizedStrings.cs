@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace DiversityPhone
 {
-    class LocalizedStrings
+    public class LocalizedStrings
     {
         public LocalizedStrings()
         {
