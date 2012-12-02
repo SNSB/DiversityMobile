@@ -115,6 +115,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\LocalizableMixin.cs" />
+    <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Services\ILocationService.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
