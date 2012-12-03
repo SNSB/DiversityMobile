@@ -340,11 +340,29 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Info_MissingRights {
+            get {
+                return ResourceManager.GetString("Info_MissingRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No Internet Connectivity.
         /// </summary>
         public static string Info_NoInternet {
             get {
                 return ResourceManager.GetString("Info_NoInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Unavailable.
+        /// </summary>
+        public static string Info_ServiceUnavailable {
+            get {
+                return ResourceManager.GetString("Info_ServiceUnavailable", resourceCulture);
             }
         }
         
@@ -367,11 +385,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service is currently unavailable, please try again later.
+        ///   Looks up a localized string similar to You don&apos;t have sufficient permissions on Table .
         /// </summary>
-        public static string Message_ServiceUnavailable_Body {
+        public static string Message_MissingRights {
             get {
-                return ResourceManager.GetString("Message_ServiceUnavailable_Body", resourceCulture);
+                return ResourceManager.GetString("Message_MissingRights", resourceCulture);
             }
         }
         
@@ -567,7 +585,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Collecting Modifications.
         /// </summary>
-        internal static string Sync_Info_CollectingModifications {
+        public static string Sync_Info_CollectingModifications {
             get {
                 return ResourceManager.GetString("Sync_Info_CollectingModifications", resourceCulture);
             }
@@ -576,7 +594,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to Collecting Multimedia.
         /// </summary>
-        internal static string Sync_Info_CollectingMultimedia {
+        public static string Sync_Info_CollectingMultimedia {
             get {
                 return ResourceManager.GetString("Sync_Info_CollectingMultimedia", resourceCulture);
             }

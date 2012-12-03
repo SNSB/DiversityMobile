@@ -232,7 +232,7 @@ namespace DiversityPhone.ViewModels.Utility
                 });                
 
             creds  
-                .Where(_ => checkInternetConnection())  
+                .CheckConnectivity(Connectivity, Notifications)
                 .Subscribe(login => getRepositories.Execute(login));
             
             IDisposable gettingRepos = null;
@@ -257,7 +257,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .RegisterAsyncFunction(login => 
                     Repository                    
                     .GetRepositories(login as Svc.UserCredentials)
-                    .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})                    
+                    .HandleServiceErrors(Notifications, Messenger, Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))                    
                     .First())
                 .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
                 .Do(repos => repos.Insert(0,NoRepo))                
@@ -294,7 +294,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .RegisterAsyncFunction(login => 
                     Repository
                     .GetProjectsForUser(login as Svc.UserCredentials)
-                    .OnServiceUnavailable(() => { notifySvcUnavailable(); return new List<Svc.Project>() as IList<Svc.Project>;} )
+                    .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Svc.Project>() as IList<Svc.Project>) )
                     .First())                     
                 .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
                 .Do(projects => projects.Insert(0, NoProject ))
@@ -311,7 +311,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .RegisterAsyncFunction(login => 
                         Repository
                         .GetUserInfo(login as Svc.UserCredentials)
-                        .OnServiceUnavailable(() => { notifySvcUnavailable(); return null;})
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(null as UserProfile))
                         .First()),
                     _ => { }, null
                 );            
@@ -335,23 +335,6 @@ namespace DiversityPhone.ViewModels.Utility
 
             
         }
-
-        private bool checkInternetConnection()
-        {
-            if (Connectivity.WifiAvailable().First())
-                return true;
-            else
-            {
-                Notifications.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION);
-                return false;
-            }
-        }
-
-        private void notifySvcUnavailable()
-        {
-            Notifications.showNotification(DiversityResources.Message_ServiceUnavailable_Body, NOTIFICATION_DURATION);
-        }
-            
     }
     
 }

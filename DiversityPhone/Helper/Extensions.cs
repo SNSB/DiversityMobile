@@ -10,11 +10,17 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Reactive.Linq;
+using System.ServiceModel;
+using DiversityPhone.Services;
+using ReactiveUI;
 
 namespace DiversityPhone.ViewModels
 {
-    public static class Extensions
+    static class Extensions
     {
+        private static readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);
+
+
         public static int ListFindIndex<T>(this IList<T> This, Func<T,bool> predicate)
         {
             if (predicate == null)
@@ -61,6 +67,40 @@ namespace DiversityPhone.ViewModels
             return source
                 .Select(x => x as T)
                 .Where(x => x != null);
+        }
+
+        public static IObservable<T> CheckConnectivity<T>(this IObservable<T> This, IConnectivityService Connectivity, INotificationService Notification)
+        {
+            return This.Where(_ =>
+                {
+                    if (Connectivity.WifiAvailable().First())
+                        return true;
+                    else
+                    {
+                        Notification.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION );
+                        return false;
+                    }
+                });
+        }
+
+        public static IObservable<T> HandleServiceErrors<T>(this IObservable<T> This, INotificationService Notification, IMessageBus Messenger, IObservable<T> ErrorValue = null) 
+        {
+            return This
+                .Catch((Exception ex) =>
+                {
+                    var rethrow = ErrorValue == null;
+                    var handled = false;
+                    if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
+                    {
+                        Notification.showNotification(DiversityResources.Info_ServiceUnavailable, NOTIFICATION_DURATION);
+                        handled = true;
+                    }
+
+                    if (!handled || rethrow)
+                        return Observable.Throw<T>(ex);
+                    else
+                        return ErrorValue;
+                });                   
         }
     }
 }

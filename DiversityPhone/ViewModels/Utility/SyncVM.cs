@@ -126,26 +126,28 @@ namespace DiversityPhone.ViewModels.Utility
 
 
             UploadEvent = new ReactiveCommand<ModifiedEventVM>(canUpload);
-            UploadEvent   
-                .Where(checkConnectivity)
+            UploadEvent
+                .CheckConnectivity(Connectivity, Notifications)
                 .Do(_ => canUpload.OnNext(false))
-                .Select(unit => new { Unit = unit, Task = UploadEventTask.Start(ioc, unit.Event.Model)})
-                .Subscribe(t =>                         
+                .Select(unit => new { Unit = unit, Task = UploadEventTask.Start(ioc, unit.Event.Model) })
+                .Subscribe(t =>
                     t.Task
                     .ObserveOnDispatcher()
+                    .HandleServiceErrors(Notifications, Messenger)
                     .Finally(() => canUpload.OnNext(true))
-                    .Subscribe( _ => {}, () => SyncUnits.Remove(t.Unit))
+                    .Subscribe(_ => { }, ex => { }, () => SyncUnits.Remove(t.Unit))
                     );
 
             UploadMultimedia = new ReactiveCommand<MultimediaVM>(canUpload);
             UploadMultimedia
-                .Where(checkConnectivity)
+                .CheckConnectivity(Connectivity, Notifications)
                 .Select(unit => new { Unit = unit, Task = UploadMultimediaTask.Start(ioc, unit.Model) })
                 .Subscribe(t =>
                     t.Task
                     .ObserveOnDispatcher()
+                    .HandleServiceErrors(Notifications, Messenger)
                     .Finally(() => canUpload.OnNext(true))
-                    .Subscribe(_ => { }, () => Multimedia.Remove(t.Unit))
+                    .Subscribe(_ => { }, ex => { }, () => Multimedia.Remove(t.Unit))
                     );
 
             UploadAll = new ReactiveCommand(canUpload);
@@ -244,17 +246,6 @@ namespace DiversityPhone.ViewModels.Utility
             canUpload.Where(can => can)
                 .Zip(multimedia, (_, multvm) => multvm)                
                 .Subscribe(UploadMultimedia.Execute);
-        }
-
-        private bool checkConnectivity(object dummy)
-        {
-            if (Connectivity.WifiAvailable().First())
-                return true;
-            else
-            {
-                Notifications.showNotification(DiversityResources.Info_NoInternet, TimeSpan.FromSeconds(3));
-                return false;
-            }
         }
     }
 }

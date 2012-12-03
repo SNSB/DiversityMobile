@@ -18,7 +18,7 @@ namespace DiversityPhone.Services
     {
         IDisposable showProgress(string text);
         void showNotification(string text, TimeSpan duration);
-        void showProgress(IObservable<string> text);
+        void showProgress(IObservable<string> text);       
     }    
 
     /// <summary>

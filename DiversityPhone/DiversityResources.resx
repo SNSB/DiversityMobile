@@ -210,8 +210,14 @@
   <data name="Info_DeletingObjects" xml:space="preserve">
     <value>Deleting Objects ...</value>
   </data>
+  <data name="Info_MissingRights" xml:space="preserve">
+    <value />
+  </data>
   <data name="Info_NoInternet" xml:space="preserve">
     <value>No Internet Connectivity</value>
+  </data>
+  <data name="Info_ServiceUnavailable" xml:space="preserve">
+    <value>Service Unavailable</value>
   </data>
   <data name="Message_ConfirmDelete" xml:space="preserve">
     <value>Do you really want to delete this element and all its children?</value>
@@ -219,8 +225,8 @@
   <data name="Message_FatalException" xml:space="preserve">
     <value>A fatal Exception has occurred, please report this to your administrator:</value>
   </data>
-  <data name="Message_ServiceUnavailable_Body" xml:space="preserve">
-    <value>The service is currently unavailable, please try again later</value>
+  <data name="Message_MissingRights" xml:space="preserve">
+    <value>You don't have sufficient permissions on Table </value>
   </data>
   <data name="Message_SorryHeader" xml:space="preserve">
     <value>Sorry</value>

@@ -144,7 +144,6 @@
     <Compile Include="Services\Database\VocabularyService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
-    <Compile Include="Services\DiversityServiceExtensions.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\IMapStorageService.cs" />
@@ -318,7 +317,9 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <Content Include="ServiceReferences.ClientConfig" />
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="ViewModels\Utility\app.config" />
   </ItemGroup>
   <ItemGroup>
