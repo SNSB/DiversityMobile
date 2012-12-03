@@ -385,11 +385,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You don&apos;t have sufficient permissions on Table .
+        ///   Looks up a localized string similar to An Error Occurred while processing your request. Maybe you don&apos;t have sufficient permissions. Message:.
         /// </summary>
-        public static string Message_MissingRights {
+        public static string Message_ServiceProblem {
             get {
-                return ResourceManager.GetString("Message_MissingRights", resourceCulture);
+                return ResourceManager.GetString("Message_ServiceProblem", resourceCulture);
             }
         }
         

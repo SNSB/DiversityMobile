@@ -225,8 +225,8 @@
   <data name="Message_FatalException" xml:space="preserve">
     <value>A fatal Exception has occurred, please report this to your administrator:</value>
   </data>
-  <data name="Message_MissingRights" xml:space="preserve">
-    <value>You don't have sufficient permissions on Table </value>
+  <data name="Message_ServiceProblem" xml:space="preserve">
+    <value>An Error Occurred while processing your request. Maybe you don't have sufficient permissions. Message:</value>
   </data>
   <data name="Message_SorryHeader" xml:space="preserve">
     <value>Sorry</value>
