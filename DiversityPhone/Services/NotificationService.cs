@@ -81,32 +81,35 @@ namespace DiversityPhone.Services
 
         private void updateNotification()
         {
-            lock (this)
-            {
-                if (_Notifications.Count > 0)
-                {                    
-                    var nextNotification = _Notifications[(_Notifications.IndexOf(_CurrentNotification) + 1) % _Notifications.Count];
-                    if (nextNotification != _CurrentNotification)
+            _Dispatcher.Schedule(() =>
+                {
+                    lock (this)
                     {
-                        _CurrentNotification = nextNotification;
-                        _CurrentNotificationSubscription.Dispose();
-                        _CurrentNotificationSubscription =
-                            new CompositeDisposable(
-                                new[] { 
+                        if (_Notifications.Count > 0)
+                        {
+                            var nextNotification = _Notifications[(_Notifications.IndexOf(_CurrentNotification) + 1) % _Notifications.Count];
+                            if (nextNotification != _CurrentNotification)
+                            {
+                                _CurrentNotification = nextNotification;
+                                _CurrentNotificationSubscription.Dispose();
+                                _CurrentNotificationSubscription =
+                                    new CompositeDisposable(
+                                        new[] { 
                                     _CurrentNotification
                                         .DistinctUntilChanged()
                                         .Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotification)),
                                     _Dispatcher.Schedule(UPDATE_INTERVAL, updateNotification)
                                 });
+                            }
+                        }
+                        else
+                        {
+                            _CurrentNotification = null;
+                            _CurrentNotificationSubscription.Dispose();
+                            setNotification("");
+                        }
                     }
-                }
-                else
-                {
-                    _CurrentNotification = null;
-                    _CurrentNotificationSubscription.Dispose();
-                    setNotification("");
-                }
-            }
+                });
         }
 
         private void addNotification(IObservable<string> notification)
@@ -118,7 +121,7 @@ namespace DiversityPhone.Services
             {
                 _Notifications.Add(replays);                  
             }
-            _Dispatcher.Schedule(updateNotification);
+            updateNotification();
         }
 
         private void removeNotification(IObservable<string> not)
