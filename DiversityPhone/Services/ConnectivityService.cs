@@ -36,14 +36,13 @@
 
         public ConnectivityService()
         {
-
+             
             
 
-            var s =Observable.Merge(                            
-                            Observable.Interval(TimeSpan.FromSeconds(1))
-                   )
-                        .StartWith(0)
-                        .Select(_ =>
+            status =
+               Observable.Interval(TimeSpan.FromSeconds(3))
+                .StartWith(0)
+                .Select(_ => 
                             {                                
                                 if (NetworkInterface.GetIsNetworkAvailable())
                                 {
@@ -55,15 +54,12 @@
                                         return ConnectionStatus.MobileBroadband;
                                 }
                                 return ConnectionStatus.None;
-                            })  
-                        .Replay(1);
-            s.Connect();
-            status = s;
+                            });
         }
 
         public IObservable<ConnectionStatus> Status()
         {
-            return status.AsObservable();
+            return status;
         }
     }
 }
