@@ -34,8 +34,8 @@ namespace DiversityPhone.Services
         ISubject<int> _ProgressCountSubject = new Subject<int>();
         IScheduler _Dispatcher;
         List<IObservable<string>> _Notifications = new List<IObservable<string>>();
-        int _CurrentNotificationIdx = -1;
-        SerialDisposable _CurrentNotificationSubscription = new SerialDisposable();        
+        IObservable<string> _CurrentNotification;
+        IDisposable _CurrentNotificationSubscription = Disposable.Empty;        
 
         public NotificationService(Container ioc)
         {
@@ -46,8 +46,7 @@ namespace DiversityPhone.Services
             _Dispatcher = ioc.ResolveNamed<IScheduler>(NamedServices.DISPATCHER);
 
             _ProgressCountSubject
-                .Select(c => c > 0)
-                .ObserveOn(_Dispatcher)
+                .Select(c => c > 0)                
                 .Subscribe(setProgressindicator);
         }
 
@@ -60,22 +59,24 @@ namespace DiversityPhone.Services
 
         private void setProgressindicator(bool show)
         {
-            if (show)
-            {
-                _Progress.IsIndeterminate = true;                
-            }
-            else
-            {
-                _Progress.IsIndeterminate = false;
-            }
-            if (!_Progress.IsVisible)
-                _Progress.IsVisible = true;
+            _Dispatcher.Schedule(() =>
+                {
+                    if (show)
+                    {
+                        _Progress.IsIndeterminate = true;
+                    }
+                    else
+                    {
+                        _Progress.IsIndeterminate = false;
+                    }
+                    if (!_Progress.IsVisible)
+                        _Progress.IsVisible = true;
+                });
         }
 
         private void setNotification(string text)
         {
-            var header = (_Notifications.Count > 1) ? string.Format("{0}/{1} ", _CurrentNotificationIdx + 1, _Notifications.Count) : "";
-            _Progress.Text = string.Format("{0}{1}", header, text);
+            _Dispatcher.Schedule(() => _Progress.Text = text);
         }
 
         private void updateNotification()
@@ -83,27 +84,33 @@ namespace DiversityPhone.Services
             lock (this)
             {
                 if (_Notifications.Count > 0)
-                {
-                    _CurrentNotificationIdx = ++_CurrentNotificationIdx % _Notifications.Count;
-                    _CurrentNotificationSubscription.Disposable =
-                        new CompositeDisposable(
-                            new[] { 
-                                _Notifications[_CurrentNotificationIdx].ObserveOn(_Dispatcher)
-                                    .Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotificationIdx)),
-                                _Dispatcher.Schedule(UPDATE_INTERVAL, updateNotification)
-                            });
+                {                    
+                    var nextNotification = _Notifications[(_Notifications.IndexOf(_CurrentNotification) + 1) % _Notifications.Count];
+                    if (nextNotification != _CurrentNotification)
+                    {
+                        _CurrentNotification = nextNotification;
+                        _CurrentNotificationSubscription.Dispose();
+                        _CurrentNotificationSubscription =
+                            new CompositeDisposable(
+                                new[] { 
+                                    _CurrentNotification
+                                        .DistinctUntilChanged()
+                                        .Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotification)),
+                                    _Dispatcher.Schedule(UPDATE_INTERVAL, updateNotification)
+                                });
+                    }
                 }
                 else
                 {
-                    _CurrentNotificationSubscription.Disposable = null;
+                    _CurrentNotification = null;
+                    _CurrentNotificationSubscription.Dispose();
                     setNotification("");
                 }
             }
         }
 
         private void addNotification(IObservable<string> notification)
-        {
-            
+        {        
 
             var replays = notification.Replay(1);                
             replays.Connect();
@@ -114,11 +121,11 @@ namespace DiversityPhone.Services
             _Dispatcher.Schedule(updateNotification);
         }
 
-        private void removeNotification(int idx)
+        private void removeNotification(IObservable<string> not)
         {
             lock (this)
             {
-                _Notifications.RemoveAt(idx);
+                _Notifications.Remove(not);
             }
             updateNotification();
         }
