@@ -529,6 +529,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Credentials.
+        /// </summary>
+        public static string Setup_Info_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Setup_Info_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Choose.
         /// </summary>
         public static string Setup_Item_PleaseChoose {

@@ -273,6 +273,9 @@
   <data name="Setup_Info_GettingRepositories" xml:space="preserve">
     <value>Getting Repositories</value>
   </data>
+  <data name="Setup_Info_InvalidCredentials" xml:space="preserve">
+    <value>Invalid Credentials</value>
+  </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
   </data>
