@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1044ba7c-7e7d-4b27-83a4-e9caf5240378" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.ObjectModel.ObservableCollection`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>false</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PhoneMediaService.xsd" MetadataType="Schema" ID="bd034d27-5fc1-4ebe-8c2a-a5fa0cb1a9fe" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PhoneMediaService.wsdl" MetadataType="Wsdl" ID="69201a8b-10de-43e5-924e-28aaabe51497" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?wsdl" />
+    <MetadataFile FileName="PhoneMediaService1.xsd" MetadataType="Schema" ID="ea73121b-1af9-4782-83ce-19d9c6de0bab" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PhoneMediaService2.xsd" MetadataType="Schema" ID="ad9046df-ab64-4c0b-a6a1-981bd35f8542" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PhoneMediaService.disco" MetadataType="Disco" ID="2997d012-1391-4d50-b4aa-8d0dbc99817f" SourceId="1" SourceUrl="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

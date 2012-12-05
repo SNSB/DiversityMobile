@@ -10,15 +10,21 @@ using Funq;
 using DiversityPhone.Services.BackgroundTasks;
 using DiversityPhone.DiversityService;
 using DiversityPhone.Messages;
+using System.Reactive;
 
 
 namespace DiversityPhone.ViewModels.Utility
 {    
     public class SetupVM : ReactiveObject
     {
+        private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(5);
+
+
         IDiversityServiceClient Repository;
         ISettingsService Settings;
         IMessageBus Messenger;
+        INotificationService Notifications;
+        IConnectivityService Connectivity;
 
 
         #region Setup Properties
@@ -90,17 +96,19 @@ namespace DiversityPhone.ViewModels.Utility
 
         private ObservableAsPropertyHelper<Svc.UserProfile> _Profile;           
 
-        public bool GettingProjects { get { return _GettingProjects.Value; } }
-        private ObservableAsPropertyHelper<bool> _GettingProjects;
+        private bool _IsBusy = true;
 
-        public bool GettingRepositories { get { return _GettingRepositories.Value; } }
-        private ObservableAsPropertyHelper<bool> _GettingRepositories;
-
-        public bool IsBusy { get { return _IsBusy.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsBusy;
-
-        public string BusyMessage { get { return _BusyMessage.Value; } }
-        private ObservableAsPropertyHelper<string> _BusyMessage;
+        public bool IsBusy
+        {
+            get
+            {
+                return _IsBusy;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value);
+            }
+        }
 
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
@@ -108,10 +116,7 @@ namespace DiversityPhone.ViewModels.Utility
         #endregion        
 
         #region Async Operations
-        ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
-        ReactiveAsyncCommand getRepositories = new ReactiveAsyncCommand();
-        ReactiveAsyncCommand getProjects = new ReactiveAsyncCommand();
-        ReactiveAsyncCommand getUserInfo = new ReactiveAsyncCommand();            
+        ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();                   
         #endregion
 
         private AppSettings createSettings()
@@ -161,33 +166,34 @@ namespace DiversityPhone.ViewModels.Utility
             Repository = ioc.Resolve<IDiversityServiceClient>();
             Messenger = ioc.Resolve<IMessageBus>();
             Settings = ioc.Resolve<ISettingsService>();
-            var background = ioc.Resolve<IBackgroundService>();
-            var refreshVocabularyTask = background.getTaskObject<RefreshVocabularyTask>();
+            Notifications = ioc.Resolve<INotificationService>();
+            Connectivity = ioc.Resolve<IConnectivityService>();
 
             RefreshVocabulary = new ReactiveCommand();
-            RefreshVocabulary
-                .Subscribe(_ => background.startTask<RefreshVocabularyTask>(Settings.getSettings().ToCreds()));
-
-            _IsBusy = this.ObservableToProperty(refreshVocabularyTask.BusyObservable.ObserveOnDispatcher(), x => x.IsBusy);
-
-            _BusyMessage = this.ObservableToProperty(
-                refreshVocabularyTask.AsyncProgressMessages.ObserveOnDispatcher(), x => x.BusyMessage);
-
-            refreshVocabularyTask.AsyncCompletedNotification
-                .Take(1)
-                .Subscribe(_ =>
+            RefreshVocabulary                
+                .Subscribe(settings => 
                     {
-                        Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
-                        Messenger.SendMessage<Page>(Page.Home);
+                        if( settings == null || !(settings is AppSettings))
+                            return;
+
+                        var login = (settings as AppSettings).ToCreds();
+
+                        RefreshVocabularyTask.Start(ioc, login )                            
+                            .StartWith(Unit.Default)
+                            .Subscribe(_ => { IsBusy = true; }, () =>
+                            {
+                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
+                                Messenger.SendMessage<Page>(Page.Home);
+                            });
                     });
+                                  
 
             clearDatabase.RegisterAsyncAction(_ =>
             {
-                var taxa = ioc.Resolve<ITaxonService>();
-                var vocabulary = ioc.Resolve<IVocabularyService>();
+                var taxa = ioc.Resolve<ITaxonService>();                
                 var storage = ioc.Resolve<IFieldDataService>();
 
-                if (taxa == null || vocabulary == null || storage == null)
+                if (taxa == null  || storage == null)
                 {
 #if DEBUG
                     throw new ArgumentNullException("services");
@@ -196,8 +202,7 @@ namespace DiversityPhone.ViewModels.Utility
 #endif
                 }
 
-                taxa.clearTaxonLists();
-                vocabulary.clearVocabulary();
+                taxa.clearTaxonLists();                
                 storage.clearDatabase();
             });
 
@@ -210,76 +215,81 @@ namespace DiversityPhone.ViewModels.Utility
                     this.ObservableForProperty(x => x.UserName),
                     this.ObservableForProperty(x => x.Password),
                     (user, pass) => new Svc.UserCredentials() { LoginName = user.Value, Password = pass.Value }
-                );
+                );          
+                        
+            creds  
+                .CheckConnectivity(Connectivity, Notifications)
+                .SelectMany(login => 
+                    {
+                        var gettingRepos = Notifications.showProgress(DiversityResources.Setup_Info_GettingRepositories);
+                        return
+                        Repository                    
+                        .GetRepositories(login as Svc.UserCredentials)
+                        .Finally(gettingRepos.Dispose)
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
+                        .Where(repos => 
+                            {
+                                if (repos != null && repos.Count > 0)
+                                    return true;
+                                else
+                                {                                    
+                                    Notifications.showNotification(DiversityResources.Setup_Info_InvalidCredentials, NOTIFICATION_DURATION);
+                                    return false;
+                                }
+                            });
+                    })                
+                .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))                                
+                .Do(repos => 
+                    {
+                        repos.Insert(0,NoRepo);
+                        if (repos.Count > 1) 
+                        {
+                            CurrentPivot = Pivots.Repository; 
+                        }
+                    })                
+                .Subscribe(Databases);
 
             var credsWithRepo =
                 Observable.CombineLatest(
                 creds,
                 Databases
-                .Where(x => x != null),
+                .Where(x => x != null && x != NoRepo),
                 (usercreds, repo) =>
                 {
                     usercreds.Repository = repo.Database;
                     return usercreds;
-                });                
+                });
 
-            creds                    
-                .Subscribe(login => getRepositories.Execute(login));
-            _GettingRepositories = this.ObservableToProperty(
-                getRepositories
-                .ItemsInflight
-                .Select(items => items > 0)
-                .ObserveOnDispatcher(),
-                x => x.GettingRepositories);
-
-            getRepositories                    
-                .RegisterAsyncFunction(login => 
-                    Repository
-                    .GetRepositories(login as Svc.UserCredentials)
-                    .OnServiceUnavailable(() => {notifySvcUnavailable(); return new List<Svc.Repository>();})                    
-                    .First())
-                .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
-                .Do(repos => repos.Insert(0,NoRepo))                
-                .Do(repos => 
-                {
-                    if (repos.Count > 1) 
+            credsWithRepo
+                .CheckConnectivity(Connectivity, Notifications)
+                .SelectMany(login => 
                     {
-                        CurrentPivot = Pivots.Repository; 
-                    }
-                })
-                .Subscribe(Databases);                
-
-            credsWithRepo.Subscribe(login => getProjects.Execute(login));
-            _GettingProjects = this.ObservableToProperty(
-                getProjects
-                .ItemsInflight
-                .Select(items => items > 0)
-                .ObserveOnDispatcher(),
-                x => x.GettingProjects);
+                        var gettingProjects = Notifications.showProgress(DiversityResources.Setup_Info_GettingProjects);
+                        return
+                        Repository
+                        .GetProjectsForUser(login)
+                        .Finally(gettingProjects.Dispose)
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Svc.Project>() as IList<Svc.Project>));
+                    })
                 
-            getProjects
-                .RegisterAsyncFunction(login => 
-                    Repository
-                    .GetProjectsForUser(login as Svc.UserCredentials)
-                    .OnServiceUnavailable(() => { notifySvcUnavailable(); return new List<Svc.Project>() as IList<Svc.Project>;} )
-                    .First())                     
-                .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed
-                .Do(projects => projects.Insert(0, NoProject ))
+                .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed                
                 .ObserveOnDispatcher()
                 .Do(projects =>
-                {
-                    if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
-                })
+                    {
+                        projects.Insert(0, NoProject );
+                        if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
+                    })
                 .Subscribe(Projects);
 
-            credsWithRepo.Subscribe(login => getUserInfo.Execute(login));
+            
             _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
-                    getUserInfo
-                    .RegisterAsyncFunction(login => 
+                    credsWithRepo
+                    .SelectMany(login => 
                         Repository
                         .GetUserInfo(login as Svc.UserCredentials)
-                        .OnServiceUnavailable(() => { notifySvcUnavailable(); return null;})
-                        .First()),
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(null as UserProfile))
+                    )
+                    .Merge(credsWithRepo.Select(_ => null as UserProfile)),
                     _ => { }, null
                 );            
             #endregion
@@ -287,24 +297,21 @@ namespace DiversityPhone.ViewModels.Utility
 
             Save = new ReactiveCommand(settingsValid().ObserveOnDispatcher());
 
+            var existingSettings = Observable.Return(Settings.getSettings());
+
+            existingSettings
+                .Where(settings => settings == null)
+                .Subscribe(_ => { IsBusy = false; });
+
             Save
                 .Do(_ => clearDatabase.Execute(null))
                 .Select(_ => createSettings())
-                .Merge(Observable.Return(Settings.getSettings()).Where(settings => settings != null)) // just refresh
+                .Merge(existingSettings.Where(settings => settings != null)) // just refresh
                 .Do(res => Settings.saveSettings(res))
                 .Subscribe(RefreshVocabulary.Execute);
 
             
         }
-
-        private void notifySvcUnavailable()
-        {
-            Messenger.SendMessage(
-                new DialogMessage( Messages.DialogType.OK,
-                    DiversityResources.Message_SorryHeader,
-                    DiversityResources.Message_ServiceUnavailable_Body));
-        }
-            
     }
     
 }

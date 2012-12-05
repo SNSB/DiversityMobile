@@ -103,7 +103,7 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(vms => vms)
                 .CreateCollection();
 
-            Analyses.ListenToChanges<IdentificationUnitAnalysis, IdentificationUnitAnalysisVM>(iuan => iuan.IdentificationUnitID == Current.Model.UnitID);
+            Analyses.ListenToChanges<IdentificationUnitAnalysis, IdentificationUnitAnalysisVM>(iuan => iuan.UnitID == Current.Model.UnitID);
 
             CurrentModelObservable
                 .Do(_ => Analyses.Clear())
@@ -135,7 +135,7 @@ namespace DiversityPhone.ViewModels
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
             Add.Where(_ => SelectedPivot == Pivots.Descriptions)
-                .Select(_ => new IdentificationUnitAnalysisVM(new IdentificationUnitAnalysis() { IdentificationUnitID = Current.Model.UnitID }) as IElementVM<IdentificationUnitAnalysis>)
+                .Select(_ => new IdentificationUnitAnalysisVM(new IdentificationUnitAnalysis() { UnitID = Current.Model.UnitID }) as IElementVM<IdentificationUnitAnalysis>)
                 .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();

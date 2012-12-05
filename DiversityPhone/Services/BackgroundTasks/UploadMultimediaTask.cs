@@ -13,70 +13,53 @@ using Funq;
 using System.IO.IsolatedStorage;
 using System.IO;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
+using System.Reactive;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
-    public class UploadMultimediaTask : BackgroundTask
+    public class UploadMultimediaTask 
     {
-        private const string ARGUMENT_KEY = "A";
+        
         private IFieldDataService Storage;
         private IDiversityServiceClient Repository;
         private IMultiMediaClient MMOSink;
+        private INotificationService Notifications;
+        private MultimediaObject _MMO;
 
-        public UploadMultimediaTask(Container ioc)
+        public static IObservable<Unit> Start(Container ioc, MultimediaObject mmo)
+        {
+            var t = new UploadMultimediaTask(ioc, mmo);
+            return Observable.Start(t.Run);
+        }
+
+
+        private UploadMultimediaTask(Container ioc, MultimediaObject mmo)
         {
             Storage = ioc.Resolve<IFieldDataService>();
             Repository = ioc.Resolve<IDiversityServiceClient>();
             MMOSink = ioc.Resolve<IMultiMediaClient>();
+            Notifications = ioc.Resolve<INotificationService>();
+
+            _MMO = mmo;
         }
 
 
-        public override bool CanResume
-        {
-            get { return false; }
-        }
+        void Run()
+        {            
+            var progress = new BehaviorSubject<string>("");
+            Notifications.showProgress(progress);
+            progress.OnNext(DiversityResources.UploadMultimediaTask_State_Uploading);
 
-        protected override void saveArgumentToState(object arg)
-        {
-            var mmo = arg as MultimediaObject;
-            if (mmo != null)
-            {
-                State[ARGUMENT_KEY] = mmo.MMOID.ToString();
-            }
-        }
+            var sinkUri = MMOSink.UploadMultiMediaObjectRawData(_MMO).First();
+            if (String.IsNullOrWhiteSpace(sinkUri))
+                throw new Exception("No value returned");
+            _MMO.DiversityCollectionUri = sinkUri;
+            Storage.updateMMOUri(_MMO.Uri, sinkUri);
+            var success = Repository.InsertMultimediaObject(_MMO).First();
+            Storage.updateMMOSuccessfullUpload(_MMO.Uri, sinkUri, success);
 
-        protected override object getArgumentFromState()
-        {
-            if (State.ContainsKey(ARGUMENT_KEY))
-            {
-                return Storage.getMultimediaByID(int.Parse(State[ARGUMENT_KEY]));
-            }
-            return null;
-        }
-
-        protected override void Run(object arg)
-        {
-            var mmo = arg as MultimediaObject;
-            if (mmo != null)
-            {
-                var sinkUri = MMOSink.UploadMultiMediaObjectRawData(mmo).First();
-                if (String.IsNullOrWhiteSpace(sinkUri))
-                    throw new Exception("No value returned");
-                mmo.DiversityCollectionUri = sinkUri;
-                Storage.updateMMOUri(mmo.Uri, sinkUri);
-                var success= Repository.InsertMultimediaObject(mmo).First();
-                Storage.updateMMOSuccessfullUpload(mmo.Uri,sinkUri,success);
-            }
-        }
-
-        protected override void Cancel()
-        {
-            //Nothing to do?
-        }
-
-        protected override void Cleanup(object arg)
-        {
-            //Nothing to do?
+            progress.OnCompleted();            
         }
     }
 }

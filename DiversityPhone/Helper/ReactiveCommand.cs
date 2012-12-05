@@ -30,6 +30,16 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand(Func<T, bool> canExecute = null)
         {
             inner_command = ReactiveCommand.Create(create_can_execute(canExecute));
+            CommonConstructor();
+        }
+        public ReactiveCommand(IObservable<bool> canExecute)
+        {
+            inner_command = new ReactiveCommand(canExecute);
+            CommonConstructor();
+        }
+
+        private void CommonConstructor()
+        {
             var obs = inner_command
                 .CastNotNull<T>()
                 .Publish();

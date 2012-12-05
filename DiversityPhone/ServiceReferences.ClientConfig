@@ -2,7 +2,7 @@
     <system.serviceModel>
         <bindings>
             <basicHttpBinding>               
-                <binding name="BasicHttpBinding_IPhoneMediaService1" closeTimeout="00:10:00"
+                <binding name="BasicHttpBinding_IPhoneMediaService" closeTimeout="00:10:00"
                     openTimeout="00:03:00" receiveTimeout="00:10:00" sendTimeout="00:10:00"
                     maxBufferSize="2147483647" maxReceivedMessageSize="2147483647">
                     <security mode="None" />
@@ -28,22 +28,19 @@
         <client>
             <endpoint address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
                 binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
-                contract="MediaService4.IMediaService4" name="WSHttpBinding_IMediaService4" />
+                contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
             <endpoint address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
-                contract="MapMediaService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
-          <!--<endpoint address="http://bsm5.snsb.info:1111/DiversityService/Service1.svc" binding="basicHttpBinding"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
+                contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
+          <!--endpoint address="http://bsm5.snsb.info:1111/DiversityService/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" /-->
           <!--endpoint address="http://169.254.80.80:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" /-->
-          <!--<endpoint address="http://192.168.1.8:7091/Service1.svc" binding="basicHttpBinding"
+          <endpoint address="http://192.168.1.8:7091/Service1.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
-          <!--<endpoint address="localhost:7091/Service1.svc" binding="basicHttpBinding"
-                bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>
 </configuration>

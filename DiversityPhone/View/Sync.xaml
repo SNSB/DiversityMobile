@@ -67,7 +67,7 @@
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
                                         <toolkit:MenuItem Header="upload" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadUnit}" 
+                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadEvent}" 
                                                             CommandParameter="{Binding}"/>
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
@@ -108,7 +108,7 @@
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="upload" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadUnit}" 
+                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadMultimedia}" 
                                                             CommandParameter="{Binding}"/>
                                         </toolkit:ContextMenu>
                                     </toolkit:ContextMenuService.ContextMenu>

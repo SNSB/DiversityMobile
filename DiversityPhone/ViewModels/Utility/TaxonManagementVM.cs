@@ -37,7 +37,7 @@ namespace DiversityPhone.ViewModels
         private IConnectivityService Connectivity;
         private ITaxonService Taxa;
         private IDiversityServiceClient Service;
-        private IBackgroundService Background;
+        private INotificationService Notification;
         
 
         #region Properties
@@ -106,9 +106,9 @@ namespace DiversityPhone.ViewModels
         public TaxonManagementVM(Container ioc)
         {            
             Taxa = ioc.Resolve<ITaxonService>();
-            Service = ioc.Resolve<IDiversityServiceClient>();
-            Background = ioc.Resolve<IBackgroundService>();
+            Service = ioc.Resolve<IDiversityServiceClient>();            
             Connectivity = ioc.Resolve<IConnectivityService>();
+            Notification = ioc.Resolve<INotificationService>();
 
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
             Select.Subscribe(taxonlist =>
@@ -128,6 +128,7 @@ namespace DiversityPhone.ViewModels
 
                                 DownloadTaxonList(taxonlist)
                                     .ObserveOnDispatcher()
+                                    .HandleServiceErrors(Notification, Messenger)
                                     .Subscribe(_ => { DownloadCount++; },
                                         _ => //Download Failed
                                         {

@@ -11,20 +11,24 @@ using System.Linq.Expressions;
 using Svc = DiversityPhone.DiversityService;
 using System.IO.IsolatedStorage;
 using DiversityPhone.ViewModels;
+using Funq;
+using System.Reactive;
 
 namespace DiversityPhone.Services
 {
    
 
-    public class OfflineStorage : IFieldDataService
+    public partial class OfflineStorage : IFieldDataService
     {
         private IList<IDisposable> _subscriptions;
         private IMessageBus _messenger;
+        private INotificationService _Notifications;
      
 
-        public OfflineStorage(IMessageBus messenger)
+        public OfflineStorage(Container ioc)
         {
-            this._messenger = messenger;
+            this._messenger = ioc.Resolve<IMessageBus>();
+            _Notifications = ioc.Resolve<INotificationService>();
 
             
 
@@ -84,6 +88,15 @@ namespace DiversityPhone.Services
             };           
         }
 
+        public void deleteAndNotifyAsync<T>(T detachedRow) where T : class
+        {
+            _Notifications.showProgress(
+                CascadingDelete.deleteCascadingAsync(detachedRow)
+                .StartWith(Unit.Default)
+                .Select(_ => DiversityResources.Info_DeletingObjects)
+                );
+        }
+
        
 
         #region EventSeries
@@ -132,18 +145,9 @@ namespace DiversityPhone.Services
 
         public void deleteEventSeries(EventSeries toDeleteEs)
         {
-            var attachedEvents = this.getEventsForSeries(toDeleteEs);
-            foreach (Event ev in attachedEvents)
-            {
-                this.deleteEvent(ev);
-            }
-           
-            var attachedGeoPoints = this.getGeoPointsForSeries(toDeleteEs.SeriesID.Value);
-            foreach (GeoPointForSeries gp in attachedGeoPoints)
-            {
-                this.deleteGeoPoint(gp);
-            }
-            deleteRow(EventSeries.Operations, ctx => ctx.EventSeries, toDeleteEs);
+                      
+            
+            deleteAndNotifyAsync(toDeleteEs);
         }
 
 
@@ -185,7 +189,7 @@ namespace DiversityPhone.Services
 
         public void deleteGeoPoint(GeoPointForSeries toDeleteGp)
         {
-            deleteRow(GeoPointForSeries.Operations, ctx => ctx.GeoTour, toDeleteGp);
+            deleteAndNotifyAsync(toDeleteGp);
         }
 
         public String convertGeoPointsToString(int seriesID)
@@ -264,21 +268,7 @@ namespace DiversityPhone.Services
 
         public void deleteEvent(Event toDeleteEv)
         {
-
-            var attachedSpecimen = this.getSpecimenForEvent(toDeleteEv);
-            foreach (Specimen spec in attachedSpecimen)
-            {
-                this.deleteSpecimen(spec);
-            }
-            var attachedProperties = this.getPropertiesForEvent(toDeleteEv.EventID);
-            foreach (EventProperty cep in attachedProperties)
-                this.deleteEventProperty(cep);
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteEv);
-            foreach (MultimediaObject mmo in attachedMMO)
-            {
-                this.deleteMMO(mmo);
-            }
-            deleteRow(Event.Operations, ctx => ctx.Events, toDeleteEv);
+            deleteAndNotifyAsync(toDeleteEv);
         }
 
         
@@ -290,7 +280,7 @@ namespace DiversityPhone.Services
         public IEnumerable<EventProperty> getPropertiesForEvent(int eventID)
         {
             return enumerateQuery(ctx =>
-                from cep in ctx.CollectionEventProperties
+                from cep in ctx.EventProperties
                 where cep.EventID == eventID 
                 select cep
                 );
@@ -298,7 +288,7 @@ namespace DiversityPhone.Services
 
         public EventProperty getPropertyByID(int eventId, int propertyId)
         {
-            return singletonQuery(ctx => from cep in ctx.CollectionEventProperties
+            return singletonQuery(ctx => from cep in ctx.EventProperties
                                          where cep.EventID == eventId &&
                                                 cep.PropertyID == propertyId
                                          select cep);
@@ -311,14 +301,14 @@ namespace DiversityPhone.Services
                 cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
 
             addOrUpdateRow(EventProperty.Operations,
-                  ctx => ctx.CollectionEventProperties,
+                  ctx => ctx.EventProperties,
                   cep
               );
         }    
 
         public void deleteEventProperty(EventProperty toDeleteCep)
         {
-            deleteRow(EventProperty.Operations, ctx => ctx.CollectionEventProperties, toDeleteCep);
+            deleteAndNotifyAsync(toDeleteCep);
         }
 
         #endregion
@@ -372,15 +362,7 @@ namespace DiversityPhone.Services
 
         public void deleteSpecimen(Specimen toDeleteSpec)
         {
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteSpec);
-            foreach (MultimediaObject mmo in attachedMMO)
-            {
-                this.deleteMMO(mmo);
-            }
-            var attachedTopLevelIU = this.getTopLevelIUForSpecimen(toDeleteSpec.SpecimenID);
-            foreach (IdentificationUnit topIU in attachedTopLevelIU)
-                this.deleteIU(topIU);
-            deleteRow(Specimen.Operations, ctx => ctx.Specimen, toDeleteSpec);
+            deleteAndNotifyAsync(toDeleteSpec);
         }
 
 
@@ -448,18 +430,7 @@ namespace DiversityPhone.Services
 
         public void deleteIU(IdentificationUnit toDeleteIU)
         {
-            IList<MultimediaObject> attachedMMO = this.getMultimediaForObject(toDeleteIU);
-            foreach (MultimediaObject mmo in attachedMMO)
-            {
-                this.deleteMMO(mmo);
-            }
-            var attachedUnits = this.getSubUnits(toDeleteIU);
-            foreach (IdentificationUnit iu in attachedUnits)
-                this.deleteIU(iu);
-            IList<IdentificationUnitAnalysis> attachedAnalyses = this.getIUANForIU(toDeleteIU);
-            foreach (IdentificationUnitAnalysis iua in attachedAnalyses)
-                this.deleteIUA(iua);
-            deleteRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, toDeleteIU);
+            deleteAndNotifyAsync(toDeleteIU);
         }
 
 
@@ -471,7 +442,7 @@ namespace DiversityPhone.Services
         {
             return uncachedQuery(ctx =>
                 from iuan in ctx.IdentificationUnitAnalyses
-                where iuan.IdentificationUnitID == iu.UnitID
+                where iuan.UnitID == iu.UnitID
                 select iuan
                 );
         }
@@ -485,7 +456,7 @@ namespace DiversityPhone.Services
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
         {
-            IdentificationUnit iu = this.getIdentificationUnitByID(iua.IdentificationUnitID);
+            IdentificationUnit iu = this.getIdentificationUnitByID(iua.UnitID);
             if (iu.DiversityCollectionUnitID != null)
                 iua.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
             addOrUpdateRow(IdentificationUnitAnalysis.Operations,
@@ -496,17 +467,12 @@ namespace DiversityPhone.Services
 
         public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA)
         {
-            deleteRow(IdentificationUnitAnalysis.Operations, ctx => ctx.IdentificationUnitAnalyses, toDeleteIUA);
+            deleteAndNotifyAsync(toDeleteIUA);
         }
 
         #endregion
 
         #region Multimedia
-
-        public IList<MultimediaObject> getAllMultimediaObjects()
-        {
-            return uncachedQuery(ctx => ctx.MultimediaObjects);
-        }
 
         public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner)
         {
@@ -536,8 +502,8 @@ namespace DiversityPhone.Services
         public MultimediaObject getMultimediaByID(int id)
         {
             return singletonQuery(ctx => from mm in ctx.MultimediaObjects
-                                                                   where mm.MMOID == id
-                                                                   select mm);
+                                        where mm.MMOID == id
+                                        select mm);
         }
 
         public MultimediaObject getMultimediaByURI(string uri)
@@ -589,19 +555,7 @@ namespace DiversityPhone.Services
 
         public void deleteMMO(MultimediaObject toDeleteMMO)
         {
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(toDeleteMMO.Uri))
-            {
-                try
-                {
-                    myStore.DeleteFile(toDeleteMMO.Uri);
-                }
-                catch (Exception)
-                {
-                    System.Diagnostics.Debugger.Break();
-                }               
-            }
-            deleteRow(MultimediaObject.Operations, ctx => ctx.MultimediaObjects, toDeleteMMO);
+            deleteAndNotifyAsync(toDeleteMMO);            
         }
 
 
@@ -637,6 +591,13 @@ namespace DiversityPhone.Services
                 recSample(depth, id++, ref id, ctx);
             }
         }
+
+        #endregion
+
+        #region Delete
+
+
+
 
         #endregion
 
@@ -701,32 +662,6 @@ namespace DiversityPhone.Services
                                 });
                         }
                     }              
-                });
-        }
-
-        private void deleteRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T detachedRow) where T : class
-        {
-
-            withDataContext(ctx =>
-                {
-                        var table = tableProvider(ctx);
-                        var attachedRow = operations.WhereKeyEquals(table, detachedRow)
-                            .FirstOrDefault();
-
-                        if (attachedRow != null)
-                        {
-                            table.DeleteOnSubmit(attachedRow);                            
-                            try
-                            {
-                                ctx.SubmitChanges();
-                            }
-                            catch (Exception)
-                            {
-                                System.Diagnostics.Debugger.Break();
-                                //TODO Log
-                            }
-                        }
-                  
                 });
         }
 
@@ -797,7 +732,7 @@ namespace DiversityPhone.Services
             {
 
                 IQueryable<EventProperty> clientPropertyList =
-                    from cep in ctx.CollectionEventProperties
+                    from cep in ctx.EventProperties
                     where cep.EventID == ev.EventID && cep.ModificationState == ModificationState.Modified
                     select cep;
                 foreach (EventProperty cep in clientPropertyList)
@@ -831,7 +766,7 @@ namespace DiversityPhone.Services
 
                         IQueryable<IdentificationUnitAnalysis> clientIUAListForIU =
                             from iua in ctx.IdentificationUnitAnalyses
-                            where iua.IdentificationUnitID == iu.UnitID && iu.ModificationState == ModificationState.Modified
+                            where iua.UnitID == iu.UnitID && iu.ModificationState == ModificationState.Modified
                             select iua;
                         foreach (IdentificationUnitAnalysis iua in clientIUAListForIU)
                         {
@@ -916,7 +851,7 @@ namespace DiversityPhone.Services
                 foreach (MultimediaObject mmo in evMMO)
                     mmo.DiversityCollectionRelatedID = serverKey;
                 var ceProperties =
-                    from cep in ctx.CollectionEventProperties
+                    from cep in ctx.EventProperties
                     where cep.EventID == clientKey
                     select cep;
                 foreach (EventProperty cep in ceProperties)
@@ -974,7 +909,7 @@ namespace DiversityPhone.Services
                     iu.DiversityCollectionRelatedUnitID = serverKey;
                 var iuaList =
                     from iua in ctx.IdentificationUnitAnalyses
-                    where iua.IdentificationUnitID == clientKey
+                    where iua.UnitID == clientKey
                     select iua;
                 foreach (IdentificationUnitAnalysis iua in iuaList)
                 {

@@ -14,8 +14,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True"
-    shell:SystemTray.ProgressIndicator="{StaticResource Progress}"
+    shell:SystemTray.IsVisible="True"    
     DataContext="{Binding Setup, Source={StaticResource Locator}}"
     Loaded="PhoneApplicationPage_Loaded">
     <phone:PhoneApplicationPage.Resources>
@@ -49,9 +48,7 @@
 
 
 
-                        <!--Busy Overlay-->
-                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                     Visibility="{Binding GettingRepositories, Converter={StaticResource BoolToVis}}"/>
+                        
                     </StackPanel>
                 </controls:PivotItem>
 
@@ -62,16 +59,14 @@
                                             ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                                             FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
                                             FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
-
-                        <ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" VerticalAlignment="Center"
-                                     Visibility="{Binding GettingProjects, Converter={StaticResource BoolToVis}}"/>
+                        
                     </StackPanel>
                 </controls:PivotItem>
             </controls:Pivot>
         </Grid>
 
         <Grid Background="{StaticResource PhoneBackgroundBrush}" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVis}}" >
-            <TextBlock Text="{Binding BusyMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Image Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png" Width="480" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Grid>
     </Grid>
  

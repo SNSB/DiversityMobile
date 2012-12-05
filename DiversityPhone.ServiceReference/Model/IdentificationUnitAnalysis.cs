@@ -31,18 +31,18 @@ namespace DiversityPhone.Model
 		  
 
 		
-		private int _IdentificationUnitID;
+		private int _UnitID;
 		[Column]
-		public int IdentificationUnitID
+		public int UnitID
 		{
-			get { return _IdentificationUnitID; }
+			get { return _UnitID; }
 			set 
 			{
-				if (_IdentificationUnitID != value)
+				if (_UnitID != value)
 				{
-					this.raisePropertyChanging("IdentificationUnitID");
-					_IdentificationUnitID = value;
-					this.raisePropertyChanged("IdentificationUnitID");
+					this.raisePropertyChanging("UnitID");
+					_UnitID = value;
+					this.raisePropertyChanged("UnitID");
 				}  
 			}
 		}
@@ -192,7 +192,7 @@ namespace DiversityPhone.Model
             export.AnalysisID = iua.AnalysisID;
             export.AnalysisResult = iua.AnalysisResult;
             export.IdentificationUnitAnalysisID = iua.IdentificationUnitAnalysisID;
-            export.IdentificationUnitID = iua.IdentificationUnitID;
+            export.IdentificationUnitID = iua.UnitID;
             return export;
         }
 

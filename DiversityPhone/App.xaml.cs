@@ -14,6 +14,7 @@ using System;
 using DiversityPhone.Messages;
 using DiversityPhone.ViewModels;
 using DiversityPhone.ViewModels.Utility;
+using System.Reactive.Concurrency;
 
 
 namespace DiversityPhone
@@ -22,9 +23,8 @@ namespace DiversityPhone
     {       
         private const string TASK_KEY = "BackgroundTasks";
 
-        public static Container IOC { get; private set; }       
+        public static Container IOC { get; private set; }              
         
-        private static BackgroundService BackgroundTasks;
         private static IMessageBus Messenger;
         private static Services.NavigationService NavSvc;
         private static ISettingsService Settings;
@@ -82,7 +82,7 @@ namespace DiversityPhone
 
         private static void registerViewModels()
         {
-
+            
 
 
             #region ViewModel Factories
@@ -109,7 +109,7 @@ namespace DiversityPhone
 
             IOC.Register<SettingsVM>(c => new SettingsVM(c));
 
-            IOC.Register<SyncVM>(c => new SyncVM(c));
+            IOC.Register<SyncVM>(new SyncVM(IOC));
 
             IOC.Register<SetupVM>(c => new SetupVM(c));
             #endregion
@@ -129,7 +129,10 @@ namespace DiversityPhone
             IOC = new Container();
             IOC.DefaultReuse = ReuseScope.None;
 
-            
+            IOC.Register<IScheduler>(NamedServices.DISPATCHER, DispatcherScheduler.Current);
+            IOC.Register<PhoneApplicationFrame>(RootFrame);
+
+            IOC.Register<INotificationService>(new NotificationService(IOC));
 
             IOC.Register<IMessageBus>(Messenger);
             IOC.Register<ISettingsService>(Settings);
@@ -137,7 +140,7 @@ namespace DiversityPhone
 
             IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IConnectivityService>(new ConnectivityService());
-            IOC.Register<IFieldDataService>(new OfflineStorage(IOC.Resolve<IMessageBus>()));
+            IOC.Register<IFieldDataService>(new OfflineStorage(IOC));
             IOC.Register<ITaxonService>(new TaxonService());
             IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IMapStorageService>(new MapStorageService());
@@ -152,30 +155,12 @@ namespace DiversityPhone
             IOC.Register<ILocationService>(new LocationService(IOC));
             IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
             
-            BackgroundTasks = new BackgroundService();            
-            BackgroundTasks.registerTask(new RefreshVocabularyTask(IOC));
-            BackgroundTasks.registerTask(new UploadEventTask(IOC));
-            BackgroundTasks.registerTask(new UploadMultimediaTask(IOC));
-            IOC.Register<IBackgroundService>(BackgroundTasks);
-            restartBackgroundTasks();
-
             registerViewModels();
 
             RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);            
         }
 
-        private static void restartBackgroundTasks()
-        {
-            object savedTasks = null;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(TASK_KEY, out savedTasks)
-                && savedTasks != null
-                && savedTasks is IEnumerable<BackgroundTaskInvocation>)
-            {
-                IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY);
-                BackgroundTasks.setQueue(savedTasks as IEnumerable<BackgroundTaskInvocation>);
-                BackgroundTasks.resume();
-            }
-        }
+        
        
 
         // Code to execute when the application is launching (eg, from Start)
@@ -189,12 +174,6 @@ namespace DiversityPhone
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            if (BackgroundTasks != null)
-            {
-                IsolatedStorageSettings.ApplicationSettings.Remove(TASK_KEY); // Remove stored Tasks, they will resume automatically            
-                BackgroundTasks.resume();
-            }
-            
             // Ensure that application state is restored appropriately
             
         }
@@ -204,22 +183,14 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./          
-            if (BackgroundTasks != null)
-            {
-                BackgroundTasks.suspend();
-                IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
-            }
+            
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            if (BackgroundTasks != null)
-            {
-                BackgroundTasks.suspend();
-                IsolatedStorageSettings.ApplicationSettings[TASK_KEY] = BackgroundTasks.dumpQueue().ToList();
-            }
+            
         }
 
         // Code to execute if a navigation fails

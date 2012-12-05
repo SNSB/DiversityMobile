@@ -19,8 +19,7 @@ namespace DiversityPhone.View
     public partial class Sync : PhoneApplicationPage
     {
         private SyncVM VM { get { return DataContext as SyncVM; } }
-
-        ProgressBinding<SyncVM> progress;
+        
         CommandButtonAdapter uploadall;
 
         public Sync()
@@ -30,20 +29,14 @@ namespace DiversityPhone.View
 
         private void syncPage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (progress == null && VM != null)
-            {
-                progress = new ProgressBinding<SyncVM>(VM, x => x.IsBusy);
+            if (uploadall == null && VM != null)
+            {                
                 uploadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.UploadAll);
             }
         }
 
         private void syncPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (progress != null)
-            {
-                progress.Dispose();
-                progress = null;
-            }
+        {            
             if (uploadall != null)
             {
                 uploadall.Dispose();

@@ -21,8 +21,7 @@ namespace DiversityPhone.View
     public partial class Setup : PhoneApplicationPage
     {
         private SetupVM VM { get { return DataContext as SetupVM; } }
-        private CommandButtonAdapter _save;
-        private ProgressBinding<SetupVM> progress;
+        private CommandButtonAdapter _save;       
 
         public Setup()
         {
@@ -39,15 +38,11 @@ namespace DiversityPhone.View
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             while (this.NavigationService.BackStack.Any())
-                this.NavigationService.RemoveBackEntry();
-
-            if (progress == null)
-                progress = new ProgressBinding<SetupVM>(VM, x => x.IsBusy);
-
-            
+                this.NavigationService.RemoveBackEntry();            
 
             VM.ObservableForProperty(x => x.IsBusy)
                 .Value()
+                .StartWith(VM.IsBusy)
                 .Subscribe(busy => this.ApplicationBar.IsVisible = !busy);
         }
     }

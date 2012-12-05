@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MediaService4" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WSHttpBinding_IMediaService4_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMediaService4_BeginTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:BeginTransaction" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_BeginTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BeginTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_EncodeFile_InputMessage">
+    <wsdl:part name="parameters" element="tns:EncodeFile" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_EncodeFile_OutputMessage">
+    <wsdl:part name="parameters" element="tns:EncodeFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Commit_InputMessage">
+    <wsdl:part name="parameters" element="tns:Commit" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Commit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CommitResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Rollback_InputMessage">
+    <wsdl:part name="parameters" element="tns:Rollback" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Rollback_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RollbackResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Submit_InputMessage">
+    <wsdl:part name="parameters" element="tns:Submit" />
+  </wsdl:message>
+  <wsdl:message name="IMediaService4_Submit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IMediaService4">
+    <wsdl:operation name="BeginTransaction">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMediaService4/BeginTransaction" message="tns:IMediaService4_BeginTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMediaService4/BeginTransactionResponse" message="tns:IMediaService4_BeginTransaction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="EncodeFile">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMediaService4/EncodeFile" message="tns:IMediaService4_EncodeFile_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMediaService4/EncodeFileResponse" message="tns:IMediaService4_EncodeFile_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Commit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMediaService4/Commit" message="tns:IMediaService4_Commit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMediaService4/CommitResponse" message="tns:IMediaService4_Commit_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Rollback">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMediaService4/Rollback" message="tns:IMediaService4_Rollback_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMediaService4/RollbackResponse" message="tns:IMediaService4_Rollback_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMediaService4/Submit" message="tns:IMediaService4_Submit_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMediaService4/SubmitResponse" message="tns:IMediaService4_Submit_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WSHttpBinding_IMediaService4" type="tns:IMediaService4">
+    <wsp:PolicyReference URI="#WSHttpBinding_IMediaService4_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginTransaction">
+      <soap12:operation soapAction="http://tempuri.org/IMediaService4/BeginTransaction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EncodeFile">
+      <soap12:operation soapAction="http://tempuri.org/IMediaService4/EncodeFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Commit">
+      <soap12:operation soapAction="http://tempuri.org/IMediaService4/Commit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Rollback">
+      <soap12:operation soapAction="http://tempuri.org/IMediaService4/Rollback" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <soap12:operation soapAction="http://tempuri.org/IMediaService4/Submit" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MediaService4">
+    <wsdl:port name="WSHttpBinding_IMediaService4" binding="tns:WSHttpBinding_IMediaService4">
+      <soap12:address location="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc</wsa10:Address>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

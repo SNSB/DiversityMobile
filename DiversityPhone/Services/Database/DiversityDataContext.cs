@@ -22,7 +22,7 @@
         public Table<GeoPointForSeries> GeoTour;
 
         public Table<Event> Events;
-        public Table<EventProperty> CollectionEventProperties;
+        public Table<EventProperty> EventProperties;
         
         
         public Table<Specimen> Specimen;

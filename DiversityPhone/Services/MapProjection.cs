@@ -24,7 +24,7 @@ namespace DiversityPhone.Services
         //The corner coordinates of the map dont define an exact rectangle in all cases. Generally, a convex quadrangle is defined.
         //The represetation on the screen will be in an rectangle. Hence, the corresponding position is calculated. To perform This,
         //2 lines are definend: One Going from the upper-left corner to the upper right corner of the map. The other one from the lower left corner to the lower right corner of the map.
-        //A cohort of lines is definend ny the connection between those lines parametrized by the percentual scale between the cornerpoint of the 2 lines definend in This way.
+        //A cohort of lines is definend by the connection between those lines parametrized by the percentual scale between the cornerpoint of the 2 lines definend in This way.
         //Analogously 2 lines are definend in the y-Direction which also define a cohort of lines between them. The GPS-Value is at a specific intersection of these cohorts.
         //These specific lines of the cohorts can be found by solving a quadratic equation. Theses lines define with their parameters the position of the GPS-Value on the map (On a percentual basis).
         private static Point? PercentilePositionOnMapImpl(Map This, double GPSLatitude, double GPSLongitude)

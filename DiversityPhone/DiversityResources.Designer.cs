@@ -331,6 +331,42 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deleting Objects ....
+        /// </summary>
+        public static string Info_DeletingObjects {
+            get {
+                return ResourceManager.GetString("Info_DeletingObjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Info_MissingRights {
+            get {
+                return ResourceManager.GetString("Info_MissingRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Internet Connectivity.
+        /// </summary>
+        public static string Info_NoInternet {
+            get {
+                return ResourceManager.GetString("Info_NoInternet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Service Unavailable.
+        /// </summary>
+        public static string Info_ServiceUnavailable {
+            get {
+                return ResourceManager.GetString("Info_ServiceUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this element and all its children?.
         /// </summary>
         public static string Message_ConfirmDelete {
@@ -349,11 +385,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The service is currently unavailable, please try again later.
+        ///   Looks up a localized string similar to An Error Occurred while processing your request. Maybe you don&apos;t have sufficient permissions. Message:.
         /// </summary>
-        public static string Message_ServiceUnavailable_Body {
+        public static string Message_ServiceProblem {
             get {
-                return ResourceManager.GetString("Message_ServiceUnavailable_Body", resourceCulture);
+                return ResourceManager.GetString("Message_ServiceProblem", resourceCulture);
             }
         }
         
@@ -475,6 +511,33 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting Projects.
+        /// </summary>
+        public static string Setup_Info_GettingProjects {
+            get {
+                return ResourceManager.GetString("Setup_Info_GettingProjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting Repositories.
+        /// </summary>
+        public static string Setup_Info_GettingRepositories {
+            get {
+                return ResourceManager.GetString("Setup_Info_GettingRepositories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid Credentials.
+        /// </summary>
+        public static string Setup_Info_InvalidCredentials {
+            get {
+                return ResourceManager.GetString("Setup_Info_InvalidCredentials", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Please Choose.
         /// </summary>
         public static string Setup_Item_PleaseChoose {
@@ -529,6 +592,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Collecting Modifications.
+        /// </summary>
+        public static string Sync_Info_CollectingModifications {
+            get {
+                return ResourceManager.GetString("Sync_Info_CollectingModifications", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Collecting Multimedia.
+        /// </summary>
+        public static string Sync_Info_CollectingMultimedia {
+            get {
+                return ResourceManager.GetString("Sync_Info_CollectingMultimedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can&apos;t download another taxon list..
         /// </summary>
         public static string TaxonManagement_Message_CantDownload {
@@ -552,6 +633,33 @@ namespace DiversityPhone {
         public static string TaxonManagement_Title_DownloadAll {
             get {
                 return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Event and children ....
+        /// </summary>
+        public static string UploadEventTask_State_UploadingEvent {
+            get {
+                return ResourceManager.GetString("UploadEventTask_State_UploadingEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading EventSeries ....
+        /// </summary>
+        public static string UploadEventTask_State_UploadingSeries {
+            get {
+                return ResourceManager.GetString("UploadEventTask_State_UploadingSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Multimedia ....
+        /// </summary>
+        public static string UploadMultimediaTask_State_Uploading {
+            get {
+                return ResourceManager.GetString("UploadMultimediaTask_State_Uploading", resourceCulture);
             }
         }
     }

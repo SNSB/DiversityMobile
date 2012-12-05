@@ -10,7 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
-using DiversityPhone.MediaService4;
+using DiversityPhone.MultimediaService;
 using System.IO.IsolatedStorage;
 using System.IO;
 using DiversityPhone.DiversityService;
@@ -18,6 +18,12 @@ using Client = DiversityPhone.Model;
 
 namespace DiversityPhone.Services
 {
+    public interface IMultiMediaClient
+    {
+        IObservable<String> UploadMultiMediaObjectRawData(Client.MultimediaObject mmo);
+    }
+
+
     public class MultimediaClient : IMultiMediaClient
     {
         private MediaService4Client _msc = new MediaService4Client();

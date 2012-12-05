@@ -1,148 +1,93 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using DiversityPhone.Model;
 using Funq;
 using System.Reactive.Linq;
 using System.Linq;
-using Svc = DiversityPhone.DiversityService;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 using System.IO;
 using System.Xml;
 using Newtonsoft.Json;
+using System.Reactive.Subjects;
+using System.Reactive;
 
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
-    public class UploadEventTask : BackgroundTask
-    {
-        private const string UNIT_KEY = "S";
-        private const string PROJECTION_KEY = "P";
+    public class UploadEventTask 
+    {     
 
         IDiversityServiceClient Repo;
         IFieldDataService Storage;
+        INotificationService Notifications;
+        Event _Event;
 
-        public UploadEventTask(Container ioc)
+        public static IObservable<Unit> Start(Container ioc, Event ev)
+        {
+            var t = new UploadEventTask(ioc, ev);
+            return Observable.Start(t.Run); 
+
+        }
+
+
+
+        private UploadEventTask(Container ioc, Event ev)
         {
             Repo = ioc.Resolve<IDiversityServiceClient>();
             Storage = ioc.Resolve<IFieldDataService>();
+            Notifications = ioc.Resolve<INotificationService>();
+            if (ev == null)
+                throw new ArgumentNullException("ev");
+
+            _Event = ev;
+
         }
 
+        protected void Run()
+        {   
+            var progress = new BehaviorSubject<string>("");
+            Notifications.showProgress(progress);
 
-        public override bool CanResume
-        {
-            get { return true; }
-        }
-
-        protected override void saveArgumentToState(object arg)
-        {
-            var ev = arg as DiversityPhone.Model.Event;
-            if (ev != null)
+            progress.OnNext(DiversityResources.UploadEventTask_State_UploadingSeries);
+            var series = Storage.getEventSeriesByID(_Event.SeriesID);
+            if (series.IsModified())
             {
+                var collectionKey = Repo.InsertEventSeries(series).First();
+                series.DiversityCollectionEventSeriesID = collectionKey;
+                Storage.updateSeriesKey(series.SeriesID.Value, collectionKey);
+            }
+
+            progress.OnNext(DiversityResources.UploadEventTask_State_UploadingEvent);
+            if (!_Event.DiversityCollectionSeriesID.HasValue)
+                _Event.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
+
+            var hierarchy = Storage.getNewHierarchyToSyncBelow(_Event);
+            var collectionKeys = Repo.InsertHierarchy(hierarchy).First();
                 
-                State[UNIT_KEY] = ev.EventID.ToString();
-            }
-        }
-
-        protected override object getArgumentFromState()
-        {            
-            if (State.ContainsKey(UNIT_KEY))
+            if (collectionKeys.eventKey.Any())
             {
-                return Storage.getEventByID(int.Parse(State[UNIT_KEY]));          
+                var evKeyProjection = collectionKeys.eventKey.First();
+
+                Storage.updateEventKey(evKeyProjection.Key, evKeyProjection.Value);
             }
 
-            return null;
-        }
-
-        protected override void Run(object arg)
-        {
-            var unit = arg as Event;
-            if (unit != null)
+            if (collectionKeys.specimenKeys.Any())
             {
-                var series = Storage.getEventSeriesByID(unit.SeriesID);
-                if (series.IsModified())
+                foreach (var specKey in collectionKeys.specimenKeys)
                 {
-                    var collectionKey = Repo.InsertEventSeries(series).First();
-                    series.DiversityCollectionEventSeriesID = collectionKey;
-                    Storage.updateSeriesKey(series.SeriesID.Value, collectionKey);
-                }
-
-                var collectionKeys = loadKeys();
-                if (collectionKeys == null)
-                {
-                    var ev = unit; 
-                    if (!ev.DiversityCollectionSeriesID.HasValue)
-                        ev.DiversityCollectionSeriesID = series.DiversityCollectionEventSeriesID;
-
-                    var hierarchy = Storage.getNewHierarchyToSyncBelow(ev);
-                    collectionKeys = Repo.InsertHierarchy(hierarchy).First();
-                    saveKeys(collectionKeys);
-                }
-                
-                
-                if (collectionKeys.eventKey.Any())
-                {
-                    var evKeyProjection = collectionKeys.eventKey.First();
-
-                    Storage.updateEventKey(evKeyProjection.Key, evKeyProjection.Value);
-                }
-
-                if (collectionKeys.specimenKeys.Any())
-                {
-                    foreach (var specKey in collectionKeys.specimenKeys)
-                    {
-                        Storage.updateSpecimenKey(specKey.Key, specKey.Value);
-                    }
-                }
-
-                if (collectionKeys.iuKeys.Any())
-                {
-                    foreach (var iuKey in collectionKeys.iuKeys)
-                    {
-                        Storage.updateIUKey(iuKey.Key, iuKey.Value);
-                    }
+                    Storage.updateSpecimenKey(specKey.Key, specKey.Value);
                 }
             }
-        }
 
-        void saveKeys(DiversityPhone.DiversityService.KeyProjection keys)
-        {
-            State[PROJECTION_KEY] = JsonConvert.SerializeObject(keys);
-        }
-
-        DiversityPhone.DiversityService.KeyProjection loadKeys()
-        {
-            try
+            if (collectionKeys.iuKeys.Any())
             {
-               
-                if (State.ContainsKey(PROJECTION_KEY))
+                foreach (var iuKey in collectionKeys.iuKeys)
                 {
-                    return JsonConvert.DeserializeObject<DiversityPhone.DiversityService.KeyProjection>(State[PROJECTION_KEY]);
+                    Storage.updateIUKey(iuKey.Key, iuKey.Value);
                 }
-                return null;
             }
-            catch (Exception)
-            {                
-                throw;
-            }
-        }
 
-
-        protected override void Cancel()
-        {
-            
-        }
-
-        protected override void Cleanup(object arg)
-        {
+            progress.OnCompleted();
             
         }
     }

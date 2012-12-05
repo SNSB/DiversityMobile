@@ -13,180 +13,135 @@ using Funq;
 using System.Reactive.Linq;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
+using System.Reactive;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
-    public class RefreshVocabularyTask : BackgroundTask
+    public class RefreshVocabularyTask
     {
-
+        private ISubject<string> _Progress;
+        private UserCredentials _Credentials;
         private IVocabularyService Vocabulary;
         private IDiversityServiceClient Repository;
+        private INotificationService Notification;
+        public IObservable<Unit> _Execute;
 
-        public RefreshVocabularyTask (Container ioc)
-	    {
+        public static IObservable<Unit> Start(Container ioc, UserCredentials credentials)
+        {
+            var task = new RefreshVocabularyTask(ioc, credentials);
+            var execution = task._Execute.Replay();
+            execution.Connect();
+
+            return execution;
+        }
+
+        private RefreshVocabularyTask(Container ioc, UserCredentials credentials)
+        {
             Vocabulary = ioc.Resolve<IVocabularyService>();
             Repository = ioc.Resolve<IDiversityServiceClient>();
-	    }
+            Notification = ioc.Resolve<INotificationService>();
+            _Credentials = credentials;
 
-        private const string KEY_LOGINNAME = "L";
-        private const string KEY_PASSWORD = "P";
-        private const string KEY_PROJECT = "J";
-        private const string KEY_REPOSITORY = "R";
-
-        private const string KEY_STATE = "S";
-        private const string STATE_INITIAL = "0";
-        private const string STATE_CLEANED = "1";
-        private const string STATE_VOCABULARY_DONE = "2";
-        private const string STATE_ANALYSES_DONE = "3";
-        private const string STATE_RESULTS_DONE = "4";
-        private const string STATE_QUALIFICATIONS_DONE = "5";
-        private const string STATE_ALL_DONE = "6";        
-
-        private string CurrentStep
-        {
-            get
+            if (_Credentials != null)
             {
-                string res;
-                if (State.TryGetValue(KEY_STATE, out res))
-                    return res;
-                else
-                    return STATE_INITIAL;
+                setupProgress();
+                _Execute =
+                Observable.Concat(
+                    clearVocabulary(),
+                    loadVocabulary(),
+                    loadAnalyses(),
+                    loadResults(),                    
+                    loadQualifications(),
+                    loadProperties())
+                    .Finally(() => { if (_Progress != null) _Progress.OnCompleted(); })
+                    .ObserveOnDispatcher();
             }
-            set
-            {                
-                State[KEY_STATE] = value;
-            }
+            else
+                throw new ArgumentException("credentials");
         }
 
-        public override bool CanResume
-        {
-            get { return false; }
-        }
+        private const int RETRY_COUNT = 3;
 
-        protected override void saveArgumentToState(object arg)
-        {
-            var user = arg as UserCredentials;
-            if (user != null)
-            {
-                State[KEY_LOGINNAME] = user.LoginName;
-                State[KEY_PASSWORD] = user.Password;
-                State[KEY_PROJECT] = user.ProjectID.ToString();
-                State[KEY_REPOSITORY] = user.Repository;
-            }
-        }
-
-        protected override object getArgumentFromState()
-        {
-            return new UserCredentials()
-            {
-                LoginName = State[KEY_LOGINNAME],
-                Password = State[KEY_PASSWORD],
-                Repository = State[KEY_REPOSITORY],
-                ProjectID = int.Parse(State[KEY_PROJECT])
-            };           
-
-        }
-
-        protected override void Run(object arg)
-        {
-            var credentials = arg as UserCredentials;
-            if (credentials != null)
-            {
-
-                while (CurrentStep != STATE_ALL_DONE)
-                {
-                    switch (CurrentStep)
-                    {
-                        case STATE_INITIAL:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_Cleaning);
-                            Vocabulary.clearVocabulary();
-                            CurrentStep = STATE_CLEANED;
-                            break;
-                        case STATE_CLEANED:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingVocabulary);
-                            var voc = retryOnException(() => Repository.GetStandardVocabulary().First());
-                            
-                            Vocabulary.addTerms(voc);
-                            CurrentStep = STATE_VOCABULARY_DONE;
-                            break;
-                        case STATE_VOCABULARY_DONE:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingAnalyses);
-                            var analyses = retryOnException(() => Repository.GetAnalysesForProject(credentials.ProjectID, credentials).First());
-                            Vocabulary.addAnalyses(analyses);
-                            CurrentStep = STATE_ANALYSES_DONE;
-                            break;
-                        case STATE_ANALYSES_DONE:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingResults);
-                            var results = retryOnException(() => Repository.GetAnalysisResultsForProject(credentials.ProjectID, credentials).First());
-                            Vocabulary.addAnalysisResults(results);
-
-                            var atgs = retryOnException(() => Repository.GetAnalysisTaxonomicGroupsForProject(credentials.ProjectID, credentials).First());
-                            Vocabulary.addAnalysisTaxonomicGroups(atgs);
-                            CurrentStep = STATE_RESULTS_DONE;
-                            break;
-                        case STATE_RESULTS_DONE:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingQualifications);
-                            var qualifications = retryOnException(() => Repository.GetQualifications(credentials).First());
-                            Vocabulary.addQualifications(qualifications);
-
-                            CurrentStep = STATE_QUALIFICATIONS_DONE;
-                            break;
-                        case STATE_QUALIFICATIONS_DONE:
-                            reportProgress(DiversityResources.RefreshVocabularyTask_State_LoadingProperties);
-                            var properties = retryOnException(() => Repository.GetPropertiesForUser(credentials).First());
-                            Vocabulary.addProperties(properties);
-
-                            foreach (var p in properties)
-                            {
-                                Repository.DownloadPropertyValuesChunked(p)
-                                    .ForEach(chunk => Vocabulary.addPropertyNames(chunk));
-                            }
-                            CurrentStep = STATE_ALL_DONE;
-                            break;
-                        default:
-                            CurrentStep = STATE_ALL_DONE;
-                            break;
-                    }
-                }       
-            }
-        }
-
-        protected override void Cancel()
-        {
-            
-        }
-
-        protected override void Cleanup(object arg)
+        void setupProgress()
         {            
-            if (CurrentStep != STATE_INITIAL)
-            {
-                Vocabulary.clearVocabulary();                
-            }
-                    
+            _Progress = new Subject<string>();
+            Notification.showProgress(_Progress);
         }
 
-        private static IEnumerable<T> retryOnException<T>(Func<IEnumerable<T>> call)
+        IObservable<Unit> clearVocabulary()
         {
-            if(call == null)
-                return Enumerable.Empty<T>();
-
-
-            IEnumerable<T> res = null;
-
-            while (res == null) //In case the service call fails, we need to retry
-            {
-                try
+            return DeferStart(() =>
                 {
-                    res = call();
-                    if (res == null)
-                        res = Enumerable.Empty<T>();
-                }
-                catch
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_Cleaning);
+                    Vocabulary.clearVocabulary();
+                });
+        }
+
+        IObservable<Unit> loadVocabulary()
+        {
+            return DeferStart(() =>
                 {
-                    res = null;
-                }
-            }    
-            return res;
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingVocabulary);
+                    var voc = Repository.GetStandardVocabulary().Retry(RETRY_COUNT).First();
+
+                    Vocabulary.addTerms(voc);
+                });
+
+        }
+
+        IObservable<Unit> loadAnalyses()
+        {
+            return DeferStart(() =>
+                {
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingAnalyses);
+                    var analyses = Repository.GetAnalysesForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
+                    Vocabulary.addAnalyses(analyses);
+                });
+        }
+
+        IObservable<Unit> loadResults()
+        {
+            return DeferStart(() =>
+                {
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingResults);
+                    var results = Repository.GetAnalysisResultsForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
+                    Vocabulary.addAnalysisResults(results);
+
+                    var atgs = Repository.GetAnalysisTaxonomicGroupsForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
+                    Vocabulary.addAnalysisTaxonomicGroups(atgs);
+                });
+        }
+
+        IObservable<Unit> loadQualifications()
+        {
+            return DeferStart(() =>
+                {
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingQualifications);
+                    var qualifications = Repository.GetQualifications(_Credentials).Retry(RETRY_COUNT).First();
+                    Vocabulary.addQualifications(qualifications);
+                });
+        }
+
+        IObservable<Unit> loadProperties()
+        {
+            return DeferStart(() =>
+                {
+                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingProperties);
+                    var properties = Repository.GetPropertiesForUser(_Credentials).Retry(RETRY_COUNT).First();
+                    Vocabulary.addProperties(properties);
+
+                    foreach (var p in properties)
+                    {
+                        Repository.DownloadPropertyValuesChunked(p)
+                            .ForEach(chunk => Vocabulary.addPropertyNames(chunk));
+                    }
+                });
+        }
+
+        private static IObservable<Unit> DeferStart(Action a)
+        {
+            return Observable.Defer(() => Observable.Start(a));
         }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using Svc = DiversityPhone.DiversityService;
 
@@ -132,6 +133,14 @@ namespace DiversityPhone.Model
 			}
 		}
 		   
+
+		private EntitySet<Event> _Events = new EntitySet<Event>();
+		[Association(Storage = "_Events", ThisKey="SeriesID", OtherKey = "SeriesID", DeleteRule="CASCADE" )]
+		public EntitySet<Event> Events
+		{
+			get { return this._Events; }
+			set { this._Events.Assign(value); }
+		}
   
 		private static EventSeries _NoEventSeries;
 

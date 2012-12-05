@@ -26,7 +26,10 @@ namespace DiversityPhone.Services
 
          public void clearVocabulary()
         {
-            withDataContext(ctx => { ctx.DeleteDatabase(); ctx.CreateDatabase(); });
+            using (var ctx = new VocabularyDataContext())
+            {
+                ctx.DeleteDatabase();
+            }
         }
 
         #region Analyses     

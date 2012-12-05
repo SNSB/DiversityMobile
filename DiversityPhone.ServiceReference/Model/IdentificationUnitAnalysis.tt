@@ -20,7 +20,7 @@ namespace DiversityPhone.Model
 	{
 <# Row("int", "IdentificationUnitAnalysisID", RowKind.Key); #>  
 
-<# Row("int", "IdentificationUnitID"); #>   
+<# Row("int", "UnitID"); #>   
 <# Row("int", "AnalysisID"); #> 
 
 <# Row("string", "DisplayText"); #>
@@ -74,7 +74,7 @@ namespace DiversityPhone.Model
             export.AnalysisID = iua.AnalysisID;
             export.AnalysisResult = iua.AnalysisResult;
             export.IdentificationUnitAnalysisID = iua.IdentificationUnitAnalysisID;
-            export.IdentificationUnitID = iua.IdentificationUnitID;
+            export.IdentificationUnitID = iua.UnitID;
             return export;
         }
 

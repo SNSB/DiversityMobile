@@ -8,6 +8,26 @@
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive;
+
+    public enum ConnectionStatus
+    {
+        Wifi,
+        MobileBroadband,
+        None
+    }
+
+    public interface IConnectivityService
+    {
+        IObservable<ConnectionStatus> Status();
+    }
+
+    public static class ConnectivityMixin
+    {
+        public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
+        {
+            return svc.Status().Select(s => s == ConnectionStatus.Wifi);
+        }
+    }
     
 
     public class ConnectivityService : IConnectivityService
@@ -16,17 +36,14 @@
 
         public ConnectivityService()
         {
-
+             
             
 
-            var s =Observable.Merge(
-                            Observable.FromEventPattern<object, EventArgs>(typeof(System.Net.NetworkInformation.NetworkChange), "NetworkAddressChanged") 
-                                .Select( _ => 0L),
-                            Observable.Interval(TimeSpan.FromSeconds(30))
-                   )
-                        .StartWith(0)
-                        .Select(_ =>
-                            {
+            status =
+               Observable.Interval(TimeSpan.FromSeconds(3))
+                .StartWith(0)
+                .Select(_ => 
+                            {                                
                                 if (NetworkInterface.GetIsNetworkAvailable())
                                 {
                                     var it = NetworkInterface.NetworkInterfaceType;
@@ -37,15 +54,12 @@
                                         return ConnectionStatus.MobileBroadband;
                                 }
                                 return ConnectionStatus.None;
-                            })  
-                        .Replay(1);
-            s.Connect();
-            status = s;
+                            });
         }
 
         public IObservable<ConnectionStatus> Status()
         {
-            return status.AsObservable();
+            return status;
         }
     }
 }

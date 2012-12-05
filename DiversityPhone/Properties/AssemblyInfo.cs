@@ -11,7 +11,7 @@ using System.Resources;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("AI4 Uni Bayreuth")]
 [assembly: AssemblyProduct("DiversityPhone")]
-[assembly: AssemblyCopyright("Copyright")]
+[assembly: AssemblyCopyright("Copyright SNSB 2013 All Rights Reserved")]
 [assembly: AssemblyTrademark("Ai4 Uni Bayreuth")]
 [assembly: AssemblyCulture("")]
 
@@ -32,6 +32,6 @@ using System.Resources;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.9.3")]
-[assembly: AssemblyFileVersion("0.9.3")]
+[assembly: AssemblyVersion("0.9.4")]
+[assembly: AssemblyFileVersion("0.9.4")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

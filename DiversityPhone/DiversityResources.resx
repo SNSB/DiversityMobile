@@ -207,14 +207,26 @@
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Info_DeletingObjects" xml:space="preserve">
+    <value>Deleting Objects ...</value>
+  </data>
+  <data name="Info_MissingRights" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Info_NoInternet" xml:space="preserve">
+    <value>No Internet Connectivity</value>
+  </data>
+  <data name="Info_ServiceUnavailable" xml:space="preserve">
+    <value>Service Unavailable</value>
+  </data>
   <data name="Message_ConfirmDelete" xml:space="preserve">
     <value>Do you really want to delete this element and all its children?</value>
   </data>
   <data name="Message_FatalException" xml:space="preserve">
     <value>A fatal Exception has occurred, please report this to your administrator:</value>
   </data>
-  <data name="Message_ServiceUnavailable_Body" xml:space="preserve">
-    <value>The service is currently unavailable, please try again later</value>
+  <data name="Message_ServiceProblem" xml:space="preserve">
+    <value>An Error Occurred while processing your request. Maybe you don't have sufficient permissions. Message:</value>
   </data>
   <data name="Message_SorryHeader" xml:space="preserve">
     <value>Sorry</value>
@@ -255,6 +267,15 @@
   <data name="Setup_Header_Repository" xml:space="preserve">
     <value>Repository</value>
   </data>
+  <data name="Setup_Info_GettingProjects" xml:space="preserve">
+    <value>Getting Projects</value>
+  </data>
+  <data name="Setup_Info_GettingRepositories" xml:space="preserve">
+    <value>Getting Repositories</value>
+  </data>
+  <data name="Setup_Info_InvalidCredentials" xml:space="preserve">
+    <value>Invalid Credentials</value>
+  </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
   </data>
@@ -273,6 +294,12 @@
   <data name="Sync_Header_Multimedia" xml:space="preserve">
     <value>multimedia</value>
   </data>
+  <data name="Sync_Info_CollectingModifications" xml:space="preserve">
+    <value>Collecting Modifications</value>
+  </data>
+  <data name="Sync_Info_CollectingMultimedia" xml:space="preserve">
+    <value>Collecting Multimedia</value>
+  </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>
   </data>
@@ -281,5 +308,14 @@
   </data>
   <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
     <value>download all</value>
+  </data>
+  <data name="UploadEventTask_State_UploadingEvent" xml:space="preserve">
+    <value>Uploading Event and children ...</value>
+  </data>
+  <data name="UploadEventTask_State_UploadingSeries" xml:space="preserve">
+    <value>Uploading EventSeries ...</value>
+  </data>
+  <data name="UploadMultimediaTask_State_Uploading" xml:space="preserve">
+    <value>Uploading Multimedia ...</value>
   </data>
 </root>
