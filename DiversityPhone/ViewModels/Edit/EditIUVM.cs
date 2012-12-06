@@ -171,7 +171,22 @@ namespace DiversityPhone.ViewModels
             .CombineLatest(TaxonomicGroup,
                 (query, tg) =>
                 {
-                    return Taxa.getTaxonNames(tg, query);                        
+                    IList<TaxonName> rawTaxa= Taxa.getTaxonNames(tg, query);
+                    IList<TaxonName> refinedTaxa = new List<TaxonName>();
+                    foreach (TaxonName tn in rawTaxa)
+                    {
+                        refinedTaxa.Add(tn);
+                        if (tn.AcceptedNameURI != null && !tn.AcceptedNameURI.Equals(String.Empty))
+                        {
+                            refinedTaxa.Add(new TaxonName() //Doesn´t contain structured Information on Genus,...
+                            {
+                                TaxonNameCache="= " + tn.AcceptedNameURI,
+                                URI=tn.AcceptedNameURI,
+                                Synonymy=DiversityPhone.Model.Synonymy.Accepted
+                            });
+                        }
+                    }
+                    return refinedTaxa;
                 })
             .Select( candidates =>
                 {
@@ -186,6 +201,8 @@ namespace DiversityPhone.ViewModels
                                 SpeciesEpithet = null,
                                 Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
                                 URI = null,
+                                AcceptedNameCache=null,
+                                AcceptedNameURI=null
                             });
                     }
                     return candidates;                    

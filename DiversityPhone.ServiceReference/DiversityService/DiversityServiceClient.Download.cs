@@ -108,9 +108,9 @@ namespace DiversityPhone.Services
                             Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy), taxon.Synonymy, true),
                             TaxonNameCache = taxon.TaxonNameCache,
                             TaxonNameSinAuth = taxon.TaxonNameSinAuth,
-                            URI = taxon.URI
-                            //AcceptedNameURI=taxon.AcceptedNameURI,
-                            //AcceptedNameCache=taxon.AcceptedNameCache
+                            URI = taxon.URI,
+                            AcceptedNameURI=taxon.AcceptedNameURI,
+                            AcceptedNameCache=taxon.AcceptedNameCache
                         }))
                     .TakeWhile(taxonChunk =>
                         {

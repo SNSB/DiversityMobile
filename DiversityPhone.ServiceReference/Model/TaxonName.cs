@@ -32,11 +32,11 @@ using DiversityPhone.Services;
         [Column]
         public Synonymy Synonymy { get; set; }
 
-        //[Column]
-        //public string AcceptedNameURI { get; set; }
+        [Column]
+        public string AcceptedNameURI { get; set; }
 
-        //[Column]
-        //public string AcceptedNameCache { get; set; }
+        [Column]
+        public string AcceptedNameCache { get; set; }
 
         public static IQueryOperations<TaxonName> Operations
         {
