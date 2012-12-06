@@ -211,6 +211,23 @@ namespace DiversityService
             }
         }
 
+        //public HierarchySection DownloadHierarchy(int DiversityCollectionEventID, UserCredentials login)
+        //{
+        //    HierarchySection hs = new HierarchySection();
+        //    using (var db = new Diversity(login))
+        //    {
+        //        hs.Event = getEvent(db, DiversityCollectionEventID);
+        //        hs.Properties = getCollectionPropertyForEvent(db, DiversityCollectionEventID).ToList<CollectionEventProperty>();
+        //        hs.Specimen = getSpecimenForEvent(db, DiversityCollectionEventID).ToList<Specimen>();
+        //        hs.IdentificationUnits = new List<IdentificationUnit>();
+        //        foreach (Specimen spec in hs.Specimen)
+        //        {
+        //            hs.IdentificationUnits = 0;
+        //        }
+        //        hs.IdentificationUnitAnalyses = 0;
+        //    }
+        //    return hs;
+        //}
        
         #endregion
 

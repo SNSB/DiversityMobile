@@ -52,6 +52,66 @@ namespace DiversityService
             return db.Query<Qualification>("FROM [DiversityMobile_IdentificationQualifiers]() AS [Qualification]");
         }
 
+        private static Event getEvent(Diversity db, int DiversityCollectionID)
+        {
+            Event ev=db.SingleOrDefault<Event>("SELECT CollectionEventID,SeriesID,CollectionDate,LocalityDescription,Habitatdescription FROM CollectionEvent WHERE CollectionEventID=@0", DiversityCollectionID);
+            IEnumerable<CollectionEventLocalisation> cel_List = getLocalisationForEvent(db, DiversityCollectionID);
+            foreach (CollectionEventLocalisation cel in cel_List)
+            {
+                if (cel.LocalisationSystemID == 4)
+                    try
+                    {
+                        ev.Altitude = Double.Parse(cel.Location1);
+                    }
+                    catch (Exception) { ev.Altitude = null; }
+                if (cel.LocalisationSystemID == 8)
+                {
+                    try
+                    {
+                        ev.Longitude = Double.Parse(cel.Location1);
+                        ev.Latitude = Double.Parse(cel.Location2);
+                    }
+                    catch (Exception) { ev.Longitude = null; ev.Latitude = null; }
+                }
+            }
+            return ev;
+        }
+
+        private static IEnumerable<CollectionEventLocalisation> getLocalisationForEvent(Diversity db, int DiversityCollectionID)
+        {
+            return db.Query<CollectionEventLocalisation>("Select LocalisationSystemID, Location1, Location2 FROM CollectionEventLocalisation WHERE CollectionEventID=@0",DiversityCollectionID);
+        }
+
+        private static IEnumerable<CollectionEventProperty> getCollectionPropertyForEvent(Diversity db, int DiversityCollectionID)
+        {
+            return db.Query<CollectionEventProperty>("Select CollectionEventID, PropertyID, DisplayText,PropertyURI FROM CollectionEventProperty WHERE CollectionEventID=@0", DiversityCollectionID);
+        }
+
+        private static IEnumerable<Specimen> getSpecimenForEvent(Diversity db, int DiversityCollectionID)
+        {
+            return db.Query<Specimen>("Select CollectionSpecimenID,CollectionEventID, DepositorsAccessionNumber FROM CollectionSpecimen WHERE CollectionEventID=@0", DiversityCollectionID);
+        }
+
+        //private static IEnumerable<IdentificationUnit> getIUForSpecimen(Diversity db, int DiversityCollectionID)
+        //{
+        //    IEnumerable<IdentificationUnit> units= db.Query<IdentificationUnit>("Select CollectionSpecimenID,IdentificationUnitID,RelatedUnitID, OnlyObserved,TaxonomicGroup,RelationType,ColonisedSubstratePart,LifeStage,Gender FROM CollectionSpecimen WHERE CollectionSpecimenID=@0", DiversityCollectionID);
+        //    foreach (IdentificationUnit iu in units)
+        //    {
+        //        IdentificationUnitGeoAnalysis iuga = getGeoAnalysisForIU(db, DiversityCollectionID);
+        //        if (iuga != null)
+        //        {
+        //            iu.AnalysisDate = iuga.AnalysisDate;
+        //            //Fehlt GeodatenSync
+        //        }
+        //    }
+        //}
+
+        private static IdentificationUnitGeoAnalysis getGeoAnalysisForIU(Diversity db, int DiversityCollectionID)
+        {
+            //Attention: No Geodata
+            return db.SingleOrDefault<IdentificationUnitGeoAnalysis>("Select IdentificationUnitID,CollectionSpecimenID,AnalysisDate From IdentificationUnitGeoAnalysis WHERE IdentificationUNitID0=@0", DiversityCollectionID);
+        }
+
         private static IEnumerable<T> loadTablePaged<T>(string table, int page, Diversity db)
         {
             //TODO Improve SQL Sanitation
