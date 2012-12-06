@@ -141,6 +141,7 @@
     <Compile Include="Model\Synonymy.cs" />
     <Compile Include="Model\TaxonList.cs" />
     <Compile Include="Model\TaxonName.cs" />
+    <Compile Include="Model\TaxonSynonymyPair.cs" />
     <Compile Include="Model\Term.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\DiversityService\Reference.cs">
