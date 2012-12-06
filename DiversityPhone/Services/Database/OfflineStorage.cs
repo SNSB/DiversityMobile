@@ -377,6 +377,7 @@ namespace DiversityPhone.Services
                 ctx =>
                     from iu in ctx.IdentificationUnits
                     where iu.SpecimenID == specimenID
+                    orderby iu.WorkingName
                     select iu
                     );
         }
@@ -386,6 +387,7 @@ namespace DiversityPhone.Services
             return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
                 where iu.SpecimenID == specimenID && iu.RelatedUnitID == null 
+                orderby iu.WorkingName
                 select iu
                 );
         }
@@ -395,7 +397,8 @@ namespace DiversityPhone.Services
         {
             return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
-                where iu.RelatedUnitID == unit.UnitID 
+                where iu.RelatedUnitID == unit.UnitID
+                orderby iu.WorkingName
                 select iu
                 );
         }

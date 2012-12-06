@@ -303,6 +303,8 @@
   <xs:element name="ArrayOfTaxonName" nillable="true" type="tns:ArrayOfTaxonName" />
   <xs:complexType name="TaxonName">
     <xs:sequence>
+      <xs:element minOccurs="0" name="AcceptedNameCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AcceptedNameURI" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="GenusOrSupragenic" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="InfraspecificEpithet" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SpeciesEpithet" nillable="true" type="xs:string" />

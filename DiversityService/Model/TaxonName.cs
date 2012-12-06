@@ -19,7 +19,15 @@ namespace DiversityService.Model
         public virtual string SpeciesEpithet { get; set; }
         [Column("InfraspecificEpithet")]
         public virtual string InfraspecificEpithet { get; set; }
+        //Synonymy Features
         [Column("Synonymy")]
         public virtual string Synonymy { get; set; }
+
+        [Column("AcceptedNameURI")]
+        public string AcceptedNameURI { get; set; }
+
+        [Column("AcceptedNameCache")]
+        public string AcceptedNameCache { get; set; }
+
     }
 }

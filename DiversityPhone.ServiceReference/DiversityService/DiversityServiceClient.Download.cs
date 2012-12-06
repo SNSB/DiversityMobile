@@ -109,6 +109,8 @@ namespace DiversityPhone.Services
                             TaxonNameCache = taxon.TaxonNameCache,
                             TaxonNameSinAuth = taxon.TaxonNameSinAuth,
                             URI = taxon.URI
+                            //AcceptedNameURI=taxon.AcceptedNameURI,
+                            //AcceptedNameCache=taxon.AcceptedNameCache
                         }))
                     .TakeWhile(taxonChunk =>
                         {

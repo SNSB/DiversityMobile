@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using DiversityPhone.Model;
 using System;
 using System.Linq;
+using System.Data.Linq.SqlClient;
 namespace DiversityPhone.Services
 {
     public class TaxonService : ITaxonService
@@ -46,7 +47,7 @@ namespace DiversityPhone.Services
                 {
                     taxctx.SubmitChanges();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     System.Diagnostics.Debugger.Break();
                     //TODO Log
@@ -165,37 +166,97 @@ namespace DiversityPhone.Services
 
             var allTaxa = from tn in (new TaxonDataContext(tableID).TaxonNames)                    
                     select tn;
-            
+
             if (queryWords.Any())
             {
+
                 var genus = from tn in allTaxa
-                    where tn.GenusOrSupragenic.StartsWith(queryWords.First())
-                    select tn;
-  
-                if (queryWords.Count()>1)
+                            where tn.GenusOrSupragenic.StartsWith(queryWords.First())
+                            select tn;
+
+
+                if (queryWords.First().Equals("%"))
                 {
-                    var species = from gen in genus
-                                  where gen.SpeciesEpithet.StartsWith(queryWords.Skip(1).First())
-                                  select gen;
-                    var completeQ = from spec in species.AsEnumerable()
-                                    where queryWords.Skip(2).All(word => spec.TaxonNameCache.Contains(word))
-                                    orderby spec.GenusOrSupragenic, spec.SpeciesEpithet
-                                    select spec;
-                    if (completeQ.Count() > 0)
-                        return completeQ.Take(20).ToList();
+                    genus = from tn in allTaxa
+                            //where SqlMethods.Like(tn.GenusOrSupragenic, queryWords.First())
+                            select tn;
+
+                }
+
+                if (queryWords.Count() >= 2)//Search for Genus and Epithet
+                {
+                    
+                    var species = from tn in genus
+                                  where tn.SpeciesEpithet.StartsWith(queryWords.Skip(1).First())
+                                  select tn;
+                    if (queryWords.Skip(1).First().Equals("%"))
+                    {
+                        species = from tn in genus
+                                  //where SqlMethods.Like(tn.SpeciesEpithet, queryWords.Skip(1).First())
+                                  select tn;
+                    }
+
+                    if (queryWords.Count() >= 3)
+                    {
+                      
+                        var infra = from tn in species
+                                    where tn.InfraspecificEpithet.StartsWith(queryWords.Skip(2).First())
+                                    select tn;//Initialization
+                        if (queryWords.Skip(2).First().Equals("%"))
+                        {
+                            infra = from tn in species
+                                    //where SqlMethods.Like(tn.InfraspecificEpithet, queryWords.Skip(2).First())
+                                    select tn;
+                        }
+     
+                        if (queryWords.Count() > 3)
+                        {
+                            var completeQ = from inf in infra.AsEnumerable()
+                                        where queryWords.Skip(3).All(word => inf.TaxonNameCache.Contains(word))
+                                        orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
+                                        select inf;
+
+                            if (completeQ.Count() > 0)
+                                return completeQ.Take(20).ToList();
+                            else
+                                return new List<TaxonName>();
+                        }
+                        else
+                        {
+                            var completeQ = from inf in infra.AsEnumerable()
+                                        orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
+                                        select inf;
+
+                            if (completeQ.Count() > 0)
+                                return completeQ.Take(20).ToList();
+                            else
+                                return new List<TaxonName>();
+                        }
+                    }
                     else
-                        return new List<TaxonName>();
+                    {
+                        var completeQ = from spec in species.AsEnumerable()
+                                    orderby spec.GenusOrSupragenic, spec.SpeciesEpithet, spec.InfraspecificEpithet
+                                    select spec;
+
+                        if (completeQ.Count() > 0)
+                            return completeQ.Take(20).ToList();
+                        else
+                            return new List<TaxonName>();
+                    }
                 }
                 else
                 {
                     var completeQ = from gen in genus.AsEnumerable()
-                                    orderby gen.GenusOrSupragenic, gen.SpeciesEpithet
-                                    select gen;
+                                orderby gen.GenusOrSupragenic, gen.SpeciesEpithet, gen.InfraspecificEpithet
+                                select gen;
+
                     if (completeQ.Count() > 0)
                         return completeQ.Take(20).ToList();
                     else
                         return new List<TaxonName>();
                 }
+
             }
             else
                 return allTaxa.Take(20).ToList();         
