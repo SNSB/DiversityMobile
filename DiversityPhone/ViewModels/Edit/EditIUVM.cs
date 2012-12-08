@@ -171,7 +171,7 @@ namespace DiversityPhone.ViewModels
             .CombineLatest(TaxonomicGroup,
                 (query, tg) =>
                 {
-                    IList<TaxonName> rawTaxa= Taxa.getTaxonNames(tg, query);
+                    var rawTaxa = Taxa.getTaxonNames(tg, query).Take(10);
                     IList<TaxonName> refinedTaxa = new List<TaxonName>();
                     foreach (TaxonName tn in rawTaxa)
                     {

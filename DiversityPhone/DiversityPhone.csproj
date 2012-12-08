@@ -135,7 +135,6 @@
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Services\Database\DiversityDataContext.cs" />
     <Compile Include="Services\Database\IFieldDataService.cs" />
-    <Compile Include="Services\Database\ITaxonService.cs" />
     <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />

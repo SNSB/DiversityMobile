@@ -7,8 +7,59 @@ using System.Linq;
 using System.Data.Linq.SqlClient;
 namespace DiversityPhone.Services
 {
+    public interface ITaxonService
+    {
+        /// <summary>
+        /// Adds a new List to the database. 
+        /// After adding it, the object will have been updated with the table id.
+        /// </summary>
+        /// <param name="newList"></param>
+        void addTaxonList(TaxonList newList);
+        /// <summary>
+        /// Adds new TaxonNames to the database
+        /// </summary>        
+        /// <param name="taxa">List of TaxonNames</param>
+        /// <param name="source">Source</param>
+        void addTaxonNames(IEnumerable<TaxonName> taxa, TaxonList source);
+        /// <summary>
+        /// Queries how many Taxon tables are unused
+        /// </summary>
+        /// <returns>Number of free Taxon tables</returns>
+        int getTaxonTableFreeCount();
+        /// <summary>
+        /// Updates a Taxon Selection
+        /// </summary>
+        /// <param name="sel"></param>
+        void selectTaxonList(TaxonList list);
+        /// <summary>
+        /// Gets all defined Taxon Selections
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<TaxonList> getTaxonSelections();
+        /// <summary>
+        /// Removes a Taxon Selection and empties its Taxon Table
+        /// </summary>
+        /// <param name="selection"></param>
+        void deleteTaxonList(TaxonList list);
+
+        /// <summary>
+        /// Retrieves Taxon Names that conform to the query string
+        /// </summary>
+        /// <param name="taxGroup"></param>
+        /// <param name="query">space separated list of keywords</param>
+        /// <returns></returns>
+        IEnumerable<TaxonName> getTaxonNames(Term taxGroup, string query);
+
+        /// <summary>
+        /// Deletes all Taxon list selections and Databases.
+        /// </summary>
+        void clearTaxonLists();
+    }
+
     public class TaxonService : ITaxonService
     {
+
+        private const string WILDCARD = "%";
         #region TaxonNames
 
         public void addTaxonList(TaxonList list)
@@ -47,7 +98,7 @@ namespace DiversityPhone.Services
                 {
                     taxctx.SubmitChanges();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     System.Diagnostics.Debugger.Break();
                     //TODO Log
@@ -124,7 +175,7 @@ namespace DiversityPhone.Services
             return result;
         }
 
-        public IList<TaxonName> getTaxonNames(Term taxonGroup, string query)
+        public IEnumerable<TaxonName> getTaxonNames(Term taxonGroup, string query)
         {
             int tableID;
             if (taxonGroup == null
@@ -158,108 +209,58 @@ namespace DiversityPhone.Services
             return TaxonList.ValidTableIDs.Except(usedTableIDs);
         }
 
-        private IList<TaxonName> getTaxonNames(int tableID, string query)
+        private IEnumerable<TaxonName> getTaxonNames(int tableID, string query)
         {
             
-            var queryWords = from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                             select word;
+            var queryWords = (from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                             select word).ToArray();
 
-            var allTaxa = from tn in (new TaxonDataContext(tableID).TaxonNames)                    
-                    select tn;
-
-            if (queryWords.Any())
+            using (var ctx = new TaxonDataContext(tableID))
             {
 
-                var genus = from tn in allTaxa
-                            where tn.GenusOrSupragenic.StartsWith(queryWords.First())
+                var q = ctx.TaxonNames as IQueryable<TaxonName>;
+
+                //Match Genus
+                if (queryWords.Length > 0 && queryWords[0] != WILDCARD)
+                {
+                    q = from tn in q
+                            where tn.GenusOrSupragenic.StartsWith(queryWords[0])
                             select tn;
-
-
-                if (queryWords.First().Equals("%"))
-                {
-                    genus = from tn in allTaxa
-                            //where SqlMethods.Like(tn.GenusOrSupragenic, queryWords.First())
-                            select tn;
-
                 }
 
-                if (queryWords.Count() >= 2)//Search for Genus and Epithet
-                {
-                    
-                    var species = from tn in genus
-                                  where tn.SpeciesEpithet.StartsWith(queryWords.Skip(1).First())
-                                  select tn;
-                    if (queryWords.Skip(1).First().Equals("%"))
-                    {
-                        species = from tn in genus
-                                  //where SqlMethods.Like(tn.SpeciesEpithet, queryWords.Skip(1).First())
-                                  select tn;
-                    }
-
-                    if (queryWords.Count() >= 3)
-                    {
-                      
-                        var infra = from tn in species
-                                    where tn.InfraspecificEpithet.StartsWith(queryWords.Skip(2).First())
-                                    select tn;//Initialization
-                        if (queryWords.Skip(2).First().Equals("%"))
-                        {
-                            infra = from tn in species
-                                    //where SqlMethods.Like(tn.InfraspecificEpithet, queryWords.Skip(2).First())
-                                    select tn;
-                        }
-     
-                        if (queryWords.Count() > 3)
-                        {
-                            var completeQ = from inf in infra.AsEnumerable()
-                                        where queryWords.Skip(3).All(word => inf.TaxonNameCache.Contains(word))
-                                        orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
-                                        select inf;
-
-                            if (completeQ.Count() > 0)
-                                return completeQ.Take(20).ToList();
-                            else
-                                return new List<TaxonName>();
-                        }
-                        else
-                        {
-                            var completeQ = from inf in infra.AsEnumerable()
-                                        orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
-                                        select inf;
-
-                            if (completeQ.Count() > 0)
-                                return completeQ.Take(20).ToList();
-                            else
-                                return new List<TaxonName>();
-                        }
-                    }
-                    else
-                    {
-                        var completeQ = from spec in species.AsEnumerable()
-                                    orderby spec.GenusOrSupragenic, spec.SpeciesEpithet, spec.InfraspecificEpithet
-                                    select spec;
-
-                        if (completeQ.Count() > 0)
-                            return completeQ.Take(20).ToList();
-                        else
-                            return new List<TaxonName>();
-                    }
-                }
-                else
-                {
-                    var completeQ = from gen in genus.AsEnumerable()
-                                orderby gen.GenusOrSupragenic, gen.SpeciesEpithet, gen.InfraspecificEpithet
-                                select gen;
-
-                    if (completeQ.Count() > 0)
-                        return completeQ.Take(20).ToList();
-                    else
-                        return new List<TaxonName>();
+                //Match SpeciesEpithet
+                if (queryWords.Length > 1 && queryWords[1] != WILDCARD)
+                {   
+                    q = from tn in q
+                        where tn.SpeciesEpithet.StartsWith(queryWords[1])
+                        select tn;
                 }
 
+                //Match Infra
+                if (queryWords.Length > 2 && queryWords[2] != WILDCARD)
+                {
+                    q = from tn in q
+                        where tn.InfraspecificEpithet.StartsWith(queryWords[2])
+                        select tn;
+                }
+
+                //Order
+                q = from inf in q                        
+                    orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
+                    select inf;                
+            
+                if (queryWords.Length > 3)
+                {
+                    q = from inf in q
+                        where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))                        
+                        select inf;
+                }
+
+                foreach (var item in q)
+                {
+                    yield return item;
+                }
             }
-            else
-                return allTaxa.Take(20).ToList();         
         }
 
         private int getTaxonTableIDForGroup(string taxonGroup)
