@@ -230,7 +230,7 @@
     <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\StreamToImageConverter.cs" />
     <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
-    <Compile Include="View\Converters\SynonymyToColorConverter.cs" />
+    <Compile Include="View\Converters\SynonymyToFontStyleConverter.cs" />
     <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />

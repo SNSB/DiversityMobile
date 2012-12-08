@@ -33,8 +33,10 @@
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="TaxonNameItemTemplate">
-                <TextBlock Text="{Binding TaxonNameCache}"
-					   Foreground="{Binding Synonymy, Converter={StaticResource SynonymyToColor}}"/>
+                <TextBlock Text="{Binding TaxonNameCache}" 
+                           FontStyle="{Binding Synonymy, Converter={StaticResource SynonymyToFontStyle}}"
+                           />
+                
             </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
@@ -73,17 +75,14 @@
                     <TextBox  Text="{Binding Current.Description}" IsEnabled="False"/>
                 </StackPanel>
 
-                <ListBox MaxHeight="300" BorderThickness="3"  
-                        ItemsSource="{Binding Identification.Items}"                     
-                        SelectedIndex="{Binding Identification.SelectedIndex, Mode=TwoWay}"
-                        ItemTemplate="{StaticResource TaxonNameItemTemplate}"
-					    Style="{StaticResource ListBoxWhiteStyle}" 
-                        Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
-                        IsEnabled="{Binding IsEditable}">
-            	    <ListBox.BorderBrush>
-            		    <SolidColorBrush Color="{StaticResource PhoneBorderColor}"/>
-            	    </ListBox.BorderBrush>
-                </ListBox>
+                <ListBox ItemsSource="{Binding Identification.Items}"                     
+                         SelectedIndex="{Binding Identification.SelectedIndex, Mode=TwoWay}"
+                         ItemTemplate="{StaticResource TaxonNameItemTemplate}"
+					     Style="{StaticResource ListBoxWhiteStyle}" 
+                         Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
+                         IsEnabled="{Binding IsEditable}"
+                         Margin="{StaticResource PhoneHorizontalMargin}"
+                         MaxHeight="300"/>
 
                 <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
                                 SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"

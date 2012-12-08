@@ -2,6 +2,7 @@
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="InputMissingBrush" Color="DarkRed"/>
+    <SolidColorBrush x:Key="SelectedItemBackgroundBrush" Color="Blue"/>
 
     <Style x:Key="ItemButtonStyle" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -69,15 +70,20 @@
                                 <VisualState x:Name="Unselected"/>
                                 <VisualState x:Name="Selected">
                                     <Storyboard>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ContentContainer" Storyboard.TargetProperty="FontWeight">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="SemiBold"/>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="LayoutRoot" Storyboard.TargetProperty="Background">
+                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SelectedItemBackgroundBrush}"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
-                        <ContentControl x:Name="ContentContainer"  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" 
-    Margin="{TemplateBinding Padding}" Content="{TemplateBinding Content}" ContentTemplate="{TemplateBinding ContentTemplate}" Foreground="{TemplateBinding Foreground}" />
+                        <ContentControl x:Name="ContentContainer"  
+                                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" 
+                                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"     
+                                        Margin="{TemplateBinding Padding}" 
+                                        Content="{TemplateBinding Content}" 
+                                        ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                        Foreground="{TemplateBinding Foreground}"/>                        
                     </Border>
                 </ControlTemplate>
             </Setter.Value>         
@@ -90,9 +96,5 @@
     
     <Style x:Key="InfoLabelTextStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSmallStyle}">
         
-    </Style>
-
-    <SolidColorBrush x:Key="SynonymyAcceptedBrush" Color="LightGreen"/>
-    <SolidColorBrush x:Key="SynonymySynonymBrush">Red</SolidColorBrush>
-    <SolidColorBrush x:Key="SynonymyWorkingNameBrush" Color="{StaticResource PhoneForegroundColor}" />
+    </Style>    
 </ResourceDictionary>

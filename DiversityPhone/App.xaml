@@ -24,7 +24,7 @@
             <vw:InvertBooleanConverter x:Key="InvertBoolean"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>
             <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
-			<vw:SynonymyToColorConverter x:Key="SynonymyToColor"/>
+			<vw:SynonymyToFontStyleConverter x:Key="SynonymyToFontStyle"/>
             <vw:PointToVisibilityConverter x:Key="PointToVis"/>
             
             
