@@ -144,8 +144,7 @@ namespace DiversityPhone.Services
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
-        {
-                      
+        {                   
             
             deleteAndNotifyAsync(toDeleteEs);
         }
@@ -562,50 +561,10 @@ namespace DiversityPhone.Services
         }
 
 
-        #endregion
-
-        #region SampleData
-        private void sampleData()
-        {
-            //using (var ctx = new DiversityDataContext())
-            //{
-            //    ctx.EventSeries.InsertOnSubmit(new Model.EventSeries() { SeriesID = 1, Description = "ES" });
-            //    ctx.Events.InsertOnSubmit(new Model.Event() { SeriesID = 0, EventID = 0, LocalityDescription = "EV" });
-            //    ctx.Specimen.InsertOnSubmit(new Model.Specimen() { CollectionEventID = 0, CollectionSpecimenID = 0, AccessionNumber = "CS" });
-            //    ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { SpecimenID = 0, UnitID = 0 });
-            //    int id = 1;
-            //    recSample(0, 0, ref id, ctx);
-            //    ctx.SubmitChanges();
-            //}
-
-        }
-        private void recSample(int depth, int parent, ref int id, DiversityDataContext ctx)
-        {
-            if (depth == 3)
-                return;
-
-            depth++;
-            int p = id;
-
-
-            for (int i = 0; i < 20; i++)
-            {
-                ctx.IdentificationUnits.InsertOnSubmit(new IdentificationUnit() { UnitID = id, RelatedUnitID = parent });
-                recSample(depth, id++, ref id, ctx);
-            }
-        }
-
-        #endregion
-
-        #region Delete
-
-
-
-
-        #endregion
+        #endregion                
 
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(IQueryOperations<T> operations, TableProvider<T> tableProvider, T row) where T : class, IModifyable
+        private void addOrUpdateRow<T>(IQueryOperations<T> operations, Func<DiversityDataContext, Table<T>> tableProvider, T row) where T : class, IModifyable
         {
             if(row == null)
             {
@@ -664,7 +623,7 @@ namespace DiversityPhone.Services
                 });
         }
 
-        private T singletonQuery<T>(QueryProvider<T> queryProvider)
+        private T singletonQuery<T>(Func<DiversityDataContext, IQueryable<T>> queryProvider)
         {
             T result = default(T);
             withDataContext(ctx =>
@@ -682,8 +641,8 @@ namespace DiversityPhone.Services
             using (var ctx = new DiversityDataContext())
                 operation(ctx);
         }
-       
-        private IList<T> uncachedQuery<T>(QueryProvider<T> query)
+
+        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
         {
             IList<T> result = null;
             withDataContext(ctx => result = query(ctx).ToList());
@@ -691,7 +650,7 @@ namespace DiversityPhone.Services
         }
 
 
-        private IEnumerable<T> enumerateQuery<T>(QueryProvider<T> query)
+        private IEnumerable<T> enumerateQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
         {
             using (var ctx = new DiversityDataContext())
             {
@@ -702,11 +661,7 @@ namespace DiversityPhone.Services
                     yield return res;
                 }
             }
-        }      
-
-        private delegate Table<T> TableProvider<T>(DiversityDataContext ctx) where T : class;
-
-        private delegate IQueryable<T> QueryProvider<T>(DiversityDataContext ctx);       
+        }       
 
         #endregion
 
