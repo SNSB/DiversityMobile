@@ -116,25 +116,15 @@ namespace DiversityPhone.Services
             var resource = App.GetResourceStream(new Uri(splash, UriKind.Relative));
             if (resource != null) return resource.Stream;       
 #endif
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            var iso = IsolatedStorageFile.GetUserStoreForApplication();
+            var filename = fileNameForMap(map);
+            if (iso.FileExists(filename))
             {
-
-                var filename = fileNameForMap(map);
-                if (iso.FileExists(filename))
-                {
-                    using (var file = iso.OpenFile(filename, System.IO.FileMode.Open))
-                    {
-                        if (file.Length > int.MaxValue)
-                            throw new ArgumentException("Map File too big");
-
-                        var res = new MemoryStream((int)file.Length);
-                        file.CopyTo(res);
-                        return res;
-                    }
-                }
-                else
-                    return null;                    
+                return iso.OpenFile(filename, System.IO.FileMode.Open);
             }
+            else
+                return null;                    
+            
         }
     }        
 }
