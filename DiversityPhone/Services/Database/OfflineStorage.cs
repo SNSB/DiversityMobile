@@ -609,12 +609,7 @@ namespace DiversityPhone.Services
         {
             if(row == null)
             {
-#if DEBUG
                 throw new ArgumentNullException ("row");
-#else
-                return;
-                //TODO Log
-#endif
             }
 
             withDataContext((ctx) =>
@@ -649,6 +644,7 @@ namespace DiversityPhone.Services
                                                     .FirstOrDefault();
                         if (existingRow != default(T))
                         {
+                            
                             //Second DataContext necessary 
                             //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
                             withDataContext((ctx2) =>

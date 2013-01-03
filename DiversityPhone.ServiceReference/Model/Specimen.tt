@@ -25,16 +25,7 @@ namespace DiversityPhone.Model
 <# Row("ModificationState", "ModificationState"); #>
  
 <# Row("int?", "DiversityCollectionSpecimenID", RowKind.Nullable); #>   
-<# Row("int?", "DiversityCollectionEventID", RowKind.Nullable); #>   
-       
-
-		private EntitySet<IdentificationUnit> _Units = new EntitySet<IdentificationUnit>();
-        [Association(Storage = "_Units", ThisKey = "SpecimenID", OtherKey = "SpecimenID")]
-        public EntitySet<IdentificationUnit> Units
-        {
-            get { return this._Units; }
-            set { this._Units.Assign(value); }
-        }
+<# Row("int?", "DiversityCollectionEventID", RowKind.Nullable); #> 
 
         public Specimen()
         {

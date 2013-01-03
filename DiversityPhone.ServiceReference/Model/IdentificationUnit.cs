@@ -299,22 +299,6 @@ namespace DiversityPhone.Model
 			}
 		}
 		 
-
-		private EntitySet<IdentificationUnitAnalysis> _Analyses = new EntitySet<IdentificationUnitAnalysis>();
-        [Association(Storage = "_Analyses", ThisKey = "UnitID", OtherKey = "UnitID")]
-        public EntitySet<IdentificationUnitAnalysis> Analyses
-        {
-            get { return this._Analyses; }
-            set { this._Analyses.Assign(value); }
-        }
-
-		private EntitySet<IdentificationUnit> _SubUnits = new EntitySet<IdentificationUnit>();
-        [Association(Storage = "_SubUnits", ThisKey = "UnitID", OtherKey = "RelatedUnitID")]
-        public EntitySet<IdentificationUnit> SubUnits
-        {
-            get { return this._SubUnits; }
-            set { this._SubUnits.Assign(value); }
-        }
 		  
 		public IdentificationUnit()
         {

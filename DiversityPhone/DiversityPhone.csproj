@@ -138,6 +138,7 @@
     <Compile Include="Services\Database\IVocabularyService.cs" />
     <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Services\Database\OfflineStorage.cs" />
+    <Compile Include="Services\Database\OfflineStorage.Queries.cs" />
     <Compile Include="Services\Database\TaxonDataContext.cs" />
     <Compile Include="Services\Database\TaxonService.cs" />
     <Compile Include="Services\Database\VocabularyService.cs" />

@@ -114,16 +114,7 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		   
-       
-
-		private EntitySet<IdentificationUnit> _Units = new EntitySet<IdentificationUnit>();
-        [Association(Storage = "_Units", ThisKey = "SpecimenID", OtherKey = "SpecimenID")]
-        public EntitySet<IdentificationUnit> Units
-        {
-            get { return this._Units; }
-            set { this._Units.Assign(value); }
-        }
+		 
 
         public Specimen()
         {

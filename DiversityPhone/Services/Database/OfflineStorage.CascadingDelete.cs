@@ -13,27 +13,8 @@ namespace DiversityPhone.Services
 {
     partial class OfflineStorage
     {
-        private static class CascadingDelete
-        {
-            private static DataLoadOptions cascadeOptions()
-            {
-                var load = new DataLoadOptions();
-                load.LoadWith<EventSeries>(es => es.Events);
-                load.LoadWith<Event>(ev => ev.Specimen);
-                load.LoadWith<Event>(ev => ev.Properties);
-                load.LoadWith<Specimen>(s => s.Units);
-                load.LoadWith<IdentificationUnit>(iu => iu.Analyses);
-
-                return load;
-            }
-
-            private static IQueryable<MultimediaObject> getMMOs(DiversityDataContext ctx, IMultimediaOwner owner)
-            {
-                return from mmo in ctx.MultimediaObjects
-                       where mmo.OwnerType == owner.OwnerType && mmo.RelatedId == owner.OwnerID
-                       select mmo;
-            }
-
+        private static partial class CascadingDelete
+        {      
             private static T attachedRowFrom<T>(DiversityDataContext ctx, IQueryOperations<T> operations, T detachedRow) where T : class
             {  
                 return operations.WhereKeyEquals(ctx.GetTable<T>(), detachedRow)
@@ -97,14 +78,8 @@ namespace DiversityPhone.Services
                             else
                                 throw new ArgumentException("Unsupported Type T");
 
-                            try
-                            {
-                                ctx.SubmitChanges();
-                            }
-                            catch (Exception)
-                            {
-                                Debugger.Break();                                
-                            }
+                           
+                            ctx.SubmitChanges();                            
                         }
                     });
                         
@@ -112,8 +87,11 @@ namespace DiversityPhone.Services
 
             private static void deleteSeries(DiversityDataContext ctx, EventSeries es)
             {
-                foreach (var ev in es.Events)
+                foreach (var ev in Queries.Events(es, ctx))
                     deleteEvent(ctx, ev);
+
+                foreach (var gp in Queries.GeoPoints(es, ctx))
+                    deleteGeoPoint(ctx, gp);
 
                 ctx.EventSeries.DeleteOnSubmit(es);
             }
@@ -125,13 +103,13 @@ namespace DiversityPhone.Services
 
             private static void deleteEvent(DiversityDataContext ctx, Event ev)
             {
-                foreach (var s in ev.Specimen)
+                foreach (var s in Queries.Specimen(ev, ctx))
                     deleteSpecimen(ctx, s);
 
-                foreach (var p in ev.Properties)
+                foreach (var p in Queries.Properties(ev,ctx))
                     deleteProperty(ctx, p);
 
-                foreach (var mmo in getMMOs(ctx, ev))
+                foreach (var mmo in Queries.Multimedia(ev, ctx))
                     deleteMMO(ctx, mmo);
 
                 ctx.Events.DeleteOnSubmit(ev);
@@ -139,10 +117,10 @@ namespace DiversityPhone.Services
 
             private static void deleteSpecimen(DiversityDataContext ctx, Specimen spec)
             {
-                foreach (var iu in spec.Units)
+                foreach (var iu in Queries.Units(spec, ctx))
                     deleteUnit(ctx, iu, false);
 
-                foreach (var mmo in getMMOs(ctx, spec))
+                foreach (var mmo in Queries.Multimedia(spec, ctx))
                     deleteMMO(ctx, mmo);
 
                 ctx.Specimen.DeleteOnSubmit(spec);
@@ -150,14 +128,14 @@ namespace DiversityPhone.Services
 
             private static void deleteUnit(DiversityDataContext ctx, IdentificationUnit iu, bool cascade = false)
             {
-                foreach (var an in iu.Analyses)
+                foreach (var an in Queries.Analyses(iu, ctx))
                     deleteAnalysis(ctx, an);
 
-                foreach (var mmo in getMMOs(ctx, iu))
+                foreach (var mmo in Queries.Multimedia(iu, ctx))
                     deleteMMO(ctx, mmo);
 
                 if (cascade)
-                    foreach (var siu in iu.SubUnits)
+                    foreach (var siu in Queries.SubUnits(iu, ctx))
                         deleteUnit(ctx, siu, cascade);
 
                 ctx.IdentificationUnits.DeleteOnSubmit(iu);

@@ -214,24 +214,7 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		  
-
-		
-		private EntitySet<Specimen> _Specimen = new EntitySet<Specimen>();
-		[Association(Storage = "_Specimen", ThisKey="EventID", OtherKey = "EventID", DeleteRule="CASCADE" )]
-		public EntitySet<Specimen> Specimen
-		{
-			get { return this._Specimen; }
-			set { this._Specimen.Assign(value); }
-		}
-
-		private EntitySet<EventProperty> _Properties = new EntitySet<EventProperty>();
-        [Association(Storage = "_Properties", ThisKey = "EventID", OtherKey = "EventID")]
-        public EntitySet<EventProperty> Properties
-        {
-            get { return this._Properties; }
-            set { this._Properties.Assign(value); }
-        }
+		 
   
 		public Event()
         {

@@ -26,15 +26,7 @@ namespace DiversityPhone.Model
  
 <# Row("ModificationState", "ModificationState"); #>
  
-<# Row("int?", "DiversityCollectionEventSeriesID", RowKind.Nullable); #>   
-
-		private EntitySet<Event> _Events = new EntitySet<Event>();
-		[Association(Storage = "_Events", ThisKey="SeriesID", OtherKey = "SeriesID", DeleteRule="CASCADE" )]
-		public EntitySet<Event> Events
-		{
-			get { return this._Events; }
-			set { this._Events.Assign(value); }
-		}
+<# Row("int?", "DiversityCollectionEventSeriesID", RowKind.Nullable); #> 
   
 		private static EventSeries _NoEventSeries;
 
