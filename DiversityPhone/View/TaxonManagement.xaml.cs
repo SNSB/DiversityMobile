@@ -18,9 +18,7 @@ namespace DiversityPhone.View
 {
     public partial class TaxonManagement : PhoneApplicationPage
     {
-        private TaxonManagementVM VM { get { return DataContext as TaxonManagementVM; } }
-
-        private ProgressBinding<TaxonManagementVM> _progress;
+        private TaxonManagementVM VM { get { return DataContext as TaxonManagementVM; } }        
 
         private CommandButtonAdapter _downloadall;
         public TaxonManagement()
@@ -28,8 +26,7 @@ namespace DiversityPhone.View
             InitializeComponent();
 
             if (VM != null)
-            {
-                _progress = new ProgressBinding<TaxonManagementVM>(VM, x => x.IsBusy);
+            {                
                 _downloadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.DownloadAll);
 
             }

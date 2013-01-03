@@ -53,47 +53,13 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
-        }
-
-
-        private bool _IsBusy;
-
-        public bool IsBusy
-        {
-            get
-            {
-                return _IsBusy;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value);
-            }
-        }
-
-        private int _DownloadCount;
-
-        public int DownloadCount
-        {
-            get { return _DownloadCount; }
-            set 
-            {
-                _DownloadCount = (value <= 0) ? 0 : value;
-                if (_DownloadCount == 0)
-                    IsBusy = false;
-                else
-                    IsBusy = true;
-            }
-        }
-
-             
+        }   
         
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
-        private ObservableAsPropertyHelper<IList<TaxonListVM>> _PersonalLists;
-        public IList<TaxonListVM> PersonalLists { get { return _PersonalLists.Value; } }
+        public ReactiveCollection<TaxonListVM> PersonalLists { get; private set; }
 
-        private ObservableAsPropertyHelper<IList<TaxonListVM>> _PublicLists;
-        public IList<TaxonListVM> PublicLists { get { return _PublicLists.Value; } }
+        public ReactiveCollection<TaxonListVM> PublicLists { get; private set; }
 
         public ReactiveCommand<TaxonListVM> Select { get; private set; }
         public ReactiveCommand<TaxonListVM> Download { get; private set; }
@@ -110,6 +76,50 @@ namespace DiversityPhone.ViewModels
             Connectivity = ioc.Resolve<IConnectivityService>();
             Notification = ioc.Resolve<INotificationService>();
 
+            var localLists =
+            this.FirstActivation()
+                .SelectMany(_ =>
+                    Taxa.getTaxonSelections()
+                    .ToObservable(ThreadPoolScheduler.Instance)
+                    .Select(list => new TaxonListVM(list)))
+                    .Publish();
+            LocalLists =
+                localLists
+                .ObserveOnDispatcher()
+                .CreateCollection();
+
+
+            
+            var onlineLists =
+            localLists
+                .IgnoreElements() //only download lists once the local ones are loaded
+                .Concat(Observable.Return(null as TaxonListVM))                   
+                .CombineLatest(this.OnActivation(),(_,_2) => _2) 
+                .CheckConnectivity(Connectivity, Notification)
+                .SelectMany(_ => 
+                    {
+                        
+                        return Service.GetTaxonLists()
+                            .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists);
+                    })
+                .ObserveOnDispatcher()
+                .SelectMany(lists => 
+                    lists.Where(list => !LocalLists.Any(loc => loc.Model == list)) // Filter lists already present locally
+                        .Select(list => new TaxonListVM(list))
+                    )
+                .Publish();
+
+            PersonalLists =
+                onlineLists.Where(vm => !vm.Model.IsPublicList)
+                .CreateCollection();
+
+            PublicLists =
+                onlineLists.Where(vm => vm.Model.IsPublicList)
+                .CreateCollection();
+
+            onlineLists.Connect();
+            localLists.Connect();
+
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
             Select.Subscribe(taxonlist =>
                     {
@@ -124,34 +134,31 @@ namespace DiversityPhone.ViewModels
                             {
                                 CurrentPivot = Pivot.Local;
                                 taxonlist.IsDownloading = true;
-                                LocalLists.Add(taxonlist);
 
+                                makeListLocal(taxonlist);
+                                                                
                                 DownloadTaxonList(taxonlist)
+                                    .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingList)
                                     .ObserveOnDispatcher()
                                     .HandleServiceErrors(Notification, Messenger)
-                                    .Subscribe(_ => { DownloadCount++; },
+                                    .Subscribe(_ => {  },
                                         _ => //Download Failed
-                                        {
-                                            LocalLists.Remove(taxonlist);
-                                            taxonlist.IsDownloading = false;                                            
-                                            DownloadCount--;
+                                        {                                            
+                                            taxonlist.IsDownloading = false;
+                                            removeLocalList(taxonlist);
                                         },
                                         () => //Download Succeeded
                                         {
-                                            taxonlist.IsDownloading = false;
-                                            DownloadCount--;
+                                            taxonlist.IsDownloading = false;                                            
                                         });
-                            }
-                            else
-                                Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.TaxonManagement_Message_Error,DiversityResources.TaxonManagement_Message_CantDownload));
+                            }                            
                         });
 
             Delete = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Delete               
                 .Subscribe(taxonlist =>
-                    {
-                        Taxa.deleteTaxonList(taxonlist.Model);
-                        LocalLists.Remove(taxonlist);
+                    {                        
+                        removeLocalList(taxonlist);
                     });
 
             Refresh = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
@@ -168,41 +175,9 @@ namespace DiversityPhone.ViewModels
             //Download all only on Personal pivot
             DownloadAll = new ReactiveCommand(this.ObservableForProperty(x => x.CurrentPivot).Value().Select(p => p == Pivot.Personal));
             DownloadAll
-                .SelectMany(_ => PersonalLists)
+                .SelectMany(_ => PersonalLists.ToArray())
                 .Where(vm => Download.CanExecute(vm))
                 .Subscribe(Download.Execute);
-
-            var local_lists =
-            this.FirstActivation()
-                .SelectMany(_ => Taxa.getTaxonSelections().ToObservable(ThreadPoolScheduler.Instance)
-                                .Select(list => new TaxonListVM(list)))
-                .Publish();
-
-            LocalLists = local_lists
-                .ObserveOnDispatcher()
-                .CreateCollection();
-
-            local_lists.Connect();
-
-
-            var local_lists_with_wifi = 
-            local_lists.ToList()
-                .CombineLatest(Connectivity.WifiAvailable().Where(wifi => wifi), (lists, _2) => lists)
-                .Take(1);
-
-            var online_lists =
-            local_lists_with_wifi.SelectMany(local => 
-                    Service.GetTaxonLists()
-                    .Select(online => online.Select(l => local.Where(vm => vm.Model == l).FirstOrDefault() ?? new TaxonListVM(l)).ToList())
-                )
-                .Retry()    
-                .ObserveOnDispatcher()                
-                .Publish();
-
-            _PersonalLists = this.ObservableToProperty(online_lists.Select(lists => lists.Where(l => !l.Model.IsPublicList).ToList() as IList<TaxonListVM>), x => x.PersonalLists);
-            _PublicLists = this.ObservableToProperty(online_lists.Select(lists => lists.Where(l => l.Model.IsPublicList).ToList() as IList<TaxonListVM>), x => x.PublicLists);
-
-            online_lists.Connect();
         }
 
         private IObservable<TaxonListVM> DownloadTaxonList(TaxonListVM vm)
@@ -210,12 +185,30 @@ namespace DiversityPhone.ViewModels
             Taxa.addTaxonList(vm.Model);
             return
             Service.DownloadTaxonListChunked(vm.Model)
-            .Do(chunk => Taxa.addTaxonNames(chunk, vm.Model), (Exception ex) => Taxa.deleteTaxonList(vm.Model))
+            .Do(chunk => Taxa.addTaxonNames(chunk, vm.Model), (Exception ex) => Taxa.deleteTaxonListIfExists(vm.Model))
             .IgnoreElements()
             .Select(_ => vm)
             .StartWith(vm);
         }
 
+        private void makeListLocal(TaxonListVM list)
+        {
+            LocalLists.Add(list);
+            if (list.Model.IsPublicList)
+                PublicLists.Remove(list);
+            else
+                PersonalLists.Remove(list);
+        }
+        private void removeLocalList(TaxonListVM list)
+        {
+            Taxa.deleteTaxonListIfExists(list.Model);
+            LocalLists.Remove(list);
+            list.Model.IsSelected = false;
+            if (list.Model.IsPublicList)
+                PublicLists.Add(list);
+            else
+                PersonalLists.Add(list);
+        }
         
     }
 }

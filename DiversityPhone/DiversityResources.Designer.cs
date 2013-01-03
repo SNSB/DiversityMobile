@@ -628,6 +628,24 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading Taxa ....
+        /// </summary>
+        public static string TaxonManagement_State_DownloadingList {
+            get {
+                return ResourceManager.GetString("TaxonManagement_State_DownloadingList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting Taxon Lists ....
+        /// </summary>
+        public static string TaxonManagement_State_DownloadingLists {
+            get {
+                return ResourceManager.GetString("TaxonManagement_State_DownloadingLists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to download all.
         /// </summary>
         public static string TaxonManagement_Title_DownloadAll {

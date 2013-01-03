@@ -13,6 +13,7 @@ using System.Reactive.Linq;
 using System.ServiceModel;
 using DiversityPhone.Services;
 using ReactiveUI;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.ViewModels
 {
@@ -106,6 +107,23 @@ namespace DiversityPhone.ViewModels
                     else
                         return ErrorValue;
                 });                   
+        }
+
+        public static IObservable<T> DisplayProgress<T>(this IObservable<T> This, INotificationService notifications, string text)
+        {
+            if (This == null)
+                throw new ArgumentNullException("This");
+            if (notifications == null)
+                throw new ArgumentNullException("notifications");
+            if (text == null)
+                throw new ArgumentNullException("text");
+
+            return Observable.Create((IObserver<T> obs) =>
+                {
+                    var n = notifications.showProgress(text);
+                    return This.Finally(n.Dispose)
+                        .Subscribe(obs);
+                });
         }
     }
 }

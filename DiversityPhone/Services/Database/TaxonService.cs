@@ -5,6 +5,8 @@ using DiversityPhone.Model;
 using System;
 using System.Linq;
 using System.Data.Linq.SqlClient;
+using System.IO.IsolatedStorage;
+
 namespace DiversityPhone.Services
 {
     public interface ITaxonService
@@ -39,8 +41,8 @@ namespace DiversityPhone.Services
         /// <summary>
         /// Removes a Taxon Selection and empties its Taxon Table
         /// </summary>
-        /// <param name="selection"></param>
-        void deleteTaxonList(TaxonList list);
+        /// <param name="list"></param>
+        void deleteTaxonListIfExists(TaxonList list);
 
         /// <summary>
         /// Retrieves Taxon Names that conform to the query string
@@ -145,19 +147,22 @@ namespace DiversityPhone.Services
             );
         }
 
-        public void deleteTaxonList(TaxonList list)
+        public void deleteTaxonListIfExists(TaxonList list)
         {
-            if (list == null)
+            if (list == null || !TaxonList.ValidTableIDs.Contains(list.TableID))
                 return;
-            if (!TaxonList.ValidTableIDs.Contains(list.TableID))
-                throw new ArgumentException("list");
+
+            using (var isostore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                var dbFile = TaxonDataContext.getDBPath(list.TableID);
+                if (isostore.FileExists(dbFile))
+                {
+                    isostore.DeleteFile(dbFile);
+                }
+            }
 
             withSelections(ctx =>
-            {
-                using (var taxa = new TaxonDataContext(list.TableID))
-                {
-                    taxa.DeleteDatabase();
-                }
+            {                
                 ctx.TaxonLists.Attach(list);
                 ctx.TaxonLists.DeleteOnSubmit(list);
                 ctx.SubmitChanges();
@@ -314,10 +319,17 @@ namespace DiversityPhone.Services
 
         private class TaxonDataContext : DataContext
         {
-            private static string connStr = "isostore:/taxonDB{0}.sdf";
+            private static readonly string ISOSTORE_PROTOCOL = "isostore:/";
+            private static readonly string TAXON_DB_NAME_PATTERN = "taxonDB{0}.sdf";
+
+            public static string getDBPath(int idx)
+            {
+                return String.Format(TAXON_DB_NAME_PATTERN, idx);
+            }
+
 
             public TaxonDataContext(int idx)
-                : base(String.Format(connStr, idx))
+                : base(String.Format("{0}{1}",ISOSTORE_PROTOCOL,getDBPath(idx)))
             {
                 if (!this.DatabaseExists())
                     this.CreateDatabase();

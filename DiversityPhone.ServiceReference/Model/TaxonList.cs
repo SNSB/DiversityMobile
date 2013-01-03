@@ -59,7 +59,34 @@ namespace DiversityPhone.Model
 
         public bool Equals(TaxonList other)
         {
+            if (Object.ReferenceEquals(other, null))
+                return false;
             return this.TableName == other.TableName && this.TaxonomicGroup == other.TaxonomicGroup;
+        }
+
+        
+        public static bool operator ==(TaxonList one, TaxonList other)
+        {
+            return (Object.ReferenceEquals(one,null)) 
+                ? Object.ReferenceEquals(other,null) 
+                : one.Equals(other);
+        }
+
+        public static bool operator !=(TaxonList one, TaxonList other)
+        {
+            return !(one == other);
+        }
+
+        public override int GetHashCode()
+        {
+            return TaxonomicGroup.GetHashCode() ^ TableName.GetHashCode() ^ ((IsPublicList) ? Int32.MaxValue : 0);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is TaxonList)
+                return Equals(obj as TaxonList);
+            return false;
         }
     }
 }
