@@ -97,7 +97,7 @@ namespace DiversityPhone.Services
                     int chunk = 1; //First Chunk is 1, not 0!
                     var subscription =
                     DownloadTaxonList
-                    .Where(args => args.UserState == list)
+                    .Where(args => Object.ReferenceEquals(args.UserState, list))
                     .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
                     .Select(taxa => taxa.Select(
                         taxon => new Client.TaxonName()
