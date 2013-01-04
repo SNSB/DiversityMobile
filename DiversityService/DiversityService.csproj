@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="DiversityService.cs" />
     <Compile Include="DiversityService.Queries.cs" />
+    <Compile Include="DiversityService.Upload.cs" />
     <Compile Include="Model\CollectionEventImage.cs" />
     <Compile Include="Model\CollectionEventSeriesImage.cs" />
     <Compile Include="Model\CollectionSpecimenImage.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Model\IdentificationUnit.cs" />
     <Compile Include="Model\IdentificationUnitAnalysis.cs" />
     <Compile Include="Model\KeyProjection.cs" />
+    <Compile Include="Model\Localization.cs" />
     <Compile Include="Model\MultimediaObject.cs" />
     <Compile Include="Model\Project.cs" />
     <Compile Include="Model\Property.cs" />
@@ -105,7 +107,6 @@
     <Compile Include="Model\TaxonList.cs" />
     <Compile Include="Model\TaxonName.cs" />
     <Compile Include="Model\Term.cs" />
-    <Compile Include="Model\TermExportList.cs" />
     <Compile Include="Model\TermLists.cs" />
     <Compile Include="Model\UserCredentials.cs" />
     <Compile Include="Model\UserProfile.cs" />

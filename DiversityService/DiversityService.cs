@@ -561,18 +561,20 @@ namespace DiversityService
         {
             if (Double.IsNaN(latitude) || Double.IsNaN(longitude))
                 return String.Empty;
-            String longitudeStr = longitude.ToString();
-            longitudeStr = longitudeStr.Replace(',', '.');
-            String latStr = latitude.ToString();
+
+            var cult = new CultureInfo("en-US");
+            String longitudeStr = longitude.ToString(cult);
+            
+            String latStr = latitude.ToString(cult);            
             latStr = latStr.Replace(',', '.');
 
             StringBuilder builder = new StringBuilder("geography::STGeomFromText('POINT(");
             builder.Append(longitudeStr);
             builder.Append(" ");
             builder.Append(latStr);
-            if (altitude != null && Double.IsNaN((double)altitude) == false)
+            if (altitude.HasValue && Double.IsNaN((double)altitude) == false)
             {
-                String altStr = altitude.ToString();
+                String altStr = altitude.Value.ToString(cult);                
                 altStr = altStr.Replace(',', '.');
                 builder.Append(" ");
                 builder.Append(altStr);
