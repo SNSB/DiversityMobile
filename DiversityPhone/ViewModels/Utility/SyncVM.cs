@@ -12,6 +12,8 @@ using System.Reactive.Subjects;
 using DiversityPhone.Services.BackgroundTasks;
 using System.Reactive.Concurrency;
 using DiversityPhone.Messages;
+using System.Reactive.Disposables;
+using System.Reactive;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -37,80 +39,109 @@ namespace DiversityPhone.ViewModels.Utility
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
         }
-        
+
 
         private IFieldDataService Storage;
         private INotificationService Notifications;
         private IConnectivityService Connectivity;
-        
-        public ReactiveCollection<ModifiedEventVM> SyncUnits { get; private set; }
-        public ReactiveCollection<MultimediaVM> Multimedia { get; private set; }
+        private IDiversityServiceClient Service;
+        private IKeyMappingService Mapping;
 
-        public ReactiveCommand<ModifiedEventVM> UploadEvent { get; private set; }
+        public ListSelectionHelper<DBObjectType> SyncLevel { get; private set; }
 
-        public ReactiveCommand<MultimediaVM> UploadMultimedia { get; private set; }
+        public ReactiveCollection<IElementVM> SyncUnits { get; private set; }
+        public ReactiveCollection<MultimediaObjectVM> Multimedia { get; private set; }
+
+        public ReactiveCommand<IElementVM> UploadElement { get; private set; }
+        public ReactiveCommand<IElementVM> UploadTree { get; private set; }
+
+        public ReactiveCommand<MultimediaObjectVM> UploadMultimedia { get; private set; }
 
         public ReactiveCommand UploadAll { get; private set; }
 
-        public class ModifiedEventVM 
+        private long _UploadsInProgress = 0;
+        private IDisposable _CurrentUpload = Disposable.Empty;
+
+        private bool TryStartUpload()
         {
-            public EventSeriesVM Series { get; private set; }
-
-            public EventVM Event { get; private set; }
-
-            public ModifiedEventVM(Event ev, EventSeries series)
-            {                
-                Event = new EventVM( ev);
-                Series = new EventSeriesVM(series);                
-            }
-        }
-
-        public class MultimediaVM : MultimediaObjectVM
-        {
-            public object Owner { get; private set; }           
-
-            public MultimediaVM(MultimediaObject obj, object owner)
-                : base(obj)
+            bool aquired = false;
+            lock(this)
             {
-                Owner = owner;
+                aquired = _UploadsInProgress == 0;
+                _UploadsInProgress = 1;
             }
+            if (aquired)
+                this.RaisePropertyChanged(x => x.IsUploading);
+            return aquired;
         }
+        private void UploadCompleted()
+        {
+            if (!IsUploading)
+                throw new InvalidOperationException("No running upload to be completed");
+
+            _UploadsInProgress = 0;
+            this.RaisePropertyChanged(x => x.IsUploading);
+        }
+        public bool IsUploading
+        {
+            get { return _UploadsInProgress > 0; }
+        }
+
+        public ReactiveCommand CancelUpload { get; private set; }
 
         public SyncVM(Container ioc)
         {
             Storage = ioc.Resolve<IFieldDataService>();
             Notifications = ioc.Resolve<INotificationService>();
             Connectivity = ioc.Resolve<IConnectivityService>();
+            Service = ioc.Resolve<IDiversityServiceClient>();
+            Mapping = ioc.Resolve<IKeyMappingService>();
 
-            SyncUnits = new ReactiveCollection<ModifiedEventVM>();
-            this.OnActivation()                
+            SyncLevel = new ListSelectionHelper<DBObjectType>();
+            SyncLevel.Items = new List<DBObjectType>()
+            {
+                DBObjectType.EventSeries,
+                DBObjectType.Event,
+                DBObjectType.Specimen,
+                DBObjectType.IdentificationUnit
+            };
+            SyncLevel.SelectedItem = DBObjectType.EventSeries;
+
+            SyncUnits = new ReactiveCollection<IElementVM>();
+
+            var recollectModifications = 
+            this.ActivationObservable
+                .CombineLatest(SyncLevel, (a, l) => new { Activated = a, Level = l });
+            recollectModifications
                 .Do(_ => SyncUnits.Clear())
-                .SelectMany(_ => 
+                .Where(t => t.Activated)
+                .SelectMany(tuple =>
                     {
-                        var notification = Notifications.showProgress(DiversityResources.Sync_Info_CollectingModifications);
                         return
-                        collectModificationsImpl()
+                        collectModificationsImpl(tuple.Level)
                         .ToObservable(ThreadPoolScheduler.Instance)
-                        .TakeUntil(this.OnDeactivation())     
-                        .Finally(notification.Dispose);
+                        .TakeUntil(recollectModifications)
+                        .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
                     })
                 .ObserveOnDispatcher()
                 .Subscribe(SyncUnits.Add);
 
-            Multimedia = new ReactiveCollection<MultimediaVM>();
+            Multimedia = new ReactiveCollection<MultimediaObjectVM>();
             //Needs to be cleared?
             this.ObservableForProperty(x => x.CurrentPivot)
                 .Value()
-                .Where(p => p == Pivots.multimedia)
+                .Select(p => p == Pivots.multimedia)
                 .Do(_ => Multimedia.Clear())
+                .Where(onMultimedia => onMultimedia)
                 .SelectMany(_ => 
-                    {
-                        var notification = Notifications.showProgress(DiversityResources.Sync_Info_CollectingMultimedia);
+                    {                        
                         return
-                        enumerateModifiedMMOs()
+                        Storage.getModifiedMMOs()
+                        .Where(mmo => Mapping.ResolveKey(mmo.OwnerType, mmo.RelatedId).HasValue)
+                        .Select(mmo => new MultimediaObjectVM(mmo))
                         .ToObservable(ThreadPoolScheduler.Instance)
                         .TakeUntil(this.OnDeactivation())
-                        .Finally(notification.Dispose);
+                        .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingMultimedia);
                     })
                 .ObserveOnDispatcher()
                 .Subscribe(Multimedia.Add);            
@@ -118,134 +149,233 @@ namespace DiversityPhone.ViewModels.Utility
            
             
 
-           
+            UploadElement = new ReactiveCommand<IElementVM>();
             
+                
+                
+
+            UploadTree = new ReactiveCommand<IElementVM>();
+            UploadTree
+                .Where(_ => TryStartUpload())                
+                .Subscribe(vm => 
+                {
+                    _CurrentUpload = uploadTree(vm)
+                        .Finally(() => UploadCompleted())
+                        .ObserveOnDispatcher()
+                        .Subscribe(_ => { }, () => SyncUnits.Remove(vm));
+                });
             
-                     
-            var canUpload = new BehaviorSubject<bool>(true);           
 
-
-            UploadEvent = new ReactiveCommand<ModifiedEventVM>(canUpload);
-            UploadEvent
-                .CheckConnectivity(Connectivity, Notifications)
-                .Do(_ => canUpload.OnNext(false))
-                .Select(unit => new { Unit = unit, Task = UploadEventTask.Start(ioc, unit.Event.Model) })
-                .Subscribe(t =>
-                    t.Task
-                    .ObserveOnDispatcher()
-                    .HandleServiceErrors(Notifications, Messenger)
-                    .Finally(() => canUpload.OnNext(true))
-                    .Subscribe(_ => { }, ex => { }, () => SyncUnits.Remove(t.Unit))
-                    );
-
-            UploadMultimedia = new ReactiveCommand<MultimediaVM>(canUpload);
+            UploadMultimedia = new ReactiveCommand<MultimediaObjectVM>();
             UploadMultimedia
-                .CheckConnectivity(Connectivity, Notifications)
-                .Select(unit => new { Unit = unit, Task = UploadMultimediaTask.Start(ioc, unit.Model) })
-                .Subscribe(t =>
-                    t.Task
-                    .ObserveOnDispatcher()
-                    .HandleServiceErrors(Notifications, Messenger)
-                    .Finally(() => canUpload.OnNext(true))
-                    .Subscribe(_ => { }, ex => { }, () => Multimedia.Remove(t.Unit))
-                    );
+                .Where(_ => TryStartUpload())
+                .Subscribe(vm =>
+                    {
+                        _CurrentUpload = uploadMultimedia(vm)
+                            .Finally(() => UploadCompleted())
+                            .ObserveOnDispatcher()
+                            .Subscribe(_ => { }, () => Multimedia.Remove(vm));
+                    });
 
-            UploadAll = new ReactiveCommand(canUpload);
+           
+
+            UploadAll = new ReactiveCommand();
             UploadAll
-                .Where(_ => CurrentPivot == Pivots.data)                
+                .Where(_ => TryStartUpload())
                 .Subscribe(_ =>
                     {
-                        var syncUnits = new List<ModifiedEventVM>(SyncUnits).ToObservable();
-                        canUpload.Where(can => can)
-                            .Zip(syncUnits, (_2,unit) => unit)                            
-                            .Subscribe(UploadEvent.Execute);                        
+                        if (CurrentPivot == Pivots.data)
+                        {
+                            var data = SyncUnits.ToList();
+
+                            _CurrentUpload =
+                                data.ToObservable(ThreadPoolScheduler.Instance)
+                                .SelectMany(vm =>
+                                    uploadTree(vm)
+                                    .IgnoreElements()
+                                    .Concat(Observable.Return(Unit.Default))
+                                    .Select(_2 => vm)
+                                        )
+                                .Finally(() => UploadCompleted())
+                                .ObserveOnDispatcher()
+                                .Subscribe(vm => SyncUnits.Remove(vm));
+                        }
+                        else
+                        {
+                            var mmos = Multimedia.ToList();
+
+                            _CurrentUpload =
+                                mmos.ToObservable(ThreadPoolScheduler.Instance)
+                                .SelectMany(vm =>
+                                    uploadMultimedia(vm)
+                                    .IgnoreElements()
+                                    .Concat(Observable.Return(Unit.Default))
+                                    .Select(_2 => vm)
+                                        )
+                                .Finally(() => UploadCompleted())
+                                .ObserveOnDispatcher()
+                                .Subscribe(vm => Multimedia.Remove(vm));
+                        }
                     });
-            Messenger.RegisterMessageSource(
-            UploadAll
-               .Where(_ => CurrentPivot == Pivots.multimedia)
-               .Select(_ => 
-                   new DialogMessage(Messages.DialogType.YesNo, 
-                        DiversityResources.Sync_Dialog_UploadAll_Caption, 
-                        DiversityResources.Sync_Dialog_UploadAll_Text, 
-                        (res) => 
-                        { 
-                            if (res == DialogResult.OKYes) 
-                                uploadAllMultimedia(canUpload); 
-                        }))
-               );
+                    
+
+            CancelUpload = new ReactiveCommand();
+            CancelUpload
+                .Subscribe(_ =>
+                    {
+                        var upl = _CurrentUpload;
+                        if (upl != null)
+                            upl.Dispose();
+                    });
 
             this.OnDeactivation()
                 .Select(_ => EventMessage.Default)
                 .ToMessage(MessageContracts.INIT);
         }
 
-        private struct SyncUnitIncrement
+        private IObservable<Unit> uploadMultimedia(MultimediaObjectVM vm)
         {
-            public int? Unit { get; set; }
-            public int Increment { get; set; }
+            return Observable.Return(vm)
+                .Select(v => v.Model)
+                .ObserveOn(ThreadPoolScheduler.Instance)
+                .Select(mmo => 
+                {
+                    byte[] data;
+                    using(var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        var file = iso.OpenFile(mmo.Uri, System.IO.FileMode.Open);
+                        data = new byte[file.Length];
+                        file.Read(data, 0, data.Length);                        
+                    }
+
+                    return new {MMO = mmo, Data = data};
+                })
+                .SelectMany(t => 
+                    {
+                        var upload = 
+                        Service.UploadMultimedia(t.MMO, t.Data)
+                        .Do(uri => t.MMO.CollectionUri = uri)
+                        .Select(_ => t.MMO)
+                        .SelectMany(mmo => Service.InsertMultimediaObject(mmo))
+                        .DisplayProgress(Notifications, DiversityResources.Sync_Info_UploadingMultimedia)
+                        .Publish();
+                        upload.Connect();
+                        return upload;
+                    });
         }
 
-        private IEnumerable<ModifiedEventVM> collectModificationsImpl()
+        private IObservable<EventSeries> uploadES(EventSeries es)
         {
-            var events = Storage.getAllEvents();
+            return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID.Value).Select(gp => gp as ILocalizable))
+                    .Select(id => es);
+        }
 
-            foreach (var ev in events)
+        private IObservable<Event> uploadEV(Event ev)
+        {
+            return Service.InsertEvent(ev, Storage.getPropertiesForEvent(ev.EventID))
+                    .Select(id => ev);
+        }
+
+        private IObservable<Specimen> uploadSpecimen(Specimen s)
+        {
+            return Service.InsertSpecimen(s)
+                .Select(id => s);
+        }
+
+        private IObservable<IdentificationUnit> uploadIU(IdentificationUnit iu)
+        {
+            return Service.InsertIdentificationUnit(iu, Storage.getIUANForIU(iu))
+                .Select(id => iu);
+        }
+
+        private IEnumerable<IdentificationUnit> getIUTree(IdentificationUnit iu)
+        {
+            Queue<IdentificationUnit> units = new Queue<IdentificationUnit>();
+            units.Enqueue(iu);
+
+            while (units.Count > 0)
             {
-                bool modified = ev.IsModified();
-                if (!modified)
-                {
-                    var modifications = Storage.getNewHierarchyToSyncBelow(ev);
-                    if (modifications.Specimen.Any()
-                        || modifications.Properties.Any()
-                        || modifications.IdentificationUnits.Any()
-                        || modifications.IdentificationUnitAnalyses.Any())    
-                        modified = true;
-                }
-                if(modified)
-                {
-                    var series = Storage.getEventSeriesByID(ev.SeriesID);
+                var u = units.Dequeue();
+                foreach (var subU in Storage.getSubUnits(u))
+                    units.Enqueue(subU);
 
-                    yield return new ModifiedEventVM(ev,series);
-                }                    
-            }            
-        }
-
-        private IEnumerable<MultimediaVM> enumerateModifiedMMOs()
-        {
-            var mmos = Storage.getMultimediaObjectsForUpload();
-
-            foreach (var mmo in mmos)
-            {                                  
-                object ownerVM;
-                switch (mmo.OwnerType)
-                {                        
-                    case ReferrerType.EventSeries:
-                        ownerVM = new EventSeriesVM(Storage.getEventSeriesByID(mmo.RelatedId));
-                        break;
-                    case ReferrerType.Event:
-                        ownerVM = new EventVM(Storage.getEventByID(mmo.RelatedId));
-                        break;
-                    case ReferrerType.Specimen:
-                        ownerVM = new SpecimenVM(Storage.getSpecimenByID(mmo.RelatedId));
-                        break;
-                    case ReferrerType.IdentificationUnit:
-                        ownerVM = new IdentificationUnitVM(Storage.getIdentificationUnitByID(mmo.RelatedId));
-                        break;
-                    default:
-                        continue;
-                }
-
-                yield return new MultimediaVM(mmo, ownerVM);                
+                yield return u;
             }
         }
 
-        private void uploadAllMultimedia(IObservable<bool> canUpload)
+        private IObservable<Unit> uploadTree(IElementVM vm)
         {
-            var multimedia = new List<MultimediaVM>(Multimedia).ToObservable();
-                           
-            canUpload.Where(can => can)
-                .Zip(multimedia, (_, multvm) => multvm)                
-                .Subscribe(UploadMultimedia.Execute);
+            var model = vm.Model;
+
+            var es = model as EventSeries;
+            var ev = model as Event;
+            var sp = model as Specimen;
+            var iu = model as IdentificationUnit;
+
+
+            return Observable.Return(es)
+                .Where(x => x != null)
+                .SelectMany(x => uploadES(x))
+                .SelectMany(x => Storage.getEventsForSeries(x))
+                .Merge(Observable.Return(ev))
+                .Where(x => x != null)
+                .SelectMany(x => uploadEV(x))
+                .SelectMany(x => Storage.getSpecimenForEvent(x))
+                .Merge(Observable.Return(sp))
+                .Where(x => x != null)
+                .SelectMany(x => uploadSpecimen(x))
+                .SelectMany(x => Storage.getTopLevelIUForSpecimen(x.SpecimenID))
+                .Merge(Observable.Return(iu))
+                .Where(x => x != null)
+                .SelectMany(x => getIUTree(x))
+                .SelectMany(x => uploadIU(x))
+                .Select(_ => Unit.Default)
+                .DisplayProgress(Notifications, DiversityResources.Sync_Info_Uploading);
+        }
+
+        private IEnumerable<IElementVM> collectModificationsImpl(DBObjectType synclevel)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                IEnumerable<IElementVM> stream;
+                switch (synclevel)
+                {
+                    case DBObjectType.EventSeries:
+                        stream = from es in ctx.EventSeries
+                                 where es.CollectionSeriesID == null && es.SeriesEnd != null
+                                 select new EventSeriesVM(es) as IElementVM;
+                        break;
+                    case DBObjectType.Event:
+                        stream = from es in ctx.EventSeries
+                                 where es.CollectionSeriesID != null
+                                 join ev in ctx.Events on es.SeriesID equals ev.SeriesID
+                                 where ev.CollectionEventID == null
+                                 select new EventVM(ev) as IElementVM;
+                        stream = stream.Concat(from ev in ctx.Events
+                                               where ev.SeriesID == null && ev.CollectionEventID == null
+                                               select new EventVM(ev) as IElementVM);
+
+                        break;
+                    case DBObjectType.Specimen:
+                        stream = from ev in ctx.Events
+                                 where ev.CollectionEventID != null
+                                 join s in ctx.Specimen on ev.EventID equals s.EventID
+                                 where s.CollectionSpecimenID == null
+                                 select new SpecimenVM(s) as IElementVM;
+                        break;
+                    case DBObjectType.IdentificationUnit:
+                        stream = from s in ctx.Specimen
+                                 where s.CollectionSpecimenID != null
+                                 join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
+                                 where iu.CollectionUnitID == null
+                                 select new IdentificationUnitVM(iu) as IElementVM;
+                        break;
+                    default:
+                        throw new ArgumentException("synclevel");
+                }
+                foreach (var vm in stream)
+                    yield return vm;
+            }
         }
     }
 }

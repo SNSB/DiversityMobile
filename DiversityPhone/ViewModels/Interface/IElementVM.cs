@@ -11,11 +11,12 @@ namespace DiversityPhone.ViewModels
     {
         string Description { get; }
         Icon Icon { get; }
+        object Model { get; }
     }
 
     public interface IElementVM<T> : IElementVM, IReactiveNotifyPropertyChanged
     {
-        T Model { get; }
+        new T Model { get; }
     }
 
     public static class ElementVMMixin
@@ -23,6 +24,6 @@ namespace DiversityPhone.ViewModels
         public static IObservable<T> Model<T>(this IObservable<IElementVM<T>> This)
         {
             return This.Select(vm => vm.Model);
-        }
+        }        
     }
 }

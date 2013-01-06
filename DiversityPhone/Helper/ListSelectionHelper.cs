@@ -34,7 +34,7 @@ namespace DiversityPhone.ViewModels
             {
                 return _Items;
             }
-            private set
+            set
             {                
                 this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value);
             }

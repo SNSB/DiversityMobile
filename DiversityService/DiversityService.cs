@@ -11,14 +11,14 @@ using System.Xml.Serialization;
 using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Data.EntityClient;
+using System.Globalization;
 
 
 
 namespace DiversityService
 {
     public partial class DiversityService : IDiversityService
-    {
-        
+    {       
 
         #region Get
 
@@ -26,32 +26,15 @@ namespace DiversityService
         {
 
             IEnumerable<Term> linqTerms;
-            using (var ctx = new DiversityCollectionFunctionsDataContext(Diversity.GetConnectionString(login, Diversity.SERVER_COLLECTION)))
+            using (var db = new Diversity(login,Diversity.SERVER_COLLECTION))         
             {
-                var taxonomicGroups = from g in ctx.DiversityMobile_TaxonomicGroups()
-                                      select new Term()
-                                      {
-                                          Source = TermList.TaxonomicGroups, //TODO
-                                          Code = g.Code,
-                                          DisplayText = g.DisplayText
-                                      };
-
-                var unitRelationTypes = from t in ctx.DiversityMobile_UnitRelationTypes()
-                                        select new Term()
-                                        {
-                                            Source = TermList.RelationshipTypes, //TODO
-                                            Code = t.Code,
-                                            DisplayText = t.DisplayText,
-                                        };
-                var eventImgTypes = from eit in ctx.DiversityMobile_EventImageTypes()
-                                    select new Term()
-                                    {
-                                        Source = TermList.EventImageTypes,//TODO
-                                        Code = eit.Code,
-                                        DisplayText = eit.DisplayText
-                                    };
-
-                linqTerms = taxonomicGroups.Concat(unitRelationTypes).Concat(eventImgTypes).ToList();
+                linqTerms =
+                Enumerable.Concat(
+                    db.Query<Term>("FROM [dbo].[DiversityMobile_TaxonomicGroups]() as Term")
+                    .Select(t => { t.Source = TermList.TaxonomicGroups; return t;}),
+                    db.Query<Term>("FROM [dbo].[DiversityMobile_UnitRelationTypes]() as Term")
+                    .Select(t => { t.Source = TermList.RelationshipTypes; return t; })
+                    ).ToList();
             }
             return linqTerms;
 
@@ -182,16 +165,16 @@ namespace DiversityService
             }            
         }
 
-        public IEnumerable<Model.PropertyName> DownloadPropertyNames(Property p, int page, UserCredentials login)
+        public IEnumerable<Model.PropertyValue> DownloadPropertyNames(Property p, int page, UserCredentials login)
         {
             var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
             PropertyList list;
             if (propsForUser.TryGetValue(p.PropertyID, out list))
             {                
-                return loadTablePaged<Model.PropertyName>(list.Table, page, new Diversity(login, CATALOG_DIVERSITYMOBILE));                
+                return loadTablePaged<Model.PropertyValue>(list.Table, page, new Diversity(login, CATALOG_DIVERSITYMOBILE));                
             }
             else
-                return Enumerable.Empty<Model.PropertyName>();
+                return Enumerable.Empty<Model.PropertyValue>();
         }
 
         public IEnumerable<Qualification> GetQualifications(UserCredentials login)
@@ -210,304 +193,8 @@ namespace DiversityService
                     .ToList();
             }
         }
-
-        //public HierarchySection DownloadHierarchy(int DiversityCollectionEventID, UserCredentials login)
-        //{
-        //    HierarchySection hs = new HierarchySection();
-        //    using (var db = new Diversity(login))
-        //    {
-        //        hs.Event = getEvent(db, DiversityCollectionEventID);
-        //        hs.Properties = getCollectionPropertyForEvent(db, DiversityCollectionEventID).ToList<CollectionEventProperty>();
-        //        hs.Specimen = getSpecimenForEvent(db, DiversityCollectionEventID).ToList<Specimen>();
-        //        hs.IdentificationUnits = new List<IdentificationUnit>();
-        //        foreach (Specimen spec in hs.Specimen)
-        //        {
-        //            hs.IdentificationUnits = 0;
-        //        }
-        //        hs.IdentificationUnitAnalyses = 0;
-        //    }
-        //    return hs;
-        //}
        
         #endregion
-
-
-        public Dictionary<int, int> InsertEventSeries(IList<EventSeries> series, UserCredentials login)
-        {
-            Dictionary<int, int> result = new Dictionary<int, int>();
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                foreach (EventSeries es in series)
-                {
-                    db.Insert(es);
-                    result.Add(es.SeriesID, (int)es.DiversityCollectionEventSeriesID);
-                    if (!string.IsNullOrEmpty(es.Geography))
-                        InsertGeographyIntoSeries((int) es.DiversityCollectionEventSeriesID, es.Geography, login);
-                }
-            }
-            return result;
-        }
-
-        public bool InsertMMO(MultimediaObject mmo, UserCredentials login)
-        {
-            try
-            {
-                using (var db = new DiversityORM.Diversity(login))
-                {
-                    switch (mmo.OwnerType)
-                    {
-                        case "EventSeries":
-                            CollectionEventSeriesImage cesi = MultimediaObject.ToSeriesImage(mmo);
-                            db.Insert(cesi);
-                            break;
-                        case "Event":
-                            CollectionEventImage cei = MultimediaObject.ToEventImage(mmo);
-                            db.Insert(cei);
-                            break;
-                        case "Specimen":
-                            CollectionSpecimenImage csi=MultimediaObject.ToSpecimenImage(mmo,null);
-                            db.Insert(csi);
-                            break;
-                        case "IdentificationUnit":
-                            IdentificationUnit iu = db.Single<IdentificationUnit>(mmo.RelatedId);
-                            CollectionSpecimenImage ciui = MultimediaObject.ToSpecimenImage(mmo, iu);
-                            db.Insert(ciui);
-                            break;
-                        default:
-                            throw new Exception("unknown type");
-                    }
-                }
-                return true;
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        public KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials login)
-        {
-            KeyProjection result = new KeyProjection();
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                #region event
-                try
-                {
-                    if (hierarchy.Event != null) //Event is not synced before-Event is always needed for key or related keys have to be saved and adjusted
-                    {
-                        Event ev = hierarchy.Event;
-                        try
-                        {
-                            db.Insert(ev);
-                            result.eventKey.Add(ev.EventID, (int)ev.DiversityCollectionEventID);
-                        }
-                        catch (Exception e)
-                        {
-                            throw new SyncException("Event:" + ev.EventID + " " + e.Message);
-                        }
-
-                        foreach (CollectionEventProperty cep in hierarchy.Properties)
-                        {
-                            cep.DiversityCollectionEventID = ev.DiversityCollectionEventID;
-                        }
-                        foreach (Specimen spec in hierarchy.Specimen)
-                        {
-                            spec.DiversityCollectionEventID = ev.DiversityCollectionEventID;
-                        }
-                        var newLocalisations = PetaPocoProjection.ToLocalisations(ev, login);
-                        foreach (CollectionEventLocalisation loc in newLocalisations)
-                        {
-                            db.Insert(loc);
-                        }
-                        String geoString = null;
-                        try
-                        {
-                            if (ev.Latitude != null && ev.Longitude != null)
-                            {
-                                geoString = SerializeGeography((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
-                                this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 8, geoString, login);
-                                if (ev.Altitude != null)
-                                    this.InsertGeographyIntoCollectionEventLocalisation(ev.DiversityCollectionEventID, 4, geoString, login);
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            
-                        }
-                    }
-
-                }
-                catch (Exception)
-                {
-                   
-                    if (!(hierarchy.Event != null && hierarchy.Event.DiversityCollectionEventID > Int32.MinValue))
-                    {
-                        throw new Exception("Unable to sync");
-                    }
-
-                }
-                IList<CollectionEventProperty> cepList = hierarchy.Properties;
-                foreach (CollectionEventProperty cep in cepList)
-                    db.Insert(cep);
-
-                #endregion
-
-                #region Specimen
-
-                var specList = hierarchy.Specimen;
-
-                foreach (Specimen spec in specList)
-                {
-                    db.Insert(spec);
-                    db.Insert(PetaPocoProjection.ToProject(spec.DiversityCollectionSpecimenID, login.ProjectID));
-                    db.Insert(PetaPocoProjection.ToAgent(spec.DiversityCollectionSpecimenID, login));
-                    //AdjustKeys
-
-                    foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
-                    {
-                        if (iu.SpecimenID == spec.CollectionSpecimenID)
-                            iu.DiversityCollectionSpecimenID = spec.DiversityCollectionSpecimenID;
-                    }
-                    foreach (IdentificationUnitAnalysis iua in hierarchy.IdentificationUnitAnalyses)
-                    {
-                        if (iua.SpecimenID == spec.CollectionSpecimenID)
-                            iua.DiversityCollectionSpecimenID = spec.DiversityCollectionSpecimenID;
-                    }
-                    result.specimenKeys.Add(spec.CollectionSpecimenID, spec.DiversityCollectionSpecimenID);
-                }
-
-                #endregion
-
-                #region IU
-
-                IList<IdentificationUnit> actualLevelIU = new List<IdentificationUnit>();
-                IList<IdentificationUnit> nextLevelIU = new List<IdentificationUnit>();
-                foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
-                    if (iu.RelatedUnitID == null || iu.DiversityCollectionRelatedUnitID!=null) //IsTopLevel or RelatedUnit is already in DB
-                        actualLevelIU.Add(iu);
-
-                //Start with top Level IU´s
-                foreach (IdentificationUnit iu in actualLevelIU)
-                {
-                    db.Insert(iu);
-                    db.Insert(PetaPocoProjection.ToIdentification(iu,login));
-                    db.Insert(PetaPocoProjection.ToGeoAnalysis(iu, login));
-                    result.iuKeys.Add(iu.UnitID, iu.DiversityCollectionUnitID);
-                    //adjust keys, get directly depending iu´s
-                    foreach (IdentificationUnit iUnit in hierarchy.IdentificationUnits)
-                    {
-                        if(iUnit.RelatedUnitID!=null)
-                            if (iUnit.RelatedUnitID == iu.UnitID)
-                            {
-                                iUnit.DiversityCollectionRelatedUnitID = iu.DiversityCollectionUnitID;
-                                nextLevelIU.Add(iUnit);
-                            }
-                    }
-                }
-
-                //iterate trough units until no changes have to be made
-                while (nextLevelIU.Count > 0)
-                {
-                    actualLevelIU = nextLevelIU;
-                    nextLevelIU = new List<IdentificationUnit>();
-                    foreach (IdentificationUnit iu in actualLevelIU)
-                    {
-                        db.Insert(iu);
-                        db.Insert(PetaPocoProjection.ToIdentification(iu, login));
-                        db.Insert(PetaPocoProjection.ToGeoAnalysis(iu, login));
-                        result.iuKeys.Add(iu.UnitID, iu.DiversityCollectionUnitID);
-                        //adjust keys, get directly depending iu´s
-                        foreach (IdentificationUnit iUnit in hierarchy.IdentificationUnits)
-                        {
-                            if (iUnit.RelatedUnitID == iu.UnitID)
-                            {
-                                iUnit.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
-                                nextLevelIU.Add(iUnit);
-                            }
-                        }
-                    } 
-                }
-
-                //Insert Coordinates and adjust Analyses
-                foreach (IdentificationUnit iu in hierarchy.IdentificationUnits)
-                {
-                    String geoString = null;
-                    try
-                    {
-                        if (iu.Latitude != null && iu.Longitude != null)
-                        {
-                            geoString = SerializeGeography((double)iu.Latitude, (double)iu.Longitude, iu.Altitude);
-                            this.InsertGeographyIntoIdentifactionUnitGeoAnalysis((int)iu.DiversityCollectionUnitID, geoString, login);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        String s = e.Message;
-                    }
-                    foreach (IdentificationUnitAnalysis iua in hierarchy.IdentificationUnitAnalyses)
-                    {
-                        if (iua.IdentificationUnitID == iu.UnitID)
-                            iua.DiversityCollectionUnitID = iu.DiversityCollectionUnitID;
-                    }
-                }
-             
-
-                #endregion
-
-                #region IUA
-
-                var analysisList = hierarchy.IdentificationUnitAnalyses;
-
-                foreach (IdentificationUnitAnalysis iua in analysisList)
-                    db.Insert(iua);
-
-                #endregion
-
-                return result;
-            }
-        }
-
-         
-
-        #region GeoData
-        public void InsertGeographyIntoSeries(int seriesID, String geoString, UserCredentials login)
-        {
-            if (geoString == null)
-                return;
-            //Adjust GeoData
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                String sql = "Update [dbo].[CollectionEventSeries] Set geography=" + geoString + " Where SeriesID=" + seriesID;
-                db.Execute(sql);
-            }
-        }
-
-        public void InsertGeographyIntoCollectionEventLocalisation(int eventID, int localisationSystemID, String geoString, UserCredentials login)
-        {
-            if (geoString == null)
-                return;
-            //Adjust GeoData
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                String sql = "Update [dbo].[CollectionEventLocalisation] Set geography=" + geoString + " Where CollectionEventID=" + eventID + " AND LocalisationSystemID=" + localisationSystemID;
-                db.Execute(sql);
-            }
-        }
-
-        public void InsertGeographyIntoIdentifactionUnitGeoAnalysis(int unitID, String geoString, UserCredentials login)
-        {
-            if (geoString == null)
-                return;
-            //Adjust GeoData
-            using (var db = new DiversityORM.Diversity(login))
-            {
-                String sql = "Update [dbo].[IdentificationUnitGeoAnalysis] Set Geography=" + geoString + " Where IdentificationUnitID=" + unitID;
-                db.Execute(sql);
-            }
-        }
-        #endregion
-
-       
 
         #region utility
         public static readonly Repository[] Repositories = new Repository[]
@@ -553,37 +240,6 @@ namespace DiversityService
         }
         #endregion
 
-
-
-
-
-        private static String SerializeGeography(double latitude, double longitude, double? altitude)
-        {
-            if (Double.IsNaN(latitude) || Double.IsNaN(longitude))
-                return String.Empty;
-
-            var cult = new CultureInfo("en-US");
-            String longitudeStr = longitude.ToString(cult);
-            
-            String latStr = latitude.ToString(cult);            
-            latStr = latStr.Replace(',', '.');
-
-            StringBuilder builder = new StringBuilder("geography::STGeomFromText('POINT(");
-            builder.Append(longitudeStr);
-            builder.Append(" ");
-            builder.Append(latStr);
-            if (altitude.HasValue && Double.IsNaN((double)altitude) == false)
-            {
-                String altStr = altitude.Value.ToString(cult);                
-                altStr = altStr.Replace(',', '.');
-                builder.Append(" ");
-                builder.Append(altStr);
-            }
-            builder.Append(")', 4326)");
-            String s = builder.ToString();
-            return builder.ToString();
-        }
-
-       
+        
     }
 }

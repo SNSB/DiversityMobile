@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using Svc = DiversityPhone.DiversityService;
 
@@ -12,6 +13,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class IdentificationUnitAnalysis : ReactiveObject, IModifyable
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _IdentificationUnitAnalysisID;
 		[Column(IsPrimaryKey=true)]
@@ -132,29 +138,10 @@ namespace DiversityPhone.Model
 			}
 		}
 		
-		
-		private int? _DiversityCollectionUnitID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionUnitID
-		{
-			get { return _DiversityCollectionUnitID; }
-			set 
-			{
-				if (_DiversityCollectionUnitID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionUnitID");
-					_DiversityCollectionUnitID = value;
-					this.raisePropertyChanged("DiversityCollectionUnitID");
-				}  
-			}
-		}
-		 
-
         public IdentificationUnitAnalysis()
         {
             this.ModificationState = ModificationState.New;            
-            this.AnalysisDate = DateTime.Now;
-            this.DiversityCollectionUnitID = null;            
+            this.AnalysisDate = DateTime.Now;                      
         }
 
         public static IQueryOperations<IdentificationUnitAnalysis> Operations
@@ -178,24 +165,6 @@ namespace DiversityPhone.Model
                               iuan.IdentificationUnitAnalysisID = QueryOperations<IdentificationUnitAnalysis>.FindFreeIntKey(q, row => row.IdentificationUnitAnalysisID);
                           });
         }
-
-        public static Svc.IdentificationUnitAnalysis ConvertToServiceObject(IdentificationUnitAnalysis iua, IdentificationUnit iu)
-        {
-            Svc.IdentificationUnitAnalysis export = new Svc.IdentificationUnitAnalysis();
-            if (iu.DiversityCollectionSpecimenID != null)
-                export.DiversityCollectionSpecimenID = (int)iu.DiversityCollectionSpecimenID;
-            else
-                export.DiversityCollectionSpecimenID = Int32.MinValue;
-            export.SpecimenID = iu.SpecimenID;
-            export.DiversityCollectionUnitID = iua.DiversityCollectionUnitID;
-            export.AnalysisDate = iua.AnalysisDate;
-            export.AnalysisID = iua.AnalysisID;
-            export.AnalysisResult = iua.AnalysisResult;
-            export.IdentificationUnitAnalysisID = iua.IdentificationUnitAnalysisID;
-            export.IdentificationUnitID = iua.UnitID;
-            return export;
-        }
-
     }
 }
  

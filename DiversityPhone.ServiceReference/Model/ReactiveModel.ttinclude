@@ -44,4 +44,19 @@
 		}
 		<#+
 	}	
+
+	void ReactiveEntity(string name, string interfaces, string content)
+	{
+	interfaces = (string.IsNullOrWhiteSpace(interfaces)) ? "" : ", " + interfaces;
+	#>
+	[Table]
+	public class <#= name #> : ReactiveObject<#=  interfaces#>
+	{
+		[Column(IsVersion = true)]
+		private Binary version;
+
+		<#= content #>
+	}
+	<#+
+	}
 #>

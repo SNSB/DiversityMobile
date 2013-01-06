@@ -19,7 +19,13 @@ namespace DiversityPhone.Model
 	[Table]
 	public class Event : ReactiveObject, ILocalizable, IModifyable, IMultimediaOwner
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 <# Row("int", "EventID", RowKind.Key); #>   
+<# Row("int?", "CollectionEventID", RowKind.Nullable); #>   
 <# Row("int?", "SeriesID", RowKind.Nullable); #>   
 <# Row("DateTime", "CollectionDate", RowKind.NoUpdateCheck); #>    
 <# Row("string", "LocalityDescription"); #>
@@ -30,9 +36,6 @@ namespace DiversityPhone.Model
 <# Row("DateTime?", "DeterminationDate", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
 <# Row("ModificationState", "ModificationState"); #>
 
-<# Row("int?", "DiversityCollectionEventID", RowKind.Nullable); #>   
-<# Row("int?", "DiversityCollectionSeriesID", RowKind.Nullable); #> 
-  
 		public Event()
         {
             this.SeriesID = null;
@@ -63,36 +66,15 @@ namespace DiversityPhone.Model
                           });
         }       
 
-        public ReferrerType OwnerType
+        public DBObjectType OwnerType
         {
-            get { return ReferrerType.Event; }
+            get { return DBObjectType.Event; }
         }
 
 
         public int OwnerID
         {
             get { return EventID; }
-        }
-
-
-		public static Svc.Event ConvertToServiceObject(Event ev)
-        {
-            Svc.Event export = new Svc.Event();
-            if (ev.DiversityCollectionEventID.HasValue)
-                export.DiversityCollectionEventID = ev.DiversityCollectionEventID.Value;
-            else
-                export.DiversityCollectionEventID = Int32.MinValue;
-            export.DiversityCollectionSeriesID = ev.DiversityCollectionSeriesID;
-            export.Altitude = ev.Altitude;
-            export.CollectionDate = ev.CollectionDate;
-            export.DeterminationDate = ev.DeterminationDate;
-            export.EventID = ev.EventID;
-            export.HabitatDescription = ev.HabitatDescription;
-            export.Latitude = ev.Latitude;
-            export.LocalityDescription = ev.LocalityDescription;            
-            export.Longitude = ev.Longitude;
-            export.SeriesID = ev.SeriesID;
-            return export;
         }
     }	
 }

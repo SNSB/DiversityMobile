@@ -110,6 +110,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Database\DiversityDataContext.cs" />
+    <Compile Include="Database\IFieldDataService.cs" />
+    <Compile Include="Database\IVocabularyService.cs" />
+    <Compile Include="Database\OfflineStorage.CascadingDelete.cs" />
+    <Compile Include="Database\OfflineStorage.cs" />
+    <Compile Include="Database\OfflineStorage.Queries.cs" />
+    <Compile Include="Database\TaxonService.cs" />
+    <Compile Include="Database\VocabularyService.cs" />
     <Compile Include="DiversityResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -130,18 +138,7 @@
     <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
-    <Compile Include="Services\BackgroundTasks\UploadEventTask.cs" />
-    <Compile Include="Services\BackgroundTasks\UploadMultimediaTask.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
-    <Compile Include="Services\Database\DiversityDataContext.cs" />
-    <Compile Include="Services\Database\IFieldDataService.cs" />
-    <Compile Include="Services\Database\IVocabularyService.cs" />
-    <Compile Include="Services\Database\OfflineStorage.CascadingDelete.cs" />
-    <Compile Include="Services\Database\OfflineStorage.cs" />
-    <Compile Include="Services\Database\OfflineStorage.Queries.cs" />
-    <Compile Include="Services\Database\TaxonDataContext.cs" />
-    <Compile Include="Services\Database\TaxonService.cs" />
-    <Compile Include="Services\Database\VocabularyService.cs" />
     <Compile Include="Services\DialogMessage.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\LocationService.cs" />
@@ -152,7 +149,6 @@
     <Compile Include="Services\Maps\MapTransferService.cs" />
     <Compile Include="Services\Maps\TestMapTransferService.cs" />
     <Compile Include="Services\Messages.cs" />
-    <Compile Include="Services\MultimediaClient.cs" />
     <Compile Include="Services\NamedServices.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
@@ -220,6 +216,7 @@
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\DBTypeToStringConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\IconToImageConverter.cs" />
@@ -320,7 +317,6 @@
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="ViewModels\Utility\app.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\appbar.add.rest.png" />

@@ -574,6 +574,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel Upload.
+        /// </summary>
+        public static string Sync_Header_CancelUpload {
+            get {
+                return ResourceManager.GetString("Sync_Header_CancelUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to data.
         /// </summary>
         public static string Sync_Header_Data {
@@ -592,6 +601,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to sync level.
+        /// </summary>
+        public static string Sync_Header_SyncLevel {
+            get {
+                return ResourceManager.GetString("Sync_Header_SyncLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Collecting Modifications.
         /// </summary>
         public static string Sync_Info_CollectingModifications {
@@ -606,6 +624,69 @@ namespace DiversityPhone {
         public static string Sync_Info_CollectingMultimedia {
             get {
                 return ResourceManager.GetString("Sync_Info_CollectingMultimedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading ....
+        /// </summary>
+        public static string Sync_Info_Uploading {
+            get {
+                return ResourceManager.GetString("Sync_Info_Uploading", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading.
+        /// </summary>
+        public static string Sync_Info_UploadingElement {
+            get {
+                return ResourceManager.GetString("Sync_Info_UploadingElement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Multimedia ....
+        /// </summary>
+        public static string Sync_Info_UploadingMultimedia {
+            get {
+                return ResourceManager.GetString("Sync_Info_UploadingMultimedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Event.
+        /// </summary>
+        public static string Sync_Level_Event {
+            get {
+                return ResourceManager.GetString("Sync_Level_Event", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to EventSeries.
+        /// </summary>
+        public static string Sync_Level_EventSeries {
+            get {
+                return ResourceManager.GetString("Sync_Level_EventSeries", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Identification Unit.
+        /// </summary>
+        public static string Sync_Level_IU {
+            get {
+                return ResourceManager.GetString("Sync_Level_IU", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specimen.
+        /// </summary>
+        public static string Sync_Level_Specimen {
+            get {
+                return ResourceManager.GetString("Sync_Level_Specimen", resourceCulture);
             }
         }
         
@@ -651,33 +732,6 @@ namespace DiversityPhone {
         public static string TaxonManagement_Title_DownloadAll {
             get {
                 return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploading Event and children ....
-        /// </summary>
-        public static string UploadEventTask_State_UploadingEvent {
-            get {
-                return ResourceManager.GetString("UploadEventTask_State_UploadingEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploading EventSeries ....
-        /// </summary>
-        public static string UploadEventTask_State_UploadingSeries {
-            get {
-                return ResourceManager.GetString("UploadEventTask_State_UploadingSeries", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uploading Multimedia ....
-        /// </summary>
-        public static string UploadMultimediaTask_State_Uploading {
-            get {
-                return ResourceManager.GetString("UploadMultimediaTask_State_Uploading", resourceCulture);
             }
         }
     }

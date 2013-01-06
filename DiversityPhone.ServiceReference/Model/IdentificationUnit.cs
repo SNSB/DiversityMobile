@@ -14,6 +14,11 @@ namespace DiversityPhone.Model
 	[Index(Columns="RelatedUnitID", IsUnique=false, Name="relunit_idx")] 
 	public class IdentificationUnit : ReactiveObject, ILocalizable, IModifyable, IMultimediaOwner
 	{  
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _UnitID;
 		[Column(IsPrimaryKey=true)]
@@ -30,7 +35,24 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		   
+		  
+		
+		private int? _CollectionUnitID;
+		[Column(CanBeNull=true)]
+		public int? CollectionUnitID
+		{
+			get { return _CollectionUnitID; }
+			set 
+			{
+				if (_CollectionUnitID != value)
+				{
+					this.raisePropertyChanging("CollectionUnitID");
+					_CollectionUnitID = value;
+					this.raisePropertyChanged("CollectionUnitID");
+				}  
+			}
+		}
+		    
 		
 		private int _SpecimenID;
 		[Column]
@@ -248,57 +270,6 @@ namespace DiversityPhone.Model
 			}
 		}
 		
-		
-		private int? _DiversityCollectionSpecimenID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionSpecimenID
-		{
-			get { return _DiversityCollectionSpecimenID; }
-			set 
-			{
-				if (_DiversityCollectionSpecimenID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionSpecimenID");
-					_DiversityCollectionSpecimenID = value;
-					this.raisePropertyChanged("DiversityCollectionSpecimenID");
-				}  
-			}
-		}
-		   
-		
-		private int? _DiversityCollectionUnitID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionUnitID
-		{
-			get { return _DiversityCollectionUnitID; }
-			set 
-			{
-				if (_DiversityCollectionUnitID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionUnitID");
-					_DiversityCollectionUnitID = value;
-					this.raisePropertyChanged("DiversityCollectionUnitID");
-				}  
-			}
-		}
-		 
-		
-		private int? _DiversityCollectionRelatedUnitID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionRelatedUnitID
-		{
-			get { return _DiversityCollectionRelatedUnitID; }
-			set 
-			{
-				if (_DiversityCollectionRelatedUnitID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionRelatedUnitID");
-					_DiversityCollectionRelatedUnitID = value;
-					this.raisePropertyChanged("DiversityCollectionRelatedUnitID");
-				}  
-			}
-		}
-		 
 		  
 		public IdentificationUnit()
         {
@@ -306,10 +277,6 @@ namespace DiversityPhone.Model
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
-            this.DiversityCollectionUnitID = null;
-            this.DiversityCollectionSpecimenID = null;
-            this.DiversityCollectionRelatedUnitID = null;
-            
         }
 
         public static IQueryOperations<IdentificationUnit> Operations
@@ -334,40 +301,9 @@ namespace DiversityPhone.Model
                           });
         }
 
-        public static Svc.IdentificationUnit ConvertToServiceObject(IdentificationUnit iu)
+        public DBObjectType OwnerType
         {
-            Svc.IdentificationUnit export = new Svc.IdentificationUnit();
-            if (iu.DiversityCollectionUnitID != null)
-                export.DiversityCollectionUnitID = (int)iu.DiversityCollectionUnitID;
-            else
-                export.DiversityCollectionUnitID = Int32.MinValue;
-            export.DiversityCollectionSpecimenID = iu.DiversityCollectionSpecimenID;
-            export.DiversityCollectionRelatedUnitID = iu.DiversityCollectionRelatedUnitID;
-            export.Altitude = iu.Altitude;
-            export.AnalysisDate = iu.AnalysisDate;
-            //export.ColonisedSubstratePart = iu.ColonisedSubstratePart;
-            //export.FamilyCache=iu. Is not supported on clientModel
-            //export.Gender = iu.Gender;
-            export.IdentificationUri = iu.IdentificationUri;
-            export.LastIdentificationCache = iu.WorkingName;
-			export.Qualification = iu.Qualification;
-            export.Latitude = iu.Latitude;
-            //export.LifeStage = iu.LifeStage;            
-            export.Longitude = iu.Longitude;
-            export.OnlyObserved = iu.OnlyObserved;
-            //export.OrderCache=iu.Is not supported on clientModel
-            export.RelatedUnitID = iu.RelatedUnitID;
-            export.RelationType = iu.RelationType;
-            export.SpecimenID = iu.SpecimenID;
-            export.TaxonomicGroup = iu.TaxonomicGroup;
-            export.UnitID = iu.UnitID;
-            return export;
-        }
-
-
-        public ReferrerType OwnerType
-        {
-            get { return ReferrerType.IdentificationUnit; }
+            get { return DBObjectType.IdentificationUnit; }
         }
 
         public int OwnerID

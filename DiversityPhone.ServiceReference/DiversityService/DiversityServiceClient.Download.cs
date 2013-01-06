@@ -4,34 +4,67 @@ using Client = DiversityPhone.Model;
 using System;
 using System.Reactive.Linq;
 using DiversityPhone.DiversityService;
+using DiversityPhone.MultimediaService;
 using System.Linq;
 using ReactiveUI;
+using System.ComponentModel;
+using System.Reactive;
 
 namespace DiversityPhone.Services
 {
-    public partial class DiversityServiceObservableClient : IDiversityServiceClient
+    public partial class DiversityServiceClient : IDiversityServiceClient
     {
+        DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
+        MapService.PhoneMediaServiceClient _maps = new MapService.PhoneMediaServiceClient();
+        MultimediaService.MediaService4Client _multimedia = new MultimediaService.MediaService4Client();
+
+
+        //VOCABULARY
         IObservable<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUser;
         IObservable<DownloadTaxonListCompletedEventArgs> DownloadTaxonList;
         IObservable<GetQualificationsCompletedEventArgs> GetQualificationsCompleted;
 
-        DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
+        // UPLOAD
+        IObservable<EventPattern<AsyncCompletedEventArgs>> InsertMMOCompleted;
+        IObservable<EventPattern<InsertEventSeriesCompletedEventArgs>> InsertESCompleted;
+        IObservable<EventPattern<InsertEventCompletedEventArgs>> InsertEVCompleted;
+        IObservable<EventPattern<InsertSpecimenCompletedEventArgs>> InsertSPCompleted;
+        IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
+
+        //DOWNLOAD
+
+        //MULTIMEDIA
+        IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
+
+
+        
+
         IMessageBus Messenger;
+        IKeyMappingService Mapping;
         ObservableAsPropertyHelper<UserCredentials> LatestCreds;
 
         private UserCredentials GetCreds() { return LatestCreds.Value; }
 
-        public DiversityServiceObservableClient(IMessageBus messenger)
+        public DiversityServiceClient(IMessageBus messenger, IKeyMappingService mapping)
         {
             Messenger = messenger;
+            Mapping = mapping;
             LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
 
             GetTaxonListsForUser = Observable.FromEvent<EventHandler<GetTaxonListsForUserCompletedEventArgs>, GetTaxonListsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
             DownloadTaxonList = Observable.FromEvent<EventHandler<DownloadTaxonListCompletedEventArgs>, DownloadTaxonListCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);
             GetQualificationsCompleted = Observable.FromEvent<EventHandler<GetQualificationsCompletedEventArgs>, GetQualificationsCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d);
+
+            InsertMMOCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _svc.InsertMMOCompleted += h, h => _svc.InsertMMOCompleted -= h);
+            InsertESCompleted = Observable.FromEventPattern<InsertEventSeriesCompletedEventArgs>(h => _svc.InsertEventSeriesCompleted += h, h => _svc.InsertEventSeriesCompleted -= h);
+            InsertEVCompleted = Observable.FromEventPattern<InsertEventCompletedEventArgs>(h => _svc.InsertEventCompleted += h, h => _svc.InsertEventCompleted -= h);
+            InsertSPCompleted = Observable.FromEventPattern<InsertSpecimenCompletedEventArgs>(h => _svc.InsertSpecimenCompleted += h, h => _svc.InsertSpecimenCompleted -= h);
+            InsertIUCompleted = Observable.FromEventPattern<InsertIdentificationUnitCompletedEventArgs>(h => _svc.InsertIdentificationUnitCompleted += h, h => _svc.InsertIdentificationUnitCompleted -= h);
+
+            UploadMultimediaCompleted = Observable.FromEventPattern<SubmitCompletedEventArgs>(h => _multimedia.SubmitCompleted += h, h => _multimedia.SubmitCompleted -= h);
         }
 
-        private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
+        private static IObservable<T> ToResultObservable<T>(IObservable<T> source)
         {
             var res = source
                 .FirstAsync()
@@ -41,12 +74,11 @@ namespace DiversityPhone.Services
             return res;
         }
 
-
         public IObservable<UserProfile> GetUserInfo(UserCredentials login)
         {
             var source = Observable.FromEvent<EventHandler<GetUserInfoCompletedEventArgs>, GetUserInfoCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetUserInfoCompleted += d, d => _svc.GetUserInfoCompleted -= d)
                 .Select(args => args.Result);
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
             _svc.GetUserInfoAsync(login);
             return res;
         }
@@ -55,7 +87,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetRepositoriesCompletedEventArgs>, GetRepositoriesCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetRepositoriesCompleted += d, d => _svc.GetRepositoriesCompleted -= d)
                 .Select(args => args.Result as IList<Repository>);
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
             _svc.GetRepositoriesAsync(login);
             return res;
         }
@@ -64,7 +96,7 @@ namespace DiversityPhone.Services
         {
             var source = Observable.FromEvent<EventHandler<GetProjectsForUserCompletedEventArgs>, GetProjectsForUserCompletedEventArgs>((a) => (s, args) => a(args), d => _svc.GetProjectsForUserCompleted += d, d => _svc.GetProjectsForUserCompleted -= d)
                 .Select(args => args.Result as IList<Project>);
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
             _svc.GetProjectsForUserAsync(login);
             return res;
         }
@@ -83,7 +115,7 @@ namespace DiversityPhone.Services
                         TaxonomicGroup =svcList.TaxonomicGroup
                     }
                     ));
-            var obs = singleResultObservable(source);
+            var obs = ToResultObservable(source);
             _svc.GetTaxonListsForUserAsync(GetCreds(), requestToken);
             return obs;
         }
@@ -138,7 +170,7 @@ namespace DiversityPhone.Services
                         PropertyID = p.PropertyID,                        
                         DisplayText = p.DisplayText
                     }));
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
             _svc.GetPropertiesForUserAsync(login);
             return res;
         }
@@ -146,7 +178,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyValuesChunked(Client.Property p)
         {            
-            var localclient = new DiversityServiceClient(); //Avoid race conditions from chunked download
+            var localclient = new DiversityService.DiversityServiceClient(); //Avoid race conditions from chunked download
             var svcProperty = new Property()
             {
                 PropertyID = p.PropertyID,               
@@ -156,7 +188,7 @@ namespace DiversityPhone.Services
             Func<IObservable<IEnumerable<Client.PropertyName>>> factory = () =>
                 {
                     var obs = Observable.FromEvent<EventHandler<DownloadPropertyNamesCompletedEventArgs>, DownloadPropertyNamesCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyNamesCompleted += d, d => localclient.DownloadPropertyNamesCompleted -= d)
-                        .Select(args => args.Result ?? Enumerable.Empty<PropertyName>())
+                        .Select(args => args.Result ?? Enumerable.Empty<PropertyValue>())
                         .Select(taxa => taxa.Select(
                             property => new Client.PropertyName
                             {
@@ -206,7 +238,7 @@ namespace DiversityPhone.Services
                        ParentCode = term.ParentCode,
                        SourceID = term.Source
                    }));
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
                
             _svc.GetStandardVocabularyAsync(GetCreds());
             return res;
@@ -224,7 +256,7 @@ namespace DiversityPhone.Services
                        DisplayText = an.DisplayText,
                        MeasurementUnit = an.MeasurementUnit
                    }));
-            var res = singleResultObservable(source);            
+            var res = ToResultObservable(source);            
             _svc.GetAnalysesForProjectAsync(projectID, login);            
             return res;
         }
@@ -242,7 +274,7 @@ namespace DiversityPhone.Services
                        Notes = ar.Notes,
                        Result = ar.Result
                    }));
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
             _svc.GetAnalysisResultsForProjectAsync(projectID, login);
             return res;
         }
@@ -257,7 +289,7 @@ namespace DiversityPhone.Services
                        AnalysisID = atg.AnalysisID,
                        TaxonomicGroup = atg.TaxonomicGroup
                    }));
-            var res = singleResultObservable(source);
+            var res = ToResultObservable(source);
 
             _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login);
             return res;
@@ -267,7 +299,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
         {
             var request = new object();
-            var res = singleResultObservable(
+            var res = ToResultObservable(
                 GetQualificationsCompleted.Where(args => args.UserState == request)
                 .Select(args => args.Result.Select(q => new Client.Qualification()
                     {

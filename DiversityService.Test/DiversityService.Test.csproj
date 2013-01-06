@@ -84,16 +84,16 @@
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.KeyProjection.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.Project.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.Property.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.PropertyName.datasource">
+    <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.PropertyValue.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.Qualification.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.Repository.datasource">
@@ -111,19 +111,6 @@
     <None Include="Service References\ServiceReference\DiversityService.Test.ServiceReference.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\ServiceReference\DiversityService.wsdl" />
-    <None Include="Service References\ServiceReference\Service1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference\Service11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference\Service12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ServiceReference\Service13.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -132,19 +119,29 @@
     <WCFMetadataStorage Include="Service References\ServiceReference\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\ServiceReference\Service1.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\ServiceReference\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ServiceReference\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\ServiceReference\DiversityService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference\DiversityService1.wsdl" />
+    <None Include="Service References\ServiceReference\DiversityService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ServiceReference\DiversityService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ServiceReference\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference\DiversityService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

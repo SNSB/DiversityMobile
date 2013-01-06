@@ -14,6 +14,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class EventSeries : ReactiveObject, IModifyable, ILocationOwner
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int? _SeriesID;
 		[Column(IsPrimaryKey=true)]
@@ -30,7 +35,24 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		
+				
+		private int? _CollectionSeriesID;
+		[Column(CanBeNull=true)]
+		public int? CollectionSeriesID
+		{
+			get { return _CollectionSeriesID; }
+			set 
+			{
+				if (_CollectionSeriesID != value)
+				{
+					this.raisePropertyChanging("CollectionSeriesID");
+					_CollectionSeriesID = value;
+					this.raisePropertyChanged("CollectionSeriesID");
+				}  
+			}
+		}
+		   
+
 		
 		private DateTime _SeriesStart;
 		[Column]
@@ -116,23 +138,6 @@ namespace DiversityPhone.Model
 			}
 		}
 		 
-		
-		private int? _DiversityCollectionEventSeriesID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionEventSeriesID
-		{
-			get { return _DiversityCollectionEventSeriesID; }
-			set 
-			{
-				if (_DiversityCollectionEventSeriesID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionEventSeriesID");
-					_DiversityCollectionEventSeriesID = value;
-					this.raisePropertyChanged("DiversityCollectionEventSeriesID");
-				}  
-			}
-		}
-		 
   
 		private static EventSeries _NoEventSeries;
 
@@ -143,8 +148,7 @@ namespace DiversityPhone.Model
             this.SeriesStart = DateTime.Now;
             this.SeriesEnd = null;
             this.SeriesID = 0;
-            this.ModificationState = ModificationState.New;
-            this.DiversityCollectionEventSeriesID = null;
+            this.ModificationState = ModificationState.New;            
         }
 
 
@@ -187,30 +191,14 @@ namespace DiversityPhone.Model
                 Description = "Events",
                 SeriesCode = "No EventSeries",
                 ModificationState = ModificationState.Unmodified,
-                SeriesEnd = DateTime.Now,
-                SeriesID = null
+                SeriesEnd = DateTime.Now,     
+				SeriesID = null,        
             };
-        }
+        }      
 
-        public static Svc.EventSeries ToServiceObject(EventSeries es)
+		public DBObjectType OwnerType
         {
-            Svc.EventSeries export = new Svc.EventSeries();
-            export.SeriesID = es.SeriesID.Value;
-            if (es.DiversityCollectionEventSeriesID != null)
-                export.DiversityCollectionEventSeriesID = (int)es.DiversityCollectionEventSeriesID;
-            else
-                export.DiversityCollectionEventSeriesID = Int32.MinValue;
-            export.SeriesCode = es.SeriesCode;
-            export.SeriesStart = es.SeriesStart;
-            export.SeriesEnd = es.SeriesEnd;
-            export.Description = es.Description;            
-            return export;
-        }
-       
-
-		public ReferrerType OwnerType
-        {
-            get { return ReferrerType.EventSeries; }
+            get { return DBObjectType.EventSeries; }
         }
 
         public int OwnerID

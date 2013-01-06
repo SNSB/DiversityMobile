@@ -49,39 +49,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiversityCollectionEntities.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollectionEntities.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityCollectionFunctions.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="DiversityMobile.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityMobile.edmx</DependentUpon>
-    </Compile>
     <Compile Include="DiversityService.cs" />
+    <Compile Include="DiversityService.Download.cs" />
     <Compile Include="DiversityService.Queries.cs" />
     <Compile Include="DiversityService.Upload.cs" />
-    <Compile Include="Model\CollectionEventImage.cs" />
-    <Compile Include="Model\CollectionEventSeriesImage.cs" />
-    <Compile Include="Model\CollectionSpecimenImage.cs" />
-    <Compile Include="Model\IdentificationUnitGeoAnalysis.cs" />
+    <Compile Include="Model\ClientModel.FieldData.cs" />
+    <Compile Include="Model\ClientModel.Vocabulary.cs" />
+    <Compile Include="Model\CollectionModel.Multimedia.cs" />
     <Compile Include="IDiversityService.cs" />
-    <Compile Include="ModelProjection.cs" />
-    <Compile Include="Model\Analysis.cs" />
-    <Compile Include="Model\AnalysisResult.cs" />
-    <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
-    <Compile Include="Model\CollectionAgent.cs" />
-    <Compile Include="Model\CollectionEventLocalisation.cs" />
-    <Compile Include="Model\CollectionEventProperty.cs" />
-    <Compile Include="Model\CollectionProject.cs" />
-    <Compile Include="Model\Event.cs" />
-    <Compile Include="Model\EventSeries.cs" />
+    <Compile Include="Model\ClientModel.Config.cs" />
+    <Compile Include="Model\CollectionModel.cs" />
     <Compile Include="Model\Generated\Diversity.cs" />
     <Compile Include="Model\Generated\DiversityCollection.cs">
       <DependentUpon>DiversityCollection.tt</DependentUpon>
@@ -89,52 +66,18 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Model\Generated\PetaPoco.cs" />
-    <Compile Include="Model\HierarchySection.cs" />
-    <Compile Include="Model\Identification.cs" />
-    <Compile Include="Model\IdentificationUnit.cs" />
-    <Compile Include="Model\IdentificationUnitAnalysis.cs" />
-    <Compile Include="Model\KeyProjection.cs" />
-    <Compile Include="Model\Localization.cs" />
-    <Compile Include="Model\MultimediaObject.cs" />
-    <Compile Include="Model\Project.cs" />
-    <Compile Include="Model\Property.cs" />
-    <Compile Include="Model\PropertyList.cs" />
-    <Compile Include="Model\PropertyName.cs" />
-    <Compile Include="Model\Qualification.cs" />
-    <Compile Include="Model\Repository.cs" />
     <Compile Include="Model\ServerInfo.cs" />
-    <Compile Include="Model\Specimen.cs" />
-    <Compile Include="Model\TaxonList.cs" />
-    <Compile Include="Model\TaxonName.cs" />
-    <Compile Include="Model\Term.cs" />
     <Compile Include="Model\TermLists.cs" />
-    <Compile Include="Model\UserCredentials.cs" />
-    <Compile Include="Model\UserProfile.cs" />
-    <Compile Include="PetaPocoProjection.cs" />
+    <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="SyncException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config">
-      <SubType>Designer</SubType>
-    </None>
-    <EntityDeploy Include="DiversityMobile.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityMobile.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <EntityDeploy Include="DiversityCollectionEntities.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DiversityCollectionEntities.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DiversityCollection</CustomToolNamespace>
-    </EntityDeploy>
-    <None Include="DiversityCollectionFunctions.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DiversityCollectionFunctions.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
     <None Include="Model\Generated\DiversityCollection.tt">
@@ -157,12 +100,6 @@
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DiversityCollectionFunctions.dbml.layout">
-      <DependentUpon>DiversityCollectionFunctions.dbml</DependentUpon>
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

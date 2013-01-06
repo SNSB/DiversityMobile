@@ -90,7 +90,12 @@ namespace DiversityPhone.ViewModels
             get { return _Thumbnail;  }
 
             set { this.RaiseAndSetIfChanged(x => x.Thumbnail, ref _Thumbnail, value); }
-        }       
+        }
+
+        object IElementVM.Model
+        {
+            get { return Model; }
+        }
 
         public MultimediaObjectVM( MultimediaObject model)
         {

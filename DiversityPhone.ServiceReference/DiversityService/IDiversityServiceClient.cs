@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Svc = DiversityPhone.DiversityService;
 using DiversityPhone.Model;
+using System.Reactive;
 namespace DiversityPhone.Services
 {
     public interface IDiversityServiceClient
@@ -25,12 +26,17 @@ namespace DiversityPhone.Services
 
         IObservable<IEnumerable<Qualification>> GetQualifications(Svc.UserCredentials credentials);
         #endregion
-        #region Upload
-        IObservable<Svc.KeyProjection> InsertHierarchy(Svc.HierarchySection section);
+        #region Upload        
 
-        IObservable<int> InsertEventSeries(EventSeries series);
-        IObservable<bool> InsertMultimediaObject(MultimediaObject mmo);        
+        IObservable<int> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations);
+        IObservable<int> InsertEvent(Event ev, IEnumerable<EventProperty> properties);
+        IObservable<int> InsertSpecimen(Specimen spec);
+        IObservable<int> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses);
+
+        IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);        
         #endregion
+
+        IObservable<String> UploadMultimedia(MultimediaObject Uri, byte[] data);
 
         #endregion
 

@@ -17,7 +17,13 @@ namespace DiversityPhone.Model
 	[Table]
 	public class EventSeries : ReactiveObject, IModifyable, ILocationOwner
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 <# Row("int?", "SeriesID", RowKind.Key); #>
+<# Row("int?", "CollectionSeriesID", RowKind.Nullable); #>   
 
 <# Row("DateTime", "SeriesStart"); #>  
 <# Row("DateTime?", "SeriesEnd", RowKind.Nullable | RowKind.NoUpdateCheck); #>     
@@ -26,7 +32,6 @@ namespace DiversityPhone.Model
  
 <# Row("ModificationState", "ModificationState"); #>
  
-<# Row("int?", "DiversityCollectionEventSeriesID", RowKind.Nullable); #> 
   
 		private static EventSeries _NoEventSeries;
 
@@ -37,8 +42,7 @@ namespace DiversityPhone.Model
             this.SeriesStart = DateTime.Now;
             this.SeriesEnd = null;
             this.SeriesID = 0;
-            this.ModificationState = ModificationState.New;
-            this.DiversityCollectionEventSeriesID = null;
+            this.ModificationState = ModificationState.New;            
         }
 
 
@@ -81,30 +85,14 @@ namespace DiversityPhone.Model
                 Description = "Events",
                 SeriesCode = "No EventSeries",
                 ModificationState = ModificationState.Unmodified,
-                SeriesEnd = DateTime.Now,
-                SeriesID = null
+                SeriesEnd = DateTime.Now,     
+				SeriesID = null,        
             };
-        }
+        }      
 
-        public static Svc.EventSeries ToServiceObject(EventSeries es)
+		public DBObjectType OwnerType
         {
-            Svc.EventSeries export = new Svc.EventSeries();
-            export.SeriesID = es.SeriesID.Value;
-            if (es.DiversityCollectionEventSeriesID != null)
-                export.DiversityCollectionEventSeriesID = (int)es.DiversityCollectionEventSeriesID;
-            else
-                export.DiversityCollectionEventSeriesID = Int32.MinValue;
-            export.SeriesCode = es.SeriesCode;
-            export.SeriesStart = es.SeriesStart;
-            export.SeriesEnd = es.SeriesEnd;
-            export.Description = es.Description;            
-            return export;
-        }
-       
-
-		public ReferrerType OwnerType
-        {
-            get { return ReferrerType.EventSeries; }
+            get { return DBObjectType.EventSeries; }
         }
 
         public int OwnerID

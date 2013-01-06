@@ -20,7 +20,17 @@
     Unloaded="syncPage_Unloaded"
     x:Name="syncPage">
     <phone:PhoneApplicationPage.Resources>
-        <vw:SyncVMPivotConverter x:Key="PivotConverter"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Templates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <vw:SyncVMPivotConverter x:Key="PivotConverter"/>
+            <vw:DBTypeToStringConverter x:Key="TypeToString"/>
+
+            <DataTemplate x:Key="TypeItemTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource TypeToString}}"/>
+            </DataTemplate>
+        </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -40,45 +50,35 @@
                         Margin="12,0" 
                         SelectedIndex="{Binding CurrentPivot, Mode=TwoWay, Converter={StaticResource PivotConverter}}">
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Data, Source={StaticResource LocalizedStrings}}">
-            <StackPanel Orientation="Vertical" Margin="0" >
-                <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                <ListBox ItemsSource="{Binding SyncUnits}" Height="509">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <Grid.ColumnDefinitions>                                
-                                    <ColumnDefinition Width="40"/>  
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/> 
-                                </Grid.RowDefinitions>
-
-                                <Image Grid.Column="0" Grid.Row="0"
-                                       Source="{Binding Event.Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
-                                <TextBlock Grid.Column="1" Grid.Row="0" 
-                                           Style="{StaticResource PhoneTextTitle3Style}"
-                                           VerticalAlignment="Center"
-                                           Margin="{StaticResource PhoneHorizontalMargin}">                                
-                                    <Run Text="{Binding Series.Description}"/>
-                                    <Run Text=": "/>
-                                    <Run Text="{Binding Event.Description}" />                              
-                                </TextBlock>
-                                <toolkit:ContextMenuService.ContextMenu>
-                                    <toolkit:ContextMenu>
-                                        <toolkit:MenuItem Header="upload" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadEvent}" 
+                <StackPanel Orientation="Vertical" Margin="0" >
+                    <toolkit:ListPicker Header="{Binding Resources.Sync_Header_SyncLevel, Source={StaticResource LocalizedStrings}}"
+                                        ItemTemplate="{StaticResource TypeItemTemplate}" 
+                                        ItemsSource="{Binding SyncLevel.Items}"
+                                        SelectedIndex="{Binding SyncLevel.SelectedIndex, Mode=TwoWay}"/>
+                    <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
+                    <ListBox ItemsSource="{Binding SyncUnits}" Height="509">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
+                                                Content="{Binding}">
+                                    <toolkit:ContextMenuService.ContextMenu>
+                                        <toolkit:ContextMenu>
+                                            <!--<toolkit:MenuItem Header="upload" 
+                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadElement}" 
+                                                            CommandParameter="{Binding}"/>-->
+                                            <toolkit:MenuItem Header="upload with children" 
+                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadTree}" 
                                                             CommandParameter="{Binding}"/>
-                                    </toolkit:ContextMenu>
-                                </toolkit:ContextMenuService.ContextMenu>
-                            </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                     
-                
-                </ListBox>
-            
-            </StackPanel>
+                                        </toolkit:ContextMenu>
+                                    </toolkit:ContextMenuService.ContextMenu>
+                                </ContentControl>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+
+
+                    </ListBox>
+
+                </StackPanel>
             </controls:PivotItem>
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Multimedia, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical" >
@@ -86,25 +86,8 @@
                     <ListBox ItemsSource="{Binding Multimedia}" Height="509">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <Image Grid.Column="0" Grid.Row="0"
-                                       Source="{Binding IconPath, Converter={StaticResource IconUrlConverter}}" Height="40" Width="40"/>
-                                    <Image Grid.Column="0" Grid.Row="0"
-                                       Source="{Binding Image.Thumb}" Height="40" Width="40"/>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" 
-                                           Style="{StaticResource PhoneTextTitle3Style}"
-                                           VerticalAlignment="Center"
-                                           Margin="{StaticResource PhoneHorizontalMargin}">                                
-                                    <Run Text="{Binding Owner.Description}"/>                                   
-                                    </TextBlock>
+                                <ContentControl ContentTemplate="{StaticResource MultimediaItemTemplate}"
+                                                Content="{Binding}">
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="upload" 
@@ -112,7 +95,7 @@
                                                             CommandParameter="{Binding}"/>
                                         </toolkit:ContextMenu>
                                     </toolkit:ContextMenuService.ContextMenu>
-                                </Grid>
+                                </ContentControl>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
 
@@ -122,8 +105,17 @@
                 </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>
-    </Grid> 
-    
+        <Grid Grid.Row="1" Visibility="{Binding IsUploading, Converter={StaticResource BoolToVis}}" 
+              Background="{StaticResource PhoneBackgroundBrush}" 
+              Opacity="0.9">
+            <Button Command="{Binding CancelUpload}"
+                    Content="{Binding Resources.Sync_Header_CancelUpload, Source={StaticResource LocalizedStrings}}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.upload.rest.png" Text="upload all"/>

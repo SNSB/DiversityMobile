@@ -4,6 +4,7 @@ using ReactiveUI;
 using System.Data.Linq.Mapping;
 using System;
 using System.Linq;
+using System.Data.Linq;
 using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
@@ -11,6 +12,11 @@ namespace DiversityPhone.Model
     [Table]
     public class MultimediaObject : ReactiveObject, IModifyable, IEquatable<MultimediaObject>
     {
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _MMOID;
 		[Column(IsPrimaryKey=true)]
@@ -29,9 +35,9 @@ namespace DiversityPhone.Model
 		}
 		   
 		
-		private ReferrerType _OwnerType;
+		private DBObjectType _OwnerType;
 		[Column]
-		public ReferrerType OwnerType
+		public DBObjectType OwnerType
 		{
 			get { return _OwnerType; }
 			set 
@@ -115,35 +121,18 @@ namespace DiversityPhone.Model
 		}
 		
 		
-		private int? _DiversityCollectionRelatedID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionRelatedID
-		{
-			get { return _DiversityCollectionRelatedID; }
-			set 
-			{
-				if (_DiversityCollectionRelatedID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionRelatedID");
-					_DiversityCollectionRelatedID = value;
-					this.raisePropertyChanged("DiversityCollectionRelatedID");
-				}  
-			}
-		}
-		  
-		
-		private string _DiversityCollectionUri;
+		private string _CollectionUri;
 		[Column]
-		public string DiversityCollectionUri
+		public string CollectionUri
 		{
-			get { return _DiversityCollectionUri; }
+			get { return _CollectionUri; }
 			set 
 			{
-				if (_DiversityCollectionUri != value)
+				if (_CollectionUri != value)
 				{
-					this.raisePropertyChanging("DiversityCollectionUri");
-					_DiversityCollectionUri = value;
-					this.raisePropertyChanged("DiversityCollectionUri");
+					this.raisePropertyChanging("CollectionUri");
+					_CollectionUri = value;
+					this.raisePropertyChanged("CollectionUri");
 				}  
 			}
 		}
@@ -184,19 +173,6 @@ namespace DiversityPhone.Model
                          });
         }
 
-        public static Svc.MultimediaObject ToServiceObject(MultimediaObject mmo)
-        {
-            if (mmo.DiversityCollectionRelatedID == null)
-                throw new Exception("Partner not synced");
-            Svc.MultimediaObject export = new Svc.MultimediaObject();            
-            export.MediaType = mmo.MediaType.ToString().ToLower();
-            export.OwnerType = mmo.OwnerType.ToString();
-            export.RelatedId = (int) mmo.DiversityCollectionRelatedID;
-            export.Uri = mmo.DiversityCollectionUri;
-            return export;
-        }
-
-
         public bool Equals(MultimediaObject other)
         {
             return base.Equals(other) ||
@@ -204,8 +180,7 @@ namespace DiversityPhone.Model
                 this.MMOID == other.MMOID &&
                 this.OwnerType == other.OwnerType &&
                 this.RelatedId == other.RelatedId &&
-                this.Uri == other.Uri &&
-                this.DiversityCollectionRelatedID == other.DiversityCollectionRelatedID &&
+                this.Uri == other.Uri &&                
                 this.ModificationState == other.ModificationState);
         }
     }

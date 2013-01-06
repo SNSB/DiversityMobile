@@ -82,9 +82,9 @@ namespace DiversityService
             return db.Query<CollectionEventLocalisation>("Select LocalisationSystemID, Location1, Location2 FROM CollectionEventLocalisation WHERE CollectionEventID=@0",DiversityCollectionID);
         }
 
-        private static IEnumerable<CollectionEventProperty> getCollectionPropertyForEvent(Diversity db, int DiversityCollectionID)
+        private static IEnumerable<EventProperty> getCollectionPropertyForEvent(Diversity db, int DiversityCollectionID)
         {
-            return db.Query<CollectionEventProperty>("Select CollectionEventID, PropertyID, DisplayText,PropertyURI FROM CollectionEventProperty WHERE CollectionEventID=@0", DiversityCollectionID);
+            return db.Query<EventProperty>("Select CollectionEventID, PropertyID, DisplayText,PropertyURI FROM CollectionEventProperty WHERE CollectionEventID=@0", DiversityCollectionID);
         }
 
         private static IEnumerable<Specimen> getSpecimenForEvent(Diversity db, int DiversityCollectionID)

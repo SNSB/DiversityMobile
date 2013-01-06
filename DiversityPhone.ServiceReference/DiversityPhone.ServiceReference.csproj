@@ -82,9 +82,12 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DiversityService\DiversityServiceClient.Multimedia.cs" />
+    <Compile Include="IKeyMappingService.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Download.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Upload.cs" />
     <Compile Include="DiversityService\IDiversityServiceClient.cs" />
+    <Compile Include="DiversityService\ModelProjection.cs" />
     <Compile Include="Model\Analysis.cs" />
     <Compile Include="Model\AnalysisResult.cs" />
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
@@ -132,7 +135,7 @@
     <Compile Include="Model\PropertyName.cs" />
     <Compile Include="Model\Qualification.cs" />
     <Compile Include="Model\QueryOperations.cs" />
-    <Compile Include="Model\ReferrerType.cs" />
+    <Compile Include="Model\DBObjectType.cs" />
     <Compile Include="Model\Specimen.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -196,16 +199,13 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyValue.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Qualification.datasource">
@@ -226,8 +226,7 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\Service1.disco" />
+    <None Include="Service References\DiversityService\DiversityService.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
     <None Include="Service References\DiversityService\Reference.svcmap">
@@ -237,16 +236,14 @@
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Service References\DiversityService\Service1.xsd">
+    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\DiversityService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service11.xsd">
+    <None Include="Service References\DiversityService\DiversityService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Service12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\Service13.xsd">
+    <None Include="Service References\DiversityService\DiversityService2.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -255,6 +252,16 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">
+      <Project>{89D2571F-5F5B-4BCB-8F34-73F03B982512}</Project>
+      <Name>DiversityPhone.MapService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
+      <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
+      <Name>DiversityPhone.MultimediaService</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

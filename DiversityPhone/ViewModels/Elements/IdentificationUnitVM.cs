@@ -24,7 +24,7 @@ namespace DiversityPhone.ViewModels
 
 
         
-        public IdentificationUnitVM (IdentificationUnit model, IdentificationUnitVM parent = null)
+        public IdentificationUnitVM (IdentificationUnit model)
             : base(model)
 	    {
             model.ObservableForProperty(iu => iu.WorkingName)

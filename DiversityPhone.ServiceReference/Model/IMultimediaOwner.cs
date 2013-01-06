@@ -2,7 +2,7 @@
 {
     public interface IOwner
     {
-        ReferrerType OwnerType { get; }
+        DBObjectType OwnerType { get; }
         int OwnerID { get; }
     }
 

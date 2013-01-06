@@ -7,8 +7,7 @@ using DiversityService.Model;
 
 namespace DiversityService
 {
-    // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Schnittstellennamen "IDivService" sowohl im Code als auch in der Konfigurationsdatei ändern.
-    [ServiceKnownType(typeof(EventSeries))]
+    // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Schnittstellennamen "IDivService" sowohl im Code als auch in der Konfigurationsdatei ändern.    
     [ServiceContract]
     public interface IDiversityService
     {
@@ -40,17 +39,34 @@ namespace DiversityService
         #region Upload
 
         [OperationContract]
-        Dictionary<int, int> InsertEventSeries(IList<EventSeries> series, UserCredentials login);
-        [OperationContract]
-        void InsertGeographyIntoSeries(int seriesID, string geostring, UserCredentials login);
+        int InsertEventSeries(EventSeries series, IEnumerable<Localization> localizations, UserCredentials login);
 
         [OperationContract]
-        KeyProjection InsertHierarchy(HierarchySection hierarchy, UserCredentials cred);
+        int InsertEvent(Event ev, IEnumerable<EventProperty> properties, UserCredentials login);
 
         [OperationContract]
-        bool InsertMMO(MultimediaObject mmo, UserCredentials cred);
+        int InsertSpecimen(Specimen s, UserCredentials login);
+
+        [OperationContract]
+        int InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses, UserCredentials login);
+
+        [OperationContract]
+        void InsertMMO(MultimediaObject mmo, UserCredentials cred);
 
         #endregion
+        [OperationContract]
+        EventSeries EventSeriesByID(int collectionSeriesID, UserCredentials login);
+
+        [OperationContract]
+        IEnumerable<Event> EventsByLocality(String locality, UserCredentials login);
+
+        [OperationContract]
+        IEnumerable<Specimen> SpecimenForEvent(int collectionEventID, UserCredentials login);
+
+
+        [OperationContract]
+        IEnumerable<IdentificationUnit> UnitsForSpecimen(int collectionSpecimenID, UserCredentials login);
+
         #endregion
 
         #region DB "DiversityMobile" Attribute SNSB
@@ -62,7 +78,7 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<Property> GetPropertiesForUser(UserCredentials login);
         [OperationContract]
-        IEnumerable<PropertyName> DownloadPropertyNames(Property p, int page, UserCredentials login);
+        IEnumerable<PropertyValue> DownloadPropertyNames(Property p, int page, UserCredentials login);
 
         #endregion
 

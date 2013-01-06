@@ -288,17 +288,44 @@
   <data name="Sync_Dialog_UploadAll_Text" xml:space="preserve">
     <value>Do you want to upload all new Multimedia? Only do this if the Phone is charging and connected via Wifi.</value>
   </data>
+  <data name="Sync_Header_CancelUpload" xml:space="preserve">
+    <value>Cancel Upload</value>
+  </data>
   <data name="Sync_Header_Data" xml:space="preserve">
     <value>data</value>
   </data>
   <data name="Sync_Header_Multimedia" xml:space="preserve">
     <value>multimedia</value>
   </data>
+  <data name="Sync_Header_SyncLevel" xml:space="preserve">
+    <value>sync level</value>
+  </data>
   <data name="Sync_Info_CollectingModifications" xml:space="preserve">
     <value>Collecting Modifications</value>
   </data>
   <data name="Sync_Info_CollectingMultimedia" xml:space="preserve">
     <value>Collecting Multimedia</value>
+  </data>
+  <data name="Sync_Info_Uploading" xml:space="preserve">
+    <value>Uploading ...</value>
+  </data>
+  <data name="Sync_Info_UploadingElement" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
+  <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
+    <value>Uploading Multimedia ...</value>
+  </data>
+  <data name="Sync_Level_Event" xml:space="preserve">
+    <value>Event</value>
+  </data>
+  <data name="Sync_Level_EventSeries" xml:space="preserve">
+    <value>EventSeries</value>
+  </data>
+  <data name="Sync_Level_IU" xml:space="preserve">
+    <value>Identification Unit</value>
+  </data>
+  <data name="Sync_Level_Specimen" xml:space="preserve">
+    <value>Specimen</value>
   </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>
@@ -314,14 +341,5 @@
   </data>
   <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
     <value>download all</value>
-  </data>
-  <data name="UploadEventTask_State_UploadingEvent" xml:space="preserve">
-    <value>Uploading Event and children ...</value>
-  </data>
-  <data name="UploadEventTask_State_UploadingSeries" xml:space="preserve">
-    <value>Uploading EventSeries ...</value>
-  </data>
-  <data name="UploadMultimediaTask_State_Uploading" xml:space="preserve">
-    <value>Uploading Multimedia ...</value>
   </data>
 </root>

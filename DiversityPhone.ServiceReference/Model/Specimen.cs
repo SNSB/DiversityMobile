@@ -14,6 +14,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class Specimen : ReactiveObject, IModifyable, IMultimediaOwner
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _SpecimenID;
 		[Column(IsPrimaryKey=true)]
@@ -31,6 +36,23 @@ namespace DiversityPhone.Model
 			}
 		}
 				
+		private int? _CollectionSpecimenID;
+		[Column(CanBeNull=true)]
+		public int? CollectionSpecimenID
+		{
+			get { return _CollectionSpecimenID; }
+			set 
+			{
+				if (_CollectionSpecimenID != value)
+				{
+					this.raisePropertyChanging("CollectionSpecimenID");
+					_CollectionSpecimenID = value;
+					this.raisePropertyChanged("CollectionSpecimenID");
+				}  
+			}
+		}
+		   
+		
 		private int _EventID;
 		[Column]
 		public int EventID
@@ -80,47 +102,11 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		 
 		
-		private int? _DiversityCollectionSpecimenID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionSpecimenID
-		{
-			get { return _DiversityCollectionSpecimenID; }
-			set 
-			{
-				if (_DiversityCollectionSpecimenID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionSpecimenID");
-					_DiversityCollectionSpecimenID = value;
-					this.raisePropertyChanged("DiversityCollectionSpecimenID");
-				}  
-			}
-		}
-		   
-		
-		private int? _DiversityCollectionEventID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionEventID
-		{
-			get { return _DiversityCollectionEventID; }
-			set 
-			{
-				if (_DiversityCollectionEventID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionEventID");
-					_DiversityCollectionEventID = value;
-					this.raisePropertyChanged("DiversityCollectionEventID");
-				}  
-			}
-		}
-		 
-
         public Specimen()
         {
             this.AccessionNumber = null;            
-            this.ModificationState = ModificationState.New;
-            this.DiversityCollectionSpecimenID = null;
+            this.ModificationState = ModificationState.New;            
         }
 
 
@@ -146,22 +132,9 @@ namespace DiversityPhone.Model
                           });
         }
 
-        public static Svc.Specimen ConvertToServiceObject(Specimen spec)
+        public DBObjectType OwnerType
         {
-            Svc.Specimen export = new Svc.Specimen();
-            if (spec.DiversityCollectionSpecimenID != null)
-                export.DiversityCollectionSpecimenID = (int)spec.DiversityCollectionSpecimenID;
-            else export.DiversityCollectionSpecimenID = Int32.MinValue;
-            export.DiversityCollectionEventID = spec.DiversityCollectionEventID;
-            export.AccessionNumber = spec.AccessionNumber;
-            export.CollectionEventID = spec.EventID;
-            export.CollectionSpecimenID = spec.SpecimenID;
-            return export;
-        }
-
-        public ReferrerType OwnerType
-        {
-            get { return ReferrerType.Specimen; }
+            get { return DBObjectType.Specimen; }
         }
 
         public int OwnerID

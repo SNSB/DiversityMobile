@@ -5,6 +5,7 @@ using System.Linq;
 using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
 using System.Data.Linq.Mapping;
+using System.Data.Linq;
 using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
@@ -12,6 +13,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class Localization : ReactiveObject, IModifyable, ILocalizable
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _LocalizationID;
 		[Column(IsPrimaryKey=true)]

@@ -10,33 +10,24 @@
     Name="mmoList"
     d:DesignHeight="480" d:DesignWidth="480">
     <UserControl.Resources>
-        <DataTemplate x:Key="MultimediaItemTemplate">
-            <Button Style="{StaticResource ItemButtonStyle}"
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Templates.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate x:Key="SelectMultimediaItemTemplate">
+                <Button Style="{StaticResource ItemButtonStyle}"
                     Command="{Binding DataContext.SelectMultimedia, ElementName=mmoList}"
                     CommandParameter="{Binding}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Image Grid.Column="0" 
-                       Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" 
-                       Height="40" 
-                       Width="40"/>
-                    <Image Grid.Column="0"
-                       Source="{Binding Thumbnail}"
-                       Height="40"
-                       Width="40"/>
-                    <TextBlock Grid.Column="1" 
-                               Margin="{StaticResource PhoneHorizontalMargin}"
-                               Text="{Binding Description}"/>
-                </Grid>
-            </Button>
-        </DataTemplate>
+                    <ContentControl Content="{Binding}"
+                                ContentTemplate="{StaticResource MultimediaItemTemplate}"/>
+                </Button>
+            </DataTemplate>
+        </ResourceDictionary>
     </UserControl.Resources>
-    
+
     <ListBox ItemsSource="{Binding}"
-             ItemTemplate="{StaticResource MultimediaItemTemplate}">
-        
-    </ListBox>    
+             ItemTemplate="{StaticResource SelectMultimediaItemTemplate}">
+
+    </ListBox>
 </UserControl>

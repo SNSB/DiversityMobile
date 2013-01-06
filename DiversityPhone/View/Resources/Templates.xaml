@@ -6,6 +6,26 @@
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
     
+    <DataTemplate x:Key="MultimediaItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" 
+                       Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" 
+                       Height="40" 
+                       Width="40"/>
+            <Image Grid.Column="0"
+                       Source="{Binding Thumbnail}"
+                       Height="40"
+                       Width="40"/>
+            <TextBlock Grid.Column="1" 
+                               Margin="{StaticResource PhoneHorizontalMargin}"
+                               Text="{Binding Description}"/>
+        </Grid>
+    </DataTemplate>
+    
     <DataTemplate x:Key="ElementItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>

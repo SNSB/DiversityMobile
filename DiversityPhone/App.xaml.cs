@@ -140,7 +140,9 @@ namespace DiversityPhone
 
             IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IConnectivityService>(new ConnectivityService());
-            IOC.Register<IFieldDataService>(new OfflineStorage(IOC));
+            var db = new OfflineStorage(IOC);
+            IOC.Register<IFieldDataService>(db);
+            IOC.Register<IKeyMappingService>(db);
             IOC.Register<ITaxonService>(new TaxonService());
             IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
             IOC.Register<IMapStorageService>(new MapStorageService());
@@ -151,9 +153,8 @@ namespace DiversityPhone
 #endif
             
 
-            IOC.Register<IDiversityServiceClient>(new DiversityServiceObservableClient(IOC.Resolve<IMessageBus>()));
-            IOC.Register<ILocationService>(new LocationService(IOC));
-            IOC.Register<IMultiMediaClient>(new MultimediaClient(IOC.Resolve<ISettingsService>()));
+            IOC.Register<IDiversityServiceClient>(new DiversityServiceClient(IOC.Resolve<IMessageBus>(), IOC.Resolve<IKeyMappingService>()));
+            IOC.Register<ILocationService>(new LocationService(IOC));            
             
             registerViewModels();
 

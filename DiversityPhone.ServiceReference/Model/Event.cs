@@ -13,6 +13,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class Event : ReactiveObject, ILocalizable, IModifyable, IMultimediaOwner
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _EventID;
 		[Column(IsPrimaryKey=true)]
@@ -26,6 +31,23 @@ namespace DiversityPhone.Model
 					this.raisePropertyChanging("EventID");
 					_EventID = value;
 					this.raisePropertyChanged("EventID");
+				}  
+			}
+		}
+		   
+		
+		private int? _CollectionEventID;
+		[Column(CanBeNull=true)]
+		public int? CollectionEventID
+		{
+			get { return _CollectionEventID; }
+			set 
+			{
+				if (_CollectionEventID != value)
+				{
+					this.raisePropertyChanging("CollectionEventID");
+					_CollectionEventID = value;
+					this.raisePropertyChanged("CollectionEventID");
 				}  
 			}
 		}
@@ -181,41 +203,6 @@ namespace DiversityPhone.Model
 			}
 		}
 		
-		
-		private int? _DiversityCollectionEventID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionEventID
-		{
-			get { return _DiversityCollectionEventID; }
-			set 
-			{
-				if (_DiversityCollectionEventID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionEventID");
-					_DiversityCollectionEventID = value;
-					this.raisePropertyChanged("DiversityCollectionEventID");
-				}  
-			}
-		}
-		   
-		
-		private int? _DiversityCollectionSeriesID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionSeriesID
-		{
-			get { return _DiversityCollectionSeriesID; }
-			set 
-			{
-				if (_DiversityCollectionSeriesID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionSeriesID");
-					_DiversityCollectionSeriesID = value;
-					this.raisePropertyChanged("DiversityCollectionSeriesID");
-				}  
-			}
-		}
-		 
-  
 		public Event()
         {
             this.SeriesID = null;
@@ -246,36 +233,15 @@ namespace DiversityPhone.Model
                           });
         }       
 
-        public ReferrerType OwnerType
+        public DBObjectType OwnerType
         {
-            get { return ReferrerType.Event; }
+            get { return DBObjectType.Event; }
         }
 
 
         public int OwnerID
         {
             get { return EventID; }
-        }
-
-
-		public static Svc.Event ConvertToServiceObject(Event ev)
-        {
-            Svc.Event export = new Svc.Event();
-            if (ev.DiversityCollectionEventID.HasValue)
-                export.DiversityCollectionEventID = ev.DiversityCollectionEventID.Value;
-            else
-                export.DiversityCollectionEventID = Int32.MinValue;
-            export.DiversityCollectionSeriesID = ev.DiversityCollectionSeriesID;
-            export.Altitude = ev.Altitude;
-            export.CollectionDate = ev.CollectionDate;
-            export.DeterminationDate = ev.DeterminationDate;
-            export.EventID = ev.EventID;
-            export.HabitatDescription = ev.HabitatDescription;
-            export.Latitude = ev.Latitude;
-            export.LocalityDescription = ev.LocalityDescription;            
-            export.Longitude = ev.Longitude;
-            export.SeriesID = ev.SeriesID;
-            return export;
         }
     }	
 }

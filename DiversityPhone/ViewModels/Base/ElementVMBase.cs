@@ -33,5 +33,10 @@ namespace DiversityPhone.ViewModels
         {
             this.Model = model;
         }
+
+        object IElementVM.Model
+        {
+            get { return Model; }
+        }
     }   
 }

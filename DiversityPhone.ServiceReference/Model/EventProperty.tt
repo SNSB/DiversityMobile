@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using Svc = DiversityPhone.DiversityService;
 
@@ -18,6 +19,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class EventProperty : ReactiveObject, IModifyable
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 <# Row("int", "EventID", RowKind.Key); #>   
 <# Row("int", "PropertyID", RowKind.Key); #> 
 
@@ -25,9 +31,6 @@ namespace DiversityPhone.Model
 <# Row("string", "PropertyUri"); #>
   
 <# Row("ModificationState", "ModificationState"); #>
-
-<# Row("int?", "DiversityCollectionEventID", RowKind.Nullable); #>   
-
   
 		 public EventProperty()
         {            
@@ -57,18 +60,6 @@ namespace DiversityPhone.Model
                           {
                               //Not Applicable
                           });
-        }
-
-        public static Svc.CollectionEventProperty ConvertToServiceObject(EventProperty cep)
-        {
-            Svc.CollectionEventProperty export = new Svc.CollectionEventProperty();
-            export.DisplayText = cep.DisplayText;
-            export.EventID = cep.EventID;
-            export.LogUpdatedWhen = cep.LogUpdatedWhen;
-            export.PropertyID = cep.PropertyID;
-            export.PropertyUri = cep.PropertyUri;
-            export.DiversityCollectionEventID = cep.DiversityCollectionEventID;
-            return export;
         }
     }
 }

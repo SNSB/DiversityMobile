@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq;
 using System.Data.Linq.Mapping;
 using Svc = DiversityPhone.DiversityService;
 
@@ -12,6 +13,11 @@ namespace DiversityPhone.Model
 	[Table]
 	public class EventProperty : ReactiveObject, IModifyable
 	{
+#pragma warning disable 0169
+		[Column(IsVersion = true)]
+		private Binary version;
+#pragma warning restore 0169
+
 		
 		private int _EventID;
 		[Column(IsPrimaryKey=true)]
@@ -96,26 +102,7 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		
-		
-		private int? _DiversityCollectionEventID;
-		[Column(CanBeNull=true)]
-		public int? DiversityCollectionEventID
-		{
-			get { return _DiversityCollectionEventID; }
-			set 
-			{
-				if (_DiversityCollectionEventID != value)
-				{
-					this.raisePropertyChanging("DiversityCollectionEventID");
-					_DiversityCollectionEventID = value;
-					this.raisePropertyChanged("DiversityCollectionEventID");
-				}  
-			}
-		}
-		   
-
-  
+		  
 		 public EventProperty()
         {            
             this.ModificationState = ModificationState.New;
@@ -144,18 +131,6 @@ namespace DiversityPhone.Model
                           {
                               //Not Applicable
                           });
-        }
-
-        public static Svc.CollectionEventProperty ConvertToServiceObject(EventProperty cep)
-        {
-            Svc.CollectionEventProperty export = new Svc.CollectionEventProperty();
-            export.DisplayText = cep.DisplayText;
-            export.EventID = cep.EventID;
-
-            export.PropertyID = cep.PropertyID;
-            export.PropertyUri = cep.PropertyUri;
-            export.DiversityCollectionEventID = cep.DiversityCollectionEventID;
-            return export;
         }
     }
 }
