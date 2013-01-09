@@ -124,8 +124,9 @@ namespace DiversityService
         {
             if (locs.Any())
             {
+                var cult = new CultureInfo("en-US");
                 return string.Format("LINESTRING({0})",
-                        string.Join(", ", locs.Select(gp => string.Format("{0} {1}", gp.Longitude, gp.Latitude)))
+                        string.Join(", ", locs.Select(gp => string.Format(cult, "{0} {1}", gp.Longitude, gp.Latitude)))
                     );
             }
             else return String.Empty;
