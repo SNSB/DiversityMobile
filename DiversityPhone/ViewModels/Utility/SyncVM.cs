@@ -71,7 +71,7 @@ namespace DiversityPhone.ViewModels.Utility
                 _UploadsInProgress = 1;
             }
             if (aquired)
-                this.RaisePropertyChanged(x => x.IsUploading);
+                Observable.Start(() => this.RaisePropertyChanged(x => x.IsUploading), DispatcherScheduler.Current);
             return aquired;
         }
         private void UploadCompleted()
@@ -80,7 +80,8 @@ namespace DiversityPhone.ViewModels.Utility
                 throw new InvalidOperationException("No running upload to be completed");
 
             _UploadsInProgress = 0;
-            this.RaisePropertyChanged(x => x.IsUploading);
+
+            Observable.Start(() => this.RaisePropertyChanged(x => x.IsUploading), DispatcherScheduler.Current);
         }
         public bool IsUploading
         {
@@ -197,7 +198,7 @@ namespace DiversityPhone.ViewModels.Utility
                                     .Select(_2 => vm)
                                         )
                                 .Finally(() => UploadCompleted())
-                                .ObserveOnDispatcher()
+                                .ObserveOnDispatcher()                                
                                 .Subscribe(vm => SyncUnits.Remove(vm));
                         }
                         else
