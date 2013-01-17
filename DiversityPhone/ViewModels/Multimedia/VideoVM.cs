@@ -77,7 +77,7 @@ namespace DiversityPhone.ViewModels
             : base( mmo => mmo.MediaType == MediaType.Video)
         {
             Record = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
-            Play = new ReactiveCommand();
+            Play = new ReactiveCommand(this.ObservableForProperty(x => x.RecordPresent).Value().StartWith(false));
             Stop = new ReactiveCommand();
 
             ModelByVisitObservable                
