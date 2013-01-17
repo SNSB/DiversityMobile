@@ -96,7 +96,7 @@ namespace DiversityPhone.ViewModels
                         Notification.showNotification(DiversityResources.Info_ServiceUnavailable, NOTIFICATION_DURATION);
                         handled = true;
                     }
-                    if (ex is FaultException<ExceptionDetail>)
+                    if (ex is FaultException)
                     {
                         Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.Message_ServiceProblem + ex.Message));
                         handled = true;

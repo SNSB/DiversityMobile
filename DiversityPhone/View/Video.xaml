@@ -14,7 +14,7 @@
     shell:SystemTray.IsVisible="True"
     Loaded="PageLoaded"
     Unloaded="PageUnloaded"
-    DataContext="{Binding NewVideo,Source={StaticResource Locator}}">
+    DataContext="{Binding NewVideo, Source={StaticResource Locator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Canvas x:Name="LayoutRoot" Background="Transparent">

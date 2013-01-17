@@ -188,8 +188,9 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         _CurrentUpload = uploadMultimedia(vm)
                             .Finally(() => UploadCompleted())
+                            .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
                             .ObserveOnDispatcher()
-                            .Subscribe(_ => { }, () => Multimedia.Remove(vm));
+                            .Subscribe(_ => Multimedia.Remove(vm));
                     });
 
            
@@ -210,6 +211,7 @@ namespace DiversityPhone.ViewModels.Utility
                                     .IgnoreElements()
                                         )
                                 .Finally(() => UploadCompleted())
+                                .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
                                 .ObserveOnDispatcher()
                                 .Subscribe(_2 => { }, () => recollectModifications.OnNext(SyncLevels.SelectedItem));
                         }
@@ -221,9 +223,8 @@ namespace DiversityPhone.ViewModels.Utility
                                 mmos.ToObservable(ThreadPoolScheduler.Instance)
                                 .SelectMany(vm =>
                                     uploadMultimedia(vm)
-                                    .IgnoreElements()
-                                    .Concat(Observable.Return(Unit.Default))
                                     .Select(_2 => vm)
+                                    .HandleServiceErrors(Notifications, Messenger, Observable.Empty<MultimediaObjectVM>())
                                         )
                                 .Finally(() => UploadCompleted())
                                 .ObserveOnDispatcher()
