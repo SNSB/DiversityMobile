@@ -315,6 +315,9 @@
   <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
     <value>Uploading Multimedia ...</value>
   </data>
+  <data name="Sync_Level_All" xml:space="preserve">
+    <value>All</value>
+  </data>
   <data name="Sync_Level_Event" xml:space="preserve">
     <value>Event</value>
   </data>

@@ -25,7 +25,7 @@
                 <ResourceDictionary Source="Resources/Templates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <vw:SyncVMPivotConverter x:Key="PivotConverter"/>
-            <vw:DBTypeToStringConverter x:Key="TypeToString"/>
+            <vw:SyncLevelToStringConverter x:Key="TypeToString"/>
 
             <DataTemplate x:Key="TypeItemTemplate">
                 <TextBlock Text="{Binding Converter={StaticResource TypeToString}}"/>
@@ -53,8 +53,8 @@
                 <StackPanel Orientation="Vertical" Margin="0" >
                     <toolkit:ListPicker Header="{Binding Resources.Sync_Header_SyncLevel, Source={StaticResource LocalizedStrings}}"
                                         ItemTemplate="{StaticResource TypeItemTemplate}" 
-                                        ItemsSource="{Binding SyncLevel.Items}"
-                                        SelectedIndex="{Binding SyncLevel.SelectedIndex, Mode=TwoWay}"/>
+                                        ItemsSource="{Binding SyncLevels.Items}"
+                                        SelectedIndex="{Binding SyncLevels.SelectedIndex, Mode=TwoWay}"/>
                     <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
                     <ListBox ItemsSource="{Binding SyncUnits}" Height="509">
                         <ListBox.ItemTemplate>

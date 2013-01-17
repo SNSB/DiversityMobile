@@ -25,6 +25,16 @@ namespace DiversityPhone.ViewModels.Utility
             multimedia
         }
 
+        public enum SyncLevel
+        {
+            All,
+            EventSeries,
+            Event,
+            Specimen,
+            IdentificationUnit
+        }
+
+
 
         private Pivots _CurrentPivot;
 
@@ -47,7 +57,7 @@ namespace DiversityPhone.ViewModels.Utility
         private IDiversityServiceClient Service;
         private IKeyMappingService Mapping;
 
-        public ListSelectionHelper<DBObjectType> SyncLevel { get; private set; }
+        public ListSelectionHelper<SyncLevel> SyncLevels { get; private set; }
 
         public ReactiveCollection<IElementVM> SyncUnits { get; private set; }
         public ReactiveCollection<MultimediaObjectVM> Multimedia { get; private set; }
@@ -58,6 +68,8 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand<MultimediaObjectVM> UploadMultimedia { get; private set; }
 
         public ReactiveCommand UploadAll { get; private set; }
+
+        private ISubject<SyncLevel?> recollectModifications = new Subject<SyncLevel?>();
 
         private long _UploadsInProgress = 0;
         private IDisposable _CurrentUpload = Disposable.Empty;
@@ -98,34 +110,36 @@ namespace DiversityPhone.ViewModels.Utility
             Service = ioc.Resolve<IDiversityServiceClient>();
             Mapping = ioc.Resolve<IKeyMappingService>();
 
-            SyncLevel = new ListSelectionHelper<DBObjectType>();
-            SyncLevel.Items = new List<DBObjectType>()
+            SyncLevels = new ListSelectionHelper<SyncLevel>();
+            SyncLevels.Items = new List<SyncLevel>()
             {
-                DBObjectType.EventSeries,
-                DBObjectType.Event,
-                DBObjectType.Specimen,
-                DBObjectType.IdentificationUnit
-            };
-            SyncLevel.SelectedItem = DBObjectType.EventSeries;
+                SyncLevel.All,
+                SyncLevel.EventSeries,
+                SyncLevel.Event,
+                SyncLevel.Specimen,
+                SyncLevel.IdentificationUnit
+            };            
 
             SyncUnits = new ReactiveCollection<IElementVM>();
 
-            var recollectModifications = 
             this.ActivationObservable
-                .CombineLatest(SyncLevel, (a, l) => new { Activated = a, Level = l });
+                .CombineLatest(SyncLevels, (a, l) => (a) ? l : null as SyncLevel?)
+                .Subscribe(recollectModifications);
             recollectModifications
                 .Do(_ => SyncUnits.Clear())
-                .Where(t => t.Activated)
-                .SelectMany(tuple =>
+                .Where(l => l.HasValue)
+                .SelectMany(level =>
                     {
                         return
-                        collectModificationsImpl(tuple.Level)
+                        collectModificationsImpl(level.Value)
                         .ToObservable(ThreadPoolScheduler.Instance)
                         .TakeUntil(recollectModifications)
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
                     })
                 .ObserveOnDispatcher()
                 .Subscribe(SyncUnits.Add);
+
+            SyncLevels.SelectedItem = SyncLevel.All;
 
             Multimedia = new ReactiveCollection<MultimediaObjectVM>();
             //Needs to be cleared?
@@ -187,19 +201,17 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         if (CurrentPivot == Pivots.data)
                         {
-                            var data = SyncUnits.ToList();
+                            var data = collectModificationsImpl(SyncLevel.All);
 
                             _CurrentUpload =
                                 data.ToObservable(ThreadPoolScheduler.Instance)
                                 .SelectMany(vm =>
                                     uploadTree(vm)
                                     .IgnoreElements()
-                                    .Concat(Observable.Return(Unit.Default))
-                                    .Select(_2 => vm)
                                         )
                                 .Finally(() => UploadCompleted())
-                                .ObserveOnDispatcher()                                
-                                .Subscribe(vm => SyncUnits.Remove(vm));
+                                .ObserveOnDispatcher()
+                                .Subscribe(_2 => { }, () => recollectModifications.OnNext(SyncLevels.SelectedItem));
                         }
                         else
                         {
@@ -334,48 +346,61 @@ namespace DiversityPhone.ViewModels.Utility
                 .DisplayProgress(Notifications, DiversityResources.Sync_Info_Uploading);
         }
 
-        private IEnumerable<IElementVM> collectModificationsImpl(DBObjectType synclevel)
-        {
-            using (var ctx = new DiversityDataContext())
+        private IEnumerable<IElementVM> collectModificationsImpl(SyncLevel synclevel)
+        {            
+            if (synclevel == SyncLevel.All)
             {
-                IEnumerable<IElementVM> stream;
-                switch (synclevel)
-                {
-                    case DBObjectType.EventSeries:
-                        stream = from es in ctx.EventSeries
-                                 where es.CollectionSeriesID == null && es.SeriesEnd != null
-                                 select new EventSeriesVM(es) as IElementVM;
-                        break;
-                    case DBObjectType.Event:
-                        stream = from es in ctx.EventSeries
-                                 where es.CollectionSeriesID != null
-                                 join ev in ctx.Events on es.SeriesID equals ev.SeriesID
-                                 where ev.CollectionEventID == null
-                                 select new EventVM(ev) as IElementVM;
-                        stream = stream.Concat(from ev in ctx.Events
-                                               where ev.SeriesID == null && ev.CollectionEventID == null
-                                               select new EventVM(ev) as IElementVM);
-
-                        break;
-                    case DBObjectType.Specimen:
-                        stream = from ev in ctx.Events
-                                 where ev.CollectionEventID != null
-                                 join s in ctx.Specimen on ev.EventID equals s.EventID
-                                 where s.CollectionSpecimenID == null
-                                 select new SpecimenVM(s) as IElementVM;
-                        break;
-                    case DBObjectType.IdentificationUnit:
-                        stream = from s in ctx.Specimen
-                                 where s.CollectionSpecimenID != null
-                                 join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
-                                 where iu.CollectionUnitID == null
-                                 select new IdentificationUnitVM(iu) as IElementVM;
-                        break;
-                    default:
-                        throw new ArgumentException("synclevel");
-                }
+                var stream = collectModificationsImpl(SyncLevel.EventSeries)
+                    .Concat(collectModificationsImpl(SyncLevel.Event))
+                    .Concat(collectModificationsImpl(SyncLevel.Specimen))
+                    .Concat(collectModificationsImpl(SyncLevel.IdentificationUnit));
                 foreach (var vm in stream)
                     yield return vm;
+            }
+            else
+            {
+                IEnumerable<IElementVM> stream;
+                using (var ctx = new DiversityDataContext())
+                {
+
+                    switch (synclevel)
+                    {
+                        case SyncLevel.EventSeries:
+                            stream = from es in ctx.EventSeries
+                                     where es.CollectionSeriesID == null && es.SeriesEnd != null
+                                     select new EventSeriesVM(es) as IElementVM;
+                            break;
+                        case SyncLevel.Event:
+                            stream = from es in ctx.EventSeries
+                                     where es.CollectionSeriesID != null
+                                     join ev in ctx.Events on es.SeriesID equals ev.SeriesID
+                                     where ev.CollectionEventID == null
+                                     select new EventVM(ev) as IElementVM;
+                            stream = stream.Concat(from ev in ctx.Events
+                                                   where ev.SeriesID == null && ev.CollectionEventID == null
+                                                   select new EventVM(ev) as IElementVM);
+
+                            break;
+                        case SyncLevel.Specimen:
+                            stream = from ev in ctx.Events
+                                     where ev.CollectionEventID != null
+                                     join s in ctx.Specimen on ev.EventID equals s.EventID
+                                     where s.CollectionSpecimenID == null
+                                     select new SpecimenVM(s) as IElementVM;
+                            break;
+                        case SyncLevel.IdentificationUnit:
+                            stream = from s in ctx.Specimen
+                                     where s.CollectionSpecimenID != null
+                                     join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
+                                     where iu.CollectionUnitID == null
+                                     select new IdentificationUnitVM(iu) as IElementVM;
+                            break;
+                        default:
+                            throw new ArgumentException("synclevel");
+                    }
+                    foreach (var vm in stream)
+                        yield return vm;
+                }
             }
         }
     }

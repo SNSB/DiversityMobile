@@ -10,28 +10,31 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Data;
 using DiversityPhone.Model;
+using DiversityPhone.ViewModels.Utility;
 
 namespace DiversityPhone.View
 {
     //[ValueConversion(typeof(bool), typeof(Visibility))]
-    public class DBTypeToStringConverter : IValueConverter
+    public class SyncLevelToStringConverter : IValueConverter
     {
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is DBObjectType) && targetType == typeof(String)))
+            if (!((value is SyncVM.SyncLevel) && targetType == typeof(String)))
                 throw new NotSupportedException();
-            var enVal = (DBObjectType)value;
+            var enVal = (SyncVM.SyncLevel)value;
 
             switch (enVal)
             {
-                case DBObjectType.EventSeries:
+                case SyncVM.SyncLevel.All:
+                    return DiversityResources.Sync_Level_All;
+                case SyncVM.SyncLevel.EventSeries:
                     return DiversityResources.Sync_Level_EventSeries;
-                case DBObjectType.Event:
+                case SyncVM.SyncLevel.Event:
                     return DiversityResources.Sync_Level_Event;
-                case DBObjectType.Specimen:
+                case SyncVM.SyncLevel.Specimen:
                     return DiversityResources.Sync_Level_Specimen;
-                case DBObjectType.IdentificationUnit:
+                case SyncVM.SyncLevel.IdentificationUnit:
                     return DiversityResources.Sync_Level_IU;
                 default:
                     throw new ArgumentException("value");

@@ -216,7 +216,7 @@
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="View\Converters\DBTypeToStringConverter.cs" />
+    <Compile Include="View\Converters\SyncLevelToStringConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\IconToImageConverter.cs" />
