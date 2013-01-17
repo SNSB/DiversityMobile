@@ -13,11 +13,8 @@ namespace DiversityPhone.Services
         public IObservable<String> UploadMultimedia(MultimediaObject mmo, byte[] data)
         {
             var login = this.GetCreds();
-            var res = ToResultObservable(
-                UploadMultimediaCompleted
-                .Where(p => p.EventArgs.UserState == mmo)
-                .Select(p => p.EventArgs.Result)
-                );
+            var res = FilterByUserStatePipeErrorsAndReplay(UploadMultimediaCompleted, mmo)
+                .Select(p => p.Result);
             _multimedia.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, DateTime.Now.ToShortDateString(), login.ProjectID, data, mmo);
             return res;
         }
