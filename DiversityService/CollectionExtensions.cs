@@ -18,7 +18,7 @@ namespace DiversityService
                 altitude.AverageLatitudeCache = ev.Latitude;
                 altitude.AverageLongitudeCache = ev.Longitude;
                 altitude.CollectionEventID = ev.CollectionEventID;
-                altitude.DeterminationDate = ev.DeterminationDate;
+                altitude.DeterminationDate = ev.CollectionDate;
                 altitude.LocalisationSystemID = 4;
                 altitude.Location1 = ev.Altitude.ToString();
                 altitude.ResponsibleAgentURI = profile.AgentURI;
@@ -38,7 +38,7 @@ namespace DiversityService
                 wgs84.AverageLatitudeCache = ev.Latitude;
                 wgs84.AverageLongitudeCache = ev.Longitude;
                 wgs84.CollectionEventID = ev.CollectionEventID;
-                wgs84.DeterminationDate = ev.DeterminationDate;
+                wgs84.DeterminationDate = ev.CollectionDate;                
                 wgs84.LocalisationSystemID = 8;
                 wgs84.Location1 = ev.Longitude.ToString();
                 wgs84.Location2 = ev.Latitude.ToString();

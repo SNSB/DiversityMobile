@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 
 /*
@@ -83,7 +84,7 @@ namespace DiversityService.Model
     }
 
     [TableName("CollectionEvent")]
-    [PrimaryKey("CollectionEventID", autoIncrement = true)]
+    [PrimaryKey("CollectionEventID", autoIncrement = true)]    
     public class Event
     {
         public int CollectionEventID { get; set; }
@@ -91,7 +92,31 @@ namespace DiversityService.Model
         [Column("SeriesID")]
         public int? CollectionSeriesID { get; set; }
 
-        public DateTime CollectionDate { get; set; }
+        public DateTime? CollectionDate 
+        {
+            get
+            {
+                if(CollectionYear.HasValue && CollectionMonth.HasValue && CollectionDay.HasValue)
+                    return new DateTime(CollectionYear.Value, CollectionMonth.Value, CollectionDay.Value);
+                return null;
+            }
+            set
+            {
+                if (value.HasValue)
+                {
+                    CollectionYear = (Int16?)value.Value.Year;
+                    CollectionMonth = (byte?)value.Value.Month;
+                    CollectionDay = (byte?)value.Value.Day;
+                }
+                else
+                {
+                    CollectionYear = null;
+                    CollectionMonth = null;
+                    CollectionDay = null;
+                }
+
+            }
+        }
         public string LocalityDescription { get; set; }
         public string HabitatDescription { get; set; }
 
@@ -104,8 +129,13 @@ namespace DiversityService.Model
         public double? Latitude { get; set; }
         [Ignore]
         public double? Longitude { get; set; }
-        [Ignore]
-        public DateTime? DeterminationDate { get; set; } 
+
+        [IgnoreDataMember]
+        public Int16? CollectionYear { get; set; }
+        [IgnoreDataMember]
+        public byte? CollectionMonth { get; set; }
+        [IgnoreDataMember]
+        public byte? CollectionDay { get; set; }
     }
 
     [TableName("CollectionEventProperty")]
