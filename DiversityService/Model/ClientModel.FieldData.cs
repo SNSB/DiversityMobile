@@ -13,11 +13,55 @@ using System.Text;
 
 namespace DiversityService.Model
 {
-    public class Localization
-    {
+    public class Localization : IEquatable<Localization>
+    {       
+
         public double? Altitude { get; set; }
         public double? Latitude { get; set; }
-        public double? Longitude { get; set; }        
+        public double? Longitude { get; set; }
+
+        public bool Equals(Localization other)
+        {
+            if (other == null)
+                return false;
+
+            if (this.Altitude.HasValue != other.Altitude.HasValue ||
+                (this.Altitude.HasValue && !AboutEqual(this.Altitude.Value, other.Altitude.Value)))
+                return false;
+            if (this.Latitude.HasValue != other.Latitude.HasValue ||
+                (this.Latitude.HasValue && !AboutEqual(this.Latitude.Value, other.Latitude.Value)))
+                return false;
+            if (this.Longitude.HasValue != other.Longitude.HasValue ||
+                (this.Longitude.HasValue && !AboutEqual(this.Longitude.Value, other.Longitude.Value)))
+                return false;
+
+            return true;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (obj is Localization)
+                return this.Equals(obj as Localization);
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return Altitude.GetHashCode() ^ Latitude.GetHashCode() ^ Longitude.GetHashCode();
+        }
+
+
+
+        private static bool AboutEqual(double x, double y)
+        {
+            if (double.IsNaN(x))
+                return double.IsNaN(y);
+
+            double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
+            return Math.Abs(x - y) <= epsilon;
+        }
     }
 
     [TableName("CollectionEventSeries")]

@@ -122,7 +122,9 @@ namespace DiversityService
 
         private static String SerializeLocalizations(IEnumerable<Localization> locs)
         {
-            if (locs.Count() > 2)
+            var uniqueLocs = locs.Distinct().ToList();
+
+            if (uniqueLocs.Count > 1)
             {
                 var cult = new CultureInfo("en-US");
                 return string.Format("LINESTRING({0})",
