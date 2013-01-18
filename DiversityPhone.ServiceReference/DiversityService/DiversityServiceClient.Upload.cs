@@ -15,7 +15,7 @@ namespace DiversityPhone.Services
     {
         public IObservable<int> InsertEvent(Event ev, IEnumerable<EventProperty> properties)
         {
-            var res = FilterByUserStatePipeErrorsAndReplay(InsertEVCompleted, ev)
+            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertEVCompleted, ev)
                 .Select(p => p.Result);                
 
             var svcProps = new ObservableCollection<Svc.EventProperty>(properties.Select(l => l.ToServiceObject()));
@@ -25,7 +25,7 @@ namespace DiversityPhone.Services
 
         public IObservable<int> InsertSpecimen(Specimen spec)
         {
-            var res = FilterByUserStatePipeErrorsAndReplay(InsertSPCompleted, spec)
+            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertSPCompleted, spec)
                 .Select(p => p.Result);
      
             _svc.InsertSpecimenAsync(spec.ToServiceObject(Mapping), this.GetCreds(), spec);
@@ -34,7 +34,7 @@ namespace DiversityPhone.Services
 
         public IObservable<int> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses)
         {
-            var res = FilterByUserStatePipeErrorsAndReplay(InsertIUCompleted, iu)
+            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertIUCompleted, iu)
                 .Select(p => p.Result);                
 
             var svcLocs = new ObservableCollection<Svc.IdentificationUnitAnalysis>(analyses.Select(l => l.ToServiceObject()));
@@ -47,7 +47,7 @@ namespace DiversityPhone.Services
             if (!series.SeriesID.HasValue)
                 throw new ArgumentException("series");
 
-            var res = FilterByUserStatePipeErrorsAndReplay(InsertESCompleted, series)
+            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertESCompleted, series)
                 .Select(p => p.Result);
             
             var svcLocs = new ObservableCollection<Svc.Localization>(localizations.Select(l => l.ToServiceObject()));
@@ -58,7 +58,7 @@ namespace DiversityPhone.Services
 
         public IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo)
         {
-            var res = FilterByUserStatePipeErrorsAndReplay(InsertMMOCompleted, mmo)                
+            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertMMOCompleted, mmo)                
                 .Select(_ => Unit.Default);
             
             var repoMmo = mmo.ToServiceObject(Mapping);
