@@ -13,54 +13,67 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient
     {
-        public IObservable<int> InsertEvent(Event ev, IEnumerable<EventProperty> properties)
+        public IObservable<Unit> InsertEvent(Event ev, IEnumerable<EventProperty> properties)
         {
-            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertEVCompleted, ev)
-                .Select(p => p.Result);                
+            var res = InsertEVCompleted.FilterByUserState(ev)
+                .PipeErrors()
+                .Select(p => p.Result)
+                .StoreMapping(ev, Mapping)
+                .ReplayOnlyFirst();
+                
 
             var svcProps = new ObservableCollection<Svc.EventProperty>(properties.Select(l => l.ToServiceObject()));
             _svc.InsertEventAsync(ev.ToServiceObject(Mapping), svcProps, this.GetCreds(), ev);
             return res;
         }
 
-        public IObservable<int> InsertSpecimen(Specimen spec)
+        public IObservable<Unit> InsertSpecimen(Specimen spec)
         {
-            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertSPCompleted, spec)
-                .Select(p => p.Result);
-     
+            var res = InsertSPCompleted.FilterByUserState(spec)
+                .PipeErrors()
+                .Select(p => p.Result)
+                .StoreMapping(spec, Mapping)
+                .ReplayOnlyFirst();
+
             _svc.InsertSpecimenAsync(spec.ToServiceObject(Mapping), this.GetCreds(), spec);
             return res;
         }
 
-        public IObservable<int> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses)
+        public IObservable<Unit> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses)
         {
-            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertIUCompleted, iu)
-                .Select(p => p.Result);                
+            var res = InsertIUCompleted.FilterByUserState(iu)
+                .PipeErrors()
+                .Select(p => p.Result)
+                .StoreMapping(iu, Mapping)
+                .ReplayOnlyFirst();
 
             var svcLocs = new ObservableCollection<Svc.IdentificationUnitAnalysis>(analyses.Select(l => l.ToServiceObject()));
             _svc.InsertIdentificationUnitAsync(iu.ToServiceObject(Mapping), svcLocs, this.GetCreds(), iu);
             return res;
         }
 
-        public IObservable<int> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations)
+        public IObservable<Unit> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations)
         {
             if (!series.SeriesID.HasValue)
                 throw new ArgumentException("series");
 
-            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertESCompleted, series)
-                .Select(p => p.Result);
-            
+            var res = InsertESCompleted.FilterByUserState(series)
+                .PipeErrors()
+                .Select(p => p.Result)
+                .StoreMapping(series, Mapping)
+                .ReplayOnlyFirst();
+
             var svcLocs = new ObservableCollection<Svc.Localization>(localizations.Select(l => l.ToServiceObject()));
-            _svc.InsertEventSeriesAsync(series.ToServiceObject(),svcLocs, this.GetCreds(), series);
+            _svc.InsertEventSeriesAsync(series.ToServiceObject(), svcLocs, this.GetCreds(), series);
             return res;
         }
 
 
         public IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo)
         {
-            var res = FilterByUserStatePipeErrorsAndReplayOne(InsertMMOCompleted, mmo)                
+            var res = InsertMMOCompleted.MakeObservableServiceResult(mmo)
                 .Select(_ => Unit.Default);
-            
+
             var repoMmo = mmo.ToServiceObject(Mapping);
             _svc.InsertMMOAsync(repoMmo, this.GetCreds(), mmo);
             return res;

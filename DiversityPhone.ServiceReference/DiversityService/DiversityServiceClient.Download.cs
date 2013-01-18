@@ -124,53 +124,13 @@ namespace DiversityPhone.Services
                 });
         }
 
-        private static IObservable<TEventArgs> FilterByUserStatePipeErrorsAndReplayOne<TEventArgs>(IObservable<EventPattern<TEventArgs>> serviceStream, object userState) where TEventArgs : AsyncCompletedEventArgs
-        {
-            var res = PipeErrors(
-                serviceStream.Where(p => p.EventArgs.UserState == userState)
-                ).Take(1).Replay(1);
-            res.Connect();
-            return res;
-        }
-
-        private static IObservable<TEventArgs> PipeErrors<TEventArgs>(IObservable<EventPattern<TEventArgs>> serviceStream) where TEventArgs : AsyncCompletedEventArgs
-        {
-            return Observable.Create<TEventArgs>(obs =>
-                {
-                    if(obs == null)
-                        throw new ArgumentNullException("obs");
-
-                    IDisposable subscription = null;
-                    try
-                    {
-                        subscription = serviceStream.Subscribe(
-                            p =>
-                            {
-                                if (p.EventArgs.Error != null)
-                                    obs.OnError(p.EventArgs.Error);
-                                else if (p.EventArgs.Cancelled)
-                                    obs.OnCompleted();
-                                else
-                                    obs.OnNext(p.EventArgs);
-                            },
-                            obs.OnError,
-                            obs.OnCompleted);                        
-                    }
-                    catch(Exception ex)
-                    {
-                        obs.OnError(ex);
-                        if (subscription != null)
-                            subscription.Dispose();
-                    }
-                    return subscription;
-                });
-        }
+        
 
         
 
         public IObservable<UserProfile> GetUserInfo(UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetUserInfoCompleted, login)
+            var source = GetUserInfoCompleted.MakeObservableServiceResult(login)
                 .Select(args => args.Result);
             _svc.GetUserInfoAsync(login, login);
             return source;
@@ -178,7 +138,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IList<Repository>> GetRepositories(DiversityService.UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetRepositoriesCompleted, login)
+            var source = GetRepositoriesCompleted.MakeObservableServiceResult(login)
                 .Select(args => args.Result as IList<Repository>);            
             _svc.GetRepositoriesAsync(login, login);
             return source;
@@ -186,7 +146,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IList<Project>> GetProjectsForUser(DiversityService.UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetProjectsForUserCompleted, login)
+            var source = GetProjectsForUserCompleted.MakeObservableServiceResult(login)
                 .Select(args => args.Result as IList<Project>);            
             _svc.GetProjectsForUserAsync(login,login);
             return source;
@@ -195,7 +155,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
         {
             var requestToken = new object();
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetTaxonListsForUser, requestToken)
+            var source = GetTaxonListsForUser.MakeObservableServiceResult(requestToken)
             .Select(args => args.Result ?? Enumerable.Empty<TaxonList>())
                 .Select(res => res
                     .Select(svcList => new Client.TaxonList()
@@ -217,7 +177,7 @@ namespace DiversityPhone.Services
             return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
                 {
                     int chunk = 1; //First Chunk is 1, not 0!
-                    var subscription = FilterByUserStatePipeErrorsAndReplayOne(DownloadTaxonList, list)                    
+                    var subscription = DownloadTaxonList.MakeObservableServiceResult(list)                    
                     .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
                     .Select(taxa => taxa.Select(
                         taxon => new Client.TaxonName()
@@ -251,7 +211,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne( GetPropertiesForUserCompleted, login)
+            var source = GetPropertiesForUserCompleted.MakeObservableServiceResult(login)
                 .Select(args => args.Result
                     .Select(p => new Client.Property()
                     { 
@@ -315,7 +275,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
         {
             object requestToken = new object();
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetStandardVocabularyCompleted, requestToken)
+            var source = GetStandardVocabularyCompleted.MakeObservableServiceResult(requestToken)
                .Select(args => args.Result)
                .Select(terms => terms
                    .Select(term => new Client.Term()
@@ -333,7 +293,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetAnalysesForProjectCompleted, login)
+            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResult(login)
                .Select(args => args.Result)
                .Select(analyses => analyses
                    .Select(an => new Client.Analysis()
@@ -349,7 +309,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetAnalysisResultsForProjectCompleted, login)
+            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResult(login)
                .Select(args => args.Result)
                .Select(ars => ars
                    .Select(ar => new Client.AnalysisResult()
@@ -366,7 +326,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
         {
-            var source = FilterByUserStatePipeErrorsAndReplayOne(GetAnalysisTaxonomicGroupsForProjectCompleted, login)
+            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResult(login)
                .Select(args => args.Result)
                .Select(atgs => atgs
                    .Select(atg => new Client.AnalysisTaxonomicGroup()
@@ -384,7 +344,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
         {
             var request = new object();
-            var res = FilterByUserStatePipeErrorsAndReplayOne(GetQualificationsCompleted, request)
+            var res = GetQualificationsCompleted.MakeObservableServiceResult(request)
                 .Select(args => args.Result.Select(q => new Client.Qualification()
                     {
                         Code = q.Code,

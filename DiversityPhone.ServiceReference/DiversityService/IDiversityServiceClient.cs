@@ -28,10 +28,10 @@ namespace DiversityPhone.Services
         #endregion
         #region Upload        
 
-        IObservable<int> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations);
-        IObservable<int> InsertEvent(Event ev, IEnumerable<EventProperty> properties);
-        IObservable<int> InsertSpecimen(Specimen spec);
-        IObservable<int> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses);
+        IObservable<Unit> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations);
+        IObservable<Unit> InsertEvent(Event ev, IEnumerable<EventProperty> properties);
+        IObservable<Unit> InsertSpecimen(Specimen spec);
+        IObservable<Unit> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses);
 
         IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);        
         #endregion

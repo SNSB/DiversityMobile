@@ -4,7 +4,7 @@ using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
 {
-    public static class ServiceProjectionExtensions
+    internal static class ServiceProjectionExtensions
     {
         public static Svc.EventSeries ToServiceObject(this EventSeries es)
         {
