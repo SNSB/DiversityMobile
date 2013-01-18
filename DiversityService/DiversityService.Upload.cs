@@ -1,5 +1,6 @@
 ﻿using DiversityORM;
 using DiversityService.Model;
+using PetaPoco;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,15 +14,15 @@ namespace DiversityService
         public int InsertEventSeries(EventSeries series, IEnumerable<Localization> localizations, UserCredentials login)
         {
             using (var db = new Diversity(login))
+            using (var t = new Transaction(db))
             {
-                db.BeginTransaction();
                 db.Insert(series);
 
                 var geoString = SerializeLocalizations(localizations);
-                if(!string.IsNullOrWhiteSpace(geoString))
+                if (!string.IsNullOrWhiteSpace(geoString))
                     db.Execute("Update [dbo].[CollectionEventSeries] Set geography=@0 Where SeriesID=@1", geoString, series.CollectionEventSeriesID);
 
-                db.CompleteTransaction();
+                t.Complete();
                 return series.CollectionEventSeriesID;
             }
         }
@@ -29,8 +30,8 @@ namespace DiversityService
         public int InsertEvent(Event ev, IEnumerable<EventProperty> properties, UserCredentials login)
         {
             using (var db = new Diversity(login))
+            using (var t = new Transaction(db))
             {
-                db.BeginTransaction();                
                 db.Insert(ev);
 
                 var geoString = SerializeLocalization((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
@@ -39,7 +40,7 @@ namespace DiversityService
                     db.Insert(loc);
 
                     if (!string.IsNullOrWhiteSpace(geoString))
-                        db.Execute("Update [dbo].[CollectionEventLocalisation] Set geography=@0 Where CollectionEventID=@1 AND LocalisationSystemID=@2", geoString, loc.CollectionEventID, loc.LocalisationSystemID);                    
+                        db.Execute("Update [dbo].[CollectionEventLocalisation] Set geography=@0 Where CollectionEventID=@1 AND LocalisationSystemID=@2", geoString, loc.CollectionEventID, loc.LocalisationSystemID);
                 }
 
                 foreach (var p in properties)
@@ -49,7 +50,7 @@ namespace DiversityService
                 }
 
 
-                db.CompleteTransaction();
+                t.Complete();
 
                 return ev.CollectionEventID;
             }
@@ -59,14 +60,14 @@ namespace DiversityService
         public int InsertSpecimen(Specimen s, UserCredentials login)
         {
             using (var db = new Diversity(login))
+            using (var t = new Transaction(db))
             {
-                db.BeginTransaction();
                 db.Insert(s);
 
                 db.Insert(s.GetProject(login.ProjectID));
                 db.Insert(s.GetAgent(login));
 
-                db.CompleteTransaction();
+                t.Complete();
                 return s.CollectionSpecimenID;
             }
         }
@@ -75,8 +76,8 @@ namespace DiversityService
         public int InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses, UserCredentials login)
         {
             using (var db = new Diversity(login))
+            using (var t = new Transaction(db))
             {
-                db.BeginTransaction();
                 db.Insert(iu);
                 db.Insert(iu.GetIdentification(login));
                 db.Insert(iu.GetGeoAnalysis(login));
@@ -88,7 +89,7 @@ namespace DiversityService
                     db.Insert(a);
                 }
 
-                db.CompleteTransaction();
+                t.Complete();
 
                 return iu.CollectionUnitID;
             }
