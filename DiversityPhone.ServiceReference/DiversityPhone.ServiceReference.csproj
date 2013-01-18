@@ -200,6 +200,15 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Event.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.IdentificationUnit.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -213,6 +222,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Specimen.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonList.datasource">
