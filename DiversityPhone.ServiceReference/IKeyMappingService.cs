@@ -26,7 +26,7 @@ namespace DiversityPhone.Services
         {
             var key = mapping.ResolveKey(ownerType, ownerID);
             if (!key.HasValue)
-                throw new KeyNotFoundException("no Mapping found");
+                throw new KeyNotFoundException(string.Format("no Mapping for type {0}, id {1} found", ownerType, ownerID) );
             else
                 return key.Value;
         }

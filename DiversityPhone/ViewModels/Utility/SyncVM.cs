@@ -278,72 +278,48 @@ namespace DiversityPhone.ViewModels.Utility
                     });
         }
 
-        private IObservable<EventSeries> uploadES(EventSeries es)
+        private IObservable<Unit> uploadES(EventSeries es)
         {
             return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID.Value).Select(gp => gp as ILocalizable))
-                    .Select(id => es);
-        }
+                    .SelectMany(_ => Storage.getEventsForSeries(es).Select(ev => uploadEV(ev)))
+                    .SelectMany(obs => obs);
+        }       
 
-        private IObservable<Event> uploadEV(Event ev)
+        private IObservable<Unit> uploadEV(Event ev)
         {
             return Service.InsertEvent(ev, Storage.getPropertiesForEvent(ev.EventID))
-                    .Select(id => ev);
+                    .SelectMany(_ => Storage.getSpecimenForEvent(ev).Select(s => uploadSpecimen(s)))
+                    .SelectMany(x => x);
         }
 
-        private IObservable<Specimen> uploadSpecimen(Specimen s)
+        private IObservable<Unit> uploadSpecimen(Specimen s)
         {
             return Service.InsertSpecimen(s)
-                .Select(id => s);
+                .SelectMany(_ => Storage.getTopLevelIUForSpecimen(s.SpecimenID).Select(iu => uploadIU(iu)))
+                .SelectMany(x => x);
         }
 
-        private IObservable<IdentificationUnit> uploadIU(IdentificationUnit iu)
+        private IObservable<Unit> uploadIU(IdentificationUnit iu)
         {
             return Service.InsertIdentificationUnit(iu, Storage.getIUANForIU(iu))
-                .Select(id => iu);
+                .SelectMany(_ => Storage.getSubUnits(iu).Select(sub => uploadIU(sub)))
+                .SelectMany(x => x);
         }
-
-        private IEnumerable<IdentificationUnit> getIUTree(IdentificationUnit iu)
-        {
-            Queue<IdentificationUnit> units = new Queue<IdentificationUnit>();
-            units.Enqueue(iu);
-
-            while (units.Count > 0)
-            {
-                var u = units.Dequeue();
-                foreach (var subU in Storage.getSubUnits(u))
-                    units.Enqueue(subU);
-
-                yield return u;
-            }
-        }
-
         private IObservable<Unit> uploadTree(IElementVM vm)
         {
             var model = vm.Model;
-
-            var es = model as EventSeries;
-            var ev = model as Event;
-            var sp = model as Specimen;
-            var iu = model as IdentificationUnit;
-
-
-            return Observable.Return(es)
-                .Where(x => x != null)
-                .SelectMany(x => uploadES(x))
-                .SelectMany(x => Storage.getEventsForSeries(x))
-                .Merge(Observable.Return(ev))
-                .Where(x => x != null)
-                .SelectMany(x => uploadEV(x))
-                .SelectMany(x => Storage.getSpecimenForEvent(x))
-                .Merge(Observable.Return(sp))
-                .Where(x => x != null)
-                .SelectMany(x => uploadSpecimen(x))
-                .SelectMany(x => Storage.getTopLevelIUForSpecimen(x.SpecimenID))
-                .Merge(Observable.Return(iu))
-                .Where(x => x != null)
-                .SelectMany(x => getIUTree(x))
-                .SelectMany(x => uploadIU(x))
-                .Select(_ => Unit.Default)
+            IObservable<Unit> res = Observable.Empty<Unit>();
+                
+            if(model is EventSeries)
+                res = uploadES(model as EventSeries);
+            if(model is Event)
+                res = uploadEV(model as Event);
+            if(model is Specimen)
+                res = uploadSpecimen(model as Specimen);
+            if(model is IdentificationUnit)
+                res = uploadIU(model as IdentificationUnit);
+                
+            return res
                 .DisplayProgress(Notifications, DiversityResources.Sync_Info_Uploading);
         }
 
