@@ -34,7 +34,6 @@ namespace DiversityPhone.Model
                 CollectionSeriesID = seriesID,
                 Altitude = ev.Altitude,
                 CollectionDate = ev.CollectionDate,
-                DeterminationDate = ev.DeterminationDate,
                 HabitatDescription = ev.HabitatDescription,
                 Latitude = ev.Latitude,
                 LocalityDescription = ev.LocalityDescription,

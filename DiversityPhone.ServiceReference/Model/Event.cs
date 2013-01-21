@@ -170,23 +170,6 @@ namespace DiversityPhone.Model
 		}
 		    
 		
-		private DateTime? _DeterminationDate;
-		[Column(CanBeNull=true,UpdateCheck=UpdateCheck.Never)]
-		public DateTime? DeterminationDate
-		{
-			get { return _DeterminationDate; }
-			set 
-			{
-				if (_DeterminationDate != value)
-				{
-					this.raisePropertyChanging("DeterminationDate");
-					_DeterminationDate = value;
-					this.raisePropertyChanged("DeterminationDate");
-				}  
-			}
-		}
-		    
-		
 		private ModificationState _ModificationState;
 		[Column]
 		public ModificationState ModificationState

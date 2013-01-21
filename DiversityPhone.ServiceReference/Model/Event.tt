@@ -33,7 +33,6 @@ namespace DiversityPhone.Model
 <# Row("double?", "Altitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
 <# Row("double?", "Latitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
 <# Row("double?", "Longitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
-<# Row("DateTime?", "DeterminationDate", RowKind.Nullable | RowKind.NoUpdateCheck); #>    
 <# Row("ModificationState", "ModificationState"); #>
 
 		public Event()
