@@ -233,6 +233,7 @@ namespace DiversityPhone.View
             InitializeComponent();
 
             _btn = new EditPageSaveEditButton(this.ApplicationBar, VM);
+            _btn.Button.Click += (s, args) => { this.ApplicationBar.Mode = (this.ApplicationBar.Mode == ApplicationBarMode.Minimized) ? ApplicationBarMode.Default : ApplicationBarMode.Minimized; };
             ImgZoom.RenderTransform = new CompositeTransform() { CenterX = 0, CenterY = 0 };
 
             var transforms = transform_subject.Replay(1);

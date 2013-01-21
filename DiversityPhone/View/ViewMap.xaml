@@ -54,7 +54,7 @@
             </Canvas>
         </Grid>
 
-        <Grid Background="Black" 
+        <StackPanel Background="Black" 
               Height="Auto"
               VerticalAlignment="Top">
             <TextBlock Text="{Binding CurrentMap.Description}"
@@ -65,7 +65,7 @@
                       Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
                       Height="Auto"
                       VerticalAlignment="Top"/>
-        </Grid>
+        </StackPanel>
         
         
     </Grid>
