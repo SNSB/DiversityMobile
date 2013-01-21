@@ -67,7 +67,7 @@ namespace DiversityPhone.Services
         public void addTaxonList(TaxonList list)
         {
             if (TaxonList.ValidTableIDs.Contains(list.TableID))
-                throw new ArgumentException("newList");
+                throw new ArgumentException("list");
             
             lock (this)
             {
@@ -76,8 +76,7 @@ namespace DiversityPhone.Services
                     var unusedIDs = getUnusedTaxonTableIDs(ctx);
                     if (unusedIDs.Count() > 0)
                     {
-                        var currentlyselectedTable = getTaxonTableIDForGroup(list.TaxonomicGroup);
-                        list.IsSelected = !TaxonList.ValidTableIDs.Contains(currentlyselectedTable); //If this is the first table for this group, select it.
+                        list.IsSelected = false;
                         list.TableID = unusedIDs.First();
                         ctx.TaxonLists.InsertOnSubmit(list);
                         ctx.SubmitChanges();                        

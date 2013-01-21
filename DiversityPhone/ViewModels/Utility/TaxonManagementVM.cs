@@ -123,6 +123,12 @@ namespace DiversityPhone.ViewModels
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
             Select.Subscribe(taxonlist =>
                     {
+                        foreach (var list in LocalLists)
+                        {
+                            if (list.Model.TaxonomicGroup == taxonlist.Model.TaxonomicGroup)
+                                list.Model.IsSelected = false;
+                        }
+
                         Taxa.selectTaxonList(taxonlist.Model);                        
                     });
 
@@ -149,7 +155,10 @@ namespace DiversityPhone.ViewModels
                                         },
                                         () => //Download Succeeded
                                         {
-                                            taxonlist.IsDownloading = false;                                            
+                                            taxonlist.IsDownloading = false;
+
+                                            if (Select.CanExecute(taxonlist))
+                                                Select.Execute(taxonlist);
                                         });
                             }                            
                         });
