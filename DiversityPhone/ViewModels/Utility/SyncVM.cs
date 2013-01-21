@@ -134,6 +134,7 @@ namespace DiversityPhone.ViewModels.Utility
                         collectModificationsImpl(level.Value)
                         .ToObservable(ThreadPoolScheduler.Instance)
                         .TakeUntil(recollectModifications)
+                        .TakeUntil(UploadAll)
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
                     })
                 .ObserveOnDispatcher()
