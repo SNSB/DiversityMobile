@@ -15,348 +15,46 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient
     {
-        DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
-        MapService.PhoneMediaServiceClient _maps = new MapService.PhoneMediaServiceClient();
-        MultimediaService.MediaService4Client _multimedia = new MultimediaService.MediaService4Client();
-
-        //MISC
-        IObservable<EventPattern<GetUserInfoCompletedEventArgs>> GetUserInfoCompleted;
-        IObservable<EventPattern<GetRepositoriesCompletedEventArgs>> GetRepositoriesCompleted;
-        IObservable<EventPattern<GetPropertiesForUserCompletedEventArgs>> GetPropertiesForUserCompleted;
-        IObservable<EventPattern<GetProjectsForUserCompletedEventArgs>> GetProjectsForUserCompleted;
 
 
-        //VOCABULARY
-        IObservable<EventPattern<GetStandardVocabularyCompletedEventArgs>> GetStandardVocabularyCompleted;
-        IObservable<EventPattern<GetTaxonListsForUserCompletedEventArgs>> GetTaxonListsForUser;
-        IObservable<EventPattern<DownloadTaxonListCompletedEventArgs>> DownloadTaxonList;
-        IObservable<EventPattern<GetQualificationsCompletedEventArgs>> GetQualificationsCompleted;
-        IObservable<EventPattern<GetAnalysesForProjectCompletedEventArgs>> GetAnalysesForProjectCompleted;
-        IObservable<EventPattern<GetAnalysisResultsForProjectCompletedEventArgs>> GetAnalysisResultsForProjectCompleted;
-        IObservable<EventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>> GetAnalysisTaxonomicGroupsForProjectCompleted;
-
-        // UPLOAD
-        IObservable<EventPattern<AsyncCompletedEventArgs>> InsertMMOCompleted;
-        IObservable<EventPattern<InsertEventSeriesCompletedEventArgs>> InsertESCompleted;
-        IObservable<EventPattern<InsertEventCompletedEventArgs>> InsertEVCompleted;
-        IObservable<EventPattern<InsertSpecimenCompletedEventArgs>> InsertSPCompleted;
-        IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
-
-        //DOWNLOAD
-
-        //MULTIMEDIA
-        IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
-
-
-        
-
-        IMessageBus Messenger;
-        IKeyMappingService Mapping;
-        ObservableAsPropertyHelper<UserCredentials> LatestCreds;
-
-        private UserCredentials GetCreds() { return LatestCreds.Value; }
-
-        public DiversityServiceClient(IMessageBus messenger, IKeyMappingService mapping)
+        public IObservable<Client.EventSeries> GetEventSeriesByID(int seriesID)
         {
-            Messenger = messenger;
-            Mapping = mapping;
-            LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
-
-            GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h);
-            GetRepositoriesCompleted = Observable.FromEventPattern<GetRepositoriesCompletedEventArgs>(h => _svc.GetRepositoriesCompleted += h, h => _svc.GetRepositoriesCompleted -= h);
-            GetPropertiesForUserCompleted = Observable.FromEventPattern<GetPropertiesForUserCompletedEventArgs>(h => _svc.GetPropertiesForUserCompleted += h, h => _svc.GetPropertiesForUserCompleted -= h);
-            GetProjectsForUserCompleted = Observable.FromEventPattern<GetProjectsForUserCompletedEventArgs>(h => _svc.GetProjectsForUserCompleted += h, h => _svc.GetProjectsForUserCompleted -= h);
-            GetStandardVocabularyCompleted = Observable.FromEventPattern<GetStandardVocabularyCompletedEventArgs>(d => _svc.GetStandardVocabularyCompleted += d, d => _svc.GetStandardVocabularyCompleted -= d);
-            GetAnalysesForProjectCompleted = Observable.FromEventPattern<GetAnalysesForProjectCompletedEventArgs>(d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d);
-            GetAnalysisResultsForProjectCompleted = Observable.FromEventPattern<GetAnalysisResultsForProjectCompletedEventArgs>( d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d);
-            GetAnalysisTaxonomicGroupsForProjectCompleted = Observable.FromEventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>(d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d);
-
-            GetTaxonListsForUser = Observable.FromEventPattern<GetTaxonListsForUserCompletedEventArgs>( d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
-            DownloadTaxonList = Observable.FromEventPattern<DownloadTaxonListCompletedEventArgs>( d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);
-            GetQualificationsCompleted = Observable.FromEventPattern<GetQualificationsCompletedEventArgs>( d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d);
-
-            InsertMMOCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _svc.InsertMMOCompleted += h, h => _svc.InsertMMOCompleted -= h);
-            InsertESCompleted = Observable.FromEventPattern<InsertEventSeriesCompletedEventArgs>(h => _svc.InsertEventSeriesCompleted += h, h => _svc.InsertEventSeriesCompleted -= h);
-            InsertEVCompleted = Observable.FromEventPattern<InsertEventCompletedEventArgs>(h => _svc.InsertEventCompleted += h, h => _svc.InsertEventCompleted -= h);
-            InsertSPCompleted = Observable.FromEventPattern<InsertSpecimenCompletedEventArgs>(h => _svc.InsertSpecimenCompleted += h, h => _svc.InsertSpecimenCompleted -= h);
-            InsertIUCompleted = Observable.FromEventPattern<InsertIdentificationUnitCompletedEventArgs>(h => _svc.InsertIdentificationUnitCompleted += h, h => _svc.InsertIdentificationUnitCompleted -= h);
-
-            UploadMultimediaCompleted = Observable.FromEventPattern<SubmitCompletedEventArgs>(h => _multimedia.SubmitCompleted += h, h => _multimedia.SubmitCompleted -= h);
-
-            InsertESCompleted
-                .OnErrorResumeNext(InsertESCompleted)
-                .Where(p => !(p.EventArgs.Error != null || p.EventArgs.Cancelled))
-                .Subscribe(p =>
-                    {
-                        Client.EventSeries es = p.EventArgs.UserState as Client.EventSeries;
-                        if (es != null)
-                            Mapping.AddMapping(Client.DBObjectType.EventSeries, es.SeriesID.Value, p.EventArgs.Result);
-                    });
-
-            InsertEVCompleted
-                .OnErrorResumeNext(InsertEVCompleted)
-                .Where(p => !(p.EventArgs.Error != null || p.EventArgs.Cancelled))
-                .Subscribe(p =>
-                {
-                    Client.Event ev = p.EventArgs.UserState as Client.Event;
-                    if (ev != null)
-                        Mapping.AddMapping(Client.DBObjectType.Event, ev.EventID, p.EventArgs.Result);
-                });
-
-            InsertSPCompleted
-                .OnErrorResumeNext(InsertSPCompleted)
-                .Where(p => !(p.EventArgs.Error != null || p.EventArgs.Cancelled))
-                .Subscribe(p =>
-                {
-                    var sp = p.EventArgs.UserState as Client.Specimen;
-                    if (sp != null)
-                        Mapping.AddMapping(Client.DBObjectType.Specimen, sp.SpecimenID, p.EventArgs.Result);
-                });
-
-            InsertIUCompleted
-                .OnErrorResumeNext(InsertIUCompleted)
-                .Where(p => !(p.EventArgs.Error != null || p.EventArgs.Cancelled))
-                .Subscribe(p =>
-                {
-                    var iu = p.EventArgs.UserState as Client.IdentificationUnit;
-                    if (iu != null)
-                        Mapping.AddMapping(Client.DBObjectType.IdentificationUnit, iu.UnitID, p.EventArgs.Result);
-                });
+            throw new NotImplementedException();
         }
 
-        
-
-        
-
-        public IObservable<UserProfile> GetUserInfo(UserCredentials login)
+        public IObservable<IEnumerable<Client.Localization>> GetEventSeriesLocalizations(int seriesID)
         {
-            var source = GetUserInfoCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result);
-            _svc.GetUserInfoAsync(login, login);
-            return source;
+            throw new NotImplementedException();
         }
 
-        public IObservable<IList<Repository>> GetRepositories(DiversityService.UserCredentials login)
+        public IObservable<IEnumerable<Client.Event>> GetEventsByLocality(string localityQuery)
         {
-            var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result as IList<Repository>);            
-            _svc.GetRepositoriesAsync(login, login);
-            return source;
+            throw new NotImplementedException();
         }
 
-        public IObservable<IList<Project>> GetProjectsForUser(DiversityService.UserCredentials login)
+        public IObservable<IEnumerable<Client.EventProperty>> GetEventProperties(int eventID)
         {
-            var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result as IList<Project>);            
-            _svc.GetProjectsForUserAsync(login,login);
-            return source;
+            throw new NotImplementedException();
         }
 
-        public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
+        public IObservable<IEnumerable<Client.Specimen>> GetSpecimenForEvent(int eventID)
         {
-            var requestToken = new object();
-            var source = GetTaxonListsForUser.MakeObservableServiceResultSingle(requestToken)
-            .Select(args => args.Result ?? Enumerable.Empty<TaxonList>())
-                .Select(res => res
-                    .Select(svcList => new Client.TaxonList()
-                    {
-                        IsPublicList = svcList.IsPublicList,
-                        TableDisplayName = svcList.DisplayText,
-                        TableName = svcList.Table,
-                        TaxonomicGroup =svcList.TaxonomicGroup
-                    }
-                    ));            
-            _svc.GetTaxonListsForUserAsync(GetCreds(), requestToken);
-            return source;
+            throw new NotImplementedException();
         }
 
-        public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)
+        public IObservable<IEnumerable<Client.IdentificationUnit>> GetIdentificationUnitsForSpecimen(int specimenID)
         {
-            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };            
-
-            return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
-                {
-                    int chunk = 1; //First Chunk is 1, not 0!                                        
-                    var pub = DownloadTaxonList.MakeObservableServiceResult(list)                    
-                    .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
-                    .Select(taxa => taxa.Select(
-                        taxon => new Client.TaxonName()
-                        {
-                            GenusOrSupragenic = taxon.GenusOrSupragenic,
-                            InfraspecificEpithet = taxon.InfraspecificEpithet,
-                            SpeciesEpithet = taxon.SpeciesEpithet,
-                            Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy), taxon.Synonymy, true),
-                            TaxonNameCache = taxon.TaxonNameCache,
-                            TaxonNameSinAuth = taxon.TaxonNameSinAuth,
-                            URI = taxon.URI,
-                            AcceptedNameURI=taxon.AcceptedNameURI,
-                            AcceptedNameCache=taxon.AcceptedNameCache
-                        }))
-                    .TakeWhile(taxonChunk =>
-                        {
-                            if (taxonChunk.Any())
-                            {
-                                //There might still be more Taxa -> request next chunk
-                                _svc.DownloadTaxonListAsync(serviceList, ++chunk, GetCreds(), list);
-                                return true;
-                            }
-                            else //Transfer finished
-                                return false;
-                        })
-                    .Publish();
-
-                    var subscription = pub.Subscribe(observer);
-
-                    pub.Connect();
-                    //Request first chunk
-                    _svc.DownloadTaxonListAsync(serviceList, chunk, GetCreds(), list);
-                    return subscription;
-                });
+            throw new NotImplementedException();
         }
 
-        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)
+        public IObservable<IEnumerable<Client.IdentificationUnit>> GetSubUnitsForIU(int unitID)
         {
-            var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result
-                    .Select(p => new Client.Property()
-                    { 
-                        PropertyID = p.PropertyID,                        
-                        DisplayText = p.DisplayText
-                    }));            
-            _svc.GetPropertiesForUserAsync(login,login);
-            return source;
+            throw new NotImplementedException();
         }
 
-
-        public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyValuesChunked(Client.Property p)
-        {            
-            var localclient = new DiversityService.DiversityServiceClient(); //Avoid race conditions from chunked download
-            var svcProperty = new Property()
-            {
-                PropertyID = p.PropertyID,               
-                DisplayText = p.DisplayText
-            };
-            int chunk = 1; //First Chunk is 1, not 0!
-            Func<IObservable<IEnumerable<Client.PropertyName>>> factory = () =>
-                {
-                    var obs = Observable.FromEvent<EventHandler<DownloadPropertyNamesCompletedEventArgs>, DownloadPropertyNamesCompletedEventArgs>((a) => (s, args) => a(args), d => localclient.DownloadPropertyNamesCompleted += d, d => localclient.DownloadPropertyNamesCompleted -= d)
-                        .Select(args => args.Result ?? Enumerable.Empty<PropertyValue>())
-                        .Select(taxa => taxa.Select(
-                            property => new Client.PropertyName
-                            {
-                                PropertyUri=property.PropertyUri,
-                                PropertyID=property.PropertyID,                       
-                                DisplayText = property.DisplayText,
-                            }))
-                        .Publish();
-                    obs.Connect();
-                    return obs;
-                };
-
-
-            var res = factory()
-                .Catch((Exception ex) => 
-                    {
-                        var obs = factory();
-                        localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds()); // Re-Request last chunk
-                        return obs;
-                    })                
-                .TakeWhile(taxonChunk =>
-                {
-                    if (taxonChunk.Any())
-                    {
-                        //There might still be more Taxa -> request next chunk
-                        localclient.DownloadPropertyNamesAsync(svcProperty, ++chunk, GetCreds());
-                        return true;
-                    }
-                    else //Transfer finished
-                        return false;
-                });
-            //Request first chunk
-            localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds());
-            return res;
-        }
-
-        public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
+        public IObservable<IEnumerable<Client.IdentificationUnitAnalysis>> GetAnalysesForIU(int unitID)
         {
-            object requestToken = new object();
-            var source = GetStandardVocabularyCompleted.MakeObservableServiceResultSingle(requestToken)
-               .Select(args => args.Result)
-               .Select(terms => terms
-                   .Select(term => new Client.Term()
-                   {
-                       Code = term.Code,
-                       Description = term.Description,
-                       DisplayText = term.DisplayText,
-                       ParentCode = term.ParentCode,
-                       SourceID = term.Source
-                   }));
-
-            _svc.GetStandardVocabularyAsync(GetCreds(), requestToken);
-            return source;
-        }
-
-        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, UserCredentials login)
-        {
-            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResultSingle(login)
-               .Select(args => args.Result)
-               .Select(analyses => analyses
-                   .Select(an => new Client.Analysis()
-                   {
-                       AnalysisID = an.AnalysisID,
-                       Description = an.Description,
-                       DisplayText = an.DisplayText,
-                       MeasurementUnit = an.MeasurementUnit
-                   }));                       
-            _svc.GetAnalysesForProjectAsync(projectID, login, login);            
-            return source;
-        }
-
-        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login)
-        {
-            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResultSingle(login)
-               .Select(args => args.Result)
-               .Select(ars => ars
-                   .Select(ar => new Client.AnalysisResult()
-                   {
-                       AnalysisID = ar.AnalysisID,
-                       Description = ar.Description,
-                       DisplayText = ar.DisplayText,
-                       Notes = ar.Notes,
-                       Result = ar.Result
-                   }));            
-            _svc.GetAnalysisResultsForProjectAsync(projectID, login, login);
-            return source;
-        }
-
-        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
-        {
-            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResultSingle(login)
-               .Select(args => args.Result)
-               .Select(atgs => atgs
-                   .Select(atg => new Client.AnalysisTaxonomicGroup()
-                   {
-                       AnalysisID = atg.AnalysisID,
-                       TaxonomicGroup = atg.TaxonomicGroup
-                   }));
-            
-
-            _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login, login);
-            return source;
-        }
-
-
-        public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
-        {
-            var request = new object();
-            var res = GetQualificationsCompleted.MakeObservableServiceResultSingle(request)
-                .Select(args => args.Result.Select(q => new Client.Qualification()
-                    {
-                        Code = q.Code,
-                        DisplayText = q.DisplayText
-                    }));
-            _svc.GetQualificationsAsync(credentials, request);
-            return res;
+            throw new NotImplementedException();
         }
     }
 }

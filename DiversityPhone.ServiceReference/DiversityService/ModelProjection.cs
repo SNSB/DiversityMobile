@@ -21,6 +21,18 @@ namespace DiversityPhone.Model
             };
         }
 
+        public static EventSeries ToClientObject(this Svc.EventSeries es)
+        {
+            return new EventSeries()
+            {
+                CollectionSeriesID = es.CollectionEventSeriesID,
+                SeriesCode = es.SeriesCode,
+                SeriesStart = es.SeriesStart ?? DateTime.MinValue,
+                SeriesEnd = es.SeriesEnd,
+                Description = es.Description
+            };
+        }
+
         public static Svc.Event ToServiceObject(this Event ev, IKeyMappingService mapping)
         {
             if (ev.CollectionEventID != null)
@@ -39,6 +51,13 @@ namespace DiversityPhone.Model
                 LocalityDescription = ev.LocalityDescription,
                 Longitude = ev.Longitude,
             };
+        }
+
+        public static Event ToClientObject(this Svc.Event ev, IKeyMappingService mapping)
+        {
+            throw new NotImplementedException();
+
+            
         }
 
         public static Svc.Localization ToServiceObject(this ILocalizable l)
