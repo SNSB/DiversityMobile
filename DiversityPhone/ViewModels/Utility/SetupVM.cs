@@ -221,11 +221,11 @@ namespace DiversityPhone.ViewModels.Utility
                 .CheckConnectivity(Connectivity, Notifications)
                 .SelectMany(login => 
                     {
-                        var gettingRepos = Notifications.showProgress(DiversityResources.Setup_Info_GettingRepositories);
+                        
                         return
                         Repository                    
                         .GetRepositories(login as Svc.UserCredentials)
-                        .Finally(gettingRepos.Dispose)
+                        .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingRepositories)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
                         .Where(repos => 
                             {
