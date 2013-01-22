@@ -22,7 +22,7 @@ namespace DiversityService
         {
             using (var db = new Diversity(login))
             {
-                return db.Query<Event>("[dbo].[DiversityMobile_EventsForProject] (@0, @1) as [Event]", login.ProjectID, locality).ToList();
+                return db.Query<Event>("[dbo].[DiversityMobile_EventsForProject] (@0, @1) as [Event]", login.ProjectID, locality).Take(15).ToList();
             }
         }
 

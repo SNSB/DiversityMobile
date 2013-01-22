@@ -12,7 +12,7 @@ namespace DiversityService
     public interface IDiversityService
     {
         #region Repository
-        #region Download
+        #region Vocabulary
         [OperationContract]
         IEnumerable<Term> GetStandardVocabulary(UserCredentials login);
 
@@ -54,6 +54,8 @@ namespace DiversityService
         void InsertMMO(MultimediaObject mmo, UserCredentials cred);
 
         #endregion
+
+        #region Download
         [OperationContract]
         EventSeries EventSeriesByID(int collectionSeriesID, UserCredentials login);
 
@@ -63,9 +65,9 @@ namespace DiversityService
         [OperationContract]
         IEnumerable<Specimen> SpecimenForEvent(int collectionEventID, UserCredentials login);
 
-
         [OperationContract]
         IEnumerable<IdentificationUnit> UnitsForSpecimen(int collectionSpecimenID, UserCredentials login);
+        #endregion
 
         #endregion
 
