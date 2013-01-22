@@ -179,6 +179,7 @@
     <Compile Include="ViewModels\Multimedia\ImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
     <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
+    <Compile Include="ViewModels\Utility\DownloadVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
     <Compile Include="ViewModels\Utility\SyncVM.cs" />
