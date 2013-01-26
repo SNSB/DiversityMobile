@@ -30,10 +30,14 @@
                 <!--Pivot item one-->
                 <controls:PivotItem Header="Login">
                     <StackPanel>
-                        <TextBlock Text="Username" Style="{StaticResource PhoneTextSmallStyle}"/>
-                        <TextBox Text="{Binding UserName, Mode=TwoWay}"/>
-                        <TextBlock Text="Password" Style="{StaticResource PhoneTextSmallStyle}"/>
-                        <TextBox Text="{Binding Password, Mode=TwoWay}"/>
+                        <TextBlock Text="{Binding Resources.Setup_Header_Username, Source={StaticResource LocalizedStrings}}" 
+                                   Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox x:Name="Username"  
+                                 Text="{Binding UserName, Mode=TwoWay}"/>
+                        <TextBlock Text="{Binding Resources.Setup_Header_Password, Source={StaticResource LocalizedStrings}}" 
+                                   Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <TextBox x:Name="Password" 
+                                 Text="{Binding Password, Mode=TwoWay}"/>
                     </StackPanel>
                 </controls:PivotItem>
 

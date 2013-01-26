@@ -493,6 +493,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string Setup_Header_Password {
+            get {
+                return ResourceManager.GetString("Setup_Header_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Project.
         /// </summary>
         public static string Setup_Header_Project {
@@ -507,6 +516,15 @@ namespace DiversityPhone {
         public static string Setup_Header_Repository {
             get {
                 return ResourceManager.GetString("Setup_Header_Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string Setup_Header_Username {
+            get {
+                return ResourceManager.GetString("Setup_Header_Username", resourceCulture);
             }
         }
         

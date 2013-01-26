@@ -14,7 +14,7 @@ using System.Reactive;
 
 
 namespace DiversityPhone.ViewModels.Utility
-{    
+{
     public class SetupVM : ReactiveObject
     {
         private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(5);
@@ -49,11 +49,11 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
         private string _UserName
-        #if DEBUG
-        = "Rollinge";
-        #else
+#if DEBUG
+ = "Rollinge";
+#else
             ;
-        #endif
+#endif
 
         public string UserName
         {
@@ -68,12 +68,8 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
 
-        private string _Password
-#if DEBUG
-= "Rolli#2-AI4@UB";
-#else
-    ;
-#endif
+        private string _Password;
+
         public string Password
         {
             get
@@ -94,7 +90,7 @@ namespace DiversityPhone.ViewModels.Utility
 
         public ListSelectionHelper<Svc.Project> Projects { get; private set; }
 
-        private ObservableAsPropertyHelper<Svc.UserProfile> _Profile;           
+        private ObservableAsPropertyHelper<Svc.UserProfile> _Profile;
 
         private bool _IsBusy = true;
 
@@ -113,10 +109,10 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
         public ReactiveCommand Save { get; private set; }
-        #endregion        
+        #endregion
 
         #region Async Operations
-        ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();                   
+        ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
         #endregion
 
         private AppSettings createSettings()
@@ -152,14 +148,14 @@ namespace DiversityPhone.ViewModels.Utility
                                 .StartWith(false);
 
 
-            var profile = _Profile                   
+            var profile = _Profile
                 .Select(p => p != null)
                 .StartWith(false);
 
             var settingsValid = Extensions.BooleanAnd(username, password, homeDB, project, profile);
-                
+
             return settingsValid.DistinctUntilChanged();
-        }       
+        }
 
         public SetupVM(Container ioc)
         {
@@ -170,15 +166,15 @@ namespace DiversityPhone.ViewModels.Utility
             Connectivity = ioc.Resolve<IConnectivityService>();
 
             RefreshVocabulary = new ReactiveCommand();
-            RefreshVocabulary                
-                .Subscribe(settings => 
+            RefreshVocabulary
+                .Subscribe(settings =>
                     {
-                        if( settings == null || !(settings is AppSettings))
+                        if (settings == null || !(settings is AppSettings))
                             return;
 
                         var login = (settings as AppSettings).ToCreds();
 
-                        RefreshVocabularyTask.Start(ioc, login )                            
+                        RefreshVocabularyTask.Start(ioc, login)
                             .StartWith(Unit.Default)
                             .Subscribe(_ => { IsBusy = true; }, () =>
                             {
@@ -186,14 +182,14 @@ namespace DiversityPhone.ViewModels.Utility
                                 Messenger.SendMessage<Page>(Page.Home);
                             });
                     });
-                                  
+
 
             clearDatabase.RegisterAsyncAction(_ =>
             {
-                var taxa = ioc.Resolve<ITaxonService>();                
+                var taxa = ioc.Resolve<ITaxonService>();
                 var storage = ioc.Resolve<IFieldDataService>();
 
-                if (taxa == null  || storage == null)
+                if (taxa == null || storage == null)
                 {
 #if DEBUG
                     throw new ArgumentNullException("services");
@@ -202,7 +198,7 @@ namespace DiversityPhone.ViewModels.Utility
 #endif
                 }
 
-                taxa.clearTaxonLists();                
+                taxa.clearTaxonLists();
                 storage.clearDatabase();
             });
 
@@ -212,41 +208,41 @@ namespace DiversityPhone.ViewModels.Utility
 
             var creds =
                 Observable.CombineLatest(
-                    this.ObservableForProperty(x => x.UserName),
-                    this.ObservableForProperty(x => x.Password),
+                    this.ObservableForProperty(x => x.UserName).Throttle(TimeSpan.FromMilliseconds(500)),
+                    this.ObservableForProperty(x => x.Password).Throttle(TimeSpan.FromMilliseconds(500)),
                     (user, pass) => new Svc.UserCredentials() { LoginName = user.Value, Password = pass.Value }
-                );          
-                        
-            creds  
+                );
+
+            creds
                 .CheckConnectivity(Connectivity, Notifications)
-                .SelectMany(login => 
+                .SelectMany(login =>
                     {
-                        
+
                         return
-                        Repository                    
+                        Repository
                         .GetRepositories(login as Svc.UserCredentials)
                         .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingRepositories)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
-                        .Where(repos => 
+                        .Where(repos =>
                             {
                                 if (repos != null && repos.Count > 0)
                                     return true;
                                 else
-                                {                                    
+                                {
                                     Notifications.showNotification(DiversityResources.Setup_Info_InvalidCredentials, NOTIFICATION_DURATION);
                                     return false;
                                 }
                             });
-                    })                
-                .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))                                
-                .Do(repos => 
+                    })
+                .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
+                .Do(repos =>
                     {
-                        repos.Insert(0,NoRepo);
-                        if (repos.Count > 1) 
+                        repos.Insert(0, NoRepo);
+                        if (repos.Count > 1)
                         {
-                            CurrentPivot = Pivots.Repository; 
+                            CurrentPivot = Pivots.Repository;
                         }
-                    })                
+                    })
                 .Subscribe(Databases);
 
             var credsWithRepo =
@@ -262,7 +258,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             credsWithRepo
                 .CheckConnectivity(Connectivity, Notifications)
-                .SelectMany(login => 
+                .SelectMany(login =>
                     {
                         var gettingProjects = Notifications.showProgress(DiversityResources.Setup_Info_GettingProjects);
                         return
@@ -271,27 +267,27 @@ namespace DiversityPhone.ViewModels.Utility
                         .Finally(gettingProjects.Dispose)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Svc.Project>() as IList<Svc.Project>));
                     })
-                
+
                 .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed                
                 .ObserveOnDispatcher()
                 .Do(projects =>
                     {
-                        projects.Insert(0, NoProject );
+                        projects.Insert(0, NoProject);
                         if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
                     })
                 .Subscribe(Projects);
 
-            
+
             _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
                     credsWithRepo
-                    .SelectMany(login => 
+                    .SelectMany(login =>
                         Repository
                         .GetUserInfo(login as Svc.UserCredentials)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return(null as UserProfile))
                     )
                     .Merge(credsWithRepo.Select(_ => null as UserProfile)),
                     _ => { }, null
-                );            
+                );
             #endregion
 
 
@@ -310,8 +306,8 @@ namespace DiversityPhone.ViewModels.Utility
                 .Do(res => Settings.saveSettings(res))
                 .Subscribe(RefreshVocabulary.Execute);
 
-            
+
         }
     }
-    
+
 }
