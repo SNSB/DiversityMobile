@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Data.Linq.SqlClient;
 using System.IO.IsolatedStorage;
+using System.Threading;
 
 namespace DiversityPhone.Services
 {
@@ -302,14 +303,23 @@ namespace DiversityPhone.Services
         #endregion
 
         private class TaxonSelectionDataContext : DataContext
-        {
+        {            
             private static string connStr = "isostore:/taxonDB.sdf";
+            private static object init_lock = new object();
+            
 
             public TaxonSelectionDataContext()
                 : base(connStr)
             {
                 if (!this.DatabaseExists())
-                    this.CreateDatabase();
+                {
+                    Monitor.Enter(init_lock); // Not created, let 1 thread create it
+                    if (!this.DatabaseExists())
+                    {
+                        this.CreateDatabase();
+                    }
+                    Monitor.Exit(init_lock);
+                }
             }
 #pragma warning disable 0649
             public Table<TaxonList> TaxonLists;
@@ -320,6 +330,7 @@ namespace DiversityPhone.Services
         {
             private static readonly string ISOSTORE_PROTOCOL = "isostore:/";
             private static readonly string TAXON_DB_NAME_PATTERN = "taxonDB{0}.sdf";
+            private static object init_lock = new object();
 
             public static string getDBPath(int idx)
             {
@@ -331,7 +342,14 @@ namespace DiversityPhone.Services
                 : base(String.Format("{0}{1}",ISOSTORE_PROTOCOL,getDBPath(idx)))
             {
                 if (!this.DatabaseExists())
-                    this.CreateDatabase();
+                {
+                    Monitor.Enter(init_lock); // Not created, let 1 thread create it
+                    if (!this.DatabaseExists())
+                    {
+                        this.CreateDatabase();
+                    }
+                    Monitor.Exit(init_lock);
+                }
             }
 #pragma warning disable 0649
             public Table<TaxonName> TaxonNames;

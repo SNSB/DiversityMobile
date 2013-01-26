@@ -68,7 +68,9 @@
                                 IsEnabled="{Binding IsEditable}"/>
 
                     <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
-                <TextBox Text="{Binding QueryString, Mode=TwoWay}" Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+                <TextBox x:Name="QueryString"
+                         Text="{Binding QueryString, Mode=TwoWay}" 
+                         Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
 
                 <StackPanel Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}, ConverterParameter=True}" Orientation="Vertical">
                     <TextBlock Text="{Binding Resources.IdentificationUnit_Header_Identification, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}" />

@@ -14,6 +14,7 @@ using DiversityPhone.ViewModels;
 using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Shell;
+using DiversityPhone.View.Helper;
 
 namespace DiversityPhone.View
 {
@@ -23,6 +24,7 @@ namespace DiversityPhone.View
 
         private EditPageSaveEditButton _appb;
         private EditPageDeleteButton _delete;
+        private INPCBindingTrigger _querystring;
 
 
         public EditIU()
@@ -30,7 +32,9 @@ namespace DiversityPhone.View
             InitializeComponent();
 
             _appb = new EditPageSaveEditButton(this.ApplicationBar, VM);
-            _delete = new EditPageDeleteButton(ApplicationBar, VM);            
+            _delete = new EditPageDeleteButton(ApplicationBar, VM);
+
+            _querystring = new INPCBindingTrigger(QueryString);
         }        
     }
 }

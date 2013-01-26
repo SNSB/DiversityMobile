@@ -12,6 +12,7 @@ using DiversityPhone.Model;
 using Funq;
 using System.Device.Location;
 using System.Reactive.Disposables;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -21,6 +22,8 @@ namespace DiversityPhone.ViewModels
         private IVocabularyService Vocabulary;
         private ILocationService Geolocation;
         private IFieldDataService Storage;
+
+        private ReactiveAsyncCommand UpdateIdentifications = new ReactiveAsyncCommand();
 
         BehaviorSubject<Coordinate> _latest_location = new BehaviorSubject<Coordinate>(Coordinate.Unknown);
         IDisposable _location_subscription = Disposable.Empty;
@@ -52,7 +55,7 @@ namespace DiversityPhone.ViewModels
         public ListSelectionHelper<Term> TaxonomicGroup { get; private set; }
 
         public ListSelectionHelper<Term> RelationshipType { get; private set; }
-        
+
         private string _Description;
         public string Description
         {
@@ -94,7 +97,7 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.AnalysisDate, ref _AnalysisDate, value); }
         }
 
-        
+
         #endregion
 
 
@@ -128,8 +131,6 @@ namespace DiversityPhone.ViewModels
                         _location_subscription.Dispose();
                     }
                 });
-
-            registerCanSave();         
 
             #region Update View
             _IsToplevel = this.ObservableToProperty(
@@ -165,53 +166,73 @@ namespace DiversityPhone.ViewModels
             #endregion
 
             #region Vocabulary
-            
+
             this.ObservableForProperty(vm => vm.QueryString)
-            .Value()
-            .CombineLatest(TaxonomicGroup,
-                (query, tg) =>
-                {
-                    var rawTaxa = Taxa.getTaxonNames(tg, query).Take(10);
-                    IList<TaxonName> refinedTaxa = new List<TaxonName>();
-                    foreach (TaxonName tn in rawTaxa)
+            .Throttle(TimeSpan.FromMilliseconds(500))
+            .Value().DistinctUntilChanged()
+            .CombineLatest(TaxonomicGroup, (query, tg) => Tuple.Create(query, tg))
+            .Subscribe(UpdateIdentifications.Execute);
+
+            var canSave = from tg in TaxonomicGroup
+                          let tgValid = tg != null
+                          from id in Identification
+                          let idValid = id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache)
+                          from updateCount in UpdateIdentifications.ItemsInflight
+                          let noUpdateInProgress = updateCount == 0
+                          select tgValid && idValid && noUpdateInProgress;
+
+            canSave
+                .StartWith(false)
+                .Subscribe(CanSaveSubject.OnNext);
+
+            UpdateIdentifications
+                .RegisterAsyncFunction(t_obj =>
                     {
-                        refinedTaxa.Add(tn);
-                        if (tn.AcceptedNameURI != null && !tn.AcceptedNameURI.Equals(String.Empty))
+                        var t = (Tuple<string, Term>)t_obj;
+                        var candidates = Taxa.getTaxonNames(t.Item2, t.Item1).Take(10)
+                        .SelectMany(tn =>
+                            {
+                                if (!string.IsNullOrWhiteSpace(tn.AcceptedNameURI))
+                                {
+                                    return new TaxonName[]
+                                    {
+                                        tn,
+                                        new TaxonName() //Doesn't contain structured Information on Genus,...
+                                        {
+                                            TaxonNameCache = "= " + tn.AcceptedNameCache,
+                                            URI = tn.AcceptedNameURI,
+                                            Synonymy = DiversityPhone.Model.Synonymy.Accepted
+                                        }
+                                    };
+                                }
+                                else
+                                    return new TaxonName[] { tn };
+                            })
+                        .ToList();
+
+                        if (!string.IsNullOrWhiteSpace(t.Item1))
                         {
-                            refinedTaxa.Add(new TaxonName() //Doesn´t contain structured Information on Genus,...
-                            {
-                                TaxonNameCache="= " + tn.AcceptedNameCache,
-                                URI=tn.AcceptedNameURI,
-                                Synonymy=DiversityPhone.Model.Synonymy.Accepted
-                            });
+                            //Prepend WorkingName as Identification
+                            candidates.Insert(0,
+                                new TaxonName()
+                                {
+                                    TaxonNameCache = QueryString,
+                                    GenusOrSupragenic = null,
+                                    SpeciesEpithet = null,
+                                    Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
+                                    URI = null,
+                                    AcceptedNameCache = null,
+                                    AcceptedNameURI = null
+                                });
                         }
-                    }
-                    return refinedTaxa;
-                })
-            .Select( candidates =>
-                {
-                    if (!string.IsNullOrWhiteSpace(QueryString))
-                    {
-                        //Prepend WorkingName as Identification
-                        candidates.Insert(0,
-                            new TaxonName()
-                            {
-                                TaxonNameCache = QueryString,
-                                GenusOrSupragenic = null,
-                                SpeciesEpithet = null,
-                                Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
-                                URI = null,
-                                AcceptedNameCache=null,
-                                AcceptedNameURI=null
-                            });
-                    }
-                    return candidates;                    
-                })
+                        return candidates as IList<TaxonName>;
+                    }, ThreadPoolScheduler.Instance)
+            .ObserveOnDispatcher()
             .Subscribe(Identification);
 
-            ActivationObservable                
+            ActivationObservable
                 .Take(1)
-                .Select(_ => Vocabulary.getTerms(Svc.TermList.TaxonomicGroups))                
+                .Select(_ => Vocabulary.getTerms(Svc.TermList.TaxonomicGroups))
                 .Subscribe(TaxonomicGroup);
 
             this.FirstActivation()
@@ -220,30 +241,30 @@ namespace DiversityPhone.ViewModels
 
             _IsToplevel
                 .Where(isToplevel => !isToplevel)
-                .Select(isToplevel => Vocabulary.getTerms(Svc.TermList.RelationshipTypes))                
+                .Select(isToplevel => Vocabulary.getTerms(Svc.TermList.RelationshipTypes))
                 .Subscribe(RelationshipType);
             #endregion
 
             #region Preserve Selections
-            
-            Identification.ItemsObservable               
+
+            Identification.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.IdentificationUri != null),
                 (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())
                 .Subscribe(x => Identification.SelectedItem = x);
-            
-            
-            TaxonomicGroup.ItemsObservable                
+
+
+            TaxonomicGroup.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.TaxonomicGroup != null),
-                (tgs,m) => tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup))
+                (tgs, m) => tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup))
                 .Subscribe(x => TaxonomicGroup.SelectedItem = x);
 
-            
-            RelationshipType.ItemsObservable                
+
+            RelationshipType.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.RelationType != null),
-                (rels,m) => rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
+                (rels, m) => rels.FirstOrDefault(rel => rel.Code == Current.Model.RelationType))
                 .Where(x => x != null)
                 .Subscribe(x => RelationshipType.SelectedItem = x);
 
@@ -253,10 +274,10 @@ namespace DiversityPhone.ViewModels
                 (qualis, m) => qualis.FirstOrDefault(q => q.Code == Current.Model.Qualification))
                 .Where(x => x != null)
                 .Subscribe(x => Qualifications.SelectedItem = x);
-            #endregion          
+            #endregion
 
             Messenger.RegisterMessageSource(
-                Save                
+                Save
                 .Select(_ => TaxonomicGroup.SelectedItem),
                 MessageContracts.USE);
 
@@ -265,26 +286,15 @@ namespace DiversityPhone.ViewModels
                 .Select(_ => RelationshipType.SelectedItem),
                 MessageContracts.USE);
         }
-      
-        private void registerCanSave()
-        {
-            var taxonomicGroupIsSet = this.TaxonomicGroup
-                .Select(term => term != null)
-                .StartWith(false);
 
-            var identificationIsSelected = this.Identification
-                .Select(id => id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache))
-                .StartWith(false);
-            
-            taxonomicGroupIsSet.BooleanAnd(identificationIsSelected).Subscribe(CanSaveSubject.OnNext);
-        }
+
 
         protected override void UpdateModel()
         {
             if (!Current.Model.IsLocalized())
                 Current.Model.SetCoordinates(_latest_location.First());
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
-            Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache.TrimStart(new[]{' ', '='});
+            Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache.TrimStart(new[] { ' ', '=' });
             Current.Model.OnlyObserved = this.OnlyObserved;
             Current.Model.IdentificationUri = Identification.SelectedItem.URI;
             Current.Model.RelationType = (RelationshipType.SelectedItem != null) ? RelationshipType.SelectedItem.Code : null;
