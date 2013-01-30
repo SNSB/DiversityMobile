@@ -222,7 +222,7 @@ namespace DiversityPhone.ViewModels.Utility
                         Repository
                         .GetRepositories(login as Svc.UserCredentials)
                         .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingRepositories)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Return<IList<Svc.Repository>>(new List<Svc.Repository>()))
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Empty<IList<Svc.Repository>>())
                         .Where(repos =>
                             {
                                 if (repos != null && repos.Count > 0)
@@ -235,6 +235,7 @@ namespace DiversityPhone.ViewModels.Utility
                             });
                     })
                 .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
+                .ObserveOnDispatcher()
                 .Do(repos =>
                     {
                         repos.Insert(0, NoRepo);
