@@ -28,9 +28,15 @@ namespace DiversityPhone.Services
         public static IObservable<TEventArgs> MakeObservableServiceResult<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
         {
             return This.FilterByUserState(userState)
-                .PipeErrors()
+                .PipeErrors();               
+        }
+
+        public static IObservable<TEventArgs> MakeObservableServiceResultSingle<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
+        {
+            return MakeObservableServiceResult(This, userState)
                 .ReplayOnlyFirst();
         }
+        
 
         public static IObservable<TEventArgs> PipeErrors<TEventArgs>(this IObservable<TEventArgs> This) where TEventArgs : AsyncCompletedEventArgs
         {
