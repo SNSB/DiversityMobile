@@ -276,15 +276,31 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(x => Qualifications.SelectedItem = x);
             #endregion
 
+            var saveTaxonGroupSelection = Save
+                .Select(_ => TaxonomicGroup.SelectedItem);
             Messenger.RegisterMessageSource(
-                Save
-                .Select(_ => TaxonomicGroup.SelectedItem),
+                saveTaxonGroupSelection,
                 MessageContracts.USE);
+
+            saveTaxonGroupSelection
+                .Select(g => bringItemToTop(TaxonomicGroup.Items, g))
+                .Subscribe(TaxonomicGroup);
 
             Messenger.RegisterMessageSource(
                 Save
                 .Select(_ => RelationshipType.SelectedItem),
                 MessageContracts.USE);
+        }
+
+        private IList<T> bringItemToTop<T>(IEnumerable<T> oldlist, T item) where T : class
+        {
+            IList<T> res = new List<T>();
+            res.Add(item);
+            foreach (var other in oldlist.Where(x => x != item))
+            {
+                res.Add(other);
+            }
+            return res;
         }
 
 
