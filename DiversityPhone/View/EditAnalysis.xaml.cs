@@ -14,6 +14,7 @@ using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Shell;
+using DiversityPhone.View.Helper;
 
 namespace DiversityPhone.View
 {
@@ -21,13 +22,15 @@ namespace DiversityPhone.View
     {
         private EditAnalysisVM VM { get { return DataContext as EditAnalysisVM; } }
 
-        private EditPageSaveEditButton _appb;        
+        private EditPageSaveEditButton _appb;
+        private INPCBindingTrigger _customresult;
 
         public EditAnalysis()
         {
             InitializeComponent();            
             DPControlBackGround.setTBBackgroundColor(TB_CustomResult);      
             _appb = new EditPageSaveEditButton(ApplicationBar, VM);
+            _customresult = new INPCBindingTrigger(TB_CustomResult);
         }
 
         private void TB_CustomResult_TextChanged(object sender, TextChangedEventArgs e)
