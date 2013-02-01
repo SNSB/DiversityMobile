@@ -106,6 +106,7 @@ namespace DiversityPhone.ViewModels
             Analyses.ListenToChanges<IdentificationUnitAnalysis, IdentificationUnitAnalysisVM>(iuan => iuan.UnitID == Current.Model.UnitID);
 
             CurrentModelObservable
+                .Do(_ => SelectedPivot = Pivots.Subunits)
                 .Do(_ => Analyses.Clear())
                 .Subscribe(getAnalyses.Execute);
 
