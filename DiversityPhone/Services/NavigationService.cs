@@ -175,7 +175,8 @@ namespace DiversityPhone.Services
 
         public void NavigateBack()
         {
-            _frame.GoBack();
+            if(_frame.CanGoBack)
+                _frame.GoBack();
         }     
       
     }

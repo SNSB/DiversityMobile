@@ -54,7 +54,7 @@
             </Canvas>
         </Grid>
 
-        <StackPanel Background="Black" 
+        <StackPanel Background="{StaticResource PhoneBackgroundBrush}" 
               Height="Auto"
               VerticalAlignment="Top">
             <TextBlock Text="{Binding CurrentMap.Description}"
