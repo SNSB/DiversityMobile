@@ -18,7 +18,8 @@
     DataContext="{Binding Sync, Source={StaticResource Locator}}"
     Loaded="syncPage_Loaded"
     Unloaded="syncPage_Unloaded"
-    x:Name="syncPage">
+    x:Name="syncPage"
+    >
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

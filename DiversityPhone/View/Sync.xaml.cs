@@ -24,7 +24,21 @@ namespace DiversityPhone.View
 
         public Sync()
         {
-            InitializeComponent();           
+            InitializeComponent();
+            this.BackKeyPress += Sync_BackKeyPress;
+        }
+
+        void Sync_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = VM;
+            if (vm != null && vm.IsUploading)
+            {
+                if (vm.CancelUpload.CanExecute(null))
+                {
+                    vm.CancelUpload.Execute(null);
+                    e.Cancel = true;
+                }
+            }
         }        
 
         private void syncPage_Loaded(object sender, RoutedEventArgs e)
