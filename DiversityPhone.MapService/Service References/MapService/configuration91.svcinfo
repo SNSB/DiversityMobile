@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="ZtEKRXII3UkGw0pv6GzTFV2mKXo=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="oOGV4horABjDiZT+Dj329F1tbvk=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IPhoneMediaService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IPhoneMediaService" contract="MapService.IPhoneMediaService" bindingType="basicHttpBinding" address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc" bindingConfiguration="BasicHttpBinding_IPhoneMediaService">
+    <endpoint name="BasicHttpBinding_IPhoneMediaService" contract="MapService.IPhoneMediaService" bindingType="basicHttpBinding" address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc" bindingConfiguration="BasicHttpBinding_IPhoneMediaService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc</serializedValue>
+          <serializedValue>http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

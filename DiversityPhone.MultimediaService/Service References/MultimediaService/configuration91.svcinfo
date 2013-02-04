@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="CqtG331FL+cQ0Ie8JiGdRyRM3ZA=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="DTvNVw7dTb+g5H3QLNYvTrGtyas=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="WSHttpBinding_IMediaService4">
       <properties>
@@ -154,10 +154,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WSHttpBinding_IMediaService4" contract="MultimediaService.IMediaService4" bindingType="customBinding" address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" bindingConfiguration="WSHttpBinding_IMediaService4">
+    <endpoint name="WSHttpBinding_IMediaService4" contract="MultimediaService.IMediaService4" bindingType="customBinding" address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc" bindingConfiguration="WSHttpBinding_IMediaService4">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc</serializedValue>
+          <serializedValue>http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

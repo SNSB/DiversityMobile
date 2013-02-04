@@ -26,20 +26,20 @@
             </customBinding>                     
         </bindings>
         <client>
-            <endpoint address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
+            <endpoint address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
                 binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
                 contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
-            <endpoint address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
                 contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
-          <endpoint address="http://bsm5.snsb.info:1111/DiversityService/DiversityService.svc" binding="basicHttpBinding"
+          <endpoint address="http://dwbmobile.snsb.info:1111/DiversityService/Service1.svc" binding="basicHttpBinding"
                     bindingConfiguration="BasicHttpBinding_IDiversityService"
                     contract="DiversityService.IDiversityService" 
                     name="BasicHttpBinding_IDiversityService" />
           <!--<endpoint address="http://169.254.80.80:7091/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->
-          <!--<endpoint address="http://192.168.1.8:7091/DiversityService.svc" binding="basicHttpBinding"
+          <!--<endpoint address="http://localhost:7091/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
         </client>

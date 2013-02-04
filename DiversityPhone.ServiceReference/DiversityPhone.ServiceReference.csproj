@@ -200,13 +200,7 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.AnalysisTaxonomicGroup.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Event.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.EventSeries.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.IdentificationUnit.datasource">
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.KeyProjection.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
@@ -215,16 +209,10 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyValue.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Qualification.datasource">
+    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.PropertyName.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Repository.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Specimen.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.TaxonList.datasource">
@@ -239,24 +227,27 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\DiversityService\Service1.disco" />
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\DiversityService.xsd">
+    <None Include="Service References\DiversityService\Service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService1.xsd">
+    <None Include="Service References\DiversityService\Service11.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService2.xsd">
+    <None Include="Service References\DiversityService\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\Service13.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

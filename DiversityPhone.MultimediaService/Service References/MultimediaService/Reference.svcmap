@@ -20,13 +20,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MediaService4.wsdl" MetadataType="Wsdl" ID="846ba6b4-f6a8-4191-9ff0-1707a980cbdc" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?wsdl" />
-    <MetadataFile FileName="MediaService4.xsd" MetadataType="Schema" ID="aba9c6aa-72a4-4599-90ac-bce68f54edc0" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" />
-    <MetadataFile FileName="MediaService41.xsd" MetadataType="Schema" ID="64290116-9163-4d35-94a4-4eb70f6dbffa" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" />
-    <MetadataFile FileName="MediaService4.disco" MetadataType="Disco" ID="456abb8b-c867-46b7-88cb-a024a014aede" SourceId="1" SourceUrl="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?disco" />
+    <MetadataFile FileName="MediaService42.xsd" MetadataType="Schema" ID="3f1bb8ec-52c3-4ae0-ac14-e5418f44c016" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" />
+    <MetadataFile FileName="MediaService421.xsd" MetadataType="Schema" ID="56f22a85-2c38-4651-a87e-a89fe773b26b" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" />
+    <MetadataFile FileName="MediaService41.disco" MetadataType="Disco" ID="21e5bb45-cc77-4817-aa6d-034ceed1f2ee" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?disco" />
+    <MetadataFile FileName="MediaService41.wsdl" MetadataType="Wsdl" ID="a389a896-1888-4602-83e9-f3ebb90c0fe5" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

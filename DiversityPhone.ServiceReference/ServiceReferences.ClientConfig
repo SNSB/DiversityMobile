@@ -9,7 +9,7 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:7091/DiversityService.svc"
+            <endpoint address="http://localhost:7091/DiversityService/DiversityService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>

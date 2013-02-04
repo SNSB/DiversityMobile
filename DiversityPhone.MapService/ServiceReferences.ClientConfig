@@ -9,7 +9,7 @@
             </basicHttpBinding>
         </bindings>
         <client>
-            <endpoint address="http://bsm5.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
                 contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
         </client>

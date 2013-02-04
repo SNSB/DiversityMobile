@@ -9,7 +9,7 @@
             </customBinding>
         </bindings>
         <client>
-            <endpoint address="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
+            <endpoint address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
                 binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
                 contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
         </client>

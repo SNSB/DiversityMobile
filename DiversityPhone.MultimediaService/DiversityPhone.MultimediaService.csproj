@@ -62,20 +62,11 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\MultimediaService\MediaService4.wsdl" />
-    <None Include="Service References\MultimediaService\MediaService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MultimediaService\MediaService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\MultimediaService\MediaService41.disco" />
     <Content Include="ServiceReferences.ClientConfig" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\MultimediaService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\MultimediaService\MediaService4.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\MultimediaService\configuration91.svcinfo" />
@@ -84,6 +75,13 @@
     <None Include="Service References\MultimediaService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\MultimediaService\MediaService41.wsdl" />
+    <None Include="Service References\MultimediaService\MediaService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MultimediaService\MediaService421.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\MultimediaService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

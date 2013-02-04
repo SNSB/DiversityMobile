@@ -9,8 +9,8 @@
   </wsp:Policy>
   <wsdl:types>
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
-      <xsd:import schemaLocation="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" namespace="http://tempuri.org/" />
-      <xsd:import schemaLocation="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IMediaService4_BeginTransaction_InputMessage">
@@ -116,9 +116,9 @@
   </wsdl:binding>
   <wsdl:service name="MediaService4">
     <wsdl:port name="WSHttpBinding_IMediaService4" binding="tns:WSHttpBinding_IMediaService4">
-      <soap12:address location="http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc" />
+      <soap12:address location="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc" />
       <wsa10:EndpointReference>
-        <wsa10:Address>http://bsm5.snsb.info:9090/DiversityMediaService4/MediaService4.svc</wsa10:Address>
+        <wsa10:Address>http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc</wsa10:Address>
       </wsa10:EndpointReference>
     </wsdl:port>
   </wsdl:service>
