@@ -16,6 +16,7 @@ using Microsoft.Phone.Shell;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DiversityPhone.View.Helper;
+using DiversityPhone.Services;
 
 namespace DiversityPhone.View
 {
@@ -49,6 +50,18 @@ namespace DiversityPhone.View
                 .Value()
                 .StartWith(VM.IsBusy)
                 .Subscribe(busy => this.ApplicationBar.IsVisible = !busy);
+
+            var messenger = App.IOC.Resolve<IMessageBus>();
+            messenger.SendMessage<DialogMessage>(new DialogMessage(Messages.DialogType.YesNo, 
+                DiversityResources.Setup_Message_AllowGPS_Caption,
+                DiversityResources.Setup_Message_AllowGPS_Body,
+                (r) => 
+                    {
+                        var vm = VM;
+                        if (vm != null)
+                            vm.UseGPS = r == DialogResult.OKYes;
+                    }));
+
         }
     }
 }

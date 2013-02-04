@@ -258,6 +258,18 @@
   <data name="Settings_Header_ButtonSave" xml:space="preserve">
     <value>save</value>
   </data>
+  <data name="Settings_Header_ContactAdmin" xml:space="preserve">
+    <value>Contact Administrator</value>
+  </data>
+  <data name="Settings_Header_ManageTaxa" xml:space="preserve">
+    <value>Manage Taxon Lists</value>
+  </data>
+  <data name="Settings_Header_PrivacyPolicy" xml:space="preserve">
+    <value>View Privacy Policy</value>
+  </data>
+  <data name="Settings_Header_UploadData" xml:space="preserve">
+    <value>Upload Data</value>
+  </data>
   <data name="Setup_Header_ButtonSave" xml:space="preserve">
     <value>save</value>
   </data>
@@ -284,6 +296,12 @@
   </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>Please Choose</value>
+  </data>
+  <data name="Setup_Message_AllowGPS_Body" xml:space="preserve">
+    <value>Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings.</value>
+  </data>
+  <data name="Setup_Message_AllowGPS_Caption" xml:space="preserve">
+    <value>Use Location Data?</value>
   </data>
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>

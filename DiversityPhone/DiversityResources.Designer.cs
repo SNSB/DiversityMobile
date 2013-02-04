@@ -484,6 +484,42 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Contact Administrator.
+        /// </summary>
+        public static string Settings_Header_ContactAdmin {
+            get {
+                return ResourceManager.GetString("Settings_Header_ContactAdmin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Manage Taxon Lists.
+        /// </summary>
+        public static string Settings_Header_ManageTaxa {
+            get {
+                return ResourceManager.GetString("Settings_Header_ManageTaxa", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View Privacy Policy.
+        /// </summary>
+        public static string Settings_Header_PrivacyPolicy {
+            get {
+                return ResourceManager.GetString("Settings_Header_PrivacyPolicy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Data.
+        /// </summary>
+        public static string Settings_Header_UploadData {
+            get {
+                return ResourceManager.GetString("Settings_Header_UploadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to save.
         /// </summary>
         public static string Setup_Header_ButtonSave {
@@ -561,6 +597,24 @@ namespace DiversityPhone {
         public static string Setup_Item_PleaseChoose {
             get {
                 return ResourceManager.GetString("Setup_Item_PleaseChoose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings..
+        /// </summary>
+        public static string Setup_Message_AllowGPS_Body {
+            get {
+                return ResourceManager.GetString("Setup_Message_AllowGPS_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Location Data?.
+        /// </summary>
+        public static string Setup_Message_AllowGPS_Caption {
+            get {
+                return ResourceManager.GetString("Setup_Message_AllowGPS_Caption", resourceCulture);
             }
         }
         
