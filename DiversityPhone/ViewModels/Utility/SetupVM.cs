@@ -308,7 +308,17 @@ namespace DiversityPhone.ViewModels.Utility
 
             existingSettings
                 .Where(settings => settings == null)
-                .Subscribe(_ => { IsBusy = false; });
+                .Subscribe(_ => 
+                    {
+                        Messenger.SendMessage<DialogMessage>(new DialogMessage(Messages.DialogType.YesNo,
+                        DiversityResources.Setup_Message_AllowGPS_Caption,
+                        DiversityResources.Setup_Message_AllowGPS_Body,
+                        (r) =>
+                        {
+                           UseGPS = r == DialogResult.OKYes;
+                        }));
+                        IsBusy = false; 
+                    });
 
             Save
                 .Do(_ => clearDatabase.Execute(null))
