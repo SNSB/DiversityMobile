@@ -262,6 +262,9 @@
     <Compile Include="View\Image.xaml.cs">
       <DependentUpon>Image.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Info.xaml.cs">
+      <DependentUpon>Info.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\MapManagement.xaml.cs">
       <DependentUpon>MapManagement.xaml</DependentUpon>
     </Compile>
@@ -555,6 +558,10 @@
     <Page Include="View\Image.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Info.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\MapManagement.xaml">
       <Generator>MSBuild:Compile</Generator>

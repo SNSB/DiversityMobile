@@ -155,6 +155,9 @@ namespace DiversityPhone.Services
                 case Page.Setup:
                     destination = "/View/Setup.xaml";
                     break;
+                case Page.Info:
+                    destination = "/View/Info.xaml";
+                    break;
 
 #if DEBUG
                 default:

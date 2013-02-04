@@ -46,17 +46,16 @@
             <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
                 
             <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
+            
             <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
-                             Content="Manage Taxon Lists" Click="ManageTaxa_Click"/>
-            <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
-                             Content="Upload Data" Click="Upload_Click"/>
-            <HyperlinkButton Margin="{StaticResource PhoneMargin}" 
-                             Content="Contact Administrator" Click="Administrator_Click"/>
+                             Content="{Binding Resources.Settings_Header_Info, Source={StaticResource LocalizedStrings}}" 
+                             Click="Info_Click"/>
         </StackPanel>         
     </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">            
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     

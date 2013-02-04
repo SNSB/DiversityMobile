@@ -16,7 +16,7 @@ namespace DiversityPhone.Services
         EditCS,
         ViewCS,
         EditIUAN,
-        
+
         NewImage,
         NewAudio,
         NewVideo,
@@ -26,6 +26,7 @@ namespace DiversityPhone.Services
         ViewMap,
         TaxonManagement,
         Sync,
-        Setup
+        Setup,
+        Info
     }
 }

@@ -24,7 +24,7 @@ namespace DiversityPhone.View
 {
     public partial class Settings : PhoneApplicationPage
     {
-        private SettingsVM VM { get { return DataContext as SettingsVM; } }       
+        private SettingsVM VM { get { return DataContext as SettingsVM; } }
 
         private ApplicationBarIconButton saveBtn, clearBtn, refreshBtn;
 
@@ -37,17 +37,17 @@ namespace DiversityPhone.View
             InitializeComponent();
 
             version_info.Text = GetVersionNumber();
-        }      
+        }
 
-        private void ManageTaxa_Click(object sender, RoutedEventArgs e)
+        private void ManageTaxa_Click()
         {
             if (VM != null)
                 VM.ManageTaxa.Execute(null);
         }
 
-        private void Upload_Click(object sender, RoutedEventArgs e)
+        private void Upload_Click()
         {
-            if (VM != null)                
+            if (VM != null)
                 VM.UploadData.Execute(null);
         }
 
@@ -71,7 +71,7 @@ namespace DiversityPhone.View
                     Text = DiversityResources.Settings_Header_ButtonRefresh
                 };
                 ApplicationBar.Buttons.Add(refreshBtn);
-                toRefresh = new CommandButtonAdapter(refreshBtn, VM.RefreshVocabulary);   
+                toRefresh = new CommandButtonAdapter(refreshBtn, VM.RefreshVocabulary);
 
                 clearBtn = new ApplicationBarIconButton()
                 {
@@ -81,17 +81,28 @@ namespace DiversityPhone.View
                 ApplicationBar.Buttons.Add(clearBtn);
                 toClear = new CommandButtonAdapter(clearBtn, VM.Reset);
 
-                           
-            }            
+
+                var manageTaxa = new ApplicationBarMenuItem()
+                {
+                    Text = DiversityResources.Settings_Header_ManageTaxa
+                };
+                manageTaxa.Click += (s, args) => ManageTaxa_Click();
+                ApplicationBar.MenuItems.Add(manageTaxa);
+
+                var uploadData = new ApplicationBarMenuItem()
+                {
+                    Text = DiversityResources.Settings_Header_UploadData
+                };
+                uploadData.Click += (s, args) => Upload_Click();
+                ApplicationBar.MenuItems.Add(uploadData);
+            }
         }
 
-        private void Administrator_Click(object sender, RoutedEventArgs e)
+        private void Info_Click(object sender, RoutedEventArgs e)
         {
-            new EmailComposeTask()
-            {
-                To = "weiss@bsm.mwn.de",
-                Subject = "DiversityMobile"
-            }.Show();
+            var vm = VM;
+            if (vm != null && vm.Info.CanExecute(null))
+                vm.Info.Execute(null);
         }
 
         private static string GetVersionNumber()
@@ -99,6 +110,11 @@ namespace DiversityPhone.View
             var asm = Assembly.GetExecutingAssembly();
             var parts = asm.FullName.Split(',');
             return parts[1].Split('=')[1];
+        }
+
+        private void PrivacyPolicy_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

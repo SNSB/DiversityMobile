@@ -79,6 +79,76 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Created by.
+        /// </summary>
+        public static string App_CreatedBy {
+            get {
+                return ResourceManager.GetString("App_CreatedBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to University of Bayreuth
+        ///Chair for applied computer science IV
+        ///
+        ///Prof. Dr.-ing Stefan Jablonski
+        ///Tobias Schneider
+        ///Georg Rollinger.
+        /// </summary>
+        public static string App_Credits {
+            get {
+                return ResourceManager.GetString("App_Credits", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Homepage.
+        /// </summary>
+        public static string App_Homepage_Title {
+            get {
+                return ResourceManager.GetString("App_Homepage_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.ai4.uni-bayreuth.de.
+        /// </summary>
+        public static string App_Homepage_URL {
+            get {
+                return ResourceManager.GetString("App_Homepage_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store data on your phone which may contain your position information if you have enabled this option in the settings. 
+        ///
+        ///All data remain only on the mobile phone unless you choose to send your data to the SNSB-It-Cente [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string App_Info {
+            get {
+                return ResourceManager.GetString("App_Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to sekretariat-ai4@uni-bayreuth.de.
+        /// </summary>
+        public static string App_Mail_Address {
+            get {
+                return ResourceManager.GetString("App_Mail_Address", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail.
+        /// </summary>
+        public static string App_Mail_Title {
+            get {
+                return ResourceManager.GetString("App_Mail_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to delete.
         /// </summary>
         public static string Button_Delete {
@@ -457,7 +527,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to clear database.
+        ///   Looks up a localized string similar to clear db.
         /// </summary>
         public static string Settings_Header_ButtonClear {
             get {
@@ -466,7 +536,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to refresh vocabulary.
+        ///   Looks up a localized string similar to get vocabulary.
         /// </summary>
         public static string Settings_Header_ButtonRefresh {
             get {
@@ -484,11 +554,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact Administrator.
+        ///   Looks up a localized string similar to About.
         /// </summary>
-        public static string Settings_Header_ContactAdmin {
+        public static string Settings_Header_Info {
             get {
-                return ResourceManager.GetString("Settings_Header_ContactAdmin", resourceCulture);
+                return ResourceManager.GetString("Settings_Header_Info", resourceCulture);
             }
         }
         
@@ -498,15 +568,6 @@ namespace DiversityPhone {
         public static string Settings_Header_ManageTaxa {
             get {
                 return ResourceManager.GetString("Settings_Header_ManageTaxa", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to View Privacy Policy.
-        /// </summary>
-        public static string Settings_Header_PrivacyPolicy {
-            get {
-                return ResourceManager.GetString("Settings_Header_PrivacyPolicy", resourceCulture);
             }
         }
         

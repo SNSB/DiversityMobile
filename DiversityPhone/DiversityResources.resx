@@ -123,6 +123,34 @@
   <data name="Analysis_Result_NoResult" xml:space="preserve">
     <value>No Result</value>
   </data>
+  <data name="App_CreatedBy" xml:space="preserve">
+    <value>Created by</value>
+  </data>
+  <data name="App_Credits" xml:space="preserve">
+    <value>University of Bayreuth
+Chair for applied computer science IV
+
+Prof. Dr.-ing Stefan Jablonski
+Tobias Schneider
+Georg Rollinger</value>
+  </data>
+  <data name="App_Homepage_Title" xml:space="preserve">
+    <value>Homepage</value>
+  </data>
+  <data name="App_Homepage_URL" xml:space="preserve">
+    <value>http://www.ai4.uni-bayreuth.de</value>
+  </data>
+  <data name="App_Info" xml:space="preserve">
+    <value>DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store data on your phone which may contain your position information if you have enabled this option in the settings. 
+
+All data remain only on the mobile phone unless you choose to send your data to the SNSB-It-Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DiversityCollection desktop client available under www.diversityworkbench.net/Portal/Software. You always keep control over your data. </value>
+  </data>
+  <data name="App_Mail_Address" xml:space="preserve">
+    <value>sekretariat-ai4@uni-bayreuth.de</value>
+  </data>
+  <data name="App_Mail_Title" xml:space="preserve">
+    <value>Mail</value>
+  </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>delete</value>
   </data>
@@ -250,22 +278,19 @@
     <value>Loading Vocabulary</value>
   </data>
   <data name="Settings_Header_ButtonClear" xml:space="preserve">
-    <value>clear database</value>
+    <value>clear db</value>
   </data>
   <data name="Settings_Header_ButtonRefresh" xml:space="preserve">
-    <value>refresh vocabulary</value>
+    <value>get vocabulary</value>
   </data>
   <data name="Settings_Header_ButtonSave" xml:space="preserve">
     <value>save</value>
   </data>
-  <data name="Settings_Header_ContactAdmin" xml:space="preserve">
-    <value>Contact Administrator</value>
+  <data name="Settings_Header_Info" xml:space="preserve">
+    <value>About</value>
   </data>
   <data name="Settings_Header_ManageTaxa" xml:space="preserve">
     <value>Manage Taxon Lists</value>
-  </data>
-  <data name="Settings_Header_PrivacyPolicy" xml:space="preserve">
-    <value>View Privacy Policy</value>
   </data>
   <data name="Settings_Header_UploadData" xml:space="preserve">
     <value>Upload Data</value>

@@ -49,7 +49,9 @@ namespace DiversityPhone.ViewModels.Utility
         
         public ReactiveCommand ManageTaxa { get; private set; }
 
-        public ReactiveCommand UploadData { get; private set; }       
+        public ReactiveCommand UploadData { get; private set; }
+
+        public ReactiveCommand Info { get; private set; }
         
 
         public AppSettings Model { get { return _Model.Value; } }
@@ -123,6 +125,12 @@ namespace DiversityPhone.ViewModels.Utility
             Messenger.RegisterMessageSource(
                 UploadData
                 .Select(_ => Services.Page.Sync)
+                );
+
+            Info = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                Info
+                .Select(_ => Services.Page.Info)
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
