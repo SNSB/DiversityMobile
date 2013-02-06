@@ -12,12 +12,14 @@ using Microsoft.Xna.Framework.Audio;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Threading.Tasks;
+using Microsoft.Phone.BackgroundAudio;
+using Microsoft.Xna.Framework.Media;
 
 
 namespace DiversityPhone.ViewModels
 {
     public class AudioVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
-    {     
+    {
 
         
 
@@ -34,7 +36,7 @@ namespace DiversityPhone.ViewModels
         private BitmapImage speakerImage = new BitmapImage(new Uri("/Images/AudioIcons/speaker.png", UriKind.RelativeOrAbsolute));
 
         #region Properties
-
+        private bool _MusicWasPlaying = false;
 
         private string _Uri;
         public string Uri
@@ -79,6 +81,20 @@ namespace DiversityPhone.ViewModels
             }
             set
             {
+                if (value != _state)
+                {
+                    if (value == PlayStates.Playing && MediaPlayer.State == MediaState.Playing)
+                    {
+                        _MusicWasPlaying = true;
+                        MediaPlayer.Pause();
+                    }
+                    else if (value == PlayStates.Idle && _MusicWasPlaying)
+                    {
+                        _MusicWasPlaying = false;
+                        MediaPlayer.Resume();
+                    }
+                }
+
                 this.RaiseAndSetIfChanged(x => x.State, ref _state, value);
             }
         }
@@ -148,6 +164,9 @@ namespace DiversityPhone.ViewModels
                         audioStream.SetLength(0);
                     });
 
+            
+
+            
         }
 
         #endregion
@@ -253,6 +272,7 @@ namespace DiversityPhone.ViewModels
         /// <param name="e"></param>
         void microphone_BufferReady(object sender, EventArgs e)
         {
+            
             // Retrieve audio data
             microphone.GetData(this.AudioBuffer);
 
