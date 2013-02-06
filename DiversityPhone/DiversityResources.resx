@@ -138,18 +138,20 @@ Georg Rollinger</value>
     <value>Homepage</value>
   </data>
   <data name="App_Homepage_URL" xml:space="preserve">
-    <value>http://www.ai4.uni-bayreuth.de</value>
+    <value>http://www.diversitymobile.net</value>
   </data>
   <data name="App_Info" xml:space="preserve">
-    <value>DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store data on your phone which may contain your position information if you have enabled this option in the settings. 
+    <value>DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. 
 
-All data remain only on the mobile phone unless you choose to send your data to the SNSB-It-Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DiversityCollection desktop client available under www.diversityworkbench.net/Portal/Software. You always keep control over your data. </value>
+All data remain only on the mobile phone unless you choose to send your data to the SNSB-IT-Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DiversityCollection desktop client which is available under www.diversityworkbench.net/Portal/Software. You always keep control over your data.
+
+DiversityMobile communicates in several processes with the servers of the SNSB-IT center. To protect you from additinal cost these services are only available when you are using a Wi-Fi connection.</value>
   </data>
   <data name="App_Mail_Address" xml:space="preserve">
-    <value>sekretariat-ai4@uni-bayreuth.de</value>
+    <value>weiss@bsm.mwn.de</value>
   </data>
   <data name="App_Mail_Title" xml:space="preserve">
-    <value>Mail</value>
+    <value>Contact for SNSB Account</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>delete</value>
