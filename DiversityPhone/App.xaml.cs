@@ -149,7 +149,7 @@ namespace DiversityPhone
 #if false
             IOC.Register<IMapTransferService>(new TestMapTransferService());
 #else
-            IOC.Register<IMapTransferService>(new MapTransferService(IOC));
+            IOC.Register<IMapTransferService>(new MapTransferService(IOC.Resolve<IMapStorageService>()));
 #endif
             
 

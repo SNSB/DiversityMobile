@@ -9,8 +9,8 @@ using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Xml.Linq;
 using System.Net;
-using Funq;
 using System.Reactive.Threading.Tasks;
+using System.Reactive;
 
 namespace DiversityPhone.Services
 {
@@ -18,15 +18,15 @@ namespace DiversityPhone.Services
     {
         private IMapStorageService MapStorage;
         private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
-        
 
-        private IObservable<GetMapListFilterCompletedEventArgs> GetMapsListCompletedObservable;
-        private IObservable<GetMapUrlCompletedEventArgs> GetMapUrlCompletedObservable;
-        private IObservable<GetXmlUrlCompletedEventArgs> GetXmlUrlCompletedObservable;
 
-        public MapTransferService(Container ioc)            
+        private IObservable<EventPattern<GetMapListFilterCompletedEventArgs>> GetMapsListCompletedObservable;
+        private IObservable<EventPattern<GetMapUrlCompletedEventArgs>> GetMapUrlCompletedObservable;
+        private IObservable<EventPattern<GetXmlUrlCompletedEventArgs>> GetXmlUrlCompletedObservable;
+
+        public MapTransferService(IMapStorageService storage)
         {
-            MapStorage = ioc.Resolve<IMapStorageService>();
+            MapStorage = storage;
 
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -36,30 +36,31 @@ namespace DiversityPhone.Services
                 }
             }
 
-            GetMapsListCompletedObservable = Observable.FromEvent<EventHandler<GetMapListFilterCompletedEventArgs>, GetMapListFilterCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetMapListFilterCompleted += d, d => MapService.GetMapListFilterCompleted -= d);
-            GetMapUrlCompletedObservable = Observable.FromEvent<EventHandler<GetMapUrlCompletedEventArgs>, GetMapUrlCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetMapUrlCompleted += d, d => MapService.GetMapUrlCompleted -= d);                
-            GetXmlUrlCompletedObservable = Observable.FromEvent<EventHandler<GetXmlUrlCompletedEventArgs>, GetXmlUrlCompletedEventArgs>((a) => (s, args) => a(args), d => MapService.GetXmlUrlCompleted += d, d => MapService.GetXmlUrlCompleted -= d);               
+            GetMapsListCompletedObservable = Observable.FromEventPattern<GetMapListFilterCompletedEventArgs>(d => MapService.GetMapListFilterCompleted += d, d => MapService.GetMapListFilterCompleted -= d);
+            GetMapUrlCompletedObservable = Observable.FromEventPattern<GetMapUrlCompletedEventArgs>(d => MapService.GetMapUrlCompleted += d, d => MapService.GetMapUrlCompleted -= d);
+            GetXmlUrlCompletedObservable = Observable.FromEventPattern<GetXmlUrlCompletedEventArgs>(d => MapService.GetXmlUrlCompleted += d, d => MapService.GetXmlUrlCompleted -= d);
         }
 
         public IObservable<IEnumerable<String>> GetAvailableMaps(String searchString)
         {
-            var res = singleResultObservable(
-                GetMapsListCompletedObservable
-                .Where(args => Object.ReferenceEquals(searchString, args.UserState))
-                .Select(args => args.Result as IEnumerable<string>));
-            MapService.GetMapListFilterAsync(searchString, searchString);
+            object request = new object();
+            var res = GetMapsListCompletedObservable
+                .MakeObservableServiceResultSingle(request)
+                .Select(args => args.Result as IEnumerable<string>);
+            MapService.GetMapListFilterAsync(searchString, request);
             return res;
         }
 
         public IObservable<Map> downloadMap(String serverKey)
         {
+            object dl = new object();
             var obs =
             Observable.Merge(
                 GetMapUrlCompletedObservable
-                .Where(args => Object.ReferenceEquals(serverKey, args.UserState))
+                .MakeObservableServiceResultSingle(dl)
                 .Select(args => args.Result),
                 GetXmlUrlCompletedObservable
-                .Where(args => Object.ReferenceEquals(serverKey, args.UserState))
+                .MakeObservableServiceResultSingle(dl)
                 .Select(args => args.Result))
                 .SelectMany(uri =>
                     {
@@ -67,9 +68,9 @@ namespace DiversityPhone.Services
                         string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
                         request.Headers["Authorization"] = "Basic " + credentials;
 
-                        return request.GetResponseAsync().ToObservable();
+                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
                     })
-                .Select( response =>
+                .Select(response =>
                     {
                         var http = response as HttpWebResponse;
 
@@ -106,52 +107,43 @@ namespace DiversityPhone.Services
                                     MapStorage.addMap(map, stream);
                                     return map;
                                 });
-                        })                    
+                        })
                     .Publish();
             obs.Connect();
-            
-            MapService.GetMapUrlAsync(serverKey, serverKey);
-            MapService.GetXmlUrlAsync(serverKey, serverKey);
+
+            MapService.GetMapUrlAsync(serverKey, dl);
+            MapService.GetXmlUrlAsync(serverKey, dl);
 
             return obs;
         }
 
-       
+
 
 
         private Map parseXMLtoMap(Stream contentStream)
-        {            
+        {
             XDocument load = XDocument.Load(contentStream);
             var data = from query in load.Descendants("ImageOptions")
-                        select new Map
-                        {
-                            Name = (string)query.Element("Name"),
-                            Description = (string)query.Element("Description"),
-                            NWLat = (double)query.Element("NWLat"),
-                            NWLong = (double)query.Element("NWLong"),
-                            SELat = (double)query.Element("SELat"),
-                            SELong = (double)query.Element("SELong"),
-                            SWLat = (double)query.Element("SWLat"),
-                            SWLong = (double)query.Element("SWLong"),
-                            NELat = (double)query.Element("NELat"),
-                            NELong = (double)query.Element("NELong"),
-                            ZoomLevel = (int?)query.Element("ZommLevel"),
-                            Transparency = (int?)query.Element("Transparency")
-                        };
+                       select new Map
+                       {
+                           Name = (string)query.Element("Name"),
+                           Description = (string)query.Element("Description"),
+                           NWLat = (double)query.Element("NWLat"),
+                           NWLong = (double)query.Element("NWLong"),
+                           SELat = (double)query.Element("SELat"),
+                           SELong = (double)query.Element("SELong"),
+                           SWLat = (double)query.Element("SWLat"),
+                           SWLong = (double)query.Element("SWLong"),
+                           NELat = (double)query.Element("NELat"),
+                           NELong = (double)query.Element("NELong"),
+                           ZoomLevel = (int?)query.Element("ZommLevel"),
+                           Transparency = (int?)query.Element("Transparency")
+                       };
             if (data.Count() > 1)
                 this.Log().Debug("Multiple Map XML Elements in content stream");
 
-            return data.FirstOrDefault();        
+            return data.FirstOrDefault();
         }
 
-        private static IObservable<T> singleResultObservable<T>(IObservable<T> source)
-        {
-            var res = source
-                .FirstAsync()
-                .Replay(1);
-
-            res.Connect();
-            return res;
-        }
     }
 }

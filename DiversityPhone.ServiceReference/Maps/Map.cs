@@ -6,7 +6,6 @@ using System.IO.IsolatedStorage;
 using System.Xml.Linq;
 using System.IO;
 using System.Windows;
-using DiversityPhone.Model.Geometry;
 
 namespace DiversityPhone.Model
 {

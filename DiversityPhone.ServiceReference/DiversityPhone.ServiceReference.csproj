@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DiversityService\DiversityServiceClient.Multimedia.cs" />
@@ -89,6 +90,11 @@
     <Compile Include="DiversityService\DiversityServiceClient.Upload.cs" />
     <Compile Include="DiversityService\IDiversityServiceClient.cs" />
     <Compile Include="DiversityService\ModelProjection.cs" />
+    <Compile Include="Maps\IMapStorageService.cs" />
+    <Compile Include="Maps\IMapTransferService.cs" />
+    <Compile Include="Maps\Map.cs" />
+    <Compile Include="Maps\MapTransferService.cs" />
+    <Compile Include="Maps\TestMapTransferService.cs" />
     <Compile Include="Model\Analysis.cs" />
     <Compile Include="Model\AnalysisResult.cs" />
     <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
