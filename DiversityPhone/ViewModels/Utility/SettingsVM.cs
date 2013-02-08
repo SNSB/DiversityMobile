@@ -19,15 +19,15 @@ namespace DiversityPhone.ViewModels.Utility
 {
     public partial class SettingsVM : PageVMBase
     {
-        
-        ISettingsService Settings;        
-        NavigationService Navigation;
 
-        
+        ISettingsService Settings;
+        IConnectivityService Connnectivity;
 
-        
 
-        public ReactiveCommand RefreshVocabulary{get; private set;}      
+
+
+
+        public ReactiveCommand RefreshVocabulary { get; private set; }
 
 
         private bool _UseGPS;
@@ -40,42 +40,42 @@ namespace DiversityPhone.ViewModels.Utility
             }
             set
             {
-                this.RaiseAndSetIfChanged(x => x.UseGPS,ref _UseGPS, value);
+                this.RaiseAndSetIfChanged(x => x.UseGPS, ref _UseGPS, value);
             }
-        }             
-        public ReactiveCommand Save { get; private set; }       
+        }
+        public ReactiveCommand Save { get; private set; }
 
-        public ReactiveCommand Reset { get; private set; }           
-        
+        public ReactiveCommand Reset { get; private set; }
+
         public ReactiveCommand ManageTaxa { get; private set; }
 
         public ReactiveCommand UploadData { get; private set; }
 
         public ReactiveCommand Info { get; private set; }
-        
+
 
         public AppSettings Model { get { return _Model.Value; } }
         private ObservableAsPropertyHelper<AppSettings> _Model;
-        private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();       
-        
-        public SettingsVM(Container ioc)            
-        {            
+        private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();
+
+        public SettingsVM(Container ioc)
+        {
             Settings = ioc.Resolve<ISettingsService>();
-            Navigation = ioc.Resolve<NavigationService>();
+            Connnectivity = ioc.Resolve<IConnectivityService>();
 
             _Model = this.ObservableToProperty(
-                _ModelSubject   
+                _ModelSubject
                 .Where(x => true),
-                x => x.Model);            
+                x => x.Model);
 
             _ModelSubject
                 .Where(x => x != null)
                 .Select(m => m.UseGPS)
-                .Subscribe(x => UseGPS = x);                      
+                .Subscribe(x => UseGPS = x);
 
-            Reset = new ReactiveCommand();
+            Reset = new ReactiveCommand(Connnectivity.WifiAvailable());
             Messenger.RegisterMessageSource(
-                Reset                
+                Reset
                 .Select(_ => new DialogMessage(
                     Messages.DialogType.YesNo,
                     "Are you sure?",
@@ -91,12 +91,12 @@ namespace DiversityPhone.ViewModels.Utility
                 Observable.Merge(
             this.ObservableForProperty(x => x.UseGPS).Select(_ => Unit.Default),
             this.ObservableForProperty(x => x.Model).Select(_ => Unit.Default),
-            _ModelSubject.Select(_ => Unit.Default)  
+            _ModelSubject.Select(_ => Unit.Default)
                 )
-            .StartWith(Unit.Default)                
+            .StartWith(Unit.Default)
                 .Where(_ => Model != null)
                 .Select(_ => Model.UseGPS != UseGPS);
-             
+
             Save = new ReactiveCommand(setting_changed);
             Messenger.RegisterMessageSource(
                 Save
@@ -104,16 +104,16 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(_ => Page.Previous)
                 );
 
-            RefreshVocabulary = new ReactiveCommand();
+            RefreshVocabulary = new ReactiveCommand(Connnectivity.WifiAvailable());
             RefreshVocabulary
-                .Subscribe(_ => 
+                .Subscribe(_ =>
                 {
                     Messenger.SendMessage(Page.Setup);
-                });           
-            
-                                   
-            
-               
+                });
+
+
+
+
 
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(
@@ -134,22 +134,22 @@ namespace DiversityPhone.ViewModels.Utility
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
-            storedConfig.Subscribe(_ModelSubject);                       
+            storedConfig.Subscribe(_ModelSubject);
         }
 
-       
+
 
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-            Settings.saveSettings(Model);           
-        }        
+            Settings.saveSettings(Model);
+        }
 
-        
+
         private void OnReset()
         {
             Settings.saveSettings(null);
             Messenger.SendMessage(Page.Setup);
-        }     
+        }
     }
 }
