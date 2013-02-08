@@ -56,7 +56,7 @@
             <!--Pivotelement eins-->
             <controls:PivotItem Header="local">
                 <StackPanel>
-                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
                     <ItemsControl ItemsSource="{Binding LocalLists}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -87,7 +87,11 @@
             
             <controls:PivotItem Header="personal">
                 <StackPanel>
-                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <Grid>
+                        <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
+                                         IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
+                    </Grid>
                     <ItemsControl ItemsSource="{Binding PersonalLists}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -106,9 +110,13 @@
                     </ItemsControl>
                 </StackPanel>
             </controls:PivotItem>
-            <controls:PivotItem Header="public">
+            <controls:PivotItem Header="public" >
                 <StackPanel>
-                    <TextBlock Text="Press and hold to display menu" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <Grid>
+                        <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
+                        <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
+                                         IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
+                    </Grid>
                     <ItemsControl ItemsSource="{Binding PublicLists}">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>

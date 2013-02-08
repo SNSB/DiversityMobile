@@ -53,7 +53,12 @@ namespace DiversityPhone.ViewModels
             {
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
-        }   
+        }
+
+
+        public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
+        
         
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
@@ -75,6 +80,8 @@ namespace DiversityPhone.ViewModels
             Service = ioc.Resolve<IDiversityServiceClient>();            
             Connectivity = ioc.Resolve<IConnectivityService>();
             Notification = ioc.Resolve<INotificationService>();
+
+            _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable);
 
             var localLists =
             this.FirstActivation()
@@ -134,6 +141,7 @@ namespace DiversityPhone.ViewModels
 
             Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Download
+                .CheckConnectivity(Connectivity, Notification)
                 .Subscribe(taxonlist =>
                         {
                             if (Taxa.getTaxonTableFreeCount() > 0)
@@ -182,7 +190,13 @@ namespace DiversityPhone.ViewModels
                 });
 
             //Download all only on Personal pivot
-            DownloadAll = new ReactiveCommand(this.ObservableForProperty(x => x.CurrentPivot).Value().Select(p => p == Pivot.Personal));
+            var canDownloadAll =
+                this.ObservableForProperty(x => x.CurrentPivot)
+                .Value()
+                .Select(p => p == Pivot.Personal)
+                .CombineLatest(Connectivity.WifiAvailable(), (p, wi) => p && wi);
+
+            DownloadAll = new ReactiveCommand(canDownloadAll);
             DownloadAll
                 .SelectMany(_ => PersonalLists.ToArray())
                 .Where(vm => Download.CanExecute(vm))
