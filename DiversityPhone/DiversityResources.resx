@@ -153,6 +153,16 @@ DiversityMobile communicates in several processes with the servers of the SNSB-I
   <data name="App_Mail_Title" xml:space="preserve">
     <value>Contact for SNSB Account</value>
   </data>
+  <data name="App_Map_LinkTitle" xml:space="preserve">
+    <value>Diversity Mobile Wiki</value>
+  </data>
+  <data name="App_Map_Text" xml:space="preserve">
+    <value>
+In cooperation with the Bayerische Vermessungsverwaltung the SNSB IT Center offers a user-restricted web service to use TK25 Bayern Topographische Karten for the DiversityMobile WP app. For details about these maps and the license that governs their use visit the</value>
+  </data>
+  <data name="App_Map_URL" xml:space="preserve">
+    <value>http://www.diversitymobile.net/wiki/TK25_Maps_Bavaria_for_DiversityMobile</value>
+  </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>delete</value>
   </data>

@@ -18,6 +18,14 @@ namespace DiversityPhone.View
             InitializeComponent();
         }
 
+        private void MapWiki_Click(object sender, RoutedEventArgs e)
+        {
+            new WebBrowserTask()
+            {
+                Uri = new Uri(DiversityResources.App_Map_URL, UriKind.Absolute)
+            }.Show();
+        }
+
         private void Mail_Click(object sender, RoutedEventArgs e)
         {
             new EmailComposeTask()

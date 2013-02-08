@@ -149,6 +149,34 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Diversity Mobile Wiki.
+        /// </summary>
+        public static string App_Map_LinkTitle {
+            get {
+                return ResourceManager.GetString("App_Map_LinkTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///In cooperation with the Bayerische Vermessungsverwaltung the SNSB IT Center offers a user-restricted web service to use TK25 Bayern Topographische Karten for the DiversityMobile WP app. For details about these maps and the license that governs their use visit the.
+        /// </summary>
+        public static string App_Map_Text {
+            get {
+                return ResourceManager.GetString("App_Map_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.diversitymobile.net/wiki/TK25_Maps_Bavaria_for_DiversityMobile.
+        /// </summary>
+        public static string App_Map_URL {
+            get {
+                return ResourceManager.GetString("App_Map_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to delete.
         /// </summary>
         public static string Button_Delete {
