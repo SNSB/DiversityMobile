@@ -105,9 +105,9 @@ namespace DiversityPhone.ViewModels
                 .CheckConnectivity(Connectivity, Notification)
                 .SelectMany(_ => 
                     {
-                        
                         return Service.GetTaxonLists()
-                            .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists);
+                            .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists)
+                            .TakeUntil(this.OnDeactivation());
                     })
                 .ObserveOnDispatcher()
                 .SelectMany(lists => 
