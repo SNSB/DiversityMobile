@@ -63,22 +63,42 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
-            <controls:PivotItem Header="online" 
-                                IsEnabled="{Binding IsOnlineAvailable}">
-                <StackPanel >                    
-                    <TextBox TextChanged="QueryString_TextChanged"/>
-                    <ListBox ItemsSource="{Binding SearchResults}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Button Style="{StaticResource ItemButtonStyle}" 
+            <controls:PivotItem Header="online">
+                <StackPanel>
+                    <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
+                                         IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="QueryString"
+                                     Grid.Column="0"
+                                     IsEnabled="{Binding IsOnlineAvailable}" />
+                            <Button Grid.Column="1"  
+                                    HorizontalAlignment="Right"
+                                   
+                                    Style="{StaticResource ItemButtonStyle}"
+                                    Command="{Binding SearchMaps}"
+                                    CommandParameter="{Binding Text, ElementName=QueryString}">
+                                <Image Source="/Images/MetroIcons/whitenocircle/search.png"  
+                                       Height ="40" Margin="0"/>
+                            </Button>
+                        </Grid>
+                        <ListBox ItemsSource="{Binding SearchResults}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Style="{StaticResource ItemButtonStyle}" 
                                     Command="{Binding DataContext.DownloadMap, ElementName=currentPage}"
                                     CommandParameter="{Binding}">
-                                    <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MapTemplate}"/>                                    
-                                </Button>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                                        <ContentControl Content="{Binding}"
+                                                    ContentTemplate="{StaticResource MapTemplate}"/>
+                                    </Button>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </StackPanel>
                 </StackPanel>
             </controls:PivotItem>
         </controls:Pivot>

@@ -22,25 +22,12 @@ using System.Reactive.Linq;
 namespace DiversityPhone.View
 {
     public partial class MapManagement : PhoneApplicationPage
-    {        
+    {
         private MapManagementVM VM { get { return DataContext as MapManagementVM; } }
 
         public MapManagement()
         {
             InitializeComponent();
-
-
-        }
-
-        private void QueryString_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var textbox = sender as TextBox;
-            var vm = VM;
-
-            if (textbox != null && vm != null)
-            {
-                vm.QueryString = textbox.Text;
-            }
         }
     }
 }

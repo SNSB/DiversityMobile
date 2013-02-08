@@ -32,7 +32,7 @@ namespace DiversityPhone.ViewModels
             {
                 return _IsDownloading;
             }
-            private set
+            set
             {
                 this.RaiseAndSetIfChanged(x => x.IsDownloading, ref _IsDownloading, value);
             }
@@ -41,7 +41,7 @@ namespace DiversityPhone.ViewModels
         public MapVM(Map model)
             : base(model)
         {
-            IsDownloading = Model == null;
+            
         }
 
         public void SetModel(Map model)

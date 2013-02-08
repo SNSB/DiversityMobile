@@ -32,19 +32,21 @@ namespace DiversityPhone.ViewModels
             Local,
             Online
         }
-        
+
         private IConnectivityService Network;
         private IMapTransferService MapService;
         private IMapStorageService MapStorage;
-       
+        private INotificationService Notifications;
+
+        public ReactiveAsyncCommand SearchMaps { get; private set; }
         public ReactiveCommand<MapVM> SelectMap { get; private set; }
         public ReactiveCommand<MapVM> DeleteMap { get; private set; }        
         public ReactiveCommand<MapVM> DownloadMap { get; private set; }
 
 
         private IDictionary<string, Unit> _local_map_register = new Dictionary<string, Unit>();
-        #region Properties    
-   
+        #region Properties
+
 
         private Pivot _CurrentPivot;
         public Pivot CurrentPivot
@@ -58,7 +60,7 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
         }
-        
+
 
         public ReactiveCollection<MapVM> MapList { get; private set; }
 
@@ -66,18 +68,11 @@ namespace DiversityPhone.ViewModels
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
         public bool IsOnlineAvailable
         {
-            get { return _IsOnlineAvailable.Value; }            
+            get { return _IsOnlineAvailable.Value; }
         }
 
-        string _QueryString = "";
-        public string QueryString
-        {
-            get { return _QueryString; }
-            set { this.RaiseAndSetIfChanged(x => x.QueryString, ref _QueryString, value); }
-        }
-
-        private ObservableAsPropertyHelper<IEnumerable<MapVM>> _SearchResults;
-        public IEnumerable<MapVM> SearchResults
+        private ObservableAsPropertyHelper<IReactiveCollection<MapVM>> _SearchResults;
+        public IReactiveCollection<MapVM> SearchResults
         {
             get { return _SearchResults.Value; }
         }
@@ -85,17 +80,16 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         private ReactiveAsyncCommand getMaps = new ReactiveAsyncCommand();
-        private ReactiveAsyncCommand searchMaps;
-
         private ReactiveAsyncCommand downloadMap = new ReactiveAsyncCommand();
 
         public MapManagementVM(Container ioc)
-        {            
+        {
             Network = ioc.Resolve<IConnectivityService>();
             MapService = ioc.Resolve<IMapTransferService>();
             MapStorage = ioc.Resolve<IMapStorageService>();
+            Notifications = ioc.Resolve<INotificationService>();
 
-            
+
 
             this.FirstActivation()
                 .Subscribe(_ => getMaps.Execute(null));
@@ -125,48 +119,57 @@ namespace DiversityPhone.ViewModels
                 .Where(map => map != null)
                 .Subscribe(map => MapStorage.deleteMap(map));
 
-            _IsOnlineAvailable = this.ObservableToProperty(Network.WifiAvailable(), x => x.IsOnlineAvailable, false);
+            _IsOnlineAvailable = this.ObservableToProperty(
+                this.OnActivation()
+                .SelectMany(Network.WifiAvailable().TakeUntil(this.OnDeactivation()))
+                , x => x.IsOnlineAvailable, false);
 
-            searchMaps = new ReactiveAsyncCommand(_IsOnlineAvailable);
-
-            this.ObservableForProperty(x => x.QueryString).ValueIfNotDefault()
-                .Throttle(TimeSpan.FromSeconds(.5))
-                .Where(s => s.Length > 2)
-                .Where(s => searchMaps.CanExecute(s))
-                .Subscribe(searchMaps.Execute);
+            SearchMaps = new ReactiveAsyncCommand(_IsOnlineAvailable);
 
             _SearchResults = this.ObservableToProperty(
-                searchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string)),
+                SearchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string)),
                 x => x.SearchResults);
 
-            DownloadMap = new ReactiveCommand<MapVM>(vm => vm.Model == null && IsOnlineAvailable && downloadMap.CanExecute(vm));
+            DownloadMap = new ReactiveCommand<MapVM>(vm => canBeDownloaded(vm as MapVM));
             DownloadMap
+                .CheckConnectivity(Network, Notifications)
+                .Do(vm => vm.IsDownloading = true)
                 .Do(_ => CurrentPivot = Pivot.Local)                   
                 .Do(vm => MapList.Add(vm))
                 .Subscribe(downloadMap.Execute);
 
-            downloadMap.RegisterAsyncFunction(vm =>
-                {
-                    var typed = vm as MapVM;
-
-                    return new { Map = MapService.downloadMap(typed.ServerKey).First(), VM = typed };
-                })
-                .Do(tuple => tuple.VM.SetModel(tuple.Map))
-                .Subscribe(tuple => SelectMap.CanExecute(tuple.VM));
+            downloadMap.RegisterAsyncObservable(vm => MapService.downloadMap((vm as MapVM).ServerKey))                
+                .Select(map =>
+                    {
+                        var vm = (from v in MapList
+                                  where v.ServerKey == map.ServerKey
+                                  select v).SingleOrDefault();
+                        if (vm != null)
+                        {
+                            vm.SetModel(map);
+                        }
+                        return vm;
+                    })                
+                .Subscribe(vm => SelectMap.CanExecute(vm));
         }
 
-        private IEnumerable<MapVM> searchMapsImpl(string p)
+        private bool canBeDownloaded(MapVM vm)
+        {
+            return vm.Model == null && !vm.IsDownloading;
+        }
+
+        private IReactiveCollection<MapVM> searchMapsImpl(string p)
         {
             try
-            {                
-                return MapService.GetAvailableMaps(p).First()
+            {
+                return new ReactiveCollection<MapVM>(MapService.GetAvailableMaps(p).First()
                     .Where(key => !_local_map_register.ContainsKey(key))
                     .Take(10)
-                    .Select(mapname => new MapVM(null) { ServerKey = mapname });
+                    .Select(mapname => new MapVM(null) { ServerKey = mapname }));
             }
-            catch(Exception)
+            catch (Exception)
             {
-                return Enumerable.Empty<MapVM>();
+                return new ReactiveCollection<MapVM>();
             }
         }
     }
