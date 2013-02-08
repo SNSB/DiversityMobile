@@ -204,6 +204,7 @@
       <DependentUpon>Audio.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Controls\CommandNotAvailableLabel.cs" />
+    <Compile Include="View\Controls\ConditionalLabel.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
     </Compile>

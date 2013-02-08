@@ -13,7 +13,7 @@ using System.Windows.Data;
 
 namespace DiversityPhone.View
 {
-    public partial class CommandNotAvailableLabel : InfoLabel
+    public partial class CommandNotAvailableLabel : ConditionalLabel
     {
         public CommandNotAvailableLabel()
         {
@@ -52,12 +52,7 @@ namespace DiversityPhone.View
         {
             var command = sender as ICommand;
 
-            if (command != null && !command.CanExecute(null))
-            {
-                contentPanel.Visibility = Visibility.Visible;
-            }
-            else
-                contentPanel.Visibility = Visibility.Collapsed;
+            this.IsVisible = command != null && !command.CanExecute(null);
         }
     }
 }
