@@ -51,6 +51,13 @@ namespace DiversityPhone.ViewModels.Utility
         }
 
 
+
+        public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
+        private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
+        
+        
+
+
         private IFieldDataService Storage;
         private INotificationService Notifications;
         private IConnectivityService Connectivity;
@@ -62,7 +69,6 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCollection<IElementVM> SyncUnits { get; private set; }
         public ReactiveCollection<MultimediaObjectVM> Multimedia { get; private set; }
 
-        public ReactiveCommand<IElementVM> UploadElement { get; private set; }
         public ReactiveCommand<IElementVM> UploadTree { get; private set; }
 
         public ReactiveCommand<MultimediaObjectVM> UploadMultimedia { get; private set; }
@@ -77,7 +83,7 @@ namespace DiversityPhone.ViewModels.Utility
         private bool TryStartUpload()
         {
             bool aquired = false;
-            lock(this)
+            lock (this)
             {
                 aquired = _UploadsInProgress == 0;
                 _UploadsInProgress = 1;
@@ -118,7 +124,7 @@ namespace DiversityPhone.ViewModels.Utility
                 SyncLevel.Event,
                 SyncLevel.Specimen,
                 SyncLevel.IdentificationUnit
-            };            
+            };
 
             SyncUnits = new ReactiveCollection<IElementVM>();
 
@@ -149,8 +155,8 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(p => p == Pivots.multimedia)
                 .Do(_ => Multimedia.Clear())
                 .Where(onMultimedia => onMultimedia)
-                .SelectMany(_ => 
-                    {                        
+                .SelectMany(_ =>
+                    {
                         return
                         Storage.getModifiedMMOs()
                         .Where(mmo => Mapping.ResolveKey(mmo.OwnerType, mmo.RelatedId).HasValue)
@@ -160,29 +166,29 @@ namespace DiversityPhone.ViewModels.Utility
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingMultimedia);
                     })
                 .ObserveOnDispatcher()
-                .Subscribe(Multimedia.Add);            
+                .Subscribe(Multimedia.Add);
 
-           
-            
 
-            UploadElement = new ReactiveCommand<IElementVM>();
-            
-                
-                
 
-            UploadTree = new ReactiveCommand<IElementVM>();
+
+
+            _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable, false);
+
+
+
+            UploadTree = new ReactiveCommand<IElementVM>(Connectivity.WifiAvailable());
             UploadTree
-                .Where(_ => TryStartUpload())                
-                .Subscribe(vm => 
+                .Where(_ => TryStartUpload())
+                .Subscribe(vm =>
                 {
                     _CurrentUpload = uploadTree(vm)
                         .Finally(() => UploadCompleted())
                         .ObserveOnDispatcher()
                         .Subscribe(_ => { }, () => SyncUnits.Remove(vm));
                 });
-            
 
-            UploadMultimedia = new ReactiveCommand<MultimediaObjectVM>();
+
+            UploadMultimedia = new ReactiveCommand<MultimediaObjectVM>(Connectivity.WifiAvailable());
             UploadMultimedia
                 .Where(_ => TryStartUpload())
                 .Subscribe(vm =>
@@ -194,9 +200,9 @@ namespace DiversityPhone.ViewModels.Utility
                             .Subscribe(_ => Multimedia.Remove(vm));
                     });
 
-           
 
-            UploadAll = new ReactiveCommand();
+
+            UploadAll = new ReactiveCommand(Connectivity.WifiAvailable());
             UploadAll
                 .Where(_ => TryStartUpload())
                 .Subscribe(_ =>
@@ -232,7 +238,7 @@ namespace DiversityPhone.ViewModels.Utility
                                 .Subscribe(vm => Multimedia.Remove(vm));
                         }
                     });
-                    
+
 
             CancelUpload = new ReactiveCommand();
             CancelUpload
@@ -253,21 +259,21 @@ namespace DiversityPhone.ViewModels.Utility
             return Observable.Return(vm)
                 .Select(v => v.Model)
                 .ObserveOn(ThreadPoolScheduler.Instance)
-                .Select(mmo => 
+                .Select(mmo =>
                 {
                     byte[] data;
-                    using(var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+                    using (var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
                     {
                         var file = iso.OpenFile(mmo.Uri, System.IO.FileMode.Open);
                         data = new byte[file.Length];
-                        file.Read(data, 0, data.Length);                        
+                        file.Read(data, 0, data.Length);
                     }
 
-                    return new {MMO = mmo, Data = data};
+                    return new { MMO = mmo, Data = data };
                 })
-                .SelectMany(t => 
+                .SelectMany(t =>
                     {
-                        var upload = 
+                        var upload =
                         Service.UploadMultimedia(t.MMO, t.Data)
                         .Do(uri => t.MMO.CollectionUri = uri)
                         .Select(_ => t.MMO)
@@ -284,7 +290,7 @@ namespace DiversityPhone.ViewModels.Utility
             return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID.Value).Select(gp => gp as ILocalizable))
                     .SelectMany(_ => Storage.getEventsForSeries(es).Select(ev => uploadEV(ev)))
                     .SelectMany(obs => obs);
-        }       
+        }
 
         private IObservable<Unit> uploadEV(Event ev)
         {
@@ -310,22 +316,22 @@ namespace DiversityPhone.ViewModels.Utility
         {
             var model = vm.Model;
             IObservable<Unit> res = Observable.Empty<Unit>();
-                
-            if(model is EventSeries)
+
+            if (model is EventSeries)
                 res = uploadES(model as EventSeries);
-            if(model is Event)
+            if (model is Event)
                 res = uploadEV(model as Event);
-            if(model is Specimen)
+            if (model is Specimen)
                 res = uploadSpecimen(model as Specimen);
-            if(model is IdentificationUnit)
+            if (model is IdentificationUnit)
                 res = uploadIU(model as IdentificationUnit);
-                
+
             return res
                 .DisplayProgress(Notifications, DiversityResources.Sync_Info_Uploading);
         }
 
         private IEnumerable<IElementVM> collectModificationsImpl(SyncLevel synclevel)
-        {            
+        {
             if (synclevel == SyncLevel.All)
             {
                 var stream = collectModificationsImpl(SyncLevel.EventSeries)

@@ -44,11 +44,14 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" >
             <TextBlock x:Name="PageTitle" Text="SYNC" Margin="{StaticResource PhoneHorizontalMargin}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
+                                 IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <controls:Pivot Grid.Row="1" 
                         Margin="12,0" 
+                        IsEnabled="{Binding IsOnlineAvailable}"
                         SelectedIndex="{Binding CurrentPivot, Mode=TwoWay, Converter={StaticResource PivotConverter}}">
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Data, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical" Margin="0" >
