@@ -40,7 +40,7 @@
             
 
             status =
-               Observable.Interval(TimeSpan.FromSeconds(3))
+               Observable.Interval(TimeSpan.FromSeconds(3), ThreadPoolScheduler.Instance)
                 .StartWith(0)
                 .Select(_ => 
                             {                                
@@ -54,7 +54,10 @@
                                         return ConnectionStatus.MobileBroadband;
                                 }
                                 return ConnectionStatus.None;
-                            });
+                            })
+                    .DistinctUntilChanged()
+                    .Replay(1)
+                    .RefCount();
         }
 
         public IObservable<ConnectionStatus> Status()

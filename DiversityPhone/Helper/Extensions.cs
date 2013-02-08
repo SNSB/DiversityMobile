@@ -22,7 +22,7 @@ namespace DiversityPhone.ViewModels
         private static readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);
 
 
-        public static int ListFindIndex<T>(this IList<T> This, Func<T,bool> predicate)
+        public static int ListFindIndex<T>(this IList<T> This, Func<T, bool> predicate)
         {
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
@@ -35,7 +35,7 @@ namespace DiversityPhone.ViewModels
         }
 
         public static IObservable<bool> BooleanAnd(this IObservable<bool> This, params IObservable<bool>[] parameters)
-        {            
+        {
             return This.CombineLatestMany((a, b) => a && b, parameters);
         }
 
@@ -51,7 +51,7 @@ namespace DiversityPhone.ViewModels
             if (aggregator == null)
                 throw new ArgumentNullException("aggregator");
 
-            if (parameters != null)            
+            if (parameters != null)
             {
                 foreach (var parameter in parameters)
                     if (parameter != null)
@@ -72,19 +72,25 @@ namespace DiversityPhone.ViewModels
 
         public static IObservable<T> CheckConnectivity<T>(this IObservable<T> This, IConnectivityService Connectivity, INotificationService Notification)
         {
-            return This.Where(_ =>
+            return This.SelectMany(val =>
                 {
-                    if (Connectivity.WifiAvailable().First())
-                        return true;
-                    else
-                    {
-                        Notification.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION );
-                        return false;
-                    }
+                    return
+                    Connectivity.Status()
+                        .FirstAsync()
+                        .Where(s =>
+                            {
+                                if(s != ConnectionStatus.Wifi) 
+                                {
+                                    Notification.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION );
+                                    return false;
+                                }
+                                return true;
+                            })
+                        .Select(_ => val);
                 });
         }
 
-        public static IObservable<T> HandleServiceErrors<T>(this IObservable<T> This, INotificationService Notification, IMessageBus Messenger, IObservable<T> ErrorValue = null) 
+        public static IObservable<T> HandleServiceErrors<T>(this IObservable<T> This, INotificationService Notification, IMessageBus Messenger, IObservable<T> ErrorValue = null)
         {
             return This
                 .Catch((Exception ex) =>
@@ -106,7 +112,7 @@ namespace DiversityPhone.ViewModels
                         return Observable.Throw<T>(ex);
                     else
                         return ErrorValue;
-                });                   
+                });
         }
 
         public static IObservable<T> DisplayProgress<T>(this IObservable<T> This, INotificationService notifications, string text)
