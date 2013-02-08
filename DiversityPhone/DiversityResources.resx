@@ -237,6 +237,9 @@ DiversityMobile communicates in several processes with the servers of the SNSB-I
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
+  <data name="Info_ContextMenu" xml:space="preserve">
+    <value>press and hold to display menu</value>
+  </data>
   <data name="Info_DeletingObjects" xml:space="preserve">
     <value>Deleting Objects ...</value>
   </data>
@@ -245,6 +248,9 @@ DiversityMobile communicates in several processes with the servers of the SNSB-I
   </data>
   <data name="Info_NoInternet" xml:space="preserve">
     <value>No Internet Connectivity</value>
+  </data>
+  <data name="Info_NoWifi" xml:space="preserve">
+    <value>No Wifi connectivity available, online services disabled</value>
   </data>
   <data name="Info_ServiceUnavailable" xml:space="preserve">
     <value>Service Unavailable</value>
