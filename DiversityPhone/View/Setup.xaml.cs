@@ -24,7 +24,6 @@ namespace DiversityPhone.View
     {
         private SetupVM VM { get { return DataContext as SetupVM; } }
         private CommandButtonAdapter _save;
-        private INPCBindingTrigger _username, _password;
 
         public Setup()
         {
@@ -37,8 +36,6 @@ namespace DiversityPhone.View
             ApplicationBar.Buttons.Add(save);
             _save = new CommandButtonAdapter(save, VM.Save);
 
-            _username = new INPCBindingTrigger(Username);
-            _password = new INPCBindingTrigger(Password);
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
