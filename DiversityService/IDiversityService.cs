@@ -60,13 +60,25 @@ namespace DiversityService
         EventSeries EventSeriesByID(int collectionSeriesID, UserCredentials login);
 
         [OperationContract]
+        IEnumerable<Localization> LocalizationsForSeries(int collectionSeriesID, UserCredentials login);
+
+        [OperationContract]
         IEnumerable<Event> EventsByLocality(String locality, UserCredentials login);
+
+        [OperationContract]
+        IEnumerable<EventProperty> PropertiesForEvent(int collectionEventID, UserCredentials login);
 
         [OperationContract]
         IEnumerable<Specimen> SpecimenForEvent(int collectionEventID, UserCredentials login);
 
         [OperationContract]
         IEnumerable<IdentificationUnit> UnitsForSpecimen(int collectionSpecimenID, UserCredentials login);
+
+        [OperationContract]
+        IEnumerable<IdentificationUnit> SubUnitsForIU(int collectionUnitID, UserCredentials login);
+
+        [OperationContract]
+        IEnumerable<IdentificationUnitAnalysis> AnalysesForIU(int collectionUnitID, UserCredentials login);
         #endregion
 
         #endregion

@@ -43,10 +43,14 @@ namespace DiversityPhone.Services
         IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
 
         //DOWNLOAD
-        IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
         IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
+        IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
+        IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
+        IObservable<EventPattern<PropertiesForEventCompletedEventArgs>> PropertiesForEventCompleted;
         IObservable<EventPattern<SpecimenForEventCompletedEventArgs>> SpecimenForEventCompleted;
         IObservable<EventPattern<UnitsForSpecimenCompletedEventArgs>> UnitsForSpecimenCompleted;
+        IObservable<EventPattern<SubUnitsForIUCompletedEventArgs>> SubUnitsForIUCompleted;
+        IObservable<EventPattern<AnalysesForIUCompletedEventArgs>> AnalysesForIUCompleted;
 
         //MULTIMEDIA
         IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
@@ -87,10 +91,14 @@ namespace DiversityPhone.Services
 
             UploadMultimediaCompleted = Observable.FromEventPattern<SubmitCompletedEventArgs>(h => _multimedia.SubmitCompleted += h, h => _multimedia.SubmitCompleted -= h);
 
-            EventsByLocalityCompleted = Observable.FromEventPattern<EventsByLocalityCompletedEventArgs>(h => _svc.EventsByLocalityCompleted += h, h => _svc.EventsByLocalityCompleted -= h);
             EventSeriesByIDCompleted = Observable.FromEventPattern<EventSeriesByIDCompletedEventArgs>(h => _svc.EventSeriesByIDCompleted += h, h => _svc.EventSeriesByIDCompleted -= h);
+            LocalizationsForSeriesCompleted = Observable.FromEventPattern<LocalizationsForSeriesCompletedEventArgs>(h => _svc.LocalizationsForSeriesCompleted += h, h => _svc.LocalizationsForSeriesCompleted -= h);
+            EventsByLocalityCompleted = Observable.FromEventPattern<EventsByLocalityCompletedEventArgs>(h => _svc.EventsByLocalityCompleted += h, h => _svc.EventsByLocalityCompleted -= h);
+            PropertiesForEventCompleted = Observable.FromEventPattern<PropertiesForEventCompletedEventArgs>(h => _svc.PropertiesForEventCompleted += h, h => _svc.PropertiesForEventCompleted -= h);
             SpecimenForEventCompleted = Observable.FromEventPattern<SpecimenForEventCompletedEventArgs>(h => _svc.SpecimenForEventCompleted += h, h => _svc.SpecimenForEventCompleted -= h);
             UnitsForSpecimenCompleted = Observable.FromEventPattern<UnitsForSpecimenCompletedEventArgs>(h => _svc.UnitsForSpecimenCompleted += h, h => _svc.UnitsForSpecimenCompleted -= h);
+            SubUnitsForIUCompleted = Observable.FromEventPattern<SubUnitsForIUCompletedEventArgs>(h => _svc.SubUnitsForIUCompleted += h, h => _svc.SubUnitsForIUCompleted -= h);
+            AnalysesForIUCompleted = Observable.FromEventPattern<AnalysesForIUCompletedEventArgs>(h => _svc.AnalysesForIUCompleted += h, h => _svc.AnalysesForIUCompleted -= h);
         }
     }
 }

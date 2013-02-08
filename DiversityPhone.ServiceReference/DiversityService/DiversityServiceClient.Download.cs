@@ -1,15 +1,8 @@
-﻿
-using System.Collections.Generic;
-using Client = DiversityPhone.Model;
+﻿using System.Collections.Generic;
+using DiversityPhone.Model;
 using System;
 using System.Reactive.Linq;
-using DiversityPhone.DiversityService;
-using DiversityPhone.MultimediaService;
 using System.Linq;
-using ReactiveUI;
-using System.ComponentModel;
-using System.Reactive;
-using System.Reactive.Disposables;
 
 namespace DiversityPhone.Services
 {
@@ -17,44 +10,83 @@ namespace DiversityPhone.Services
     {
 
 
-        public IObservable<Client.EventSeries> GetEventSeriesByID(int seriesID)
+        public IObservable<EventSeries> GetEventSeriesByID(int seriesID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in EventSeriesByIDCompleted.MakeObservableServiceResult(request)
+                      select result.Result.ToClientObject();
+            _svc.EventSeriesByIDAsync(seriesID, GetCreds(), request);
+            return res;                
         }
 
-        public IObservable<IEnumerable<Client.Localization>> GetEventSeriesLocalizations(int seriesID)
+        public IObservable<IEnumerable<Localization>> GetEventSeriesLocalizations(int seriesID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in LocalizationsForSeriesCompleted.MakeObservableServiceResult(request)
+                      select from loc in result.Result
+                             select loc.ToClientObject();
+            _svc.LocalizationsForSeriesAsync(seriesID, GetCreds(), request);
+            return res; 
         }
 
-        public IObservable<IEnumerable<Client.Event>> GetEventsByLocality(string localityQuery)
+        public IObservable<IEnumerable<Event>> GetEventsByLocality(string localityQuery)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in EventsByLocalityCompleted.MakeObservableServiceResult(request)
+                      select from ev in result.Result
+                             select ev.ToClientObject(Mapping);
+            _svc.EventsByLocalityAsync(localityQuery, GetCreds(), request);
+            return res;    
         }
 
-        public IObservable<IEnumerable<Client.EventProperty>> GetEventProperties(int eventID)
+        public IObservable<IEnumerable<EventProperty>> GetEventProperties(int eventID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in PropertiesForEventCompleted.MakeObservableServiceResult(request)
+                      select from p in result.Result
+                             select p.ToClientObject();
+            _svc.PropertiesForEventAsync(eventID, GetCreds(), request);
+            return res;
         }
 
-        public IObservable<IEnumerable<Client.Specimen>> GetSpecimenForEvent(int eventID)
+        public IObservable<IEnumerable<Specimen>> GetSpecimenForEvent(int eventID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in SpecimenForEventCompleted.MakeObservableServiceResult(request)
+                      select from spec in result.Result
+                             select spec.ToClientObject(Mapping);                
+            _svc.SpecimenForEventAsync(eventID, GetCreds(), request);
+            return res;    
         }
 
-        public IObservable<IEnumerable<Client.IdentificationUnit>> GetIdentificationUnitsForSpecimen(int specimenID)
+        public IObservable<IEnumerable<IdentificationUnit>> GetIdentificationUnitsForSpecimen(int specimenID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in UnitsForSpecimenCompleted.MakeObservableServiceResult(request)
+                      select from iu in result.Result
+                             select iu.ToClientObject(Mapping);
+            _svc.UnitsForSpecimenAsync(specimenID, GetCreds(), request);
+            return res; 
         }
 
-        public IObservable<IEnumerable<Client.IdentificationUnit>> GetSubUnitsForIU(int unitID)
+        public IObservable<IEnumerable<IdentificationUnit>> GetSubUnitsForIU(int unitID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in SubUnitsForIUCompleted.MakeObservableServiceResult(request)
+                      select from iu in result.Result
+                             select iu.ToClientObject(Mapping);
+            _svc.SubUnitsForIUAsync(unitID, GetCreds(), request);
+            return res; 
         }
 
-        public IObservable<IEnumerable<Client.IdentificationUnitAnalysis>> GetAnalysesForIU(int unitID)
+        public IObservable<IEnumerable<IdentificationUnitAnalysis>> GetAnalysesForIU(int unitID)
         {
-            throw new NotImplementedException();
+            object request = new object();
+            var res = from result in AnalysesForIUCompleted.MakeObservableServiceResult(request)
+                      select from an in result.Result
+                             select an.ToClientObject();
+            _svc.AnalysesForIUAsync(unitID, GetCreds(), request);
+            return res; 
         }
     }
 }

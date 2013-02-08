@@ -1983,10 +1983,20 @@ namespace DiversityPhone.DiversityService {
         
         DiversityPhone.DiversityService.EventSeries EndEventSeriesByID(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/LocalizationsForSeries", ReplyAction="http://tempuri.org/IDiversityService/LocalizationsForSeriesResponse")]
+        System.IAsyncResult BeginLocalizationsForSeries(int collectionSeriesID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> EndLocalizationsForSeries(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/EventsByLocality", ReplyAction="http://tempuri.org/IDiversityService/EventsByLocalityResponse")]
         System.IAsyncResult BeginEventsByLocality(string locality, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> EndEventsByLocality(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/PropertiesForEvent", ReplyAction="http://tempuri.org/IDiversityService/PropertiesForEventResponse")]
+        System.IAsyncResult BeginPropertiesForEvent(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> EndPropertiesForEvent(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/SpecimenForEvent", ReplyAction="http://tempuri.org/IDiversityService/SpecimenForEventResponse")]
         System.IAsyncResult BeginSpecimenForEvent(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
@@ -1997,6 +2007,16 @@ namespace DiversityPhone.DiversityService {
         System.IAsyncResult BeginUnitsForSpecimen(int collectionSpecimenID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> EndUnitsForSpecimen(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/SubUnitsForIU", ReplyAction="http://tempuri.org/IDiversityService/SubUnitsForIUResponse")]
+        System.IAsyncResult BeginSubUnitsForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> EndSubUnitsForIU(System.IAsyncResult result);
+        
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/AnalysesForIU", ReplyAction="http://tempuri.org/IDiversityService/AnalysesForIUResponse")]
+        System.IAsyncResult BeginAnalysesForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> EndAnalysesForIU(System.IAsyncResult result);
         
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/GetTaxonListsForUser", ReplyAction="http://tempuri.org/IDiversityService/GetTaxonListsForUserResponse")]
         System.IAsyncResult BeginGetTaxonListsForUser(DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState);
@@ -2272,6 +2292,25 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class LocalizationsForSeriesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public LocalizationsForSeriesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class EventsByLocalityCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -2285,6 +2324,25 @@ namespace DiversityPhone.DiversityService {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class PropertiesForEventCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public PropertiesForEventCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty>)(this.results[0]));
             }
         }
     }
@@ -2323,6 +2381,44 @@ namespace DiversityPhone.DiversityService {
             get {
                 base.RaiseExceptionIfNecessary();
                 return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class SubUnitsForIUCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public SubUnitsForIUCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class AnalysesForIUCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public AnalysesForIUCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis>)(this.results[0]));
             }
         }
     }
@@ -2491,11 +2587,23 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onEventSeriesByIDCompletedDelegate;
         
+        private BeginOperationDelegate onBeginLocalizationsForSeriesDelegate;
+        
+        private EndOperationDelegate onEndLocalizationsForSeriesDelegate;
+        
+        private System.Threading.SendOrPostCallback onLocalizationsForSeriesCompletedDelegate;
+        
         private BeginOperationDelegate onBeginEventsByLocalityDelegate;
         
         private EndOperationDelegate onEndEventsByLocalityDelegate;
         
         private System.Threading.SendOrPostCallback onEventsByLocalityCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginPropertiesForEventDelegate;
+        
+        private EndOperationDelegate onEndPropertiesForEventDelegate;
+        
+        private System.Threading.SendOrPostCallback onPropertiesForEventCompletedDelegate;
         
         private BeginOperationDelegate onBeginSpecimenForEventDelegate;
         
@@ -2508,6 +2616,18 @@ namespace DiversityPhone.DiversityService {
         private EndOperationDelegate onEndUnitsForSpecimenDelegate;
         
         private System.Threading.SendOrPostCallback onUnitsForSpecimenCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginSubUnitsForIUDelegate;
+        
+        private EndOperationDelegate onEndSubUnitsForIUDelegate;
+        
+        private System.Threading.SendOrPostCallback onSubUnitsForIUCompletedDelegate;
+        
+        private BeginOperationDelegate onBeginAnalysesForIUDelegate;
+        
+        private EndOperationDelegate onEndAnalysesForIUDelegate;
+        
+        private System.Threading.SendOrPostCallback onAnalysesForIUCompletedDelegate;
         
         private BeginOperationDelegate onBeginGetTaxonListsForUserDelegate;
         
@@ -2614,11 +2734,19 @@ namespace DiversityPhone.DiversityService {
         
         public event System.EventHandler<EventSeriesByIDCompletedEventArgs> EventSeriesByIDCompleted;
         
+        public event System.EventHandler<LocalizationsForSeriesCompletedEventArgs> LocalizationsForSeriesCompleted;
+        
         public event System.EventHandler<EventsByLocalityCompletedEventArgs> EventsByLocalityCompleted;
+        
+        public event System.EventHandler<PropertiesForEventCompletedEventArgs> PropertiesForEventCompleted;
         
         public event System.EventHandler<SpecimenForEventCompletedEventArgs> SpecimenForEventCompleted;
         
         public event System.EventHandler<UnitsForSpecimenCompletedEventArgs> UnitsForSpecimenCompleted;
+        
+        public event System.EventHandler<SubUnitsForIUCompletedEventArgs> SubUnitsForIUCompleted;
+        
+        public event System.EventHandler<AnalysesForIUCompletedEventArgs> AnalysesForIUCompleted;
         
         public event System.EventHandler<GetTaxonListsForUserCompletedEventArgs> GetTaxonListsForUserCompleted;
         
@@ -3300,6 +3428,54 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginLocalizationsForSeries(int collectionSeriesID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginLocalizationsForSeries(collectionSeriesID, login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> DiversityPhone.DiversityService.IDiversityService.EndLocalizationsForSeries(System.IAsyncResult result) {
+            return base.Channel.EndLocalizationsForSeries(result);
+        }
+        
+        private System.IAsyncResult OnBeginLocalizationsForSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int collectionSeriesID = ((int)(inValues[0]));
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginLocalizationsForSeries(collectionSeriesID, login, callback, asyncState);
+        }
+        
+        private object[] OnEndLocalizationsForSeries(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndLocalizationsForSeries(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnLocalizationsForSeriesCompleted(object state) {
+            if ((this.LocalizationsForSeriesCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.LocalizationsForSeriesCompleted(this, new LocalizationsForSeriesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void LocalizationsForSeriesAsync(int collectionSeriesID, DiversityPhone.DiversityService.UserCredentials login) {
+            this.LocalizationsForSeriesAsync(collectionSeriesID, login, null);
+        }
+        
+        public void LocalizationsForSeriesAsync(int collectionSeriesID, DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginLocalizationsForSeriesDelegate == null)) {
+                this.onBeginLocalizationsForSeriesDelegate = new BeginOperationDelegate(this.OnBeginLocalizationsForSeries);
+            }
+            if ((this.onEndLocalizationsForSeriesDelegate == null)) {
+                this.onEndLocalizationsForSeriesDelegate = new EndOperationDelegate(this.OnEndLocalizationsForSeries);
+            }
+            if ((this.onLocalizationsForSeriesCompletedDelegate == null)) {
+                this.onLocalizationsForSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnLocalizationsForSeriesCompleted);
+            }
+            base.InvokeAsync(this.onBeginLocalizationsForSeriesDelegate, new object[] {
+                        collectionSeriesID,
+                        login}, this.onEndLocalizationsForSeriesDelegate, this.onLocalizationsForSeriesCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginEventsByLocality(string locality, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginEventsByLocality(locality, login, callback, asyncState);
         }
@@ -3345,6 +3521,54 @@ namespace DiversityPhone.DiversityService {
             base.InvokeAsync(this.onBeginEventsByLocalityDelegate, new object[] {
                         locality,
                         login}, this.onEndEventsByLocalityDelegate, this.onEventsByLocalityCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginPropertiesForEvent(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginPropertiesForEvent(collectionEventID, login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> DiversityPhone.DiversityService.IDiversityService.EndPropertiesForEvent(System.IAsyncResult result) {
+            return base.Channel.EndPropertiesForEvent(result);
+        }
+        
+        private System.IAsyncResult OnBeginPropertiesForEvent(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int collectionEventID = ((int)(inValues[0]));
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginPropertiesForEvent(collectionEventID, login, callback, asyncState);
+        }
+        
+        private object[] OnEndPropertiesForEvent(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndPropertiesForEvent(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnPropertiesForEventCompleted(object state) {
+            if ((this.PropertiesForEventCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.PropertiesForEventCompleted(this, new PropertiesForEventCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void PropertiesForEventAsync(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login) {
+            this.PropertiesForEventAsync(collectionEventID, login, null);
+        }
+        
+        public void PropertiesForEventAsync(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginPropertiesForEventDelegate == null)) {
+                this.onBeginPropertiesForEventDelegate = new BeginOperationDelegate(this.OnBeginPropertiesForEvent);
+            }
+            if ((this.onEndPropertiesForEventDelegate == null)) {
+                this.onEndPropertiesForEventDelegate = new EndOperationDelegate(this.OnEndPropertiesForEvent);
+            }
+            if ((this.onPropertiesForEventCompletedDelegate == null)) {
+                this.onPropertiesForEventCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnPropertiesForEventCompleted);
+            }
+            base.InvokeAsync(this.onBeginPropertiesForEventDelegate, new object[] {
+                        collectionEventID,
+                        login}, this.onEndPropertiesForEventDelegate, this.onPropertiesForEventCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3441,6 +3665,102 @@ namespace DiversityPhone.DiversityService {
             base.InvokeAsync(this.onBeginUnitsForSpecimenDelegate, new object[] {
                         collectionSpecimenID,
                         login}, this.onEndUnitsForSpecimenDelegate, this.onUnitsForSpecimenCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginSubUnitsForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginSubUnitsForIU(collectionUnitID, login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> DiversityPhone.DiversityService.IDiversityService.EndSubUnitsForIU(System.IAsyncResult result) {
+            return base.Channel.EndSubUnitsForIU(result);
+        }
+        
+        private System.IAsyncResult OnBeginSubUnitsForIU(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int collectionUnitID = ((int)(inValues[0]));
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginSubUnitsForIU(collectionUnitID, login, callback, asyncState);
+        }
+        
+        private object[] OnEndSubUnitsForIU(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndSubUnitsForIU(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnSubUnitsForIUCompleted(object state) {
+            if ((this.SubUnitsForIUCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.SubUnitsForIUCompleted(this, new SubUnitsForIUCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void SubUnitsForIUAsync(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login) {
+            this.SubUnitsForIUAsync(collectionUnitID, login, null);
+        }
+        
+        public void SubUnitsForIUAsync(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginSubUnitsForIUDelegate == null)) {
+                this.onBeginSubUnitsForIUDelegate = new BeginOperationDelegate(this.OnBeginSubUnitsForIU);
+            }
+            if ((this.onEndSubUnitsForIUDelegate == null)) {
+                this.onEndSubUnitsForIUDelegate = new EndOperationDelegate(this.OnEndSubUnitsForIU);
+            }
+            if ((this.onSubUnitsForIUCompletedDelegate == null)) {
+                this.onSubUnitsForIUCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnSubUnitsForIUCompleted);
+            }
+            base.InvokeAsync(this.onBeginSubUnitsForIUDelegate, new object[] {
+                        collectionUnitID,
+                        login}, this.onEndSubUnitsForIUDelegate, this.onSubUnitsForIUCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginAnalysesForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginAnalysesForIU(collectionUnitID, login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> DiversityPhone.DiversityService.IDiversityService.EndAnalysesForIU(System.IAsyncResult result) {
+            return base.Channel.EndAnalysesForIU(result);
+        }
+        
+        private System.IAsyncResult OnBeginAnalysesForIU(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int collectionUnitID = ((int)(inValues[0]));
+            DiversityPhone.DiversityService.UserCredentials login = ((DiversityPhone.DiversityService.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginAnalysesForIU(collectionUnitID, login, callback, asyncState);
+        }
+        
+        private object[] OnEndAnalysesForIU(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndAnalysesForIU(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnAnalysesForIUCompleted(object state) {
+            if ((this.AnalysesForIUCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.AnalysesForIUCompleted(this, new AnalysesForIUCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void AnalysesForIUAsync(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login) {
+            this.AnalysesForIUAsync(collectionUnitID, login, null);
+        }
+        
+        public void AnalysesForIUAsync(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, object userState) {
+            if ((this.onBeginAnalysesForIUDelegate == null)) {
+                this.onBeginAnalysesForIUDelegate = new BeginOperationDelegate(this.OnBeginAnalysesForIU);
+            }
+            if ((this.onEndAnalysesForIUDelegate == null)) {
+                this.onEndAnalysesForIUDelegate = new EndOperationDelegate(this.OnEndAnalysesForIU);
+            }
+            if ((this.onAnalysesForIUCompletedDelegate == null)) {
+                this.onAnalysesForIUCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnAnalysesForIUCompleted);
+            }
+            base.InvokeAsync(this.onBeginAnalysesForIUDelegate, new object[] {
+                        collectionUnitID,
+                        login}, this.onEndAnalysesForIUDelegate, this.onAnalysesForIUCompletedDelegate, userState);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -3904,6 +4224,20 @@ namespace DiversityPhone.DiversityService {
                 return _result;
             }
             
+            public System.IAsyncResult BeginLocalizationsForSeries(int collectionSeriesID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = collectionSeriesID;
+                _args[1] = login;
+                System.IAsyncResult _result = base.BeginInvoke("LocalizationsForSeries", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> EndLocalizationsForSeries(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization>)(base.EndInvoke("LocalizationsForSeries", _args, result)));
+                return _result;
+            }
+            
             public System.IAsyncResult BeginEventsByLocality(string locality, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
                 object[] _args = new object[2];
                 _args[0] = locality;
@@ -3915,6 +4249,20 @@ namespace DiversityPhone.DiversityService {
             public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> EndEventsByLocality(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event>)(base.EndInvoke("EventsByLocality", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginPropertiesForEvent(int collectionEventID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = collectionEventID;
+                _args[1] = login;
+                System.IAsyncResult _result = base.BeginInvoke("PropertiesForEvent", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> EndPropertiesForEvent(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.EventProperty>)(base.EndInvoke("PropertiesForEvent", _args, result)));
                 return _result;
             }
             
@@ -3943,6 +4291,34 @@ namespace DiversityPhone.DiversityService {
             public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> EndUnitsForSpecimen(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>)(base.EndInvoke("UnitsForSpecimen", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginSubUnitsForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = collectionUnitID;
+                _args[1] = login;
+                System.IAsyncResult _result = base.BeginInvoke("SubUnitsForIU", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> EndSubUnitsForIU(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnit>)(base.EndInvoke("SubUnitsForIU", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginAnalysesForIU(int collectionUnitID, DiversityPhone.DiversityService.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = collectionUnitID;
+                _args[1] = login;
+                System.IAsyncResult _result = base.BeginInvoke("AnalysesForIU", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> EndAnalysesForIU(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.IdentificationUnitAnalysis>)(base.EndInvoke("AnalysesForIU", _args, result)));
                 return _result;
             }
             
