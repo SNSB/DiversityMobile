@@ -17,7 +17,7 @@ namespace DiversityPhone.Services
     {
         public IObservable<UserProfile> GetUserInfo(UserCredentials login)
         {
-            var source = GetUserInfoCompleted.MakeObservableServiceResult(login)
+            var source = GetUserInfoCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result);
             _svc.GetUserInfoAsync(login, login);
             return source;
@@ -25,7 +25,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IList<Repository>> GetRepositories(DiversityService.UserCredentials login)
         {
-            var source = GetRepositoriesCompleted.MakeObservableServiceResult(login)
+            var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result as IList<Repository>);            
             _svc.GetRepositoriesAsync(login, login);
             return source;
@@ -33,7 +33,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IList<Project>> GetProjectsForUser(DiversityService.UserCredentials login)
         {
-            var source = GetProjectsForUserCompleted.MakeObservableServiceResult(login)
+            var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result as IList<Project>);            
             _svc.GetProjectsForUserAsync(login,login);
             return source;
@@ -42,7 +42,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
         {
             var requestToken = new object();
-            var source = GetTaxonListsForUser.MakeObservableServiceResult(requestToken)
+            var source = GetTaxonListsForUser.MakeObservableServiceResultSingle(requestToken)
             .Select(args => args.Result ?? Enumerable.Empty<TaxonList>())
                 .Select(res => res
                     .Select(svcList => new Client.TaxonList()
@@ -98,7 +98,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)
         {
-            var source = GetPropertiesForUserCompleted.MakeObservableServiceResult(login)
+            var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result
                     .Select(p => new Client.Property()
                     { 
@@ -162,7 +162,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
         {
             object requestToken = new object();
-            var source = GetStandardVocabularyCompleted.MakeObservableServiceResult(requestToken)
+            var source = GetStandardVocabularyCompleted.MakeObservableServiceResultSingle(requestToken)
                .Select(args => args.Result)
                .Select(terms => terms
                    .Select(term => new Client.Term()
@@ -180,7 +180,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, UserCredentials login)
         {
-            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResult(login)
+            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
                .Select(analyses => analyses
                    .Select(an => new Client.Analysis()
@@ -196,7 +196,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login)
         {
-            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResult(login)
+            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
                .Select(ars => ars
                    .Select(ar => new Client.AnalysisResult()
@@ -213,7 +213,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
         {
-            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResult(login)
+            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
                .Select(atgs => atgs
                    .Select(atg => new Client.AnalysisTaxonomicGroup()
@@ -231,7 +231,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
         {
             var request = new object();
-            var res = GetQualificationsCompleted.MakeObservableServiceResult(request)
+            var res = GetQualificationsCompleted.MakeObservableServiceResultSingle(request)
                 .Select(args => args.Result.Select(q => new Client.Qualification()
                     {
                         Code = q.Code,
