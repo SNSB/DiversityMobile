@@ -26,6 +26,14 @@ namespace DiversityPhone.View
             }.Show();
         }
 
+        private void TaxWiki_Click(object sender, RoutedEventArgs e)
+        {
+            new WebBrowserTask()
+            {
+                Uri = new Uri(DiversityResources.App_Taxa_URL, UriKind.Absolute)
+            }.Show();
+        }
+
         private void Mail_Click(object sender, RoutedEventArgs e)
         {
             new EmailComposeTask()

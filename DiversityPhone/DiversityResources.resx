@@ -124,15 +124,14 @@
     <value>No Result</value>
   </data>
   <data name="App_CreatedBy" xml:space="preserve">
-    <value>Created by</value>
+    <value>This App was implemented by</value>
   </data>
   <data name="App_Credits" xml:space="preserve">
-    <value>University of Bayreuth
-Chair for applied computer science IV
-
-Prof. Dr.-ing Stefan Jablonski
-Tobias Schneider
-Georg Rollinger</value>
+    <value>
+Tobias Schneider and Georg Rollinger 
+University of Bayreuth
+Chair for Applied Computer Science IV 
+under supervision of Prof. Dr.-Ing. Stefan Jablonski.</value>
   </data>
   <data name="App_Homepage_Title" xml:space="preserve">
     <value>Homepage</value>
@@ -141,27 +140,40 @@ Georg Rollinger</value>
     <value>http://www.diversitymobile.net</value>
   </data>
   <data name="App_Info" xml:space="preserve">
-    <value>DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. 
+    <value>DiversityMobile – recording biological research data in nature
 
-All data remain only on the mobile phone unless you choose to send your data to the SNSB-IT-Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DiversityCollection desktop client which is available under www.diversityworkbench.net/Portal/Software. You always keep control over your data.
-
-DiversityMobile communicates in several processes with the servers of the SNSB-IT center. To protect you from additinal cost these services are only available when you are using a Wi-Fi connection.</value>
+DiversityMobile is an application for professional biologists and ecologists as well as citizen scientists, being experienced in recording observation data in nature. Information may be directly entered into the smartphone database. DiversityMobile is designed following Diversity Workbench (=DWB) concepts. Mechanisms of automated recording and storage of GPS data and the manual recording of multimedia data are included. During that process there is no need to be online. 
+In order to be able to use DiversityMobile, you need an account at the SNSB IT Center (http://www.snsb.info/). Accounts are restricted and set up for scientific purposes only. 
+During the gathering process, DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. All data remain only on the mobile phone unless you choose to send your data to the data repository at the SNSB IT Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DWB virtual research environment. You always keep control over your data.
+DiversityMobile communicates in several processes with the servers of the SNSB IT Center (see http://www.diversitymobile.net/wiki/DiversityMobile_Web_Services). To protect you from additional costs these web services are only available when you are using a Wi-Fi connection.
+IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.net/wiki/DiversityMobile_IPR_and_Licenses</value>
   </data>
   <data name="App_Mail_Address" xml:space="preserve">
-    <value>weiss@bsm.mwn.de</value>
+    <value>diversitymobile@bsm.mwn.de</value>
   </data>
   <data name="App_Mail_Title" xml:space="preserve">
-    <value>Contact for SNSB Account</value>
+    <value>Contact</value>
   </data>
   <data name="App_Map_LinkTitle" xml:space="preserve">
     <value>Diversity Mobile Wiki</value>
   </data>
   <data name="App_Map_Text" xml:space="preserve">
-    <value>
-In cooperation with the Bayerische Vermessungsverwaltung the SNSB IT Center offers a user-restricted web service to use TK25 Bayern Topographische Karten for the DiversityMobile WP app. For details about these maps and the license that governs their use visit the</value>
+    <value>The SNSB IT Center offers a user-restricted web service to use ‘TK25 Bayern Topographische Karten’ for the DiversityMobile WP app. The digital maps are provided to DiversityMobile users by the Bayerische Vermessungsverwaltunghttp://vermessung.bayern.de/index.html). For detail information about these maps and the license that governs their use visit the</value>
   </data>
   <data name="App_Map_URL" xml:space="preserve">
     <value>http://www.diversitymobile.net/wiki/TK25_Maps_Bavaria_for_DiversityMobile</value>
+  </data>
+  <data name="App_Taxa_LinkTitle" xml:space="preserve">
+    <value>Diversity Mobile Wiki</value>
+  </data>
+  <data name="App_Taxa_Text" xml:space="preserve">
+    <value>The SNSB IT Center offers web services with open and free read-only access to taxon lists and scientific terminologies in the DWB context. This data is provided in cooperation with the Bayerische Landesamt für Umwelt (http://www.lfu.bayern.de/index.htm), with several diversity research projects and individual scientists. For details visit the </value>
+  </data>
+  <data name="App_Taxa_Title" xml:space="preserve">
+    <value>Taxon Names</value>
+  </data>
+  <data name="App_Taxa_URL" xml:space="preserve">
+    <value>http://www.diversitymobile.net/wiki/TNT_services_for_DiversityMobile</value>
   </data>
   <data name="Button_Delete" xml:space="preserve">
     <value>delete</value>

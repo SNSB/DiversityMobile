@@ -79,7 +79,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Created by.
+        ///   Looks up a localized string similar to This App was implemented by.
         /// </summary>
         public static string App_CreatedBy {
             get {
@@ -88,12 +88,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to University of Bayreuth
-        ///Chair for applied computer science IV
-        ///
-        ///Prof. Dr.-ing Stefan Jablonski
-        ///Tobias Schneider
-        ///Georg Rollinger.
+        ///   Looks up a localized string similar to 
+        ///Tobias Schneider and Georg Rollinger 
+        ///University of Bayreuth
+        ///Chair for Applied Computer Science IV 
+        ///under supervision of Prof. Dr.-Ing. Stefan Jablonski..
         /// </summary>
         public static string App_Credits {
             get {
@@ -120,9 +119,9 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DiversityMobile is an application suitable for diversity data collection in the field for scientific purposes. In order to be able to user DiversityMobile, you need an account at the SNSB-IT-Center that you can reach at http://www.snsb.info/. During the gathering process DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. 
+        ///   Looks up a localized string similar to DiversityMobile – recording biological research data in nature
         ///
-        ///All data remain only on the mobile phone unless you choose to send your data to the SNSB [rest of string was truncated]&quot;;.
+        ///DiversityMobile is an application for professional biologists and ecologists as well as citizen scientists, being experienced in recording observation data in nature. Information may be directly entered into the smartphone database. DiversityMobile is designed following Diversity Workbench (=DWB) concepts. Mechanisms of automated recording and storage of GPS data and the manual recording of multimedia data are included. During that process th [rest of string was truncated]&quot;;.
         /// </summary>
         public static string App_Info {
             get {
@@ -131,7 +130,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to weiss@bsm.mwn.de.
+        ///   Looks up a localized string similar to diversitymobile@bsm.mwn.de.
         /// </summary>
         public static string App_Mail_Address {
             get {
@@ -140,7 +139,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact for SNSB Account.
+        ///   Looks up a localized string similar to Contact.
         /// </summary>
         public static string App_Mail_Title {
             get {
@@ -158,8 +157,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-        ///In cooperation with the Bayerische Vermessungsverwaltung the SNSB IT Center offers a user-restricted web service to use TK25 Bayern Topographische Karten for the DiversityMobile WP app. For details about these maps and the license that governs their use visit the.
+        ///   Looks up a localized string similar to The SNSB IT Center offers a user-restricted web service to use ‘TK25 Bayern Topographische Karten’ for the DiversityMobile WP app. The digital maps are provided to DiversityMobile users by the Bayerische Vermessungsverwaltunghttp://vermessung.bayern.de/index.html). For detail information about these maps and the license that governs their use visit the.
         /// </summary>
         public static string App_Map_Text {
             get {
@@ -173,6 +171,42 @@ namespace DiversityPhone {
         public static string App_Map_URL {
             get {
                 return ResourceManager.GetString("App_Map_URL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diversity Mobile Wiki.
+        /// </summary>
+        public static string App_Taxa_LinkTitle {
+            get {
+                return ResourceManager.GetString("App_Taxa_LinkTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SNSB IT Center offers web services with open and free read-only access to taxon lists and scientific terminologies in the DWB context. This data is provided in cooperation with the Bayerische Landesamt für Umwelt (http://www.lfu.bayern.de/index.htm), with several diversity research projects and individual scientists. For details visit the .
+        /// </summary>
+        public static string App_Taxa_Text {
+            get {
+                return ResourceManager.GetString("App_Taxa_Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Taxon Names.
+        /// </summary>
+        public static string App_Taxa_Title {
+            get {
+                return ResourceManager.GetString("App_Taxa_Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://www.diversitymobile.net/wiki/TNT_services_for_DiversityMobile.
+        /// </summary>
+        public static string App_Taxa_URL {
+            get {
+                return ResourceManager.GetString("App_Taxa_URL", resourceCulture);
             }
         }
         
