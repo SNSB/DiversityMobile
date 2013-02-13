@@ -157,8 +157,7 @@ namespace DiversityPhone.ViewModels
 
             ModelByVisitObservable
                 .Select(m => m.WorkingName)
-                .Where(wn => !string.IsNullOrWhiteSpace(wn))
-                .Subscribe(x => QueryString = x);
+                .Subscribe(x => QueryString = x ?? string.Empty);
 
             ModelByVisitObservable
                 .Select(iu => iu.AnalysisDate)
