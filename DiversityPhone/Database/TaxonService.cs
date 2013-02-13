@@ -252,16 +252,22 @@ namespace DiversityPhone.Services
                 //Order
                 q = from inf in q                        
                     orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
-                    select inf;                
+                    select inf;
+
+                // Treating the query as an enumerable prevents the following operators 
+                // from being applied on the DB
+                // which is necessary, because "Contains" is not supported in SQL CE
+                // instead, it is evaluated in application code
+                var e = q.AsEnumerable();
             
                 if (queryWords.Length > 3)
                 {
-                    q = from inf in q
+                    e = from inf in e
                         where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))                        
                         select inf;
                 }
 
-                foreach (var item in q)
+                foreach (var item in e)
                 {
                     yield return item;
                 }
