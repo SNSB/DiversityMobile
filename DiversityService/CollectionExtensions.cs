@@ -78,7 +78,7 @@ namespace DiversityService
                 IdentificationSequence = 1,
                 IdentificationDay = (byte?)iu.AnalysisDate.Day,
                 IdentificationMonth = (byte?)iu.AnalysisDate.Month,
-                IdentificationYear = (byte?)iu.AnalysisDate.Year,
+                IdentificationYear = (short?)iu.AnalysisDate.Year,
                 IdentificationDateCategory = "actual",
                 TaxonomicName = iu.LastIdentificationCache,
                 NameURI = iu.IdentificationUri,

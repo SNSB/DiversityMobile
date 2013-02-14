@@ -21,7 +21,7 @@ namespace DiversityService.Model
         public int IdentificationSequence { get; set; }
         public byte? IdentificationDay { get; set; }
         public byte? IdentificationMonth { get; set; }
-        public byte? IdentificationYear { get; set; }
+        public short? IdentificationYear { get; set; }
         public String IdentificationDateCategory { get; set; }
         public String TaxonomicName { get; set; }
         public String NameURI { get; set; }
