@@ -26,27 +26,35 @@
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
-    <StackPanel Background="Transparent">
-        <Button Style="{StaticResource ItemButtonStyle}"
+    <Grid Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Row="0"  
+                Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding EditSpecimen}"
                 CommandParameter="{Binding Current}">
             <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
                             Content="{Binding Current}"/>
         </Button>
         
-        <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
+        <controls:Pivot Grid.Row="1"  
+                        SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="units">
                 <ListBox ItemsSource="{Binding UnitList}" 
                          ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
                          HorizontalAlignment="Left"
-                         HorizontalContentAlignment="Left"/>
+                         HorizontalContentAlignment="Left"
+                         VerticalAlignment="Stretch"/>
             </controls:PivotItem>
             
             <controls:PivotItem Header="multimedia">
                 <vw:MultimediaListControl DataContext="{Binding MultimediaList}"/>
             </controls:PivotItem>
         </controls:Pivot>
-    </StackPanel>
+    </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">

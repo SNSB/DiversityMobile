@@ -26,15 +26,22 @@
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
     
-    <StackPanel>
-        <Button Style="{StaticResource ItemButtonStyle}"
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "Auto"/>
+            <RowDefinition Height = "*"/>
+        </Grid.RowDefinitions>
+        
+        <Button Grid.Row="0"  
+                Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding EditEvent}"
                 CommandParameter="{Binding Current}">
             <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
                             Content="{Binding Current}"/>
         </Button>
         
-        <controls:Pivot Margin="0" VerticalAlignment="Top" 
+        <controls:Pivot Grid.Row="1"  
+                        Margin="0"
                         SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="specimen">
                 <ListBox ItemsSource="{Binding SpecList}">
@@ -75,7 +82,7 @@
             </controls:PivotItem>
         </controls:Pivot>
         
-    </StackPanel>
+    </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>

@@ -37,19 +37,27 @@
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
     
-    <StackPanel x:Name="LayoutRoot" Background="Transparent">   
-        <Button Style="{StaticResource ItemButtonStyle}"                
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height = "Auto"/>
+            <RowDefinition Height = "*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Style="{StaticResource ItemButtonStyle}"                
                 Command="{Binding EditCurrent}"
                 CommandParameter="{Binding Current}">
             <ContentControl Content="{Binding Current}"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
         </Button>
         
-        <controls:Pivot SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">            
+        <controls:Pivot Grid.Row="1"  
+                        SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">            
             <controls:PivotItem Header="subunits">
                 <ListBox ItemsSource="{Binding Subunits}"
                          ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
-                         Height="470" />
+                         VerticalAlignment="Stretch"
+                         HorizontalAlignment="Left"
+                         HorizontalContentAlignment="Left"/>
             </controls:PivotItem>
             
             <controls:PivotItem Header="descriptions">
@@ -60,8 +68,7 @@
                                     Content="{Binding Current.Model}"/>                    
                     <ItemsControl ItemsSource="{Binding Analyses}"
                                   ItemTemplate="{StaticResource AnalysisItemTemplate}"
-                                  HorizontalContentAlignment="Left"
-                                  />
+                                  HorizontalContentAlignment="Left"/>
                 </StackPanel>                
             </controls:PivotItem>
             
@@ -69,7 +76,7 @@
                 <vw:MultimediaListControl DataContext="{Binding MultimediaList}" />
             </controls:PivotItem>
         </controls:Pivot>       
-    </StackPanel>
+    </Grid>
     
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">

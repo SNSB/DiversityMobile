@@ -27,7 +27,11 @@
     </UserControl.Resources>
 
     <ListBox ItemsSource="{Binding}"
-             ItemTemplate="{StaticResource SelectMultimediaItemTemplate}">
+             ItemTemplate="{StaticResource SelectMultimediaItemTemplate}"
+             HorizontalAlignment="Stretch"
+             HorizontalContentAlignment="Left"
+             VerticalAlignment="Stretch"
+             VerticalContentAlignment="Top">
 
     </ListBox>
 </UserControl>
