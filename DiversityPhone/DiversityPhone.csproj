@@ -134,7 +134,6 @@
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\GeoPointForSeries.cs" />
     <Compile Include="Model\LocalizableMixin.cs" />
-    <Compile Include="Model\SyncUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
