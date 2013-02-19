@@ -277,6 +277,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Info_ServiceUnavailable" xml:space="preserve">
     <value>Service Unavailable</value>
   </data>
+  <data name="MapManagement_Message_NoPermissions" xml:space="preserve">
+    <value>Couldn't download the Map. Maybe you don't have permissions to do that?</value>
+  </data>
   <data name="Message_ConfirmDelete" xml:space="preserve">
     <value>Do you really want to delete this element and all its children?</value>
   </data>

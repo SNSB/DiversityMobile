@@ -517,6 +517,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Couldn&apos;t download the Map. Maybe you don&apos;t have permissions to do that?.
+        /// </summary>
+        public static string MapManagement_Message_NoPermissions {
+            get {
+                return ResourceManager.GetString("MapManagement_Message_NoPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Do you really want to delete this element and all its children?.
         /// </summary>
         public static string Message_ConfirmDelete {

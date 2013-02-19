@@ -27,7 +27,7 @@ namespace DiversityPhone
         
         private static IMessageBus Messenger;
         private static Services.NavigationService NavSvc;
-        private static ISettingsService Settings;
+        private static SettingsService Settings;
         private static ILocationService GeoLocation { get { return IOC.Resolve<ILocationService>(); } }
         public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
         
@@ -136,6 +136,7 @@ namespace DiversityPhone
 
             IOC.Register<IMessageBus>(Messenger);
             IOC.Register<ISettingsService>(Settings);
+            IOC.Register<ICurrentCredentials>(Settings);
             IOC.Register<Services.NavigationService>(NavSvc);
 
             IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
@@ -149,7 +150,7 @@ namespace DiversityPhone
 #if false
             IOC.Register<IMapTransferService>(new TestMapTransferService());
 #else
-            IOC.Register<IMapTransferService>(new MapTransferService(IOC.Resolve<IMapStorageService>()));
+            IOC.Register<IMapTransferService>(new MapTransferService(IOC.Resolve<IMapStorageService>(), IOC.Resolve<ICurrentCredentials>()));
 #endif
             
 

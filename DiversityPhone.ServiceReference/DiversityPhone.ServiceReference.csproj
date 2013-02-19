@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="DiversityService\DiversityServiceClient.Multimedia.cs" />
     <Compile Include="DiversityService\ServiceObservableExtensions.cs" />
+    <Compile Include="ICurrentCredentials.cs" />
     <Compile Include="IKeyMappingService.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Download.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Upload.cs" />

@@ -14,7 +14,7 @@ namespace DiversityPhone.Services
         void saveSettings(DiversityPhone.Model.AppSettings settings);
     }
 
-    public class SettingsService : ISettingsService
+    public class SettingsService : ISettingsService, ICurrentCredentials
     {
         private const string SETTINGS_KEY = "Settings";
 
@@ -58,6 +58,13 @@ namespace DiversityPhone.Services
             IsolatedStorageSettings.ApplicationSettings.Save();
         }
 
-        
+
+
+        public DiversityPhone.DiversityService.UserCredentials CurrentCredentials()
+        {
+            if (_settings != null)
+                return _settings.ToCreds();
+            return null;
+        }
     }
 }

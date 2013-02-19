@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
@@ -75,6 +76,20 @@ namespace DiversityPhone.Services
         {
             return This.Do(id => mappingService.AddMapping(owner, id))
                 .Select(_ => Unit.Default);
+        }
+
+        public static IObservable<WebResponse> DownloadWithCredentials(this IObservable<string> uriObservable, ICurrentCredentials CredentialsProvider)
+        {
+            return uriObservable
+                .SelectMany(uri =>
+                    {
+                        var creds = CredentialsProvider.CurrentCredentials();
+                        var request = WebRequest.CreateHttp(uri);
+                        string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
+                        request.Headers["Authorization"] = "Basic " + credentials;
+
+                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
+                    });
         }
     }
 }

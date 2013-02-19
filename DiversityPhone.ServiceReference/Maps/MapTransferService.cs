@@ -17,6 +17,7 @@ namespace DiversityPhone.Services
     public partial class MapTransferService : IMapTransferService, IEnableLogger
     {
         private IMapStorageService MapStorage;
+        private ICurrentCredentials CredentialsProvider;
         private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
 
 
@@ -24,9 +25,10 @@ namespace DiversityPhone.Services
         private IObservable<EventPattern<GetMapUrlCompletedEventArgs>> GetMapUrlCompletedObservable;
         private IObservable<EventPattern<GetXmlUrlCompletedEventArgs>> GetXmlUrlCompletedObservable;
 
-        public MapTransferService(IMapStorageService storage)
+        public MapTransferService(IMapStorageService storage, ICurrentCredentials creds)
         {
             MapStorage = storage;
+            CredentialsProvider = creds;
 
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -54,62 +56,34 @@ namespace DiversityPhone.Services
         public IObservable<Map> downloadMap(String serverKey)
         {
             object dl = new object();
-            var obs =
-            Observable.Merge(
+
+            var map =
                 GetMapUrlCompletedObservable
-                .MakeObservableServiceResultSingle(dl)
-                .Select(args => args.Result),
+                .FilterByUserState(dl)
+                .Take(1)
+                .PipeErrors()
+                .Select(res => res.Result)
+                .DownloadWithCredentials(CredentialsProvider)
+                .Select(response => parseXMLtoMap(response.GetResponseStream()));
+            var image =
                 GetXmlUrlCompletedObservable
-                .MakeObservableServiceResultSingle(dl)
-                .Select(args => args.Result))
-                .SelectMany(uri =>
-                    {
-                        var request = WebRequest.CreateHttp(uri);
-                        string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes("snsb" + ":" + "maps"));
-                        request.Headers["Authorization"] = "Basic " + credentials;
+                .FilterByUserState(dl)
+                .Take(1)
+                .PipeErrors()
+                .Select(res => res.Result)
+                .DownloadWithCredentials(CredentialsProvider);
 
-                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
-                    })
-                .Select(response =>
-                    {
-                        var http = response as HttpWebResponse;
-
-                        if (http.StatusCode != HttpStatusCode.OK)
-                            return null;
-
-                        String fileName = "Maps\\" + serverKey + ".png";
-
-                        var isXML = http.ResponseUri.OriginalString.ToLower().EndsWith(".xml");
-
-                        if (isXML)
-                        {
-                            var map = parseXMLtoMap(http.GetResponseStream());
-                            if (map != null)
+            var combined =
+            Observable.CombineLatest(map, image,
+                (m, i) => new { Map = m, ImageResponse = i })
+                .SelectMany(resps =>
+                    Observable.Start(() =>
                             {
-                                map.ServerKey = serverKey;
-                            }
-                            return map as object;
-                        }
-                        else
-                        {
-                            return http.GetResponseStream() as object;
-                        }
-                    })
-                    .Buffer(2)
-                    .Take(1)
-                    .SelectMany(win =>
-                        {
-                            var map = win.Where(i => i is Map).FirstOrDefault() as Map;
-                            var stream = win.Where(i => i is Stream).FirstOrDefault() as Stream;
-
-                            return Observable.Start(() =>
-                                {
-                                    MapStorage.addMap(map, stream);
-                                    return map;
-                                });
-                        })
-                    .Publish();
-            obs.Connect();
+                                MapStorage.addMap(resps.Map, resps.ImageResponse.GetResponseStream());
+                                return resps.Map;
+                            }));
+            var obs = combined
+                .ReplayOnlyFirst();
 
             MapService.GetMapUrlAsync(serverKey, dl);
             MapService.GetXmlUrlAsync(serverKey, dl);

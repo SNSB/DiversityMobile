@@ -40,7 +40,7 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveAsyncCommand SearchMaps { get; private set; }
         public ReactiveCommand<MapVM> SelectMap { get; private set; }
-        public ReactiveCommand<MapVM> DeleteMap { get; private set; }        
+        public ReactiveCommand<MapVM> DeleteMap { get; private set; }
         public ReactiveCommand<MapVM> DownloadMap { get; private set; }
 
 
@@ -134,23 +134,42 @@ namespace DiversityPhone.ViewModels
             DownloadMap
                 .CheckConnectivity(Network, Notifications)
                 .Do(vm => vm.IsDownloading = true)
-                .Do(_ => CurrentPivot = Pivot.Local)                   
+                .Do(_ => CurrentPivot = Pivot.Local)
                 .Do(vm => MapList.Add(vm))
                 .Subscribe(downloadMap.Execute);
 
-            downloadMap.RegisterAsyncObservable(vm => MapService.downloadMap((vm as MapVM).ServerKey))                
-                .Select(map =>
-                    {
-                        var vm = (from v in MapList
-                                  where v.ServerKey == map.ServerKey
-                                  select v).SingleOrDefault();
-                        if (vm != null)
+            downloadMap.RegisterAsyncObservable(vm =>
+            {
+                var vm_t = vm as MapVM;
+                if (vm_t == null)
+                    return Observable.Empty<Tuple<MapVM, Map>>();
+                else
+                    return MapService.downloadMap(vm_t.ServerKey)
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return<Map>(null))
+                        .Catch((WebException ex) =>
                         {
-                            vm.SetModel(map);
+                            Messenger.SendMessage(new DialogMessage(DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.MapManagement_Message_NoPermissions));
+
+                            return Observable.Return<Map>(null);
+                        })
+                        .Select(map => Tuple.Create(vm_t, map));
+            })
+            .Select(t =>
+                {
+                    if (t.Item1 != null) // VM
+                    {
+                        if (t.Item2 != null) // Map
+                        {
+                            t.Item1.SetModel(t.Item2);
                         }
-                        return vm;
-                    })                
-                .Subscribe(vm => SelectMap.CanExecute(vm));
+                        else
+                        {
+                            MapList.Remove(t.Item1);
+                        }
+                    }
+                    return t.Item1;
+                })
+            .Subscribe(vm => SelectMap.CanExecute(vm));
         }
 
         private bool canBeDownloaded(MapVM vm)
