@@ -211,6 +211,9 @@
     <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Controls\SearchBox.xaml.cs">
+      <DependentUpon>SearchBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="View\Converters\SyncLevelToStringConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
