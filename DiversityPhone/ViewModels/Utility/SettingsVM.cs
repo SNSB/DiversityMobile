@@ -50,6 +50,7 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand ManageTaxa { get; private set; }
 
         public ReactiveCommand UploadData { get; private set; }
+        public ReactiveCommand DownloadData { get; private set; }
 
         public ReactiveCommand Info { get; private set; }
 
@@ -124,7 +125,13 @@ namespace DiversityPhone.ViewModels.Utility
             UploadData = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 UploadData
-                .Select(_ => Services.Page.Sync)
+                .Select(_ => Services.Page.Upload)
+                );
+
+            DownloadData = new ReactiveCommand();
+            Messenger.RegisterMessageSource(
+                DownloadData
+                .Select(_ => Services.Page.Download)
                 );
 
             Info = new ReactiveCommand();

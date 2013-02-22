@@ -146,8 +146,11 @@ namespace DiversityPhone.Services
                 case Page.TaxonManagement:
                     destination = "/View/TaxonManagement.xaml";
                     break;
-                case Page.Sync:
-                    destination = "/View/Sync.xaml";
+                case Page.Upload:
+                    destination = "/View/Upload.xaml";
+                    break;
+                case Page.Download:
+                    destination = "/View/Download.xaml";
                     break;
                 case Page.EditEventProperty:
                     destination = "/View/EditEventProperty.xaml";

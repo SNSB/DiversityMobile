@@ -25,8 +25,9 @@ namespace DiversityPhone.Services
         MapManagement,
         ViewMap,
         TaxonManagement,
-        Sync,
+        Upload,
         Setup,
-        Info
+        Info,
+        Download
     }
 }

@@ -16,13 +16,13 @@ using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {
-    public partial class Sync : PhoneApplicationPage
+    public partial class Download : PhoneApplicationPage
     {
-        private SyncVM VM { get { return DataContext as SyncVM; } }
+        private UploadVM VM { get { return DataContext as UploadVM; } }
         
         CommandButtonAdapter uploadall;
 
-        public Sync()
+        public Download()
         {
             InitializeComponent();
             this.BackKeyPress += Sync_BackKeyPress;

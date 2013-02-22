@@ -17,7 +17,7 @@ using System.Reactive;
 
 namespace DiversityPhone.ViewModels.Utility
 {
-    public class SyncVM : PageVMBase
+    public class UploadVM : PageVMBase
     {
         public enum Pivots
         {
@@ -108,7 +108,7 @@ namespace DiversityPhone.ViewModels.Utility
 
         public ReactiveCommand CancelUpload { get; private set; }
 
-        public SyncVM(Container ioc)
+        public UploadVM(Container ioc)
         {
             Storage = ioc.Resolve<IFieldDataService>();
             Notifications = ioc.Resolve<INotificationService>();

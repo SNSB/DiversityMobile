@@ -20,21 +20,21 @@ namespace DiversityPhone.View
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is SyncVM.SyncLevel) && targetType == typeof(String)))
+            if (!((value is UploadVM.SyncLevel) && targetType == typeof(String)))
                 throw new NotSupportedException();
-            var enVal = (SyncVM.SyncLevel)value;
+            var enVal = (UploadVM.SyncLevel)value;
 
             switch (enVal)
             {
-                case SyncVM.SyncLevel.All:
+                case UploadVM.SyncLevel.All:
                     return DiversityResources.Sync_Level_All;
-                case SyncVM.SyncLevel.EventSeries:
+                case UploadVM.SyncLevel.EventSeries:
                     return DiversityResources.Sync_Level_EventSeries;
-                case SyncVM.SyncLevel.Event:
+                case UploadVM.SyncLevel.Event:
                     return DiversityResources.Sync_Level_Event;
-                case SyncVM.SyncLevel.Specimen:
+                case UploadVM.SyncLevel.Specimen:
                     return DiversityResources.Sync_Level_Specimen;
-                case SyncVM.SyncLevel.IdentificationUnit:
+                case UploadVM.SyncLevel.IdentificationUnit:
                     return DiversityResources.Sync_Level_IU;
                 default:
                     throw new ArgumentException("value");

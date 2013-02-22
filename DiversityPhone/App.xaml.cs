@@ -109,7 +109,8 @@ namespace DiversityPhone
 
             IOC.Register<SettingsVM>(c => new SettingsVM(c));
 
-            IOC.Register<SyncVM>(new SyncVM(IOC));
+            IOC.Register<UploadVM>(new UploadVM(IOC));
+            IOC.Register<DownloadVM>(new DownloadVM(IOC));
 
             IOC.Register<SetupVM>(c => new SetupVM(c));
             #endregion

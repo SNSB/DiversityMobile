@@ -19,16 +19,16 @@ namespace DiversityPhone.View
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is SyncVM.Pivots) && targetType == typeof(int)))
+            if (!((value is UploadVM.Pivots) && targetType == typeof(int)))
                 throw new NotSupportedException();
 
 
-            var v = (SyncVM.Pivots)value;
+            var v = (UploadVM.Pivots)value;
             switch (v)
             {
-                case SyncVM.Pivots.data:
+                case UploadVM.Pivots.data:
                     return 0;                    
-                case SyncVM.Pivots.multimedia:
+                case UploadVM.Pivots.multimedia:
                     return 1;
                 default:
                     System.Diagnostics.Debugger.Break();
@@ -40,7 +40,7 @@ namespace DiversityPhone.View
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (!((value is int) && targetType == typeof(SyncVM.Pivots)))
+            if (!((value is int) && targetType == typeof(UploadVM.Pivots)))
                 throw new NotSupportedException();
 
 
@@ -48,12 +48,12 @@ namespace DiversityPhone.View
             switch (v)
             {
                 case 0:
-                    return SyncVM.Pivots.data;
+                    return UploadVM.Pivots.data;
                 case 1:
-                    return SyncVM.Pivots.multimedia;             
+                    return UploadVM.Pivots.multimedia;             
                 default:
                     System.Diagnostics.Debugger.Break();
-                    return SyncVM.Pivots.data;                    
+                    return UploadVM.Pivots.data;                    
             }  
         }
     }

@@ -95,7 +95,21 @@ namespace DiversityPhone.View
                 };
                 uploadData.Click += (s, args) => Upload_Click();
                 ApplicationBar.MenuItems.Add(uploadData);
+
+                var downloadData = new ApplicationBarMenuItem()
+                {
+                    Text = DiversityResources.Settings_Header_DownloadData
+                };
+                downloadData.Click += (s, args) => Download_Click();
+                ApplicationBar.MenuItems.Add(downloadData);
             }
+        }
+
+        private void Download_Click()
+        {
+            var vm = VM;
+            if (vm != null && vm.DownloadData.CanExecute(null))
+                vm.DownloadData.Execute(null);
         }
 
         private void Info_Click(object sender, RoutedEventArgs e)

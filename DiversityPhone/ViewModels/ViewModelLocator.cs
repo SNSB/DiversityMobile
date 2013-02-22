@@ -25,7 +25,9 @@ namespace DiversityPhone.ViewModels
         {
         }
 
-        public SyncVM Sync { get { return IOC.Resolve<SyncVM>(); } }
+        public UploadVM Upload { get { return IOC.Resolve<UploadVM>(); } }
+
+        public DownloadVM Download { get { return IOC.Resolve<DownloadVM>(); } }
 
         public HomeVM Home { get { return IOC.Resolve<HomeVM>(); } }
 

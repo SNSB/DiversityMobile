@@ -182,7 +182,7 @@
     <Compile Include="ViewModels\Utility\DownloadVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
-    <Compile Include="ViewModels\Utility\SyncVM.cs" />
+    <Compile Include="ViewModels\Utility\UploadVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
@@ -232,6 +232,9 @@
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />
+    <Compile Include="View\Download.xaml.cs">
+      <DependentUpon>Download.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\DPColors.cs" />
     <Compile Include="View\DPControlBackGround.cs" />
     <Compile Include="View\EditAnalysis.xaml.cs">
@@ -276,8 +279,8 @@
     <Compile Include="View\Splash.xaml.cs">
       <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Sync.xaml.cs">
-      <DependentUpon>Sync.xaml</DependentUpon>
+    <Compile Include="View\Upload.xaml.cs">
+      <DependentUpon>Upload.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\TaxonManagement.xaml.cs">
       <DependentUpon>TaxonManagement.xaml</DependentUpon>
@@ -526,6 +529,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Controls\SearchBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Download.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\EditAnalysis.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -594,7 +605,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Sync.xaml">
+    <Page Include="View\Upload.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

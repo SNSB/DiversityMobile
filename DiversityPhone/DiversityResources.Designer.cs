@@ -256,6 +256,33 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cancel download.
+        /// </summary>
+        public static string Download_Header_CancelDownload {
+            get {
+                return ResourceManager.GetString("Download_Header_CancelDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to location query.
+        /// </summary>
+        public static string Download_Header_LocationQuery {
+            get {
+                return ResourceManager.GetString("Download_Header_LocationQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to press and hold to download an item.
+        /// </summary>
+        public static string Download_HintLongPress {
+            get {
+                return ResourceManager.GetString("Download_HintLongPress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Property.
         /// </summary>
         public static string EventProperty_Header_Property {
@@ -639,6 +666,15 @@ namespace DiversityPhone {
         public static string Settings_Header_ButtonSave {
             get {
                 return ResourceManager.GetString("Settings_Header_ButtonSave", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Data.
+        /// </summary>
+        public static string Settings_Header_DownloadData {
+            get {
+                return ResourceManager.GetString("Settings_Header_DownloadData", resourceCulture);
             }
         }
         
