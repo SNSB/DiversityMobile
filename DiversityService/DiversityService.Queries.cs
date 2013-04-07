@@ -1,4 +1,5 @@
 ﻿using DiversityService.Model;
+using DiversityPhone.Model;
 using DiversityORM;
 using System.Collections.Generic;
 using System.Text;
@@ -39,7 +40,7 @@ namespace DiversityService
 
         private static IEnumerable<PropertyList> propertyListsForUser(UserCredentials login)
         {
-            return new Diversity(login,CATALOG_DIVERSITYMOBILE).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
+            return login.GetConnection(CATALOG_DIVERSITYMOBILE).Query<PropertyList>("FROM [TermsListsForUser](@0) AS [PropertyList]", login.LoginName);
         }
 
         private static IEnumerable<Property> getProperties(Diversity db)
@@ -54,7 +55,7 @@ namespace DiversityService
 
         private static Event getEvent(Diversity db, int DiversityCollectionID)
         {
-            Event ev=db.SingleOrDefault<Event>("SELECT CollectionEventID,SeriesID,CollectionDate,LocalityDescription,Habitatdescription FROM CollectionEvent WHERE CollectionEventID=@0", DiversityCollectionID);
+            Event ev=db.SingleOrDefault<Event>("FROM CollectionEvent WHERE CollectionEventID=@0", DiversityCollectionID);
             IEnumerable<CollectionEventLocalisation> cel_List = getLocalisationForEvent(db, DiversityCollectionID);
             foreach (CollectionEventLocalisation cel in cel_List)
             {
@@ -91,20 +92,6 @@ namespace DiversityService
         {
             return db.Query<Specimen>("Select CollectionSpecimenID,CollectionEventID, DepositorsAccessionNumber FROM CollectionSpecimen WHERE CollectionEventID=@0", DiversityCollectionID);
         }
-
-        //private static IEnumerable<IdentificationUnit> getIUForSpecimen(Diversity db, int DiversityCollectionID)
-        //{
-        //    IEnumerable<IdentificationUnit> units= db.Query<IdentificationUnit>("Select CollectionSpecimenID,IdentificationUnitID,RelatedUnitID, OnlyObserved,TaxonomicGroup,RelationType,ColonisedSubstratePart,LifeStage,Gender FROM CollectionSpecimen WHERE CollectionSpecimenID=@0", DiversityCollectionID);
-        //    foreach (IdentificationUnit iu in units)
-        //    {
-        //        IdentificationUnitGeoAnalysis iuga = getGeoAnalysisForIU(db, DiversityCollectionID);
-        //        if (iuga != null)
-        //        {
-        //            iu.AnalysisDate = iuga.AnalysisDate;
-        //            //Fehlt GeodatenSync
-        //        }
-        //    }
-        //}
 
         private static IdentificationUnitGeoAnalysis getGeoAnalysisForIU(Diversity db, int DiversityCollectionID)
         {

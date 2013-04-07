@@ -5,20 +5,11 @@
     using ReactiveUI;
     using DiversityPhone.Model;
     using ReactiveUI.Xaml;
-    using DiversityPhone.Messages;
-    using System.Collections.Generic;
-    using DiversityPhone.Services;
-    using System.Data.Linq.Mapping;
-    using System.Reflection;
-    using System.Globalization;
-    using System.Threading;
-    using System.Windows.Navigation;
-    using Funq;
+    
+    using DiversityPhone.Interface;
 
     public class EditESVM : EditPageVMBase<EventSeries>
     {
-        private ISettingsService Settings;
-
         public ReactiveCommand FinishSeries { get; private set; }
 
         #region Properties
@@ -60,9 +51,8 @@
         #endregion
 
 
-        public EditESVM(Container ioc)
+        public EditESVM()
         {
-            Settings = ioc.Resolve<ISettingsService>();
 
             ModelByVisitObservable
                 .Select(es => es.Description ?? String.Empty)
@@ -97,12 +87,12 @@
         private IObservable<bool> CanSave()
         {            
             var descriptionNonEmpty = 
-                this.ObservableForProperty(x => x.Description)
-                .Select(desc => !string.IsNullOrWhiteSpace(desc.Value))
+                this.WhenAny(x => x.Description, x => x.Value)
+                .Select(desc => !string.IsNullOrWhiteSpace(desc))
                 .StartWith(false);
 
             var endsAfterItBegins =
-                this.ObservableForProperty(x => x.SeriesEnd)
+                this.WhenAny(x => x.SeriesEnd, x => x.Value)
                 .CombineLatest(CurrentModelObservable, (end, model) => new { SeriesEnd = end, Model = model })
                 .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart)
                 .StartWith(true);

@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reactive.Disposables;
-using Funq;
+
 using System.Reactive.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 using System.Threading;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using DiversityPhone.Interface;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.Services
-{   
+{
 
-    interface INotificationService
-    {
-        IDisposable showProgress(string text);
-        void showNotification(string text, TimeSpan duration);
-        void showProgress(IObservable<string> text);       
-    }    
+
 
     /// <summary>
     /// Provides global Notifications and Progress reporting via the Notification Tray
@@ -33,20 +30,20 @@ namespace DiversityPhone.Services
         int _ProgressCount = 0;
         ISubject<int> _ProgressCountSubject = new Subject<int>();
         IScheduler _Dispatcher;
-        List<IObservable<string>> _Notifications = new List<IObservable<string>>();
+        Stack<IObservable<string>> _Notifications = new Stack<IObservable<string>>();
         IObservable<string> _CurrentNotification;
-        IDisposable _CurrentNotificationSubscription = Disposable.Empty;        
+        IDisposable _CurrentNotificationSubscription = Disposable.Empty;
 
-        public NotificationService(Container ioc)
+        public NotificationService(
+            PhoneApplicationFrame RootFrame,
+            [Dispatcher] IScheduler Dispatcher
+            )
         {
-            var rootFrame = ioc.Resolve<PhoneApplicationFrame>();
-            rootFrame.Navigated += OnFrameNavigated;
-
-
-            _Dispatcher = ioc.ResolveNamed<IScheduler>(NamedServices.DISPATCHER);
+            RootFrame.Navigated += OnFrameNavigated;
+            _Dispatcher = Dispatcher;
 
             _ProgressCountSubject
-                .Select(c => c > 0)                
+                .Select(c => c > 0)
                 .Subscribe(setProgressindicator);
         }
 
@@ -54,7 +51,10 @@ namespace DiversityPhone.Services
         {
             var page = e.Content as PhoneApplicationPage;
             if (page != null)
+            {
                 page.SetValue(SystemTray.ProgressIndicatorProperty, _Progress);
+                page.SetValue(SystemTray.IsVisibleProperty, true);
+            }
         }
 
         private void setProgressindicator(bool show)
@@ -85,22 +85,19 @@ namespace DiversityPhone.Services
                 {
                     lock (this)
                     {
+                        // The current Notification has ended and called us -> remove
+                        if (_Notifications.Peek() == _CurrentNotification)
+                            _Notifications.Pop();
+
+                        // Check for active Notifications
                         if (_Notifications.Count > 0)
                         {
-                            var nextNotification = _Notifications[(_Notifications.IndexOf(_CurrentNotification) + 1) % _Notifications.Count];
-                            if (nextNotification != _CurrentNotification)
-                            {
-                                _CurrentNotification = nextNotification;
-                                _CurrentNotificationSubscription.Dispose();
-                                _CurrentNotificationSubscription =
-                                    new CompositeDisposable(
-                                        new[] { 
-                                    _CurrentNotification
-                                        .DistinctUntilChanged()
-                                        .Subscribe(n => setNotification(n), () => removeNotification(_CurrentNotification)),
-                                    _Dispatcher.Schedule(UPDATE_INTERVAL, updateNotification)
-                                });
-                            }
+                            _CurrentNotificationSubscription.Dispose();
+                            _CurrentNotification = _Notifications.Peek();
+                            _CurrentNotificationSubscription =
+                                _CurrentNotification
+                                    .DistinctUntilChanged()
+                                    .Subscribe(n => setNotification(n), () => updateNotification());
                         }
                         else
                         {
@@ -113,22 +110,12 @@ namespace DiversityPhone.Services
         }
 
         private void addNotification(IObservable<string> notification)
-        {        
-
-            var replays = notification.Replay(1);                
+        {
+            var replays = notification.Replay(1);
             replays.Connect();
             lock (this)
             {
-                _Notifications.Add(replays);                  
-            }
-            updateNotification();
-        }
-
-        private void removeNotification(IObservable<string> not)
-        {
-            lock (this)
-            {
-                _Notifications.Remove(not);
+                _Notifications.Push(replays);
             }
             updateNotification();
         }
@@ -148,6 +135,11 @@ namespace DiversityPhone.Services
             var observable = new BehaviorSubject<string>(text);
             showProgress(observable);
             return Disposable.Create(observable.OnCompleted);
+        }
+
+        public void showNotification(string text)
+        {
+            showNotification(text, UPDATE_INTERVAL);
         }
 
         public void showNotification(string text, TimeSpan duration)

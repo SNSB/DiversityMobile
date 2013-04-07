@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
+using DiversityPhone.Model;
 
 namespace DiversityService
 {
@@ -59,7 +60,7 @@ namespace DiversityService
             };
         }
 
-        public static CollectionAgent GetAgent(this Specimen s, Model.UserCredentials profile)
+        public static CollectionAgent GetAgent(this Specimen s, UserCredentials profile)
         {
             return new CollectionAgent()
             {

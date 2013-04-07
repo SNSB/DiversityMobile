@@ -1,10 +1,8 @@
 ﻿using System;
 using ReactiveUI;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Disposables;
-using DiversityPhone.Messages;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.ViewModels
 {    

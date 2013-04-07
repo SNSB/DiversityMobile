@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Net;
 using System.Reactive.Linq;
 using ReactiveUI;
 using System.Linq;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
 using System.Collections.Generic;
 using DiversityPhone.Services;
-using Funq;
+
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
-using System.Reactive;
+using DiversityPhone.Interface;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditPropertyVM : EditPageVMBase<EventProperty>
     {
+        readonly IVocabularyService Vocabulary;
+        readonly IFieldDataService Storage;
 
         private ObservableAsyncMRUCache<int, IObservable<PropertyName>> _PropertyNamesCache;
         private IObservable<Property> _Properties;
         private BehaviorSubject<IEnumerable<int>> _UsedProperties;
-
-
-        #region Services        
-        private IVocabularyService Vocabulary { get; set; }
-        private IFieldDataService Storage { get; set; }   
-        #endregion        
+       
+            
 
         #region Properties    
    
@@ -58,10 +54,15 @@ namespace DiversityPhone.ViewModels
         #endregion      
 
 
-        public EditPropertyVM(Container ioc)                  
+        public EditPropertyVM(
+            IVocabularyService Vocabulary,
+            IFieldDataService Storage
+            )                  
         {
-            Vocabulary = ioc.Resolve<IVocabularyService>();
-            Storage = ioc.Resolve<IFieldDataService>();
+            Contract.Requires(Vocabulary != null);
+            Contract.Requires(Storage != null);
+            this.Vocabulary = Vocabulary;
+            this.Storage = Storage;
 
             _UsedProperties = new BehaviorSubject<IEnumerable<int>>(Enumerable.Empty<int>());
             Messenger.Listen<IEnumerable<int>>(VMMessages.USED_EVENTPROPERTY_IDS)

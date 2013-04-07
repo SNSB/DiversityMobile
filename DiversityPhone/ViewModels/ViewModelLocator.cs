@@ -1,61 +1,48 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Funq;
-using DiversityPhone.Services;
-using ReactiveUI;
-using DiversityPhone.DiversityService;
-using DiversityPhone.ViewModels.Utility;
+﻿using DiversityPhone.ViewModels.Utility;
+using Ninject;
 
 namespace DiversityPhone.ViewModels
 {
     public partial class ViewModelLocator
     {
         private const string OFFLINE_STORAGE = "OfflineStorage";
-        private static Container IOC { get { return App.IOC; } }   
+        private static IKernel IOC { get { return App.Kernel; } }
 
         public ViewModelLocator()
         {
         }
 
-        public UploadVM Upload { get { return IOC.Resolve<UploadVM>(); } }
+        public UploadVM Upload { get { return IOC.Get<UploadVM>(); } }
 
-        public DownloadVM Download { get { return IOC.Resolve<DownloadVM>(); } }
+        public DownloadVM Download { get { return IOC.Get<DownloadVM>(); } }
 
-        public HomeVM Home { get { return IOC.Resolve<HomeVM>(); } }
+        public HomeVM Home { get { return IOC.Get<HomeVM>(); } }
 
-        public EditESVM EditES { get { return IOC.Resolve<EditESVM>(); } }
-        public ViewESVM ViewES { get { return IOC.Resolve<ViewESVM>(); } }
+        public EditESVM EditES { get { return IOC.Get<EditESVM>(); } }
+        public ViewESVM ViewES { get { return IOC.Get<ViewESVM>(); } }
 
-        public EditEVVM EditEV { get { return IOC.Resolve<EditEVVM>(); } }
-        public ViewEVVM ViewEV { get { return IOC.Resolve<ViewEVVM>(); } }
+        public EditEVVM EditEV { get { return IOC.Get<EditEVVM>(); } }
+        public ViewEVVM ViewEV { get { return IOC.Get<ViewEVVM>(); } }
 
-        public EditCSVM EditCS { get { return IOC.Resolve<EditCSVM>(); } }
-        public ViewCSVM ViewCS { get { return IOC.Resolve<ViewCSVM>(); } }
+        public EditCSVM EditCS { get { return IOC.Get<EditCSVM>(); } }
+        public ViewCSVM ViewCS { get { return IOC.Get<ViewCSVM>(); } }
 
-        public EditIUVM EditIU { get { return IOC.Resolve<EditIUVM>(); } }
-        public ViewIUVM ViewIU { get { return IOC.Resolve<ViewIUVM>(); } }
-        public EditAnalysisVM EditAnalysis { get { return IOC.Resolve<EditAnalysisVM>(); } }
-        public EditPropertyVM EditProperty { get { return IOC.Resolve<EditPropertyVM>(); } }
+        public EditIUVM EditIU { get { return IOC.Get<EditIUVM>(); } }
+        public ViewIUVM ViewIU { get { return IOC.Get<ViewIUVM>(); } }
+        public EditAnalysisVM EditAnalysis { get { return IOC.Get<EditAnalysisVM>(); } }
+        public EditPropertyVM EditProperty { get { return IOC.Get<EditPropertyVM>(); } }
 
-        public MapManagementVM MapManagement { get { return IOC.Resolve<MapManagementVM>(); } }               
-        public ViewMapVM ViewMap { get { return IOC.Resolve<ViewMapVM>(); } }        
-        
-        public ImageVM Image { get { return IOC.Resolve<ImageVM>(); } }
-        public AudioVM NewAudio { get { return IOC.Resolve<AudioVM>(); } }
-        public VideoVM NewVideo { get { return IOC.Resolve<VideoVM>(); } }
+        public MapManagementVM MapManagement { get { return IOC.Get<MapManagementVM>(); } }
+        public ViewMapVM ViewMap { get { return IOC.Get<ViewMapVM>(); } }
 
-        public TaxonManagementVM TaxonManagement { get { return IOC.Resolve<TaxonManagementVM>(); } }
-        public SettingsVM Settings { get { return IOC.Resolve<SettingsVM>(); } }
+        public ImageVM Image { get { return IOC.Get<ImageVM>(); } }
+        public AudioVM NewAudio { get { return IOC.Get<AudioVM>(); } }
+        public VideoVM NewVideo { get { return IOC.Get<VideoVM>(); } }
 
-        public SetupVM Setup { get { return IOC.Resolve<SetupVM>(); } }
-       
+        public TaxonManagementVM TaxonManagement { get { return IOC.Get<TaxonManagementVM>(); } }
+        public SettingsVM Settings { get { return IOC.Get<SettingsVM>(); } }
+
+        public SetupVM Setup { get { return IOC.Get<SetupVM>(); } }
+
     }
 }

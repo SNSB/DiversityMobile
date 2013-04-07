@@ -2,10 +2,6 @@
 using System.Reactive.Linq;
 using ReactiveUI;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
-using System.Collections.Generic;
-using DiversityPhone.Services;
 
 namespace DiversityPhone.ViewModels
 {

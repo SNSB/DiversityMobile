@@ -42,33 +42,40 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xml.Schema.Linq, Version=2.0.2.56002, Culture=neutral, PublicKeyToken=47d0c84d0ebb13e5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\LinqToXsd.2.0.2\lib\Xml.Schema.Linq.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Configuration.Xml.cs" />
     <Compile Include="DiversityService.cs" />
     <Compile Include="DiversityService.Download.cs" />
     <Compile Include="DiversityService.Queries.cs" />
     <Compile Include="DiversityService.Upload.cs" />
-    <Compile Include="Model\ClientModel.FieldData.cs" />
-    <Compile Include="Model\ClientModel.Vocabulary.cs" />
-    <Compile Include="Model\CollectionModel.Multimedia.cs" />
     <Compile Include="IDiversityService.cs" />
-    <Compile Include="Model\ClientModel.Config.cs" />
-    <Compile Include="Model\CollectionModel.cs" />
-    <Compile Include="Model\Generated\Diversity.cs" />
-    <Compile Include="Model\Generated\DiversityCollection.cs">
-      <DependentUpon>DiversityCollection.tt</DependentUpon>
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Models\ClientModel.Config.cs" />
+    <Compile Include="Models\ClientModel.FieldData.cs" />
+    <Compile Include="Models\ClientModel.Vocabulary.cs" />
+    <Compile Include="Models\CollectionModel.cs" />
+    <Compile Include="Models\CollectionModel.Multimedia.cs" />
+    <Compile Include="Models\Generated\Diversity.cs" />
+    <Compile Include="Models\Generated\DiversityCollection.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\Generated\PetaPoco.cs" />
-    <Compile Include="Model\ServerInfo.cs" />
-    <Compile Include="Model\TermLists.cs" />
-    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Models\PetaPoco.cs" />
+    <Compile Include="Models\ServerInfo.cs" />
+    <Compile Include="Models\TermLists.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -80,21 +87,22 @@
     <None Include="App.Config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Model\Generated\DiversityCollection.tt">
+    <None Include="Models\Generated\DiversityCollection.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>DiversityCollection.cs</LastGenOutput>
     </None>
-    <None Include="Model\Generated\PetaPoco.Core.ttinclude" />
-    <None Include="Model\Generated\PetaPoco.Generator.ttinclude" />
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Models\Generated\PetaPoco.Core.ttinclude" />
+    <None Include="Models\Generated\PetaPoco.Generator.ttinclude" />
+    <None Include="packages.config" />
     <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_BaseTestEntities.datasource" />
     <None Include="Properties\DataSources\DiversityCollection.DiversityCollection_MonitoringEntities.datasource" />
     <None Include="Properties\DataSources\DiversityMobileEntities.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="DiversityService.Configuration.xsd">
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -104,7 +112,12 @@
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>powershell -Command "&amp; { cp '$(SolutionDir)packages\LinqToXsd.2.0.2\lib\Xml.Schema.Linq.dll' '$(SolutionDir)packages\LinqToXsd.2.0.2\tools';   &amp; '$(SolutionDir)packages\LinqToXsd.2.0.2\tools\LinqToXsd.exe' '$(ProjectDir)DiversityService.Configuration.xsd' /fileName:'$(ProjectDir)Configuration.Xml.cs'}"</PreBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

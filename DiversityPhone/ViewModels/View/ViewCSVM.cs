@@ -3,35 +3,32 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Collections.Generic;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
-using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Linq;
-using System.Reactive.Subjects;
-using Funq;
-using System.Reactive.Disposables;
+
+using DiversityPhone.Interface;
 namespace DiversityPhone.ViewModels
 {
-   
+
 
     public class ViewCSVM : ViewPageVMBase<Specimen>
     {
+        private readonly IFieldDataService Storage;
+
         private ReactiveAsyncCommand getSubunits = new ReactiveAsyncCommand();
-        
-        private IFieldDataService Storage;
 
         public enum Pivots
         {
             Units,
             Multimedia
         }
-     
+
         #region Commands
         public ReactiveCommand Add { get; private set; }
 
         public ReactiveCommand<IElementVM<Specimen>> EditSpecimen { get; private set; }
         public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
-        
+
         #endregion
 
         #region Properties
@@ -52,10 +49,12 @@ namespace DiversityPhone.ViewModels
 
         public ReactiveCollection<IdentificationUnitVM> UnitList { get; private set; }
         #endregion
-       
-        public ViewCSVM(Container ioc)             
+
+        public ViewCSVM(
+            IFieldDataService Storage
+            )
         {
-            Storage = ioc.Resolve<IFieldDataService>();
+            this.Storage = Storage;
 
             EditSpecimen = new ReactiveCommand<IElementVM<Specimen>>(vm => !vm.Model.IsObservation());
             EditSpecimen
@@ -86,7 +85,7 @@ namespace DiversityPhone.ViewModels
 
             Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Units)
-                .Select(_ => new IdentificationUnitVM(new IdentificationUnit(){SpecimenID = Current.Model.SpecimenID, RelatedUnitID = null}) as IElementVM<IdentificationUnit>)
+                .Select(_ => new IdentificationUnitVM(new IdentificationUnit() { SpecimenID = Current.Model.SpecimenID, RelatedUnitID = null }) as IElementVM<IdentificationUnit>)
                 .ToMessage(MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
@@ -103,7 +102,7 @@ namespace DiversityPhone.ViewModels
             while (work_left.Any())
             {
                 var unit = work_left.Dequeue();
-                IdentificationUnitVM  vm;
+                IdentificationUnitVM vm;
 
                 if (unit.RelatedUnitID.HasValue)
                 {

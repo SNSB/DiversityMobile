@@ -2,17 +2,17 @@
 using ReactiveUI;
 using DiversityPhone.Model;
 using ReactiveUI.Xaml;
-using DiversityPhone.Services;
 using System.Linq;
 using System.Reactive.Linq;
-using DiversityPhone.Messages;
 using System.Reactive.Subjects;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
     public class ElementMultimediaVM : ReactiveCollection<MultimediaObjectVM>, IObserver<IMultimediaOwner>
     {        
-        IFieldDataService Storage;
+        readonly IFieldDataService Storage;
+
         private ISubject<IMultimediaOwner> ownerSubject = new ReplaySubject<IMultimediaOwner>(1);
         private ObservableAsPropertyHelper<IMultimediaOwner> _Owner;
         private IMultimediaOwner Owner { get { return _Owner.Value; } }
@@ -24,7 +24,7 @@ namespace DiversityPhone.ViewModels
 
         public ElementMultimediaVM(IFieldDataService storage)
         {            
-            Storage = storage;
+            this.Storage = storage;
 
             getMultimedia = new ReactiveAsyncCommand();
             getMultimedia.RegisterAsyncFunction(own =>
@@ -44,7 +44,7 @@ namespace DiversityPhone.ViewModels
 
             _Owner = new ObservableAsPropertyHelper<IMultimediaOwner>(ownerSubject, (o) => {}, null);
 
-            this.ListenToChanges<MultimediaObject, MultimediaObjectVM>(mmo => Owner != null && mmo.OwnerType == Owner.OwnerType && mmo.RelatedId == Owner.OwnerID);
+            this.ListenToChanges<MultimediaObject, MultimediaObjectVM>(mmo => Owner != null && mmo.OwnerType == Owner.EntityType && mmo.RelatedId == Owner.EntityID);
 
             SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObject>>();
             SelectMultimedia

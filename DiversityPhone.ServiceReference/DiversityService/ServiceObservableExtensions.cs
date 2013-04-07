@@ -1,13 +1,10 @@
 ﻿using DiversityPhone.Model;
-using DiversityPhone.Services;
+using DiversityPhone.Interface;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
 
 namespace DiversityPhone.Services
 {
@@ -72,7 +69,7 @@ namespace DiversityPhone.Services
             });
         }
 
-        public static IObservable<Unit> StoreMapping(this IObservable<int> This, IOwner owner, IKeyMappingService mappingService)
+        public static IObservable<Unit> StoreMapping(this IObservable<int> This, IEntity owner, IKeyMappingService mappingService)
         {
             return This.Do(id => mappingService.AddMapping(owner, id))
                 .Select(_ => Unit.Default);

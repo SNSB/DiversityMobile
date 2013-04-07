@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using DiversityService.Model;
+using DiversityPhone.Model;
 
 namespace DiversityService
 {

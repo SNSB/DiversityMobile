@@ -2,17 +2,8 @@
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
 using System.Reactive.Linq;
-using DiversityPhone.Services;
-using System.Collections.Generic;
-using Funq;
-using System.Windows.Media;
 using System.IO.IsolatedStorage;
-using System.Windows;
-using System.IO;
-using System.Windows.Shapes;
-using System.Windows.Controls;
 
 namespace DiversityPhone.ViewModels
 {

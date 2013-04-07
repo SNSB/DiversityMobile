@@ -4,31 +4,14 @@
     using Microsoft.Phone.Net.NetworkInformation;
     using System.Reactive.Disposables;
     using System.Reactive.Subjects;
-    using Funq;
+    
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive;
+    using DiversityPhone.Interface;
 
-    public enum ConnectionStatus
-    {
-        Wifi,
-        MobileBroadband,
-        None
-    }
-
-    public interface IConnectivityService
-    {
-        IObservable<ConnectionStatus> Status();
-        void ForceUpdate();
-    }
-
-    public static class ConnectivityMixin
-    {
-        public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
-        {
-            return svc.Status().Select(s => s == ConnectionStatus.Wifi);
-        }
-    }
+    
+    
 
 
     public class ConnectivityService : IConnectivityService

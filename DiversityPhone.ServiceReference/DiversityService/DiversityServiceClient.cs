@@ -10,6 +10,7 @@ using ReactiveUI;
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Disposables;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
@@ -60,15 +61,15 @@ namespace DiversityPhone.Services
 
         IMessageBus Messenger;
         IKeyMappingService Mapping;
-        ObservableAsPropertyHelper<UserCredentials> LatestCreds;
+        ObservableAsPropertyHelper<Client.UserCredentials> LatestCreds;
 
-        private UserCredentials GetCreds() { return LatestCreds.Value; }
+        private Client.UserCredentials GetCreds() { return LatestCreds.Value; }
 
         public DiversityServiceClient(IMessageBus messenger, IKeyMappingService mapping)
         {
             Messenger = messenger;
             Mapping = mapping;
-            LatestCreds = new ObservableAsPropertyHelper<UserCredentials>(messenger.Listen<UserCredentials>(), _ => { });
+            LatestCreds = new ObservableAsPropertyHelper<Client.UserCredentials>(messenger.Listen<Client.UserCredentials>(), _ => { });
 
             GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h);
             GetRepositoriesCompleted = Observable.FromEventPattern<GetRepositoriesCompletedEventArgs>(h => _svc.GetRepositoriesCompleted += h, h => _svc.GetRepositoriesCompleted -= h);

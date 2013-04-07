@@ -1,26 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityService.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:complexType name="EventSeries">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="CollectionEventSeriesID" type="xs:int" />
-      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="SeriesEnd" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="SeriesStart" nillable="true" type="xs:dateTime" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
-  <xs:complexType name="UserCredentials">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AgentName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="AgentURI" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LoginName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
-      <xs:element minOccurs="0" name="Repository" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserCredentials" nillable="true" type="tns:UserCredentials" />
+  <xs:import schemaLocation="http://169.254.80.80:7091/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" />
   <xs:complexType name="ArrayOfTerm">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Term" nillable="true" type="tns:Term" />
@@ -34,27 +14,10 @@
       <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
       <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Source" type="tns:TermList" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="Source" type="q1:TermList" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Term" nillable="true" type="tns:Term" />
-  <xs:simpleType name="TermList">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="TaxonomicGroups" />
-      <xs:enumeration value="RelationshipTypes" />
-      <xs:enumeration value="Circumstances" />
-      <xs:enumeration value="EventImageTypes" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="TermList" nillable="true" type="tns:TermList" />
-  <xs:complexType name="UserProfile">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="AgentUri" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="LoginName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserProfile" nillable="true" type="tns:UserProfile" />
   <xs:complexType name="ArrayOfRepository">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Repository" nillable="true" type="tns:Repository" />
@@ -81,19 +44,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Qualification" nillable="true" type="tns:Qualification" />
-  <xs:complexType name="ArrayOfProject">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Project" nillable="true" type="tns:Project" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfProject" nillable="true" type="tns:ArrayOfProject" />
-  <xs:complexType name="Project">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ProjectID" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Project" nillable="true" type="tns:Project" />
   <xs:complexType name="ArrayOfAnalysisTaxonomicGroup">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
@@ -138,6 +88,16 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+  <xs:complexType name="EventSeries">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CollectionEventSeriesID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeriesEnd" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SeriesStart" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
   <xs:complexType name="ArrayOfLocalization">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Localization" nillable="true" type="tns:Localization" />
@@ -155,10 +115,9 @@
   <xs:complexType name="Event">
     <xs:sequence>
       <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
-      <xs:element minOccurs="0" name="CollectionDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
       <xs:element minOccurs="0" name="CollectionSeriesID" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="DeterminationDate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
       <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
@@ -256,6 +215,24 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="MultimediaOwner" nillable="true" type="tns:MultimediaOwner" />
+  <xs:complexType name="ArrayOfEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Event" nillable="true" type="tns:Event" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEvent" nillable="true" type="tns:ArrayOfEvent" />
+  <xs:complexType name="ArrayOfSpecimen">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Specimen" nillable="true" type="tns:Specimen" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSpecimen" nillable="true" type="tns:ArrayOfSpecimen" />
+  <xs:complexType name="ArrayOfIdentificationUnit">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfIdentificationUnit" nillable="true" type="tns:ArrayOfIdentificationUnit" />
   <xs:complexType name="ArrayOfTaxonList">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonList" nillable="true" type="tns:TaxonList" />

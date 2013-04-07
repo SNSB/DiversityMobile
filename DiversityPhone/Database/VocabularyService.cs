@@ -4,9 +4,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
 using DiversityPhone.Model;
-using Svc = DiversityPhone.DiversityService;
 using ReactiveUI;
-using DiversityPhone.Messages;
 using System.Reactive.Disposables;
 
 namespace DiversityPhone.Services
@@ -97,7 +95,7 @@ namespace DiversityPhone.Services
         }
 
         #region Terms
-        public IList<Term> getTerms(Svc.TermList source)
+        public IList<Term> getTerms(TermList source)
         {
             return queryDataContext(ctx => from t in ctx.Terms
                                         where t.SourceID == source

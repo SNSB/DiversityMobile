@@ -8,7 +8,7 @@
     using ReactiveUI;
     using System.Reactive.Disposables;
     using System.Collections.Generic;
-    using Funq;
+    
     using DiversityPhone.Model;
     using System.Threading;
 
@@ -97,7 +97,7 @@
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
         private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;       
 
-        IMessageBus Messenger;
+        readonly IMessageBus Messenger;
 
         private IScheduler threadpool = ThreadPoolScheduler.Instance;
         private GeoCoordinateWatcher watcher = null;
@@ -133,9 +133,9 @@
         /// The default accuracy to be used for all requests for location information.
         /// </param>
         /// </summary>
-        public LocationService(Container ioc) 
+        public LocationService(IMessageBus Messenger) 
         {
-            Messenger = ioc.Resolve<IMessageBus>();
+            this.Messenger = Messenger;
 
             Messenger.Listen<AppSettings>()
                 .Where(s => s != null)

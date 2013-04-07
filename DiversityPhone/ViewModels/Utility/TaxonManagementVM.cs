@@ -19,9 +19,10 @@ using ReactiveUI.Xaml;
 using System.Collections.Specialized;
 using System.Collections.ObjectModel;
 using DiversityPhone.Services.BackgroundTasks;
-using Funq;
+
 using System.Reactive.Concurrency;
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
@@ -30,20 +31,20 @@ namespace DiversityPhone.ViewModels
         public enum Pivot
         {
             Local,
-            Personal, 
+            Personal,
             Public
         }
 
-        private IConnectivityService Connectivity;
-        private ITaxonService Taxa;
-        private IDiversityServiceClient Service;
-        private INotificationService Notification;
-        
+        readonly IConnectivityService Connectivity;
+        readonly ITaxonService Taxa;
+        readonly IDiversityServiceClient Service;
+        readonly INotificationService Notification;
+
 
         #region Properties
 
         private Pivot _CurrentPivot = Pivot.Local;
-        public Pivot CurrentPivot 
+        public Pivot CurrentPivot
         {
             get
             {
@@ -58,8 +59,8 @@ namespace DiversityPhone.ViewModels
 
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
-        
-        
+
+
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
         public ReactiveCollection<TaxonListVM> PersonalLists { get; private set; }
@@ -74,12 +75,17 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public TaxonManagementVM(Container ioc)
-        {            
-            Taxa = ioc.Resolve<ITaxonService>();
-            Service = ioc.Resolve<IDiversityServiceClient>();            
-            Connectivity = ioc.Resolve<IConnectivityService>();
-            Notification = ioc.Resolve<INotificationService>();
+        public TaxonManagementVM(
+            IConnectivityService Connectivity,
+            ITaxonService Taxa,
+            IDiversityServiceClient Service,
+            INotificationService Notification
+            )
+        {
+            this.Connectivity = Connectivity;
+            this.Service = Service;
+            this.Taxa = Taxa;
+            this.Notification = Notification;
 
             _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable);
 
@@ -96,21 +102,21 @@ namespace DiversityPhone.ViewModels
                 .CreateCollection();
 
 
-            
+
             var onlineLists =
             localLists
                 .IgnoreElements() //only download lists once the local ones are loaded
-                .Concat(Observable.Return(null as TaxonListVM))                   
-                .CombineLatest(this.OnActivation(),(_,_2) => _2) 
+                .Concat(Observable.Return(null as TaxonListVM))
+                .CombineLatest(this.OnActivation(), (_, _2) => _2)
                 .CheckConnectivity(Connectivity, Notification)
-                .SelectMany(_ => 
+                .SelectMany(_ =>
                     {
                         return Service.GetTaxonLists()
                             .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists)
                             .TakeUntil(this.OnDeactivation());
                     })
                 .ObserveOnDispatcher()
-                .SelectMany(lists => 
+                .SelectMany(lists =>
                     lists.Where(list => !LocalLists.Any(loc => loc.Model == list)) // Filter lists already present locally
                         .Select(list => new TaxonListVM(list))
                     )
@@ -136,7 +142,7 @@ namespace DiversityPhone.ViewModels
                                 list.Model.IsSelected = false;
                         }
 
-                        Taxa.selectTaxonList(taxonlist.Model);                        
+                        Taxa.selectTaxonList(taxonlist.Model);
                     });
 
             Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
@@ -150,14 +156,14 @@ namespace DiversityPhone.ViewModels
                                 taxonlist.IsDownloading = true;
 
                                 makeListLocal(taxonlist);
-                                                                
+
                                 DownloadTaxonList(taxonlist)
                                     .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingList)
                                     .ObserveOnDispatcher()
                                     .HandleServiceErrors(Notification, Messenger)
-                                    .Subscribe(_ => {  },
+                                    .Subscribe(_ => { },
                                         _ => //Download Failed
-                                        {                                            
+                                        {
                                             taxonlist.IsDownloading = false;
                                             removeLocalList(taxonlist);
                                         },
@@ -168,13 +174,13 @@ namespace DiversityPhone.ViewModels
                                             if (Select.CanExecute(taxonlist))
                                                 Select.Execute(taxonlist);
                                         });
-                            }                            
+                            }
                         });
 
             Delete = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
-            Delete               
+            Delete
                 .Subscribe(taxonlist =>
-                    {                        
+                    {
                         removeLocalList(taxonlist);
                     });
 
@@ -232,6 +238,6 @@ namespace DiversityPhone.ViewModels
             else
                 PersonalLists.Add(list);
         }
-        
+
     }
 }

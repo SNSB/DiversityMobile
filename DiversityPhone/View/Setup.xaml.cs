@@ -10,13 +10,13 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using Microsoft.Phone.Controls;
-using DiversityPhone.ViewModels.Utility;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Shell;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DiversityPhone.View.Helper;
 using DiversityPhone.Services;
+using DiversityPhone.ViewModels;
 
 namespace DiversityPhone.View
 {

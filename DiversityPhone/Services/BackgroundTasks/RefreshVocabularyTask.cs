@@ -9,64 +9,83 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using DiversityPhone.DiversityService;
-using Funq;
+
 using System.Reactive.Linq;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Reactive;
+using DiversityPhone.Interface;
+using DiversityPhone.Model;
 
 namespace DiversityPhone.Services.BackgroundTasks
 {
-    public class RefreshVocabularyTask
+    
+
+    public class RefreshVocabularyTask : IRefreshVocabularyTask
     {
-        private ISubject<string> _Progress;
-        private UserCredentials _Credentials;
-        private IVocabularyService Vocabulary;
-        private IDiversityServiceClient Repository;
-        private INotificationService Notification;
-        public IObservable<Unit> _Execute;
-
-        public static IObservable<Unit> Start(Container ioc, UserCredentials credentials)
-        {
-            var task = new RefreshVocabularyTask(ioc, credentials);
-            var execution = task._Execute.Replay();
-            execution.Connect();
-
-            return execution;
-        }
-
-        private RefreshVocabularyTask(Container ioc, UserCredentials credentials)
-        {
-            Vocabulary = ioc.Resolve<IVocabularyService>();
-            Repository = ioc.Resolve<IDiversityServiceClient>();
-            Notification = ioc.Resolve<INotificationService>();
-            _Credentials = credentials;
-
-            if (_Credentials != null)
-            {
-                setupProgress();
-                _Execute =
-                Observable.Concat(
-                    clearVocabulary(),
-                    loadVocabulary(),
-                    loadAnalyses(),
-                    loadResults(),                    
-                    loadQualifications(),
-                    loadProperties())
-                    .Finally(() => { if (_Progress != null) _Progress.OnCompleted(); })
-                    .ObserveOnDispatcher();
-            }
-            else
-                throw new ArgumentException("credentials");
-        }
+        private readonly IVocabularyService Vocabulary;
+        private readonly IDiversityServiceClient Repository;
+        private readonly INotificationService Notification;
 
         private const int RETRY_COUNT = 3;
 
-        void setupProgress()
-        {            
-            _Progress = new Subject<string>();
-            Notification.showProgress(_Progress);
+        private bool _HasStarted = false;
+        private ISubject<string> _Progress = new Subject<string>();
+        private UserCredentials _Credentials;
+        public IObservable<Unit> _Execute;
+
+        
+
+        public RefreshVocabularyTask(
+            IVocabularyService Vocabulary,
+            IDiversityServiceClient Repository,
+            INotificationService Notification
+            )
+        {
+            this.Vocabulary = Vocabulary;
+            this.Repository = Repository;
+            this.Notification = Notification;
+        }
+
+        public IObservable<Unit> Start(
+            UserCredentials login
+            )
+        {
+            lock (this)
+            {
+                if (!_HasStarted)
+                {
+
+                    _Credentials = login;
+
+                    if (_Credentials != null)
+                    {
+                        Notification.showProgress(_Progress);
+                        var execution =
+                        Observable.Concat(
+                            clearVocabulary(),
+                            loadVocabulary(),
+                            loadAnalyses(),
+                            loadResults(),
+                            loadQualifications(),
+                            loadProperties())
+                            .Finally(() => { if (_Progress != null) _Progress.OnCompleted(); })
+                            .ObserveOnDispatcher()
+                            .Replay();
+
+                        _Execute = execution;
+
+                        execution.Connect();
+                    }
+                    else
+                        throw new ArgumentException("login");
+                }
+
+                _HasStarted = true;
+
+                return _Execute;
+            }            
         }
 
         IObservable<Unit> clearVocabulary()

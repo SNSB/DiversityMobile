@@ -18,6 +18,8 @@
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,33 +46,33 @@
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="ReactiveUI.Blend_WP7">
-      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Routing_WP7">
-      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI.Routing_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI.Xaml_WP7">
-      <HintPath>..\packages\reactiveui-xaml.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI.Xaml_WP7.dll</HintPath>
     </Reference>
     <Reference Include="ReactiveUI_WP7">
-      <HintPath>..\packages\reactiveui-core.4.0.2\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
+      <HintPath>..\packages\reactiveui-core.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
     </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\packages\Rx-Core.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\SL4-WindowsPhone71\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\packages\Rx-Interfaces.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\SL4-WindowsPhone71\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\packages\Rx-Linq.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\SL4-WindowsPhone71\System.Reactive.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.PlatformServices">
-      <HintPath>..\packages\Rx-PlatformServices.2.0.21103\lib\SL4-WindowsPhone71\System.Reactive.PlatformServices.dll</HintPath>
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\SL4-WindowsPhone71\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-Xaml.2.0.21030\lib\SL4-WindowsPhone71\System.Reactive.Windows.Threading.dll</HintPath>
+      <HintPath>..\packages\Rx-XAML.2.1.30214.0\lib\SL4-WindowsPhone71\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -91,70 +93,12 @@
     <Compile Include="IKeyMappingService.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Vocabulary.cs" />
     <Compile Include="DiversityService\DiversityServiceClient.Upload.cs" />
-    <Compile Include="DiversityService\IDiversityServiceClient.cs" />
     <Compile Include="DiversityService\ModelProjection.cs" />
     <Compile Include="Maps\IMapStorageService.cs" />
     <Compile Include="Maps\IMapTransferService.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Maps\MapTransferService.cs" />
     <Compile Include="Maps\TestMapTransferService.cs" />
-    <Compile Include="Model\Analysis.cs" />
-    <Compile Include="Model\AnalysisResult.cs" />
-    <Compile Include="Model\AnalysisTaxonomicGroup.cs" />
-    <Compile Include="Model\Event.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Event.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EventProperty.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EventProperty.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\EventSeries.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EventSeries.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\IdentificationUnit.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IdentificationUnit.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\IdentificationUnitAnalysis.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>IdentificationUnitAnalysis.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\ILocalizable.cs" />
-    <Compile Include="Model\IModifyable.cs" />
-    <Compile Include="Model\IMultimediaOwner.cs" />
-    <Compile Include="Model\IQueryOperations.cs" />
-    <Compile Include="Model\MultimediaObject.cs">
-      <DependentUpon>MultimediaObject.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="Model\Localization.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Localization.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\MediaType.cs" />
-    <Compile Include="Model\Property.cs" />
-    <Compile Include="Model\PropertyName.cs" />
-    <Compile Include="Model\Qualification.cs" />
-    <Compile Include="Model\QueryOperations.cs" />
-    <Compile Include="Model\DBObjectType.cs" />
-    <Compile Include="Model\Specimen.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Specimen.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Synonymy.cs" />
-    <Compile Include="Model\TaxonList.cs" />
-    <Compile Include="Model\TaxonName.cs" />
-    <Compile Include="Model\Term.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\DiversityService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -166,40 +110,9 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Model\Event.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Event.cs</LastGenOutput>
-    </None>
-    <None Include="Model\EventProperty.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EventProperty.cs</LastGenOutput>
-    </None>
-    <None Include="Model\EventSeries.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>EventSeries.cs</LastGenOutput>
-    </None>
-    <None Include="Model\IdentificationUnit.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdentificationUnit.cs</LastGenOutput>
-    </None>
-    <None Include="Model\IdentificationUnitAnalysis.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>IdentificationUnitAnalysis.cs</LastGenOutput>
-    </None>
-    <None Include="Model\MultimediaObject.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>MultimediaObject.cs</LastGenOutput>
-    </None>
-    <None Include="Model\Localization.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Localization.cs</LastGenOutput>
-    </None>
-    <None Include="Model\ReactiveModel.ttinclude" />
-    <None Include="Model\Specimen.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Specimen.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\DiversityPhone.Model.Project.datasource" />
+    <None Include="Properties\DataSources\DiversityPhone.Model.UserProfile.datasource" />
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Analysis.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -227,9 +140,6 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Localization.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Project.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Property.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -254,11 +164,16 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Term.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityPhone.DiversityService.UserProfile.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
+    <None Include="Service References\DiversityService\DiversityService.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
+    <None Include="Service References\DiversityService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="ServiceReferences.ClientConfig">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Service References\DiversityService\DiversityService.wsdl" />
     <None Include="Service References\DiversityService\DiversityService.xsd">
       <SubType>Designer</SubType>
@@ -269,34 +184,38 @@
     <None Include="Service References\DiversityService\DiversityService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\DiversityService\DiversityService.disco" />
-    <Content Include="ServiceReferences.ClientConfig">
+    <None Include="Service References\DiversityService\DiversityService3.xsd">
       <SubType>Designer</SubType>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\DiversityService\" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\DiversityPhone.Interface\DiversityPhone.Interface.csproj">
+      <Project>{1BBCA3C5-90DC-4729-B5DF-1BBE95E8BD64}</Project>
+      <Name>DiversityPhone.Interface</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">
       <Project>{89D2571F-5F5B-4BCB-8F34-73F03B982512}</Project>
       <Name>DiversityPhone.MapService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.Model\DiversityPhone.Model.csproj">
+      <Project>{F4FD53A5-06DF-4431-AA33-34AEB3CAC032}</Project>
+      <Name>DiversityPhone.Model</Name>
     </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
       <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
       <Name>DiversityPhone.MultimediaService</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\DiversityService\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

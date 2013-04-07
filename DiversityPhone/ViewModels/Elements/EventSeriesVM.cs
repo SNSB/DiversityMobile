@@ -3,11 +3,6 @@
     using System;
     using ReactiveUI;
     using DiversityPhone.Model;
-    using ReactiveUI.Xaml;
-    using System.Reactive.Linq;
-    using DiversityPhone.Messages;
-    using System.Collections.Generic;
-    using DiversityPhone.Services;
 
     public class EventSeriesVM : ElementVMBase<EventSeries>
     {

@@ -1,25 +1,78 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.ServiceModel;
-using DiversityPhone.Services;
 using ReactiveUI;
-using System.Diagnostics.Contracts;
+using DiversityPhone.Interface;
+using DiversityPhone.Model;
+using Ninject.Modules;
+using Ninject.Activation;
+using Ninject.Parameters;
+using Ninject;
+using System.Linq;
 
 namespace DiversityPhone.ViewModels
 {
+    public class DispatcherAttribute : Attribute { }
+    public class ThreadPoolAttribute : Attribute { }
+
+    public class FuncModule : NinjectModule
+    {
+        public override void Load()
+        {
+            this.Kernel.Bind(typeof(Func<>)).ToMethod(CreateFunc).When(VerifyFactoryFunction);
+        }
+
+        private static bool VerifyFactoryFunction(IRequest request)
+        {
+            var genericArguments = request.Service.GetGenericArguments();
+            if (genericArguments.Count() != 1)
+            {
+                return false;
+            }
+
+            var instanceType = genericArguments.Single();
+            return request.ParentContext.Kernel.CanResolve(new Request(genericArguments[0], null, new IParameter[0], null, false, true)) ||
+                   TypeIsSelfBindable(instanceType);
+        }
+
+        private static object CreateFunc(IContext ctx)
+        {
+            var functionFactoryType = typeof(FunctionFactory<>).MakeGenericType(ctx.GenericArguments);
+            var ctor = functionFactoryType.GetConstructors().Single();
+            var functionFactory = ctor.Invoke(new object[] { ctx.Kernel });
+            return functionFactoryType.GetMethod("Create").Invoke(functionFactory, new object[0]);
+        }
+
+        private static bool TypeIsSelfBindable(Type service)
+        {
+            return !service.IsInterface
+                   && !service.IsAbstract
+                   && !service.IsValueType
+                   && service != typeof(string)
+                   && !service.ContainsGenericParameters;
+        }
+
+        public class FunctionFactory<T>
+        {
+            private readonly IKernel kernel;
+
+            public FunctionFactory(IKernel kernel)
+            {
+                this.kernel = kernel;
+            }
+
+            public Func<T> Create()
+            {
+                return () => this.kernel.Get<T>();
+            }
+        }
+    }
+
     static class Extensions
     {
         private static readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);
+
 
 
         public static int ListFindIndex<T>(this IList<T> This, Func<T, bool> predicate)
@@ -104,7 +157,7 @@ namespace DiversityPhone.ViewModels
                     }
                     if (ex is FaultException)
                     {
-                        Messenger.SendMessage(new DialogMessage(Messages.DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.Message_ServiceProblem + ex.Message));
+                        Messenger.SendMessage(new DialogMessage(DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.Message_ServiceProblem + ex.Message));
                         handled = true;
                     }
 

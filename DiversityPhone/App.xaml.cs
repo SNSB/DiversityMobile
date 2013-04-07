@@ -1,60 +1,50 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
-using System.Windows.Navigation;
 using ReactiveUI;
-using Funq;
-using DiversityPhone.Services.BackgroundTasks;
-using System.IO.IsolatedStorage;
-using System.Device.Location;
-using System;
-using DiversityPhone.Messages;
+
 using DiversityPhone.ViewModels;
 using DiversityPhone.ViewModels.Utility;
 using System.Reactive.Concurrency;
+using Ninject;
+using DiversityPhone.Interface;
+using DiversityPhone.Model;
+using DiversityPhone.Services.BackgroundTasks;
+using System;
 
 
 namespace DiversityPhone
 {
     public partial class App : Application
-    {       
+    {
         private const string TASK_KEY = "BackgroundTasks";
 
-        public static Container IOC { get; private set; }              
-        
-        private static IMessageBus Messenger;
-        private static Services.NavigationService NavSvc;
-        private static SettingsService Settings;
-        private static ILocationService GeoLocation { get { return IOC.Resolve<ILocationService>(); } }
-        public static IFieldDataService OfflineDB { get { return IOC.Resolve<IFieldDataService>(); } }
-        
-        
+        public static IKernel Kernel { get; private set; }        
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
         /// <returns>The root frame of the Phone Application.</returns>
-        public static PhoneApplicationFrame RootFrame { get; private set; }       
-        
+        public static PhoneApplicationFrame RootFrame { get; private set; }
+
         /// <summary>
         /// Constructor for the Application object.
         /// </summary>
         public App()
-        {            
+        {
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
-            
-            
+
+
 
             // Standard Silverlight initialization
             InitializeComponent();
-            
+
 
             // Phone-specific initialization
             InitializePhoneApplication();
-            
+
 
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached)
@@ -75,102 +65,116 @@ namespace DiversityPhone
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-            
+
         }
 
-       
-
-        private static void registerViewModels()
+        class ViewModelModule : Ninject.Modules.NinjectModule
         {
-            
+            private void BindAndActivateSingleton<T>()
+            {
+                var tmp = Kernel.Get<T>();
+                Bind<T>().ToConstant(tmp).InSingletonScope();                
+            }
+
+            public override void Load()
+            {
+                BindAndActivateSingleton<HomeVM>();
+                BindAndActivateSingleton<ViewESVM>();
+                BindAndActivateSingleton<EditESVM>();
+                BindAndActivateSingleton<ViewEVVM>();
+                BindAndActivateSingleton<EditEVVM>();
+                BindAndActivateSingleton<ViewCSVM>();
+                BindAndActivateSingleton<EditCSVM>();
+                BindAndActivateSingleton<ViewIUVM>();
+                BindAndActivateSingleton<EditIUVM>();
+                BindAndActivateSingleton<EditPropertyVM>();
+                BindAndActivateSingleton<EditAnalysisVM>();
+
+                BindAndActivateSingleton<MapManagementVM>();
+                BindAndActivateSingleton<ViewMapVM>();
+
+                BindAndActivateSingleton<ImageVM>();
+                BindAndActivateSingleton<AudioVM>();
+                BindAndActivateSingleton<VideoVM>();
 
 
-            #region ViewModel Factories
-            IOC.Register<HomeVM>(new HomeVM(IOC));
-            IOC.Register<EditESVM>(new EditESVM(IOC));
-            IOC.Register<ViewESVM>(new ViewESVM(IOC));
-            IOC.Register<EditEVVM>(new EditEVVM(IOC));
-            IOC.Register<ViewEVVM>(new ViewEVVM(IOC));
-            IOC.Register<EditCSVM>(new EditCSVM());
-            IOC.Register<ViewCSVM>(new ViewCSVM(IOC));
-            IOC.Register<EditIUVM>(new EditIUVM(IOC));
-            IOC.Register<ViewIUVM>(new ViewIUVM(IOC));
-            IOC.Register<EditPropertyVM>(new EditPropertyVM(IOC));
-            IOC.Register<EditAnalysisVM>(new EditAnalysisVM(IOC));
+                BindAndActivateSingleton<UploadVM>();
+                BindAndActivateSingleton<DownloadVM>();
 
-            IOC.Register<MapManagementVM>(new MapManagementVM(IOC));
-            IOC.Register<ViewMapVM>(new ViewMapVM(IOC));           
-                      
-            IOC.Register<ImageVM>(new ImageVM());
-            IOC.Register<AudioVM>(new AudioVM());
-            IOC.Register<VideoVM>(new VideoVM());
+                BindAndActivateSingleton<SettingsVM>();
 
-            IOC.Register<TaxonManagementVM>(c => new TaxonManagementVM(c));
+                Bind<SetupVM>().ToSelf().InSingletonScope();
 
-            IOC.Register<SettingsVM>(c => new SettingsVM(c));
+                Bind<TaxonManagementVM>().ToSelf().InTransientScope();
 
-            IOC.Register<UploadVM>(new UploadVM(IOC));
-            IOC.Register<DownloadVM>(new DownloadVM(IOC));
+                
+            }
 
-            IOC.Register<SetupVM>(c => new SetupVM(c));
-            #endregion
-            
         }
+
+        class ServiceModule : Ninject.Modules.NinjectModule
+        {
+            private void BindAndActivateSingleton<T>()
+            {
+                Bind<T>().ToSelf().InSingletonScope();
+                Kernel.Get<T>();
+            }
+
+            public override void Load()
+            {
+                Bind<IScheduler>().ToConstant(DispatcherScheduler.Current).WhenTargetHas<DispatcherAttribute>();
+                Bind<IScheduler>().ToConstant(ThreadPoolScheduler.Instance).WhenTargetHas<ThreadPoolAttribute>();
+                Bind<INotificationService>().To<NotificationService>().InSingletonScope();
+                Bind<IMessageBus>().ToConstant(MessageBus.Current);
+
+                Bind<SettingsService>().ToSelf().InSingletonScope();
+                Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());
+                Bind<ICurrentCredentials>().ToConstant(Kernel.Get<SettingsService>());
+
+
+                BindAndActivateSingleton<NavigationService>();
+                BindAndActivateSingleton<DialogService>();
+
+                Bind<IConnectivityService>().To<ConnectivityService>().InSingletonScope();
+
+                Bind<OfflineStorage>().ToSelf().InSingletonScope();
+                Bind<IFieldDataService>().ToConstant(Kernel.Get<OfflineStorage>());
+                Bind<IKeyMappingService>().ToConstant(Kernel.Get<OfflineStorage>());
+
+                Bind<IVocabularyService>().To<VocabularyService>().InSingletonScope();
+                Bind<ITaxonService>().To<TaxonService>().InSingletonScope();
+                Bind<IMapStorageService>().To<MapStorageService>().InSingletonScope();
+                Bind<IMapTransferService>().To<MapTransferService>().InSingletonScope();
+
+                Bind<IDiversityServiceClient>().To<DiversityServiceClient>().InSingletonScope();
+                Bind<ILocationService>().To<LocationService>().InSingletonScope();
+
+                Bind<IRefreshVocabularyTask>().To<RefreshVocabularyTask>();
+            }
+        }
+
+
 
         public static void Initialize()
-        {           
+        {
 
-            Messenger = MessageBus.Current;
-            Settings = new SettingsService(Messenger);
-            NavSvc = new Services.NavigationService(Messenger);
+            Kernel = new StandardKernel();
+            Kernel.Bind<PhoneApplicationFrame>().ToConstant(RootFrame);
+            Kernel.Load<FuncModule>();
+            Kernel.Load<ServiceModule>();
+            Kernel.Load<ViewModelModule>();
 
-            NavSvc.AttachToNavigation(RootFrame);
-
-
-            IOC = new Container();
-            IOC.DefaultReuse = ReuseScope.None;
-
-            IOC.Register<IScheduler>(NamedServices.DISPATCHER, DispatcherScheduler.Current);
-            IOC.Register<PhoneApplicationFrame>(RootFrame);
-
-            IOC.Register<INotificationService>(new NotificationService(IOC));
-
-            IOC.Register<IMessageBus>(Messenger);
-            IOC.Register<ISettingsService>(Settings);
-            IOC.Register<ICurrentCredentials>(Settings);
-            IOC.Register<Services.NavigationService>(NavSvc);
-
-            IOC.Register<DialogService>(new DialogService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IConnectivityService>(new ConnectivityService());
-            var db = new OfflineStorage(IOC);
-            IOC.Register<IFieldDataService>(db);
-            IOC.Register<IKeyMappingService>(db);
-            IOC.Register<ITaxonService>(new TaxonService());
-            IOC.Register<IVocabularyService>(new VocabularyService(IOC.Resolve<IMessageBus>()));
-            IOC.Register<IMapStorageService>(new MapStorageService());
-#if false
-            IOC.Register<IMapTransferService>(new TestMapTransferService());
-#else
-            IOC.Register<IMapTransferService>(new MapTransferService(IOC.Resolve<IMapStorageService>(), IOC.Resolve<ICurrentCredentials>()));
-#endif
-            
-
-            IOC.Register<IDiversityServiceClient>(new DiversityServiceClient(IOC.Resolve<IMessageBus>(), IOC.Resolve<IKeyMappingService>()));
-            IOC.Register<ILocationService>(new LocationService(IOC));            
-            
-            registerViewModels();
-
-            RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);            
+            RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);
         }
 
-        
-       
+
+
 
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-           
+
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -178,7 +182,7 @@ namespace DiversityPhone
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             // Ensure that application state is restored appropriately
-            
+
         }
 
         // Code to execute when the application is deactivated (sent to background)
@@ -186,25 +190,25 @@ namespace DiversityPhone
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
             // Ensure that required application state is persisted here./          
-            
+
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
-            
+
         }
 
         // Code to execute if a navigation fails
-        private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void RootFrame_NavigationFailed(object sender, System.Windows.Navigation.NavigationFailedEventArgs e)
         {
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // A navigation has failed; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
-            
+
         }
 
         // Code to execute on Unhandled Exceptions
@@ -218,8 +222,9 @@ namespace DiversityPhone
 
             e.Handled = true;
 
-            if(Messenger != null)
-                Messenger.SendMessage(new DialogMessage(DialogType.OK, "", string.Format("{0} {1}", DiversityResources.Message_FatalException, e.ExceptionObject.Message)));
+            var messenger = Kernel.Get<IMessageBus>();
+            if (messenger != null)
+                messenger.SendMessage(new DialogMessage(DialogType.OK, "", string.Format("{0} {1}", DiversityResources.Message_FatalException, e.ExceptionObject.Message)));
         }
 
         #region Phone application initialization
@@ -235,7 +240,7 @@ namespace DiversityPhone
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();            
+            RootFrame = new PhoneApplicationFrame();
 
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
@@ -247,13 +252,13 @@ namespace DiversityPhone
         }
 
         // Do not add any additional code to this method
-        private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
+        private void CompleteInitializePhoneApplication(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
             // Set the root visual to allow the application to render
             if (RootVisual != RootFrame)
                 RootVisual = RootFrame;
 
-            
+
 
             // Remove this handler since it is no longer needed
             RootFrame.Navigated -= CompleteInitializePhoneApplication;
@@ -264,6 +269,6 @@ namespace DiversityPhone
 
 
 
-        
+
     }
 }

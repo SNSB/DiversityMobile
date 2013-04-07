@@ -4,15 +4,12 @@ using System.Linq;
 using System.Collections.Generic;
 using DiversityPhone.Model;
 using ReactiveUI;
-using DiversityPhone.Messages;
 using System.Data.Linq;
-using System.Text;
 using System.Linq.Expressions;
-using Svc = DiversityPhone.DiversityService;
-using System.IO.IsolatedStorage;
 using DiversityPhone.ViewModels;
-using Funq;
+
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
@@ -21,60 +18,63 @@ namespace DiversityPhone.Services
     public partial class OfflineStorage : IFieldDataService, IKeyMappingService
     {
         private IList<IDisposable> _subscriptions;
-        private IMessageBus _messenger;
-        private INotificationService _Notifications;
+        readonly IMessageBus Messenger;
+        readonly INotificationService Notifications;
      
 
-        public OfflineStorage(Container ioc)
+        public OfflineStorage(
+            IMessageBus Messenger,
+            INotificationService Notifications
+            )
         {
-            this._messenger = ioc.Resolve<IMessageBus>();
-            _Notifications = ioc.Resolve<INotificationService>();
+            this.Messenger = Messenger;
+            this.Notifications = Notifications;
 
             
 
             _subscriptions = new List<IDisposable>()
             {
-                _messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Model()                        
+                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Model()                        
                     .Subscribe(es => addOrUpdateEventSeries(es)),
-                _messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()  
+                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()  
                     .Subscribe(es => deleteEventSeries(es)),
 
-                _messenger.Listen<IElementVM<Event>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<Event>>(MessageContracts.SAVE).Model() 
                     .Subscribe(ev => addOrUpdateEvent(ev)),
-                _messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model() 
                     .Subscribe(ev=>deleteEvent(ev)),
 
-                _messenger.Listen<IElementVM<EventProperty>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.SAVE).Model() 
                     .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
-                _messenger.Listen<IElementVM<EventProperty>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.DELETE).Model() 
                     .Subscribe(cep => deleteEventProperty(cep)),
 
-                _messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model() 
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
-                _messenger.Listen<IElementVM<Specimen>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.DELETE).Model() 
                     .Subscribe(spec=>deleteSpecimen(spec)),
 
-                _messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.SAVE).Model() 
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
-                _messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.DELETE).Model() 
                     .Subscribe(iu=>deleteIU(iu)),
 
-                _messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.SAVE).Model() 
                     .Subscribe(iua=>addOrUpdateIUA(iua)),
-                 _messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model() 
+                 Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model() 
                     .Subscribe(iua=>deleteIUA(iua)),
 
-                _messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.SAVE).Model()
+                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.SAVE).Model()
                     .Subscribe(mmo => addMultimediaObject(mmo)),
-                _messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.DELETE).Model()
+                Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.DELETE).Model()
                     .Subscribe(mmo=>deleteMMO(mmo)),
 
-                _messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE)
+                Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE)
                     .Subscribe(gp => addGeoPoint(gp)),
-                _messenger.Listen<GeoPointForSeries>(MessageContracts.DELETE)
+                Messenger.Listen<GeoPointForSeries>(MessageContracts.DELETE)
                     .Subscribe(gp => deleteGeoPoint(gp)),
 
-                _messenger.Listen<ILocalizable>(MessageContracts.SAVE)
+                Messenger.Listen<ILocalizable>(MessageContracts.SAVE)
                     .Subscribe(loc => 
                         {
                             if (loc is Event)
@@ -90,7 +90,7 @@ namespace DiversityPhone.Services
 
         public void deleteAndNotifyAsync<T>(T detachedRow) where T : class
         {
-            _Notifications.showProgress(
+            Notifications.showProgress(
                 CascadingDelete.deleteCascadingAsync(detachedRow)
                 .StartWith(Unit.Default)
                 .Select(_ => DiversityResources.Info_DeletingObjects)
@@ -140,7 +140,7 @@ namespace DiversityPhone.Services
             if (EventSeries.isNoEventSeries(newSeries))
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
-            _messenger.SendMessage<EventSeries>(newSeries, MessageContracts.START);
+            Messenger.SendMessage<EventSeries>(newSeries, MessageContracts.START);
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
@@ -439,8 +439,8 @@ namespace DiversityPhone.Services
         public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner)
         {
              IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == owner.OwnerType
-                                                && mm.RelatedId == owner.OwnerID
+                                        where mm.OwnerType == owner.EntityType
+                                                && mm.RelatedId == owner.EntityID
                                         select mm);
              return objects;
 
@@ -527,7 +527,7 @@ namespace DiversityPhone.Services
                             //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
                             withDataContext((ctx2) =>
                                 {
-                                    tableProvider(ctx2).Attach(row, true);
+                                    tableProvider(ctx2).Attach(row, existingRow);
                                     try
                                     {
                                         ctx2.SubmitChanges();
@@ -596,7 +596,7 @@ namespace DiversityPhone.Services
 
 
 
-        public int? ResolveKey(DBObjectType ownerType, int ownerID)
+        public int? ResolveToServerKey(DBObjectType ownerType, int localID)
         {
             using (var ctx = new DiversityDataContext())
             {
@@ -605,26 +605,61 @@ namespace DiversityPhone.Services
                 {
                     case DBObjectType.EventSeries:
                         key = from es in ctx.EventSeries
-                              where es.SeriesID == ownerID
+                              where es.SeriesID == localID
                               select es.CollectionSeriesID;
                         break;
                     case DBObjectType.Event:
                         key = from ev in ctx.Events
-                              where ev.EventID == ownerID
+                              where ev.EventID == localID
                               select ev.CollectionEventID;
                         break;
                     case DBObjectType.Specimen:
                         key = from s in ctx.Specimen
-                              where s.SpecimenID == ownerID
+                              where s.SpecimenID == localID
                               select s.CollectionSpecimenID;
                         break;
                     case DBObjectType.IdentificationUnit:
                         key = from iu in ctx.IdentificationUnits
-                              where iu.UnitID == ownerID
+                              where iu.UnitID == localID
                               select iu.CollectionUnitID;
                         break;
                     default:
                         throw new ArgumentException("ownerType");                        
+                }
+
+                return key.FirstOrDefault();
+            }
+        }
+
+        public int? ResolveToLocalKey(DBObjectType ownerType, int localID) 
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                IEnumerable<int?> key;
+                switch (ownerType)
+                {
+                    case DBObjectType.EventSeries:
+                        key = from es in ctx.EventSeries
+                              where es.CollectionSeriesID == localID
+                              select es.SeriesID;
+                        break;
+                    case DBObjectType.Event:
+                        key = from ev in ctx.Events
+                              where ev.CollectionEventID == localID
+                              select ev.EventID as int?;
+                        break;
+                    case DBObjectType.Specimen:
+                        key = from s in ctx.Specimen
+                              where s.CollectionSpecimenID == localID
+                              select s.SpecimenID as int?;
+                        break;
+                    case DBObjectType.IdentificationUnit:
+                        key = from iu in ctx.IdentificationUnits
+                              where iu.CollectionUnitID == localID
+                              select iu.UnitID as int?;
+                        break;
+                    default:
+                        throw new ArgumentException("ownerType");
                 }
 
                 return key.FirstOrDefault();
@@ -685,10 +720,112 @@ namespace DiversityPhone.Services
                                           select mmo);
         }
 
-
-        public int? ResolveKey<T>(T entity)
+        public void add<T>(T element) where T : class, IModifyable
         {
-            throw new NotImplementedException();
+            addAll(Enumerable.Repeat(element, 1));
+        }
+
+        public void addAll<T>(IEnumerable<T> elements) where T : class, IModifyable
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                foreach (var e in elements)
+                {
+                    if (e.ModificationState == ModificationState.New)
+                        e.ModificationState = ModificationState.Modified;
+                }
+                ctx.GetTable<T>().InsertAllOnSubmit(elements);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public void update<T>(T element, Action<T> updateValues) where T : class
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                ctx.GetTable<T>().Attach(element, false);
+                updateValues(element);
+                ctx.SubmitChanges();
+            }
+        }
+
+        public void delete<T>(T element) where T : class
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                var table = ctx.GetTable<T>();
+                table.Attach(element, false); 
+                table.DeleteOnSubmit(element);
+                ctx.SubmitChanges();
+            }
+        }
+
+        
+
+        static IDictionary<Type, Delegate> keyComparerFactories = new Dictionary<Type, Delegate>();
+        
+
+        Expression<Func<T, bool>> getKeyComparison<T, TKey>(TKey id)
+        {            
+            Delegate comparerFactory;
+            if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory))
+            {
+                var keyprop = (from p in typeof(T).GetProperties()
+                               where (p.GetCustomAttributes(typeof(EntityKeyAttribute), false)).Any()
+                               select p).Single();
+
+                if (!keyprop.PropertyType.IsAssignableFrom(typeof(TKey)))
+                    throw new InvalidOperationException("Incompatible Key Types");
+
+                //construct the parameter which is x and it is of type T
+                ParameterExpression xParam = Expression.Parameter(typeof(T), "x");
+                MemberExpression leftExpr = MemberExpression.Property(xParam, keyprop);
+
+
+                Func<TKey, Expression<Func<T, bool>>> comparerFactoryLambda = (TKey i) =>
+                    {
+                        Expression rightExpr = Expression.Constant(i);
+                        BinaryExpression myExpr = MemberExpression.Equal(leftExpr, rightExpr);
+
+                        return Expression.Lambda<Func<T, bool>>
+                            (
+                                myExpr,
+                                new ParameterExpression[] { xParam }
+                            );
+                    };
+
+                //factory for this type not initalized yet
+                lock (keyComparerFactories)
+                {
+                    //Check again to avoid adding it twice
+                    if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory))
+                    {
+                        keyComparerFactories.Add(typeof(T), comparerFactoryLambda);
+                        comparerFactory = comparerFactoryLambda;
+                    }
+                }
+            }
+
+            return (Expression<Func<T, bool>>) comparerFactory.DynamicInvoke(id);      
+        }
+
+        private T get<T, TKey>(TKey id) where T : class, IEntity
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                var table = ctx.GetTable<T>();
+
+                var q = table.Where(getKeyComparison<T, TKey>(id));
+                return q.FirstOrDefault();
+            }
+        }
+
+        public T get<T>(int? id) where T : class, IEntity
+        {
+            if (typeof(T) == typeof(EventSeries))
+                return get<T, int?>(id);
+            else
+                return get<T, int>(id.Value);
         }
     }
 }

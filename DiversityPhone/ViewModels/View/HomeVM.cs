@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using DiversityPhone.Messages;
 using DiversityPhone.Model;
 using DiversityPhone.Services;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using Funq;
-using System.Reactive.Disposables;
+
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
@@ -18,10 +15,12 @@ namespace DiversityPhone.ViewModels
 
     public class HomeVM : PageVMBase
     {
+        private readonly IFieldDataService Storage;
+        private readonly ILocationService Location;
+
         private ReactiveAsyncCommand getSeries = new ReactiveAsyncCommand();
                   
-        private IFieldDataService Storage;
-        private ILocationService Location;
+        
 
         #region Commands
         public ReactiveCommand Settings { get; private set; }
@@ -40,14 +39,18 @@ namespace DiversityPhone.ViewModels
         }       
         #endregion
 
-        public HomeVM(Container ioc)           
+        public HomeVM(
+            IFieldDataService Storage,
+            ILocationService Location
+            )           
         {
-            Storage = ioc.Resolve<IFieldDataService>();
-            Location = ioc.Resolve<ILocationService>();
+            this.Storage = Storage;
+            this.Location = Location;
 
 
             //EventSeries
-            SeriesList = 
+            SeriesList = new ReactiveCollection<EventSeriesVM>();
+
             getSeries.RegisterAsyncFunction(_ =>
                     Enumerable.Repeat(EventSeries.NoEventSeries,1)
                     .Concat(
@@ -57,7 +60,7 @@ namespace DiversityPhone.ViewModels
                     .Select(es => new EventSeriesVM(es))
                 )
                 .SelectMany(vm => vm)               
-                .CreateCollection();            
+                .Subscribe(SeriesList.Add);            
 
             SeriesList
                     .ListenToChanges<EventSeries, EventSeriesVM>();    

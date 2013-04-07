@@ -1,30 +1,29 @@
 ﻿using ReactiveUI;
-using Svc = DiversityPhone.DiversityService;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
 using System;
-using DiversityPhone.Services;
-using Funq;
-using DiversityPhone.Services.BackgroundTasks;
-using DiversityPhone.DiversityService;
-using DiversityPhone.Messages;
+using System.Linq;
 using System.Reactive;
+using DiversityPhone.Interface;
+using ReactiveUI.Xaml;
+using System.Reactive.Concurrency;
 
 
-namespace DiversityPhone.ViewModels.Utility
+namespace DiversityPhone.ViewModels
 {
     public class SetupVM : ReactiveObject
     {
         private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(5);
 
 
-        IDiversityServiceClient Repository;
-        ISettingsService Settings;
-        IMessageBus Messenger;
-        INotificationService Notifications;
-        IConnectivityService Connectivity;
+        readonly IDiversityServiceClient Repository;
+        readonly ISettingsService Settings;
+        readonly IMessageBus Messenger;
+        readonly INotificationService Notifications;
+        readonly IConnectivityService Connectivity;
+        readonly ITaxonService Taxa;
+        readonly IFieldDataService FieldData;
 
 
         #region Setup Properties
@@ -82,15 +81,15 @@ namespace DiversityPhone.ViewModels.Utility
             }
         }
 
-        private Svc.Repository NoRepo = new Repository() { Database = null, DisplayText = DiversityResources.Setup_Item_PleaseChoose };
+        private string NoRepo = DiversityResources.Setup_Item_PleaseChoose;
 
-        public ListSelectionHelper<Svc.Repository> Databases { get; private set; }
+        public ListSelectionHelper<string> Databases { get; private set; }
 
-        private Svc.Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
+        private Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
 
-        public ListSelectionHelper<Svc.Project> Projects { get; private set; }
+        public ListSelectionHelper<Project> Projects { get; private set; }
 
-        private ObservableAsPropertyHelper<Svc.UserProfile> _Profile;
+        private ObservableAsPropertyHelper<UserProfile> _Profile;
 
         private bool _IsBusy = true;
 
@@ -133,8 +132,7 @@ namespace DiversityPhone.ViewModels.Utility
             m.AgentURI = profile.AgentUri;
             m.CurrentProject = Projects.SelectedItem.ProjectID;
             m.CurrentProjectName = Projects.SelectedItem.DisplayText;
-            m.HomeDB = Databases.SelectedItem.Database;
-            m.HomeDBName = Databases.SelectedItem.DisplayText;
+            m.HomeDBName = Databases.SelectedItem;
             m.Password = Password;
             m.UserName = UserName;
             m.UseGPS = UseGPS;
@@ -167,13 +165,25 @@ namespace DiversityPhone.ViewModels.Utility
             return settingsValid.DistinctUntilChanged();
         }
 
-        public SetupVM(Container ioc)
+        public SetupVM(
+            [Dispatcher] IScheduler Dispatcher,
+            IDiversityServiceClient Repository,
+            ISettingsService Settings,
+            IMessageBus Messenger,
+            INotificationService Notifications,
+            IConnectivityService Connectivity,
+            ITaxonService Taxa,
+            IFieldDataService FieldData,
+            Func<IRefreshVocabularyTask> refreshVocabluaryTaskFactory
+            )
         {
-            Repository = ioc.Resolve<IDiversityServiceClient>();
-            Messenger = ioc.Resolve<IMessageBus>();
-            Settings = ioc.Resolve<ISettingsService>();
-            Notifications = ioc.Resolve<INotificationService>();
-            Connectivity = ioc.Resolve<IConnectivityService>();
+            this.Repository = Repository;
+            this.Messenger = Messenger;
+            this.Settings = Settings;
+            this.Notifications = Notifications;
+            this.Connectivity = Connectivity;
+            this.Taxa = Taxa;
+            this.FieldData = FieldData;
 
             RefreshVocabulary = new ReactiveCommand();
             RefreshVocabulary
@@ -184,7 +194,7 @@ namespace DiversityPhone.ViewModels.Utility
 
                         var login = (settings as AppSettings).ToCreds();
 
-                        RefreshVocabularyTask.Start(ioc, login)
+                        refreshVocabluaryTaskFactory().Start(login)
                             .StartWith(Unit.Default)
                             .Subscribe(_ => { IsBusy = true; }, () =>
                             {
@@ -195,11 +205,9 @@ namespace DiversityPhone.ViewModels.Utility
 
 
             clearDatabase.RegisterAsyncAction(_ =>
-            {
-                var taxa = ioc.Resolve<ITaxonService>();
-                var storage = ioc.Resolve<IFieldDataService>();
+            {               
 
-                if (taxa == null || storage == null)
+                if (Taxa == null || FieldData == null)
                 {
 #if DEBUG
                     throw new ArgumentNullException("services");
@@ -208,19 +216,19 @@ namespace DiversityPhone.ViewModels.Utility
 #endif
                 }
 
-                taxa.clearTaxonLists();
-                storage.clearDatabase();
+                Taxa.clearTaxonLists();
+                FieldData.clearDatabase();
             });
 
             #region Setup
-            Databases = new ListSelectionHelper<Svc.Repository>();
-            Projects = new ListSelectionHelper<Svc.Project>();
+            Databases = new ListSelectionHelper<string>();
+            Projects = new ListSelectionHelper<Project>();
 
             var creds =
                 Observable.CombineLatest(
                     this.ObservableForProperty(x => x.UserName).Throttle(TimeSpan.FromMilliseconds(500)),
                     this.ObservableForProperty(x => x.Password).Throttle(TimeSpan.FromMilliseconds(500)),
-                    (user, pass) => new Svc.UserCredentials() { LoginName = user.Value, Password = pass.Value }
+                    (user, pass) => new UserCredentials() { LoginName = user.Value, Password = pass.Value }
                 );
 
             creds
@@ -230,12 +238,12 @@ namespace DiversityPhone.ViewModels.Utility
 
                         return
                         Repository
-                        .GetRepositories(login as Svc.UserCredentials)
+                        .GetRepositories(login as UserCredentials)
                         .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingRepositories)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Empty<IList<Svc.Repository>>())
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Empty<IEnumerable<string>>())
                         .Where(repos =>
                             {
-                                if (repos != null && repos.Count > 0)
+                                if (repos != null && repos.Any())
                                     return true;
                                 else
                                 {
@@ -244,16 +252,19 @@ namespace DiversityPhone.ViewModels.Utility
                                 }
                             });
                     })
-                .Merge(creds.Select(_ => new List<Svc.Repository>() as IList<Svc.Repository>))
-                .ObserveOnDispatcher()
-                .Do(repos =>
+                .Merge(creds.Select(_ => Enumerable.Empty<string>()))
+                .ObserveOn(Dispatcher)
+                .Select(repos =>
                     {
-                        repos.Insert(0, NoRepo);
-                        if (repos.Count > 1)
+                        IList<string> repList = repos.ToList();
+                        repList.Insert(0, NoRepo);
+                        if (repList.Count > 1)
                         {
                             CurrentPivot = Pivots.Repository;
                         }
-                    })
+
+                        return repList;
+                    })                
                 .Subscribe(Databases);
 
             var credsWithRepo =
@@ -263,7 +274,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Where(x => x != null && x != NoRepo),
                 (usercreds, repo) =>
                 {
-                    usercreds.Repository = repo.Database;
+                    usercreds.Repository = repo;
                     return usercreds;
                 });
 
@@ -276,11 +287,11 @@ namespace DiversityPhone.ViewModels.Utility
                         Repository
                         .GetProjectsForUser(login)
                         .Finally(gettingProjects.Dispose)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Svc.Project>() as IList<Svc.Project>));
+                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Project>() as IList<Project>));
                     })
 
-                .Merge(Databases.Select(_ => new List<Svc.Project>() as IList<Svc.Project>)) //Repo changed                
-                .ObserveOnDispatcher()
+                .Merge(Databases.Select(_ => new List<Project>() as IList<Project>)) //Repo changed                
+                .ObserveOn(Dispatcher)
                 .Do(projects =>
                     {
                         projects.Insert(0, NoProject);
@@ -289,11 +300,11 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(Projects);
 
 
-            _Profile = new ObservableAsPropertyHelper<Svc.UserProfile>(
+            _Profile = new ObservableAsPropertyHelper<UserProfile>(
                     credsWithRepo
                     .SelectMany(login =>
                         Repository
-                        .GetUserInfo(login as Svc.UserCredentials)
+                        .GetUserInfo(login as UserCredentials)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return(null as UserProfile))
                     )
                     .Merge(credsWithRepo.Select(_ => null as UserProfile)),
@@ -302,22 +313,22 @@ namespace DiversityPhone.ViewModels.Utility
             #endregion
 
 
-            Save = new ReactiveCommand(settingsValid().ObserveOnDispatcher());
+            Save = new ReactiveCommand(settingsValid().ObserveOn(Dispatcher));
 
             var existingSettings = Observable.Return(Settings.getSettings());
 
             existingSettings
                 .Where(settings => settings == null)
-                .Subscribe(_ => 
+                .Subscribe(_ =>
                     {
-                        Messenger.SendMessage<DialogMessage>(new DialogMessage(Messages.DialogType.YesNo,
+                        Messenger.SendMessage<DialogMessage>(new DialogMessage(DialogType.YesNo,
                         DiversityResources.Setup_Message_AllowGPS_Caption,
                         DiversityResources.Setup_Message_AllowGPS_Body,
                         (r) =>
                         {
-                           UseGPS = r == DialogResult.OKYes;
+                            UseGPS = r == DialogResult.OKYes;
                         }));
-                        IsBusy = false; 
+                        IsBusy = false;
                     });
 
             Save

@@ -46,9 +46,8 @@
                     <StackPanel>
                         <toolkit:ListPicker ItemsSource="{Binding Databases.Items}"
                                             SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}"
-                                            ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                                             FullModeHeader="{Binding Resources.Setup_Header_Repository, Source={StaticResource LocalizedStrings}}"
-                                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
+                                            />
 
 
 

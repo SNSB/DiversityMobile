@@ -190,6 +190,12 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Button_Stop" xml:space="preserve">
     <value>stop</value>
   </data>
+  <data name="Download_DownloadingItems" xml:space="preserve">
+    <value>Downloading Data Items </value>
+  </data>
+  <data name="Download_EventAlreadyDownloaded" xml:space="preserve">
+    <value>Event already downloaded</value>
+  </data>
   <data name="Download_Header_CancelDownload" xml:space="preserve">
     <value>cancel download</value>
   </data>
@@ -198,6 +204,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Download_HintLongPress" xml:space="preserve">
     <value>press and hold to download an item</value>
+  </data>
+  <data name="Download_SearchingEvents" xml:space="preserve">
+    <value>Looking for Events ...</value>
   </data>
   <data name="EventProperty_Header_Property" xml:space="preserve">
     <value>Property</value>

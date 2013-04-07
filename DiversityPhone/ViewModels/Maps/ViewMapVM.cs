@@ -2,25 +2,22 @@
 using System.Reactive.Linq;
 using ReactiveUI;
 using System.Windows;
-using System.IO;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
-using Funq;
+
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
 using System.Windows.Media.Imaging;
-using System.Collections.Generic;
 using System.Reactive.Concurrency;
-using System.Reactive;
-using System.Linq;
+using DiversityPhone.Interface;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.ViewModels
 {
     public class ViewMapVM : PageVMBase, ISavePageVM
     {
-        private IMapStorageService MapStorage;
-        private ILocationService Location;
-        private IFieldDataService Storage;
+        readonly IMapStorageService MapStorage;
+        readonly ILocationService Location;
+        readonly IFieldDataService Storage;
 
         public ReactiveCommand SelectMap { get; private set; }
         public IReactiveCommand ToggleEditable { get; private set; }
@@ -95,11 +92,18 @@ namespace DiversityPhone.ViewModels
             }           
         }
 
-        public ViewMapVM(Container ioc)
+        public ViewMapVM(
+            IMapStorageService MapStorage,
+            ILocationService Location,
+            IFieldDataService Storage
+            )
         {
-            MapStorage = ioc.Resolve<IMapStorageService>();
-            Location = ioc.Resolve<ILocationService>();
-            Storage = ioc.Resolve<IFieldDataService>();
+            Contract.Requires(MapStorage != null);
+            Contract.Requires(Location != null);
+            Contract.Requires(Storage != null);
+            this.MapStorage = MapStorage;
+            this.Location = Location;
+            this.Storage = Storage;
 
             ImageScale = 1.0;
             ImageOffset = new Point();
@@ -116,6 +120,7 @@ namespace DiversityPhone.ViewModels
 
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
             _CurrentMap
+                .Where(vm => vm!=null)
                 .SelectMany(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)).TakeUntil(_CurrentMap))                
                 .ObserveOnDispatcher()
                 .Select(stream => 
@@ -148,8 +153,8 @@ namespace DiversityPhone.ViewModels
                     {
                         if (pair.Series != null)
                         {
-                            var stream = Storage.getGeoPointsForSeries(pair.Series.OwnerID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
-                                    .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.OwnerID)) //Listen to new Geopoints that are added to the current tour
+                            var stream = Storage.getGeoPointsForSeries(pair.Series.EntityID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
+                                    .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.EntityID)) //Listen to new Geopoints that are added to the current tour
                                     .Select(gp => pair.Map.PercentilePositionOnMap(gp))
                                     .TakeUntil(series_and_map)
                                     .Replay();

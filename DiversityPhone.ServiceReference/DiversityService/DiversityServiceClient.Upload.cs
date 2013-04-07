@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.ComponentModel;
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {

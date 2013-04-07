@@ -1,27 +1,17 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
 
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using ReactiveUI;
 using System.Reactive.Linq;
 using System.Linq;
 using DiversityPhone.Services;
 using System.Collections.Generic;
-using Client = DiversityPhone.Model;
-using DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
-using Funq;
+
 using System.Reactive;
+using DiversityPhone.Interface;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.ViewModels
 {
@@ -33,10 +23,10 @@ namespace DiversityPhone.ViewModels
             Online
         }
 
-        private IConnectivityService Network;
-        private IMapTransferService MapService;
-        private IMapStorageService MapStorage;
-        private INotificationService Notifications;
+        readonly IConnectivityService Network;
+        readonly IMapTransferService MapService;
+        readonly IMapStorageService MapStorage;
+        readonly INotificationService Notifications;
 
         public ReactiveAsyncCommand SearchMaps { get; private set; }
         public ReactiveCommand<MapVM> SelectMap { get; private set; }
@@ -82,12 +72,21 @@ namespace DiversityPhone.ViewModels
         private ReactiveAsyncCommand getMaps = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand downloadMap = new ReactiveAsyncCommand();
 
-        public MapManagementVM(Container ioc)
+        public MapManagementVM(
+            IConnectivityService Network,
+            IMapTransferService MapService,
+            IMapStorageService MapStorage,
+            INotificationService Notifications
+            )
         {
-            Network = ioc.Resolve<IConnectivityService>();
-            MapService = ioc.Resolve<IMapTransferService>();
-            MapStorage = ioc.Resolve<IMapStorageService>();
-            Notifications = ioc.Resolve<INotificationService>();
+            Contract.Requires(Network != null);
+            Contract.Requires(MapService != null);
+            Contract.Requires(MapStorage != null);
+            Contract.Requires(Notifications != null);
+            this.Network = Network;
+            this.MapService = MapService;
+            this.MapStorage = MapStorage;
+            this.Notifications = Notifications;
 
 
 
@@ -142,7 +141,7 @@ namespace DiversityPhone.ViewModels
             {
                 var vm_t = vm as MapVM;
                 if (vm_t == null)
-                    return Observable.Empty<Tuple<MapVM, Map>>();
+                    return Observable.Empty<System.Tuple<MapVM, Map>>();
                 else
                     return MapService.downloadMap(vm_t.ServerKey)
                         .HandleServiceErrors(Notifications, Messenger, Observable.Return<Map>(null))
@@ -152,7 +151,7 @@ namespace DiversityPhone.ViewModels
 
                             return Observable.Return<Map>(null);
                         })
-                        .Select(map => Tuple.Create(vm_t, map));
+                        .Select(map => System.Tuple.Create(vm_t, map));
             })
             .Select(t =>
                 {

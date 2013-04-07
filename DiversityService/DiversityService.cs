@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DiversityService.Model;
+using DiversityPhone.Model;
 using DiversityORM;
 using System.Xml;
 using System.Xml.Linq;
@@ -12,11 +13,23 @@ using System.ServiceModel;
 using System.Runtime.Serialization;
 using System.Data.EntityClient;
 using System.Globalization;
+using DiversityService.Configuration;
+using System.Threading.Tasks;
 
 
 
 namespace DiversityService
 {
+    static class CredentialsExtensions
+    {
+        public static Diversity GetConnection(this UserCredentials This, string repository = null)
+        {
+            DiversityServiceConfiguration.Login l = This;
+            var repo = Configuration.ServiceConfiguration.RepositoryByName(This.Repository);
+            return new Diversity(l, repo.Server, repository ?? repo.Catalog);
+        }
+    }
+
     public partial class DiversityService : IDiversityService
     {       
 
@@ -26,14 +39,14 @@ namespace DiversityService
         {
 
             IEnumerable<Term> linqTerms;
-            using (var db = new Diversity(login,Diversity.SERVER_COLLECTION))         
+            using (var db = login.GetConnection())         
             {
                 linqTerms =
                 Enumerable.Concat(
                     db.Query<Term>("FROM [dbo].[DiversityMobile_TaxonomicGroups]() as Term")
-                    .Select(t => { t.Source = TermList.TaxonomicGroups; return t;}),
+                    .Select(t => { t.Source = DiversityPhone.Model.TermList.TaxonomicGroups; return t; }),
                     db.Query<Term>("FROM [dbo].[DiversityMobile_UnitRelationTypes]() as Term")
-                    .Select(t => { t.Source = TermList.RelationshipTypes; return t; })
+                    .Select(t => { t.Source = DiversityPhone.Model.TermList.RelationshipTypes; return t; })
                     ).ToList();
             }
             return linqTerms;
@@ -44,7 +57,7 @@ namespace DiversityService
         {  
             if(string.IsNullOrWhiteSpace(login.Repository))
                 return Enumerable.Empty<Project>();
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 try
                 {
@@ -65,7 +78,7 @@ namespace DiversityService
 
         public IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
         {
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 var atgs = new Queue<AnalysisTaxonomicGroup>(analysisTaxonomicGroupsForProject(projectID,db));                    
                 var flattened = new HashSet<AnalysisTaxonomicGroup>();
@@ -92,7 +105,7 @@ namespace DiversityService
 
         public IEnumerable<Model.Analysis> GetAnalysesForProject(int projectID, UserCredentials login)
         {
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 var res = analysesForProject(projectID, db).ToList();
                 return res;
@@ -100,7 +113,7 @@ namespace DiversityService
         }
         public IEnumerable<Model.AnalysisResult> GetAnalysisResultsForProject(int projectID, UserCredentials login)
         {
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 return analysisResultsForProject(projectID, db).ToList();
             }
@@ -110,7 +123,7 @@ namespace DiversityService
         {
             try
             {
-                using (var db = new DiversityORM.Diversity(login))
+                using (var db = login.GetConnection())
                 {
                     return db.Query<UserProfile>("FROM [DiversityMobile_UserInfo]() AS [UserProfile]").Single();
                 }
@@ -122,19 +135,20 @@ namespace DiversityService
 
         }
 
-        private static readonly UserCredentials TNT_Login = new UserCredentials() { LoginName = "TNT", Password = "mu7idSwg",Repository="DiversityMobile" };
+        private static readonly UserCredentials TNT_Login = new UserCredentials() { LoginName = "TNT", Password = "mu7idSwg", Repository="DiversityMobile" };
 
         public IEnumerable<Model.TaxonList> GetTaxonListsForUser(UserCredentials login)
         {
             List<Model.TaxonList> result = new List<TaxonList>();
-            using (var db = new DiversityORM.Diversity(login, CATALOG_DIVERSITYMOBILE))
+            using (var db = login.GetConnection(CATALOG_DIVERSITYMOBILE))
             {
                 result.AddRange(
                     taxonListsForUser(login.LoginName,db)
                     .Select(l => {l.IsPublicList = false; return l;})
                     );
             }
-            using (var db = new DiversityORM.Diversity(TNT_Login,Diversity.SERVER_TNT))
+            var publicTaxa = ServiceConfiguration.PublicTaxa;
+            using (var db = new DiversityORM.Diversity(publicTaxa.Login, publicTaxa.Server, publicTaxa.Catalog))
             {
                 result.AddRange(
                     taxonListsForUser(db)
@@ -148,9 +162,12 @@ namespace DiversityService
         {
             Diversity db;
             if (list.IsPublicList)
-                db = new Diversity(TNT_Login, Diversity.SERVER_TNT);
+            {
+                var taxa = ServiceConfiguration.PublicTaxa;
+                db = new Diversity(taxa.Login, taxa.Server, taxa.Catalog);
+            }
             else
-                db = new Diversity(login, CATALOG_DIVERSITYMOBILE);
+                db = login.GetConnection(CATALOG_DIVERSITYMOBILE);
 
             return loadTablePaged<Model.TaxonName>(list.Table, page, db);                   
         }
@@ -159,7 +176,7 @@ namespace DiversityService
         {
             var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
             
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 return getProperties(db).Where(p => propsForUser.ContainsKey(p.PropertyID)).ToList();
             }            
@@ -170,8 +187,8 @@ namespace DiversityService
             var propsForUser = propertyListsForUser(login).ToDictionary(pl => pl.PropertyID);
             PropertyList list;
             if (propsForUser.TryGetValue(p.PropertyID, out list))
-            {                
-                return loadTablePaged<Model.PropertyValue>(list.Table, page, new Diversity(login, CATALOG_DIVERSITYMOBILE));                
+            {
+                return loadTablePaged<Model.PropertyValue>(list.Table, page, login.GetConnection(CATALOG_DIVERSITYMOBILE));                
             }
             else
                 return Enumerable.Empty<Model.PropertyValue>();
@@ -179,7 +196,7 @@ namespace DiversityService
 
         public IEnumerable<Qualification> GetQualifications(UserCredentials login)
         {
-            using (var db = new Diversity(login))
+            using (var db = login.GetConnection())
             {
                 return getQualifications(db)
                     .Select(q => 
@@ -197,44 +214,29 @@ namespace DiversityService
         #endregion
 
         #region utility
-        public static readonly Repository[] Repositories = new Repository[]
-            {
-                new Repository()
-                { 
-                    DisplayText = "Test",
-                    Database = "DiversityCollection_Test"
-                },
-                /*new Repository() // In München funktionen noch nicht implementiert
-                {
-                    DisplayText="DiversityCollection",
-                    Database="DiversityCollection",
-                },*/
-                 new Repository() 
-                {
-                    DisplayText="DiversityCollection Monitoring",
-                    Database="DiversityCollection_Monitoring",
-                },
-            };
 
         public IEnumerable<Repository> GetRepositories(UserCredentials login)
-        {
+        {           
+
             List<Repository> result = new List<Repository>();
 
-            foreach (var repo in Repositories)
+            Parallel.ForEach(Configuration.ServiceConfiguration.Repositories, repo =>
             {
-                login.Repository = repo.Database;
-                using (var ctx = new Diversity(login))
+                using (var ctx = new Diversity(login, repo.Server, repo.Catalog))
                 {
                     try
                     {
                         ctx.OpenSharedConnection(); // validate Credentials
-                        result.Add(repo);
+                        lock (result)
+                        {
+                            result.Add(new Repository() { Database = repo.Catalog, DisplayText = repo.name });
+                        }
                     }
                     catch (Exception)
-                    {                        
+                    {
                     }
-                }  
-            }
+                }
+            });
 
             return result;
         }

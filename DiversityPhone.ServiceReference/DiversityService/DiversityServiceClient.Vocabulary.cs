@@ -10,12 +10,13 @@ using ReactiveUI;
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Disposables;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient
     {
-        public IObservable<UserProfile> GetUserInfo(UserCredentials login)
+        public IObservable<Client.UserProfile> GetUserInfo(Client.UserCredentials login)
         {
             var source = GetUserInfoCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result);
@@ -23,18 +24,19 @@ namespace DiversityPhone.Services
             return source;
         }
 
-        public IObservable<IList<Repository>> GetRepositories(DiversityService.UserCredentials login)
+        public IObservable<IEnumerable<string>> GetRepositories(Client.UserCredentials login)
         {
             var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result as IList<Repository>);            
+                .Select(args => from repo in args.Result
+                                select repo.DisplayText);            
             _svc.GetRepositoriesAsync(login, login);
             return source;
         }
 
-        public IObservable<IList<Project>> GetProjectsForUser(DiversityService.UserCredentials login)
+        public IObservable<IList<Client.Project>> GetProjectsForUser(Client.UserCredentials login)
         {
             var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result as IList<Project>);            
+                .Select(args => args.Result as IList<Client.Project>);            
             _svc.GetProjectsForUserAsync(login,login);
             return source;
         }
@@ -96,7 +98,7 @@ namespace DiversityPhone.Services
                 });
         }
 
-        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(UserCredentials login)
+        public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(Client.UserCredentials login)
         {
             var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result
@@ -171,14 +173,14 @@ namespace DiversityPhone.Services
                        Description = term.Description,
                        DisplayText = term.DisplayText,
                        ParentCode = term.ParentCode,
-                       SourceID = term.Source
+                       SourceID = (Client.TermList) term.Source,
                    }));
 
             _svc.GetStandardVocabularyAsync(GetCreds(), requestToken);
             return source;
         }
 
-        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, UserCredentials login)
+        public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, Client.UserCredentials login)
         {
             var source = GetAnalysesForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
@@ -194,7 +196,7 @@ namespace DiversityPhone.Services
             return source;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login)
+        public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, Client.UserCredentials login)
         {
             var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
@@ -211,7 +213,7 @@ namespace DiversityPhone.Services
             return source;
         }
 
-        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login)
+        public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, Client.UserCredentials login)
         {
             var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResultSingle(login)
                .Select(args => args.Result)
@@ -228,7 +230,7 @@ namespace DiversityPhone.Services
         }
 
 
-        public IObservable<IEnumerable<Client.Qualification>> GetQualifications(UserCredentials credentials)
+        public IObservable<IEnumerable<Client.Qualification>> GetQualifications(Client.UserCredentials credentials)
         {
             var request = new object();
             var res = GetQualificationsCompleted.MakeObservableServiceResultSingle(request)

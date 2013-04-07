@@ -1,5 +1,4 @@
 ﻿
-using System.Reactive;
 using System.Reactive.Linq;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -7,8 +6,6 @@ using System.Collections.Generic;
 using System.Collections;
 using System;
 using DiversityPhone.ViewModels;
-using DiversityPhone.Services;
-using DiversityPhone.Messages;
 using System.Reactive.Disposables;
 using DiversityPhone.Model;
 namespace DiversityPhone.View.Appbar
@@ -75,7 +72,7 @@ namespace DiversityPhone.View.Appbar
                     .Select(_ => MediaType.Video)
                     )
                     .Do(_ => restore_buttons())
-                    .Select(media => new MultimediaObjectVM(new MultimediaObject() { MediaType = media, OwnerType = _mmowner.OwnerType, RelatedId = _mmowner.OwnerID }) as IElementVM<MultimediaObject>)
+                    .Select(media => new MultimediaObjectVM(new MultimediaObject() { MediaType = media, OwnerType = _mmowner.EntityType, RelatedId = _mmowner.EntityID }) as IElementVM<MultimediaObject>)
                     .ToMessage(MessageContracts.EDIT);
 
             

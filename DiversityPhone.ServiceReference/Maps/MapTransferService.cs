@@ -58,7 +58,7 @@ namespace DiversityPhone.Services
             object dl = new object();
 
             var map =
-                GetMapUrlCompletedObservable
+                GetXmlUrlCompletedObservable
                 .FilterByUserState(dl)
                 .Take(1)
                 .PipeErrors()
@@ -66,7 +66,7 @@ namespace DiversityPhone.Services
                 .DownloadWithCredentials(CredentialsProvider)
                 .Select(response => parseXMLtoMap(response.GetResponseStream()));
             var image =
-                GetXmlUrlCompletedObservable
+                GetMapUrlCompletedObservable
                 .FilterByUserState(dl)
                 .Take(1)
                 .PipeErrors()
@@ -79,6 +79,7 @@ namespace DiversityPhone.Services
                 .SelectMany(resps =>
                     Observable.Start(() =>
                             {
+                                resps.Map.ServerKey = serverKey;
                                 MapStorage.addMap(resps.Map, resps.ImageResponse.GetResponseStream());
                                 return resps.Map;
                             }));

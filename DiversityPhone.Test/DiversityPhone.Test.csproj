@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2C9191A7-1AE6-427C-9D97-55D579692C12}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DiversityPhone.Test</RootNamespace>
+    <AssemblyName>DiversityPhone.Test</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
+    <IsCodedUITest>False</IsCodedUITest>
+    <TestProjectType>UnitTest</TestProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TEST</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentAssertions">
+      <HintPath>..\packages\FluentAssertions.2.0.1\lib\net45\FluentAssertions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Reactive.Testing">
+      <HintPath>..\packages\Rx-Testing.2.1.30214.0\lib\Net45-Full\Microsoft.Reactive.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.MockingKernel">
+      <HintPath>..\packages\Ninject.MockingKernel.3.0.0.5\lib\net45-full\Ninject.MockingKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject.MockingKernel.Moq">
+      <HintPath>..\packages\Ninject.MockingKernel.Moq.3.0.0.5\lib\net45-full\Ninject.MockingKernel.Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Blend_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\net45\ReactiveUI.Blend_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Routing_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\net45\ReactiveUI.Routing_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Testing_Net45">
+      <HintPath>..\packages\reactiveui-testing.4.5.0\lib\net45\ReactiveUI.Testing_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI.Xaml_Net45">
+      <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\net45\ReactiveUI.Xaml_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="ReactiveUI_Net45">
+      <HintPath>..\packages\reactiveui-core.4.5.0\lib\net45\ReactiveUI_Net45.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\packages\Rx-PlatformServices.2.1.30214.0\lib\Net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading">
+      <HintPath>..\packages\Rx-XAML.2.1.30214.0\lib\Net45\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="xunit">
+      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
+    </Reference>
+    <Reference Include="xunit.extensions">
+      <HintPath>..\packages\xunit.extensions.1.9.1\lib\net20\xunit.extensions.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Choose>
+    <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.1.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
+  <ItemGroup>
+    <Compile Include="..\DiversityPhone.Interface\IConnectivityService.cs">
+      <Link>Implementation\Interface\IConnectivityService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\IDiversityServiceClient.cs">
+      <Link>Implementation\Interface\IDiversityServiceClient.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\IFieldDataService.cs">
+      <Link>Implementation\Interface\IFieldDataService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\INotificationService.cs">
+      <Link>Implementation\Interface\INotificationService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\ISettingsService.cs">
+      <Link>Implementation\Interface\ISettingsService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\ITaxonService.cs">
+      <Link>Implementation\Interface\ITaxonService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Interface\IVocabularyService.cs">
+      <Link>Implementation\Interface\IVocabularyService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\AppSettings.cs">
+      <Link>Implementation\Model\AppSettings.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Analysis.cs">
+      <Link>Implementation\Model\Analysis.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\AnalysisResult.cs">
+      <Link>Implementation\Model\AnalysisResult.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\AnalysisTaxonomicGroup.cs">
+      <Link>Implementation\Model\AnalysisTaxonomicGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\DBObjectType.cs">
+      <Link>Implementation\Model\DBObjectType.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Event.cs">
+      <Link>Implementation\Model\Event.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\EventProperty.cs">
+      <Link>Implementation\Model\EventProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\EventSeries.cs">
+      <Link>Implementation\Model\EventSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\GeoPointForSeries.cs">
+      <Link>Implementation\Model\GeoPointForSeries.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\IdentificationUnit.cs">
+      <Link>Implementation\Model\IdentificationUnit.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\IdentificationUnitAnalysis.cs">
+      <Link>Implementation\Model\IdentificationUnitAnalysis.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Localization.cs">
+      <Link>Implementation\Model\Localization.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\MediaType.cs">
+      <Link>Implementation\Model\MediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\MultimediaObject.cs">
+      <Link>Implementation\Model\MultimediaObject.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Property.cs">
+      <Link>Implementation\Model\Property.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\PropertyName.cs">
+      <Link>Implementation\Model\PropertyName.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Qualification.cs">
+      <Link>Implementation\Model\Qualification.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\QueryOperations.cs">
+      <Link>Implementation\Model\QueryOperations.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Specimen.cs">
+      <Link>Implementation\Model\Specimen.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Synonymy.cs">
+      <Link>Implementation\Model\Synonymy.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\TaxonList.cs">
+      <Link>Implementation\Model\TaxonList.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\TaxonName.cs">
+      <Link>Implementation\Model\TaxonName.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Term.cs">
+      <Link>Implementation\Model\Term.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\IEntity.cs">
+      <Link>Implementation\Model\IEntity.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\ILocalizable.cs">
+      <Link>Implementation\Model\ILocalizable.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\IModifyable.cs">
+      <Link>Implementation\Model\IModifyable.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\IQueryOperations.cs">
+      <Link>Implementation\Model\IQueryOperations.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\Messages.cs">
+      <Link>Implementation\Model\Messages.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\Page.cs">
+      <Link>Implementation\Model\Page.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.ServiceReference\IKeyMappingService.cs">
+      <Link>Implementation\Interface\IKeyMappingService.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\DiversityResources.Designer.cs">
+      <Link>DiversityResources.Designer.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DiversityResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Helper\EventHierarchyLoader.cs">
+      <Link>Implementation\Helper\EventHierarchyLoader.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Helper\Extensions.cs">
+      <Link>Implementation\Helper\Extensions.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Helper\ListSelectionHelper.cs">
+      <Link>Implementation\Helper\ListSelectionHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Services\BackgroundTasks\IRefreshVocabularyTask.cs">
+      <Link>Implementation\Interface\IRefreshVocabularyTask.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Base\PageVMBase.cs">
+      <Link>Implementation\ViewModels\PageVMBase.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Utility\DownloadVM.cs">
+      <Link>Implementation\ViewModels\DownloadVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Utility\SetupVM.cs">
+      <Link>Implementation\ViewModels\SetupVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityService\Models\ClientModel.Config.cs">
+      <Link>Implementation\Model\ClientModel.Config.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityService\Models\TermLists.cs">
+      <Link>Implementation\Model\TermLists.cs</Link>
+    </Compile>
+    <Compile Include="Implementation\NamespaceDummies.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\DownloadVMFixture.cs" />
+    <Compile Include="Tests\EventHierarchyLoaderFixture.cs" />
+    <Compile Include="Tests\SetupVMFixture.cs" />
+    <Compile Include="UnitTestKernel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\DiversityPhone\DiversityResources.resx">
+      <Link>DiversityResources.resx</Link>
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>DiversityPhone</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
+      <ItemGroup>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+        <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+          <Private>False</Private>
+        </Reference>
+      </ItemGroup>
+    </When>
+  </Choose>
+  <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

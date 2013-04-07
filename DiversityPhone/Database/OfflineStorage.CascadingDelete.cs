@@ -170,7 +170,7 @@ namespace DiversityPhone.Services
                 ctx.MultimediaObjects.DeleteOnSubmit(mmo);
             }
 
-            private static void deleteMappingIfExists<T>(DiversityDataContext ctx, T entity) where T : IOwner
+            private static void deleteMappingIfExists<T>(DiversityDataContext ctx, T entity) where T : IEntity
             {
 
             }

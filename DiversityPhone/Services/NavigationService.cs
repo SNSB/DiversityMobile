@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Linq;
-using System.Net;
 using Microsoft.Phone.Controls;
 using ReactiveUI;
-using DiversityPhone.Messages;
 using DiversityPhone.Model;
-using System.Collections;
-using System.Collections.Generic;
-using System.Windows.Navigation;
 using DiversityPhone.ViewModels;
 using System.Reactive.Linq;
 
@@ -16,8 +10,8 @@ namespace DiversityPhone.Services
 {
     public class NavigationService
     {
-        private IMessageBus Messenger;        
-        private PhoneApplicationFrame _frame;
+        readonly IMessageBus Messenger;        
+        readonly PhoneApplicationFrame _frame;
 
         private PageVMBase _CurrentVM;
         public PageVMBase CurrentVM
@@ -37,9 +31,15 @@ namespace DiversityPhone.Services
         }
 
 
-        public NavigationService(IMessageBus messenger)
+        public NavigationService(
+            IMessageBus messenger,
+            PhoneApplicationFrame RootFrame
+            )
         {
             Messenger = messenger;
+            _frame = RootFrame;
+
+            _frame.Navigated += (s, args) => { NavigationFinished(); };
 
             var mmo = Observable.Merge(
                 Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT)
@@ -67,16 +67,7 @@ namespace DiversityPhone.Services
 
              Messenger.Listen<Page>()                
                 .Subscribe(NavigateToPage);   
-        }
-        public void AttachToNavigation(PhoneApplicationFrame frame)
-        {
-            if (frame == null)
-                throw new ArgumentNullException("frame");
-
-            _frame = frame;
-
-            _frame.Navigated += (s, args) => { NavigationFinished(); };
-        }
+        }      
 
         void NavigationFinished()
         {

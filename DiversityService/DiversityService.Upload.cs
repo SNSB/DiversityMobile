@@ -1,5 +1,6 @@
 ﻿using DiversityORM;
 using DiversityService.Model;
+using DiversityPhone.Model;
 using PetaPoco;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace DiversityService
     {
         public int InsertEventSeries(EventSeries series, IEnumerable<Localization> localizations, UserCredentials login)
         {
-            using (var db = new Diversity(login))
+            using (var db = login.GetConnection())
             using (var t = new Transaction(db))
             {
                 db.Insert(series);
@@ -29,7 +30,7 @@ namespace DiversityService
 
         public int InsertEvent(Event ev, IEnumerable<EventProperty> properties, UserCredentials login)
         {
-            using (var db = new Diversity(login))
+            using (var db = login.GetConnection())
             using (var t = new Transaction(db))
             {
                 db.Insert(ev);
@@ -43,11 +44,12 @@ namespace DiversityService
                         db.Execute("Update [dbo].[CollectionEventLocalisation] Set geography=@0 Where CollectionEventID=@1 AND LocalisationSystemID=@2", geoString, loc.CollectionEventID, loc.LocalisationSystemID);
                 }
 
-                foreach (var p in properties)
-                {
-                    p.CollectionEventID = ev.CollectionEventID;
-                    db.Insert(p);
-                }
+                if (properties != null)
+                    foreach (var p in properties)
+                    {
+                        p.CollectionEventID = ev.CollectionEventID;
+                        db.Insert(p);
+                    }
 
 
                 t.Complete();
@@ -59,7 +61,7 @@ namespace DiversityService
 
         public int InsertSpecimen(Specimen s, UserCredentials login)
         {
-            using (var db = new Diversity(login))
+            using (var db = login.GetConnection())
             using (var t = new Transaction(db))
             {
                 db.Insert(s);
@@ -75,19 +77,21 @@ namespace DiversityService
 
         public int InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses, UserCredentials login)
         {
-            using (var db = new Diversity(login))
-            using (var t = new Transaction(db))
+            using (var db = login.GetConnection())
+            using (var t = db.GetTransaction())
             {
+                
                 db.Insert(iu);
                 db.Insert(iu.GetIdentification(login));
                 db.Insert(iu.GetGeoAnalysis(login));
 
-                foreach (var a in analyses)
-                {
-                    a.CollectionUnitID = iu.CollectionUnitID;
-                    a.CollectionSpecimenID = iu.CollectionSpecimenID;
-                    db.Insert(a);
-                }
+                if (analyses != null)
+                    foreach (var a in analyses)
+                    {
+                        a.CollectionUnitID = iu.CollectionUnitID;
+                        a.CollectionSpecimenID = iu.CollectionSpecimenID;
+                        db.Insert(a);
+                    }
 
                 t.Complete();
 
@@ -98,7 +102,7 @@ namespace DiversityService
 
         public void InsertMMO(MultimediaObject mmo, UserCredentials login)
         {
-            using (var db = new DiversityORM.Diversity(login))
+            using (var db = login.GetConnection())
             {
                 switch (mmo.OwnerType)
                 {
@@ -123,7 +127,7 @@ namespace DiversityService
 
         private static String SerializeLocalizations(IEnumerable<Localization> locs)
         {
-            var uniqueLocs = locs.Distinct().ToList();
+            var uniqueLocs = (locs != null) ? locs.Distinct().ToList() : new List<Localization>();
 
             if (uniqueLocs.Count > 1)
             {

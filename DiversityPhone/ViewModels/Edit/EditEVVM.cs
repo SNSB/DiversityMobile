@@ -1,21 +1,18 @@
 ﻿using System;
 using ReactiveUI;
-using ReactiveUI.Xaml;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
 using System.Reactive.Linq;
 using DiversityPhone.Services;
-using System.Collections.Generic;
-using Funq;
+
 using System.Reactive.Subjects;
-using System.Device.Location;
 using System.Reactive.Disposables;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditEVVM : EditPageVMBase<Event>
     {
-        ILocationService Geolocation;
+        readonly ILocationService Geolocation;
         BehaviorSubject<Coordinate> _latest_location = new BehaviorSubject<Coordinate>(Coordinate.Unknown);
         IDisposable _location_subscription = Disposable.Empty;
 
@@ -43,9 +40,12 @@ namespace DiversityPhone.ViewModels
         }
         #endregion
 
-        public EditEVVM(Container ioc)
+        public EditEVVM(
+            ILocationService Geolocation
+            )
         {
-            Geolocation = ioc.Resolve<ILocationService>();
+            Contract.Requires(Geolocation != null);
+            this.Geolocation = Geolocation;
 
             Observable.CombineLatest(
             CurrentModelObservable.Where(m => m.IsNew()),

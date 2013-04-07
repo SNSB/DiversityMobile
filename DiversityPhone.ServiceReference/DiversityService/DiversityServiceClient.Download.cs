@@ -3,6 +3,7 @@ using DiversityPhone.Model;
 using System;
 using System.Reactive.Linq;
 using System.Linq;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
@@ -34,9 +35,10 @@ namespace DiversityPhone.Services
             object request = new object();
             var res = from result in EventsByLocalityCompleted.MakeObservableServiceResultSingle(request)
                       select from ev in result.Result
-                             select ev.ToClientObject(Mapping);
+                             select ev.ToClientObject(ev.CollectionSeriesID);
             _svc.EventsByLocalityAsync(localityQuery, GetCreds(), request);
             return res;    
+            
         }
 
         public IObservable<IEnumerable<EventProperty>> GetEventProperties(int eventID)
@@ -54,7 +56,7 @@ namespace DiversityPhone.Services
             object request = new object();
             var res = from result in SpecimenForEventCompleted.MakeObservableServiceResultSingle(request)
                       select from spec in result.Result
-                             select spec.ToClientObject(Mapping);                
+                             select spec.ToClientObject();                
             _svc.SpecimenForEventAsync(eventID, GetCreds(), request);
             return res;    
         }
@@ -64,7 +66,7 @@ namespace DiversityPhone.Services
             object request = new object();
             var res = from result in UnitsForSpecimenCompleted.MakeObservableServiceResultSingle(request)
                       select from iu in result.Result
-                             select iu.ToClientObject(Mapping);
+                             select iu.ToClientObject();
             _svc.UnitsForSpecimenAsync(specimenID, GetCreds(), request);
             return res; 
         }
@@ -74,7 +76,7 @@ namespace DiversityPhone.Services
             object request = new object();
             var res = from result in SubUnitsForIUCompleted.MakeObservableServiceResultSingle(request)
                       select from iu in result.Result
-                             select iu.ToClientObject(Mapping);
+                             select iu.ToClientObject();
             _svc.SubUnitsForIUAsync(unitID, GetCreds(), request);
             return res; 
         }

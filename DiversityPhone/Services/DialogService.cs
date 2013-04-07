@@ -2,8 +2,8 @@
 {
     using System;
     using System.Windows;
-    using DiversityPhone.Messages;
     using ReactiveUI;
+    using DiversityPhone.Model;
 
     public class DialogService
     {

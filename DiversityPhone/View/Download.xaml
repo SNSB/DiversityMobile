@@ -19,9 +19,14 @@
     >
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Templates.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
+            <DataTemplate x:Key="ServiceEventItemTemplate">
+                <StackPanel Orientation="Horizontal" >
+                    <Image Source="/Images/SNSBIcons/Event_40.png" Height="40" Width="40"/>
+                    <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" 
+                               Text="{Binding LocalityDescription}"
+                               Style="{StaticResource PhoneTextNormalStyle}"/>
+                </StackPanel>
+            </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
@@ -51,12 +56,15 @@
                 <vw:SearchBox SearchCommand="{Binding SearchEvents}" />
                 <TextBlock Text="{Binding Resources.Download_HintLongPress, Source={StaticResource LocalizedStrings}}"  Style="{StaticResource InfoLabelTextStyle}" />
             </StackPanel>
-            <ListBox Grid.Row="1"  
-                     ItemsSource="{Binding QueryResult}">
-                <ListBox.ItemTemplate>
+            <ItemsControl Grid.Row="1"
+                          Margin="{StaticResource PhoneMargin}"
+                          ItemsSource="{Binding QueryResult}">
+                <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
-                                                Content="{Binding}">
+                        <ContentControl ContentTemplate="{StaticResource ServiceEventItemTemplate}"
+                                        Content="{Binding}"
+                                        HorizontalAlignment="Left"
+                                        HorizontalContentAlignment="Left">
                             <toolkit:ContextMenuService.ContextMenu>
                                 <toolkit:ContextMenu>
                                     <toolkit:MenuItem Header="download" 
@@ -66,8 +74,8 @@
                             </toolkit:ContextMenuService.ContextMenu>
                         </ContentControl>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
         <Grid Grid.Row="1" 
               Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}" 

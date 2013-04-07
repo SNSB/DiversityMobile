@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Collections.Generic;
 using DiversityPhone.Model;
-using ReactiveUI;
-using DiversityPhone.Messages;
 using System.IO.IsolatedStorage;
 using System.Data.Linq;
-using System.IO;
 
 namespace DiversityPhone.Services
 {

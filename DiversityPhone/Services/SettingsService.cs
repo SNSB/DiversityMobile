@@ -2,17 +2,13 @@
 using System.IO.IsolatedStorage;
 using DiversityPhone.Model;
 using ReactiveUI;
-using DiversityPhone.Messages;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
-    public interface ISettingsService
-    {
-        DiversityPhone.Model.AppSettings getSettings();
-        void saveSettings(DiversityPhone.Model.AppSettings settings);
-    }
+    
 
     public class SettingsService : ISettingsService, ICurrentCredentials
     {
@@ -60,7 +56,7 @@ namespace DiversityPhone.Services
 
 
 
-        public DiversityPhone.DiversityService.UserCredentials CurrentCredentials()
+        public UserCredentials CurrentCredentials()
         {
             if (_settings != null)
                 return _settings.ToCreds();

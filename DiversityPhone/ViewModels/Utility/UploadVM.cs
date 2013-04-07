@@ -1,5 +1,5 @@
 ﻿using System;
-using Funq;
+
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Collections.Generic;
@@ -7,13 +7,11 @@ using DiversityPhone.Services;
 using System.Linq;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Reactive.Subjects;
-using DiversityPhone.Services.BackgroundTasks;
 using System.Reactive.Concurrency;
-using DiversityPhone.Messages;
 using System.Reactive.Disposables;
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels.Utility
 {
@@ -33,6 +31,12 @@ namespace DiversityPhone.ViewModels.Utility
             Specimen,
             IdentificationUnit
         }
+
+        private readonly IFieldDataService Storage;
+        private readonly INotificationService Notifications;
+        private readonly IConnectivityService Connectivity;
+        private readonly IDiversityServiceClient Service;
+        private readonly IKeyMappingService Mapping;
 
 
 
@@ -54,15 +58,11 @@ namespace DiversityPhone.ViewModels.Utility
 
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
-        
-        
 
 
-        private IFieldDataService Storage;
-        private INotificationService Notifications;
-        private IConnectivityService Connectivity;
-        private IDiversityServiceClient Service;
-        private IKeyMappingService Mapping;
+
+
+
 
         public ListSelectionHelper<SyncLevel> SyncLevels { get; private set; }
 
@@ -108,13 +108,19 @@ namespace DiversityPhone.ViewModels.Utility
 
         public ReactiveCommand CancelUpload { get; private set; }
 
-        public UploadVM(Container ioc)
+        public UploadVM(
+             IFieldDataService Storage,
+            INotificationService Notifications,
+            IConnectivityService Connectivity,
+            IDiversityServiceClient Service,
+            IKeyMappingService Mapping
+            )
         {
-            Storage = ioc.Resolve<IFieldDataService>();
-            Notifications = ioc.Resolve<INotificationService>();
-            Connectivity = ioc.Resolve<IConnectivityService>();
-            Service = ioc.Resolve<IDiversityServiceClient>();
-            Mapping = ioc.Resolve<IKeyMappingService>();
+            this.Storage = Storage;
+            this.Notifications = Notifications;
+            this.Connectivity = Connectivity;
+            this.Service = Service;
+            this.Mapping = Mapping;
 
             SyncLevels = new ListSelectionHelper<SyncLevel>();
             SyncLevels.Items = new List<SyncLevel>()
@@ -159,7 +165,7 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         return
                         Storage.getModifiedMMOs()
-                        .Where(mmo => Mapping.ResolveKey(mmo.OwnerType, mmo.RelatedId).HasValue)
+                        .Where(mmo => Mapping.ResolveToServerKey(mmo.OwnerType, mmo.RelatedId).HasValue)
                         .Select(mmo => new MultimediaObjectVM(mmo))
                         .ToObservable(ThreadPoolScheduler.Instance)
                         .TakeUntil(this.OnDeactivation())

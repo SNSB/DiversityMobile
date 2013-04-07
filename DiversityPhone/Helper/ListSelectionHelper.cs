@@ -4,6 +4,7 @@ using System.Reactive.Subjects;
 using System.Reactive.Linq;
 using System.Linq;
 using System;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -56,7 +57,12 @@ namespace DiversityPhone.ViewModels
                 else
                 {
                     _SelectedIndex = value;
+
+                    _SelectedItem = (value > -1) ? Items[value] : default(T);
+
                     this.RaisePropertyChanged(x => x.SelectedIndex);
+                    this.RaisePropertyChanged(x => x.SelectedItem);
+                    _SelectedItemSubject.OnNext(_SelectedItem);
                 }
             }
         }
@@ -80,13 +86,7 @@ namespace DiversityPhone.ViewModels
 
         public ListSelectionHelper()
         {
-            _ItemsSubject = new Subject<IList<T>>();
-            this.ObservableForProperty(x => x.SelectedIndex)
-                .Value()
-                .Select(idx => (idx > -1) ? Items[idx] : default(T))                
-                .DistinctUntilChanged()
-                .Do(val => _SelectedItem = val)
-                .Subscribe(item => _SelectedItemSubject.OnNext(item));            
+            _ItemsSubject = new Subject<IList<T>>();            
         }
 
         private void correctSelectedIndex(IList<T> items, T selectedItem)

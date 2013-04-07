@@ -2,12 +2,7 @@
 {
     using System;
     using ReactiveUI;
-    using System.Reactive.Linq;
-    using System.Collections.Generic;
     using DiversityPhone.Model;
-    using ReactiveUI.Xaml;
-    using DiversityPhone.Messages;
-using DiversityPhone.Services;
 
     public class SpecimenVM : ElementVMBase<Specimen>
     {

@@ -6,9 +6,10 @@ using DiversityPhone.Model;
 using System.Collections.Generic;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
-using Funq;
-using DiversityPhone.Messages;
+
 using System.Reactive.Concurrency;
+using DiversityPhone.Interface;
+using System.Diagnostics.Contracts;
 
 
 
@@ -16,8 +17,8 @@ namespace DiversityPhone.ViewModels
 {
     public class EditAnalysisVM : EditPageVMBase<IdentificationUnitAnalysis>
     {           
-        private readonly IVocabularyService Vocabulary;
-        private readonly IFieldDataService Storage;
+        readonly IVocabularyService Vocabulary;
+        readonly IFieldDataService Storage;
 
         private ObservableAsPropertyHelper<IElementVM<IdentificationUnit>> _Parent;
         public IElementVM<IdentificationUnit> Parent { get { return _Parent.Value; } }
@@ -59,10 +60,16 @@ namespace DiversityPhone.ViewModels
         ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
 
 
-        public EditAnalysisVM(Container ioc)
+        public EditAnalysisVM(
+            IFieldDataService Storage,
+            IVocabularyService Vocabulary
+            )
         {
-            Storage = ioc.Resolve<IFieldDataService>();
-            Vocabulary = ioc.Resolve<IVocabularyService>();
+            Contract.Requires(Storage != null);
+            Contract.Requires(Vocabulary != null);
+            this.Storage = Storage;
+            this.Vocabulary = Vocabulary;
+
             
             _Parent = this.ObservableToProperty(
                 Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW),
@@ -117,7 +124,7 @@ namespace DiversityPhone.ViewModels
             ModelByVisitObservable                
                 .Select(iuan => iuan.AnalysisResult)
                 .Merge(
-                    _IsCustomResult
+                    this.WhenAny(x => x.IsCustomResult, x => x.Value)
                     .Where(custom => !custom)
                     .Select(_ => String.Empty)
                 )
@@ -136,11 +143,10 @@ namespace DiversityPhone.ViewModels
             var vocabularyResultValid = Results
                 .Select(result => result != NoResult);
 
-            var customResultValid = this.ObservableForProperty(x => x.CustomResult)
-                .Select(change => !string.IsNullOrWhiteSpace(change.Value));
+            var customResultValid = this.WhenAny(x => x.CustomResult, x => x.Value)
+                .Select(change => !string.IsNullOrWhiteSpace(change));
 
-            var resultValid = this.ObservableForProperty(x => x.IsCustomResult)
-                .Select(change => change.Value)
+            var resultValid = this.WhenAny(x => x.IsCustomResult, x => x.Value)
                 .SelectMany(isCustomResult => (isCustomResult) ? customResultValid : vocabularyResultValid);
 
             return resultValid;

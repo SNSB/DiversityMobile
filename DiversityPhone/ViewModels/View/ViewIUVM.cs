@@ -3,15 +3,13 @@ using ReactiveUI;
 using System.Reactive.Linq;
 using System.Collections.Generic;
 using DiversityPhone.Model;
-using DiversityPhone.Messages;
 using DiversityPhone.Services;
 using ReactiveUI.Xaml;
-using System.Reactive.Subjects;
 using System.Linq;
-using System.Collections.ObjectModel;
-using Funq;
+
 using System.Reactive.Disposables;
 using System.Reactive.Concurrency;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
@@ -26,9 +24,8 @@ namespace DiversityPhone.ViewModels
             Multimedia
         }
 
-        private Container IOC;
-        private IVocabularyService Vocabulary;
-        private IFieldDataService Storage;
+        private readonly IVocabularyService Vocabulary;
+        private readonly IFieldDataService Storage;
 
         #region Commands
         public ReactiveCommand Add { get; private set; }
@@ -67,11 +64,13 @@ namespace DiversityPhone.ViewModels
 
         #endregion
 
-        public ViewIUVM(Container ioc)
-        {
-            IOC = ioc;
-            Vocabulary = ioc.Resolve<IVocabularyService>();
-            Storage = ioc.Resolve<IFieldDataService>();
+        public ViewIUVM(
+            IVocabularyService Vocabulary,
+            IFieldDataService Storage
+            )
+        {            
+            this.Vocabulary = Vocabulary;
+            this.Storage = Storage;
 
             EditCurrent = new ReactiveCommand<IElementVM<IdentificationUnit>>();
             EditCurrent

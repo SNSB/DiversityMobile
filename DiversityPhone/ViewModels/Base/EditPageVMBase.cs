@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using System.Reactive.Linq;
-using DiversityPhone.Messages;
 using ReactiveUI.Xaml;
 using DiversityPhone.Model;
 using System.Reactive.Subjects;

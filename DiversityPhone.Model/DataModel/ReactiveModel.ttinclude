@@ -1,0 +1,68 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#+ 
+	[Flags]
+	enum RowKind
+	{
+		None = 0x0,
+		Nullable = 0x01,
+		NoUpdateCheck = 0x02,		
+		CompositeKey = 0x04,
+		AutoIncrement = 0x10,
+		Key = CompositeKey | AutoIncrement,
+
+	}
+
+
+	void Row(string type, string name, RowKind rowkind = RowKind.None)
+	{
+		this.ReactiveRow(type, name, rowkind);
+    }
+
+	void ReactiveRow(string type, string name, RowKind rowkind = RowKind.None){
+		string field = "_" + name;
+		string attributes = string.Join(",", new string[]
+			{
+				((rowkind & RowKind.CompositeKey) != RowKind.None) ? "IsPrimaryKey=true" : "",
+				((rowkind & RowKind.AutoIncrement) != RowKind.None) ? "IsDbGenerated=true" : "",
+				((rowkind & RowKind.Nullable) != RowKind.None) ? "CanBeNull=true" : "",
+				((rowkind & RowKind.NoUpdateCheck) != RowKind.None) ? "UpdateCheck=UpdateCheck.Never" : ""
+            }.Where(x => !string.IsNullOrWhiteSpace(x)));
+		attributes = (attributes.Length > 0) ? string.Format("({0})", attributes) : "";
+		string entityKey = ((rowkind & RowKind.Key) != RowKind.None) ? "[EntityKey]" : String.Empty;	
+					
+		#>		
+		private <#=type#> <#= field #>;
+		[Column<#= attributes #>]
+		<#=entityKey#>
+		public <#=type#> <#=name#>
+		{
+			get { return <#= field #>; }
+			set 
+			{
+				if (<#= field #> != value)
+				{
+					this.raisePropertyChanging("<#=name#>");
+					<#= field #> = value;
+					this.raisePropertyChanged("<#=name#>");
+				}  
+			}
+		}
+		<#+
+	}	
+
+	void ReactiveEntity(string name, string interfaces, string content)
+	{
+	interfaces = (string.IsNullOrWhiteSpace(interfaces)) ? "" : ", " + interfaces;
+	#>
+	[Table]
+	public class <#= name #> : ReactiveObject<#=  interfaces#>
+	{
+		[Column(IsVersion = true)]
+		private Binary version;
+
+		<#= content #>
+	}
+	<#+
+	}
+#>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:7091/DiversityService/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
+  <xs:import schemaLocation="http://localhost:7091/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" />
+  <xs:import schemaLocation="http://localhost:7091/DiversityService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" />
   <xs:element name="GetStandardVocabulary">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q1:UserCredentials" />
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q1:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -18,21 +19,21 @@
   <xs:element name="GetUserInfo">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q3:UserCredentials" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q3:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUserInfoResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetUserInfoResult" nillable="true" type="q4:UserProfile" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="GetUserInfoResult" nillable="true" type="q4:UserProfile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetRepositories">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q5:UserCredentials" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q5:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -46,7 +47,7 @@
   <xs:element name="GetQualifications">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q7:UserCredentials" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q7:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -60,14 +61,14 @@
   <xs:element name="GetProjectsForUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q9:UserCredentials" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q9:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetProjectsForUserResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="GetProjectsForUserResult" nillable="true" type="q10:ArrayOfProject" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="GetProjectsForUserResult" nillable="true" type="q10:ArrayOfProject" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -75,7 +76,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="projectID" type="xs:int" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q11:UserCredentials" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q11:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -90,7 +91,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="projectID" type="xs:int" />
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q13:UserCredentials" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q13:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -105,7 +106,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="projectID" type="xs:int" />
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q15:UserCredentials" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q15:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -121,7 +122,7 @@
       <xs:sequence>
         <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="series" nillable="true" type="q17:EventSeries" />
         <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="localizations" nillable="true" type="q18:ArrayOfLocalization" />
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q19:UserCredentials" />
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q19:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -137,7 +138,7 @@
       <xs:sequence>
         <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="ev" nillable="true" type="q20:Event" />
         <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="properties" nillable="true" type="q21:ArrayOfEventProperty" />
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q22:UserCredentials" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q22:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -152,7 +153,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="s" nillable="true" type="q23:Specimen" />
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q24:UserCredentials" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q24:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -168,7 +169,7 @@
       <xs:sequence>
         <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="iu" nillable="true" type="q25:IdentificationUnit" />
         <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="analyses" nillable="true" type="q26:ArrayOfIdentificationUnitAnalysis" />
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q27:UserCredentials" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q27:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -183,7 +184,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="mmo" nillable="true" type="q28:MultimediaObject" />
-        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="cred" nillable="true" type="q29:UserCredentials" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="cred" nillable="true" type="q29:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -196,7 +197,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionSeriesID" type="xs:int" />
-        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q30:UserCredentials" />
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q30:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -211,7 +212,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionSeriesID" type="xs:int" />
-        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q32:UserCredentials" />
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q32:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -226,7 +227,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="locality" nillable="true" type="xs:string" />
-        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q34:UserCredentials" />
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q34:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -241,7 +242,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionEventID" type="xs:int" />
-        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q36:UserCredentials" />
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q36:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -256,7 +257,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionEventID" type="xs:int" />
-        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q38:UserCredentials" />
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q38:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -271,7 +272,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionSpecimenID" type="xs:int" />
-        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q40:UserCredentials" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q40:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -286,7 +287,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionUnitID" type="xs:int" />
-        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q42:UserCredentials" />
+        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q42:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -301,7 +302,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="collectionUnitID" type="xs:int" />
-        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q44:UserCredentials" />
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q44:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -315,7 +316,7 @@
   <xs:element name="GetTaxonListsForUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q46:UserCredentials" />
+        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q46:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -331,7 +332,7 @@
       <xs:sequence>
         <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="list" nillable="true" type="q48:TaxonList" />
         <xs:element minOccurs="0" name="page" type="xs:int" />
-        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q49:UserCredentials" />
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q49:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -345,7 +346,7 @@
   <xs:element name="GetPropertiesForUser">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q51:UserCredentials" />
+        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q51:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -361,7 +362,7 @@
       <xs:sequence>
         <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="p" nillable="true" type="q53:Property" />
         <xs:element minOccurs="0" name="page" type="xs:int" />
-        <xs:element xmlns:q54="http://schemas.datacontract.org/2004/07/DiversityService.Model" minOccurs="0" name="login" nillable="true" type="q54:UserCredentials" />
+        <xs:element xmlns:q54="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="login" nillable="true" type="q54:UserCredentials" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

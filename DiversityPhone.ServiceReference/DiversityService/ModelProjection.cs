@@ -1,10 +1,10 @@
-﻿using DiversityPhone.Services;
+﻿using DiversityPhone.Interface;
 using System;
 using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Model
 {
-    internal static class ServiceProjectionExtensions
+    public static class ServiceProjectionExtensions
     {
         public static Svc.EventSeries ToServiceObject(this EventSeries es)
         {
@@ -29,7 +29,8 @@ namespace DiversityPhone.Model
                 SeriesCode = es.SeriesCode,
                 SeriesStart = es.SeriesStart ?? DateTime.MinValue,
                 SeriesEnd = es.SeriesEnd,
-                Description = es.Description
+                Description = es.Description,
+                ModificationState = ModificationState.Unmodified,
             };
         }
 
@@ -50,6 +51,7 @@ namespace DiversityPhone.Model
                 Altitude = l.Altitude,
                 Latitude = l.Latitude,
                 Longitude = l.Longitude,
+                ModificationState = ModificationState.Unmodified,
             };
         }
 
@@ -73,9 +75,20 @@ namespace DiversityPhone.Model
             };
         }
 
-        public static Event ToClientObject(this Svc.Event ev, IKeyMappingService mapping)
+        public static Event ToClientObject(this Svc.Event ev, int? SeriesID)
         {
-            throw new NotImplementedException();
+            return new Event()
+            {
+                CollectionEventID = ev.CollectionEventID,
+                SeriesID = SeriesID,
+                CollectionDate = ev.CollectionDate ?? DateTime.Now,
+                HabitatDescription = ev.HabitatDescription,
+                LocalityDescription = ev.LocalityDescription,
+                Altitude = ev.Altitude,
+                Latitude = ev.Latitude,
+                Longitude = ev.Longitude,
+                ModificationState = ModificationState.Unmodified,
+            };
         }
 
         public static Svc.EventProperty ToServiceObject(this EventProperty cep)
@@ -95,6 +108,7 @@ namespace DiversityPhone.Model
                 DisplayText = cep.DisplayText,
                 PropertyID = cep.PropertyID,
                 PropertyUri = cep.PropertyUri,
+                ModificationState = ModificationState.Unmodified,
             };
         }
 
@@ -110,9 +124,14 @@ namespace DiversityPhone.Model
             };
         }
 
-        public static Specimen ToClientObject(this Svc.Specimen spec, IKeyMappingService mapping)
+        public static Specimen ToClientObject(this Svc.Specimen spec)
         {
-            throw new NotImplementedException();
+            return new Specimen()
+            {
+                AccessionNumber = spec.AccessionNumber,
+                CollectionSpecimenID = spec.CollectionSpecimenID,
+                ModificationState = ModificationState.Unmodified,
+            };
         }
 
         public static Svc.IdentificationUnit ToServiceObject(this IdentificationUnit iu, IKeyMappingService mapping)
@@ -140,10 +159,25 @@ namespace DiversityPhone.Model
 
         }
 
-        public static IdentificationUnit ToClientObject(this Svc.IdentificationUnit iu, IKeyMappingService mapping)
+        public static IdentificationUnit ToClientObject(this Svc.IdentificationUnit iu)
         {
-            throw new NotImplementedException();
-
+            return new IdentificationUnit()
+            {
+                Altitude = iu.Altitude,
+                AnalysisDate = iu.AnalysisDate,
+                CollectionUnitID = iu.CollectionUnitID,
+                RelatedUnitID = iu.CollectionRelatedUnitID,
+                IdentificationUri = iu.IdentificationUri,
+                Latitude = iu.Latitude,
+                Longitude = iu.Longitude,
+                OnlyObserved = iu.OnlyObserved,
+                Qualification = iu.Qualification,
+                RelationType = iu.RelationType,
+                TaxonomicGroup = iu.TaxonomicGroup,
+                WorkingName = iu.LastIdentificationCache,
+                ModificationState = ModificationState.Unmodified,
+            };
+                
         }
 
         public static Svc.IdentificationUnitAnalysis ToServiceObject(this IdentificationUnitAnalysis iua)
@@ -163,6 +197,7 @@ namespace DiversityPhone.Model
                 AnalysisDate = iua.AnalysisDate,
                 AnalysisID = iua.AnalysisID,
                 AnalysisResult = iua.AnalysisResult,
+                ModificationState = ModificationState.Unmodified,
             };
         }
 

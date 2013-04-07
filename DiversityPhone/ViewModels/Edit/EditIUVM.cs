@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Linq;
-using DiversityPhone.Messages;
 using DiversityPhone.Services;
-using Svc = DiversityPhone.DiversityService;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
 using DiversityPhone.Model;
-using Funq;
-using System.Device.Location;
+
 using System.Reactive.Disposables;
 using System.Reactive.Concurrency;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : EditPageVMBase<IdentificationUnit>
     {
-        private ITaxonService Taxa;
-        private IVocabularyService Vocabulary;
-        private ILocationService Geolocation;
-        private IFieldDataService Storage;
+        readonly ITaxonService Taxa;
+        readonly IVocabularyService Vocabulary;
+        readonly ILocationService Geolocation;
+        readonly IFieldDataService Storage;
 
         private ReactiveAsyncCommand UpdateIdentifications = new ReactiveAsyncCommand();
 
@@ -102,12 +100,17 @@ namespace DiversityPhone.ViewModels
 
 
 
-        public EditIUVM(Container ioc)
+        public EditIUVM(
+            ITaxonService Taxa,
+            IVocabularyService Vocabulary,
+            ILocationService Geolocation,
+            IFieldDataService Storage
+            )
         {
-            Storage = ioc.Resolve<IFieldDataService>();
-            Taxa = ioc.Resolve<ITaxonService>();
-            Vocabulary = ioc.Resolve<IVocabularyService>();
-            Geolocation = ioc.Resolve<ILocationService>();
+            this.Storage = Storage;
+            this.Taxa = Taxa;
+            this.Vocabulary = Vocabulary;
+            this.Geolocation = Geolocation;
 
             TaxonomicGroup = new ListSelectionHelper<Term>();
             RelationshipType = new ListSelectionHelper<Term>();
@@ -169,7 +172,7 @@ namespace DiversityPhone.ViewModels
             this.ObservableForProperty(vm => vm.QueryString)
             .Throttle(TimeSpan.FromMilliseconds(500))
             .Value().DistinctUntilChanged()
-            .CombineLatest(TaxonomicGroup, (query, tg) => Tuple.Create(query, tg))
+            .CombineLatest(TaxonomicGroup, (query, tg) => System.Tuple.Create(query, tg))
             .Subscribe(UpdateIdentifications.Execute);
 
             var canSave = from tg in TaxonomicGroup
@@ -187,7 +190,7 @@ namespace DiversityPhone.ViewModels
             UpdateIdentifications
                 .RegisterAsyncFunction(t_obj =>
                     {
-                        var t = (Tuple<string, Term>)t_obj;
+                        var t = (System.Tuple<string, Term>)t_obj;
                         var candidates = Taxa.getTaxonNames(t.Item2, t.Item1).Take(10)
                         .SelectMany(tn =>
                             {
@@ -231,7 +234,7 @@ namespace DiversityPhone.ViewModels
 
             ActivationObservable
                 .Take(1)
-                .Select(_ => Vocabulary.getTerms(Svc.TermList.TaxonomicGroups))
+                .Select(_ => Vocabulary.getTerms(TermList.TaxonomicGroups))
                 .Subscribe(TaxonomicGroup);
 
             this.FirstActivation()
@@ -240,7 +243,7 @@ namespace DiversityPhone.ViewModels
 
             _IsToplevel
                 .Where(isToplevel => !isToplevel)
-                .Select(isToplevel => Vocabulary.getTerms(Svc.TermList.RelationshipTypes))
+                .Select(isToplevel => Vocabulary.getTerms(TermList.RelationshipTypes))
                 .Subscribe(RelationshipType);
             #endregion
 

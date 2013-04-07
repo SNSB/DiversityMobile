@@ -3,19 +3,16 @@
     using System;
     using ReactiveUI;
     using System.Reactive.Linq;
-    using System.Collections.Generic;
     using DiversityPhone.Model;
-    using DiversityPhone.Messages;
-    using DiversityPhone.Services;
     using ReactiveUI.Xaml;
     using System.Linq;
 
-using System.Reactive.Disposables;
-    using Funq;
+    
+    using DiversityPhone.Interface;
 
     public class ViewEVVM : ViewPageVMBase<Event>
     {
-        private IFieldDataService Storage;
+        private readonly IFieldDataService Storage;
 
         public enum Pivots
         {
@@ -58,9 +55,11 @@ using System.Reactive.Disposables;
         private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
         
-        public ViewEVVM(Container ioc)            
+        public ViewEVVM(
+            IFieldDataService Storage
+            )            
         {
-            Storage = ioc.Resolve<IFieldDataService>();
+            this.Storage = Storage;
 
             //Current
             EditEvent = new ReactiveCommand<IElementVM<Event>>();

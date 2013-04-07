@@ -1,11 +1,7 @@
-﻿using DiversityPhone.DiversityService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
+    using DiversityPhone.Model;
+
     public interface ICurrentCredentials
     {
         UserCredentials CurrentCredentials();

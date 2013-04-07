@@ -2,36 +2,34 @@
 {
     using System;
     using ReactiveUI;
-    using DiversityPhone.Services;
     using System.Reactive.Linq;
     using ReactiveUI.Xaml;
-    using System.Collections.Generic;
     using DiversityPhone.Model;
-    using DiversityPhone.Messages;
     using System.Linq;
-    using System.Reactive.Disposables;
-    using System.Reactive.Subjects;
-    using Funq;
+    
     using System.Reactive.Concurrency;
+    using DiversityPhone.Interface;
 
     public class ViewESVM : ViewPageVMBase<EventSeries>
     {
-        private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();  
+        private readonly IFieldDataService Storage;
 
-        private IFieldDataService Storage;
+        private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
 
         #region Commands
-        public ReactiveCommand AddEvent { get; private set; }        
+        public ReactiveCommand AddEvent { get; private set; }
         public ReactiveCommand Maps { get; private set; }
         public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
         public ReactiveCommand<IElementVM<Event>> SelectEvent { get; private set; }
         #endregion
-        
-        public ReactiveCollection<EventVM> EventList { get; private set; }              
 
-        public ViewESVM(Container ioc)            
+        public ReactiveCollection<EventVM> EventList { get; private set; }
+
+        public ViewESVM(
+            IFieldDataService Storage
+            )
         {
-            Storage = ioc.Resolve<IFieldDataService>();
+            this.Storage = Storage;
 
             EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !EventSeries.isNoEventSeries(vm.Model));
             EditSeries
@@ -44,11 +42,11 @@
             CurrentModelObservable
                 .Merge(
                     from refresh in Messenger.Listen<EventMessage>(MessageContracts.REFRESH)
-                    from activation in this.OnActivation().TakeUntil(CurrentModelObservable)                    
+                    from activation in this.OnActivation().TakeUntil(CurrentModelObservable)
                     select Current.Model
                     )
                 .Do(_ => EventList.Clear())
-                .SelectMany(m => 
+                .SelectMany(m =>
                     Storage.getEventsForSeries(m)
                     .Select(ev => new EventVM(ev))
                     .ToObservable(ThreadPoolScheduler.Instance)
@@ -60,7 +58,7 @@
             SelectEvent = new ReactiveCommand<IElementVM<Event>>();
             SelectEvent
                 .ToMessage(MessageContracts.VIEW);
-            
+
             AddEvent = new ReactiveCommand();
             AddEvent
                 .Select(_ => new EventVM(
@@ -74,6 +72,6 @@
             Maps
                 .Select(_ => Current.Model as ILocationOwner)
                 .ToMessage(MessageContracts.VIEW);
-        }       
+        }
     }
 }

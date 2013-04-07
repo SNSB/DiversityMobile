@@ -4,24 +4,17 @@ using DiversityPhone.Model;
 using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using ReactiveUI;
-using System.Linq;
-using System.Collections.Generic;
-using Svc = DiversityPhone.DiversityService;
 using System.Reactive.Subjects;
-using DiversityPhone.Messages;
-using System.Reactive.Disposables;
-using Funq;
-using DiversityPhone.Services.BackgroundTasks;
-using DiversityPhone.DiversityService;
+
 using System.Reactive;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels.Utility
 {
     public partial class SettingsVM : PageVMBase
     {
-
-        ISettingsService Settings;
-        IConnectivityService Connnectivity;
+        readonly ISettingsService Settings;
+        readonly IConnectivityService Connectivity;
 
 
 
@@ -59,10 +52,13 @@ namespace DiversityPhone.ViewModels.Utility
         private ObservableAsPropertyHelper<AppSettings> _Model;
         private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();
 
-        public SettingsVM(Container ioc)
+        public SettingsVM(
+            ISettingsService Settings,
+            IConnectivityService Connectivity
+            )
         {
-            Settings = ioc.Resolve<ISettingsService>();
-            Connnectivity = ioc.Resolve<IConnectivityService>();
+            this.Settings = Settings;
+            this.Connectivity = Connectivity;
 
             _Model = this.ObservableToProperty(
                 _ModelSubject
@@ -74,11 +70,11 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(m => m.UseGPS)
                 .Subscribe(x => UseGPS = x);
 
-            Reset = new ReactiveCommand(Connnectivity.WifiAvailable());
+            Reset = new ReactiveCommand(Connectivity.WifiAvailable());
             Messenger.RegisterMessageSource(
                 Reset
                 .Select(_ => new DialogMessage(
-                    Messages.DialogType.YesNo,
+                    DialogType.YesNo,
                     "Are you sure?",
                     "All diversity data you have not already uploaded will be lost!",
                     res =>
@@ -89,14 +85,7 @@ namespace DiversityPhone.ViewModels.Utility
                     )));
 
             var setting_changed =
-                Observable.Merge(
-            this.ObservableForProperty(x => x.UseGPS).Select(_ => Unit.Default),
-            this.ObservableForProperty(x => x.Model).Select(_ => Unit.Default),
-            _ModelSubject.Select(_ => Unit.Default)
-                )
-            .StartWith(Unit.Default)
-                .Where(_ => Model != null)
-                .Select(_ => Model.UseGPS != UseGPS);
+                this.WhenAny(x => x.UseGPS, x => x.Model, (gps, model) => (model.Value != null) ? model.Value.UseGPS != gps.Value : false);
 
             Save = new ReactiveCommand(setting_changed);
             Messenger.RegisterMessageSource(
@@ -105,7 +94,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(_ => Page.Previous)
                 );
 
-            RefreshVocabulary = new ReactiveCommand(Connnectivity.WifiAvailable());
+            RefreshVocabulary = new ReactiveCommand(Connectivity.WifiAvailable());
             RefreshVocabulary
                 .Subscribe(_ =>
                 {
@@ -119,25 +108,25 @@ namespace DiversityPhone.ViewModels.Utility
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 ManageTaxa
-                .Select(_ => Services.Page.TaxonManagement)
+                .Select(_ => Page.TaxonManagement)
                 );
 
             UploadData = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 UploadData
-                .Select(_ => Services.Page.Upload)
+                .Select(_ => Page.Upload)
                 );
 
             DownloadData = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 DownloadData
-                .Select(_ => Services.Page.Download)
+                .Select(_ => Page.Download)
                 );
 
             Info = new ReactiveCommand();
             Messenger.RegisterMessageSource(
                 Info
-                .Select(_ => Services.Page.Info)
+                .Select(_ => Page.Info)
                 );
 
             var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());

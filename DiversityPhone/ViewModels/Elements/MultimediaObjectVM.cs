@@ -1,14 +1,9 @@
 ﻿
 using ReactiveUI;
 using DiversityPhone.Model;
-using ReactiveUI.Xaml;
-using DiversityPhone.Messages;
-using System.Collections.Generic;
-using DiversityPhone.Services;
 using System.Windows.Media.Imaging;
 using System.IO.IsolatedStorage;
 using System.IO;
-using System.Reactive;
 using System.Reactive.Linq;
 using System;
 

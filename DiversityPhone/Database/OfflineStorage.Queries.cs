@@ -11,7 +11,7 @@ namespace DiversityPhone.Services
             internal static IQueryable<MultimediaObject> Multimedia(IMultimediaOwner owner, DiversityDataContext ctx)
             {
                 return from mmo in ctx.MultimediaObjects
-                       where mmo.OwnerType == owner.OwnerType && mmo.RelatedId == owner.OwnerID
+                       where mmo.OwnerType == owner.EntityType && mmo.RelatedId == owner.EntityID
                        select mmo;
             }
 
