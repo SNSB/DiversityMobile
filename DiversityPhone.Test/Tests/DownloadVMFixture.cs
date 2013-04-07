@@ -34,7 +34,7 @@
 
 
         [Fact]
-        public void can_only_search_when_online()
+        public void CanOnlySearchWhenOnline()
         {
             // Setup
             var connectivityObs = Scheduler.CreateHotObservable(
@@ -68,7 +68,7 @@
         }
 
         [Fact]
-        public void event_search_queries_the_service()
+        public void SearchQueriesTheService()
         {
             // Setup
             Connectivity.Setup(c => c.Status()).Returns(ReturnAndNever(ConnectionStatus.Wifi));

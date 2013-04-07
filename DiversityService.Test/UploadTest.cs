@@ -19,7 +19,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void Insert_ES_should_not_fail()
+        public void EventSeriesWorking()
         {
             //Prepare
             var es = new EventSeries()
@@ -48,7 +48,7 @@ namespace DiversityService.Test
 
 
         [Fact]
-        public void Insert_EV_should_not_fail()
+        public void EventWorking()
         {
             //Prepare
             var ev = new Event()
@@ -73,7 +73,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void Insert_SP_should_not_fail()
+        public void SpecimenWorking()
         {
             //Prepare
             var spec = new Specimen()
@@ -94,7 +94,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void Insert_IU_should_not_fail()
+        public void IdentificationUnitWorking()
         {
             //Prepare
             var iu = new IdentificationUnit()

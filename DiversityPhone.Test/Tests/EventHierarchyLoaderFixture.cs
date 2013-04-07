@@ -27,7 +27,7 @@ namespace DiversityPhone.Test.Tests
         }
 
         [Fact]
-        public void getOrDownloadSeries_should_not_load_unmapped_series()
+        public void DoesntLoadUnmappedSeriesFromStorage()
         {
             GetT();
             T.getOrDownloadSeries(SERIES_ID);
@@ -37,7 +37,7 @@ namespace DiversityPhone.Test.Tests
         }
 
         [Fact]
-        public void getOrDownloadSeries_should_load_mapped_series()
+        public void LoadsMappedSeriesFromStorage()
         {
             // Setup
             Mappings.Setup(m => m.ResolveToLocalKey(DBObjectType.EventSeries, SERIES_ID)).Returns(LOCAL_SERIES_ID);
@@ -52,7 +52,7 @@ namespace DiversityPhone.Test.Tests
         }
 
         [Fact]
-        public void getOrDownloadSeries_should_return_noeventseries()
+        public void ReturnsNoEventSeries()
         {
             // Setup
 

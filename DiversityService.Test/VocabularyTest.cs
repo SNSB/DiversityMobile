@@ -16,47 +16,8 @@ namespace DiversityService.Test
             _target = new DiversityServiceClient();
         }
 
-        //[Fact]
-        //public void svc_should_insert_single_event_hierarchy()
-        //{
-        //    //Prepare
-        //    var hierarchy = new HierarchySection()
-        //    {
-        //        Event = new Event()
-        //        {
-        //            EventID = 0,
-        //            SeriesID = null,
-        //            LocalityDescription = "TestLocality",
-        //            HabitatDescription = "TestHabitat",
-        //            CollectionDate = new DateTime(2001,01,02)                                        
-        //        }
-        //    };
-
-        //    //Execute
-        //    var updatedHierarchy = _target.InsertHierarchy(hierarchy);
-        //    var updatedEvent = updatedHierarchy.Event;
-
-            
-        //    var ctx = new DiversityCollection.DiversityCollection_BaseTestEntities();
-        //    var addedEntity = ( from ev in ctx.CollectionEvent
-        //                        where ev.CollectionEventID == updatedEvent.EventID
-        //                        select ev).FirstOrDefault();
-
-        //    //Cleanup
-        //    if (addedEntity != null)
-        //    {
-        //        ctx.CollectionEvent.DeleteObject(addedEntity);
-        //        ctx.SaveChanges();
-        //    }
-
-
-        //    //Assert
-        //    Assert.NotNull(addedEntity); 
-
-        //}
-
         [Fact]
-        public void getUserInfo_should_return_valid_info()
+        public void GetUserInfoWorking()
         {
             //Prepare
            
@@ -72,7 +33,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void getRepositories_should_return_valid_info()
+        public void GetRepositoriesWorking()
         {
             //Prepare
 
@@ -86,7 +47,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void getProjects_should_return_valid_info()
+        public void GetProjectsWorking()
         {
             //Prepare
 
@@ -100,7 +61,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void taxonNames_via_PetaPoco_should_work()
+        public void ProjectTaxonNamesWorking()
         {
             //Prepare
             var tl = new TaxonList()
@@ -121,7 +82,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void TNT_taxonNames_should_work()
+        public void PublicTaxonNamesWorking()
         {
             //Prepare
             var tl = new TaxonList()
@@ -143,7 +104,7 @@ namespace DiversityService.Test
 
 
         [Fact]
-        public void taxonNamesForUser_should_work()
+        public void TaxonListsForUserWorking()
         {
             //Prepare
             
@@ -158,7 +119,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void AnalysesForProject_should_work()
+        public void AnalysesForProjectWorking()
         {
             //Prepare
             
@@ -172,7 +133,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void AnalysisResultsForProject_should_work()
+        public void AnalysisResultsForProjectWorking()
         {
             //Prepare            
 
@@ -185,7 +146,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void GetAnalysisTaxonomicGroupsForProject_should_work()
+        public void GetAnalysisTaxonomicGroupsForProjectWorking()
         {
             //Prepare
            
@@ -200,7 +161,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void Terms_in_Vocabulary_should_be_unique()
+        public void VocabularyTermsAreUnique()
         {
             //Prepare
             
@@ -215,7 +176,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void ATGs_should_be_unique()
+        public void AnalysisTaxonomicGroupsAreUnique()
         {
             //Prepare          
 
@@ -229,7 +190,7 @@ namespace DiversityService.Test
         }
 
         [Fact]
-        public void propertylistssForUser_should_work()
+        public void PropertyListsForUserWorking()
         {
             //Prepare
             

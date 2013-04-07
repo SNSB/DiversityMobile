@@ -16,7 +16,7 @@
         }
 
         [Fact]
-        public void Cannot_save_initially()
+        public void CannotSaveInitially()
         {
             Assert.False(T.Save.CanExecute(null));
         }
