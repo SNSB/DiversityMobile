@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="DiversityMediaService4.MediaService4" CodeBehind="MediaService4.svc.cs" %>
