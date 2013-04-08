@@ -266,7 +266,7 @@ INSERT INTO [dbo].[Identification]
            ,'TestIdentification'
            ,'TestURI'
            ,NULL
-           ,NULL
+           ,'?'
            ,NULL
            ,NULL
            ,NULL
@@ -332,6 +332,7 @@ INSERT INTO [dbo].[IdentificationUnit]
            ,NULL
            ,NEWID()
            ,NULL)
+
 INSERT INTO [dbo].[Identification]
            ([CollectionSpecimenID]
            ,[IdentificationUnitID]

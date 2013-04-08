@@ -1,6 +1,7 @@
 ﻿using PetaPoco;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -201,18 +202,19 @@ namespace DiversityService.Model
         public bool OnlyObserved { get; set; }
         public string TaxonomicGroup { get; set; }
         public string RelationType { get; set; } //Only on Non-Toplevel
-        public string ColonisedSubstratePart { get; set; }
-        public string LifeStage { get; set; }
-        public string Gender { get; set; }
+        //public string ColonisedSubstratePart { get; set; }
+        //public string LifeStage { get; set; }
+        //public string Gender { get; set; }
 
 
-        //Identification
-
+        //Identification    
+        [ResultColumn]
         public string LastIdentificationCache { get; set; }
-        [Ignore]
+        /*
         public string FamilyCache { get; set; }
-        [Ignore]
+        
         public string OrderCache { get; set; }
+        */
         [Ignore]
         public string IdentificationUri { get; set; }
         [Ignore]
@@ -241,6 +243,25 @@ namespace DiversityService.Model
         public int AnalysisNumber { get; set; }
 
         public string AnalysisResult { get; set; }
+
+        [Ignore]
         public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
+
+        //Backing DB Column (varchar(50)) with no reliable formatting... (worse in Test DB)
+        [Column("AnalysisDate"), IgnoreDataMember]
+        public string CollectionAnalysisDate 
+        {
+            get
+            {
+                var tmp = AnalysisDate.ToString("d", new CultureInfo("de-DE"));
+                return tmp;
+            }
+            set
+            {
+                DateTime tmp;
+                if (DateTime.TryParse(value, new CultureInfo("de-DE"), DateTimeStyles.AllowWhiteSpaces, out tmp))
+                    AnalysisDate = tmp;
+            }
+        }
     }
 }

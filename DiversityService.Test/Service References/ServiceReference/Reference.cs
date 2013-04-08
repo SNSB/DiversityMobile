@@ -1341,15 +1341,6 @@ namespace DiversityService.Test.ServiceReference {
         private int CollectionUnitIDField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ColonisedSubstratePartField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string FamilyCacheField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string GenderField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string IdentificationUriField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -1359,16 +1350,10 @@ namespace DiversityService.Test.ServiceReference {
         private System.Nullable<double> LatitudeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string LifeStageField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.Nullable<double> LongitudeField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool OnlyObservedField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string OrderCacheField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string QualificationField;
@@ -1455,45 +1440,6 @@ namespace DiversityService.Test.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ColonisedSubstratePart {
-            get {
-                return this.ColonisedSubstratePartField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ColonisedSubstratePartField, value) != true)) {
-                    this.ColonisedSubstratePartField = value;
-                    this.RaisePropertyChanged("ColonisedSubstratePart");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string FamilyCache {
-            get {
-                return this.FamilyCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.FamilyCacheField, value) != true)) {
-                    this.FamilyCacheField = value;
-                    this.RaisePropertyChanged("FamilyCache");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Gender {
-            get {
-                return this.GenderField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.GenderField, value) != true)) {
-                    this.GenderField = value;
-                    this.RaisePropertyChanged("Gender");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string IdentificationUri {
             get {
                 return this.IdentificationUriField;
@@ -1533,19 +1479,6 @@ namespace DiversityService.Test.ServiceReference {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LifeStage {
-            get {
-                return this.LifeStageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LifeStageField, value) != true)) {
-                    this.LifeStageField = value;
-                    this.RaisePropertyChanged("LifeStage");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<double> Longitude {
             get {
                 return this.LongitudeField;
@@ -1567,19 +1500,6 @@ namespace DiversityService.Test.ServiceReference {
                 if ((this.OnlyObservedField.Equals(value) != true)) {
                     this.OnlyObservedField = value;
                     this.RaisePropertyChanged("OnlyObserved");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string OrderCache {
-            get {
-                return this.OrderCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.OrderCacheField, value) != true)) {
-                    this.OrderCacheField = value;
-                    this.RaisePropertyChanged("OrderCache");
                 }
             }
         }
