@@ -105,6 +105,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\MapService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\MultimediaService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -171,6 +181,20 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\MapService\PhoneMediaService.disco" />
+    <None Include="Service References\MapService\configuration91.svcinfo" />
+    <None Include="Service References\MapService\configuration.svcinfo" />
+    <None Include="Service References\MapService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\MultimediaService\MediaService4.disco" />
+    <None Include="Service References\MultimediaService\configuration91.svcinfo" />
+    <None Include="Service References\MultimediaService\configuration.svcinfo" />
+    <None Include="Service References\MultimediaService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
@@ -187,6 +211,23 @@
     <None Include="Service References\DiversityService\DiversityService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\MapService\PhoneMediaService.wsdl" />
+    <None Include="Service References\MapService\PhoneMediaService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapService\PhoneMediaService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MapService\PhoneMediaService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MultimediaService\MediaService4.wsdl" />
+    <None Include="Service References\MultimediaService\MediaService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\MultimediaService\MediaService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -196,21 +237,15 @@
       <Project>{1BBCA3C5-90DC-4729-B5DF-1BBE95E8BD64}</Project>
       <Name>DiversityPhone.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">
-      <Project>{89D2571F-5F5B-4BCB-8F34-73F03B982512}</Project>
-      <Name>DiversityPhone.MapService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.Model\DiversityPhone.Model.csproj">
       <Project>{F4FD53A5-06DF-4431-AA33-34AEB3CAC032}</Project>
       <Name>DiversityPhone.Model</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
-      <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
-      <Name>DiversityPhone.MultimediaService</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
+    <WCFMetadataStorage Include="Service References\MapService\" />
+    <WCFMetadataStorage Include="Service References\MultimediaService\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />

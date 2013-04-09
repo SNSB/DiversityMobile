@@ -654,17 +654,9 @@
       <Project>{1BBCA3C5-90DC-4729-B5DF-1BBE95E8BD64}</Project>
       <Name>DiversityPhone.Interface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DiversityPhone.MapService\DiversityPhone.MapService.csproj">
-      <Project>{89D2571F-5F5B-4BCB-8F34-73F03B982512}</Project>
-      <Name>DiversityPhone.MapService</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.Model\DiversityPhone.Model.csproj">
       <Project>{F4FD53A5-06DF-4431-AA33-34AEB3CAC032}</Project>
       <Name>DiversityPhone.Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
-      <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
-      <Name>DiversityPhone.MultimediaService</Name>
     </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.Resources\DiversityPhone.Resource.csproj">
       <Project>{13B955B8-3DC1-4219-9824-AEFBEA3D2844}</Project>

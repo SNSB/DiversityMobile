@@ -2,16 +2,39 @@
     <system.serviceModel>
         <bindings>
             <basicHttpBinding>
+                <binding name="BasicHttpBinding_IPhoneMediaService" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
                 <binding name="BasicHttpBinding_IDiversityService" maxBufferSize="2147483647"
                     maxReceivedMessageSize="2147483647">
                     <security mode="None" />
                 </binding>
+                <binding name="BasicHttpBinding_IPhoneMediaService1" maxBufferSize="2147483647"
+                    maxReceivedMessageSize="2147483647">
+                    <security mode="None" />
+                </binding>
             </basicHttpBinding>
+            <customBinding>
+                <binding name="WSHttpBinding_IMediaService4">
+                    <textMessageEncoding messageVersion="Default" writeEncoding="utf-8" />
+                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
+                </binding>
+            </customBinding>
         </bindings>
         <client>
             <endpoint address="http://localhost:7091/DiversityService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
+            <endpoint address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
+                binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
+                contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
+            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
+                contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
+            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
+                contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
         </client>
     </system.serviceModel>
 </configuration>
