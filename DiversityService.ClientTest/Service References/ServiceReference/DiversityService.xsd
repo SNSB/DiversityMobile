@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityService.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://169.254.80.80:7091/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" />
+  <xs:complexType name="ArrayOfTerm">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Term" nillable="true" type="tns:Term" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTerm" nillable="true" type="tns:ArrayOfTerm" />
+  <xs:complexType name="Term">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LogUpdatedWhen" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ParentCode" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" minOccurs="0" name="Source" type="q1:TermList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Term" nillable="true" type="tns:Term" />
+  <xs:complexType name="ArrayOfRepository">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Repository" nillable="true" type="tns:Repository" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRepository" nillable="true" type="tns:ArrayOfRepository" />
+  <xs:complexType name="Repository">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Database" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Repository" nillable="true" type="tns:Repository" />
+  <xs:complexType name="ArrayOfQualification">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Qualification" nillable="true" type="tns:Qualification" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQualification" nillable="true" type="tns:ArrayOfQualification" />
+  <xs:complexType name="Qualification">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Qualification" nillable="true" type="tns:Qualification" />
+  <xs:complexType name="ArrayOfAnalysisTaxonomicGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysisTaxonomicGroup" nillable="true" type="tns:ArrayOfAnalysisTaxonomicGroup" />
+  <xs:complexType name="AnalysisTaxonomicGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnalysisTaxonomicGroup" nillable="true" type="tns:AnalysisTaxonomicGroup" />
+  <xs:complexType name="ArrayOfAnalysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Analysis" nillable="true" type="tns:Analysis" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysis" nillable="true" type="tns:ArrayOfAnalysis" />
+  <xs:complexType name="Analysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MeasurementUnit" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Analysis" nillable="true" type="tns:Analysis" />
+  <xs:complexType name="ArrayOfAnalysisResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAnalysisResult" nillable="true" type="tns:ArrayOfAnalysisResult" />
+  <xs:complexType name="AnalysisResult">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Result" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AnalysisResult" nillable="true" type="tns:AnalysisResult" />
+  <xs:complexType name="EventSeries">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CollectionEventSeriesID" type="xs:int" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeriesCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SeriesEnd" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SeriesStart" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EventSeries" nillable="true" type="tns:EventSeries" />
+  <xs:complexType name="ArrayOfLocalization">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Localization" nillable="true" type="tns:Localization" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfLocalization" nillable="true" type="tns:ArrayOfLocalization" />
+  <xs:complexType name="Localization">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Localization" nillable="true" type="tns:Localization" />
+  <xs:complexType name="Event">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="CollectionDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionSeriesID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="HabitatDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="LocalityDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Event" nillable="true" type="tns:Event" />
+  <xs:complexType name="ArrayOfEventProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EventProperty" nillable="true" type="tns:EventProperty" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEventProperty" nillable="true" type="tns:ArrayOfEventProperty" />
+  <xs:complexType name="EventProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
+      <xs:element minOccurs="0" name="PropertyUri" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="EventProperty" nillable="true" type="tns:EventProperty" />
+  <xs:complexType name="Specimen">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccessionNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionEventID" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Specimen" nillable="true" type="tns:Specimen" />
+  <xs:complexType name="IdentificationUnit">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Altitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="AnalysisDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CollectionRelatedUnitID" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionUnitID" type="xs:int" />
+      <xs:element minOccurs="0" name="IdentificationUri" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastIdentificationCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Latitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="Longitude" nillable="true" type="xs:double" />
+      <xs:element minOccurs="0" name="OnlyObserved" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Qualification" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RelationType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
+  <xs:complexType name="ArrayOfIdentificationUnitAnalysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfIdentificationUnitAnalysis" nillable="true" type="tns:ArrayOfIdentificationUnitAnalysis" />
+  <xs:complexType name="IdentificationUnitAnalysis">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AnalysisDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="AnalysisID" type="xs:int" />
+      <xs:element minOccurs="0" name="AnalysisNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="AnalysisResult" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CollectionSpecimenID" type="xs:int" />
+      <xs:element minOccurs="0" name="CollectionUnitID" nillable="true" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IdentificationUnitAnalysis" nillable="true" type="tns:IdentificationUnitAnalysis" />
+  <xs:complexType name="MultimediaObject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MediaType" type="tns:MultimediaType" />
+      <xs:element minOccurs="0" name="OwnerType" type="tns:MultimediaOwner" />
+      <xs:element minOccurs="0" name="RelatedCollectionID" type="xs:int" />
+      <xs:element minOccurs="0" name="Uri" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MultimediaObject" nillable="true" type="tns:MultimediaObject" />
+  <xs:simpleType name="MultimediaType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Image" />
+      <xs:enumeration value="Video" />
+      <xs:enumeration value="Audio" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MultimediaType" nillable="true" type="tns:MultimediaType" />
+  <xs:simpleType name="MultimediaOwner">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Specimen" />
+      <xs:enumeration value="IdentificationUnit" />
+      <xs:enumeration value="EventSeries" />
+      <xs:enumeration value="Event" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="MultimediaOwner" nillable="true" type="tns:MultimediaOwner" />
+  <xs:complexType name="ArrayOfEvent">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Event" nillable="true" type="tns:Event" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEvent" nillable="true" type="tns:ArrayOfEvent" />
+  <xs:complexType name="ArrayOfSpecimen">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Specimen" nillable="true" type="tns:Specimen" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSpecimen" nillable="true" type="tns:ArrayOfSpecimen" />
+  <xs:complexType name="ArrayOfIdentificationUnit">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="IdentificationUnit" nillable="true" type="tns:IdentificationUnit" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfIdentificationUnit" nillable="true" type="tns:ArrayOfIdentificationUnit" />
+  <xs:complexType name="ArrayOfTaxonList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonList" nillable="true" type="tns:TaxonList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTaxonList" nillable="true" type="tns:ArrayOfTaxonList" />
+  <xs:complexType name="TaxonList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsPublicList" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonomicGroup" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaxonList" nillable="true" type="tns:TaxonList" />
+  <xs:complexType name="ArrayOfTaxonName">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TaxonName" nillable="true" type="tns:TaxonName" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTaxonName" nillable="true" type="tns:ArrayOfTaxonName" />
+  <xs:complexType name="TaxonName">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AcceptedNameCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AcceptedNameURI" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="GenusOrSupragenic" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InfraspecificEpithet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SpeciesEpithet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Synonymy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonNameCache" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TaxonNameSinAuth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="URI" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TaxonName" nillable="true" type="tns:TaxonName" />
+  <xs:complexType name="ArrayOfProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Property" nillable="true" type="tns:Property" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProperty" nillable="true" type="tns:ArrayOfProperty" />
+  <xs:complexType name="Property">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Property" nillable="true" type="tns:Property" />
+  <xs:complexType name="ArrayOfPropertyValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyValue" nillable="true" type="tns:PropertyValue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyValue" nillable="true" type="tns:ArrayOfPropertyValue" />
+  <xs:complexType name="PropertyValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DisplayText" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PropertyID" type="xs:int" />
+      <xs:element minOccurs="0" name="PropertyUri" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PropertyValue" nillable="true" type="tns:PropertyValue" />
+</xs:schema>
