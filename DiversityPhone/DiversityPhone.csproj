@@ -141,17 +141,11 @@
     <Compile Include="Database\OfflineStorage.Queries.cs" />
     <Compile Include="Database\TaxonService.cs" />
     <Compile Include="Database\VocabularyService.cs" />
-    <Compile Include="DiversityResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Helper\EventHierarchyLoader.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\ListSelectionHelper.cs" />
     <Compile Include="Helper\ReactiveCollectionListener.cs" />
     <Compile Include="Helper\ReactiveCommand.cs" />
-    <Compile Include="LocalizedStrings.cs" />
     <Compile Include="Model\Geometry\Line.cs" />
     <Compile Include="Model\Geometry\Vector.cs" />
     <Compile Include="Model\LocalizableMixin.cs" />
@@ -658,13 +652,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DiversityResources.resx">
-      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <CustomToolNamespace>DiversityPhone</CustomToolNamespace>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DiversityPhone.Interface\DiversityPhone.Interface.csproj">
       <Project>{1BBCA3C5-90DC-4729-B5DF-1BBE95E8BD64}</Project>
       <Name>DiversityPhone.Interface</Name>
@@ -680,6 +667,10 @@
     <ProjectReference Include="..\DiversityPhone.MultimediaService\DiversityPhone.MultimediaService.csproj">
       <Project>{17F0C8EA-8D86-46A6-A516-807FD8799131}</Project>
       <Name>DiversityPhone.MultimediaService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DiversityPhone.Resources\DiversityPhone.Resource.csproj">
+      <Project>{13B955B8-3DC1-4219-9824-AEFBEA3D2844}</Project>
+      <Name>DiversityPhone.Resource</Name>
     </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj">
       <Project>{5F67B82B-6BE3-4B02-9056-B56F84BDED51}</Project>

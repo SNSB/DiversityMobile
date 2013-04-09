@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
-    xmlns:local="clr-namespace:DiversityPhone"
+    xmlns:res="clr-namespace:DiversityPhone;assembly=DiversityPhone.Resource"
     xmlns:vw="clr-namespace:DiversityPhone.View"
     xmlns:vm="clr-namespace:DiversityPhone.ViewModels"
     >
@@ -19,7 +19,7 @@
     		</ResourceDictionary.MergedDictionaries>
             <shell:ProgressIndicator x:Key="Progress"/>
     		<vm:ViewModelLocator x:Key="Locator" />
-            <local:LocalizedStrings x:Key="LocalizedStrings" />
+            <res:LocalizedStrings x:Key="LocalizedStrings"/>
     		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
             <vw:InvertBooleanConverter x:Key="InvertBoolean"/>
             <vw:IconToImageConverter x:Key="IconPathConverter"/>

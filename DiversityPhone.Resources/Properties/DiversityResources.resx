@@ -191,7 +191,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>stop</value>
   </data>
   <data name="Download_DownloadingItems" xml:space="preserve">
-    <value>Downloading Data Items </value>
+    <value>Downloading...</value>
   </data>
   <data name="Download_EventAlreadyDownloaded" xml:space="preserve">
     <value>Event already downloaded</value>
@@ -204,6 +204,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Download_HintLongPress" xml:space="preserve">
     <value>press and hold to download an item</value>
+  </data>
+  <data name="Download_ItemsDone" xml:space="preserve">
+    <value>Items Done</value>
   </data>
   <data name="Download_SearchingEvents" xml:space="preserve">
     <value>Looking for Events ...</value>

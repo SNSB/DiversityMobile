@@ -222,12 +222,6 @@
     <Compile Include="..\DiversityPhone.ServiceReference\IKeyMappingService.cs">
       <Link>Implementation\Interface\IKeyMappingService.cs</Link>
     </Compile>
-    <Compile Include="..\DiversityPhone\DiversityResources.Designer.cs">
-      <Link>DiversityResources.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DiversityResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="..\DiversityPhone\Helper\EventHierarchyLoader.cs">
       <Link>Implementation\Helper\EventHierarchyLoader.cs</Link>
     </Compile>
@@ -270,12 +264,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="..\DiversityPhone\DiversityResources.resx">
-      <Link>DiversityResources.resx</Link>
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>DiversityResources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>DiversityPhone</CustomToolNamespace>
-    </EmbeddedResource>
+    <ProjectReference Include="..\DiversityPhone.Resources\DiversityPhone.Resource.csproj">
+      <Project>{13b955b8-3dc1-4219-9824-aefbea3d2844}</Project>
+      <Name>DiversityPhone.Resource</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

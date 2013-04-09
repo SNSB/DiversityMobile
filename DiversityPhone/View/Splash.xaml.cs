@@ -27,7 +27,6 @@ namespace DiversityPhone.View
                 messenger.SendMessage(Page.Setup);
             else
                 messenger.SendMessage(Page.Home);
-
         }
     }
 }

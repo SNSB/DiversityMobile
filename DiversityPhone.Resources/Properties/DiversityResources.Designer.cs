@@ -39,7 +39,7 @@ namespace DiversityPhone {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DiversityPhone.Test.DiversityResources", typeof(DiversityResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DiversityPhone.Properties.DiversityResources", typeof(DiversityResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -256,7 +256,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading Data Items .
+        ///   Looks up a localized string similar to Downloading....
         /// </summary>
         public static string Download_DownloadingItems {
             get {
@@ -297,6 +297,15 @@ namespace DiversityPhone {
         public static string Download_HintLongPress {
             get {
                 return ResourceManager.GetString("Download_HintLongPress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items Done.
+        /// </summary>
+        public static string Download_ItemsDone {
+            get {
+                return ResourceManager.GetString("Download_ItemsDone", resourceCulture);
             }
         }
         
