@@ -243,13 +243,13 @@ namespace DiversityService.Model
         public int AnalysisNumber { get; set; }
 
         public string AnalysisResult { get; set; }
-
+        
         [Ignore]
         public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
 
         //Backing DB Column (varchar(50)) with no reliable formatting... (worse in Test DB)
         [Column("AnalysisDate"), IgnoreDataMember]
-        public string CollectionAnalysisDate 
+        public string CollectionAnalysisDate
         {
             get
             {
