@@ -25,6 +25,8 @@ namespace DiversityPhone.Model
 			get { return _EventID; }
 			set 
 			{
+				
+
 				if (_EventID != value)
 				{
 					this.raisePropertyChanging("EventID");
@@ -43,6 +45,8 @@ namespace DiversityPhone.Model
 			get { return _CollectionEventID; }
 			set 
 			{
+				
+
 				if (_CollectionEventID != value)
 				{
 					this.raisePropertyChanging("CollectionEventID");
@@ -61,6 +65,8 @@ namespace DiversityPhone.Model
 			get { return _SeriesID; }
 			set 
 			{
+				
+
 				if (_SeriesID != value)
 				{
 					this.raisePropertyChanging("SeriesID");
@@ -79,6 +85,15 @@ namespace DiversityPhone.Model
 			get { return _CollectionDate; }
 			set 
 			{
+				
+				var minSQLCEDate = new DateTime(1753, 01, 01);
+				var maxSQLCEDate = new DateTime(9999, 12, 31);
+				if (value < minSQLCEDate)
+					value = minSQLCEDate;
+				if (value > maxSQLCEDate)
+					value = maxSQLCEDate;
+				
+
 				if (_CollectionDate != value)
 				{
 					this.raisePropertyChanging("CollectionDate");
@@ -97,6 +112,8 @@ namespace DiversityPhone.Model
 			get { return _LocalityDescription; }
 			set 
 			{
+				
+
 				if (_LocalityDescription != value)
 				{
 					this.raisePropertyChanging("LocalityDescription");
@@ -114,6 +131,8 @@ namespace DiversityPhone.Model
 			get { return _HabitatDescription; }
 			set 
 			{
+				
+
 				if (_HabitatDescription != value)
 				{
 					this.raisePropertyChanging("HabitatDescription");
@@ -131,6 +150,8 @@ namespace DiversityPhone.Model
 			get { return _Altitude; }
 			set 
 			{
+				
+
 				if (_Altitude != value)
 				{
 					this.raisePropertyChanging("Altitude");
@@ -149,6 +170,8 @@ namespace DiversityPhone.Model
 			get { return _Latitude; }
 			set 
 			{
+				
+
 				if (_Latitude != value)
 				{
 					this.raisePropertyChanging("Latitude");
@@ -167,6 +190,8 @@ namespace DiversityPhone.Model
 			get { return _Longitude; }
 			set 
 			{
+				
+
 				if (_Longitude != value)
 				{
 					this.raisePropertyChanging("Longitude");
@@ -185,6 +210,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");

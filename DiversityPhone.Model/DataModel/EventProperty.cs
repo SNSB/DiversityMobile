@@ -25,6 +25,8 @@ namespace DiversityPhone.Model
 			get { return _EventID; }
 			set 
 			{
+				
+
 				if (_EventID != value)
 				{
 					this.raisePropertyChanging("EventID");
@@ -43,6 +45,8 @@ namespace DiversityPhone.Model
 			get { return _PropertyID; }
 			set 
 			{
+				
+
 				if (_PropertyID != value)
 				{
 					this.raisePropertyChanging("PropertyID");
@@ -62,6 +66,8 @@ namespace DiversityPhone.Model
 			get { return _DisplayText; }
 			set 
 			{
+				
+
 				if (_DisplayText != value)
 				{
 					this.raisePropertyChanging("DisplayText");
@@ -79,6 +85,8 @@ namespace DiversityPhone.Model
 			get { return _PropertyUri; }
 			set 
 			{
+				
+
 				if (_PropertyUri != value)
 				{
 					this.raisePropertyChanging("PropertyUri");
@@ -97,6 +105,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");

@@ -25,6 +25,8 @@ namespace DiversityPhone.Model
 			get { return _LocalizationID; }
 			set 
 			{
+				
+
 				if (_LocalizationID != value)
 				{
 					this.raisePropertyChanging("LocalizationID");
@@ -44,6 +46,8 @@ namespace DiversityPhone.Model
 			get { return _RelatedID; }
 			set 
 			{
+				
+
 				if (_RelatedID != value)
 				{
 					this.raisePropertyChanging("RelatedID");
@@ -62,6 +66,8 @@ namespace DiversityPhone.Model
 			get { return _Altitude; }
 			set 
 			{
+				
+
 				if (_Altitude != value)
 				{
 					this.raisePropertyChanging("Altitude");
@@ -80,6 +86,8 @@ namespace DiversityPhone.Model
 			get { return _Latitude; }
 			set 
 			{
+				
+
 				if (_Latitude != value)
 				{
 					this.raisePropertyChanging("Latitude");
@@ -98,6 +106,8 @@ namespace DiversityPhone.Model
 			get { return _Longitude; }
 			set 
 			{
+				
+
 				if (_Longitude != value)
 				{
 					this.raisePropertyChanging("Longitude");
@@ -117,6 +127,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");

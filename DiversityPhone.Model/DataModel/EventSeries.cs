@@ -27,6 +27,8 @@ namespace DiversityPhone.Model
 			get { return _SeriesID; }
 			set 
 			{
+				
+
 				if (_SeriesID != value)
 				{
 					this.raisePropertyChanging("SeriesID");
@@ -44,6 +46,8 @@ namespace DiversityPhone.Model
 			get { return _CollectionSeriesID; }
 			set 
 			{
+				
+
 				if (_CollectionSeriesID != value)
 				{
 					this.raisePropertyChanging("CollectionSeriesID");
@@ -63,6 +67,15 @@ namespace DiversityPhone.Model
 			get { return _SeriesStart; }
 			set 
 			{
+				
+				var minSQLCEDate = new DateTime(1753, 01, 01);
+				var maxSQLCEDate = new DateTime(9999, 12, 31);
+				if (value < minSQLCEDate)
+					value = minSQLCEDate;
+				if (value > maxSQLCEDate)
+					value = maxSQLCEDate;
+				
+
 				if (_SeriesStart != value)
 				{
 					this.raisePropertyChanging("SeriesStart");
@@ -81,6 +94,8 @@ namespace DiversityPhone.Model
 			get { return _SeriesEnd; }
 			set 
 			{
+				
+
 				if (_SeriesEnd != value)
 				{
 					this.raisePropertyChanging("SeriesEnd");
@@ -99,6 +114,8 @@ namespace DiversityPhone.Model
 			get { return _Description; }
 			set 
 			{
+				
+
 				if (_Description != value)
 				{
 					this.raisePropertyChanging("Description");
@@ -116,6 +133,8 @@ namespace DiversityPhone.Model
 			get { return _SeriesCode; }
 			set 
 			{
+				
+
 				if (_SeriesCode != value)
 				{
 					this.raisePropertyChanging("SeriesCode");
@@ -135,6 +154,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");

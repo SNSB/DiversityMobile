@@ -29,6 +29,8 @@ namespace DiversityPhone.Model
 			get { return _UnitID; }
 			set 
 			{
+				
+
 				if (_UnitID != value)
 				{
 					this.raisePropertyChanging("UnitID");
@@ -47,6 +49,8 @@ namespace DiversityPhone.Model
 			get { return _CollectionUnitID; }
 			set 
 			{
+				
+
 				if (_CollectionUnitID != value)
 				{
 					this.raisePropertyChanging("CollectionUnitID");
@@ -65,6 +69,8 @@ namespace DiversityPhone.Model
 			get { return _SpecimenID; }
 			set 
 			{
+				
+
 				if (_SpecimenID != value)
 				{
 					this.raisePropertyChanging("SpecimenID");
@@ -83,6 +89,8 @@ namespace DiversityPhone.Model
 			get { return _RelatedUnitID; }
 			set 
 			{
+				
+
 				if (_RelatedUnitID != value)
 				{
 					this.raisePropertyChanging("RelatedUnitID");
@@ -101,6 +109,8 @@ namespace DiversityPhone.Model
 			get { return _OnlyObserved; }
 			set 
 			{
+				
+
 				if (_OnlyObserved != value)
 				{
 					this.raisePropertyChanging("OnlyObserved");
@@ -119,6 +129,8 @@ namespace DiversityPhone.Model
 			get { return _TaxonomicGroup; }
 			set 
 			{
+				
+
 				if (_TaxonomicGroup != value)
 				{
 					this.raisePropertyChanging("TaxonomicGroup");
@@ -136,6 +148,8 @@ namespace DiversityPhone.Model
 			get { return _RelationType; }
 			set 
 			{
+				
+
 				if (_RelationType != value)
 				{
 					this.raisePropertyChanging("RelationType");
@@ -153,6 +167,8 @@ namespace DiversityPhone.Model
 			get { return _Qualification; }
 			set 
 			{
+				
+
 				if (_Qualification != value)
 				{
 					this.raisePropertyChanging("Qualification");
@@ -170,6 +186,8 @@ namespace DiversityPhone.Model
 			get { return _WorkingName; }
 			set 
 			{
+				
+
 				if (_WorkingName != value)
 				{
 					this.raisePropertyChanging("WorkingName");
@@ -187,6 +205,8 @@ namespace DiversityPhone.Model
 			get { return _IdentificationUri; }
 			set 
 			{
+				
+
 				if (_IdentificationUri != value)
 				{
 					this.raisePropertyChanging("IdentificationUri");
@@ -204,6 +224,15 @@ namespace DiversityPhone.Model
 			get { return _AnalysisDate; }
 			set 
 			{
+				
+				var minSQLCEDate = new DateTime(1753, 01, 01);
+				var maxSQLCEDate = new DateTime(9999, 12, 31);
+				if (value < minSQLCEDate)
+					value = minSQLCEDate;
+				if (value > maxSQLCEDate)
+					value = maxSQLCEDate;
+				
+
 				if (_AnalysisDate != value)
 				{
 					this.raisePropertyChanging("AnalysisDate");
@@ -222,6 +251,8 @@ namespace DiversityPhone.Model
 			get { return _Altitude; }
 			set 
 			{
+				
+
 				if (_Altitude != value)
 				{
 					this.raisePropertyChanging("Altitude");
@@ -240,6 +271,8 @@ namespace DiversityPhone.Model
 			get { return _Latitude; }
 			set 
 			{
+				
+
 				if (_Latitude != value)
 				{
 					this.raisePropertyChanging("Latitude");
@@ -258,6 +291,8 @@ namespace DiversityPhone.Model
 			get { return _Longitude; }
 			set 
 			{
+				
+
 				if (_Longitude != value)
 				{
 					this.raisePropertyChanging("Longitude");
@@ -277,6 +312,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");

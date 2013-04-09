@@ -25,6 +25,8 @@ namespace DiversityPhone.Model
 			get { return _IdentificationUnitAnalysisID; }
 			set 
 			{
+				
+
 				if (_IdentificationUnitAnalysisID != value)
 				{
 					this.raisePropertyChanging("IdentificationUnitAnalysisID");
@@ -44,6 +46,8 @@ namespace DiversityPhone.Model
 			get { return _UnitID; }
 			set 
 			{
+				
+
 				if (_UnitID != value)
 				{
 					this.raisePropertyChanging("UnitID");
@@ -62,6 +66,8 @@ namespace DiversityPhone.Model
 			get { return _AnalysisID; }
 			set 
 			{
+				
+
 				if (_AnalysisID != value)
 				{
 					this.raisePropertyChanging("AnalysisID");
@@ -81,6 +87,8 @@ namespace DiversityPhone.Model
 			get { return _DisplayText; }
 			set 
 			{
+				
+
 				if (_DisplayText != value)
 				{
 					this.raisePropertyChanging("DisplayText");
@@ -98,6 +106,8 @@ namespace DiversityPhone.Model
 			get { return _AnalysisResult; }
 			set 
 			{
+				
+
 				if (_AnalysisResult != value)
 				{
 					this.raisePropertyChanging("AnalysisResult");
@@ -116,6 +126,15 @@ namespace DiversityPhone.Model
 			get { return _AnalysisDate; }
 			set 
 			{
+				
+				var minSQLCEDate = new DateTime(1753, 01, 01);
+				var maxSQLCEDate = new DateTime(9999, 12, 31);
+				if (value < minSQLCEDate)
+					value = minSQLCEDate;
+				if (value > maxSQLCEDate)
+					value = maxSQLCEDate;
+				
+
 				if (_AnalysisDate != value)
 				{
 					this.raisePropertyChanging("AnalysisDate");
@@ -134,6 +153,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");
