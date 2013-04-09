@@ -855,25 +855,15 @@ namespace DiversityPhone.DiversityService {
         
         private int CollectionUnitIDField;
         
-        private string ColonisedSubstratePartField;
-        
-        private string FamilyCacheField;
-        
-        private string GenderField;
-        
         private string IdentificationUriField;
         
         private string LastIdentificationCacheField;
         
         private System.Nullable<double> LatitudeField;
         
-        private string LifeStageField;
-        
         private System.Nullable<double> LongitudeField;
         
         private bool OnlyObservedField;
-        
-        private string OrderCacheField;
         
         private string QualificationField;
         
@@ -947,45 +937,6 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ColonisedSubstratePart {
-            get {
-                return this.ColonisedSubstratePartField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ColonisedSubstratePartField, value) != true)) {
-                    this.ColonisedSubstratePartField = value;
-                    this.RaisePropertyChanged("ColonisedSubstratePart");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string FamilyCache {
-            get {
-                return this.FamilyCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.FamilyCacheField, value) != true)) {
-                    this.FamilyCacheField = value;
-                    this.RaisePropertyChanged("FamilyCache");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Gender {
-            get {
-                return this.GenderField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.GenderField, value) != true)) {
-                    this.GenderField = value;
-                    this.RaisePropertyChanged("Gender");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string IdentificationUri {
             get {
                 return this.IdentificationUriField;
@@ -1025,19 +976,6 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string LifeStage {
-            get {
-                return this.LifeStageField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.LifeStageField, value) != true)) {
-                    this.LifeStageField = value;
-                    this.RaisePropertyChanged("LifeStage");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public System.Nullable<double> Longitude {
             get {
                 return this.LongitudeField;
@@ -1059,19 +997,6 @@ namespace DiversityPhone.DiversityService {
                 if ((this.OnlyObservedField.Equals(value) != true)) {
                     this.OnlyObservedField = value;
                     this.RaisePropertyChanged("OnlyObserved");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string OrderCache {
-            get {
-                return this.OrderCacheField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.OrderCacheField, value) != true)) {
-                    this.OrderCacheField = value;
-                    this.RaisePropertyChanged("OrderCache");
                 }
             }
         }
