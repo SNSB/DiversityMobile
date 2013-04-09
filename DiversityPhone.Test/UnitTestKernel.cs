@@ -20,7 +20,38 @@ using System.Text;
 
 namespace DiversityPhone.Test
 {
-   
+    public class SingleUseEnumerable<T> : IEnumerable<T>
+    {
+        readonly IEnumerable<T> _Inner;
+        bool enumerated;
+        public SingleUseEnumerable(IEnumerable<T> inner)
+        {
+            _Inner = inner;
+            enumerated = false;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            if (enumerated)
+            {
+                foreach(var item in Enumerable.Empty<T>())
+                    yield return item;
+            }                
+            else
+            {
+                enumerated = true;
+                foreach (var item in _Inner)
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
 
     public class TestServiceModule : NinjectModule
     {
@@ -44,7 +75,18 @@ namespace DiversityPhone.Test
     {
         protected readonly UnitTestKernel K;
         protected readonly TestScheduler Scheduler;
-        protected TTest T;
+        private TTest _T;
+        private bool _GotT = false;
+        protected TTest T
+        {
+            get
+            {
+                if (_GotT)
+                    return _T;
+                else
+                    return (_T = K.Get<TTest>());
+            }
+        }
 
         protected readonly Mock<IDiversityServiceClient> Service;
         protected readonly Mock<IConnectivityService> Connectivity;
@@ -52,16 +94,23 @@ namespace DiversityPhone.Test
         protected readonly Mock<IKeyMappingService> Mappings;
         protected readonly Mock<IFieldDataService> Storage;
 
+        
+
+        protected IObservable<T> Return<T>(T value)
+        {
+            return Observable.Return(value, Scheduler);
+        }
+
         protected IObservable<T> ReturnAndNever<T>(T value)
         {
             return Observable.Return(value, Scheduler).Concat(Observable.Never<T>());
         }
 
+       
+
         protected void GetT()
         {
-            
-
-            T = K.Get<TTest>();
+            var x = T;
         }
 
         public DiversityTestBase()

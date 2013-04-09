@@ -18,72 +18,6 @@ using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
-    [Flags]
-    enum ProgressType
-    {
-        Total = 0x01, Completed = 0x02,
-        TotalAndCompleted = Total | Completed
-    }
-    static class ProgressExtensions
-    {
-
-        public static IObservable<T> CountProgress<T, U>(this IObservable<T> This, ProgressReporter p, ProgressType t) where T : IEnumerable<U>
-        {
-            return This.Do(l =>
-            {
-                var count = l.Count();
-                if ((t & ProgressType.Total) == ProgressType.Total) p.Total += count;
-                if ((t & ProgressType.Completed) == ProgressType.Completed) p.Completed += count;
-            });
-        }
-
-        public static IObservable<T> CountProgress<T>(this IObservable<T> This, ProgressReporter p, ProgressType t)
-        {
-            return This.Do(l =>
-            {
-                if ((t & ProgressType.Total) == ProgressType.Total) p.Total++;
-                if ((t & ProgressType.Completed) == ProgressType.Completed) p.Completed++;
-            });
-        }
-    }
-
-    internal class ProgressReporter
-    {
-        private int _Total;
-
-        public int Total
-        {
-            get { return _Total; }
-            set
-            {
-                _Total = value;
-                pushUpdate();
-            }
-        }
-
-        private int _Completed;
-
-        public int Completed
-        {
-            get { return _Completed; }
-            set { _Completed = value; pushUpdate(); }
-        }
-
-        private void pushUpdate()
-        {
-            _inner.OnNext(string.Format("{0} {1}/{2}", DiversityResources.Download_DownloadingItems, Completed, Total));
-        }
-
-        public bool Cancelled { get; private set; }
-
-        private ISubject<string> _inner = new Subject<string>();
-
-        public ProgressReporter()
-        {
-
-        }
-    }
-
     public class DownloadVM : PageVMBase
     {
         private readonly IDiversityServiceClient Service;
@@ -97,24 +31,31 @@ namespace DiversityPhone.ViewModels
         public bool IsDownloading { get { return _IsDownloading.Value; } }
         private ObservableAsPropertyHelper<bool> _IsDownloading;
 
-
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
+
+        public int ElementsDownloaded { get { return _ElementsDownloaded.Value; } }
+        private ISubject<int> _ElementsDownloadedSubject;
+        private ObservableAsPropertyHelper<int> _ElementsDownloaded;
+
 
         public ReactiveAsyncCommand SearchEvents { get; private set; }
 
         public ReactiveCollection<Event> QueryResult { get; private set; }
 
-        public ReactiveAsyncCommand DownloadElement { get; set; }
+        public ReactiveAsyncCommand DownloadElement { get; private set; }
 
-       
+        public ReactiveCommand CancelDownload { get; private set; }
+
+
         public DownloadVM(
             IDiversityServiceClient Service,
             INotificationService Notifications,
             IConnectivityService Connectivity,
             IFieldDataService Storage,
             IKeyMappingService Mappings,
-            EventHierarchyLoader HierarchyLoader
+            EventHierarchyLoader HierarchyLoader,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             this.Service = Service;
@@ -140,15 +81,23 @@ namespace DiversityPhone.ViewModels
                 .Do(_ => QueryResult.Clear())
                 .Subscribe(QueryResult.AddRange);
 
-            _IsDownloading = SearchEvents.ItemsInflight
-                .Select(x => x > 0)
-                .ToProperty(this, x => x.IsDownloading);
+            CancelDownload = new ReactiveCommand();
 
             DownloadElement = new ReactiveAsyncCommand(this.WhenAny(x => x.IsOnlineAvailable, x => x.Value));
             DownloadElement
                 .RegisterAsyncObservable(ev => IfNotDownloadedYet(ev as Event)
-                    .SelectMany(HierarchyLoader.downloadAndStoreDependencies));
+                    .Select(HierarchyLoader.downloadAndStoreDependencies)
+                    .SelectMany(dl => dl.TakeUntil(CancelDownload))
+                    .Scan(0, (acc, _) => ++acc)
+                    .Do(_ElementsDownloadedSubject.OnNext)
+                    );
 
+            _IsDownloading = DownloadElement.ItemsInflight
+                .Select(x => x > 0)
+                .ToProperty(this, x => x.IsDownloading);
+
+            _ElementsDownloadedSubject = new Subject<int>();
+            _ElementsDownloaded = _ElementsDownloadedSubject.ToProperty(this, x => x.ElementsDownloaded, 0, Dispatcher);
         }
 
         private IObservable<Event> IfNotDownloadedYet(Event ev)
@@ -172,8 +121,8 @@ namespace DiversityPhone.ViewModels
                 });
         }
 
-       
 
-       
+
+
     }
 }

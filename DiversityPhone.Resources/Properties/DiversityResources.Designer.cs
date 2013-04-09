@@ -256,11 +256,11 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading....
+        ///   Looks up a localized string similar to Downloading: .
         /// </summary>
-        public static string Download_DownloadingItems {
+        public static string Download_Downloading {
             get {
-                return ResourceManager.GetString("Download_DownloadingItems", resourceCulture);
+                return ResourceManager.GetString("Download_Downloading", resourceCulture);
             }
         }
         

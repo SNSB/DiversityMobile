@@ -81,10 +81,20 @@
               Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}" 
               Background="{StaticResource PhoneBackgroundBrush}" 
               Opacity="0.9">
-            <Button Command="{Binding CancelDownload}"
-                    Content="{Binding Resources.Download_Header_CancelDownload, Source={StaticResource LocalizedStrings}}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
+            <StackPanel Orientation="Vertical" 
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock HorizontalAlignment="Center"
+                           VerticalAlignment="Center">
+                    <Run Text="{Binding Resources.Download_Downloading, Source={StaticResource LocalizedStrings}}"/>
+                    <Run Text="{Binding ElementsDownloaded}"/>
+                    <Run Text="{Binding Resources.Download_ItemsDone, Source={StaticResource LocalizedStrings}}"/>
+                </TextBlock>
+                <Button Command="{Binding CancelDownload}"
+                        Content="{Binding Resources.Download_Header_CancelDownload, Source={StaticResource LocalizedStrings}}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </phone:PhoneApplicationPage>

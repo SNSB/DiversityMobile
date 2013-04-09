@@ -1,9 +1,10 @@
-﻿using DiversityPhone.Interface;
-using System;
-using Svc = DiversityPhone.DiversityService;
-
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
+    using DiversityPhone.Interface;
+    using System;
+    using System.Collections.Generic;
+    using Svc = DiversityPhone.DiversityService;
+
     public static class ServiceProjectionExtensions
     {
         public static Svc.EventSeries ToServiceObject(this EventSeries es)

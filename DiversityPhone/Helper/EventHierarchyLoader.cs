@@ -50,7 +50,9 @@ namespace DiversityPhone.ViewModels
             return
             Observable.Merge(
                 series_future.Select(_ => Unit.Default),
+                event_future.Select(_ => Unit.Default),
                 props_future,
+                specimen_future.Select(_ => Unit.Default),
                 iu_future.Select(_ => Unit.Default),
                 an_future
                 );
@@ -85,9 +87,8 @@ namespace DiversityPhone.ViewModels
                                     Storage.add(loc);
                                 }
                                 return es;
-                            }).Replay();
-
-                insertion_future.Connect();
+                            }).Replay()
+                            .RefCount();
 
                 return insertion_future;
             }
@@ -102,10 +103,8 @@ namespace DiversityPhone.ViewModels
                     ev.SeriesID = es.SeriesID;
                     Storage.add(ev);
                     return ev;
-                })
-                .Replay();
-
-            insertion_future.Connect();
+                }).Replay()
+                .RefCount();
 
             return insertion_future;
         }
@@ -125,9 +124,8 @@ namespace DiversityPhone.ViewModels
                     })
                 )
                 .Select(_ => Unit.Default)
-                .Replay();
-
-            insertion_future.Connect();
+                .Replay()
+                .RefCount();
 
             return insertion_future;
         }
@@ -145,11 +143,8 @@ namespace DiversityPhone.ViewModels
                         spec.EventID = ev.EventID;
                         Storage.add(spec);
                         return spec;
-                    }
-                    )
-                .Replay();
-
-            insertion_future.Connect();
+                    }).Replay()
+                    .RefCount();
 
             return insertion_future;
         }
@@ -171,26 +166,28 @@ namespace DiversityPhone.ViewModels
                 }
 
                 yield return iu;
-            }            
+            }
         }
 
-        public IConnectableObservable<IdentificationUnit> downloadUnits(IObservable<Specimen> specimen_future)
+        public IObservable<IdentificationUnit> downloadUnits(IObservable<Specimen> specimen_future)
         {
             var insertion_future =
                 specimen_future
                 .SelectMany(spec => Service.GetIdentificationUnitsForSpecimen(spec.CollectionSpecimenID.Value)
-                    .Do(ius => {
-                        foreach (var iu in ius)
+                    .Select(ius =>
+                    {
+                        var unitList = ius.ToList();
+                        foreach (var iu in unitList)
                         {
                             iu.SpecimenID = spec.SpecimenID;
                         }
+
+                        return unitList;
                     })
                     .Select(ius => ius.ToLookup(iu => iu.RelatedUnitID))
-                    .SelectMany(tree => insertUnitsHierarchical(tree).ToObservable(ThreadPool))                    
-                )
-                .Replay();
-
-            insertion_future.Connect();
+                    .SelectMany(tree => insertUnitsHierarchical(tree).ToObservable(ThreadPool))
+                ).Replay()
+                .RefCount();
 
             return insertion_future;
         }
@@ -204,13 +201,11 @@ namespace DiversityPhone.ViewModels
                         {
                             an.UnitID = iu.UnitID;
                             Storage.add(an);
-                        }
-                        )
+                        })
                     )
                     .Select(_ => Unit.Default)
-                    .Replay();
-
-            insertion_future.Connect();
+                    .Replay()
+                    .RefCount();
 
             return insertion_future;
         }
