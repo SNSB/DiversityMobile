@@ -57,19 +57,15 @@ namespace DiversityPhone.Services
         IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
 
 
-        
+        readonly IKeyMappingService Mapping;
+        readonly ICurrentCredentials Credentials;
 
-        IMessageBus Messenger;
-        IKeyMappingService Mapping;
-        ObservableAsPropertyHelper<Client.UserCredentials> LatestCreds;
+        private Client.UserCredentials GetCreds() { return Credentials.CurrentCredentials(); }
 
-        private Client.UserCredentials GetCreds() { return LatestCreds.Value; }
-
-        public DiversityServiceClient(IMessageBus messenger, IKeyMappingService mapping)
-        {
-            Messenger = messenger;
-            Mapping = mapping;
-            LatestCreds = new ObservableAsPropertyHelper<Client.UserCredentials>(messenger.Listen<Client.UserCredentials>(), _ => { });
+        public DiversityServiceClient(ICurrentCredentials Credentials, IKeyMappingService Mapping)
+        {            
+            this.Mapping = Mapping;
+            this.Credentials = Credentials;
 
             GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h);
             GetRepositoriesCompleted = Observable.FromEventPattern<GetRepositoriesCompletedEventArgs>(h => _svc.GetRepositoriesCompleted += h, h => _svc.GetRepositoriesCompleted -= h);

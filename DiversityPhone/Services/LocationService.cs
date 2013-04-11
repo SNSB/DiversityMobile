@@ -11,6 +11,7 @@
     
     using DiversityPhone.Model;
     using System.Threading;
+    using DiversityPhone.Interface;
 
 
     public class Coordinate : ILocalizable
@@ -95,9 +96,9 @@
     {
         private static readonly TimeSpan DefaultStartupTimeout = TimeSpan.FromSeconds(5);
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
-        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;       
+        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;
 
-        readonly IMessageBus Messenger;
+        readonly ISettingsService Settings;
 
         private IScheduler threadpool = ThreadPoolScheduler.Instance;
         private GeoCoordinateWatcher watcher = null;
@@ -133,11 +134,12 @@
         /// The default accuracy to be used for all requests for location information.
         /// </param>
         /// </summary>
-        public LocationService(IMessageBus Messenger) 
+        public LocationService(ISettingsService Settings) 
         {
-            this.Messenger = Messenger;
+            this.Settings = Settings;
 
-            Messenger.Listen<AppSettings>()
+            Settings
+                .CurrentSettings()
                 .Where(s => s != null)
                 .Select(s => s.UseGPS)
                 .Subscribe(gps => IsEnabled = gps);

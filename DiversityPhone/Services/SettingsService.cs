@@ -14,53 +14,37 @@ namespace DiversityPhone.Services
     {
         private const string SETTINGS_KEY = "Settings";
 
-        IMessageBus Messenger;
-        AppSettings _settings;
-        ISubject<AppSettings> _SettingSubject = new Subject<AppSettings>();
-        public SettingsService (IMessageBus msg)
+        ISubject<AppSettings> _SettingSubject = new BehaviorSubject<AppSettings>(null);
+        public SettingsService()
 	    {
-            Messenger = msg;
-            msg.Listen<AppSettings>(MessageContracts.SAVE)
-                .Subscribe(s => saveSettings(s));
+            AppSettings settings;
 
-            Messenger.RegisterMessageSource(
-                _SettingSubject
-            );
-            Messenger.RegisterMessageSource(
-                _SettingSubject
-                .Where(settings => settings != null)
-                .Select(settings => settings.ToCreds())
-                );
-
-            Messenger.Listen<EventMessage>(MessageContracts.INIT)
-                .Where(_ => _settings != null)
-                .Select(_ => _settings)
-                .Subscribe(_SettingSubject);
-            
-            if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out _settings))
-                _settings = null;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out settings))
+                _SettingSubject.OnNext(settings);
 	    }
 
-        public AppSettings getSettings()
-        {
-            return (_settings != null) ? _settings.Clone() : null;
-        }
 
-        public void saveSettings(AppSettings settings)
-        {
-            _settings = settings;
-            _SettingSubject.OnNext(settings);
+
+        public void SaveSettings(AppSettings settings)
+        {   
             IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
             IsolatedStorageSettings.ApplicationSettings.Save();
+            _SettingSubject.OnNext(settings);
         }
 
 
 
         public UserCredentials CurrentCredentials()
         {
-            if (_settings != null)
-                return _settings.ToCreds();
+            var settings = _SettingSubject.FirstOrDefault();
+            if (settings != null)
+                return settings.ToCreds();
             return null;
+        }
+
+        public IObservable<AppSettings> CurrentSettings()
+        {
+            return _SettingSubject.AsObservable();
         }
     }
 }

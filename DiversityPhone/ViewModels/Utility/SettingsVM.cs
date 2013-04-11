@@ -48,9 +48,20 @@ namespace DiversityPhone.ViewModels.Utility
         public ReactiveCommand Info { get; private set; }
 
 
-        public AppSettings Model { get { return _Model.Value; } }
-        private ObservableAsPropertyHelper<AppSettings> _Model;
-        private ISubject<AppSettings> _ModelSubject = new Subject<AppSettings>();
+
+        private AppSettings _Model;
+
+        public AppSettings Model
+        {
+            get
+            {
+                return _Model;
+            }
+            private set
+            {
+                this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
+            }
+        }
 
         public SettingsVM(
             ISettingsService Settings,
@@ -60,15 +71,10 @@ namespace DiversityPhone.ViewModels.Utility
             this.Settings = Settings;
             this.Connectivity = Connectivity;
 
-            _Model = this.ObservableToProperty(
-                _ModelSubject
-                .Where(x => true),
-                x => x.Model);
-
-            _ModelSubject
+            this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
                 .Select(m => m.UseGPS)
-                .Subscribe(x => UseGPS = x);
+                .BindTo(this, x => x.UseGPS);
 
             Reset = new ReactiveCommand(Connectivity.WifiAvailable());
             Messenger.RegisterMessageSource(
@@ -85,7 +91,8 @@ namespace DiversityPhone.ViewModels.Utility
                     )));
 
             var setting_changed =
-                this.WhenAny(x => x.UseGPS, x => x.Model, (gps, model) => (model.Value != null) ? model.Value.UseGPS != gps.Value : false);
+                this.WhenAny(x => x.UseGPS, x => x.Model, 
+                    (gps, model) => (model.Value != null) ? model.Value.UseGPS != gps.Value : false);
 
             Save = new ReactiveCommand(setting_changed);
             Messenger.RegisterMessageSource(
@@ -99,6 +106,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(_ =>
                 {
                     Messenger.SendMessage(Page.Setup);
+                    Messenger.SendMessage(EventMessage.Default, MessageContracts.REFRESH);
                 });
 
 
@@ -129,8 +137,9 @@ namespace DiversityPhone.ViewModels.Utility
                 .Select(_ => Page.Info)
                 );
 
-            var storedConfig = Observable.Return(Settings.getSettings()).Concat(Observable.Never<AppSettings>());
-            storedConfig.Subscribe(_ModelSubject);
+            Settings
+                .CurrentSettings()
+                .BindTo(this, x => x.Model);            
         }
 
 
@@ -138,13 +147,13 @@ namespace DiversityPhone.ViewModels.Utility
         private void saveModel()
         {
             Model.UseGPS = UseGPS;
-            Settings.saveSettings(Model);
+            Settings.SaveSettings(Model);
         }
 
 
         private void OnReset()
         {
-            Settings.saveSettings(null);
+            Settings.SaveSettings(null);
             Messenger.SendMessage(Page.Setup);
         }
     }

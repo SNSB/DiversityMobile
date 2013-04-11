@@ -103,7 +103,7 @@ namespace DiversityPhone
 
                 BindAndActivateSingleton<SettingsVM>();
 
-                Bind<SetupVM>().ToSelf().InSingletonScope();
+                BindAndActivateSingleton<SetupVM>();
 
                 Bind<TaxonManagementVM>().ToSelf().InTransientScope();
 

@@ -315,9 +315,9 @@ namespace DiversityPhone.ViewModels
 
             Save = new ReactiveCommand(settingsValid().ObserveOn(Dispatcher));
 
-            var existingSettings = Observable.Return(Settings.getSettings());
 
-            existingSettings
+
+            Settings.CurrentSettings()
                 .Where(settings => settings == null)
                 .Subscribe(_ =>
                     {
@@ -334,8 +334,8 @@ namespace DiversityPhone.ViewModels
             Save
                 .Do(_ => clearDatabase.Execute(null))
                 .Select(_ => createSettings())
-                .Merge(existingSettings.Where(settings => settings != null)) // just refresh
-                .Do(res => Settings.saveSettings(res))
+                .Do(res => Settings.SaveSettings(res))
+                .Merge(Messenger.Listen<EventMessage>(MessageContracts.REFRESH).Select(_ => Settings.CurrentSettings().FirstOrDefault()))
                 .Subscribe(RefreshVocabulary.Execute);
 
 
