@@ -784,7 +784,7 @@ namespace DiversityPhone.Services
 
                 Func<TKey, Expression<Func<T, bool>>> comparerFactoryLambda = (TKey i) =>
                     {
-                        Expression rightExpr = Expression.Constant(i);
+                        Expression rightExpr = Expression.Constant(i, typeof(TKey));
                         BinaryExpression myExpr = MemberExpression.Equal(leftExpr, rightExpr);
 
                         return Expression.Lambda<Func<T, bool>>
