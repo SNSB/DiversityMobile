@@ -96,6 +96,9 @@ namespace DiversityPhone.ViewModels
                 .Select(x => x > 0)
                 .ToProperty(this, x => x.IsDownloading);
 
+            this.OnDeactivation()
+                .Subscribe(_ => Messenger.SendMessage(EventMessage.Default, MessageContracts.INIT));
+
             _ElementsDownloadedSubject = new Subject<int>();
             _ElementsDownloaded = _ElementsDownloadedSubject.ToProperty(this, x => x.ElementsDownloaded, 0, Dispatcher);
         }

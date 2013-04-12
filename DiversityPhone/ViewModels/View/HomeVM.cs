@@ -108,11 +108,8 @@ namespace DiversityPhone.ViewModels
             Maps.Select(_ => null as ILocalizable)
                 .ToMessage(MessageContracts.VIEW);
 
-            Observable.Merge(
-                Messenger.Listen<EventMessage>(MessageContracts.CLEAN),
-                Messenger.Listen<EventMessage>(MessageContracts.INIT),
-                Messenger.Listen<EventMessage>(MessageContracts.REFRESH)
-                )                
+            
+            Messenger.Listen<EventMessage>(MessageContracts.INIT)
                 .Do(_ => SeriesList.Clear())
                 .Subscribe(_ => getSeries.Execute(null));
         }

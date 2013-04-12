@@ -12,7 +12,7 @@ using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
-    public class SetupVM : ReactiveObject
+    public class SetupVM : PageVMBase
     {
         private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(5);
 
@@ -198,7 +198,7 @@ namespace DiversityPhone.ViewModels
                             .StartWith(Unit.Default)
                             .Subscribe(_ => { IsBusy = true; }, () =>
                             {
-                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.CLEAN);
+                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
                                 Messenger.SendMessage<Page>(Page.Home);
                             });
                     });
@@ -218,6 +218,8 @@ namespace DiversityPhone.ViewModels
 
                 Taxa.clearTaxonLists();
                 FieldData.clearDatabase();
+
+                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
             });
 
             #region Setup
@@ -335,7 +337,9 @@ namespace DiversityPhone.ViewModels
                 .Do(_ => clearDatabase.Execute(null))
                 .Select(_ => createSettings())
                 .Do(res => Settings.SaveSettings(res))
-                .Merge(Messenger.Listen<EventMessage>(MessageContracts.REFRESH).Select(_ => Settings.CurrentSettings().FirstOrDefault()))
+                .Merge(
+                    Settings.CurrentSettings().Sample(this.OnActivation()).Where(s => s != null)                    
+                )
                 .Subscribe(RefreshVocabulary.Execute);
 
 

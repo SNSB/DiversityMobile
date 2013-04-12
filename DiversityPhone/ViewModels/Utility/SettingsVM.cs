@@ -106,7 +106,6 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(_ =>
                 {
                     Messenger.SendMessage(Page.Setup);
-                    Messenger.SendMessage(EventMessage.Default, MessageContracts.REFRESH);
                 });
 
 
