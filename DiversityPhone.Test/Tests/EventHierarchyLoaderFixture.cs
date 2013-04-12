@@ -133,9 +133,21 @@ namespace DiversityPhone.Test.Tests
             Scheduler.Start();
 
             Storage.Verify(x => x.add<EventSeries>(Resources.EventSeries), Times.Once());
-            Storage.Verify(x => x.add<Event>(Resources.Event), Times.Once());
+            Storage.Verify(x => x.add<Event>(It.IsAny<Event>()), Times.Once());
             Storage.Verify(x => x.add<Specimen>(Resources.Specimen), Times.Once());
             Storage.Verify(x => x.add<IdentificationUnit>(Resources.Unit), Times.Once());
+        }
+
+        [Fact]
+        public void DoesNotInsertEventObjectPassedAsParameter()
+        {
+            SetupHierarchy();
+
+            T.downloadAndStoreDependencies(Resources.Event).Subscribe();
+
+            Scheduler.Start();
+            
+            Storage.Verify(x => x.add<Event>(It.Is<Event>(ev => !object.ReferenceEquals(ev, Resources.Event) && ev.CollectionEventID == Resources.Event.CollectionEventID)), Times.Once());
         }
 
         [Fact]

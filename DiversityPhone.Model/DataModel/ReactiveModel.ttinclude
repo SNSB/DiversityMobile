@@ -66,6 +66,16 @@
 			}
 		}
 		<#+
+	}
+	
+	void EnableMemberwiseClone(string typename)
+	{
+		#>
+		public <#=typename #> MemberwiseClone()
+        {
+            return (<#=typename #>)base.MemberwiseClone();
+        }
+		<#+
 	}	
 
 	void ReactiveEntity(string name, string interfaces, string content)

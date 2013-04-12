@@ -40,6 +40,7 @@ namespace DiversityPhone.Model
             this.ModificationState = ModificationState.New;
 		}
 
+ <# EnableMemberwiseClone("Event"); #>
        
         public static IQueryOperations<Event> Operations
         {

@@ -37,6 +37,9 @@ namespace DiversityPhone.ViewModels
             if (ev == null)
                 throw new ArgumentNullException();
 
+            //Avoid undesirable interactions
+            ev = ev.MemberwiseClone();
+
 
             IObservable<EventSeries> series_future = getOrDownloadSeries(ev.SeriesID);
             IObservable<Event> event_future = addEvent(series_future, ev);
