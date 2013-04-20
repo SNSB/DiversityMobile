@@ -205,11 +205,9 @@ namespace DiversityService.Model
         //public string ColonisedSubstratePart { get; set; }
         //public string LifeStage { get; set; }
         //public string Gender { get; set; }
-
-
-        //Identification    
-        [ResultColumn]
         public string LastIdentificationCache { get; set; }
+
+        //Identification         
         /*
         public string FamilyCache { get; set; }
         
