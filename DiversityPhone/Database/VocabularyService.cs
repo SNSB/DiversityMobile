@@ -22,7 +22,7 @@ namespace DiversityPhone.Services
         }
 
 
-         public void clearVocabulary()
+        public void clearVocabulary()
         {
             using (var ctx = new VocabularyDataContext())
             {
@@ -30,7 +30,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        #region Analyses     
+        #region Analyses
 
         public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
@@ -46,8 +46,8 @@ namespace DiversityPhone.Services
         public Analysis getAnalysisByID(int id)
         {
             return singleDataContext(ctx => from an in ctx.Analyses
-                                         where an.AnalysisID == id
-                                         select an);
+                                            where an.AnalysisID == id
+                                            select an);
         }
 
         public void addAnalyses(IEnumerable<Analysis> analyses)
@@ -98,9 +98,9 @@ namespace DiversityPhone.Services
         public IList<Term> getTerms(TermList source)
         {
             return queryDataContext(ctx => from t in ctx.Terms
-                                        where t.SourceID == source
-                                        orderby t.LastUsed descending
-                                        select t
+                                           where t.SourceID == source
+                                           orderby t.LastUsed descending
+                                           select t
                                         );
         }
 
@@ -122,7 +122,7 @@ namespace DiversityPhone.Services
                      //TODO Log
                  }
 
-             });            
+             });
         }
 
         public void updateLastUsed(Term term)
@@ -131,20 +131,15 @@ namespace DiversityPhone.Services
             {
                 //e.g. Relationship when ToplevelIU is saved
                 return;
-            }
-//            {
-//#if DEBUG
-//                throw new ArgumentNullException("term");
-//#else
-//                return;
-//#endif
-                //TODO Log
-            //}
+            }          
 
             withDataContext(ctx =>
             {
-                ctx.Terms.Attach(term);
-                term.LastUsed = DateTime.Now;
+                var dbTerm = (from t in ctx.Terms
+                              where t.Code == term.Code &&
+                                    t.SourceID == term.SourceID
+                              select t).Single();
+                dbTerm.LastUsed = DateTime.Now;
                 ctx.SubmitChanges();
             });
         }
@@ -153,20 +148,22 @@ namespace DiversityPhone.Services
         {
             if (analysis == null)
             {
-               
-                        
-            #if DEBUG
-                            throw new ArgumentNullException("term");
-            #else
+
+
+#if DEBUG
+                throw new ArgumentNullException("analysis");
+#else
                             return;
-            #endif
-            //TODO Log
+#endif
+                //TODO Log
             }
 
             withDataContext(ctx =>
             {
-                ctx.Analyses.Attach(analysis);
-                analysis.LastUsed = DateTime.Now;
+                var dbTerm = (from a in ctx.Analyses
+                              where a.AnalysisID == analysis.AnalysisID
+                              select a).Single();
+                dbTerm.LastUsed = DateTime.Now;
                 ctx.SubmitChanges();
             });
         }
@@ -174,29 +171,29 @@ namespace DiversityPhone.Services
 
         #endregion
 
-        
+
 
         #region PropertyNames
 
         public void addPropertyNames(IEnumerable<PropertyName> properties)
         {
             withDataContext(ctx =>
-                {                    
-                    try 
-	                {
-                        
-                            ctx.PropertyNames.InsertAllOnSubmit(properties);
-                            ctx.SubmitChanges();
-                        	                
-	                }
-	                catch (Exception)
-	                {
-		                
-		                throw;
-	                }
-                   
+                {
+                    try
+                    {
+
+                        ctx.PropertyNames.InsertAllOnSubmit(properties);
+                        ctx.SubmitChanges();
+
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+
                 });
-            
+
         }
 
         public IEnumerable<PropertyName> getPropertyNames(int propertyID)
@@ -267,10 +264,10 @@ namespace DiversityPhone.Services
 
         private IList<T> queryDataContext<T>(Func<VocabularyDataContext, IQueryable<T>> operation)
         {
-            using(var ctx = new VocabularyDataContext())
-	        {
-		        return operation(ctx).ToList();
-	        }            
+            using (var ctx = new VocabularyDataContext())
+            {
+                return operation(ctx).ToList();
+            }
         }
 
         private T singleDataContext<T>(Func<VocabularyDataContext, IQueryable<T>> operation)
@@ -280,7 +277,7 @@ namespace DiversityPhone.Services
                 return operation(ctx).SingleOrDefault();
             }
         }
-        
+
         private class VocabularyDataContext : DataContext
         {
             private static string connStr = "isostore:/vocabularyDB.sdf";
@@ -292,7 +289,7 @@ namespace DiversityPhone.Services
                     this.CreateDatabase();
             }
 
-            #pragma warning disable 0649
+#pragma warning disable 0649
             public Table<Analysis> Analyses;
             public Table<AnalysisResult> AnalysisResults;
             public Table<AnalysisTaxonomicGroup> AnalysisTaxonomicGroups;
@@ -303,7 +300,7 @@ namespace DiversityPhone.Services
             public Table<Property> Properties;
 
             public Table<Qualification> Qualifications;
-            #pragma warning restore 0649
+#pragma warning restore 0649
         }
     }
 }
