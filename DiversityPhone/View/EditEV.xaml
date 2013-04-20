@@ -40,8 +40,7 @@
             <TextBox x:Name="HabitatTB" Text="{Binding HabitatDescription, Mode=TwoWay}" 
                      IsEnabled="{Binding IsEditable}"/>
             <TextBlock Text="Collection Date"/>
-            <toolkit:DatePicker Value="{Binding CollectionDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
-            <toolkit:TimePicker Value="{Binding CollectionDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />                     
+            <toolkit:DatePicker Value="{Binding CollectionDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />            
         </StackPanel>
     </Grid>
  
