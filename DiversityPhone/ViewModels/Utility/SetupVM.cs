@@ -19,7 +19,6 @@ namespace DiversityPhone.ViewModels
 
         readonly IDiversityServiceClient Repository;
         readonly ISettingsService Settings;
-        readonly IMessageBus Messenger;
         readonly INotificationService Notifications;
         readonly IConnectivityService Connectivity;
         readonly ITaxonService Taxa;
@@ -169,7 +168,6 @@ namespace DiversityPhone.ViewModels
             [Dispatcher] IScheduler Dispatcher,
             IDiversityServiceClient Repository,
             ISettingsService Settings,
-            IMessageBus Messenger,
             INotificationService Notifications,
             IConnectivityService Connectivity,
             ITaxonService Taxa,
@@ -178,7 +176,6 @@ namespace DiversityPhone.ViewModels
             )
         {
             this.Repository = Repository;
-            this.Messenger = Messenger;
             this.Settings = Settings;
             this.Notifications = Notifications;
             this.Connectivity = Connectivity;

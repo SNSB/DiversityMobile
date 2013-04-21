@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using ReactiveUI.Xaml;
 using DiversityPhone.Model;
 using System.Reactive.Subjects;
-using DiversityPhone.Services;
 using System.Reactive;
 using System;
 

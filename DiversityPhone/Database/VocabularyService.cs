@@ -6,6 +6,7 @@ using System.Linq;
 using DiversityPhone.Model;
 using ReactiveUI;
 using System.Reactive.Disposables;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {

@@ -14,64 +14,7 @@
     using DiversityPhone.Interface;
 
 
-    public class Coordinate : ILocalizable
-    {
-        public static readonly Coordinate Unknown = new Coordinate();
-
-
-        public double? Altitude
-        {
-            get;
-            set;
-        }
-
-        public double? Latitude
-        {
-            get;
-            set;
-        }
-
-        public double? Longitude
-        {
-            get;
-            set;
-        }
-    }
-
-    public static class CoordinateMixin
-    {
-        public static bool IsUnknown(this Coordinate This)
-        {
-            return !This.Latitude.HasValue && !This.Longitude.HasValue && !This.Altitude.HasValue;
-        }
-    }
-
-    /// <summary>
-    /// Interface defining the location service API.
-    /// </summary>
-    public interface ILocationService
-    {
-        /// <summary>
-        /// The location by distance threshold, the location is returned dependent on exceeding the distance.
-        /// </summary>
-        /// <param name="distance">
-        /// The distance that has to be exceeeded to trigger the current location being published - distance in metres.
-        /// </param>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        IObservable<Coordinate> LocationByDistanceThreshold(int distance);
-
-        /// <summary>
-        /// The current location.
-        /// </summary>
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        IObservable<Coordinate> Location();
-
-        bool IsEnabled { get; set; }
-    }
+    
 
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.

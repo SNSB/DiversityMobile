@@ -228,7 +228,7 @@ namespace DiversityPhone.Model
             this.ModificationState = ModificationState.New;
 		}
 
- 		public Event MemberwiseClone()
+ 		public new Event MemberwiseClone()
         {
             return (Event)base.MemberwiseClone();
         }

@@ -120,6 +120,9 @@
     <Compile Include="..\DiversityPhone.Interface\IFieldDataService.cs">
       <Link>Implementation\Interface\IFieldDataService.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone.Interface\ILocationService.cs">
+      <Link>Implementation\Interface\ILocationService.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone.Interface\INotificationService.cs">
       <Link>Implementation\Interface\INotificationService.cs</Link>
     </Compile>
@@ -143,6 +146,9 @@
     </Compile>
     <Compile Include="..\DiversityPhone.Model\DataModel\AnalysisTaxonomicGroup.cs">
       <Link>Implementation\Model\AnalysisTaxonomicGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\DataModel\Coordinate.cs">
+      <Link>Implementation\Model\Coordinate.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone.Model\DataModel\DBObjectType.cs">
       <Link>Implementation\Model\DBObjectType.cs</Link>
@@ -213,6 +219,9 @@
     <Compile Include="..\DiversityPhone.Model\IQueryOperations.cs">
       <Link>Implementation\Model\IQueryOperations.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone.Model\LocalizableMixin.cs">
+      <Link>Implementation\Helper\LocalizableMixin.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone.Model\Messages.cs">
       <Link>Implementation\Model\Messages.cs</Link>
     </Compile>
@@ -234,8 +243,38 @@
     <Compile Include="..\DiversityPhone\Services\BackgroundTasks\IRefreshVocabularyTask.cs">
       <Link>Implementation\Interface\IRefreshVocabularyTask.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Base\EditPageVMBase.cs">
+      <Link>Implementation\ViewModels\EditPageVMBase.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Base\ElementPageVMBase.cs">
+      <Link>Implementation\ViewModels\ElementPageVMBase.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Base\Icon.cs">
+      <Link>Implementation\ViewModels\Icon.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Base\PageVMBase.cs">
       <Link>Implementation\ViewModels\PageVMBase.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Edit\EditIUVM.cs">
+      <Link>Implementation\ViewModels\EditIUVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Interface\IAudioVideoPageVM.cs">
+      <Link>Implementation\ViewModels\IAudioVideoPageVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Interface\IDeletePageVM.cs">
+      <Link>Implementation\ViewModels\IDeletePageVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Interface\IEditPageVM.cs">
+      <Link>Implementation\ViewModels\IEditPageVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Interface\IElementVM.cs">
+      <Link>Implementation\ViewModels\IElementVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Interface\ISavePageVM.cs">
+      <Link>Implementation\ViewModels\ISavePageVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Multimedia\PlayStates.cs">
+      <Link>Implementation\ViewModels\PlayStates.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Utility\DownloadVM.cs">
       <Link>Implementation\ViewModels\DownloadVM.cs</Link>
@@ -249,10 +288,12 @@
     <Compile Include="..\DiversityService\Models\TermLists.cs">
       <Link>Implementation\Model\TermLists.cs</Link>
     </Compile>
+    <Compile Include="Implementation\Helper\MessengerMixin.cs" />
     <Compile Include="Implementation\NamespaceDummies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestResources.cs" />
     <Compile Include="Tests\DownloadVMFixture.cs" />
+    <Compile Include="Tests\EditIUVMFixture.cs" />
     <Compile Include="Tests\EventHierarchyLoaderFixture.cs" />
     <Compile Include="Tests\SetupVMFixture.cs" />
     <Compile Include="UnitTestKernel.cs" />

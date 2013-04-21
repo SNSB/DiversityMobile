@@ -7,6 +7,7 @@ using DiversityPhone.Services;
 using System.Reactive.Subjects;
 using System.Reactive.Disposables;
 using System.Diagnostics.Contracts;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {

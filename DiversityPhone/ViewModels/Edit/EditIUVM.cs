@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Linq;
-using DiversityPhone.Services;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System.Reactive.Subjects;
@@ -310,7 +309,7 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             if (!Current.Model.IsLocalized())
-                Current.Model.SetCoordinates(_latest_location.First());
+                Current.Model.SetCoordinates(_latest_location.FirstAsync().Wait());
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache.TrimStart(new[] { ' ', '=' });
             Current.Model.OnlyObserved = this.OnlyObserved;

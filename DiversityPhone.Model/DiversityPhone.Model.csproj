@@ -79,6 +79,7 @@
     <Compile Include="DataModel\Analysis.cs" />
     <Compile Include="DataModel\AnalysisResult.cs" />
     <Compile Include="DataModel\AnalysisTaxonomicGroup.cs" />
+    <Compile Include="DataModel\Coordinate.cs" />
     <Compile Include="DataModel\DBObjectType.cs" />
     <Compile Include="DataModel\Event.cs">
       <DependentUpon>Event.tt</DependentUpon>
@@ -122,6 +123,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="LocalizableMixin.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Page.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

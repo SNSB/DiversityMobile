@@ -71,6 +71,7 @@
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="IDiversityServiceClient.cs" />
     <Compile Include="IFieldDataService.cs" />
+    <Compile Include="ILocationService.cs" />
     <Compile Include="INotificationService.cs" />
     <Compile Include="ISettingsService.cs" />
     <Compile Include="ITaxonService.cs" />
