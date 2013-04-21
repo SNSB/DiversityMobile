@@ -16,6 +16,7 @@ namespace DiversityService.Test
 
         public static UserCredentials Credentials = new UserCredentials()
         {
+            ProjectID = 0,
             LoginName = "test_user",
             Password = "HinzKunz1",
             Repository = "Bayreuth TestServer", //DisplayName!!
