@@ -379,10 +379,20 @@ namespace DiversityPhone.ViewModels.Utility
                                      select new SpecimenVM(s) as IElementVM;
                             break;
                         case SyncLevel.IdentificationUnit:
-                            stream = from s in ctx.Specimen
-                                     where s.CollectionSpecimenID != null
-                                     join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
-                                     where iu.CollectionUnitID == null
+                            stream = from iu in
+                                    //New IU with parent Spec Uploaded
+                                         (from s in ctx.Specimen
+                                          where s.CollectionSpecimenID != null
+                                          join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
+                                          where iu.CollectionUnitID == null
+                                          && iu.RelatedUnitID == null
+                                          select iu)
+                                    //New IU with parent Unit uploaded
+                                     .Union(from u in ctx.IdentificationUnits
+                                            where u.CollectionUnitID != null
+                                            join sub in ctx.IdentificationUnits on u.UnitID equals sub.RelatedUnitID
+                                            where sub.CollectionUnitID == null
+                                            select sub)
                                      select new IdentificationUnitVM(iu) as IElementVM;
                             break;
                         default:
