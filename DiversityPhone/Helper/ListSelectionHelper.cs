@@ -28,7 +28,7 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private IList<T> _Items = null;
+        private IList<T> _Items = new List<T>();
         public IList<T> Items
         {
             get
@@ -37,7 +37,7 @@ namespace DiversityPhone.ViewModels
             }
             set
             {                
-                this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value);
+                this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value ?? new List<T>());
             }
         }
         public IObservable<IList<T>> ItemsObservable { get { return _ItemsSubject; } }
