@@ -31,6 +31,6 @@ namespace DiversityPhone.Interface
         /// </returns>
         IObservable<Coordinate> Location();
 
-        bool IsEnabled { get; set; }
+        IObservable<bool> IsEnabled();
     }
 }

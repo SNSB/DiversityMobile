@@ -147,26 +147,20 @@ namespace DiversityPhone
                 Bind<IMapTransferService>().To<MapTransferService>().InSingletonScope();
 
                 Bind<IDiversityServiceClient>().To<DiversityServiceClient>().InSingletonScope();
-                Bind<ILocationService>().To<LocationService>().InSingletonScope();
+
+                var location = Kernel.Get<LocationService>();
+
+                Kernel.Get<ISettingsService>()
+                    .CurrentSettings()
+                    .Where(s => s!=null)
+                    .Select(s => s.UseGPS)
+                    .Subscribe(gps => location.IsEnabled = gps);
+
+                Bind<ILocationService>().ToConstant(location);
 
                 Bind<IRefreshVocabularyTask>().To<RefreshVocabularyTask>();
             }
         }
-
-        class ServiceConnectionModule : Ninject.Modules.NinjectModule
-        {
-            public override void Load()
-            {
-                var settings = Kernel.Get<ISettingsService>();
-                var location = Kernel.Get<ILocationService>();
-
-                settings.CurrentSettings()
-                    .Select(s => s.UseGPS)
-                    .Subscribe(gps => location.IsEnabled = gps);
-
-            }
-        }
-
 
 
         public static void Initialize()
@@ -177,7 +171,6 @@ namespace DiversityPhone
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
-            Kernel.Load<ServiceConnectionModule>();
 
             RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);
         }

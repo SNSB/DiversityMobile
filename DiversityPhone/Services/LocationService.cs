@@ -4,13 +4,9 @@
     using System.Device.Location;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Reactive.Subjects;
     using ReactiveUI;
-    using System.Reactive.Disposables;
     using System.Collections.Generic;
-
     using DiversityPhone.Model;
-    using System.Threading;
     using DiversityPhone.Interface;
 
 
@@ -19,7 +15,7 @@
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.
     /// </summary>
-    public sealed class LocationService : ILocationService, IEnableLogger
+    public sealed class LocationService : ReactiveObject, ILocationService, IEnableLogger
     {
         private static readonly TimeSpan DefaultStartupTimeout = TimeSpan.FromSeconds(5);
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
@@ -71,6 +67,7 @@
                             }
                         }
                     }
+                    this.RaisePropertyChanged(x => x.IsEnabled);
                 }
             }
         }
@@ -117,6 +114,11 @@
                  .AsObservable();
         }
 
+        IObservable<bool> ILocationService.IsEnabled()
+        {
+            return this.WhenAny(x => x.IsEnabled, x => x.Value);
+        }
+
         private class DistanceThresholdComparer : IEqualityComparer<GeoCoordinate>
         {
             double distance_threshold;
@@ -142,6 +144,9 @@
 
 
 
+
+
+        
     }
 
     static class GeoCoordinateMixin
