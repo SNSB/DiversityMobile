@@ -45,7 +45,7 @@
             <controls:PivotItem Header="units">
                 <ListBox ItemsSource="{Binding UnitList}" 
                          ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
-                         HorizontalAlignment="Left"
+                         HorizontalAlignment="Stretch"
                          HorizontalContentAlignment="Left"
                          VerticalAlignment="Stretch"/>
             </controls:PivotItem>
