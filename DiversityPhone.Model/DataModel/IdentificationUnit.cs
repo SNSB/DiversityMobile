@@ -330,6 +330,7 @@ namespace DiversityPhone.Model
 
             this.AnalysisDate = DateTime.Now;//TODO Something useful?
             this.RelatedUnitID = null;
+			this.Qualification = string.Empty;
         }
 
         public static IQueryOperations<IdentificationUnit> Operations

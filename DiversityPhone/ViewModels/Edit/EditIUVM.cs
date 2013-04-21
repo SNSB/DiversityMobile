@@ -272,8 +272,8 @@ namespace DiversityPhone.ViewModels
 
             Qualifications.ItemsObservable
                 .Where(x => x != null)
-                .CombineLatest(ModelByVisitObservable.Where(m => m.Qualification != null),
-                (qualis, m) => qualis.FirstOrDefault(q => q.Code == Current.Model.Qualification))
+                .CombineLatest(ModelByVisitObservable,
+                (qualis, m) => qualis.FirstOrDefault(q => q.Code == m.Qualification))
                 .Where(x => x != null)
                 .Subscribe(x => Qualifications.SelectedItem = x);
             #endregion
