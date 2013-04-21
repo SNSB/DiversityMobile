@@ -79,25 +79,6 @@ namespace DiversityPhone.Model
 		 
 
 		
-		private string _DisplayText;
-		[Column]
-		
-		public string DisplayText
-		{
-			get { return _DisplayText; }
-			set 
-			{
-				
-
-				if (_DisplayText != value)
-				{
-					this.raisePropertyChanging("DisplayText");
-					_DisplayText = value;
-					this.raisePropertyChanged("DisplayText");
-				}  
-			}
-		}
-				
 		private string _AnalysisResult;
 		[Column]
 		
@@ -143,7 +124,7 @@ namespace DiversityPhone.Model
 				}  
 			}
 		}
-		  
+		
 		
 		private ModificationState _ModificationState;
 		[Column]

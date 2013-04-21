@@ -156,7 +156,6 @@ namespace DiversityPhone.ViewModels
         {
             Current.Model.AnalysisID = Analyses.SelectedItem.AnalysisID;
             Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : Results.SelectedItem.Result;
-            Current.Model.DisplayText = String.Format("{0} : {1}{2}", Analyses.SelectedItem.DisplayText, (IsCustomResult) ? CustomResult : Results.SelectedItem.DisplayText, Analyses.SelectedItem.MeasurementUnit);
         }
     }
 }

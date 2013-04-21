@@ -27,11 +27,10 @@ namespace DiversityPhone.Model
 <# Row("int", "UnitID"); #>   
 <# Row("int", "AnalysisID"); #> 
 
-<# Row("string", "DisplayText"); #>
 <# Row("string", "AnalysisResult"); #>
 
 <# Row("DateTime", "AnalysisDate"); #>
-  
+
 <# Row("ModificationState", "ModificationState"); #>
 
         public IdentificationUnitAnalysis()

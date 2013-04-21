@@ -98,7 +98,7 @@ namespace DiversityPhone.ViewModels
                 .Select(m => m as IMultimediaOwner)
                 .Subscribe(MultimediaList);
 
-            Analyses = getAnalyses.RegisterAsyncFunction(iu => Storage.getIUANForIU(iu as IdentificationUnit).Select(iuan => new IdentificationUnitAnalysisVM(iuan)))
+            Analyses = getAnalyses.RegisterAsyncFunction(iu => Storage.getIUANForIU(iu as IdentificationUnit).Select(iuan => new IdentificationUnitAnalysisVM(iuan, Vocabulary)))
                 .SelectMany(vms => vms)
                 .CreateCollection();
 
@@ -135,7 +135,7 @@ namespace DiversityPhone.ViewModels
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
             Add.Where(_ => SelectedPivot == Pivots.Descriptions)
-                .Select(_ => new IdentificationUnitAnalysisVM(new IdentificationUnitAnalysis() { UnitID = Current.Model.UnitID }) as IElementVM<IdentificationUnitAnalysis>)
+                .Select(_ => new IdentificationUnitAnalysisVM(new IdentificationUnitAnalysis() { UnitID = Current.Model.UnitID }, Vocabulary) as IElementVM<IdentificationUnitAnalysis>)
                 .ToMessage(MessageContracts.EDIT);
 
             Maps = new ReactiveCommand();
