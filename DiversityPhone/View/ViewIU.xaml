@@ -19,12 +19,12 @@
     BackKeyPress="PhoneApplicationPage_BackKeyPress"
     x:Name="currentPage" 
 	>
-    <phone:PhoneApplicationPage.Resources>        
+    <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
                 <ResourceDictionary Source="Resources/GeoRefTemplates.xaml"/>
-            </ResourceDictionary.MergedDictionaries>            
+            </ResourceDictionary.MergedDictionaries>
             <vw:ViewIUPivotConverter x:Key="PivotConverter"/>
             <DataTemplate x:Key="AnalysisItemTemplate">
                 <Button Style="{StaticResource ItemButtonStyle}"                
@@ -36,7 +36,7 @@
             </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
-    
+
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height = "Auto"/>
@@ -49,9 +49,9 @@
             <ContentControl Content="{Binding Current}"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"/>
         </Button>
-        
+
         <controls:Pivot Grid.Row="1"  
-                        SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">            
+                        SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="subunits">
                 <ListBox ItemsSource="{Binding Subunits}"
                          ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
@@ -59,29 +59,36 @@
                          HorizontalAlignment="Left"
                          HorizontalContentAlignment="Left"/>
             </controls:PivotItem>
-            
+
             <controls:PivotItem Header="descriptions">
-                <StackPanel>
-                    <vw:CommandNotAvailableLabel Command="{Binding Add}" 
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <vw:CommandNotAvailableLabel Command="{Binding Add}" 
                                                  Text="{Binding Resources.IdentificationUnit_Info_NoAnalyses, Source={StaticResource LocalizedStrings}}"/>
-                    <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
-                                    Content="{Binding Current.Model}"/>                    
-                    <ItemsControl ItemsSource="{Binding Analyses}"
-                                  ItemTemplate="{StaticResource AnalysisItemTemplate}"
-                                  HorizontalContentAlignment="Left"/>
-                </StackPanel>                
+                        <ContentControl ContentTemplate="{StaticResource GeoRefItemTemplate}" 
+                                    Content="{Binding Current.Model}"/>
+                    </StackPanel>
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding Analyses}"
+                             ItemTemplate="{StaticResource AnalysisItemTemplate}"
+                             HorizontalContentAlignment="Left"/>
+                </Grid>
             </controls:PivotItem>
-            
+
             <controls:PivotItem Header="multimedia">
                 <vw:MultimediaListControl DataContext="{Binding MultimediaList}" />
             </controls:PivotItem>
-        </controls:Pivot>       
+        </controls:Pivot>
     </Grid>
-    
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="Add"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="Add"/>           
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="Add"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
