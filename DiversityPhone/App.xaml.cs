@@ -3,7 +3,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using DiversityPhone.Services;
 using ReactiveUI;
-
+using System.Reactive.Linq;
 using DiversityPhone.ViewModels;
 using DiversityPhone.ViewModels.Utility;
 using System.Reactive.Concurrency;
@@ -153,6 +153,20 @@ namespace DiversityPhone
             }
         }
 
+        class ServiceConnectionModule : Ninject.Modules.NinjectModule
+        {
+            public override void Load()
+            {
+                var settings = Kernel.Get<ISettingsService>();
+                var location = Kernel.Get<ILocationService>();
+
+                settings.CurrentSettings()
+                    .Select(s => s.UseGPS)
+                    .Subscribe(gps => location.IsEnabled = gps);
+
+            }
+        }
+
 
 
         public static void Initialize()
@@ -163,6 +177,7 @@ namespace DiversityPhone
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
+            Kernel.Load<ServiceConnectionModule>();
 
             RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);
         }

@@ -8,7 +8,7 @@
     using ReactiveUI;
     using System.Reactive.Disposables;
     using System.Collections.Generic;
-    
+
     using DiversityPhone.Model;
     using System.Threading;
     using DiversityPhone.Interface;
@@ -52,18 +52,6 @@
     public interface ILocationService
     {
         /// <summary>
-        /// The location by time threshold, the location is returned dependent on the frequency and if the current
-        /// location has changed.
-        /// </summary>
-        /// <param name="frequency">
-        /// The frequency at which the current location will be published - timespan value.
-        /// </param>       
-        /// <returns>
-        /// Returns the current location.
-        /// </returns>
-        IObservable<Coordinate> LocationByTimeThreshold(TimeSpan frequency);
-
-        /// <summary>
         /// The location by distance threshold, the location is returned dependent on exceeding the distance.
         /// </summary>
         /// <param name="distance">
@@ -75,18 +63,14 @@
         IObservable<Coordinate> LocationByDistanceThreshold(int distance);
 
         /// <summary>
-        /// The current status of location services for the device
-        /// </summary>
-        /// <returns>Returns the current status of locaton services for the device</returns>
-        IObservable<GeoPositionStatus> Status();
-
-        /// <summary>
         /// The current location.
         /// </summary>
         /// <returns>
         /// Returns the current location.
         /// </returns>
         IObservable<Coordinate> Location();
+
+        bool IsEnabled { get; set; }
     }
 
     /// <summary>
@@ -98,35 +82,55 @@
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
         private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;
 
-        readonly ISettingsService Settings;
+        readonly IScheduler threadpool = ThreadPoolScheduler.Instance;
 
-        private IScheduler threadpool = ThreadPoolScheduler.Instance;
-        private GeoCoordinateWatcher watcher = null;
-        private IDisposable watcher_activation = Disposable.Empty;
-        private int watcher_refcount = 0;
-        private IObservable<GeoPositionStatus> status_observable;
+
+        private IObservable<GeoCoordinateWatcher> watcher;
         private IObservable<GeoPosition<GeoCoordinate>> coordinate_observable;
 
+
+        private GeoCoordinateWatcher _CurrentWatcher;
+        private GeoCoordinateWatcher CurrentWatcher
+        {
+            get { return _CurrentWatcher; }
+            set
+            {
+                if (_CurrentWatcher != value)
+                {
+                    if (_CurrentWatcher != null)
+                        _CurrentWatcher.Dispose();
+                    _CurrentWatcher = value;
+                }
+            }
+        }
+
         private bool _IsEnabled = true;
-        public bool IsEnabled 
+        public bool IsEnabled
         {
             get { return _IsEnabled; }
             set
             {
-                _IsEnabled = value;
-                lock (this)
+                if (_IsEnabled != value)
                 {
-                    if (!_IsEnabled)
+                    _IsEnabled = value;
+                    lock (this)
                     {
-                        stopWatcher();
-                    }
-                    else
-                    {
-                        startWatcher();
+                        var curr_w = CurrentWatcher;
+                        if (curr_w != null)
+                        {
+                            if (!_IsEnabled)
+                            {
+                                curr_w.Stop();
+                            }
+                            else
+                            {
+                                curr_w.Start();
+                            }
+                        }
                     }
                 }
             }
-        }          
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocationService"/> class with a default accuracy specified.
@@ -134,111 +138,47 @@
         /// The default accuracy to be used for all requests for location information.
         /// </param>
         /// </summary>
-        public LocationService(ISettingsService Settings) 
+        public LocationService()
         {
-            this.Settings = Settings;
-
-            Settings
-                .CurrentSettings()
-                .Where(s => s != null)
-                .Select(s => s.UseGPS)
-                .Subscribe(gps => IsEnabled = gps);
-
-            this.watcher = new GeoCoordinateWatcher(DefaultAccuracy);
-
-            
-
-            var coordinates = Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(watcher, "PositionChanged").Select(ev => ev.EventArgs.Position)
-                .Replay(1);
-            coordinate_observable = coordinates;
-            coordinates.Connect();
 
 
-            status_observable = Observable.FromEventPattern<GeoPositionStatusChangedEventArgs>(watcher, "StatusChanged").Select(ev => ev.EventArgs.Status);
-        }
+            this.watcher = Observable.Defer(() => Observable.Start(() => new GeoCoordinateWatcher(DefaultAccuracy)))
+                .Where(w => IsEnabled)
+                .Do(w => CurrentWatcher = w)
+                .Do(w => w.Start())
+                .Replay(1)
+                .RefCount();
 
-        public IObservable<Coordinate> LocationByTimeThreshold(TimeSpan frequency)
-        {
-            throw new NotImplementedException();
+
+
+            coordinate_observable = watcher
+                .SelectMany(w => Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
+                    .Select(ev => ev.EventArgs.Position)
+                    );
         }
 
         public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
         {
             var comparer = new DistanceThresholdComparer(distance);
 
-            return RefCount(coordinate_observable.Select(p => p.Location)
+            return coordinate_observable.Select(p => p.Location)
                 .DistinctUntilChanged(comparer)
                 .ToCoordinates()
-                .AsObservable());                
-        }
-
-        public IObservable<GeoPositionStatus> Status()
-        {
-            return StatusImpl();
+                .AsObservable();
         }
 
         public IObservable<Coordinate> Location()
         {
-            return RefCount(coordinate_observable.Select(p => p.Location)
+            return coordinate_observable.Select(p => p.Location)
                  .ToCoordinates()
-                 .AsObservable());
-        }       
-
-        private IObservable<GeoPositionStatus> StatusImpl()
-        {     
-            var watcher_handle = StartWatcherIfNecessary();
-
-            var valid_status_seen = false;
-
-            return status_observable
-                .TakeWhile(s => (valid_status_seen |= (s != GeoPositionStatus.Initializing && s != GeoPositionStatus.NoData)))
-                .Finally(() => watcher_handle.Dispose())
-                .AsObservable();               
-        }
-
-        private void startWatcher()
-        {
-            if(IsEnabled && watcher_refcount > 0)
-                threadpool.Schedule(() =>
-                {
-                    var started = watcher.TryStart(true, DefaultStartupTimeout);
-                });
-        }
-
-        private void stopWatcher()
-        {
-            watcher.Stop();
-        }
-
-        IDisposable StartWatcherIfNecessary()
-        {            
-            if (Interlocked.Increment(ref watcher_refcount) == 1)
-            {
-                startWatcher();
-            }
-
-            return Disposable.Create(() =>
-                {
-                    if (Interlocked.Decrement(ref watcher_refcount) == 0)
-                        stopWatcher();
-                });
-        }
-
-        private IObservable<T> RefCount<T>(IObservable<T> source)
-        {
-            return Observable.Create<T>((observer) =>
-                {
-                    var sub = source.Subscribe(observer);
-                    var handle = StartWatcherIfNecessary();
-                    return new CompositeDisposable(sub, handle) as IDisposable;
-                });
+                 .AsObservable();
         }
 
         private class DistanceThresholdComparer : IEqualityComparer<GeoCoordinate>
         {
             double distance_threshold;
 
-            public DistanceThresholdComparer( double threshold )
+            public DistanceThresholdComparer(double threshold)
             {
                 if (threshold < 0.0)
                     throw new ArgumentOutOfRangeException("threshold");
@@ -257,8 +197,8 @@
             }
         }
 
-        
-        
+
+
     }
 
     static class GeoCoordinateMixin
