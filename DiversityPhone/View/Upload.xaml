@@ -54,22 +54,26 @@
                         IsEnabled="{Binding IsOnlineAvailable}"
                         SelectedIndex="{Binding CurrentPivot, Mode=TwoWay, Converter={StaticResource PivotConverter}}">
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Data, Source={StaticResource LocalizedStrings}}">
-                <StackPanel Orientation="Vertical" Margin="0" >
-                    <toolkit:ListPicker Header="{Binding Resources.Sync_Header_SyncLevel, Source={StaticResource LocalizedStrings}}"
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0">
+                        <toolkit:ListPicker Header="{Binding Resources.Sync_Header_SyncLevel, Source={StaticResource LocalizedStrings}}"
                                         ItemTemplate="{StaticResource TypeItemTemplate}" 
                                         ItemsSource="{Binding SyncLevels.Items}"
                                         SelectedIndex="{Binding SyncLevels.SelectedIndex, Mode=TwoWay}"/>
-                    <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                    <ListBox ItemsSource="{Binding SyncUnits}" Height="509">
+                        <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
+                    </StackPanel>
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding SyncUnits}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
                                                 Content="{Binding}">
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
-                                            <!--<toolkit:MenuItem Header="upload" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadElement}" 
-                                                            CommandParameter="{Binding}"/>-->
                                             <toolkit:MenuItem Header="upload with children" 
                                                             Command="{Binding ElementName=syncPage, Path=DataContext.UploadTree}" 
                                                             CommandParameter="{Binding}"/>
@@ -78,11 +82,9 @@
                                 </ContentControl>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
-
                     </ListBox>
 
-                </StackPanel>
+                </Grid>
             </controls:PivotItem>
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Multimedia, Source={StaticResource LocalizedStrings}}">
                 <StackPanel Orientation="Vertical" >
