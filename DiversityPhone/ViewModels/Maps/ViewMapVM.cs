@@ -30,7 +30,7 @@ namespace DiversityPhone.ViewModels
         public double ImageScale { get; set; }
 
         public Point ImageOffset { get; set; }
-        
+
         public bool IsEditable { get { return _IsEditable.Value; } }
         private ObservableAsPropertyHelper<bool> _IsEditable;
 
@@ -41,7 +41,7 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.MapUri, ref _MapUri, value); }
         }
 
-        
+
 
         private BitmapImage _MapImage;
         public BitmapImage MapImage
@@ -89,7 +89,7 @@ namespace DiversityPhone.ViewModels
             get
             {
                 return _AdditionalLocalizations;
-            }           
+            }
         }
 
         public ViewMapVM(
@@ -120,10 +120,11 @@ namespace DiversityPhone.ViewModels
 
             _CurrentMap = this.ObservableToProperty(Messenger.Listen<IElementVM<Map>>(MessageContracts.VIEW), x => x.CurrentMap);
             _CurrentMap
-                .Where(vm => vm!=null)
-                .SelectMany(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)).TakeUntil(_CurrentMap))                
+                .Where(vm => vm != null)
+                .Select(vm => Observable.Start(() => MapStorage.loadMap(vm.Model)))
+                .Switch()
                 .ObserveOnDispatcher()
-                .Select(stream => 
+                .Select(stream =>
                     {
                         var img = new BitmapImage();
                         img.SetSource(stream);
@@ -140,13 +141,13 @@ namespace DiversityPhone.ViewModels
 
             var current_localizable_if_not_series = current_localizable.Merge(current_series.Select(_ => null as ILocalizable));
 
-            var series_and_map = 
-            current_series_if_not_localizable                
+            var series_and_map =
+            current_series_if_not_localizable
                 .CombineLatest(_CurrentMap.Where(x => x != null), (es, map) =>
                     new { Map = map.Model, Series = es })
                 .Publish();
 
-            
+
             var add_locs =
             series_and_map
                 .Select(pair =>
@@ -173,15 +174,15 @@ namespace DiversityPhone.ViewModels
             Observable.CombineLatest(
                 current_localizable_if_not_series,
                 _CurrentMap,
-                (loc, map) => 
-                    {
-                        if(map == null)
-                            return null;
-                        return map.Model.PercentilePositionOnMap(loc);                        
-                    })                
+                (loc, map) =>
+                {
+                    if (map == null)
+                        return null;
+                    return map.Model.PercentilePositionOnMap(loc);
+                })
                 .Subscribe(c => PrimaryLocalization = c);
 
-            
+
 
             ToggleEditable = new ReactiveCommand(current_localizable_if_not_series.Select(l => l != null));
 
@@ -200,24 +201,23 @@ namespace DiversityPhone.ViewModels
                 .Select(loc => loc.HasValue);
 
 
-            
+
             Save = new ReactiveCommand(_IsEditable.BooleanAnd(valid_localization));
             current_localizable_if_not_series
                 .Where(loc => loc != null)
-                .SelectMany(loc => 
+                .Select(loc =>
                     Save
-                    .Select(_ => loc)                
-                    .TakeUntil(current_localizable_if_not_series)
+                    .Select(_ => loc)
                     )
+                .Switch()
                 .Do(c => c.SetCoordinates(CurrentMap.Model.GPSFromPercentilePosition(PrimaryLocalization.Value)))
                 .Do(_ => Messenger.SendMessage(Page.Previous))
                 .ToMessage(MessageContracts.SAVE);
 
-            ActivationObservable
-                .Where(a => a)
+            this.OnActivation()
                 .Where(_ => CurrentMap != null)
-                .SelectMany(_ => Location.Location().StartWith(null as Coordinate).TakeUntil(ActivationObservable.Where(a => !a)))                
-                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c))                
+                .SelectMany(_ => Location.Location().StartWith(null as Coordinate).TakeUntil(this.OnDeactivation()))
+                .Select(c => CurrentMap.Model.PercentilePositionOnMap(c))
                 .Subscribe(c => CurrentLocation = c);
 
         }

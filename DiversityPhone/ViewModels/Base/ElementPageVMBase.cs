@@ -44,7 +44,8 @@ namespace DiversityPhone.ViewModels
 
             var modelObs =
                 CurrentObservable
-                .SelectMany(vm => vm.ObservableForProperty(x => x.Model).TakeUntil(CurrentObservable))
+                .Select(vm => vm.ObservableForProperty(x => x.Model))
+                .Switch()
                 .Value()
                 .Merge(CurrentObservable.Select(vm => vm.Model))                
                 .Publish();

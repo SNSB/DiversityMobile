@@ -92,9 +92,9 @@
 
 
             coordinate_observable = watcher
-                .SelectMany(w => Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
-                    .Select(ev => ev.EventArgs.Position)
-                    );
+                .Select(w => Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
+                    .Select(ev => ev.EventArgs.Position)                    
+                    ).Switch();
         }
 
         public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
