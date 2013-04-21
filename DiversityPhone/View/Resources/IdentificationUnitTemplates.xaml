@@ -56,7 +56,9 @@
                 <Rectangle Style="{StaticResource LayerArrowStyle}"/>
                 <ListBox ItemsSource="{Binding SubUnits}"
                          ItemTemplate="{StaticResource UnitItemTemplate}"
-                         VerticalAlignment="Top"/>
+                         VerticalAlignment="Top"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                         />
             </StackPanel>
         </StackPanel>
     </DataTemplate>
@@ -72,7 +74,8 @@
                 <Rectangle Style="{StaticResource LayerArrowStyle}"/>
                 <ListBox ItemsSource="{Binding SubUnits}"
                          ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"
-                         VerticalAlignment="Top"/>
+                         VerticalAlignment="Top"
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
             </StackPanel>
         </StackPanel>
     </DataTemplate>
