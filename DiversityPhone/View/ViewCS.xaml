@@ -15,7 +15,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding ViewCS, Source={StaticResource Locator}}"
-    x:Name="currentPage" d:DataContext="{d:DesignData /SampleData/ViewCSVMSampleData.xaml}">
+    x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

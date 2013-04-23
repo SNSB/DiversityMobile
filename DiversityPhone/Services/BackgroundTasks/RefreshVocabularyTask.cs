@@ -71,7 +71,6 @@ namespace DiversityPhone.Services.BackgroundTasks
                             loadQualifications(),
                             loadProperties())
                             .Finally(() => { if (_Progress != null) _Progress.OnCompleted(); })
-                            .ObserveOnDispatcher()
                             .Replay();
 
                         _Execute = execution;

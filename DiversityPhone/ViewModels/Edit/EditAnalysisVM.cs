@@ -62,7 +62,8 @@ namespace DiversityPhone.ViewModels
 
         public EditAnalysisVM(
             IFieldDataService Storage,
-            IVocabularyService Vocabulary
+            IVocabularyService Vocabulary,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             Contract.Requires(Storage != null);
@@ -94,12 +95,12 @@ namespace DiversityPhone.ViewModels
                 .SelectMany(selectedAN =>
                     {
                         if(selectedAN != NoAnalysis)
-                            return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID), ThreadPoolScheduler.Instance);
+                            return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) as IList<AnalysisResult>, ThreadPoolScheduler.Instance);
                         else
                             return Observable.Return(Enumerable.Empty<AnalysisResult>().ToList() as IList<AnalysisResult>);
                     })
                 .Do(list => list.Insert(0, NoResult))
-                .ObserveOnDispatcher()
+                .ObserveOn(Dispatcher)
                 .Subscribe(Results);
 
             Results.ItemsObservable

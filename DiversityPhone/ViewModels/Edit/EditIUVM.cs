@@ -103,7 +103,9 @@ namespace DiversityPhone.ViewModels
             ITaxonService Taxa,
             IVocabularyService Vocabulary,
             ILocationService Geolocation,
-            IFieldDataService Storage
+            IFieldDataService Storage,
+            [Dispatcher] IScheduler Dispatcher,
+            [ThreadPool] IScheduler ThreadPool
             )
         {
             this.Storage = Storage;
@@ -111,10 +113,10 @@ namespace DiversityPhone.ViewModels
             this.Vocabulary = Vocabulary;
             this.Geolocation = Geolocation;
 
-            TaxonomicGroup = new ListSelectionHelper<Term>();
-            RelationshipType = new ListSelectionHelper<Term>();
-            Identification = new ListSelectionHelper<TaxonName>();
-            Qualifications = new ListSelectionHelper<Model.Qualification>();
+            TaxonomicGroup = new ListSelectionHelper<Term>(Dispatcher);
+            RelationshipType = new ListSelectionHelper<Term>(Dispatcher);
+            Identification = new ListSelectionHelper<TaxonName>(Dispatcher);
+            Qualifications = new ListSelectionHelper<Model.Qualification>(Dispatcher);
 
             Observable.CombineLatest(
                 CurrentModelObservable.Where(m => m.IsNew()),
@@ -168,21 +170,48 @@ namespace DiversityPhone.ViewModels
 
             #region Vocabulary
 
-            this.ObservableForProperty(vm => vm.QueryString)
-            .Throttle(TimeSpan.FromMilliseconds(500))
-            .Value().DistinctUntilChanged()
-            .CombineLatest(TaxonomicGroup, (query, tg) => System.Tuple.Create(query, tg))
-            .Subscribe(UpdateIdentifications.Execute);
+            var identificationQuery =
+                this.WhenAny(x => x.QueryString, x => x.Value)
+                    .CombineLatest(TaxonomicGroup, (query, tg) => System.Tuple.Create(query, tg))
+                    .Publish();
 
-            var canSave = from tg in TaxonomicGroup
-                          let tgValid = tg != null
-                          from id in Identification
-                          let idValid = id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache)
-                          from updateCount in UpdateIdentifications.ItemsInflight
-                          let noUpdateInProgress = updateCount == 0
-                          select tgValid && idValid && noUpdateInProgress;
+            identificationQuery
+                .Throttle(TimeSpan.FromMilliseconds(500), Dispatcher)
+                .Subscribe(UpdateIdentifications.Execute);
+
+            identificationQuery.Connect();
+
+
+            var noUpdatesInFlight = UpdateIdentifications.ItemsInflight
+                .Select(count => count == 0)
+                .StartWith(true)
+                .Replay(1, Dispatcher);
+
+            noUpdatesInFlight.Connect();
+
+            var canSave = Observable.CombineLatest(
+                              (from tg in TaxonomicGroup
+                               select tg != null),
+                              (from id in Identification
+                               select id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache)),
+                              (from q in identificationQuery
+                               select noUpdatesInFlight.StartWith(false))
+                              .Switch(),
+                              (a, b, c) => a && b && c
+                                  
+                              );
 
             canSave
+                .DistinctUntilChanged()
+                .Select(can_save =>
+                    {
+                        //immediately disable saving, delay reenabling it
+                        if (can_save)
+                            return Observable.Return(true).Delay(TimeSpan.FromMilliseconds(500), Dispatcher);
+                        else
+                            return Observable.Return(false);
+                    })
+                .Switch()
                 .StartWith(false)
                 .Subscribe(CanSaveSubject.OnNext);
 
@@ -227,13 +256,13 @@ namespace DiversityPhone.ViewModels
                                 });
                         }
                         return candidates as IList<TaxonName>;
-                    }, ThreadPoolScheduler.Instance)
-            .ObserveOnDispatcher()
+                    }, ThreadPool)
+            .ObserveOn(Dispatcher)
             .Subscribe(Identification);
 
             ActivationObservable
                 .Take(1)
-                .Select(_ => Vocabulary.getTerms(TermList.TaxonomicGroups))
+                .Select(_ => Vocabulary.getTerms(TermList.TaxonomicGroups).ToList() as IList<Term>)
                 .Subscribe(TaxonomicGroup);
 
             this.FirstActivation()
@@ -242,7 +271,7 @@ namespace DiversityPhone.ViewModels
 
             _IsToplevel
                 .Where(isToplevel => !isToplevel)
-                .Select(isToplevel => Vocabulary.getTerms(TermList.RelationshipTypes))
+                .Select(isToplevel => Vocabulary.getTerms(TermList.RelationshipTypes).ToList() as IList<Term>)
                 .Subscribe(RelationshipType);
             #endregion
 
@@ -309,7 +338,7 @@ namespace DiversityPhone.ViewModels
         protected override void UpdateModel()
         {
             if (!Current.Model.IsLocalized())
-                Current.Model.SetCoordinates(_latest_location.FirstAsync().Wait());
+                Current.Model.SetCoordinates(_latest_location.FirstOrDefaultAsync().Wait() ?? Coordinate.Unknown);
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache.TrimStart(new[] { ' ', '=' });
             Current.Model.OnlyObserved = this.OnlyObserved;

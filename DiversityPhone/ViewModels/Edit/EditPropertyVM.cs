@@ -56,7 +56,8 @@ namespace DiversityPhone.ViewModels
 
         public EditPropertyVM(
             IVocabularyService Vocabulary,
-            IFieldDataService Storage
+            IFieldDataService Storage,
+            [Dispatcher] IScheduler Dispatcher
             )                  
         {
             Contract.Requires(Vocabulary != null);
@@ -107,7 +108,7 @@ namespace DiversityPhone.ViewModels
                             .ToList();                        
                     })     
                 .Select(coll => coll as IList<Property>)
-                .ObserveOnDispatcher()
+                .ObserveOn(Dispatcher)
                 .Subscribe(Properties);
 
             Properties.ItemsObservable
@@ -145,7 +146,7 @@ namespace DiversityPhone.ViewModels
                         })
                         //Reselect value that was selected                    
                     .Select(coll => coll as IList<PropertyName>)
-                    .ObserveOnDispatcher()
+                    .ObserveOn(Dispatcher)
                     .Do(values => Values.SelectedItem =
                         values
                             .Where(item => item.PropertyUri == Current.Model.PropertyUri)

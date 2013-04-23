@@ -93,6 +93,8 @@ namespace DiversityPhone.Test
         protected readonly Mock<INotificationService> Notifications;
         protected readonly Mock<IKeyMappingService> Mappings;
         protected readonly Mock<IFieldDataService> Storage;
+        protected readonly Mock<IVocabularyService> Vocabulary;
+        protected readonly Mock<ITaxonService> Taxa;
 
         
 
@@ -130,6 +132,8 @@ namespace DiversityPhone.Test
             Notifications = K.GetMock<INotificationService>();
             Mappings = K.GetMock<IKeyMappingService>();
             Storage = K.GetMock<IFieldDataService>();
+            Vocabulary = K.GetMock<IVocabularyService>();
+            Taxa = K.GetMock<ITaxonService>();
         }
     }
 }

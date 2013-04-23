@@ -66,7 +66,8 @@ namespace DiversityPhone.ViewModels
 
         public ViewIUVM(
             IVocabularyService Vocabulary,
-            IFieldDataService Storage
+            IFieldDataService Storage,
+            [Dispatcher] IScheduler Dispatcher
             )
         {            
             this.Vocabulary = Vocabulary;
@@ -111,20 +112,20 @@ namespace DiversityPhone.ViewModels
 
             var has_analyses_observable = 
             CurrentModelObservable
-                .SelectMany(current =>
+                .Select(current =>
                     Observable.Return(Enumerable.Empty<Analysis>().ToList() as IList<Analysis>) // first clear last analyses
                     .Concat(
                         // Then Load possible Analyses in the background
-                    Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup), ThreadPoolScheduler.Instance)
-                    .TakeUntil(CurrentModelObservable)
+                    Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup) as IList<Analysis>, ThreadPoolScheduler.Instance)
                     ))
+                .Switch()
                 .Select(list =>
                     {
                         var hasAnalyses = list.Any();
                         Messenger.SendMessage<IList<Analysis>>(list); //Broadcast Analyses to editVM
                         return hasAnalyses;
                     })
-                .ObserveOnDispatcher();
+                .ObserveOn(Dispatcher);
             var can_add_observable = this.ObservableForProperty(x => x.SelectedPivot).Value().Select(p => p != Pivots.Descriptions)
                 .BooleanOr(has_analyses_observable);
 

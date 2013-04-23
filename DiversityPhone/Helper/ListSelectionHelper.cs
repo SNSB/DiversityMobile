@@ -12,7 +12,7 @@ namespace DiversityPhone.ViewModels
     {
         private int deferredIndex = -1;
         private bool _UpdatingItems;
-        private bool UpdatingItems 
+        private bool UpdatingItems
         {
             get
             {
@@ -21,7 +21,7 @@ namespace DiversityPhone.ViewModels
             set
             {
                 _UpdatingItems = value;
-                if (!_UpdatingItems)                    
+                if (!_UpdatingItems)
                     SelectedIndex = deferredIndex;
                 if (_UpdatingItems)
                     deferredIndex = SelectedIndex;
@@ -36,12 +36,12 @@ namespace DiversityPhone.ViewModels
                 return _Items;
             }
             set
-            {                
+            {
                 this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value ?? new List<T>());
             }
         }
         public IObservable<IList<T>> ItemsObservable { get { return _ItemsSubject; } }
-        
+
 
         private int _SelectedIndex = -1;
         public int SelectedIndex
@@ -68,13 +68,13 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private ISubject<IList<T>> _ItemsSubject = new Subject<IList<T>>();
-        private ISubject<T> _SelectedItemSubject = new ReplaySubject<T>(1);        
+        private ISubject<IList<T>> _ItemsSubject;
+        private ISubject<T> _SelectedItemSubject;
 
         private T _SelectedItem;
         public T SelectedItem
         {
-            get 
+            get
             {
                 return _SelectedItem;
             }
@@ -84,22 +84,25 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public ListSelectionHelper()
+        public ListSelectionHelper(IScheduler Scheduler = null)
         {
-            _ItemsSubject = new Subject<IList<T>>();            
+            Scheduler = Scheduler ?? DefaultScheduler.Instance;
+
+            _ItemsSubject = new ScheduledSubject<IList<T>>(Scheduler);
+            _SelectedItemSubject = new ReplaySubject<T>(1, Scheduler);
         }
 
         private void correctSelectedIndex(IList<T> items, T selectedItem)
         {
             if (items != null)
-            {                
+            {
                 if (items.Count == 0)
                     SelectedIndex = -1;
                 else
                 {
                     var selectedIdx = items.IndexOf(selectedItem);
                     if (selectedIdx != -1)
-                        SelectedIndex = selectedIdx;                                     
+                        SelectedIndex = selectedIdx;
                     else
                         SelectedIndex = 0;
                 }
