@@ -33,7 +33,7 @@ namespace DiversityPhone.Services
 
         #region Analyses
 
-        public IList<Analysis> getPossibleAnalyses(string taxonomicGroup)
+        public IEnumerable<Analysis> getPossibleAnalyses(string taxonomicGroup)
         {
             //This query can't be (unordered join) and doesn't have to be (very small) cached 
             return queryDataContext(ctx =>
@@ -62,7 +62,7 @@ namespace DiversityPhone.Services
         #endregion
         #region AnalysisResults
 
-        public IList<AnalysisResult> getPossibleAnalysisResults(int analysisID)
+        public IEnumerable<AnalysisResult> getPossibleAnalysisResults(int analysisID)
         {
             return queryDataContext(ctx =>
                 from ar in ctx.AnalysisResults
@@ -96,7 +96,7 @@ namespace DiversityPhone.Services
         }
 
         #region Terms
-        public IList<Term> getTerms(TermList source)
+        public IEnumerable<Term> getTerms(TermList source)
         {
             return queryDataContext(ctx => from t in ctx.Terms
                                            where t.SourceID == source
