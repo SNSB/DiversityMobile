@@ -22,7 +22,7 @@
         <binding name="WSHttpBinding_IMediaService4" closeTimeout="00:10:00"
             openTimeout="00:03:00" receiveTimeout="00:10:00" sendTimeout="00:10:00">
           <textMessageEncoding messageVersion="Default" writeEncoding="utf-8" />
-          <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
+          <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647"/>
         </binding>
       </customBinding>
     </bindings>
@@ -32,7 +32,10 @@
       <!--<endpoint address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
           binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
           contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />-->
-      <endpoint address="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc"
+      <!--<endpoint address="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc"
+          binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
+          contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />-->
+      <endpoint address="http://169.254.80.80:7092/MediaService4.svc"
           binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
           contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
 

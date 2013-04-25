@@ -20,13 +20,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MediaService4.xsd" MetadataType="Schema" ID="5aaf0cb8-c42b-426d-b5a9-bcbb2101bbb7" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd1" />
-    <MetadataFile FileName="MediaService41.xsd" MetadataType="Schema" ID="31d9aa74-73c7-4bc5-8d0e-761731605546" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?xsd=xsd0" />
-    <MetadataFile FileName="MediaService4.disco" MetadataType="Disco" ID="76e3320d-6439-4805-abf6-35e3a782e9c5" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?disco" />
-    <MetadataFile FileName="MediaService4.wsdl" MetadataType="Wsdl" ID="eb6a26e4-bb64-4368-97dc-4e8b93173ccb" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc?wsdl" />
+    <MetadataFile FileName="MediaService41.disco" MetadataType="Disco" ID="cd98e80f-68e6-4418-9d31-2099569585dd" SourceId="1" SourceUrl="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc?disco" />
+    <MetadataFile FileName="MediaService41.wsdl" MetadataType="Wsdl" ID="ad35f89c-b821-4b5f-aae3-94d6dfb563c4" SourceId="1" SourceUrl="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc?wsdl" />
+    <MetadataFile FileName="MediaService42.xsd" MetadataType="Schema" ID="947a68bc-01b0-4ed4-8e4e-359dbfc4df67" SourceId="1" SourceUrl="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc?xsd=xsd0" />
+    <MetadataFile FileName="MediaService421.xsd" MetadataType="Schema" ID="64c2bf7f-6d13-4969-b230-4a5b0d917601" SourceId="1" SourceUrl="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

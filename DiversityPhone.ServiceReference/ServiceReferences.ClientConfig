@@ -26,15 +26,15 @@
             <endpoint address="http://localhost:7091/DiversityService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
-            <endpoint address="http://dwbmobile.snsb.info:9090/DiversityMediaService4/MediaService4.svc"
-                binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
-                contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
             <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
                 contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
             <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
                 contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
+            <endpoint address="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc"
+                binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
+                contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
         </client>
     </system.serviceModel>
 </configuration>

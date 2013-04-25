@@ -14,6 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.UnitTest", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.ServiceReference", "DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj", "{5F67B82B-6BE3-4B02-9056-B56F84BDED51}"
 	ProjectSection(ProjectDependencies) = postProject
+		{83AB433D-1A19-4995-8D75-747DDBB3502A} = {83AB433D-1A19-4995-8D75-747DDBB3502A}
 		{99C4E84A-8FE7-456A-BD7C-33561641F204} = {99C4E84A-8FE7-456A-BD7C-33561641F204}
 	EndProjectSection
 EndProject
