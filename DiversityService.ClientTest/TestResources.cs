@@ -24,7 +24,7 @@ namespace DiversityService.Test
             AgentURI = "TestAgentURI"
         };
 
-        public static int ProjectID = 1100;
+        public static int ProjectID = 0;
 
         public static int SeriesID = -1;
         public static int EventID = 1;
