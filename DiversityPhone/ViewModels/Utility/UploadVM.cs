@@ -215,14 +215,18 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         if (CurrentPivot == Pivots.data)
                         {
-                            var data = collectModificationsImpl(SyncLevel.All);
 
-                            _CurrentUpload =
-                                data.ToObservable(ThreadPoolScheduler.Instance)
-                                .SelectMany(vm =>
-                                    uploadTree(vm)
-                                    .IgnoreElements()
-                                        )
+
+                            _CurrentUpload = Observable.Start(() =>
+                                {
+                                    var data = collectModificationsImpl(SyncLevel.All);
+                                    foreach (var vm in data)
+                                    {
+                                        uploadTree(vm)
+                                            .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
+                                            .Wait();
+                                    }
+                                })
                                 .Finally(() => UploadCompleted())
                                 .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
                                 .ObserveOnDispatcher()
@@ -232,13 +236,32 @@ namespace DiversityPhone.ViewModels.Utility
                         {
                             var mmos = Multimedia.ToList();
 
-                            _CurrentUpload =
-                                mmos.ToObservable(ThreadPoolScheduler.Instance)
-                                .SelectMany(vm =>
-                                    uploadMultimedia(vm)
-                                    .Select(_2 => vm)
-                                    .HandleServiceErrors(Notifications, Messenger, Observable.Empty<MultimediaObjectVM>())
-                                        )
+                            _CurrentUpload = Observable.Create<MultimediaObjectVM>(obs =>
+                                {
+                                    bool cancel = false;
+                                    Observable.Start(() =>
+                                        {
+                                            try
+                                            {
+                                                foreach (var mmo in mmos)
+                                                {
+                                                    uploadMultimedia(mmo)
+                                                        .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
+                                                        .LastOrDefault();
+                                                    if (cancel) return;
+
+                                                    obs.OnNext(mmo);
+                                                }
+                                                obs.OnCompleted();
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                obs.OnError(ex);
+                                            }
+                                        });
+
+                                    return Disposable.Create(() => cancel = true);
+                                })
                                 .Finally(() => UploadCompleted())
                                 .ObserveOnDispatcher()
                                 .Subscribe(vm => Multimedia.Remove(vm));
@@ -281,9 +304,11 @@ namespace DiversityPhone.ViewModels.Utility
                     {
                         var upload =
                         Service.UploadMultimedia(t.MMO, t.Data)
-                        .Do(uri => t.MMO.CollectionUri = uri)
+                        .Do(uri => Storage.update(t.MMO, o => o.CollectionUri = uri))
                         .Select(_ => t.MMO)
-                        .SelectMany(mmo => Service.InsertMultimediaObject(mmo))
+                        .SelectMany(mmo => Service.InsertMultimediaObject(mmo)
+                                                  .Do(_ => Storage.MarkUploaded(mmo))
+                        )
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_UploadingMultimedia)
                         .Publish();
                         upload.Connect();
@@ -380,14 +405,14 @@ namespace DiversityPhone.ViewModels.Utility
                             break;
                         case SyncLevel.IdentificationUnit:
                             stream = from iu in
-                                    //New IU with parent Spec Uploaded
+                                         //New IU with parent Spec Uploaded
                                          (from s in ctx.Specimen
                                           where s.CollectionSpecimenID != null
                                           join iu in ctx.IdentificationUnits on s.SpecimenID equals iu.SpecimenID
                                           where iu.CollectionUnitID == null
                                           && iu.RelatedUnitID == null
                                           select iu)
-                                    //New IU with parent Unit uploaded
+                                             //New IU with parent Unit uploaded
                                      .Union(from u in ctx.IdentificationUnits
                                             where u.CollectionUnitID != null
                                             join sub in ctx.IdentificationUnits on u.UnitID equals sub.RelatedUnitID
