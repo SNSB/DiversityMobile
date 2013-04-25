@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using DiversityPhone.Model;
 using System;
+    using System.Diagnostics.Contracts;
 
     public interface IFieldDataService
     {
@@ -54,5 +55,20 @@ using System;
         void update<T>(T element, Action<T> updateValues) where T : class;
         void delete<T>(T element) where T : class;
         T get<T>(int? id) where T : class, IEntity;
+    }
+
+    public static class FieldDataMixin
+    {
+        public static T MarkUploaded<T>(this IFieldDataService This, T entity) where T : class, IModifyable
+        {
+            Contract.Requires<ArgumentNullException>(This != null);
+            Contract.Requires<ArgumentNullException>(entity != null);
+            Contract.Requires<InvalidOperationException>(entity.ModificationState == ModificationState.Modified, "Entity is already marked uploaded");
+            Contract.Ensures(entity.ModificationState == ModificationState.Unmodified);
+
+            This.update(entity, e => e.ModificationState = ModificationState.Unmodified);
+
+            return entity;
+        }
     }
 }
