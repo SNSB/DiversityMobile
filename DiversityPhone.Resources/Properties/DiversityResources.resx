@@ -266,7 +266,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Only observed</value>
   </data>
   <data name="IdentificationUnit_Header_Qualification" xml:space="preserve">
-    <value>Qualification</value>
+    <value>Qualifier</value>
   </data>
   <data name="IdentificationUnit_Header_RelationshipType" xml:space="preserve">
     <value>Relationship Type</value>
@@ -387,6 +387,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>
+  </data>
+  <data name="Specimen_Header_SpecimenCode" xml:space="preserve">
+    <value>Specimen Code</value>
   </data>
   <data name="Sync_Dialog_UploadAll_Caption" xml:space="preserve">
     <value>upload all</value>

@@ -481,7 +481,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Qualification.
+        ///   Looks up a localized string similar to Qualifier.
         /// </summary>
         public static string IdentificationUnit_Header_Qualification {
             get {
@@ -846,6 +846,15 @@ namespace DiversityPhone {
         public static string Setup_Message_CantGoBack_Body {
             get {
                 return ResourceManager.GetString("Setup_Message_CantGoBack_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Specimen Code.
+        /// </summary>
+        public static string Specimen_Header_SpecimenCode {
+            get {
+                return ResourceManager.GetString("Specimen_Header_SpecimenCode", resourceCulture);
             }
         }
         

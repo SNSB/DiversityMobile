@@ -203,7 +203,7 @@ namespace DiversityService
                         {
                             if(string.IsNullOrWhiteSpace(q.DisplayText))
                             {
-                                q.DisplayText = "no qualification";
+                                q.DisplayText = "no qualifier";
                             }
                             return q;
                         })

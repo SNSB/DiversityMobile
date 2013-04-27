@@ -52,7 +52,7 @@
 
         <controls:Pivot Grid.Row="1"  
                         SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
-            <controls:PivotItem Header="subunits">
+            <controls:PivotItem Header="related">
                 <ListBox ItemsSource="{Binding Subunits}"
                          ItemTemplate="{StaticResource TwoLevelUnitItemTemplate}"
                          VerticalAlignment="Stretch"

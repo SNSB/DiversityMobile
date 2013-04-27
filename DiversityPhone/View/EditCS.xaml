@@ -6,8 +6,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
-    xmlns:vw="clr-namespace:DiversityPhone.View"
-    xmlns:controls="clr-namespace:DiversityPhone.Controls"
+    xmlns:vw="clr-namespace:DiversityPhone.View"    
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -24,7 +23,7 @@
         </Grid>
 
         <StackPanel Background="Transparent">
-            <TextBlock Text="Field Number"/>
+            <TextBlock Text="{Binding Resources.Specimen_Header_SpecimenCode, Source={StaticResource LocalizedStrings}}"/>
             <TextBox x:Name="AN_TB" Background="#BFFFFFFF" 
                      Text="{Binding AccessionNumber, Mode=TwoWay}" 
                      TextChanged="DescTB_TextChanged" 
