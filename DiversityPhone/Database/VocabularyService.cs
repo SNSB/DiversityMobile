@@ -100,7 +100,7 @@ namespace DiversityPhone.Services
         {
             return queryDataContext(ctx => from t in ctx.Terms
                                            where t.SourceID == source
-                                           orderby t.LastUsed descending
+                                           orderby t.LastUsed descending, t.DisplayText ascending
                                            select t
                                         );
         }

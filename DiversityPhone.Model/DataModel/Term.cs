@@ -9,6 +9,7 @@ namespace DiversityPhone.Model
 #if !TEST
     [Index(Columns = "LastUsed", IsUnique = false, Name = "term_lastusage")]
     [Index(Columns = "ParentCode", IsUnique = false, Name = "term_inheritance")]
+    [Index(Columns = "DisplayText", IsUnique = false, Name = "term_displaytext")]
 #endif
     public class Term
     {
