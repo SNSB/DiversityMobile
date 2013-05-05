@@ -154,7 +154,10 @@ namespace DiversityPhone.ViewModels
         private void goBack()
         {
             if (unitBackStack.Any())
+            {
+                SelectedPivot = Pivots.Subunits;
                 Messenger.SendMessage(unitBackStack.Pop(), MessageContracts.VIEW);
+            }
             else
                 Messenger.SendMessage(Page.Previous);
         }
