@@ -49,16 +49,19 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">            
-            <TextBlock x:Name="PageTitle" Text="identification" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">       
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" x:Name="PageTitle" Text="identification" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <vw:CommandNotAvailableLabel Grid.Row="1" Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                                         Command="{Binding ToggleEditable}"/>
+        </Grid>
 
         <!--ContentPanel - place additional content here-->
 		<ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">
-                <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                                Command="{Binding ToggleEditable}"/>
-
                 <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
                                 SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource TermListItemTemplate}"                                

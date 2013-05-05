@@ -28,24 +28,30 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid Grid.Row="0" Margin="{StaticResource PhoneMargin}">      
-            <TextBlock Text="DIVERSITYMOBILE" 
-                       Style="{StaticResource PhoneTextNormalStyle}" 
-                       Width="263" 
+        <Grid Grid.Row="0" Margin="{StaticResource PhoneMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0"
+                       Text="DIVERSITYMOBILE" 
+                       Style="{StaticResource PhoneTextNormalStyle}"
                        HorizontalAlignment="Left" />
-            <Image Source="/Images/ApplicationIcon.png"
+            <Image Grid.Row="0" Grid.RowSpan="2" 
+                   Source="/Images/ApplicationIcon.png"
                    Height="120" Width="140"  
                    Stretch="Fill" 
-                   HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-            <TextBlock Text="home"
-                       Style="{StaticResource PhoneTextTitle1Style}"
-                       Margin="55,29,193,0"
-                       Width="220" Height="91" />            
+                   HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBlock Grid.Row="1" Text="home"
+                       Style="{StaticResource PhoneTextTitle1Style}"/>
+            <vw:CommandNotAvailableLabel Grid.Row="2" 
+                                         Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
         </Grid>
 
         
-        <StackPanel Grid.Row="1" Margin="12,0,0,0">
-            <vw:CommandNotAvailableLabel Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>            
+        <Grid Grid.Row="1" Margin="12,0,0,0">
+            
             <ListBox ItemsSource="{Binding SeriesList}" Height="479" >
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -56,7 +62,7 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-        </StackPanel>
+        </Grid>
     </Grid>
 
 

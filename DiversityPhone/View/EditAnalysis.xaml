@@ -34,15 +34,21 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="PageTitle" Text="analysis" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-        </StackPanel>
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Text="analysis" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <vw:CommandNotAvailableLabel Grid.Row="1" 
+                                         Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                                         Command="{Binding ToggleEditable}"/>
+        </Grid>
         <StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1" >
             <ContentControl Content="{Binding Parent}" 
                             ContentTemplate="{StaticResource UnitItemTemplate}" 
                             HorizontalContentAlignment="Left"/>
-            <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                                   Command="{Binding ToggleEditable}"/>
+
             <toolkit:ListPicker Header="Analysis" 
                                 IsEnabled="{Binding IsEditable}"                                
                                 ItemsSource="{Binding Analyses.Items}"
@@ -58,25 +64,25 @@
                                 FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
                                 IsEnabled="{Binding IsEditable}"
                                 Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}"/>
-            
+
 
             <StackPanel Orientation="Vertical" Visibility="{Binding IsCustomResult, ConverterParameter=false, Converter={StaticResource BoolToVis}}">
-        		<TextBlock Margin="12,0,12,0" 
+                <TextBlock Margin="12,0,12,0" 
                            TextWrapping="Wrap" 
                            Style="{StaticResource InfoLabelTextStyle}"
                            Text="Result"/>
                 <TextBox Name="TB_CustomResult" TextWrapping="Wrap" 
                          Text="{Binding CustomResult, Mode=TwoWay}"
                          IsEnabled="{Binding IsEditable}" TextChanged="TB_CustomResult_TextChanged" />
-        	</StackPanel>
+            </StackPanel>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
     </Grid>
- 
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            
+
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

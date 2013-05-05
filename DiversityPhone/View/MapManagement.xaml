@@ -40,6 +40,8 @@
         <controls:Pivot Name="pivotControl" 
                         Margin="{StaticResource PhoneHorizontalMargin}"
                         SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
                         Title="MAPS">
             <controls:PivotItem Header="local">
                 <ListBox ItemsSource="{Binding MapList}">

@@ -23,17 +23,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel>
-                <!--TitlePanel contains the name of the application and page title-->
+            <!--TitlePanel contains the name of the application and page title-->
             <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
                 <TextBlock x:Name="PageTitle" Text="eventseries" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Left" Width="363" />
                 <Image Source="{Binding Current.Icon, Converter={StaticResource IconPathConverter}}" HorizontalAlignment="Right" Margin="0,6,18,2" Stretch="Fill" VerticalAlignment="Center" Height="80" Width="80" />
+                <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                                             Command="{Binding ToggleEditable}"/>
             </Grid>
 
             <!--ContentPanel - place additional content here-->
             <ScrollViewer>
                 <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-                    <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                                   Command="{Binding ToggleEditable}"/>
                     <TextBlock Text="Description"/>
                     <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding IsEditable}" Background="#BFFFFFFF" />
                     <TextBlock Text="SeriesCode"/>
@@ -52,10 +52,10 @@
             </ScrollViewer>
         </StackPanel>
     </Grid>
- 
+
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            
+
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

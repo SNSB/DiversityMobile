@@ -20,6 +20,8 @@
                        Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Left" />
             <Image Source="{Binding Current.Icon, Converter={StaticResource IconPathConverter}}" 
                    HorizontalAlignment="Right" Stretch="Fill" VerticalAlignment="Center" Height="80" Width="80" />
+            <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
+                                         Command="{Binding ToggleEditable}"/>
         </Grid>
 
         <StackPanel Background="Transparent">
