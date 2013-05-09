@@ -35,7 +35,7 @@ namespace DiversityService
             {
                 db.Insert(ev);
 
-                var geoString = SerializeLocalization((double)ev.Latitude, (double)ev.Longitude, ev.Altitude);
+                var geoString = SerializeLocalization(ev.Latitude, ev.Longitude, ev.Altitude);
                 foreach (var loc in ev.GetLocalisations(login))
                 {
                     db.Insert(loc);
@@ -139,15 +139,16 @@ namespace DiversityService
             else return String.Empty;
         }
 
-        private static String SerializeLocalization(double latitude, double longitude, double? altitude)
+        private static String SerializeLocalization(double? latitude, double? longitude, double? altitude)
         {
-            if (Double.IsNaN(latitude) || Double.IsNaN(longitude))
+            if (!latitude.HasValue || !longitude.HasValue ||
+                Double.IsNaN(latitude.Value) || Double.IsNaN(longitude.Value))
                 return String.Empty;
 
             var cult = new CultureInfo("en-US");
-            String longitudeStr = longitude.ToString(cult);
+            String longitudeStr = longitude.Value.ToString(cult);
 
-            String latStr = latitude.ToString(cult);
+            String latStr = latitude.Value.ToString(cult);
             latStr = latStr.Replace(',', '.');
 
             StringBuilder builder = new StringBuilder("POINT(");
