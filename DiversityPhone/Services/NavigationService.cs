@@ -4,20 +4,21 @@ using ReactiveUI;
 using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using System.Reactive.Linq;
+using System.Reactive.Concurrency;
 
 
 namespace DiversityPhone.Services
 {
     public class NavigationService
     {
-        readonly IMessageBus Messenger;        
+        readonly IMessageBus Messenger;
         readonly PhoneApplicationFrame _frame;
 
         private PageVMBase _CurrentVM;
         public PageVMBase CurrentVM
         {
             get { return _CurrentVM; }
-            set 
+            set
             {
                 if (value != null && _CurrentVM != value)
                 {
@@ -26,14 +27,15 @@ namespace DiversityPhone.Services
                     _CurrentVM = value;
                     _CurrentVM.Activate();
                 }
-                
+
             }
         }
 
 
         public NavigationService(
             IMessageBus messenger,
-            PhoneApplicationFrame RootFrame
+            PhoneApplicationFrame RootFrame,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             Messenger = messenger;
@@ -44,18 +46,18 @@ namespace DiversityPhone.Services
             var mmo = Observable.Merge(
                 Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT)
                 );
-            
+
             Messenger.RegisterMessageSource(
                 Observable.Merge(
                     Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.VIEW).Select(_ => Page.ViewES),
-                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.EDIT).Select(_ => Page.EditES),                    
+                    Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.EDIT).Select(_ => Page.EditES),
                     Messenger.Listen<IElementVM<Event>>(MessageContracts.VIEW).Select(_ => Page.ViewEV),
                     Messenger.Listen<IElementVM<Event>>(MessageContracts.EDIT).Select(_ => Page.EditEV),
                     Messenger.Listen<IElementVM<Specimen>>(MessageContracts.VIEW).Select(_ => Page.ViewCS),
                     Messenger.Listen<IElementVM<Specimen>>(MessageContracts.EDIT).Select(_ => Page.EditCS),
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW).Select(_ => Page.ViewIU),
-                    Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),                    
-                    Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),                   
+                    Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),
+                    Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),
                     Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
                     mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
                     mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
@@ -65,19 +67,20 @@ namespace DiversityPhone.Services
                     )
                 );
 
-             Messenger.Listen<Page>()                
-                .Subscribe(NavigateToPage);   
-        }      
+            Messenger.Listen<Page>()
+               .ObserveOn(Dispatcher)
+               .Subscribe(NavigateToPage);
+        }
 
         void NavigationFinished()
         {
             var page = _frame.Content as PhoneApplicationPage;
-            if(page != null)          
-                CurrentVM = page.DataContext as PageVMBase;            
-        } 
+            if (page != null)
+                CurrentVM = page.DataContext as PageVMBase;
+        }
 
         private void NavigateToPage(Page p)
-        {            
+        {
             string destination = null;
             switch (p)
             {
@@ -86,7 +89,7 @@ namespace DiversityPhone.Services
                 case Page.Previous:
                     NavigateBack();
                     return;
-                case Page.Home:                    
+                case Page.Home:
                     destination = "/View/Home.xaml";
                     break;
                 case Page.Settings:
@@ -161,20 +164,20 @@ namespace DiversityPhone.Services
             }
 
             if (destination != null && _frame != null)
-            {               
+            {
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
                 if (destURI != _frame.CurrentSource)
                 {
-                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));                    
+                    _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
                 }
             }
-        }       
+        }
 
         public void NavigateBack()
         {
-            if(_frame.CanGoBack)
+            if (_frame.CanGoBack)
                 _frame.GoBack();
-        }     
-      
+        }
+
     }
 }

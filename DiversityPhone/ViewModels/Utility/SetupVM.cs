@@ -193,6 +193,7 @@ namespace DiversityPhone.ViewModels
 
                         refreshVocabluaryTaskFactory().Start(login)
                             .StartWith(Unit.Default)
+                            .ObserveOn(Dispatcher)
                             .Subscribe(_ => { IsBusy = true; }, () =>
                             {
                                 Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
