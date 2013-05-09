@@ -224,6 +224,8 @@ namespace DiversityPhone.ViewModels.Utility
                                     {
                                         uploadTree(vm)
                                             .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
+                                            .IgnoreElements()
+                                            .Concat(Observable.Return(Unit.Default))
                                             .Wait();
                                     }
                                 })
