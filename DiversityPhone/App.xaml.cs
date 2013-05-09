@@ -12,6 +12,7 @@ using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using DiversityPhone.Services.BackgroundTasks;
 using System;
+using Ninject.Extensions.Factory;
 
 
 namespace DiversityPhone
@@ -130,7 +131,6 @@ namespace DiversityPhone
                 Bind<SettingsService>().ToSelf().InSingletonScope();
                 Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());
                 Bind<ICurrentCredentials>().ToConstant(Kernel.Get<SettingsService>());
-
 
                 BindAndActivateSingleton<NavigationService>();
                 BindAndActivateSingleton<DialogService>();
