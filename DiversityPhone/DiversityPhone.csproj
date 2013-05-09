@@ -129,6 +129,9 @@
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WriteableBitmapExWinPhone">
+      <HintPath>..\packages\WriteableBitmapEx.1.0.7.0\lib\sl4-wp71\WriteableBitmapExWinPhone.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -239,6 +242,7 @@
     <Compile Include="View\Converters\SynonymyToFontStyleConverter.cs" />
     <Compile Include="View\Converters\TaxonManagementPivotConverter.cs" />
     <Compile Include="View\Converters\TermToImageConverter.cs" />
+    <Compile Include="View\Converters\ThumbNailConverter.cs" />
     <Compile Include="View\Converters\ViewCSPivotConverter.cs" />
     <Compile Include="View\Converters\ViewEVPivotConverter.cs" />
     <Compile Include="View\Converters\ViewIUPivotConverter.cs" />

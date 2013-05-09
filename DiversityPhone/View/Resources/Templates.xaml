@@ -17,7 +17,7 @@
                        Height="40" 
                        Width="40"/>
             <Image Grid.Column="0"
-                       Source="{Binding Thumbnail}"
+                       Source="{Binding Model.Uri, Converter={StaticResource ThumbNail}}"
                        Height="40"
                        Width="40"/>
             <TextBlock Grid.Column="1" 

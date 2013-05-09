@@ -26,6 +26,7 @@
             <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
 			<vw:SynonymyToFontStyleConverter x:Key="SynonymyToFontStyle"/>
             <vw:PointToVisibilityConverter x:Key="PointToVis"/>
+            <vw:ThumbNailConverter x:Key="ThumbNail"/>
             
             
         </ResourceDictionary>        
