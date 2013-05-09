@@ -4,16 +4,22 @@
     using System.Windows;
     using ReactiveUI;
     using DiversityPhone.Model;
+    using DiversityPhone.ViewModels;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
 
     public class DialogService
     {
         private IMessageBus _messenger;
 
-        public DialogService(IMessageBus messenger)
+        public DialogService(
+            IMessageBus messenger,
+            [Dispatcher] IScheduler Dispatcher)
         {
             this._messenger = messenger;
 
             this._messenger.Listen<DialogMessage>()
+                .ObserveOn(Dispatcher)
                 .Subscribe(msg => this.showDialog(msg));
         }
 
