@@ -51,8 +51,9 @@ namespace DiversityPhone.View
         private void commandCanExecuteChanged(object sender, EventArgs args)
         {
             var command = sender as ICommand;
+            var isVisible = command != null && !command.CanExecute(null);
 
-            this.IsVisible = command != null && !command.CanExecute(null);
+            this.Dispatcher.BeginInvoke(() => this.IsVisible = isVisible);
         }
     }
 }
