@@ -8,6 +8,7 @@ using ReactiveUI.Xaml;
 
 using System.Reactive;
 using DiversityPhone.Interface;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -41,7 +42,8 @@ namespace DiversityPhone.ViewModels
 
         public HomeVM(
             IFieldDataService Storage,
-            ILocationService Location
+            ILocationService Location,
+            [Dispatcher] IScheduler Dispatcher
             )           
         {
             this.Storage = Storage;
@@ -59,7 +61,8 @@ namespace DiversityPhone.ViewModels
                         )                    
                     .Select(es => new EventSeriesVM(es))
                 )
-                .SelectMany(vm => vm)               
+                .SelectMany(vm => vm)
+                .ObserveOn(Dispatcher)
                 .Subscribe(SeriesList.Add);            
 
             SeriesList
