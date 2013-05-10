@@ -133,7 +133,7 @@ namespace DiversityPhone.ViewModels
             onlineLists.Connect();
             localLists.Connect();
 
-            Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected);
+            Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected && !vm.IsDownloading);
             Select.Subscribe(taxonlist =>
                     {
                         foreach (var list in LocalLists)
