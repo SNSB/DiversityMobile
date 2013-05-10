@@ -113,7 +113,8 @@ namespace DiversityPhone.ViewModels.Utility
             INotificationService Notifications,
             IConnectivityService Connectivity,
             IDiversityServiceClient Service,
-            IKeyMappingService Mapping
+            IKeyMappingService Mapping,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             this.Storage = Storage;
@@ -138,6 +139,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .CombineLatest(SyncLevels, (a, l) => (a) ? l : null as SyncLevel?)
                 .Subscribe(recollectModifications);
             recollectModifications
+                .ObserveOn(Dispatcher)
                 .Do(_ => SyncUnits.Clear())
                 .Where(l => l.HasValue)
                 .SelectMany(level =>
@@ -149,7 +151,7 @@ namespace DiversityPhone.ViewModels.Utility
                         .TakeUntil(UploadAll)
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
                     })
-                .ObserveOnDispatcher()
+                .ObserveOn(Dispatcher)
                 .Subscribe(SyncUnits.Add);
 
             SyncLevels.SelectedItem = SyncLevel.All;
@@ -171,7 +173,7 @@ namespace DiversityPhone.ViewModels.Utility
                         .TakeUntil(this.OnDeactivation())
                         .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingMultimedia);
                     })
-                .ObserveOnDispatcher()
+                .ObserveOn(Dispatcher)
                 .Subscribe(Multimedia.Add);
 
 
@@ -189,7 +191,7 @@ namespace DiversityPhone.ViewModels.Utility
                 {
                     _CurrentUpload = uploadTree(vm)
                         .Finally(() => UploadCompleted())
-                        .ObserveOnDispatcher()
+                        .ObserveOn(Dispatcher)
                         .Subscribe(_ => { }, () => SyncUnits.Remove(vm));
                 });
 
@@ -202,7 +204,7 @@ namespace DiversityPhone.ViewModels.Utility
                         _CurrentUpload = uploadMultimedia(vm)
                             .Finally(() => UploadCompleted())
                             .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
-                            .ObserveOnDispatcher()
+                            .ObserveOn(Dispatcher)
                             .Subscribe(_ => Multimedia.Remove(vm));
                     });
 
@@ -231,7 +233,7 @@ namespace DiversityPhone.ViewModels.Utility
                                 })
                                 .Finally(() => UploadCompleted())
                                 .HandleServiceErrors(Notifications, Messenger, Observable.Empty<Unit>())
-                                .ObserveOnDispatcher()
+                                .ObserveOn(Dispatcher)
                                 .Subscribe(_2 => { }, () => recollectModifications.OnNext(SyncLevels.SelectedItem));
                         }
                         else
@@ -265,7 +267,7 @@ namespace DiversityPhone.ViewModels.Utility
                                     return Disposable.Create(() => cancel = true);
                                 })
                                 .Finally(() => UploadCompleted())
-                                .ObserveOnDispatcher()
+                                .ObserveOn(Dispatcher)
                                 .Subscribe(vm => Multimedia.Remove(vm));
                         }
                     });

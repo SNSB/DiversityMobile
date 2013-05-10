@@ -91,7 +91,7 @@ namespace DiversityPhone.ViewModels
                             return gp;
                         })
                     .TakeUntil(openSeries) : Observable.Empty<GeoPointForSeries>())
-                .ObserveOnDispatcher()
+                .ObserveOn(Dispatcher)
                 .ToMessage(MessageContracts.SAVE);
                 
 
