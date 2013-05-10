@@ -15,8 +15,8 @@ namespace DiversityPhone.ViewModels
 
             //If the current element has been deleted in the meantime, navigate back.
             Observable.CombineLatest(
-                this.OnActivation()
-                .Select(_ => Current),
+                this.ActivationObservable
+                .Select(active => active ? Current : null),
                 Messenger.Listen<IElementVM<T>>(MessageContracts.DELETE),
                 (current, deleted) => current == deleted
             )
