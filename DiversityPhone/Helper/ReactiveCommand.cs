@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels
             {
                 return (arg) =>
                 {
-                    if (arg != null)
+                    if (arg is U)
                         return canExecute(arg as U);
                     else 
                         return false;
@@ -27,15 +27,25 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public ReactiveCommand(Func<T, bool> canExecute = null)
+        public ReactiveCommand(Func<T, bool> canExecute = null, IObservable<Unit> canExecuteChanged = null)
         {
             inner_command = ReactiveCommand.Create(create_can_execute(canExecute));
+            if (canExecuteChanged != null)
+                canExecuteChanged.Subscribe(_ => RaiseCanExecuteChanged(this, EventArgs.Empty));
             CommonConstructor();
         }
         public ReactiveCommand(IObservable<bool> canExecute)
         {
             inner_command = new ReactiveCommand(canExecute);
+            inner_command.CanExecuteChanged += RaiseCanExecuteChanged;
             CommonConstructor();
+        }
+
+        void RaiseCanExecuteChanged(object sender, EventArgs args)
+        {
+            var subscribers = CanExecuteChanged;
+            if (subscribers != null)
+                subscribers(sender, args);
         }
 
         private void CommonConstructor()
@@ -53,11 +63,7 @@ namespace DiversityPhone.ViewModels
             return inner_command.CanExecute(parameter as T);
         }
 
-        public event System.EventHandler CanExecuteChanged
-        {
-            add { inner_command.CanExecuteChanged += value; }
-            remove { inner_command.CanExecuteChanged -= value; }
-        }
+        public event System.EventHandler CanExecuteChanged;
 
         public void Execute(object parameter)
         {
