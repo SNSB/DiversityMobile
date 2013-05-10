@@ -13,14 +13,14 @@ using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
-   
+
 
     public partial class OfflineStorage : IFieldDataService, IKeyMappingService
     {
         private IList<IDisposable> _subscriptions;
         readonly IMessageBus Messenger;
         readonly INotificationService Notifications;
-     
+
 
         public OfflineStorage(
             IMessageBus Messenger,
@@ -30,7 +30,7 @@ namespace DiversityPhone.Services
             this.Messenger = Messenger;
             this.Notifications = Notifications;
 
-            
+
 
             _subscriptions = new List<IDisposable>()
             {
@@ -85,7 +85,7 @@ namespace DiversityPhone.Services
                                 addGeoPoint(loc as GeoPointForSeries);
                         })
                    
-            };           
+            };
         }
 
         public void deleteAndNotifyAsync<T>(T detachedRow) where T : class
@@ -97,31 +97,15 @@ namespace DiversityPhone.Services
                 );
         }
 
-       
+
 
         #region EventSeries
 
-        private IList<EventSeries> esQuery(Expression<Func<EventSeries, bool>> restriction = null)
-        {
-            return uncachedQuery(ctx =>
-            {
-                var q = (from es in ctx.EventSeries
-                         select es);
-                if (restriction == null)
-                    return q;
-                else
-                    return q.Where(restriction);
-            });
-        }
 
         public IList<EventSeries> getAllEventSeries()
         {
-            return esQuery();
-        }
-
-        public IList<EventSeries> getNewEventSeries()
-        {
-            return esQuery(es => es.ModificationState == ModificationState.Modified);
+            return uncachedQuery(ctx => from es in ctx.EventSeries
+                                        select es);
         }
 
         public EventSeries getEventSeriesByID(int? id)
@@ -144,8 +128,8 @@ namespace DiversityPhone.Services
         }
 
         public void deleteEventSeries(EventSeries toDeleteEs)
-        {                   
-            
+        {
+
             deleteAndNotifyAsync(toDeleteEs);
         }
 
@@ -166,7 +150,7 @@ namespace DiversityPhone.Services
         }
 
         public IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
-        {           
+        {
             using (var ctx = new DiversityDataContext())
             {
                 var query = from gt in ctx.GeoTour
@@ -191,7 +175,7 @@ namespace DiversityPhone.Services
             deleteAndNotifyAsync(toDeleteGp);
         }
 
-       
+
 
         #endregion
 
@@ -206,7 +190,7 @@ namespace DiversityPhone.Services
         public IEnumerable<Event> getEventsForSeries(EventSeries es)
         {
             //Workaround for the fact, that ev.SeriesID == es.SeriesID doesn't work for null values
-            if (EventSeries.isNoEventSeries(es)) 
+            if (EventSeries.isNoEventSeries(es))
                 return enumerateQuery(
                     ctx => from ev in ctx.Events
                            where ev.SeriesID == null
@@ -217,7 +201,7 @@ namespace DiversityPhone.Services
                        where ev.SeriesID == es.SeriesID
                        select ev);
         }
-         
+
 
         public Event getEventByID(int id)
         {
@@ -226,7 +210,7 @@ namespace DiversityPhone.Services
                        where ev.EventID == id
                        select ev);
         }
-          
+
 
         public void addOrUpdateEvent(Event ev)
         {
@@ -251,7 +235,7 @@ namespace DiversityPhone.Services
             deleteAndNotifyAsync(toDeleteEv);
         }
 
-        
+
 
         #endregion
 
@@ -261,7 +245,7 @@ namespace DiversityPhone.Services
         {
             return enumerateQuery(ctx =>
                 from cep in ctx.EventProperties
-                where cep.EventID == eventID 
+                where cep.EventID == eventID
                 select cep
                 );
         }
@@ -280,7 +264,7 @@ namespace DiversityPhone.Services
                   ctx => ctx.EventProperties,
                   cep
               );
-        }    
+        }
 
         public void deleteEventProperty(EventProperty toDeleteCep)
         {
@@ -290,10 +274,10 @@ namespace DiversityPhone.Services
         #endregion
 
 
-        #region Specimen        
-        
+        #region Specimen
+
         public IEnumerable<Specimen> getAllSpecimen()
-        {   
+        {
             return enumerateQuery(ctx => ctx.Specimen);
         }
 
@@ -301,12 +285,12 @@ namespace DiversityPhone.Services
         public IEnumerable<Specimen> getSpecimenForEvent(Event ev)
         {
             return enumerateQuery(ctx =>
-                from spec in ctx.Specimen                 
+                from spec in ctx.Specimen
                 where spec.EventID == ev.EventID
                 select spec
                 );
         }
-      
+
 
         public Specimen getSpecimenByID(int id)
         {
@@ -318,11 +302,11 @@ namespace DiversityPhone.Services
 
         public IEnumerable<Specimen> getSpecimenWithoutEvent()
         {
-          return enumerateQuery(ctx =>
-                from spec in ctx.Specimen
-                where spec.EventID == null 
-                select spec
-                );
+            return enumerateQuery(ctx =>
+                  from spec in ctx.Specimen
+                  where spec.EventID == null
+                  select spec
+                  );
         }
 
         public void addOrUpdateSpecimen(Specimen spec)
@@ -359,7 +343,7 @@ namespace DiversityPhone.Services
         {
             return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
-                where iu.SpecimenID == specimenID && iu.RelatedUnitID == null 
+                where iu.SpecimenID == specimenID && iu.RelatedUnitID == null
                 orderby iu.WorkingName
                 select iu
                 );
@@ -389,8 +373,8 @@ namespace DiversityPhone.Services
         }
 
         public void addOrUpdateIUnit(IdentificationUnit iu)
-        {   
-            addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);           
+        {
+            addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);
         }
 
         public void deleteIU(IdentificationUnit toDeleteIU)
@@ -420,7 +404,7 @@ namespace DiversityPhone.Services
         }
 
         public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
-        {            
+        {
             addOrUpdateRow(IdentificationUnitAnalysis.Operations,
                 ctx => ctx.IdentificationUnitAnalyses,
                 iua
@@ -438,25 +422,25 @@ namespace DiversityPhone.Services
 
         public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner)
         {
-             IList<MultimediaObject> objects= uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.OwnerType == owner.EntityType
-                                                && mm.RelatedId == owner.EntityID
-                                        select mm);
-             return objects;
+            IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
+                                                                   where mm.OwnerType == owner.EntityType
+                                                                           && mm.RelatedId == owner.EntityID
+                                                                   select mm);
+            return objects;
 
         }
 
         public MultimediaObject getMultimediaByID(int id)
         {
             return singletonQuery(ctx => from mm in ctx.MultimediaObjects
-                                        where mm.MMOID == id
-                                        select mm);
+                                         where mm.MMOID == id
+                                         select mm);
         }
 
         public MultimediaObject getMultimediaByURI(string uri)
         {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
-                                                                   where mm.Uri==uri
+                                                                   where mm.Uri == uri
                                                                    select mm);
             if (objects.Count == 0)
                 throw new KeyNotFoundException();
@@ -464,30 +448,30 @@ namespace DiversityPhone.Services
                 throw new DuplicateKeyException(objects);
             return objects[0];
         }
-     
+
 
         public void addMultimediaObject(MultimediaObject mmo)
         {
             addOrUpdateRow(MultimediaObject.Operations,
             ctx => ctx.MultimediaObjects,
             mmo
-            ); 
+            );
         }
 
         public void deleteMMO(MultimediaObject toDeleteMMO)
         {
-            deleteAndNotifyAsync(toDeleteMMO);            
+            deleteAndNotifyAsync(toDeleteMMO);
         }
 
 
-        #endregion                
+        #endregion
 
         #region Generische Implementierungen
         private void addOrUpdateRow<T>(IQueryOperations<T> operations, Func<DiversityDataContext, Table<T>> tableProvider, T row) where T : class, IModifyable
         {
-            if(row == null)
+            if (row == null)
             {
-                throw new ArgumentNullException ("row");
+                throw new ArgumentNullException("row");
             }
 
             withDataContext((ctx) =>
@@ -502,18 +486,18 @@ namespace DiversityPhone.Services
                         operations.SetFreeKeyOnItem(allRowsQuery, row);
                         row.ModificationState = ModificationState.Modified; //Mark for Upload
 
-                        table.InsertOnSubmit(row);                        
+                        table.InsertOnSubmit(row);
                         try
                         {
-                            ctx.SubmitChanges();                            
+                            ctx.SubmitChanges();
                         }
                         catch (Exception)
                         {
                             System.Diagnostics.Debugger.Break();
-                            
+
                             //Object not new
                             //TODO update?
-                            
+
                         }
                     }
                     else
@@ -522,7 +506,7 @@ namespace DiversityPhone.Services
                                                     .FirstOrDefault();
                         if (existingRow != default(T))
                         {
-                            
+
                             //Second DataContext necessary 
                             //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
                             withDataContext((ctx2) =>
@@ -538,7 +522,7 @@ namespace DiversityPhone.Services
                                     }
                                 });
                         }
-                    }              
+                    }
                 });
         }
 
@@ -580,7 +564,7 @@ namespace DiversityPhone.Services
                     yield return res;
                 }
             }
-        }       
+        }
 
         #endregion
 
@@ -624,14 +608,14 @@ namespace DiversityPhone.Services
                               select iu.CollectionUnitID;
                         break;
                     default:
-                        throw new ArgumentException("ownerType");                        
+                        throw new ArgumentException("ownerType");
                 }
 
                 return key.FirstOrDefault();
             }
         }
 
-        public int? ResolveToLocalKey(DBObjectType ownerType, int localID) 
+        public int? ResolveToLocalKey(DBObjectType ownerType, int localID)
         {
             using (var ctx = new DiversityDataContext())
             {
@@ -705,7 +689,7 @@ namespace DiversityPhone.Services
                         d.ModificationState = ModificationState.Unmodified;
                         break;
                     default:
-                        throw new ArgumentException("ownerType");                        
+                        throw new ArgumentException("ownerType");
                 }
 
                 ctx.SubmitChanges();
@@ -715,9 +699,9 @@ namespace DiversityPhone.Services
 
         public IEnumerable<MultimediaObject> getModifiedMMOs()
         {
-            return enumerateQuery(ctx =>  from mmo in ctx.MultimediaObjects
-                                          where mmo.ModificationState == ModificationState.Modified
-                                          select mmo);
+            return enumerateQuery(ctx => from mmo in ctx.MultimediaObjects
+                                         where mmo.ModificationState == ModificationState.Modified
+                                         select mmo);
         }
 
         public void add<T>(T element) where T : class, IModifyable
@@ -754,19 +738,19 @@ namespace DiversityPhone.Services
             using (var ctx = new DiversityDataContext())
             {
                 var table = ctx.GetTable<T>();
-                table.Attach(element, false); 
+                table.Attach(element, false);
                 table.DeleteOnSubmit(element);
                 ctx.SubmitChanges();
             }
         }
 
-        
+
 
         static IDictionary<Type, Delegate> keyComparerFactories = new Dictionary<Type, Delegate>();
-        
+
 
         Expression<Func<T, bool>> getKeyComparison<T, TKey>(TKey id)
-        {            
+        {
             Delegate comparerFactory;
             if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory))
             {
@@ -806,7 +790,7 @@ namespace DiversityPhone.Services
                 }
             }
 
-            return (Expression<Func<T, bool>>) comparerFactory.DynamicInvoke(id);      
+            return (Expression<Func<T, bool>>)comparerFactory.DynamicInvoke(id);
         }
 
         private T get<T, TKey>(TKey id) where T : class, IEntity

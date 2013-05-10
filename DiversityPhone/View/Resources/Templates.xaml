@@ -36,6 +36,10 @@
     <DataTemplate x:Key="DisplayTextItemTemplate">
         <TextBlock Text="{Binding DisplayText}"/>
     </DataTemplate>
+    <DataTemplate x:Key="DisplayTextItemTemplateLarge">
+        <TextBlock Text="{Binding DisplayText}" 
+                   Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+    </DataTemplate>
 
     
 </ResourceDictionary>

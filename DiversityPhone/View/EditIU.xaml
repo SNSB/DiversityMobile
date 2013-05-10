@@ -20,23 +20,30 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <DataTemplate x:Key="TermListItemTemplate">                
+            <DataTemplate x:Key="TermListItemTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="{Binding Code, Converter={StaticResource TermToImage}}" VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="30" MaxHeight="30"/>
-                    <TextBlock Text="{Binding DisplayText}" TextWrapping="NoWrap" Margin="8,0,0,0"  />
+                    <Image Source="{Binding Code, Converter={StaticResource TermToImage}}"                            
+                           MaxHeight="40" MaxWidth="40"/>
+                    <TextBlock Text="{Binding DisplayText}" 
+                               TextWrapping="NoWrap" 
+                               Margin="{StaticResource PhoneHorizontalMargin}"  />
                 </StackPanel>
             </DataTemplate>
-            <DataTemplate x:Key="TermListPickerItemTemplate">
+            <DataTemplate x:Key="TermListItemTemplateLarge">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
-                    <TextBlock Text="{Binding DisplayText}" Style="{StaticResource PhoneTextExtraLargeStyle}"/>
+                    <Image Source="{Binding Code, Converter={StaticResource TermToImage}}"                            
+                           MaxHeight="40" MaxWidth="40"/>
+                    <TextBlock Text="{Binding DisplayText}" 
+                               TextWrapping="NoWrap" 
+                               Margin="{StaticResource PhoneHorizontalMargin}" 
+                               Style="{StaticResource PhoneTextExtraLargeStyle}"/>
                 </StackPanel>
             </DataTemplate>
             <DataTemplate x:Key="TaxonNameItemTemplate">
                 <TextBlock Text="{Binding TaxonNameCache}" 
                            FontStyle="{Binding Synonymy, Converter={StaticResource SynonymyToFontStyle}}"
                            />
-                
+
             </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
@@ -49,7 +56,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">       
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -60,17 +67,17 @@
         </Grid>
 
         <!--ContentPanel - place additional content here-->
-		<ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1">
             <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">
                 <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
                                 SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource TermListItemTemplate}"                                
-                                FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
+                                FullModeItemTemplate="{StaticResource TermListItemTemplateLarge}"
                                 Header="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
                                 IsEnabled="{Binding IsEditable}"/>
 
-                    <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
+                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
                 <TextBox x:Name="QueryString"
                          Text="{Binding QueryString, Mode=TwoWay}" 
                          Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
@@ -87,12 +94,12 @@
                          Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
                          IsEnabled="{Binding IsEditable}"
                          Margin="{StaticResource PhoneHorizontalMargin}"
-                         MaxHeight="300"/>
+                         MaxHeight="170"/>
 
                 <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
                                 SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"             
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
+                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplateLarge}"
                                 Header="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
                                 IsEnabled="{Binding IsEditable}"
@@ -101,7 +108,7 @@
                     <toolkit:ListPicker ItemsSource="{Binding RelationshipType.Items}" 
                         SelectedIndex="{Binding RelationshipType.SelectedIndex, Mode=TwoWay}"
                         ItemTemplate="{StaticResource TermListItemTemplate}"                                
-                        FullModeItemTemplate="{StaticResource TermListPickerItemTemplate}"
+                        FullModeItemTemplate="{StaticResource TermListItemTemplateLarge}"
                         Header="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
                         FullModeHeader="{Binding Resources.IdentificationUnit_Header_RelationshipType, Source={StaticResource LocalizedStrings}}"
                         IsEnabled="{Binding IsEditable}" />
@@ -111,19 +118,19 @@
 					        Content="{Binding Resources.IdentificationUnit_Header_OnlyObserved, Source={StaticResource LocalizedStrings}}" 
 					        Visibility="{Binding IsObservation, Converter={StaticResource BoolToVis}, ConverterParameter=True}"
                             IsEnabled="{Binding IsEditable}"/>
-            
+
                 <ListBox ItemsSource="{Binding Circumstances}" 
                             SelectedItem="{Binding Circumstance, Mode=TwoWay}"
                             IsEnabled="{Binding IsEditable}"/>
                 <TextBlock Text="{Binding Resources.IdentificationUnit_Header_AnalysisDate, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />                
+                <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
             </StackPanel>
-		</ScrollViewer>
+        </ScrollViewer>
     </Grid>
- 
-   <phone:PhoneApplicationPage.ApplicationBar>
+
+    <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-                 
+
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

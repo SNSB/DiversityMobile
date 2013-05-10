@@ -9,10 +9,10 @@
 
     public class DiversityDataContext : DataContext
     {
-        private static string connStr = "isostore:/diversityDB.sdf";
+        private static string isolatedStorageDBUri = "isostore:/diversityDB.sdf";
 
         public DiversityDataContext()
-            : base(connStr)
+            : base(isolatedStorageDBUri)
         {
             if (!this.DatabaseExists())
                 this.CreateDatabase();
