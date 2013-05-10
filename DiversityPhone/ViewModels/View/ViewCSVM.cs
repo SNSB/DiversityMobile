@@ -1,12 +1,13 @@
-﻿using System;
-using ReactiveUI;
-using System.Reactive.Linq;
-using System.Collections.Generic;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using ReactiveUI;
 using ReactiveUI.Xaml;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
-using DiversityPhone.Interface;
 namespace DiversityPhone.ViewModels
 {
 
@@ -51,7 +52,8 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         public ViewCSVM(
-            IFieldDataService Storage
+            IFieldDataService Storage,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             this.Storage = Storage;
@@ -63,6 +65,7 @@ namespace DiversityPhone.ViewModels
             //SubUnits
             UnitList = getSubunits.RegisterAsyncFunction(spec => buildIUTree(spec as Specimen))
                 .SelectMany(vms => vms)
+                .ObserveOn(Dispatcher)
                 .CreateCollection();
 
             UnitList.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(iu => iu.RelatedUnitID == null);
