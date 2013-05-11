@@ -67,6 +67,7 @@ namespace DiversityPhone.ViewModels
         public ViewIUVM(
             IVocabularyService Vocabulary,
             IFieldDataService Storage,
+            ElementMultimediaVM MultimediaList,
             [Dispatcher] IScheduler Dispatcher
             )
         {            
@@ -94,7 +95,7 @@ namespace DiversityPhone.ViewModels
                 x => x.Subunits); 
 
             //Multimedia
-            MultimediaList = new ElementMultimediaVM(Storage);
+            this.MultimediaList = MultimediaList;
             CurrentModelObservable
                 .Select(m => m as IMultimediaOwner)
                 .Subscribe(MultimediaList);

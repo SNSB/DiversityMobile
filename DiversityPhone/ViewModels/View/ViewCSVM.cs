@@ -53,7 +53,8 @@ namespace DiversityPhone.ViewModels
 
         public ViewCSVM(
             IFieldDataService Storage,
-            [Dispatcher] IScheduler Dispatcher
+            [Dispatcher] IScheduler Dispatcher,
+            ElementMultimediaVM MultimediaList
             )
         {
             this.Storage = Storage;
@@ -79,7 +80,7 @@ namespace DiversityPhone.ViewModels
                 .ToMessage(MessageContracts.VIEW);
 
             //Multimedia
-            MultimediaList = new ElementMultimediaVM(Storage);
+            this.MultimediaList = MultimediaList;
             CurrentModelObservable
                 .Select(m => m as IMultimediaOwner)
                 .Subscribe(MultimediaList);

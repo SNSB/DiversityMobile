@@ -56,7 +56,8 @@
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
         
         public ViewEVVM(
-            IFieldDataService Storage
+            IFieldDataService Storage, 
+            ElementMultimediaVM MultimediaList
             )            
         {
             this.Storage = Storage;
@@ -96,7 +97,7 @@
                 .ToMessage(MessageContracts.EDIT);
         
             //Multimedia
-            MultimediaList = new ElementMultimediaVM(Storage);
+            this.MultimediaList = MultimediaList;
 
             CurrentModelObservable
                 .Select(m => m as IMultimediaOwner)

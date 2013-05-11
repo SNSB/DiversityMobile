@@ -48,10 +48,6 @@
                                             SelectedIndex="{Binding Databases.SelectedIndex, Mode=TwoWay}"
                                             FullModeHeader="{Binding Resources.Setup_Header_Repository, Source={StaticResource LocalizedStrings}}"
                                             />
-
-
-
-                        
                     </StackPanel>
                 </controls:PivotItem>
 
