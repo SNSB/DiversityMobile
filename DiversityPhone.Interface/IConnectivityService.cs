@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reactive.Linq;
+using System.Diagnostics.Contracts;
 
 namespace DiversityPhone.Interface
 {
@@ -23,6 +24,8 @@ namespace DiversityPhone.Interface
     {
         public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
         {
+            Contract.Requires<ArgumentNullException>(svc != null);
+
             return svc.Status().Select(s => s == ConnectionStatus.Wifi);
         }
     }

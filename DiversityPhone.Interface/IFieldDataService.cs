@@ -64,7 +64,7 @@ using System;
             Contract.Requires<ArgumentNullException>(This != null);
             Contract.Requires<ArgumentNullException>(entity != null);
             Contract.Requires<InvalidOperationException>(entity.ModificationState == ModificationState.Modified, "Entity is already marked uploaded");
-            Contract.Ensures(entity.ModificationState == ModificationState.Unmodified);
+            //Contract.Ensures(entity.ModificationState == ModificationState.Unmodified);
 
             This.update(entity, e => e.ModificationState = ModificationState.Unmodified);
 
