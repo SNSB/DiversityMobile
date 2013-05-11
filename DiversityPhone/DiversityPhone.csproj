@@ -149,6 +149,7 @@
     <Compile Include="Helper\EventHierarchyLoader.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\ListSelectionHelper.cs" />
+    <Compile Include="Helper\MultipleSelectionHelper.cs" />
     <Compile Include="Helper\ReactiveCollectionListener.cs" />
     <Compile Include="Helper\ReactiveCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -223,6 +224,9 @@
     <Compile Include="View\Controls\ConditionalLabel.cs" />
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\ListBoxSelector.xaml.cs">
+      <DependentUpon>ListBoxSelector.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Controls\MultimediaListControl.xaml.cs">
       <DependentUpon>MultimediaListControl.xaml</DependentUpon>
@@ -540,6 +544,10 @@
     <Page Include="View\Controls\InfoLabel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Controls\ListBoxSelector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Controls\MultimediaListControl.xaml">
       <Generator>MSBuild:Compile</Generator>

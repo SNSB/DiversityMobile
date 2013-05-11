@@ -1,0 +1,62 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	x:Class="DiversityPhone.View.ListBoxSelector"
+    mc:Ignorable="d"
+    d:DesignHeight="630" d:DesignWidth="542"
+    x:Name="selectorControl">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ValueItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <CheckBox IsChecked="{Binding IsSelected}" 
+                          Width="{Binding SelectionWidth, ElementName=selectorControl}"/>
+                <ContentControl Content="{Binding Value}" 
+                                ContentTemplate="{Binding ItemTemplate, ElementName=selectorControl}"/>
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.FontFamily>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+    </UserControl.FontFamily>
+    <UserControl.FontSize>
+        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+    </UserControl.FontSize>
+    <UserControl.Foreground>
+        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+    </UserControl.Foreground>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="14*"/>
+        </Grid.ColumnDefinitions>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="SelectionMode">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="Selecting">
+                    <Storyboard>
+                        <DoubleAnimation To="68" Duration="0:0:0.1"
+                                         Storyboard.TargetProperty="(ListBoxSelector.SelectionWidth)" 
+                                         Storyboard.TargetName="selectorControl"/>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
+        <ItemsControl x:Name="valueList" Grid.Column="1" Grid.ColumnSpan="2"                 
+                      ItemsSource="{Binding ItemsSource, ElementName=selectorControl}"
+			          ItemTemplate="{StaticResource ValueItemTemplate}"/>
+
+        <Rectangle Grid.Column="1" x:Name="touchableEdge" Width="80"
+                   Margin="-12,0,0,0"
+			       HorizontalAlignment="Left"
+			       VerticalAlignment="Stretch"
+			       Fill="Transparent"
+                   Tap="EnterSelecting"/>
+    </Grid>
+</UserControl>
