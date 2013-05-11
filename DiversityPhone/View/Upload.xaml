@@ -26,11 +26,7 @@
                 <ResourceDictionary Source="Resources/Templates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <vw:SyncVMPivotConverter x:Key="PivotConverter"/>
-            <vw:SyncLevelToStringConverter x:Key="TypeToString"/>
 
-            <DataTemplate x:Key="TypeItemTemplate">
-                <TextBlock Text="{Binding Converter={StaticResource TypeToString}}"/>
-            </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
@@ -59,56 +55,31 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <StackPanel Grid.Row="0">
-                        <toolkit:ListPicker Header="{Binding Resources.Sync_Header_SyncLevel, Source={StaticResource LocalizedStrings}}"
-                                        ItemTemplate="{StaticResource TypeItemTemplate}" 
-                                        ItemsSource="{Binding SyncLevels.Items}"
-                                        SelectedIndex="{Binding SyncLevels.SelectedIndex, Mode=TwoWay}"/>
-                        <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                    </StackPanel>
-                    <ListBox Grid.Row="1" 
-                             ItemsSource="{Binding SyncUnits}">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
-                                                Content="{Binding}">
-                                    <toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu>
-                                            <toolkit:MenuItem Header="upload with children" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadTree}" 
-                                                            CommandParameter="{Binding}"/>
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>
-                                </ContentControl>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+
+                    <vw:InfoLabel Grid.Row="0" 
+                                  Text="{Binding Resources.Sync_Info_SelectionHint, Source={StaticResource LocalizedStrings}}"/>
+
+                    <vw:ListBoxSelector Grid.Row="1" 
+                                        x:Name="FDSelector"
+                                        DataContext="{Binding FieldData}"
+                                        ItemTemplate="{StaticResource ElementItemTemplate}"/>
 
                 </Grid>
             </controls:PivotItem>
             <controls:PivotItem Header="{Binding Resources.Sync_Header_Multimedia, Source={StaticResource LocalizedStrings}}">
-                <StackPanel Orientation="Vertical" >
-                    <TextBlock Style="{StaticResource InfoLabelTextStyle}">Tap and hold for menu</TextBlock>
-                    <ListBox ItemsSource="{Binding Multimedia}" Height="509">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <ContentControl ContentTemplate="{StaticResource MultimediaItemTemplate}"
-                                                Content="{Binding}">
-                                    <toolkit:ContextMenuService.ContextMenu>
-                                        <toolkit:ContextMenu>
-                                            <toolkit:MenuItem Header="upload" 
-                                                            Command="{Binding ElementName=syncPage, Path=DataContext.UploadMultimedia}" 
-                                                            CommandParameter="{Binding}"/>
-                                        </toolkit:ContextMenu>
-                                    </toolkit:ContextMenuService.ContextMenu>
-                                </ContentControl>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
+                <Grid Margin="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
 
-
-                    </ListBox>
-
-                </StackPanel>
+                    <vw:InfoLabel Grid.Row="0" 
+                                  Text="{Binding Resources.Sync_Info_SelectionHint, Source={StaticResource LocalizedStrings}}"/>
+                    <vw:ListBoxSelector Grid.Row="1" 
+                                        x:Name="MMSelector" 
+                                        DataContext="{Binding Multimedia}" 
+                                        ItemTemplate="{StaticResource MultimediaItemTemplate}"/>
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
         <Grid Grid.Row="1" Visibility="{Binding IsUploading, Converter={StaticResource BoolToVis}}" 

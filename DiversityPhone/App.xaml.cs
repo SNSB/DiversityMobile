@@ -98,7 +98,8 @@ namespace DiversityPhone
                 BindAndActivateSingleton<AudioVM>();
                 BindAndActivateSingleton<VideoVM>();
 
-
+                Bind<IUploadVM<IElementVM>>().To<FieldDataUploadVM>().InSingletonScope();
+                Bind<IUploadVM<MultimediaObjectVM>>().To<MultimediaUploadVM>().InSingletonScope();
                 BindAndActivateSingleton<UploadVM>();
                 BindAndActivateSingleton<DownloadVM>();
 

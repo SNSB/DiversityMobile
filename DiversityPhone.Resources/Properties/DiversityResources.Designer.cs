@@ -931,6 +931,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to tap the screen to the left to select individual items.
+        /// </summary>
+        public static string Sync_Info_SelectionHint {
+            get {
+                return ResourceManager.GetString("Sync_Info_SelectionHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Uploading ....
         /// </summary>
         public static string Sync_Info_Uploading {
@@ -940,7 +949,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uploading.
+        ///   Looks up a localized string similar to Uploading FieldData .
         /// </summary>
         public static string Sync_Info_UploadingElement {
             get {
@@ -949,7 +958,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uploading Multimedia ....
+        ///   Looks up a localized string similar to Uploading Multimedia .
         /// </summary>
         public static string Sync_Info_UploadingMultimedia {
             get {

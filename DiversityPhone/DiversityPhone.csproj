@@ -232,8 +232,10 @@
     <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
     <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Utility\DownloadVM.cs" />
+    <Compile Include="ViewModels\Utility\FieldDataUploadVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
+    <Compile Include="ViewModels\Utility\MultimediaUploadVM.cs" />
     <Compile Include="ViewModels\Utility\UploadVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.cs" />
     <Compile Include="ViewModels\Utility\TaxonManagementVM.TaxonListVM.cs" />
@@ -270,7 +272,6 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
-    <Compile Include="View\Converters\SyncLevelToStringConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\IconToImageConverter.cs" />

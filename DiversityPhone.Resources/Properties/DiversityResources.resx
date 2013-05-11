@@ -415,14 +415,17 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Sync_Info_CollectingMultimedia" xml:space="preserve">
     <value>Collecting Multimedia</value>
   </data>
+  <data name="Sync_Info_SelectionHint" xml:space="preserve">
+    <value>tap the screen to the left to select individual items</value>
+  </data>
   <data name="Sync_Info_Uploading" xml:space="preserve">
     <value>Uploading ...</value>
   </data>
   <data name="Sync_Info_UploadingElement" xml:space="preserve">
-    <value>Uploading</value>
+    <value>Uploading FieldData </value>
   </data>
   <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
-    <value>Uploading Multimedia ...</value>
+    <value>Uploading Multimedia </value>
   </data>
   <data name="Sync_Level_All" xml:space="preserve">
     <value>All</value>

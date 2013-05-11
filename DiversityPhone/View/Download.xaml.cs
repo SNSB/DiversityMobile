@@ -45,7 +45,7 @@ namespace DiversityPhone.View
         {
             if (uploadall == null && VM != null)
             {                
-                uploadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.UploadAll);
+                uploadall = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.StartUpload);
             }
         }
 
