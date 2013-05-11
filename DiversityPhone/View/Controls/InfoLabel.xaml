@@ -12,7 +12,7 @@
           Background="{StaticResource PhoneBackgroundBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="40"/>
-            <ColumnDefinition Width="Auto" MinWidth="280"/>
+            <ColumnDefinition Width="*" MinWidth="280"/>
         </Grid.ColumnDefinitions>
         <Rectangle Fill="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" 
                    Width="40" Height="40">
@@ -21,7 +21,7 @@
             </Rectangle.OpacityMask>
         </Rectangle>        
         <TextBlock Grid.Column="1" x:Name="textField" Style="{StaticResource InfoLabelTextStyle}" 
-                   Width="422" Height="Auto" 
+                   Width="Auto" Height="Auto" 
                    TextWrapping="Wrap" 
                    Margin="6,0,0,0"
                    VerticalAlignment="Center"/>
