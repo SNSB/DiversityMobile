@@ -1,22 +1,16 @@
 ﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using DiversityPhone.ViewModels;
 using Microsoft.Reactive.Testing;
 using Moq;
 using Ninject;
-using Ninject.Activation;
+using Ninject.Extensions.Factory;
 using Ninject.MockingKernel;
 using Ninject.MockingKernel.Moq;
 using Ninject.Modules;
-using Ninject.Parameters;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
 
 namespace DiversityPhone.Test
 {
@@ -118,8 +112,7 @@ namespace DiversityPhone.Test
 
         public DiversityTestBase()
         {
-            K = new UnitTestKernel();
-            K.Load<FuncModule>();
+            K = new UnitTestKernel();            
             K.Load<TestServiceModule>();
 
             Scheduler = new TestScheduler();
