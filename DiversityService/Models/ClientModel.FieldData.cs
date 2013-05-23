@@ -183,7 +183,7 @@ namespace DiversityService.Model
     {
         public MultimediaOwner OwnerType { get; set; }
         public Int32 RelatedCollectionID { get; set; }
-        public String Uri { get; set; }
+        public Uri Uri { get; set; }
         public String Description { get; set; }
         public MultimediaType MediaType { get; set; }
     }

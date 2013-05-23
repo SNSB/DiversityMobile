@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.ServiceModel;
 
 namespace DiversityPhone.Services
 {
@@ -26,7 +27,7 @@ namespace DiversityPhone.Services
         public static IObservable<TEventArgs> MakeObservableServiceResult<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
         {
             return This.FilterByUserState(userState)
-                .PipeErrors();               
+                .PipeErrors();
         }
 
         public static IObservable<TEventArgs> MakeObservableServiceResultSingle<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
@@ -34,7 +35,25 @@ namespace DiversityPhone.Services
             return MakeObservableServiceResult(This, userState)
                 .ReplayOnlyFirst();
         }
-        
+
+        public static IObservable<T> ConvertErrors<T>(this IObservable<T> This)
+        {
+            return This
+               .Catch((Exception ex) =>
+               {
+                   if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
+                   {
+                       return Observable.Throw<T>(new ServiceNotAvailableException(ex.Message, ex));
+                   }
+                   if (ex is FaultException)
+                   {
+                       return Observable.Throw<T>(new ServiceOperationException(ex.Message, ex));
+                   }
+                   return Observable.Throw<T>(ex);
+               });
+        }
+
+
 
         public static IObservable<TEventArgs> PipeErrors<TEventArgs>(this IObservable<TEventArgs> This) where TEventArgs : AsyncCompletedEventArgs
         {
@@ -66,7 +85,7 @@ namespace DiversityPhone.Services
                         subscription.Dispose();
                 }
                 return subscription;
-            });
+            }).ConvertErrors();
         }
 
         public static IObservable<Unit> StoreMapping(this IObservable<int> This, IEntity owner, IKeyMappingService mappingService)

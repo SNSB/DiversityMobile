@@ -28,7 +28,26 @@ namespace DiversityPhone.Model
 
 <# Row("ModificationState", "ModificationState"); #>
 
-<# Row("string", "CollectionUri"); #>   
+		[Column]
+		private String CollectionUri { get; set; }
+		
+		
+		public Uri CollectionURI
+		{
+			get { return new Uri(CollectionUri, UriKind.RelativeOrAbsolute); }
+			set 
+			{
+
+
+                if (CollectionUri != value.ToString())
+				{
+					this.raisePropertyChanging("CollectionURI");
+					CollectionUri = value.ToString();
+					this.raisePropertyChanged("CollectionURI");
+				}  
+			}
+		}
+
 
         
 

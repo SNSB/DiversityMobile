@@ -189,7 +189,7 @@
       <xs:element minOccurs="0" name="MediaType" type="tns:MultimediaType" />
       <xs:element minOccurs="0" name="OwnerType" type="tns:MultimediaOwner" />
       <xs:element minOccurs="0" name="RelatedCollectionID" type="xs:int" />
-      <xs:element minOccurs="0" name="Uri" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Uri" nillable="true" type="xs:anyURI" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="MultimediaObject" nillable="true" type="tns:MultimediaObject" />

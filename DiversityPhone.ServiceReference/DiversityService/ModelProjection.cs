@@ -213,7 +213,7 @@
                 MediaType = mmo.MediaType.ToServiceObject(),
                 OwnerType = mmo.OwnerType.ToServiceObject(),
                 RelatedCollectionID = relID,
-                Uri = mmo.CollectionUri
+                Uri = mmo.CollectionURI
             };
 
         }

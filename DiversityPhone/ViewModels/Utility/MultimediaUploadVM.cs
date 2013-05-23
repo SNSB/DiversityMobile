@@ -114,7 +114,7 @@ namespace DiversityPhone.ViewModels.Utility
                 {
                     var upload =
                     Service.UploadMultimedia(t.MMO, t.Data)
-                    .Do(uri => Storage.update(t.MMO, o => o.CollectionUri = uri))
+                    .Do(uri => Storage.update(t.MMO, o => o.CollectionURI = uri))
                     .Select(_ => t.MMO)
                     .SelectMany(mmo => Service.InsertMultimediaObject(mmo)
                                               .Do(_ => Storage.MarkUploaded(mmo))

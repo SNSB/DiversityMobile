@@ -96,23 +96,16 @@ namespace DiversityPhone.ViewModels
             return This
                 .Catch((Exception ex) =>
                 {
-                    var rethrow = ErrorValue == null;
-                    var handled = false;
-                    if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
+                    bool rethrow = ErrorValue == null;
+                    if (ex is ServiceNotAvailableException)
                     {
                         Notification.showNotification(DiversityResources.Info_ServiceUnavailable, NOTIFICATION_DURATION);
-                        handled = true;
                     }
-                    if (ex is FaultException)
+                    else if (ex is ServiceOperationException)
                     {
                         Messenger.SendMessage(new DialogMessage(DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.Message_ServiceProblem + ex.Message));
-                        handled = true;
                     }
-
-                    if (!handled || rethrow)
-                        return Observable.Throw<T>(ex);
-                    else
-                        return ErrorValue;
+                    return ErrorValue;
                 });
         }
 

@@ -62,7 +62,7 @@ namespace DiversityService.Model
             CollectionEventSeriesImage export = new CollectionEventSeriesImage();
             export.SeriesID = mmo.RelatedCollectionID;
             export.ImageType = MediaTypeToString(mmo.MediaType);
-            export.Uri = mmo.Uri;            
+            export.Uri = mmo.Uri.ToString();            
             export.Notes = "Generated via DiversityMobile";
             return export;
         }
@@ -77,7 +77,7 @@ namespace DiversityService.Model
             CollectionEventImage export = new CollectionEventImage();
             export.CollectionEventID = mmo.RelatedCollectionID;
             export.ImageType = MediaTypeToString(mmo.MediaType);
-            export.Uri = mmo.Uri;            
+            export.Uri = mmo.Uri.ToString();            
             export.Notes = "Generated via DiversityMobile";
             return export;
         }       
@@ -105,7 +105,7 @@ namespace DiversityService.Model
                     throw new NotImplementedException("Case overlooked");
             }
             export.ImageType = MediaTypeToString(mmo.MediaType);
-            export.Uri = mmo.Uri;
+            export.Uri = mmo.Uri.ToString();
             export.Description = mmo.Description;
             export.Notes = "Generated via DiversityMobile";            
             return export;

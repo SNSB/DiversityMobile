@@ -4,6 +4,21 @@ using DiversityPhone.Model;
 using System.Reactive;
 namespace DiversityPhone.Interface
 {
+    
+    public class ServiceNotAvailableException : Exception
+    {
+        public ServiceNotAvailableException() { }
+        public ServiceNotAvailableException(string message) : base(message) { }
+        public ServiceNotAvailableException(string message, Exception inner) : base(message, inner) { }
+    }
+
+    public class ServiceOperationException : Exception
+    {
+        public ServiceOperationException() { }
+        public ServiceOperationException(string message) : base(message) { }
+        public ServiceOperationException(string message, Exception inner) : base(message, inner) { }
+    }
+
     public interface IDiversityServiceClient
     {
         #region Vocabulary
@@ -56,7 +71,7 @@ namespace DiversityPhone.Interface
 
         IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);
 
-        IObservable<String> UploadMultimedia(MultimediaObject Uri, byte[] data);
+        IObservable<Uri> UploadMultimedia(MultimediaObject Owner, byte[] data);
         #endregion
 
 

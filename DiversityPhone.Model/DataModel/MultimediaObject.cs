@@ -25,6 +25,8 @@ namespace DiversityPhone.Model
 			get { return _MMOID; }
 			set 
 			{
+				
+
 				if (_MMOID != value)
 				{
 					this.raisePropertyChanging("MMOID");
@@ -43,6 +45,8 @@ namespace DiversityPhone.Model
 			get { return _OwnerType; }
 			set 
 			{
+				
+
 				if (_OwnerType != value)
 				{
 					this.raisePropertyChanging("OwnerType");
@@ -61,6 +65,8 @@ namespace DiversityPhone.Model
 			get { return _RelatedId; }
 			set 
 			{
+				
+
 				if (_RelatedId != value)
 				{
 					this.raisePropertyChanging("RelatedId");
@@ -79,6 +85,8 @@ namespace DiversityPhone.Model
 			get { return _Uri; }
 			set 
 			{
+				
+
 				if (_Uri != value)
 				{
 					this.raisePropertyChanging("Uri");
@@ -97,6 +105,8 @@ namespace DiversityPhone.Model
 			get { return _MediaType; }
 			set 
 			{
+				
+
 				if (_MediaType != value)
 				{
 					this.raisePropertyChanging("MediaType");
@@ -116,6 +126,8 @@ namespace DiversityPhone.Model
 			get { return _ModificationState; }
 			set 
 			{
+				
+
 				if (_ModificationState != value)
 				{
 					this.raisePropertyChanging("ModificationState");
@@ -125,24 +137,26 @@ namespace DiversityPhone.Model
 			}
 		}
 		
-		
-		private string _CollectionUri;
 		[Column]
+		private String CollectionUri { get; set; }
 		
-		public string CollectionUri
+		
+		public Uri CollectionURI
 		{
-			get { return _CollectionUri; }
+			get { return new Uri(CollectionUri, UriKind.RelativeOrAbsolute); }
 			set 
 			{
-				if (_CollectionUri != value)
+
+
+                if (CollectionUri != value.ToString())
 				{
-					this.raisePropertyChanging("CollectionUri");
-					_CollectionUri = value;
-					this.raisePropertyChanged("CollectionUri");
+					this.raisePropertyChanging("CollectionURI");
+					CollectionUri = value.ToString();
+					this.raisePropertyChanged("CollectionURI");
 				}  
 			}
 		}
-		   
+
 
         
 

@@ -1168,7 +1168,7 @@ namespace DiversityPhone.DiversityService {
         
         private int RelatedCollectionIDField;
         
-        private string UriField;
+        private System.Uri UriField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
         public string Description {
@@ -1223,7 +1223,7 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Uri {
+        public System.Uri Uri {
             get {
                 return this.UriField;
             }
