@@ -151,8 +151,10 @@ namespace DiversityPhone.Model
                 if (CollectionUri != value.ToString())
 				{
 					this.raisePropertyChanging("CollectionURI");
+					this.raisePropertyChanging("CollectionUri");
 					CollectionUri = value.ToString();
 					this.raisePropertyChanged("CollectionURI");
+					this.raisePropertyChanged("CollectionUri");
 				}  
 			}
 		}
