@@ -5,7 +5,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    
+
     <DataTemplate x:Key="MultimediaItemTemplate">
         <Grid>
             <Grid.ColumnDefinitions>
@@ -21,25 +21,32 @@
                        Height="40"
                        Width="40"/>
             <TextBlock Grid.Column="1" 
-                               Margin="{StaticResource PhoneHorizontalMargin}"
-                               Text="{Binding Description}"/>
+                       Margin="{StaticResource PhoneHorizontalMargin}"
+                       Text="{Binding Description}"
+                       Style="{StaticResource PhoneTextTitle2Style}"/>
         </Grid>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="ElementItemTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
-            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" Text="{Binding Description}"/>
+            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" 
+                       Text="{Binding Description}"
+                       Style="{StaticResource PhoneTextTitle2Style}"/>
         </StackPanel>
     </DataTemplate>
-    
+
     <DataTemplate x:Key="DisplayTextItemTemplate">
         <TextBlock Text="{Binding DisplayText}"/>
     </DataTemplate>
     <DataTemplate x:Key="DisplayTextItemTemplateLarge">
         <TextBlock Text="{Binding DisplayText}" 
+                   Style="{StaticResource PhoneTextLargeStyle}"/>
+    </DataTemplate>
+    <DataTemplate x:Key="DisplayTextItemTemplateExtraLarge">
+        <TextBlock Text="{Binding DisplayText}" 
                    Style="{StaticResource PhoneTextExtraLargeStyle}"/>
     </DataTemplate>
 
-    
+
 </ResourceDictionary>

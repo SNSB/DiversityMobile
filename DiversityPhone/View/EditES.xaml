@@ -33,7 +33,9 @@
 
             <!--ContentPanel - place additional content here-->
             <ScrollViewer>
-                <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+                <StackPanel x:Name="ContentPanel" 
+                            Grid.Row="1" 
+                            Margin="{StaticResource PhoneHorizontalMargin}">
                     <TextBlock Text="Description"/>
                     <TextBox x:Name="DescTB" Text="{Binding Description, Mode=TwoWay}" TextChanged="DescTB_TextChanged" IsEnabled="{Binding IsEditable}" Background="#BFFFFFFF" />
                     <TextBlock Text="SeriesCode"/>

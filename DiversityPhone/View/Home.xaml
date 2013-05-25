@@ -39,7 +39,7 @@
                        Style="{StaticResource PhoneTextNormalStyle}"
                        HorizontalAlignment="Left" />
             <Image Grid.Row="0" Grid.RowSpan="2" 
-                   Source="/Images/ApplicationIcon.png"
+                   Source="/Images/AppIcons/Diversity_allein_tr.png"
                    Height="120" Width="140"  
                    Stretch="Fill" 
                    HorizontalAlignment="Right" VerticalAlignment="Center" />

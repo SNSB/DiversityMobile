@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">            
+        <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -35,28 +35,36 @@
         </Grid>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel Grid.Row="1">            
-            <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
+        <Grid Grid.Row="1" Margin="{StaticResource PhoneHorizontalMargin}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0">
+                <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"                                
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
                                 ItemsSource="{Binding Properties.Items}"
                                 SelectedIndex="{Binding Properties.SelectedIndex, Mode=TwoWay}"                                
                                 />
 
-            <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/>
-            <TextBox Name="tbFilterString" Text="{Binding FilterString, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
-            <TextBlock Text="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
-            <ListBox ItemTemplate="{StaticResource DisplayTextItemTemplate}" 
+                <TextBlock Text="Filter" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                <TextBox Name="tbFilterString" Text="{Binding FilterString, Mode=TwoWay}" IsEnabled="{Binding IsEditable}"/>
+                <TextBlock Text="{Binding Resources.EventProperty_Header_Value, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+            </StackPanel>
+            <ListBox Grid.Row="1" 
+                     Style="{StaticResource ListBoxWhiteStyle}"
+                     ItemTemplate="{StaticResource DisplayTextItemTemplateLarge}" 
                      ItemsSource="{Binding Values.Items}"
                      SelectedIndex="{Binding Values.SelectedIndex, Mode=TwoWay}"
                      IsEnabled="{Binding IsEditable}"/>
-        </StackPanel>
+        </Grid>
     </Grid>
- 
+
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-            
+
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

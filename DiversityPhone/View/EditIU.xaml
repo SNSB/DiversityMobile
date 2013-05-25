@@ -42,6 +42,7 @@
             <DataTemplate x:Key="TaxonNameItemTemplate">
                 <TextBlock Text="{Binding TaxonNameCache}" 
                            FontStyle="{Binding Synonymy, Converter={StaticResource SynonymyToFontStyle}}"
+                           Style="{StaticResource PhoneTextTitle2Style}"
                            />
 
             </DataTemplate>
@@ -68,7 +69,8 @@
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer Grid.Row="1">
-            <StackPanel x:Name="ContentPanel"  Margin="12,0,12,0">
+            <StackPanel x:Name="ContentPanel"  
+                        Margin="{StaticResource PhoneHorizontalMargin}">
                 <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
                                 SelectedIndex="{Binding TaxonomicGroup.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource TermListItemTemplate}"                                
@@ -99,7 +101,7 @@
                 <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
                                 SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"             
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplateLarge}"
+                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplateExtraLarge}"
                                 Header="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.IdentificationUnit_Header_Qualification, Source={StaticResource LocalizedStrings}}"
                                 IsEnabled="{Binding IsEditable}"

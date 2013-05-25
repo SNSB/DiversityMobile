@@ -24,7 +24,8 @@
                                          Command="{Binding ToggleEditable}"/>
         </Grid>
 
-        <StackPanel Background="Transparent">
+        <StackPanel Background="Transparent"
+                    Margin="{StaticResource PhoneHorizontalMargin}">
             <TextBlock Text="{Binding Resources.Specimen_Header_SpecimenCode, Source={StaticResource LocalizedStrings}}"/>
             <TextBox x:Name="AN_TB" Background="#BFFFFFFF" 
                      Text="{Binding AccessionNumber, Mode=TwoWay}" 

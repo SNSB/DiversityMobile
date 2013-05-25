@@ -36,7 +36,8 @@
         </Grid>
         
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >            
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" 
+                    Margin="{StaticResource PhoneHorizontalMargin}">            
             <TextBlock Text="Locality Description"/>
             <TextBox x:Name="LocalityTB" Text="{Binding LocalityDescription, Mode=TwoWay}" 
                      TextChanged="LocalityTB_TextChanged" IsEnabled="{Binding IsEditable}"/>
