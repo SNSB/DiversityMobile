@@ -119,7 +119,7 @@ namespace DiversityPhone.ViewModels
         #endregion
 
         #region Async Operations
-        ReactiveAsyncCommand clearDatabase = new ReactiveAsyncCommand();
+        ReactiveCommand clearDatabase = new ReactiveCommand();
         #endregion
 
         private AppSettings createSettings()
@@ -202,7 +202,7 @@ namespace DiversityPhone.ViewModels
                     });
 
 
-            clearDatabase.RegisterAsyncAction(_ =>
+            clearDatabase.Subscribe(_ =>
             {               
 
                 if (Taxa == null || FieldData == null)
