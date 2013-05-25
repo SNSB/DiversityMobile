@@ -12,6 +12,7 @@ using DiversityPhone.Model;
 using System.Reactive;
 using DiversityPhone.Interface;
 using System.Diagnostics.Contracts;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
@@ -76,7 +77,8 @@ namespace DiversityPhone.ViewModels
             IConnectivityService Network,
             IMapTransferService MapService,
             IMapStorageService MapStorage,
-            INotificationService Notifications
+            INotificationService Notifications,
+            [Dispatcher] IScheduler Dispatcher
             )
         {
             Contract.Requires(Network != null);
@@ -94,7 +96,8 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_ => getMaps.Execute(null));
 
             MapList = getMaps.RegisterAsyncFunction(_ => MapStorage.getAllMaps().Select(m => new MapVM(m)))
-                      .SelectMany(vms => vms)
+                      .SelectMany(vms => vms.ToList())
+                      .ObserveOn(Dispatcher)
                       .CreateCollection();
             MapList.ItemsAdded
                 .Subscribe(item => _local_map_register.Add(item.ServerKey, Unit.Default));
@@ -121,12 +124,27 @@ namespace DiversityPhone.ViewModels
             _IsOnlineAvailable = this.ObservableToProperty(
                 this.OnActivation()
                 .SelectMany(Network.WifiAvailable().TakeUntil(this.OnDeactivation()))
+                .Do(x => {})
                 , x => x.IsOnlineAvailable, false);
 
             SearchMaps = new ReactiveAsyncCommand(_IsOnlineAvailable);
 
-            _SearchResults = this.ObservableToProperty(
-                SearchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string)),
+            SearchMaps.CanExecuteChanged += (s, args) => { };
+
+            _SearchResults = this.ObservableToProperty<MapManagementVM, IReactiveCollection<MapVM>>(
+                SearchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string))
+                .ObserveOn(Dispatcher)
+                .Select(result =>
+                    {
+                        try
+                        {
+                            return new ReactiveCollection<MapVM>(result.Select(x => new MapVM(null) { ServerKey = x })) as IReactiveCollection<MapVM>;
+                        }
+                        catch (Exception ex)
+                        {
+                            return null;
+                        }
+                    }),
                 x => x.SearchResults);
 
             DownloadMap = new ReactiveCommand<MapVM>(vm => canBeDownloaded(vm as MapVM));
@@ -153,6 +171,7 @@ namespace DiversityPhone.ViewModels
                         })
                         .Select(map => System.Tuple.Create(vm_t, map));
             })
+            .ObserveOn(Dispatcher)
             .Select(t =>
                 {
                     if (t.Item1 != null) // VM
@@ -168,6 +187,7 @@ namespace DiversityPhone.ViewModels
                     }
                     return t.Item1;
                 })
+            
             .Subscribe(vm => SelectMap.CanExecute(vm));
         }
 
@@ -176,18 +196,19 @@ namespace DiversityPhone.ViewModels
             return vm.Model == null && !vm.IsDownloading;
         }
 
-        private IReactiveCollection<MapVM> searchMapsImpl(string p)
+        private IEnumerable<string> searchMapsImpl(string p)
         {
             try
             {
-                return new ReactiveCollection<MapVM>(MapService.GetAvailableMaps(p).First()
+                return
+                MapService.GetAvailableMaps(p).First()
                     .Where(key => !_local_map_register.ContainsKey(key))
                     .Take(10)
-                    .Select(mapname => new MapVM(null) { ServerKey = mapname }));
+                    .ToList();
             }
             catch (Exception)
             {
-                return new ReactiveCollection<MapVM>();
+                return Enumerable.Empty<string>();
             }
         }
     }

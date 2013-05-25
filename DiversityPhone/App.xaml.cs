@@ -176,6 +176,14 @@ namespace DiversityPhone
 
         public static void Initialize()
         {
+            //Work around an Issue with ReactiveUI
+            //The WriteableBitmapEx library is recognized as the Pex Unit Test Runner
+            RxApp.DeferredScheduler = null;
+            RxApp.TaskpoolScheduler = null;
+            RxApp.InUnitTestRunnerOverride = false;
+            RxApp.DeferredScheduler = DispatcherScheduler.Current;
+            RxApp.TaskpoolScheduler = ThreadPoolScheduler.Instance;
+
 
             Kernel = new StandardKernel();
             Kernel.Bind<PhoneApplicationFrame>().ToConstant(RootFrame);
