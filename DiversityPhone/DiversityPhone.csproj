@@ -87,6 +87,8 @@
   <ItemGroup>
     <Reference Include="Microsoft.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=736440c9b414ea16, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Devices.Sensors" />
+    <Reference Include="Microsoft.Live, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Live.Controls, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit">
@@ -178,6 +180,7 @@
     <Compile Include="Database\DiversityDataContext.cs" />
     <Compile Include="Database\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Database\OfflineStorage.cs" />
+    <Compile Include="Database\OfflineStorage.Migration.cs" />
     <Compile Include="Database\OfflineStorage.Queries.cs" />
     <Compile Include="Database\TaxonService.cs" />
     <Compile Include="Database\VocabularyService.cs" />
@@ -246,6 +249,9 @@
     <Compile Include="ViewModels\View\ViewESVM.cs" />
     <Compile Include="ViewModels\View\ViewEVVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
+    <Compile Include="View\Admin.xaml.cs">
+      <DependentUpon>Admin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
@@ -573,6 +579,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\Admin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Audio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

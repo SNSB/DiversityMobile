@@ -1,23 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
+﻿using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels.Utility;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System;
+using System.Reactive;
 using System.Reactive.Linq;
-using ReactiveUI;
-using System.Reactive.Disposables;
-using DiversityPhone.View.Appbar;
 using System.Reflection;
-using Microsoft.Phone.Tasks;
+using System.Windows;
+using System.Windows.Input;
 
 
 namespace DiversityPhone.View
@@ -37,6 +27,13 @@ namespace DiversityPhone.View
             InitializeComponent();
 
             version_info.Text = GetVersionNumber();
+
+            var version_taps = Observable.FromEventPattern<System.Windows.Input.GestureEventArgs>(h => VersionTextBlock.DoubleTap += h, h => VersionTextBlock.DoubleTap -= h)
+                .Select(_ => Unit.Default)
+                .Window(TimeSpan.FromSeconds(5), 3)
+                .SelectMany(window => window.Count())
+                .Where(count => count == 3)
+                .Subscribe(_ => NavigationService.Navigate(new Uri("/View/Admin.xaml", UriKind.RelativeOrAbsolute)));
         }
 
         private void ManageTaxa_Click()

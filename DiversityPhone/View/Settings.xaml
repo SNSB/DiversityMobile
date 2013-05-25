@@ -31,7 +31,7 @@
             <TextBlock TextWrapping="Wrap" Text="Settings" Style="{StaticResource PhoneTextTitle1Style}"/>
 
             <TextBlock Text="Version" Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBlock Style="{StaticResource PhoneTextLargeStyle}">
+            <TextBlock x:Name="VersionTextBlock" Style="{StaticResource PhoneTextLargeStyle}">
                 <Run>
                     DiversityMobile 
                 </Run>
