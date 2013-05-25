@@ -9,13 +9,13 @@
 
     public class DiversityDataContext : DataContext
     {
-        private static string isolatedStorageDBUri = "isostore:/diversityDB.sdf";
+        public static readonly string DB_FILENAME = "diversityDB.sdf";
+        public static readonly string DB_URI = "isostore:/diversityDB.sdf";
 
         public DiversityDataContext()
-            : base(isolatedStorageDBUri)
+            : base(DB_URI)
         {
-            if (!this.DatabaseExists())
-                this.CreateDatabase();
+            
         }
 
         public Table<EventSeries> EventSeries;

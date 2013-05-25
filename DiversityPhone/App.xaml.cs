@@ -164,6 +164,16 @@ namespace DiversityPhone
         }
 
 
+        class InitModule : Ninject.Modules.NinjectModule
+        {
+            public override void Load()
+            {
+                Kernel.Get<OfflineStorage>().CheckAndRepairDatabase();
+                Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
+
+            }
+        }
+
         public static void Initialize()
         {
 
@@ -172,8 +182,8 @@ namespace DiversityPhone
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
-
-            RxApp.MessageBus.SendMessage(EventMessage.Default, MessageContracts.INIT);
+            Kernel.Load<InitModule>();
+            
         }
 
 
