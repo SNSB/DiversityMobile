@@ -27,25 +27,27 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public ReactiveCommand(Func<T, bool> canExecute = null, IObservable<Unit> canExecuteChanged = null)
+        public ReactiveCommand(Func<T, bool> canExecute, IObservable<Unit> canExecuteChanged = null)
         {
             inner_command = ReactiveCommand.Create(create_can_execute(canExecute));
             if (canExecuteChanged != null)
                 canExecuteChanged.Subscribe(_ => RaiseCanExecuteChanged(this, EventArgs.Empty));
+            else
+                inner_command.CanExecuteChanged += RaiseCanExecuteChanged;
             CommonConstructor();
         }
-        public ReactiveCommand(IObservable<bool> canExecute)
+        public ReactiveCommand(IObservable<bool> canExecute = null)
         {
             inner_command = new ReactiveCommand(canExecute);
             inner_command.CanExecuteChanged += RaiseCanExecuteChanged;
             CommonConstructor();
         }
 
-        void RaiseCanExecuteChanged(object sender, EventArgs args)
+        public void RaiseCanExecuteChanged(object sender = null, EventArgs args = null)
         {
             var subscribers = CanExecuteChanged;
             if (subscribers != null)
-                subscribers(sender, args);
+                subscribers(this, args ?? EventArgs.Empty);
         }
 
         private void CommonConstructor()

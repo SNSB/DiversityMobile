@@ -23,7 +23,8 @@
             <TextBlock Grid.Column="1" 
                        Margin="{StaticResource PhoneHorizontalMargin}"
                        Text="{Binding Description}"
-                       Style="{StaticResource PhoneTextTitle2Style}"/>
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       VerticalAlignment="Center"/>
         </Grid>
     </DataTemplate>
 
@@ -32,7 +33,8 @@
             <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40"/>
             <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" 
                        Text="{Binding Description}"
-                       Style="{StaticResource PhoneTextTitle2Style}"/>
+                       Style="{StaticResource PhoneTextTitle2Style}"
+                       VerticalAlignment="Center"/>
         </StackPanel>
     </DataTemplate>
 

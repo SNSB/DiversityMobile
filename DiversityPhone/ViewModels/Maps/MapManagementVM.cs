@@ -1,18 +1,16 @@
-﻿using System;
-using System.Net;
-
-using ReactiveUI;
-using System.Reactive.Linq;
-using System.Linq;
-using DiversityPhone.Services;
-using System.Collections.Generic;
-using ReactiveUI.Xaml;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-
-using System.Reactive;
-using DiversityPhone.Interface;
+using DiversityPhone.Services;
+using ReactiveUI;
+using ReactiveUI.Xaml;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Net;
+using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
@@ -129,8 +127,6 @@ namespace DiversityPhone.ViewModels
 
             SearchMaps = new ReactiveAsyncCommand(_IsOnlineAvailable);
 
-            SearchMaps.CanExecuteChanged += (s, args) => { };
-
             _SearchResults = this.ObservableToProperty<MapManagementVM, IReactiveCollection<MapVM>>(
                 SearchMaps.RegisterAsyncFunction(s => searchMapsImpl(s as string))
                 .ObserveOn(Dispatcher)
@@ -147,7 +143,7 @@ namespace DiversityPhone.ViewModels
                     }),
                 x => x.SearchResults);
 
-            DownloadMap = new ReactiveCommand<MapVM>(vm => canBeDownloaded(vm as MapVM));
+            DownloadMap = new ReactiveCommand<MapVM>(vm => canBeDownloaded(vm as MapVM), Observable.Empty<Unit>());
             DownloadMap
                 .CheckConnectivity(Network, Notifications)
                 .Do(vm => vm.IsDownloading = true)
@@ -186,9 +182,7 @@ namespace DiversityPhone.ViewModels
                         }
                     }
                     return t.Item1;
-                })
-            
-            .Subscribe(vm => SelectMap.CanExecute(vm));
+                }).Subscribe(_ => SelectMap.RaiseCanExecuteChanged());
         }
 
         private bool canBeDownloaded(MapVM vm)
