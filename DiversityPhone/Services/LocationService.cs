@@ -8,9 +8,10 @@
     using System.Collections.Generic;
     using DiversityPhone.Model;
     using DiversityPhone.Interface;
+    using System.Reactive.Disposables;
 
 
-    
+
 
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.
@@ -19,29 +20,13 @@
     {
         private static readonly TimeSpan DefaultStartupTimeout = TimeSpan.FromSeconds(5);
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
-        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.Default;
+        private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.High;
 
         readonly IScheduler threadpool = ThreadPoolScheduler.Instance;
 
 
-        private IObservable<GeoCoordinateWatcher> watcher;
+        private IDisposable current_watcher = Disposable.Empty;
         private IObservable<GeoPosition<GeoCoordinate>> coordinate_observable;
-
-
-        private GeoCoordinateWatcher _CurrentWatcher;
-        private GeoCoordinateWatcher CurrentWatcher
-        {
-            get { return _CurrentWatcher; }
-            set
-            {
-                if (_CurrentWatcher != value)
-                {
-                    if (_CurrentWatcher != null)
-                        _CurrentWatcher.Dispose();
-                    _CurrentWatcher = value;
-                }
-            }
-        }
 
         private bool _IsEnabled = true;
         public bool IsEnabled
@@ -52,21 +37,8 @@
                 if (_IsEnabled != value)
                 {
                     _IsEnabled = value;
-                    lock (this)
-                    {
-                        var curr_w = CurrentWatcher;
-                        if (curr_w != null)
-                        {
-                            if (!_IsEnabled)
-                            {
-                                curr_w.Stop();
-                            }
-                            else
-                            {
-                                curr_w.Start();
-                            }
-                        }
-                    }
+                    if (!_IsEnabled)
+                        current_watcher.Dispose();
                     this.RaisePropertyChanged(x => x.IsEnabled);
                 }
             }
@@ -82,10 +54,19 @@
         {
 
 
-            this.watcher = Observable.Defer(() => Observable.Start(() => new GeoCoordinateWatcher(DefaultAccuracy)))
-                .Where(w => IsEnabled)
-                .Do(w => CurrentWatcher = w)
-                .Do(w => w.Start())
+            var watcher = this.WhenAny(x => x.IsEnabled, x => x.Value)
+                    .Where(enabled => enabled)
+                    .Select(_ => Observable.Create<GeoCoordinateWatcher>(obs =>
+                    {
+                        var w = new GeoCoordinateWatcher(DefaultAccuracy);
+                        obs.OnNext(w);
+                        w.Start();
+
+                        current_watcher = Disposable.Create(() => w.Stop());
+
+                        return current_watcher;
+                    }))
+                .Switch()
                 .Replay(1)
                 .RefCount();
 
@@ -93,7 +74,7 @@
 
             coordinate_observable = watcher
                 .Select(w => Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
-                    .Select(ev => ev.EventArgs.Position)                    
+                    .Select(ev => ev.EventArgs.Position)
                     ).Switch();
         }
 
@@ -146,7 +127,7 @@
 
 
 
-        
+
     }
 
     static class GeoCoordinateMixin

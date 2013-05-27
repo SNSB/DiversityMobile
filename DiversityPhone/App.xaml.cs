@@ -21,7 +21,7 @@ namespace DiversityPhone
     {
         private const string TASK_KEY = "BackgroundTasks";
 
-        public static IKernel Kernel { get; private set; }        
+        public static IKernel Kernel { get; private set; }
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -74,7 +74,7 @@ namespace DiversityPhone
             private void BindAndActivateSingleton<T>()
             {
                 var tmp = Kernel.Get<T>();
-                Bind<T>().ToConstant(tmp).InSingletonScope();                
+                Bind<T>().ToConstant(tmp).InSingletonScope();
             }
 
             public override void Load()
@@ -109,7 +109,7 @@ namespace DiversityPhone
 
                 Bind<TaxonManagementVM>().ToSelf().InTransientScope();
 
-                
+
             }
 
         }
@@ -153,7 +153,7 @@ namespace DiversityPhone
 
                 Kernel.Get<ISettingsService>()
                     .CurrentSettings()
-                    .Where(s => s!=null)
+                    .Where(s => s != null)
                     .Select(s => s.UseGPS)
                     .Subscribe(gps => location.IsEnabled = gps);
 
@@ -191,7 +191,7 @@ namespace DiversityPhone
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
             Kernel.Load<InitModule>();
-            
+
         }
 
 
