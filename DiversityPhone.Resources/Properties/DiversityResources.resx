@@ -118,10 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Analysis_NoAnalysis" xml:space="preserve">
-    <value>No Analysis</value>
+    <value>no analysis</value>
   </data>
   <data name="Analysis_Result_NoResult" xml:space="preserve">
-    <value>No Result</value>
+    <value>no result</value>
   </data>
   <data name="App_CreatedBy" xml:space="preserve">
     <value>This App was implemented by</value>
@@ -194,7 +194,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Downloading: </value>
   </data>
   <data name="Download_EventAlreadyDownloaded" xml:space="preserve">
-    <value>Event already downloaded</value>
+    <value>event already downloaded</value>
   </data>
   <data name="Download_Header_CancelDownload" xml:space="preserve">
     <value>cancel download</value>
@@ -206,25 +206,28 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>press and hold to download an item</value>
   </data>
   <data name="Download_ItemsDone" xml:space="preserve">
-    <value>Items Done</value>
+    <value>items done</value>
   </data>
   <data name="Download_SearchingEvents" xml:space="preserve">
-    <value>Looking for Events ...</value>
+    <value>looking for events ...</value>
   </data>
   <data name="EventProperty_Header_Property" xml:space="preserve">
-    <value>Property</value>
+    <value>property</value>
   </data>
   <data name="EventProperty_Header_Value" xml:space="preserve">
-    <value>Value</value>
+    <value>value</value>
+  </data>
+  <data name="EventSeries_NoES_Header" xml:space="preserve">
+    <value>events</value>
   </data>
   <data name="GeoCoordinates_NoAltitude" xml:space="preserve">
-    <value>No Altitude</value>
+    <value>no altitude</value>
   </data>
   <data name="GeoCoordinates_NoLatitude" xml:space="preserve">
-    <value>No Latitude</value>
+    <value>no latitude</value>
   </data>
   <data name="GeoCoordinates_NoLongitude" xml:space="preserve">
-    <value>No Longitude</value>
+    <value>no longitude</value>
   </data>
   <data name="GeoCoordinates_Suffix_E" xml:space="preserve">
     <value>E</value>
@@ -254,28 +257,28 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Can't open a new Series while there is still an unfinished one.</value>
   </data>
   <data name="IdentificationUnit_Header_AnalysisDate" xml:space="preserve">
-    <value>Collection Date</value>
+    <value>collection date</value>
   </data>
   <data name="IdentificationUnit_Header_Identification" xml:space="preserve">
-    <value>Identification</value>
+    <value>identification</value>
   </data>
   <data name="IdentificationUnit_Header_NameQuery" xml:space="preserve">
-    <value>Name Query</value>
+    <value>name query</value>
   </data>
   <data name="IdentificationUnit_Header_OnlyObserved" xml:space="preserve">
-    <value>Only observed</value>
+    <value>only observed</value>
   </data>
   <data name="IdentificationUnit_Header_Qualification" xml:space="preserve">
-    <value>Qualifier</value>
+    <value>qualifier</value>
   </data>
   <data name="IdentificationUnit_Header_RelationshipType" xml:space="preserve">
-    <value>Relationship Type</value>
+    <value>relationship type</value>
   </data>
   <data name="IdentificationUnit_Header_TaxonomicGroup" xml:space="preserve">
-    <value>Taxonomic Group</value>
+    <value>taxonomic group</value>
   </data>
   <data name="IdentificationUnit_Info_NoAnalyses" xml:space="preserve">
-    <value>No Analyses available.</value>
+    <value>no analyses available.</value>
   </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
@@ -284,7 +287,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>press and hold to display menu</value>
   </data>
   <data name="Info_DeletingObjects" xml:space="preserve">
-    <value>Deleting Objects ...</value>
+    <value>deleting objects ...</value>
   </data>
   <data name="Info_MissingRights" xml:space="preserve">
     <value />
@@ -356,16 +359,16 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>save</value>
   </data>
   <data name="Setup_Header_Password" xml:space="preserve">
-    <value>Password</value>
+    <value>password</value>
   </data>
   <data name="Setup_Header_Project" xml:space="preserve">
-    <value>Project</value>
+    <value>project</value>
   </data>
   <data name="Setup_Header_Repository" xml:space="preserve">
-    <value>Repository</value>
+    <value>repository</value>
   </data>
   <data name="Setup_Header_Username" xml:space="preserve">
-    <value>Username</value>
+    <value>username</value>
   </data>
   <data name="Setup_Info_GettingProjects" xml:space="preserve">
     <value>Getting Projects</value>
@@ -377,7 +380,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Invalid Credentials</value>
   </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
-    <value>Please Choose</value>
+    <value>please choose</value>
   </data>
   <data name="Setup_Message_AllowGPS_Body" xml:space="preserve">
     <value>Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings.</value>
@@ -389,7 +392,10 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>You can only use the application once it's been initialized</value>
   </data>
   <data name="Specimen_Header_SpecimenCode" xml:space="preserve">
-    <value>Specimen Code</value>
+    <value>specimen code</value>
+  </data>
+  <data name="Specimen_Observation" xml:space="preserve">
+    <value>observation</value>
   </data>
   <data name="Sync_Dialog_UploadAll_Caption" xml:space="preserve">
     <value>upload all</value>
@@ -405,9 +411,6 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Sync_Header_Multimedia" xml:space="preserve">
     <value>multimedia</value>
-  </data>
-  <data name="Sync_Header_SyncLevel" xml:space="preserve">
-    <value>sync level</value>
   </data>
   <data name="Sync_Info_CollectingModifications" xml:space="preserve">
     <value>Collecting Modifications</value>
@@ -426,21 +429,6 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
     <value>Uploading Multimedia </value>
-  </data>
-  <data name="Sync_Level_All" xml:space="preserve">
-    <value>All</value>
-  </data>
-  <data name="Sync_Level_Event" xml:space="preserve">
-    <value>Event</value>
-  </data>
-  <data name="Sync_Level_EventSeries" xml:space="preserve">
-    <value>EventSeries</value>
-  </data>
-  <data name="Sync_Level_IU" xml:space="preserve">
-    <value>Identification Unit</value>
-  </data>
-  <data name="Sync_Level_Specimen" xml:space="preserve">
-    <value>Specimen</value>
   </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>

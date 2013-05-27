@@ -71,7 +71,7 @@ namespace DiversityPhone.ViewModels
             }
             else if (!collectionSeriesID.HasValue)
             {
-                return Observable.Return(EventSeries.NoEventSeries);
+                return Observable.Return(NoEventSeriesMixin.NoEventSeries);
             }
             else
             {
@@ -86,7 +86,7 @@ namespace DiversityPhone.ViewModels
                             {
                                 foreach (var loc in locs)
                                 {
-                                    loc.RelatedID = es.SeriesID.Value;
+                                    loc.RelatedID = es.SeriesID;
                                     Storage.add(loc);
                                 }
                                 return es;

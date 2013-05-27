@@ -111,7 +111,7 @@ namespace DiversityPhone.Services
         public EventSeries getEventSeriesByID(int? id)
         {
             if (!id.HasValue)
-                return EventSeries.NoEventSeries;
+                return NoEventSeriesMixin.NoEventSeries;
 
             return singletonQuery(ctx => from es in ctx.EventSeries
                                          where es.SeriesID == id.Value
@@ -121,7 +121,7 @@ namespace DiversityPhone.Services
 
         public void addOrUpdateEventSeries(EventSeries newSeries)
         {
-            if (EventSeries.isNoEventSeries(newSeries))
+            if (newSeries.IsNoEventSeries())
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
             Messenger.SendMessage<EventSeries>(newSeries, MessageContracts.START);
@@ -190,7 +190,7 @@ namespace DiversityPhone.Services
         public IEnumerable<Event> getEventsForSeries(EventSeries es)
         {
             //Workaround for the fact, that ev.SeriesID == es.SeriesID doesn't work for null values
-            if (EventSeries.isNoEventSeries(es))
+            if (es.IsNoEventSeries())
                 return enumerateQuery(
                     ctx => from ev in ctx.Events
                            where ev.SeriesID == null
@@ -625,7 +625,7 @@ namespace DiversityPhone.Services
                     case DBObjectType.EventSeries:
                         key = from es in ctx.EventSeries
                               where es.CollectionSeriesID == localID
-                              select es.SeriesID;
+                              select es.SeriesID as int?;
                         break;
                     case DBObjectType.Event:
                         key = from ev in ctx.Events

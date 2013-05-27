@@ -54,7 +54,7 @@ namespace DiversityPhone.ViewModels
             SeriesList = new ReactiveCollection<EventSeriesVM>();
 
             getSeries.RegisterAsyncFunction(_ =>
-                    Enumerable.Repeat(EventSeries.NoEventSeries,1)
+                    Enumerable.Repeat(NoEventSeriesMixin.NoEventSeries,1)
                     .Concat(
                         Storage
                         .getAllEventSeries()
@@ -71,7 +71,7 @@ namespace DiversityPhone.ViewModels
             (SelectSeries = new ReactiveCommand<IElementVM<EventSeries>>())            
                 .ToMessage(MessageContracts.VIEW);
 
-            (EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => vm.Model != EventSeries.NoEventSeries))
+            (EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => vm.Model != NoEventSeriesMixin.NoEventSeries))
                 .ToMessage(MessageContracts.EDIT);
 
             
@@ -86,7 +86,7 @@ namespace DiversityPhone.ViewModels
                     Location.LocationByDistanceThreshold(20)
                     .Select(c =>
                         {
-                            var gp = new GeoPointForSeries() { SeriesID = series.Model.SeriesID.Value };
+                            var gp = new GeoPointForSeries() { SeriesID = series.Model.SeriesID };
                             gp.SetCoordinates(c);
                             return gp;
                         })

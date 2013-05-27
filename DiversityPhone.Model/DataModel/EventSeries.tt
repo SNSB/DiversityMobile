@@ -10,6 +10,7 @@ using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
 using System.Data.Linq; 
 using System.Data.Linq.Mapping;
+using DiversityPhone;
 
 namespace DiversityPhone.Model
 {	
@@ -21,7 +22,7 @@ namespace DiversityPhone.Model
 		private Binary version;
 #pragma warning restore 0169
 
-<# Row("int?", "SeriesID", RowKind.Key); #>
+<# Row("int", "SeriesID", RowKind.Key); #>
 <# Row("int?", "CollectionSeriesID", RowKind.Nullable); #>   
 
 <# Row("DateTime", "SeriesStart"); #>  
@@ -45,18 +46,7 @@ namespace DiversityPhone.Model
         }
 
 
-        public static EventSeries NoEventSeries
-        {
-            get
-            {
-                return _NoEventSeries;
-            }
-        }
-       
-        public static bool isNoEventSeries(EventSeries es)
-        {
-            return _NoEventSeries == es;
-        }
+        
 
         public static IQueryOperations<EventSeries> Operations
         {
@@ -79,14 +69,7 @@ namespace DiversityPhone.Model
                               es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID.Value);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
                           });
 
-            _NoEventSeries = new EventSeries()
-            {
-                Description = "Events",
-                SeriesCode = "No EventSeries",
-                ModificationState = ModificationState.Unmodified,
-                SeriesEnd = DateTime.Now,     
-				SeriesID = null,        
-            };
+            
         }      
 
 		public DBObjectType EntityType

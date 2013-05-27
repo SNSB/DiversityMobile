@@ -21,7 +21,7 @@
         public EventSeriesVM( EventSeries model )
             : base(model)
         {           
-            if (EventSeries.isNoEventSeries(Model)) //Überprüfen auf NoEventSeries
+            if (Model.IsNoEventSeries()) //Überprüfen auf NoEventSeries
                 _esIcon = ViewModels.Icon.NoEventSeries;
             else
             {

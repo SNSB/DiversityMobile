@@ -31,13 +31,13 @@
         {
             this.Storage = Storage;
 
-            EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !EventSeries.isNoEventSeries(vm.Model));
+            EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !vm.Model.IsNoEventSeries());
             EditSeries
                 .ToMessage(MessageContracts.EDIT);
 
             EventList = new ReactiveCollection<EventVM>();
             EventList
-                .ListenToChanges<Event, EventVM>(ev => ev.SeriesID == Current.Model.SeriesID);
+                .ListenToChanges<Event, EventVM>(ev => ev.SeriesID == Current.Model.EventSeriesID());
 
             CurrentModelObservable
                 .Merge(
@@ -64,11 +64,11 @@
                 .Select(_ => new EventVM(
                     new Event()
                     {
-                        SeriesID = Current.Model.SeriesID
+                        SeriesID = Current.Model.IsNoEventSeries() ? null : Current.Model.SeriesID as int?
                     }) as IElementVM<Event>)
                 .ToMessage(MessageContracts.EDIT);
 
-            Maps = new ReactiveCommand(CurrentModelObservable.Select(es => !EventSeries.isNoEventSeries(es)));
+            Maps = new ReactiveCommand(CurrentModelObservable.Select(es => !es.IsNoEventSeries()));
             Maps
                 .Select(_ => Current.Model as ILocationOwner)
                 .ToMessage(MessageContracts.VIEW);

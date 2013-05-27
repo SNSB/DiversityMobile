@@ -7,6 +7,7 @@ using ReactiveUI;
 using Microsoft.Phone.Data.Linq.Mapping;
 using System.Data.Linq; 
 using System.Data.Linq.Mapping;
+using DiversityPhone;
 
 namespace DiversityPhone.Model
 {	
@@ -19,10 +20,10 @@ namespace DiversityPhone.Model
 #pragma warning restore 0169
 
 		
-		private int? _SeriesID;
+		private int _SeriesID;
 		[Column(IsPrimaryKey=true,IsDbGenerated=true)]
 		[EntityKey]
-		public int? SeriesID
+		public int SeriesID
 		{
 			get { return _SeriesID; }
 			set 
@@ -179,18 +180,7 @@ namespace DiversityPhone.Model
         }
 
 
-        public static EventSeries NoEventSeries
-        {
-            get
-            {
-                return _NoEventSeries;
-            }
-        }
-       
-        public static bool isNoEventSeries(EventSeries es)
-        {
-            return _NoEventSeries == es;
-        }
+        
 
         public static IQueryOperations<EventSeries> Operations
         {
@@ -210,17 +200,10 @@ namespace DiversityPhone.Model
                 //FreeKey
                           (q, es) =>
                           {
-                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID.Value);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
+                              es.SeriesID = QueryOperations<EventSeries>.FindFreeIntKeyUp(q, row => row.SeriesID);//CollectionEventSeries Autoinc-key is lowered by one by default in DiversityCollection. As we need to avoid Synchronisationconflicts we need to count in the other direction.
                           });
 
-            _NoEventSeries = new EventSeries()
-            {
-                Description = "Events",
-                SeriesCode = "No EventSeries",
-                ModificationState = ModificationState.Unmodified,
-                SeriesEnd = DateTime.Now,     
-				SeriesID = null,        
-            };
+            
         }      
 
 		public DBObjectType EntityType
@@ -230,7 +213,7 @@ namespace DiversityPhone.Model
 
         public int EntityID
         {
-            get { return SeriesID.Value; }
+            get { return SeriesID; }
         }
     }	
 } 

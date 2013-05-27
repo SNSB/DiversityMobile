@@ -188,6 +188,7 @@
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\ListSelectionHelper.cs" />
     <Compile Include="Helper\MultipleSelectionHelper.cs" />
+    <Compile Include="Helper\NoEventSeriesMixin.cs" />
     <Compile Include="Helper\ReactiveCollectionListener.cs" />
     <Compile Include="Helper\ReactiveCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -374,7 +375,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
-    <None Include="Images\AppIcons\Thumbs.db" />
     <None Include="Images\AudioIcons\Thumbs.db" />
     <None Include="Images\Screenshots\Thumbs.db" />
     <None Include="packages.config" />

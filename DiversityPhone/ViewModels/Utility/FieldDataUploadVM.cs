@@ -96,7 +96,7 @@ namespace DiversityPhone.ViewModels.Utility
 
         private IObservable<Unit> uploadES(EventSeries es)
         {
-            return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID.Value).Select(gp => gp as ILocalizable))
+            return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID).Select(gp => gp as ILocalizable))
                     .SelectMany(_ => Storage.getEventsForSeries(es).Select(ev => uploadEV(ev)))
                     .SelectMany(obs => obs);
         }

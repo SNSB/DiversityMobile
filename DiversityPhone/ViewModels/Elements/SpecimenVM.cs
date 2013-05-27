@@ -11,7 +11,7 @@
         {
             get
             {
-                return (!Model.IsObservation()) ? Model.AccessionNumber : "Observation";
+                return (!Model.IsObservation()) ? Model.AccessionNumber : DiversityResources.Specimen_Observation;
             }
         }
         public override Icon Icon

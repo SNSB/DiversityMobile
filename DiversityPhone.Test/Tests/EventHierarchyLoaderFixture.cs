@@ -84,7 +84,7 @@ namespace DiversityPhone.Test.Tests
             var series = T.getOrDownloadSeries(NOSERIES_ID);
 
             // Assert
-            ReactiveAssert.AreElementsEqual(series, Observable.Return(EventSeries.NoEventSeries));
+            ReactiveAssert.AreElementsEqual(series, Observable.Return(NoEventSeriesMixin.NoEventSeries));
         }
 
         [Fact]
