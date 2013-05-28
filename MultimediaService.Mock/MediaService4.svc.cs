@@ -70,7 +70,7 @@ namespace DiversityMediaService4
             int projectId,      // project ID (integer number)  
             byte[] data)        // transmitted data
         {
-            return Guid.NewGuid().ToString();
+            return string.Format("http://{0}",Guid.NewGuid().ToString());
         }
     }
 }

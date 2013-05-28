@@ -10,7 +10,7 @@
     <UserControl.Resources>
         <DataTemplate x:Key="ValueItemTemplate">
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding IsSelected}" 
+                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" 
                           Width="{Binding SelectionWidth, ElementName=selectorControl}"/>
                 <ContentControl Content="{Binding Value}" 
                                 ContentTemplate="{Binding ItemTemplate, ElementName=selectorControl}"/>

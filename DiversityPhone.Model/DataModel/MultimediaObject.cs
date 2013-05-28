@@ -143,7 +143,12 @@ namespace DiversityPhone.Model
 		
 		public Uri CollectionURI
 		{
-			get { return new Uri(CollectionUri, UriKind.RelativeOrAbsolute); }
+			get {
+				if(!string.IsNullOrWhiteSpace(CollectionUri))
+					return new Uri(CollectionUri, UriKind.RelativeOrAbsolute);
+				else
+					return null;
+			}
 			set 
 			{
 
