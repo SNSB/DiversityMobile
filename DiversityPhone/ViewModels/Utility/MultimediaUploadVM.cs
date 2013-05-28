@@ -40,7 +40,7 @@ namespace DiversityPhone.ViewModels.Utility
                     .ToObservable(ThreadPool)
                     .TakeWhile(_ => !cancel.IsCancellationRequested)
                     .Finally(obs.OnCompleted));
-                    
+
                 return Disposable.Create(cancelSource.Cancel);
             });
         }
@@ -100,27 +100,31 @@ namespace DiversityPhone.ViewModels.Utility
                 .ObserveOn(ThreadPoolScheduler.Instance)
                 .Select(mmo =>
                 {
-                    byte[] data;
-                    using (var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+                    if (mmo.CollectionURI == null)
                     {
-                        var file = iso.OpenFile(mmo.Uri, System.IO.FileMode.Open);
-                        data = new byte[file.Length];
-                        file.Read(data, 0, data.Length);
+                        byte[] data;
+                        using (var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+                        {
+                            var file = iso.OpenFile(mmo.Uri, System.IO.FileMode.Open);
+                            data = new byte[file.Length];
+                            file.Read(data, 0, data.Length);
+                        }
+                        return Service.UploadMultimedia(mmo, data)
+                            .Do(uri => Storage.update(mmo, o => o.CollectionURI = uri))
+                            .Select(_ => mmo);
                     }
-
-                    return new { MMO = mmo, Data = data };
+                    else
+                    {
+                        return Observable.Return(mmo);
+                    }
                 })
-                .SelectMany(t =>
+                .SelectMany(obs =>
                 {
-                    var upload =
-                    Service.UploadMultimedia(t.MMO, t.Data)
-                    .Do(uri => Storage.update(t.MMO, o => o.CollectionURI = uri))
-                    .Select(_ => t.MMO)
-                    .SelectMany(mmo => Service.InsertMultimediaObject(mmo)
-                                              .Do(_ => Storage.MarkUploaded(mmo))
-                    )
-                    .DisplayProgress(Notifications, DiversityResources.Sync_Info_UploadingMultimedia)
-                    .Publish();
+                    var upload = obs.SelectMany(mmo => Service.InsertMultimediaObject(mmo).Select(_ => mmo))
+                        .Do(mmo => Storage.MarkUploaded(mmo))
+                        .DisplayProgress(Notifications, DiversityResources.Sync_Info_UploadingMultimedia)
+                        .Select(_ => Unit.Default)
+                        .Publish();
                     upload.Connect();
                     return upload;
                 });
