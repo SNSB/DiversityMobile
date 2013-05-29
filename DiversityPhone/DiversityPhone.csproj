@@ -369,6 +369,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\SNSBIcons\Taxa\gall_80.png" />
+    <Content Include="Images\SNSBIcons\Taxa\soil_80.png" />
+    <Content Include="Images\SNSBIcons\Taxa\unknown_80.png" />
     <Content Include="README_FIRST.txt" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
@@ -522,48 +525,27 @@
     <Content Include="Images\SNSBIcons\Observation_80.png" />
     <Content Include="Images\SNSBIcons\Series.png" />
     <Content Include="Images\SNSBIcons\Series_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\alga_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\alga_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\arthropod_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\arthropod_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\bacterium_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bacterium_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\bird.png" />
-    <Content Include="Images\SNSBIcons\Taxa\bird_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bird_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\bryophyte_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\bryophyte_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\cnidaria_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\cnidaria_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\echinoderm_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\echinoderm_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\evertebrate_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\evertebrate_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\fish_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\fish_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\fungus_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\fungus_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\herbivore_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\herbivore_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\insect_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\insect_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\lichen_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\lichen_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\mammal_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\mammal_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\mollusc_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\mollusc_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\myxomycete_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\myxomycete_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\other_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\other_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\plant_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\plant_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\reptile_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\reptile_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\vertebrate_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\vertebrate_80.png" />
-    <Content Include="Images\SNSBIcons\Taxa\virus_40.png" />
     <Content Include="Images\SNSBIcons\Taxa\virus_80.png" />
     <Content Include="Images\SNSBIcons\WGS84.png" />
   </ItemGroup>
