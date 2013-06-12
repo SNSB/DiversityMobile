@@ -10,8 +10,6 @@
         <Setter Property="BorderBrush" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
 
-        <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
-        <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
         <Setter Property="Padding" Value="0"/><!--10,3,10,5-->
         <Setter Property="Template">
             <Setter.Value>
@@ -96,5 +94,7 @@
     
     <Style x:Key="InfoLabelTextStyle" TargetType="TextBlock" BasedOn="{StaticResource PhoneTextSmallStyle}">
         
-    </Style>    
+    </Style>  
+	
+	  
 </ResourceDictionary>
