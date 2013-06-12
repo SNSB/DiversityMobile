@@ -172,6 +172,7 @@ namespace DiversityPhone.ViewModels
             IConnectivityService Connectivity,
             ITaxonService Taxa,
             IFieldDataService FieldData,
+            IStoreMultimedia Multimedia,
             Func<IRefreshVocabularyTask> refreshVocabluaryTaskFactory
             )
         {
@@ -203,19 +204,10 @@ namespace DiversityPhone.ViewModels
 
 
             clearDatabase.Subscribe(_ =>
-            {               
-
-                if (Taxa == null || FieldData == null)
-                {
-#if DEBUG
-                    throw new ArgumentNullException("services");
-#else
-                        return;
-#endif
-                }
-
+            {   
                 Taxa.clearTaxonLists();
                 FieldData.clearDatabase();
+                Multimedia.ClearMultimedia();
 
                 Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
             });
