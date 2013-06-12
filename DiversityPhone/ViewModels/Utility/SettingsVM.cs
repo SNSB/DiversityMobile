@@ -74,7 +74,7 @@ namespace DiversityPhone.ViewModels.Utility
             this.WhenAny(x => x.Model, x => x.Value)
                 .Where(x => x != null)
                 .Select(m => m.UseGPS)
-                .BindTo(this, x => x.UseGPS);
+                .Subscribe(x => UseGPS = x);
 
             Reset = new ReactiveCommand(Connectivity.WifiAvailable());
             Messenger.RegisterMessageSource(
@@ -138,7 +138,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             Settings
                 .CurrentSettings()
-                .BindTo(this, x => x.Model);            
+                .Subscribe(x => Model = x);            
         }
 
 
