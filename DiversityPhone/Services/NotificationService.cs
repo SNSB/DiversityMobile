@@ -21,7 +21,7 @@ namespace DiversityPhone.Services
     /// <summary>
     /// Provides global Notifications and Progress reporting via the Notification Tray
     /// </summary>
-    class NotificationService : INotificationService
+    public class NotificationService : INotificationService
     {
         private readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromSeconds(3);
 
