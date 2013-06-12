@@ -17,7 +17,7 @@ namespace DiversityPhone.Model
         ViewCS,
         EditIUAN,
 
-        NewImage,
+        ViewImage,
         NewAudio,
         NewVideo,
         EditEventProperty,

@@ -4,16 +4,17 @@ using ReactiveUI.Xaml;
 using DiversityPhone.Model;
 using System.Reactive.Linq;
 using System.IO.IsolatedStorage;
+using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {
     public class VideoVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
-       
+        public readonly IStoreMultimedia VideoStore;
 
         #region Properties
 
-        public string TempFileName 
+        public string TempFileName
         {
             get { return "tempVideoSave.mp4"; }
         }
@@ -62,30 +63,41 @@ namespace DiversityPhone.ViewModels
         public IReactiveCommand Play { get; private set; }
         public IReactiveCommand Stop { get; private set; }
 
-        #endregion      
+        #endregion
 
-        public VideoVM()
-            : base( mmo => mmo.MediaType == MediaType.Video)
+        public VideoVM(IStoreMultimedia VideoStore)
+            : base(mmo => mmo.MediaType == MediaType.Video)
         {
+            this.VideoStore = VideoStore;
+
             Record = new ReactiveCommand(this.ObservableForProperty(x => x.IsEditable).Value());
             Play = new ReactiveCommand(this.ObservableForProperty(x => x.RecordPresent).Value().StartWith(false));
             Stop = new ReactiveCommand();
 
-            ModelByVisitObservable                
+            ModelByVisitObservable
                 .Subscribe(m =>
                     {
                         RecordPresent = false;
                         State = PlayStates.Idle;
                         Uri = m.Uri;
-                    });                
+                    });
 
             CanSave().Subscribe(CanSaveSubject);
-        }        
+        }
 
         protected override void UpdateModel()
         {
-            saveVideo();            
-            Current.Model.Uri = Uri;
+            using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (store.FileExists(TempFileName))
+                {
+                    using (var fileStream = store.OpenFile(TempFileName, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+                    {
+                        Current.Model.Uri = VideoStore.StoreMultimedia(Current.Model.NewFileName(), fileStream);
+                    }
+                    store.DeleteFile(TempFileName);
+                }
+            }
         }
 
         protected IObservable<bool> CanSave()
@@ -100,32 +112,6 @@ namespace DiversityPhone.ViewModels
             return idle.BooleanAnd(recordPresent);
         }
 
-        private void saveVideo()
-        {
-            String uri;
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
-            {
-                Guid g = Guid.NewGuid();
-                uri = g.ToString() + ".mp4";
-            }
-            else
-            {
-                uri = Current.Model.Uri;
-            }
-            //Create virtual store and file stream. Check for duplicate tempJPEG files.
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(uri))
-            {
-                myStore.DeleteFile(uri);
-            }
-            if (myStore.FileExists(TempFileName))
-            {
-                myStore.MoveFile(TempFileName, uri);
-            }
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
-            {
-                Uri = uri;
-            }
-        }
+
     }
 }

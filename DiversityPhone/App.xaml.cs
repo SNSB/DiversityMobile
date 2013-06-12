@@ -94,7 +94,8 @@ namespace DiversityPhone
                 BindAndActivateSingleton<MapManagementVM>();
                 BindAndActivateSingleton<ViewMapVM>();
 
-                BindAndActivateSingleton<ImageVM>();
+                BindAndActivateSingleton<ViewImageVM>();
+                BindAndActivateSingleton<NewImageVM>();
                 BindAndActivateSingleton<AudioVM>();
                 BindAndActivateSingleton<VideoVM>();
 
@@ -138,6 +139,8 @@ namespace DiversityPhone
 
                 Bind<IConnectivityService>().To<ConnectivityService>().InSingletonScope();
 
+                Bind<IStoreImages>().To<MultimediaStorageService>().InSingletonScope();
+                Bind<IStoreMultimedia>().ToConstant(Kernel.Get<IStoreImages>());
                 Bind<OfflineStorage>().ToSelf().InSingletonScope();
                 Bind<IFieldDataService>().ToConstant(Kernel.Get<OfflineStorage>());
                 Bind<IKeyMappingService>().ToConstant(Kernel.Get<OfflineStorage>());

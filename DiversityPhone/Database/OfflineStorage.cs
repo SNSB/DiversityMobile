@@ -17,6 +17,7 @@ namespace DiversityPhone.Services
 
     public partial class OfflineStorage : IFieldDataService, IKeyMappingService
     {
+        readonly CascadingDeleter CascadingDelete;
         private IList<IDisposable> _subscriptions;
         readonly IMessageBus Messenger;
         readonly INotificationService Notifications;
@@ -24,11 +25,13 @@ namespace DiversityPhone.Services
 
         public OfflineStorage(
             IMessageBus Messenger,
-            INotificationService Notifications
+            INotificationService Notifications,
+            CascadingDeleter CascadingDelete
             )
         {
             this.Messenger = Messenger;
             this.Notifications = Notifications;
+            this.CascadingDelete = CascadingDelete;
 
 
 

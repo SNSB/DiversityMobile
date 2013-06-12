@@ -39,6 +39,10 @@
           binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
           contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
 
+      <!--<endpoint address="http://localhost:7092/MediaService4.svc"
+          binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
+          contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />-->
+
       <!-- MAPSSERVICE -->
 
       <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
@@ -51,6 +55,9 @@
                     bindingConfiguration="BasicHttpBinding_IDiversityService"
                     contract="DiversityService.IDiversityService" 
                     name="BasicHttpBinding_IDiversityService" />-->
+      <!--<endpoint address="http://localhost:7091/DiversityService.svc" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_IDiversityService"
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->
       <endpoint address="http://169.254.80.80:7091/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>

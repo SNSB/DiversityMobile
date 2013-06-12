@@ -48,6 +48,11 @@ namespace DiversityPhone.ViewModels
 
             SelectMultimedia = new ReactiveCommand<IElementVM<MultimediaObject>>();
             SelectMultimedia
+                .Where(mmo => mmo.Model.MediaType == MediaType.Image)
+                .ToMessage(MessageContracts.VIEW);
+
+            SelectMultimedia
+                .Where(mmo => mmo.Model.MediaType != MediaType.Image)
                 .ToMessage(MessageContracts.EDIT);
 
             AddMultimedia = new ReactiveCommand();

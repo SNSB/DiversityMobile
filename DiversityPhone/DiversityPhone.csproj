@@ -201,6 +201,7 @@
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
     <Compile Include="Helper\MessengerMixin.cs" />
+    <Compile Include="Services\MultimediaStorageService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\SettingsService.cs" />
@@ -232,7 +233,8 @@
     <Compile Include="ViewModels\Maps\MapVM.cs" />
     <Compile Include="ViewModels\Maps\ViewMapVM.cs" />
     <Compile Include="ViewModels\Multimedia\AudioVM.cs" />
-    <Compile Include="ViewModels\Multimedia\ImageVM.cs" />
+    <Compile Include="ViewModels\Multimedia\NewImageVM.cs" />
+    <Compile Include="ViewModels\Multimedia\ViewImageVM.cs" />
     <Compile Include="ViewModels\Multimedia\PlayStates.cs" />
     <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Utility\DownloadVM.cs" />
@@ -325,8 +327,8 @@
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Image.xaml.cs">
-      <DependentUpon>Image.xaml</DependentUpon>
+    <Compile Include="View\ViewImage.xaml.cs">
+      <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Info.xaml.cs">
       <DependentUpon>Info.xaml</DependentUpon>
@@ -610,7 +612,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\Image.xaml">
+    <Page Include="View\ViewImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

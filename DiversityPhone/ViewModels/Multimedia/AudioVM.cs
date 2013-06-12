@@ -14,6 +14,7 @@ using ReactiveUI.Xaml;
 using System.Reactive.Threading.Tasks;
 using Microsoft.Phone.BackgroundAudio;
 using Microsoft.Xna.Framework.Media;
+using DiversityPhone.Interface;
 
 
 namespace DiversityPhone.ViewModels
@@ -21,16 +22,16 @@ namespace DiversityPhone.ViewModels
     public class AudioVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
 
-        
+        private readonly IStoreMultimedia MultimediaStore;
 
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
         private DispatcherTimer timer;
-       
+
         private MemoryStream audioStream = new MemoryStream();  // Stores the audio data for later playback
         private SoundEffectInstance soundInstance;              // Used to play back audio
-        
+
         private BitmapImage blankImage = new BitmapImage(new Uri("/Images/AudioIcons/blank.png", UriKind.RelativeOrAbsolute));
         private BitmapImage microphoneImage = new BitmapImage(new Uri("/Images/AudioIcons/microphone.png", UriKind.RelativeOrAbsolute));
         private BitmapImage speakerImage = new BitmapImage(new Uri("/Images/AudioIcons/speaker.png", UriKind.RelativeOrAbsolute));
@@ -99,7 +100,7 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-       
+
 
         #endregion
 
@@ -115,15 +116,16 @@ namespace DiversityPhone.ViewModels
 
         #region Constructor
 
-        public AudioVM()
-            : base( mmo => mmo.MediaType == MediaType.Audio)
+        public AudioVM(IStoreMultimedia MultimediaStore)
+            : base(mmo => mmo.MediaType == MediaType.Audio)
         {
+            this.MultimediaStore = MultimediaStore;
             // Timer to simulate the XNA Framework game loop (Microphone is 
             // from the XNA Framework). We also use this timer to monitor the 
             // state of audio playback so we can update the UI appropriately.
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
-            timer.Tick += new EventHandler(timer_Tick);            
+            timer.Tick += new EventHandler(timer_Tick);
 
             // Event handler for getting audio data when the buffer is full
             microphone.BufferReady += new EventHandler<EventArgs>(microphone_BufferReady);
@@ -143,17 +145,14 @@ namespace DiversityPhone.ViewModels
                         timer.Start();
                         if (!Current.Model.IsNew())
                         {
-                            using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+                            using (var file = MultimediaStore.GetMultimedia(Current.Model.Uri))
                             {
-                                if (store.FileExists(Current.Model.Uri))
+                                if (file.Length > 0)
                                 {
-                                    using (var file = store.OpenFile(Current.Model.Uri, FileMode.Open))
-                                    {
-                                        file.CopyTo(audioStream);
-                                    }
+                                    file.CopyTo(audioStream);
                                 }
                             }
-                        }                        
+                        }
                     });
 
             this.OnDeactivation()
@@ -164,9 +163,9 @@ namespace DiversityPhone.ViewModels
                         audioStream.SetLength(0);
                     });
 
-            
 
-            
+
+
         }
 
         #endregion
@@ -175,21 +174,22 @@ namespace DiversityPhone.ViewModels
 
         protected override void UpdateModel()
         {
-            saveAudio();            
-            Current.Model.Uri = Uri;
-        }       
+            UpdateWavHeader(audioStream);
+
+            Current.Model.Uri = MultimediaStore.StoreMultimedia(Current.Model.NewFileName(), audioStream);
+        }
 
         protected IObservable<bool> CanSave()
         {
             var idle = this.ObservableForProperty(x => x.State)
-                .Select(sound => sound.Value==PlayStates.Idle)
+                .Select(sound => sound.Value == PlayStates.Idle)
                 .StartWith(false);
 
             var bufferReady = this.ObservableForProperty(x => x.AudioBuffer)
                 .Select(buffer => buffer.Value != null)
                 .StartWith(false);
             return idle.BooleanAnd(bufferReady);
-        }       
+        }
 
         #endregion
 
@@ -272,7 +272,7 @@ namespace DiversityPhone.ViewModels
         /// <param name="e"></param>
         void microphone_BufferReady(object sender, EventArgs e)
         {
-            
+
             // Retrieve audio data
             microphone.GetData(this.AudioBuffer);
 
@@ -280,7 +280,7 @@ namespace DiversityPhone.ViewModels
             audioStream.Write(AudioBuffer, 0, AudioBuffer.Length);
         }
 
-       
+
 
         /// <summary>
         /// Updates the XNA FrameworkDispatcher and checks to see if a sound is playing.
@@ -293,7 +293,7 @@ namespace DiversityPhone.ViewModels
             try { FrameworkDispatcher.Update(); }
             catch { }
 
-            if (State==PlayStates.Playing)
+            if (State == PlayStates.Playing)
             {
                 if (soundInstance.State != SoundState.Playing)
                 {
@@ -336,7 +336,7 @@ namespace DiversityPhone.ViewModels
                 // Play the audio in a new thread so the UI can update.
                 Thread soundThread = new Thread(new ThreadStart(playSound));
                 soundThread.Start();
-            }            
+            }
         }
 
 
@@ -360,7 +360,7 @@ namespace DiversityPhone.ViewModels
                 microphone.Stop();
 
             }
-            else if (soundInstance.State == SoundState.Playing)
+            else if (soundInstance != null && soundInstance.State == SoundState.Playing)
             {
                 // In PLAY mode, user clicked the 
                 // stop button to end playing back
@@ -371,37 +371,7 @@ namespace DiversityPhone.ViewModels
         }
 
 
-        private void saveAudio()
-        {
-            //Create filename for JPEG in isolated storage as a Guid and filename for thumb
-            String uri;
 
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
-            {
-                Guid g = Guid.NewGuid();
-                uri = g.ToString() + ".wav";
-            }
-            else
-            {
-                uri = Current.Model.Uri;
-            }
-            //Create virtual store and file stream. Check for duplicate tempJPEG files.
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
-            if (myStore.FileExists(uri))
-            {
-                myStore.DeleteFile(uri);
-            }
-            UpdateWavHeader(audioStream);
-            IsolatedStorageFileStream myFileStream = myStore.CreateFile(uri);
-            audioStream.WriteTo(myFileStream);
-            myFileStream.Flush();
-
-            myFileStream.Close();
-            if (Current.Model.Uri == null || Current.Model.Uri.Equals(String.Empty))
-            {
-                Uri = uri;
-            }
-        }
 
         #endregion
 

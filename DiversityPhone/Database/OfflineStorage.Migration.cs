@@ -61,7 +61,7 @@ namespace DiversityPhone.Services
                             schema.Execute();
                         }
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         MoveAndRecreateDB = true;
                     }

@@ -110,6 +110,7 @@
     <Compile Include="ILocationService.cs" />
     <Compile Include="INotificationService.cs" />
     <Compile Include="ISettingsService.cs" />
+    <Compile Include="IStoreMultimedia.cs" />
     <Compile Include="ITaxonService.cs" />
     <Compile Include="IVocabularyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

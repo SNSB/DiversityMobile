@@ -22,6 +22,7 @@
         public AppSettings()
         {
             UseGPS = true;
+            SaveMultimediaExtrnally = true;
         }
 
         public string UserName { get; set; }
@@ -29,6 +30,8 @@
         public string AgentName { get; set; }
         public string AgentURI { get; set; }        
         public bool UseGPS { get; set; }
+
+        public bool SaveMultimediaExtrnally { get; set; }
         
         public string HomeDBName { get; set; }
 

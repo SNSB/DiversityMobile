@@ -78,6 +78,7 @@ namespace DiversityPhone.ViewModels.Utility
             INotificationService Notifications,
             IDiversityServiceClient Service,
             IMessageBus Messenger,
+            IStoreMultimedia ImageStore,
             [Dispatcher] IScheduler Dispatcher,
             [ThreadPool] IScheduler ThreadPool,
             Func<MultimediaObject, MultimediaObjectVM> MultimediaVMFactory

@@ -18,23 +18,17 @@ namespace DiversityPhone.View
 {
     public partial class ImagePage : PhoneApplicationPage
     {        
-        private ImageVM VM
+        private ViewImageVM VM
         {
             get
             {
-                return DataContext as ImageVM;
+                return DataContext as ViewImageVM;
             }
         }
-
-        private CommandButtonAdapter _takeButton;        
-        private SaveDeleteButton _savedelete;
 
         public ImagePage()
         {
             this.InitializeComponent();
-
-            _takeButton = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Take);
-            _savedelete = new SaveDeleteButton(ApplicationBar, VM);
         }
 
 

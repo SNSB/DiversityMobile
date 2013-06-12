@@ -136,7 +136,7 @@ namespace DiversityPhone.ViewModels
                         {
                             return new ReactiveCollection<MapVM>(result.Select(x => new MapVM(null) { ServerKey = x })) as IReactiveCollection<MapVM>;
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return null;
                         }

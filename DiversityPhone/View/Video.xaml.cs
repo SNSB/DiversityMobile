@@ -22,7 +22,7 @@ namespace DiversityPhone.View
     {
 
 
-        private IsolatedStorageFileStream isoVideoFile;
+        private Stream isoVideoFile;
         private VideoBrush videoRecorderBrush;
         private CaptureSource captureSource;
         private VideoCaptureDevice videoCaptureDevice;
@@ -184,38 +184,60 @@ namespace DiversityPhone.View
 
         #region Playback
 
+        void openTempFile()
+        {
+            using(var store = IsolatedStorageFile.GetUserStoreForApplication())
+                {
+                    if (store.FileExists(VM.TempFileName))
+                    {
+                        isoVideoFile = new IsolatedStorageFileStream(VM.TempFileName,
+                                                FileMode.Open, FileAccess.Read,
+                                                store);
+                    }
+
+            }
+        }
+
+        void openMediaFile()
+        {
+            isoVideoFile = VM.VideoStore.GetMultimedia(VM.Current.Model.Uri);
+        }
+
         private void startPlayback()
         {
 
             // Start video playback when the file stream exists.
             if (isoVideoFile != null)
-            {
-  
+            {  
                 videoPlayer.Play();
             }
-            // Start the video for the first time.
+            // Try to Start the video for the first time.
             else
             {
-                var filename = (VM.IsEditable) ? VM.TempFileName : VM.Current.Model.Uri;
-
-                using(var store = IsolatedStorageFile.GetUserStoreForApplication())
+                if(VM.IsEditable)
                 {
-                    if (store.FileExists(filename))
-                    {
-                        captureSource.Stop();
-                        // Remove VideoBrush from the tree.
-                        viewfinderRectangle.Fill = null;
-                        isoVideoFile = new IsolatedStorageFileStream(filename,
-                                                FileMode.Open, FileAccess.Read,
-                                                store);
+                    openTempFile();
+                }
+                else
+                {
+                    openMediaFile();
+                }
 
-                        videoPlayer.SetSource(isoVideoFile);
-                        videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
-                        videoPlayer.Play();
-                    }
-                    else
-                        return;
-                }                
+                if (isoVideoFile != null)
+                {
+                    captureSource.Stop();
+                    // Remove VideoBrush from the tree.
+                    viewfinderRectangle.Fill = null;
+
+
+                    videoPlayer.SetSource(isoVideoFile);
+                    videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
+                    videoPlayer.Play();
+                }
+                else
+                {
+                    return;
+                }                    
             }
             VM.State = PlayStates.Playing;
         }
@@ -243,9 +265,7 @@ namespace DiversityPhone.View
         // Display the viewfinder when playback ends.
         public void VideoPlayerMediaEnded(object sender, RoutedEventArgs e)
         {
-            disposeVideoPlayer();
-            if (VM.IsEditable)
-                startVideoPreview();
+            stopPlayback();
         }
 
         #endregion

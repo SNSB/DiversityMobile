@@ -5,11 +5,25 @@ using System.IO.IsolatedStorage;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Ninject;
 
 namespace DiversityPhone.View
 {
     public class ThumbNailConverter : IValueConverter
     {
+        IStoreImages _ImageStore;
+        IStoreImages ImageStore
+        {
+            get
+            {
+                if (_ImageStore == null)
+                {
+                    _ImageStore = App.Kernel.Get<IStoreImages>();
+                }
+                return _ImageStore;
+            }
+        }
+
         const int THUMBNAIL_HEIGHT = 40,
                   THUMBNAIL_WIDTH = 40,
                   MAX_THUMBNAILS = 100;
@@ -21,20 +35,15 @@ namespace DiversityPhone.View
 
             if (!string.IsNullOrEmpty(uri))
             {
-                using (IsolatedStorageFile isf = IsolatedStorageFile.GetUserStoreForApplication())
+                using (var thumbnailStream = ImageStore.GetImageThumbnail(uri))
                 {
-                    if (isf.FileExists(uri))
+                    if (thumbnailStream.Length > 0)
                     {
-                        using (IsolatedStorageFileStream isfs = isf.OpenFile(uri, FileMode.Open, FileAccess.Read))
-                        {
-                            var fullScaleImage = new BitmapImage();
-                            fullScaleImage.SetSource(isfs);
+                        var fullScaleImage = new BitmapImage();
+                        fullScaleImage.SetSource(thumbnailStream);
+                        var thumbnailBitmap = new WriteableBitmap(fullScaleImage).Resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, WriteableBitmapExtensions.Interpolation.NearestNeighbor);
 
-
-                            var thumbnailBitmap = new WriteableBitmap(fullScaleImage).Resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, WriteableBitmapExtensions.Interpolation.NearestNeighbor);
-
-                            return thumbnailBitmap;
-                        }
+                        return thumbnailBitmap;
                     }
                 }
             }
@@ -43,7 +52,9 @@ namespace DiversityPhone.View
 
         public ThumbNailConverter()
         {
+
             thumbCache = new MemoizingMRUCache<string, ImageSource>(loadThumb, MAX_THUMBNAILS);
+
         }
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -43,7 +43,7 @@ namespace DiversityPhone.Services
 
             _frame.Navigated += (s, args) => { NavigationFinished(); };
 
-            var mmo = Observable.Merge(
+            var mmoEdit = Observable.Merge(
                 Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.EDIT)
                 );
 
@@ -58,10 +58,10 @@ namespace DiversityPhone.Services
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW).Select(_ => Page.ViewIU),
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),
                     Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),
-                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
-                    mmo.Where(vm => vm.Model.MediaType == MediaType.Image).Select(_ => Page.NewImage),
-                    mmo.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
-                    mmo.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
+                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),  
+                    Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW).Select(_ => Page.ViewImage),
+                    mmoEdit.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
+                    mmoEdit.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
                     Messenger.Listen<ILocalizable>(MessageContracts.VIEW).Select(_ => Page.ViewMap),
                     Messenger.Listen<ILocationOwner>(MessageContracts.VIEW).Select(_ => Page.ViewMap)
                     )
@@ -125,8 +125,8 @@ namespace DiversityPhone.Services
                 case Page.ViewMap:
                     destination = "/View/ViewMap.xaml";
                     break;
-                case Page.NewImage:
-                    destination = "/View/Image.xaml";
+                case Page.ViewImage:
+                    destination = "/View/ViewImage.xaml";
                     break;
                 case Page.NewAudio:
                     destination = "/View/Audio.xaml";
