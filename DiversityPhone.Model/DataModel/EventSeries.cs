@@ -166,8 +166,6 @@ namespace DiversityPhone.Model
 			}
 		}
 		 
-  
-		private static EventSeries _NoEventSeries;
 
         public EventSeries()
         {

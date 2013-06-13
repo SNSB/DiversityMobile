@@ -2,6 +2,7 @@
 using DiversityPhone.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text;
@@ -10,10 +11,53 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient
     {
+        private string ServiceFileName(MultimediaObject mmo, int CollectionOwnerID)
+        {
+            string extension;
+            switch (mmo.MediaType)
+            {
+                case MediaType.Image:
+                    extension = "jpg";
+                    break;
+                case MediaType.Audio:
+                    extension = "wav";
+                    break;
+                case MediaType.Video:
+                    extension = "mp4";
+                    break;
+                default:
+                    throw new ArgumentException("Unknown Media Type");
+            }
+
+            string ownerCode;
+            switch (mmo.OwnerType)
+            {               
+                case DBObjectType.Event:
+                    ownerCode = "EV";
+                    break;
+                case DBObjectType.Specimen:
+                    ownerCode = "SP";
+                    break;
+                case DBObjectType.IdentificationUnit:
+                    ownerCode = "IU";
+                    break;
+                default:
+                    throw new ArgumentException("Unsupported Media Owner");
+            }
+
+            return string.Format("DM-{0}-{1}-{2}-{3}.{4}",
+                ownerCode,
+                CollectionOwnerID,
+                mmo.TimeStamp.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+                mmo.TimeStamp.ToString("HHmmss", CultureInfo.InvariantCulture),
+                extension
+                );
+        }
+
         public IObservable<Uri> UploadMultimedia(MultimediaObject mmo, byte[] data)
         {
             var login = this.GetCreds();
-            var res = UploadMultimediaCompleted.MakeObservableServiceResultSingle(mmo)                
+            var res = UploadMultimediaCompleted.MakeObservableServiceResultSingle(mmo)
                 .Select(p =>
                     {
                         var uriString = p.Result;
@@ -22,8 +66,9 @@ namespace DiversityPhone.Services
                         else
                             throw new ServiceOperationException(p.Result);
                     });
-            var filename = mmo.Uri.Split(new char[] { '/', '\\' }).Last();
-            _multimedia.SubmitAsync(filename, filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, DateTime.Now.ToShortDateString(), login.ProjectID, data, mmo);
+            var collectionOwnerID = Mapping.EnsureKey(mmo.OwnerType, mmo.RelatedId);
+            var filename = ServiceFileName(mmo, collectionOwnerID);
+            _multimedia.SubmitAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName,mmo.TimeStamp.ToString(CultureInfo.InvariantCulture), login.ProjectID, data, mmo);
             return res;
         }
     }

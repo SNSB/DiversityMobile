@@ -161,8 +161,7 @@ namespace DiversityPhone.Services
         }
 
         private void deleteMMO(DiversityDataContext ctx, MultimediaObject mmo)
-        {
-            var myStore = IsolatedStorageFile.GetUserStoreForApplication();
+        {            
             MultimediaStore.DeleteMultimedia(mmo.Uri);
             ctx.MultimediaObjects.DeleteOnSubmit(mmo);
         }

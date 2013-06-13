@@ -137,6 +137,33 @@ namespace DiversityPhone.Model
 			}
 		}
 		
+		
+		private DateTime _TimeStamp;
+		[Column]
+		
+		public DateTime TimeStamp
+		{
+			get { return _TimeStamp; }
+			set 
+			{
+				
+				var minSQLCEDate = new DateTime(1753, 01, 01);
+				var maxSQLCEDate = new DateTime(9999, 12, 31);
+				if (value < minSQLCEDate)
+					value = minSQLCEDate;
+				if (value > maxSQLCEDate)
+					value = maxSQLCEDate;
+				
+
+				if (_TimeStamp != value)
+				{
+					this.raisePropertyChanging("TimeStamp");
+					_TimeStamp = value;
+					this.raisePropertyChanged("TimeStamp");
+				}  
+			}
+		}
+		
 		[Column]
 		private String CollectionUri { get; set; }
 		
@@ -181,6 +208,11 @@ namespace DiversityPhone.Model
                 (Uri ?? "").GetHashCode() ^
                 MediaType.GetHashCode();
         }
+
+		public MultimediaObject()
+		{
+			TimeStamp = DateTime.Now;
+		}
 
         static MultimediaObject()
         {

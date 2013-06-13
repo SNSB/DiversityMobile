@@ -28,6 +28,8 @@ namespace DiversityPhone.Model
 
 <# Row("ModificationState", "ModificationState"); #>
 
+<# Row("DateTime", "TimeStamp"); #>
+
 		[Column]
 		private String CollectionUri { get; set; }
 		
@@ -72,6 +74,11 @@ namespace DiversityPhone.Model
                 (Uri ?? "").GetHashCode() ^
                 MediaType.GetHashCode();
         }
+
+		public MultimediaObject()
+		{
+			TimeStamp = DateTime.Now;
+		}
 
         static MultimediaObject()
         {
