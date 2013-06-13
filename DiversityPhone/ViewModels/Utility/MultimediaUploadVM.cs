@@ -22,6 +22,7 @@ namespace DiversityPhone.ViewModels.Utility
         readonly INotificationService Notifications;
         readonly IScheduler ThreadPool;
         readonly IKeyMappingService Mapping;
+        readonly IStoreMultimedia Multimedia;
         readonly Func<MultimediaObject, MultimediaObjectVM> MultimediaVMFactory;
 
         public MultipleSelectionHelper<MultimediaObjectVM> Items { get; private set; }
@@ -78,7 +79,7 @@ namespace DiversityPhone.ViewModels.Utility
             INotificationService Notifications,
             IDiversityServiceClient Service,
             IMessageBus Messenger,
-            IStoreMultimedia ImageStore,
+            IStoreMultimedia MultimediaStore,
             [Dispatcher] IScheduler Dispatcher,
             [ThreadPool] IScheduler ThreadPool,
             Func<MultimediaObject, MultimediaObjectVM> MultimediaVMFactory
@@ -89,6 +90,7 @@ namespace DiversityPhone.ViewModels.Utility
             this.Notifications = Notifications;
             this.ThreadPool = ThreadPool;
             this.Mapping = Mapping;
+            this.Multimedia = MultimediaStore;
             this.MultimediaVMFactory = MultimediaVMFactory;
 
             Items = new MultipleSelectionHelper<MultimediaObjectVM>(Dispatcher);
@@ -104,9 +106,8 @@ namespace DiversityPhone.ViewModels.Utility
                     if (mmo.CollectionURI == null)
                     {
                         byte[] data;
-                        using (var iso = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
+                        using (var file = Multimedia.GetMultimedia(mmo.Uri))
                         {
-                            var file = iso.OpenFile(mmo.Uri, System.IO.FileMode.Open);
                             data = new byte[file.Length];
                             file.Read(data, 0, data.Length);
                         }

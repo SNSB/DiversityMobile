@@ -22,7 +22,8 @@ namespace DiversityPhone.Services
                         else
                             throw new ServiceOperationException(p.Result);
                     });
-            _multimedia.SubmitAsync(mmo.Uri, mmo.Uri, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, DateTime.Now.ToShortDateString(), login.ProjectID, data, mmo);
+            var filename = mmo.Uri.Split(new char[] { '/', '\\' }).Last();
+            _multimedia.SubmitAsync(filename, filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, DateTime.Now.ToShortDateString(), login.ProjectID, data, mmo);
             return res;
         }
     }
