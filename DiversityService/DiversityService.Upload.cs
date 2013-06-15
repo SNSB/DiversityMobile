@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Data.SqlClient;
 
 namespace DiversityService
 {
@@ -80,7 +81,7 @@ namespace DiversityService
             using (var db = login.GetConnection())
             using (var t = db.GetTransaction())
             {
-                
+
                 db.Insert(iu);
                 db.Insert(iu.GetIdentification(login));
                 db.Insert(iu.GetGeoAnalysis(login));
@@ -104,23 +105,31 @@ namespace DiversityService
         {
             using (var db = login.GetConnection())
             {
-                switch (mmo.OwnerType)
+                try
                 {
-                    case MultimediaOwner.EventSeries:
-                        CollectionEventSeriesImage cesi = mmo.ToSeriesImage();
-                        db.Insert(cesi);
-                        break;
-                    case MultimediaOwner.Event:
-                        CollectionEventImage cei = mmo.ToEventImage();
-                        db.Insert(cei);
-                        break;
-                    case MultimediaOwner.Specimen:
-                    case MultimediaOwner.IdentificationUnit:
-                        CollectionSpecimenImage csi = mmo.ToSpecimenImage(db);
-                        db.Insert(csi);
-                        break;
-                    default:
-                        throw new ArgumentException("unknown type");
+                    switch (mmo.OwnerType)
+                    {
+                        case MultimediaOwner.EventSeries:
+                            CollectionEventSeriesImage cesi = mmo.ToSeriesImage();
+                            db.Insert(cesi);
+                            break;
+                        case MultimediaOwner.Event:
+                            CollectionEventImage cei = mmo.ToEventImage();
+                            db.Insert(cei);
+                            break;
+                        case MultimediaOwner.Specimen:
+                        case MultimediaOwner.IdentificationUnit:
+                            CollectionSpecimenImage csi = mmo.ToSpecimenImage(db);
+                            db.Insert(csi);
+                            break;
+                        default:
+                            throw new ArgumentException("unknown type");
+                    }
+                }
+                catch (SqlException)
+                {
+                    // Presumably Multiple Insert, meaning the object already exists
+                    // -> Success
                 }
             }
         }
