@@ -93,6 +93,14 @@ namespace DiversityPhone.ViewModels
 
             _SelectableItems = Items.CreateDerivedCollection(x => new Selectable<T>(this, x) as ISelectable<T>);
 
+            _SelectableItems
+                .CollectionCountChanged
+                .Select(count => count == 0)
+                .Where(isEmpty => isEmpty)
+                .Subscribe(_ =>
+                    IsSelecting = false
+                    );
+
             _ItemStreams
                 .ObserveOn(Dispatcher)
                 .Do(_ => Items.Clear())
