@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 
 namespace DiversityPhone.Interface
 {
     public interface IStoreMultimedia
     {
-        string StoreMultimedia(string fileName, Stream data);
-        Stream GetMultimedia(string fileName);
+        /// <summary>
+        /// Stores the data for one Multimedia File 
+        /// </summary>
+        /// <param name="fileNameHint">Desired File Name</param>
+        /// <param name="data"></param>
+        /// <returns>A string URI identifying the multimedia item for later retrieval</returns>
+        string StoreMultimedia(string fileNameHint, Stream data);
+        
+        Stream GetMultimedia(string URI);
 
-        void DeleteMultimedia(string uri);
-        void ClearMultimedia();
+        void DeleteMultimedia(string URI);
+
+        void ClearAllMultimedia();
     }
 }

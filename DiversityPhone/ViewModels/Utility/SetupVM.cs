@@ -207,7 +207,7 @@ namespace DiversityPhone.ViewModels
             {   
                 Taxa.clearTaxonLists();
                 FieldData.clearDatabase();
-                Multimedia.ClearMultimedia();
+                Multimedia.ClearAllMultimedia();
 
                 Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
             });
