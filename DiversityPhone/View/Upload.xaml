@@ -31,7 +31,7 @@
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
-    <Grid x:Name="LayoutRoot" Background="Transparent" Height="696">
+    <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -76,7 +76,7 @@
                     <vw:InfoLabel Grid.Row="0" 
                                   Text="{Binding Resources.Sync_Info_SelectionHint, Source={StaticResource LocalizedStrings}}"/>
                     <vw:ListBoxSelector Grid.Row="1" 
-                                        x:Name="MMSelector" 
+                                        x:Name="MMSelector"
                                         DataContext="{Binding Multimedia}" 
                                         ItemTemplate="{StaticResource MultimediaItemTemplate}"/>
                 </Grid>

@@ -48,7 +48,7 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
-        <ItemsControl x:Name="valueList" Grid.Column="1" Grid.ColumnSpan="2"                 
+        <ListBox x:Name="valueList" Grid.Column="1" Grid.ColumnSpan="2"
                       ItemsSource="{Binding ItemsSource, ElementName=selectorControl}"
 			          ItemTemplate="{StaticResource ValueItemTemplate}"/>
 
