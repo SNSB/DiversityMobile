@@ -17,11 +17,29 @@ namespace DiversityPhone.ViewModels
         bool IsSelected { get; set; }
     }
 
+
+    /// <summary>
+    /// Helper Class for working with a Collection and selecting multiple Items from it.
+    /// The Collection is supplied via an IObservable containing an IObservable<T>
+    /// an asynchronous stream of Items that are accumulated into a Collection
+    /// </summary>
+    /// <remarks>
+    /// Can marshal new Items to the Dispatcher Thread for IU safety
+    /// </remarks>
+    /// <typeparam name="T"></typeparam>
     public class MultipleSelectionHelper<T> : ReactiveObject, IObserver<IObservable<T>>
     {
         public readonly IScheduler Dispatcher;
+        private readonly ISubject<IObservable<T>> _ItemStreams = new Subject<IObservable<T>>();
 
-        private class Selectable<U> : ReactiveObject, ISelectable<U>
+        /// <summary>
+        /// Internal Class to encapsulate a single Item and store its selection status
+        /// </summary>
+        /// <remarks>
+        /// Needs to be public to enable Binding in Windows Phone 7
+        /// </remarks>
+        /// <typeparam name="U"></typeparam>
+        public class Selectable<U> : ReactiveObject, ISelectable<U>
         {
             public U Value { get; private set; }
 
@@ -42,7 +60,6 @@ namespace DiversityPhone.ViewModels
             {
                 Value = value;
                 IsSelected = false;
-
             }
         }
 
@@ -52,7 +69,6 @@ namespace DiversityPhone.ViewModels
         public IEnumerable<ISelectable<T>> SelectableItems { get { return _SelectableItems; } }
 
         public bool IsSelecting { get; set; }
-
 
         public IObservable<IEnumerable<T>> SelectedItems
         {
@@ -66,7 +82,6 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
         public IObservable<IEnumerable<T>> UnSelectedItems
         {
             get
@@ -79,8 +94,13 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        readonly ISubject<IObservable<T>> _ItemStreams = new Subject<IObservable<T>>();
-
+        /// <summary>
+        /// Constructs a new MultipleSelectionHelper
+        /// </summary>
+        /// <param name="Dispatcher">
+        /// The IScheduler Instance that publicly visible change notifications are marshalled to.
+        /// Default: Use the current thread's Dispatcher.
+        /// </param>
         public MultipleSelectionHelper(
             [Dispatcher] IScheduler Dispatcher = null
             )
@@ -89,7 +109,6 @@ namespace DiversityPhone.ViewModels
             this.Dispatcher = Dispatcher;
 
             Items = new ReactiveCollection<T>();
-
 
             _SelectableItems = Items.CreateDerivedCollection(x => new Selectable<T>(this, x) as ISelectable<T>);
 
