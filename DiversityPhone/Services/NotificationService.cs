@@ -86,12 +86,14 @@ namespace DiversityPhone.Services
                     lock (this)
                     {
                         // The current Notification has ended and called us -> remove
-                        if (_Notifications.Peek() == _CurrentNotification)
+                        if (_Notifications.Any() && _Notifications.Peek() == _CurrentNotification)
                             _Notifications.Pop();
 
                         // Check for active Notifications
                         if (_Notifications.Count > 0)
                         {
+                            
+
                             _CurrentNotificationSubscription.Dispose();
                             _CurrentNotification = _Notifications.Peek();
                             _CurrentNotificationSubscription =
