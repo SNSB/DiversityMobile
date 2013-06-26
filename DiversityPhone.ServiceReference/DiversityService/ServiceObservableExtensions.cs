@@ -41,14 +41,16 @@ namespace DiversityPhone.Services
             return This
                .Catch((Exception ex) =>
                {
-                   if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
-                   {
-                       return Observable.Throw<T>(new ServiceNotAvailableException(ex.Message, ex));
-                   }
                    if (ex is FaultException)
                    {
                        return Observable.Throw<T>(new ServiceOperationException(ex.Message, ex));
                    }
+
+                   if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
+                   {
+                       return Observable.Throw<T>(new ServiceNotAvailableException(ex.Message, ex));
+                   }
+                  
                    return Observable.Throw<T>(ex);
                });
         }

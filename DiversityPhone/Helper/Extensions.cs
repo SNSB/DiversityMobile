@@ -96,7 +96,7 @@ namespace DiversityPhone.ViewModels
             return This
                 .Catch((Exception ex) =>
                 {
-                    bool rethrow = ErrorValue == null;
+                    ErrorValue = ErrorValue ?? Observable.Empty<T>();
                     if (ex is ServiceNotAvailableException)
                     {
                         Notification.showNotification(DiversityResources.Info_ServiceUnavailable, NOTIFICATION_DURATION);
