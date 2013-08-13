@@ -26,7 +26,7 @@ namespace DiversityPhone.ViewModels
                         var results =
                             Observable.FromEventPattern<PhotoResult>(h => capture.Completed += h, h => capture.Completed -= h)
                             .Select(ev => ev.EventArgs)
-                            .Catch(Observable.Empty<PhotoResult>())
+                            .Catch(Observable.Empty<PhotoResult>())                            
                             .Select(res => new { VM = mmo, Result = res })
                             .Take(1)
                             .Replay(1);
@@ -40,13 +40,13 @@ namespace DiversityPhone.ViewModels
                         }
                         return results;
                     })
+                .Where(tuple => tuple.VM != null 
+                    && tuple.Result != null
+                    && tuple.Result.TaskResult == TaskResult.OK)
                 .Do(tuple =>
-                    {
-                        var res = tuple.Result;
-                        if (res != null && res.TaskResult == TaskResult.OK)
-                        {
-                            tuple.VM.Model.Uri = ImageStore.StoreImage(tuple.VM.Model.NewFileName(), res);
-                        }
+                    {                       
+                       tuple.VM.Model.Uri = ImageStore.StoreImage(tuple.VM.Model.NewFileName(), tuple.Result);
+                     
                     })
                 .Select(t => t.VM as IElementVM<MultimediaObject>)
                 .ToMessage(MessageContracts.SAVE);
