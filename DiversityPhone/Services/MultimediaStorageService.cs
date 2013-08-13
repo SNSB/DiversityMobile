@@ -3,6 +3,7 @@ using DiversityPhone.Model;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using System;
+using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
@@ -101,6 +102,8 @@ namespace DiversityPhone
 
             public static StorageDescriptor FromURI(string uri)
             {
+                Contract.Requires(!string.IsNullOrWhiteSpace(uri), "Cannot retrieve StorageDescriptor for empty uri");
+
                 var matches = ISOSTORE_URI_REGEX.Match(uri);
                 if (matches.Success)
                 {
@@ -149,15 +152,18 @@ namespace DiversityPhone
 
         public Stream GetImageThumbnail(string URI)
         {
-            var storageDescriptor = StorageDescriptor.FromURI(URI);
-
-            if (storageDescriptor.Type == StorageType.CameraRoll)
+            if (URI != null)
             {
-                var fileName = storageDescriptor.FileName;
-                var picture = Library.CameraRoll().Pictures.Where(p => p.Name == fileName).FirstOrDefault();
-                if (picture != null)
+                var storageDescriptor = StorageDescriptor.FromURI(URI);
+
+                if (storageDescriptor.Type == StorageType.CameraRoll)
                 {
-                    return picture.GetThumbnail();
+                    var fileName = storageDescriptor.FileName;
+                    var picture = Library.CameraRoll().Pictures.Where(p => p.Name == fileName).FirstOrDefault();
+                    if (picture != null)
+                    {
+                        return picture.GetThumbnail();
+                    }
                 }
             }
             return Stream.Null;
@@ -210,18 +216,21 @@ namespace DiversityPhone
 
         public Stream GetMultimedia(string filePath)
         {
-            var storageDescriptor = StorageDescriptor.FromURI(filePath);
-
-            switch (storageDescriptor.Type)
+            if (filePath != null)
             {
-                case StorageType.IsolatedStorage:
-                    return GetMultimediaFromIsolatedStorage(storageDescriptor.FileName);
-                case StorageType.CameraRoll:
-                    return GetMultimediaFromCameraRoll(storageDescriptor.FileName);
-                case StorageType.Unknown:
-                    break;
-                default:
-                    break;
+                var storageDescriptor = StorageDescriptor.FromURI(filePath);
+
+                switch (storageDescriptor.Type)
+                {
+                    case StorageType.IsolatedStorage:
+                        return GetMultimediaFromIsolatedStorage(storageDescriptor.FileName);
+                    case StorageType.CameraRoll:
+                        return GetMultimediaFromCameraRoll(storageDescriptor.FileName);
+                    case StorageType.Unknown:
+                        break;
+                    default:
+                        break;
+                }
             }
             return Stream.Null;
         }
@@ -243,16 +252,19 @@ namespace DiversityPhone
 
         public void DeleteMultimedia(string uri)
         {
-            var storageDescriptor = StorageDescriptor.FromURI(uri);
-
-            if (storageDescriptor.Type == StorageType.IsolatedStorage)
+            if (uri != null)
             {
-                UsingIsolatedStorage(store =>
-                    {
-                        if (store.FileExists(storageDescriptor.FileName))
-                            store.DeleteFile(storageDescriptor.FileName);
-                    });
+                var storageDescriptor = StorageDescriptor.FromURI(uri);
 
+                if (storageDescriptor.Type == StorageType.IsolatedStorage)
+                {
+                    UsingIsolatedStorage(store =>
+                        {
+                            if (store.FileExists(storageDescriptor.FileName))
+                                store.DeleteFile(storageDescriptor.FileName);
+                        });
+
+                }
             }
         }
 
