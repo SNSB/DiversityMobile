@@ -55,9 +55,6 @@ namespace DiversityPhone.Services
 
         public IObservable<Unit> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations)
         {
-            if (string.IsNullOrWhiteSpace(series.SeriesCode))
-                throw new ArgumentException("series");
-
             var res = InsertESCompleted.FilterByUserState(series)
                 .PipeErrors()
                 .Select(p => p.Result)
