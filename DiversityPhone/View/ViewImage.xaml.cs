@@ -26,9 +26,15 @@ namespace DiversityPhone.View
             }
         }
 
+        
+
         public ImagePage()
         {
             this.InitializeComponent();
+
+            new EditPageDeleteButton(this.ApplicationBar, VM);
+                
+                
         }
 
 

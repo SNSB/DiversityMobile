@@ -14,7 +14,7 @@ using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {
-    public class ViewImageVM : ViewPageVMBase<MultimediaObject>
+    public class ViewImageVM : ViewPageVMBase<MultimediaObject>,  IDeletePageVM
     {
         readonly IStoreImages ImageStore;
 
@@ -31,6 +31,8 @@ namespace DiversityPhone.ViewModels
                 this.RaiseAndSetIfChanged(x => x.CurrentImage, ref _CurrentImage, value);
             }
         }
+
+        public IReactiveCommand Delete { get; private set; }
 
 
         public ViewImageVM(IStoreImages ImageStore, 
@@ -64,6 +66,8 @@ namespace DiversityPhone.ViewModels
                         }
                     })
                 .Subscribe(img => CurrentImage = img);
+
+            Delete = this.CurrentObservable.DeleteCommand(Messenger);
         }
     }
 }

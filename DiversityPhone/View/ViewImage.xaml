@@ -18,4 +18,7 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">        
         <Image Source="{Binding CurrentImage}"/>
     </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar/>
+    </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

@@ -205,6 +205,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="ViewModels\Base\GenericItemCommands.cs" />
     <Compile Include="ViewModels\Base\EditPageVMBase.cs" />
     <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
     <Compile Include="ViewModels\Base\ElementVMBase.cs" />
