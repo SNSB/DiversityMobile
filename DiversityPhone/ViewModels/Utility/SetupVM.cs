@@ -67,7 +67,6 @@ namespace DiversityPhone.ViewModels
 
 
         public SetupVM(
-            [Dispatcher] IScheduler Dispatcher,
             IValidateLogin Login,
             ISelectDatabase Database,
             ISelectProject Project,
