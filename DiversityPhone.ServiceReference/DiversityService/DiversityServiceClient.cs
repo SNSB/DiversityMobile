@@ -58,11 +58,11 @@ namespace DiversityPhone.Services
 
 
         readonly IKeyMappingService Mapping;
-        readonly ICurrentCredentials Credentials;
+        readonly ICredentialsService Credentials;
 
         private Client.UserCredentials GetCreds() { return Credentials.CurrentCredentials(); }
 
-        public DiversityServiceClient(ICurrentCredentials Credentials, IKeyMappingService Mapping)
+        public DiversityServiceClient(ICredentialsService Credentials, IKeyMappingService Mapping)
         {            
             this.Mapping = Mapping;
             this.Credentials = Credentials;

@@ -109,7 +109,7 @@ namespace DiversityPhone.ViewModels
                     })     
                 .Select(coll => coll as IList<Property>)
                 .ObserveOn(Dispatcher)
-                .Subscribe(Properties);
+                .Subscribe(Properties.ItemsObserver);
 
             Properties.ItemsObservable
                 .Where(items => items.Count > 0)
@@ -117,7 +117,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(i => Properties.SelectedItem = i);
 
             Values = new ListSelectionHelper<PropertyName>();
-            Properties                  
+            Properties.SelectedItemObservable                 
                 .SelectMany(prop => 
                     {
                         return
@@ -152,7 +152,7 @@ namespace DiversityPhone.ViewModels
                             .Where(item => item.PropertyUri == Current.Model.PropertyUri)
                             .FirstOrDefault()
                         )
-                .Subscribe(Values);
+                .Subscribe(Values.ItemsObserver);
           
 
             CanSaveObs()
@@ -161,12 +161,12 @@ namespace DiversityPhone.ViewModels
 
        
         private IObservable<bool> CanSaveObs()
-        {            
-            var propSelected = Properties
+        {
+            var propSelected = Properties.SelectedItemObservable
                 .Select(x => x != NoProperty && x != null)
                 .StartWith(false);
 
-            var valueSelected = Values
+            var valueSelected = Values.SelectedItemObservable
                  .Select(x => x != NoValue && x != null)
                  .StartWith(false);
 

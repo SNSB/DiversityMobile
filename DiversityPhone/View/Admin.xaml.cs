@@ -38,7 +38,7 @@ namespace DiversityPhone.View
                 var store = IsolatedStorageFile.GetUserStoreForApplication();                
                 var dbFiles = new Stack<string>();
                 dbFiles.Push(DiversityDataContext.DB_FILENAME);
-                foreach (var f in OfflineStorage.BackupDBFiles().TakeWhile(store.FileExists))
+                foreach (var f in FieldDataService.BackupDBFiles().TakeWhile(store.FileExists))
                 {
                     dbFiles.Push(f);
                 }
@@ -113,7 +113,7 @@ namespace DiversityPhone.View
                     }
                     SystemTray.ProgressIndicator.IsVisible = false;
 
-                    App.Kernel.Get<OfflineStorage>().CheckAndRepairDatabase();
+                    App.Kernel.Get<FieldDataService>().CheckAndRepairDatabase();
 
                 };
 

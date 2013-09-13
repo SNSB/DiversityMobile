@@ -7,7 +7,7 @@ using System;
 
     public interface IFieldDataService
     {
-        void clearDatabase();
+        void ClearDatabase();
 
         IList<EventSeries> getAllEventSeries();
         EventSeries getEventSeriesByID(int? id);        

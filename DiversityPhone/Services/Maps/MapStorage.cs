@@ -75,7 +75,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void clearMaps()
+        public void ClearMaps()
         {
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {

@@ -80,7 +80,7 @@ namespace DiversityPhone.ViewModels
 
             Analyses = new ListSelectionHelper<Analysis>();
             Messenger.Listen<IList<Analysis>>()
-                .Subscribe(Analyses);
+                .Subscribe(Analyses.ItemsObserver);
 
             Analyses.ItemsObservable.Where(items => items != null)
                 .CombineLatest(ModelByVisitObservable, (analyses, iuan) =>
@@ -89,8 +89,8 @@ namespace DiversityPhone.ViewModels
                             .FirstOrDefault())
                 .Where(x => x != null)
                 .Subscribe(x => Analyses.SelectedItem = x);
-                        
-            Analyses
+
+            Analyses.SelectedItemObservable
                 .Where(an => an != null)
                 .SelectMany(selectedAN =>
                     {
@@ -101,7 +101,7 @@ namespace DiversityPhone.ViewModels
                     })
                 .Do(list => list.Insert(0, NoResult))
                 .ObserveOn(Dispatcher)
-                .Subscribe(Results);
+                .Subscribe(Results.ItemsObserver);
 
             Results.ItemsObservable
                 .Where(results => results != null)
@@ -119,7 +119,7 @@ namespace DiversityPhone.ViewModels
                 .Where(res => res != null)
                 .Select(results => !results.Any(res => res != NoResult))
                 //Don't allow Custom Results until we checked the DB
-                .Merge(Analyses.Select(_ => false)), 
+                .Merge(Analyses.SelectedItemObservable.Select(_ => false)), 
                 vm => vm.IsCustomResult);
 
             ModelByVisitObservable                
@@ -141,7 +141,7 @@ namespace DiversityPhone.ViewModels
 
         protected IObservable<bool> CanSave()
         {
-            var vocabularyResultValid = Results
+            var vocabularyResultValid = Results.SelectedItemObservable
                 .Select(result => result != NoResult);
 
             var customResultValid = this.WhenAny(x => x.CustomResult, x => x.Value)

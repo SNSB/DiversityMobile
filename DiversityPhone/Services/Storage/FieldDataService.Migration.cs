@@ -8,7 +8,7 @@ using System.IO.IsolatedStorage;
 
 namespace DiversityPhone.Services
 {
-    public partial class OfflineStorage
+    public partial class FieldDataService
     {
         private const int CURRENT_SCHEMA_VERSION = 0;
 

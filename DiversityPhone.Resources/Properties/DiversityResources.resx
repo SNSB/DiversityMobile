@@ -163,6 +163,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="App_Map_URL" xml:space="preserve">
     <value>http://www.diversitymobile.net/wiki/TK25_Maps_Bavaria_for_DiversityMobile</value>
   </data>
+  <data name="App_Name" xml:space="preserve">
+    <value>DIVERSITYMOBILE</value>
+  </data>
   <data name="App_Taxa_LinkTitle" xml:space="preserve">
     <value>Diversity Mobile Wiki</value>
   </data>
@@ -180,6 +183,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Button_Edit" xml:space="preserve">
     <value>edit</value>
+  </data>
+  <data name="Button_OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="Button_Play" xml:space="preserve">
     <value>play</value>
@@ -255,6 +261,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Home_Info_CantOpenNewSeries" xml:space="preserve">
     <value>Can't open a new Series while there is still an unfinished one.</value>
+  </data>
+  <data name="Home_PageHeader" xml:space="preserve">
+    <value>home</value>
   </data>
   <data name="IdentificationUnit_Header_AnalysisDate" xml:space="preserve">
     <value>collection date</value>
@@ -355,20 +364,26 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Settings_Header_UploadData" xml:space="preserve">
     <value>Upload Data</value>
   </data>
-  <data name="Setup_Header_ButtonSave" xml:space="preserve">
-    <value>save</value>
+  <data name="Setup_Database_PageHeader" xml:space="preserve">
+    <value>repository</value>
+  </data>
+  <data name="Setup_GPS_PageHeader" xml:space="preserve">
+    <value>GPS</value>
+  </data>
+  <data name="Setup_GPS_Text" xml:space="preserve">
+    <value>Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings.</value>
+  </data>
+  <data name="Setup_GPS_ToggleHeader" xml:space="preserve">
+    <value>Use GPS</value>
   </data>
   <data name="Setup_Header_Password" xml:space="preserve">
     <value>password</value>
   </data>
-  <data name="Setup_Header_Project" xml:space="preserve">
-    <value>project</value>
-  </data>
-  <data name="Setup_Header_Repository" xml:space="preserve">
-    <value>repository</value>
-  </data>
   <data name="Setup_Header_Username" xml:space="preserve">
     <value>username</value>
+  </data>
+  <data name="Setup_Info_GettingProfile" xml:space="preserve">
+    <value>Getting User Profile ...</value>
   </data>
   <data name="Setup_Info_GettingProjects" xml:space="preserve">
     <value>Getting Projects</value>
@@ -379,17 +394,23 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Setup_Info_InvalidCredentials" xml:space="preserve">
     <value>Invalid Credentials</value>
   </data>
+  <data name="Setup_Info_ValidatingLogin" xml:space="preserve">
+    <value>Validating Login ...</value>
+  </data>
   <data name="Setup_Item_PleaseChoose" xml:space="preserve">
     <value>please choose</value>
   </data>
-  <data name="Setup_Message_AllowGPS_Body" xml:space="preserve">
-    <value>Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings.</value>
-  </data>
-  <data name="Setup_Message_AllowGPS_Caption" xml:space="preserve">
-    <value>Use Location Data?</value>
+  <data name="Setup_Login_PageHeader" xml:space="preserve">
+    <value>login</value>
   </data>
   <data name="Setup_Message_CantGoBack_Body" xml:space="preserve">
     <value>You can only use the application once it's been initialized</value>
+  </data>
+  <data name="Setup_Project_PageHeader" xml:space="preserve">
+    <value>project</value>
+  </data>
+  <data name="Setup_Welcome_PageHeader" xml:space="preserve">
+    <value>welcome</value>
   </data>
   <data name="Specimen_Header_SpecimenCode" xml:space="preserve">
     <value>specimen code</value>

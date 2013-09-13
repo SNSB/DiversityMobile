@@ -183,13 +183,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Database\DiversityDataContext.cs" />
-    <Compile Include="Database\OfflineStorage.CascadingDelete.cs" />
-    <Compile Include="Database\OfflineStorage.cs" />
-    <Compile Include="Database\OfflineStorage.Migration.cs" />
-    <Compile Include="Database\OfflineStorage.Queries.cs" />
-    <Compile Include="Database\TaxonService.cs" />
-    <Compile Include="Database\VocabularyService.cs" />
+    <Compile Include="Services\Storage\CleanupService.cs" />
+    <Compile Include="Services\Storage\DiversityDataContext.cs" />
+    <Compile Include="Services\Storage\OfflineStorage.CascadingDelete.cs" />
+    <Compile Include="Services\Storage\FieldDataService.cs" />
+    <Compile Include="Services\Storage\FieldDataService.Migration.cs" />
+    <Compile Include="Services\Storage\FieldDataService.Queries.cs" />
+    <Compile Include="Services\Storage\TaxonService.cs" />
+    <Compile Include="Services\Storage\VocabularyService.cs" />
     <Compile Include="Helper\EventHierarchyLoader.cs" />
     <Compile Include="Helper\Extensions.cs" />
     <Compile Include="Helper\ListSelectionHelper.cs" />
@@ -207,10 +208,10 @@
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
     <Compile Include="Helper\MessengerMixin.cs" />
-    <Compile Include="Services\MultimediaStorageService.cs" />
+    <Compile Include="Services\Storage\MultimediaStorageService.cs" />
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
-    <Compile Include="Services\SettingsService.cs" />
+    <Compile Include="Services\Storage\SettingsService.cs" />
     <Compile Include="ViewModels\Base\GenericItemCommands.cs" />
     <Compile Include="ViewModels\Base\EditPageVMBase.cs" />
     <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
@@ -246,6 +247,7 @@
     <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Utility\DownloadVM.cs" />
     <Compile Include="ViewModels\Utility\FieldDataUploadVM.cs" />
+    <Compile Include="ViewModels\Utility\RefreshVocabularyVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
     <Compile Include="ViewModels\Utility\MultimediaUploadVM.cs" />
@@ -265,6 +267,7 @@
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
+    <Compile Include="View\Appbar\OKNextPageButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
     <Compile Include="View\Appbar\PlayStopButton.cs" />
     <Compile Include="View\Appbar\SaveDeleteButton.cs" />
@@ -275,6 +278,9 @@
     </Compile>
     <Compile Include="View\Controls\CommandNotAvailableLabel.cs" />
     <Compile Include="View\Controls\ConditionalLabel.cs" />
+    <Compile Include="View\Controls\DiversityMobilePageHeader.xaml.cs">
+      <DependentUpon>DiversityMobilePageHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Controls\InfoLabel.xaml.cs">
       <DependentUpon>InfoLabel.xaml</DependentUpon>
     </Compile>
@@ -295,7 +301,6 @@
     <Compile Include="View\Converters\MapManagementPivotConverter.cs" />
     <Compile Include="View\Converters\MultiplyConverter.cs" />
     <Compile Include="View\Converters\PointToVisibilityConverter.cs" />
-    <Compile Include="View\Converters\SettingsPivotConverter.cs" />
     <Compile Include="View\Converters\StreamToImageConverter.cs" />
     <Compile Include="View\Converters\SyncVMPivotConverter.cs" />
     <Compile Include="View\Converters\SynonymyToFontStyleConverter.cs" />
@@ -334,6 +339,24 @@
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Setup\AskGPS.xaml.cs">
+      <DependentUpon>AskGPS.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\DatabaseServer.xaml.cs">
+      <DependentUpon>DatabaseServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\Project.xaml.cs">
+      <DependentUpon>Project.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\Vocabulary.xaml.cs">
+      <DependentUpon>Vocabulary.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\WelcomeSplash.xaml.cs">
+      <DependentUpon>WelcomeSplash.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
     </Compile>
@@ -345,12 +368,6 @@
     </Compile>
     <Compile Include="View\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Setup.xaml.cs">
-      <DependentUpon>Setup.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\Splash.xaml.cs">
-      <DependentUpon>Splash.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Upload.xaml.cs">
       <DependentUpon>Upload.xaml</DependentUpon>
@@ -572,6 +589,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Controls\DiversityMobilePageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Controls\InfoLabel.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -620,6 +641,30 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\Setup\AskGPS.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\DatabaseServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\Login.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\Project.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\Vocabulary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\WelcomeSplash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ViewImage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -649,14 +694,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\Settings.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Setup.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="View\Splash.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -711,6 +748,7 @@
       <Name>DiversityPhone.ServiceReference</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

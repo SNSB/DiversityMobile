@@ -6,6 +6,13 @@ namespace DiversityPhone.Model
         Current,
         Previous,
 
+        SetupWelcome,
+        SetupLogin,
+        SetupDatabase,
+        SetupProject,
+        SetupGPS,
+        SetupVocabulary,
+
         Home,
         EditES,
         ViewES,
@@ -26,7 +33,6 @@ namespace DiversityPhone.Model
         ViewMap,
         TaxonManagement,
         Upload,
-        Setup,
         Info,
         Download
     }

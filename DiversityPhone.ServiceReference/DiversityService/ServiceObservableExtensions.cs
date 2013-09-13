@@ -96,7 +96,7 @@ namespace DiversityPhone.Services
                 .Select(_ => Unit.Default);
         }
 
-        public static IObservable<WebResponse> DownloadWithCredentials(this IObservable<string> uriObservable, ICurrentCredentials CredentialsProvider)
+        public static IObservable<WebResponse> DownloadWithCredentials(this IObservable<string> uriObservable, ICredentialsService CredentialsProvider)
         {
             return uriObservable
                 .SelectMany(uri =>

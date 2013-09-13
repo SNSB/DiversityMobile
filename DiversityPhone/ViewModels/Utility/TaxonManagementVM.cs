@@ -1,28 +1,10 @@
-﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using DiversityPhone.Interface;
 using ReactiveUI;
-using System.Reactive.Linq;
-using System.Linq;
-using DiversityPhone.Services;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using Svc = DiversityPhone.DiversityService;
 using ReactiveUI.Xaml;
-using System.Collections.Specialized;
-using System.Collections.ObjectModel;
-using DiversityPhone.Services.BackgroundTasks;
-
+using System;
+using System.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive;
-using DiversityPhone.Interface;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {

@@ -2,7 +2,7 @@
 {
     using DiversityPhone.Model;
 
-    public interface ICurrentCredentials
+    public interface ICredentialsService
     {
         UserCredentials CurrentCredentials();
     }

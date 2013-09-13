@@ -1,110 +1,59 @@
-﻿using ReactiveUI;
-using System.Collections.Generic;
-using System.Reactive.Linq;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using ReactiveUI;
+using ReactiveUI.Xaml;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
-using DiversityPhone.Interface;
-using ReactiveUI.Xaml;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 
 namespace DiversityPhone.ViewModels
 {
+    public interface IValidateLogin : INotifyPropertyChanged
+    {
+        string UserName { get; set; }
+        string Password { get; set; }
+        IObservable<bool> IsLoginValid { get; }
+        IObservable<AppSettings> ValidCredentials { get; }
+    }
+
+    public interface ISelectDatabase : IListSelector<string>
+    {
+        IObservable<bool> IsDatabaseSelected { get; }
+        IObserver<AppSettings> ValidCredentials { get; }
+        IObservable<AppSettings> CredentialsWithDatabase { get; }
+    }
+
+    public interface ISelectProject : IListSelector<Project>
+    {
+        IObservable<bool> IsProjectSelected { get; }
+        IObserver<AppSettings> CredentialsWithDatabase { get; }
+        IObservable<AppSettings> CredentialsWithProject { get; }
+    }
+
+    public interface IGetUserProfile
+    {
+        IObserver<AppSettings> CredentialsWithDatabase { get; }
+        IObservable<bool> IsProfileValid { get; }
+        IObservable<AppSettings> CredentialsWithProfile { get; }
+    }
+
     public class SetupVM : PageVMBase
     {
-        private readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(5);
-
-
-        readonly IDiversityServiceClient Repository;
-        readonly ISettingsService Settings;
-        readonly INotificationService Notifications;
-        readonly IConnectivityService Connectivity;
-        readonly ITaxonService Taxa;
-        readonly IFieldDataService FieldData;
-
+        public IValidateLogin Login { get; private set; }
+        public ISelectDatabase Database { get; private set; }
+        public ISelectProject Project { get; private set; }
+        public IGetUserProfile Profile { get; private set; }
 
         #region Setup Properties
-        public enum Pivots
-        {
-            Login,
-            Repository,
-            Projects
-        }
-
-        private Pivots _CurrentPivot;
-        public Pivots CurrentPivot
-        {
-            get
-            {
-                return _CurrentPivot;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
-            }
-        }
-
-        private string _UserName
-#if DEBUG
- = "Rollinge";
-#else
-            ;
-#endif
-
-        public string UserName
-        {
-            get
-            {
-                return _UserName;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.UserName, ref _UserName, value);
-            }
-        }
 
 
-        private string _Password;
-
-        public string Password
-        {
-            get
-            {
-                return _Password;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.Password, ref _Password, value);
-            }
-        }
-
-        private string NoRepo = DiversityResources.Setup_Item_PleaseChoose;
-
-        public ListSelectionHelper<string> Databases { get; private set; }
-
-        private Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
-
-        public ListSelectionHelper<Project> Projects { get; private set; }
-
-        private ObservableAsPropertyHelper<UserProfile> _Profile;
-
-        private bool _IsBusy = true;
-
-        public bool IsBusy
-        {
-            get
-            {
-                return _IsBusy;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(x => x.IsBusy, ref _IsBusy, value);
-            }
-        }
-
-        private bool _UseGPS = false;
+        private bool _UseGPS = true;
 
         public bool UseGPS
         {
@@ -112,228 +61,296 @@ namespace DiversityPhone.ViewModels
             set { _UseGPS = value; }
         }
 
-
-        public ReactiveCommand RefreshVocabulary { get; private set; }
-
         public ReactiveCommand Save { get; private set; }
         #endregion
 
-        #region Async Operations
-        ReactiveCommand clearDatabase = new ReactiveCommand();
-        #endregion
 
-        private AppSettings createSettings()
-        {
-            var m = new AppSettings();
-            var profile = _Profile.Value;
-
-            m.AgentName = profile.UserName;
-            m.AgentURI = profile.AgentUri;
-            m.CurrentProject = Projects.SelectedItem.ProjectID;
-            m.CurrentProjectName = Projects.SelectedItem.DisplayText;
-            m.HomeDBName = Databases.SelectedItem;
-            m.Password = Password;
-            m.UserName = UserName;
-            m.UseGPS = UseGPS;
-
-            return m;
-        }
-
-        private IObservable<bool> settingsValid()
-        {
-            var username = this.ObservableForProperty(x => x.UserName)
-                                .Select(change => !string.IsNullOrWhiteSpace(change.Value))
-                                .StartWith(false);
-            var password = this.ObservableForProperty(x => x.Password)
-                                .Select(change => !string.IsNullOrEmpty(change.Value))
-                                .StartWith(false);
-            var homeDB = Databases
-                            .Select(db => db != NoRepo)
-                            .StartWith(false);
-            var project = Projects
-                                .Select(p => p != NoProject)
-                                .StartWith(false);
-
-
-            var profile = _Profile
-                .Select(p => p != null)
-                .StartWith(false);
-
-            var settingsValid = Extensions.BooleanAnd(username, password, homeDB, project, profile);
-
-            return settingsValid.DistinctUntilChanged();
-        }
 
         public SetupVM(
             [Dispatcher] IScheduler Dispatcher,
-            IDiversityServiceClient Repository,
-            ISettingsService Settings,
-            INotificationService Notifications,
-            IConnectivityService Connectivity,
-            ITaxonService Taxa,
-            IFieldDataService FieldData,
-            IStoreMultimedia Multimedia,
-            Func<IRefreshVocabularyTask> refreshVocabluaryTaskFactory
+            IValidateLogin Login,
+            ISelectDatabase Database,
+            ISelectProject Project,
+            IGetUserProfile Profile,
+            ISettingsService Settings
             )
         {
-            this.Repository = Repository;
-            this.Settings = Settings;
-            this.Notifications = Notifications;
-            this.Connectivity = Connectivity;
-            this.Taxa = Taxa;
-            this.FieldData = FieldData;
+            this.Login = Login;
+            this.Database = Database;
+            this.Project = Project;
+            this.Profile = Profile;
 
-            RefreshVocabulary = new ReactiveCommand();
-            RefreshVocabulary
-                .Subscribe(settings =>
+            Login.ValidCredentials
+                .Subscribe(Database.ValidCredentials);
+
+            Database.CredentialsWithDatabase
+                .Subscribe(Project.CredentialsWithDatabase);
+
+            Project.CredentialsWithProject
+                .Subscribe(Profile.CredentialsWithDatabase);
+
+            var canSave = Profile.IsProfileValid
+                .Sample(Profile.CredentialsWithProfile.Where(p => p != null));
+
+            Save = new ReactiveCommand(canSave, initialCondition: false);
+            Profile.CredentialsWithProfile
+                .Sample(Save)
+                .Subscribe(s =>
                     {
-                        if (settings == null || !(settings is AppSettings))
-                            return;
-
-                        var login = (settings as AppSettings).ToCreds();
-
-                        refreshVocabluaryTaskFactory().Start(login)
-                            .StartWith(Unit.Default)
-                            .ObserveOn(Dispatcher)
-                            .Subscribe(_ => { IsBusy = true; }, () =>
-                            {
-                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
-                                Messenger.SendMessage<Page>(Page.Home);
-                            });
+                        s.UseGPS = this.UseGPS;
+                        Settings.SaveSettings(s);
+                        Messenger.SendMessage(Page.SetupVocabulary);
                     });
-
-
-            clearDatabase.Subscribe(_ =>
-            {   
-                Taxa.clearTaxonLists();
-                FieldData.clearDatabase();
-                Multimedia.ClearAllMultimedia();
-
-                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
-            });
-
-            #region Setup
-            Databases = new ListSelectionHelper<string>();
-            Projects = new ListSelectionHelper<Project>();
-
-            var creds =
-                Observable.CombineLatest(
-                    this.ObservableForProperty(x => x.UserName).Throttle(TimeSpan.FromMilliseconds(500)),
-                    this.ObservableForProperty(x => x.Password).Throttle(TimeSpan.FromMilliseconds(500)),
-                    (user, pass) => new UserCredentials() { LoginName = user.Value, Password = pass.Value }
-                );
-
-            creds
-                .CheckConnectivity(Connectivity, Notifications)
-                .SelectMany(login =>
-                    {
-
-                        return
-                        Repository
-                        .GetRepositories(login as UserCredentials)
-                        .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingRepositories)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Empty<IEnumerable<string>>())
-                        .Where(repos =>
-                            {
-                                if (repos != null && repos.Any())
-                                    return true;
-                                else
-                                {
-                                    Notifications.showNotification(DiversityResources.Setup_Info_InvalidCredentials, NOTIFICATION_DURATION);
-                                    return false;
-                                }
-                            });
-                    })
-                .Merge(creds.Select(_ => Enumerable.Empty<string>()))
-                .ObserveOn(Dispatcher)
-                .Select(repos =>
-                    {
-                        IList<string> repList = repos.ToList();
-                        repList.Insert(0, NoRepo);
-                        if (repList.Count > 1)
-                        {
-                            CurrentPivot = Pivots.Repository;
-                        }
-
-                        return repList;
-                    })                
-                .Subscribe(Databases);
-
-            var credsWithRepo =
-                Observable.CombineLatest(
-                creds,
-                Databases
-                .Where(x => x != null && x != NoRepo),
-                (usercreds, repo) =>
-                {
-                    usercreds.Repository = repo;
-                    return usercreds;
-                });
-
-            credsWithRepo
-                .CheckConnectivity(Connectivity, Notifications)
-                .SelectMany(login =>
-                    {
-                        var gettingProjects = Notifications.showProgress(DiversityResources.Setup_Info_GettingProjects);
-                        return
-                        Repository
-                        .GetProjectsForUser(login)
-                        .Finally(gettingProjects.Dispose)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(new List<Project>() as IList<Project>));
-                    })
-
-                .Merge(Databases.Select(_ => new List<Project>() as IList<Project>)) //Repo changed                
-                .ObserveOn(Dispatcher)
-                .Do(projects =>
-                    {
-                        projects.Insert(0, NoProject);
-                        if (projects.Count > 1) { CurrentPivot = Pivots.Projects; }
-                    })
-                .Subscribe(Projects);
-
-
-            _Profile = new ObservableAsPropertyHelper<UserProfile>(
-                    credsWithRepo
-                    .SelectMany(login =>
-                        Repository
-                        .GetUserInfo(login as UserCredentials)
-                        .HandleServiceErrors(Notifications, Messenger, Observable.Return(null as UserProfile))
-                    )
-                    .Merge(credsWithRepo.Select(_ => null as UserProfile)),
-                    _ => { }, null
-                );
-            #endregion
-
-
-            Save = new ReactiveCommand(settingsValid().ObserveOn(Dispatcher));
-
-
-
-            Settings.CurrentSettings()
-                .Where(settings => settings == null)
-                .Subscribe(_ =>
-                    {
-                        Messenger.SendMessage<DialogMessage>(new DialogMessage(DialogType.YesNo,
-                        DiversityResources.Setup_Message_AllowGPS_Caption,
-                        DiversityResources.Setup_Message_AllowGPS_Body,
-                        (r) =>
-                        {
-                            UseGPS = r == DialogResult.OKYes;
-                        }));
-                        IsBusy = false;
-                    });
-
-            Save
-                .Do(_ => clearDatabase.Execute(null))
-                .Select(_ => createSettings())
-                .Do(res => Settings.SaveSettings(res))
-                .Merge(
-                    Settings.CurrentSettings().Sample(this.OnActivation()).Where(s => s != null)                    
-                )
-                .Subscribe(RefreshVocabulary.Execute);
-
-
         }
     }
+
+    public class LoginValidator : ListSelectionHelper<string>, IValidateLogin, ISelectDatabase
+    {
+        private string _UserName = "";
+        public string UserName
+        {
+            get { return _UserName; }
+            set { this.RaiseAndSetIfChanged(x => x.UserName, ref _UserName, value); }
+        }
+
+        private string _Password;
+        public string Password
+        {
+            get { return _Password; }
+            set { this.RaiseAndSetIfChanged(x => x.Password, ref _Password, value); }
+        }
+
+        public IObservable<bool> IsLoginValid
+        {
+            get { return _ValidCredentialsOut.Select(creds => creds != null).StartWith(false); }
+        }
+
+        IObservable<AppSettings> IValidateLogin.ValidCredentials
+        {
+            get
+            {
+                return _ValidCredentialsOut;
+            }
+        }
+
+
+        public IObservable<bool> IsDatabaseSelected
+        {
+            get { return CredentialsWithDatabase.Select(creds => creds != null).StartWith(false); }
+        }
+
+        public IObserver<AppSettings> ValidCredentials
+        {
+            get;
+            private set;
+        }
+
+        public IObservable<AppSettings> CredentialsWithDatabase
+        {
+            get;
+            private set;
+        }
+
+        private IObservable<AppSettings> _ValidCredentialsOut;
+        private string NoRepo = DiversityResources.Setup_Item_PleaseChoose;
+        private IList<string> EmptyList = new List<string>();
+
+        public LoginValidator(
+            [Dispatcher] IScheduler Dispatcher,
+            IMessageBus Messenger,
+            IConnectivityService Connectivity,
+            INotificationService Notifications,
+            IDiversityServiceClient Repository
+            )
+            : base(Dispatcher)
+        {
+            //////////////// Login Validation
+
+            var credentials =
+                Observable.CombineLatest(
+                this.ObservableForProperty(x => x.UserName).Throttle(TimeSpan.FromMilliseconds(500)),
+                this.ObservableForProperty(x => x.Password).Throttle(TimeSpan.FromMilliseconds(500)),
+                (user, pass) => new AppSettings() { UserName = user.Value, Password = pass.Value }
+            ).Publish().PermaRef();
+
+            var repositoryResults =
+            credentials
+            .CheckConnectivity(Connectivity, Notifications)
+            .Select(s =>
+            {
+                return
+                Repository
+                .GetRepositories(s.ToCreds())
+                .DisplayProgress(Notifications, DiversityResources.Setup_Info_ValidatingLogin)
+                .HandleServiceErrors(Notifications, Messenger, Observable.Return<IEnumerable<string>>(null))
+                .StartWith(new IEnumerable<string>[] { null })
+                .Select(repos => new { Credentials = s, Repositories = repos ?? Enumerable.Empty<string>() });
+            })
+            .Switch()
+            .Replay(1)
+            .PermaRef();
+
+            _ValidCredentialsOut = repositoryResults
+                .Select(t => (t.Repositories.Any()) ? t.Credentials : null);
+
+            ////////////// Database Selection
+
+            repositoryResults
+                .Select(t =>
+                        Enumerable.Repeat(NoRepo, 1)
+                        .Concat(t.Repositories)
+                        .ToList() as IList<string>)
+                .Subscribe(this.ItemsObserver);
+
+            var validCredentialsIn = new Subject<AppSettings>();
+            ValidCredentials = validCredentialsIn;
+
+            CredentialsWithDatabase =
+                validCredentialsIn.CombineLatest(this.SelectedItemObservable, (s, repo) =>
+                {
+                    if (repo != null && repo != NoRepo)
+                    {
+                        s.HomeDBName = repo;
+
+                        return s;
+                    }
+                    else
+                        return null;
+                })
+                .Replay(1)
+                .PermaRef();
+        }
+
+
+
+
+
+
+    }
+
+    public class ProjectSelector : ListSelectionHelper<Project>, ISelectProject
+    {
+        public IObservable<bool> IsProjectSelected
+        {
+            get { return LatestCredentialsWithProject.Select(c => c != null).StartWith(false); }
+        }
+
+        public IObserver<AppSettings> CredentialsWithDatabase { get; private set; }
+        public IObservable<AppSettings> CredentialsWithProject { get; private set; }
+
+
+        private Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
+        private IList<Project> EmptyList = new List<Project>();
+        private IObservable<AppSettings> LatestCredentialsWithProject;
+
+        public ProjectSelector(
+            [Dispatcher] IScheduler Dispatcher,
+            IDiversityServiceClient Repository,
+            INotificationService Notifications,
+            IMessageBus Messenger
+        )
+            : base(Dispatcher)
+        {
+            var validCredentialsSubject = new Subject<AppSettings>();
+            var validCredentials = validCredentialsSubject
+                .Where(c => c != null);
+            var projectsForCredentials =
+                validCredentials
+                .Select(s =>
+                    Repository
+                    .GetProjectsForUser(s.ToCreds())
+                    .Select(l => l.AsEnumerable())
+                    .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingProjects)
+                    .HandleServiceErrors(Notifications, Messenger, Observable.Return(Enumerable.Empty<Project>()))
+                    .StartWith(Enumerable.Empty<Project>())
+                    .Select(projects => new { Credentials = s, Projects = projects ?? Enumerable.Empty<Project>() })
+                    )
+                .Switch()
+                .Select(t => Enumerable.Repeat(NoProject, 1).Concat(t.Projects).ToList() as IList<Project>)
+                .Subscribe(this.ItemsObserver);
+
+            CredentialsWithDatabase = validCredentialsSubject;
+
+            LatestCredentialsWithProject =
+            this.SelectedItemObservable
+            .CombineLatest(validCredentials, (project, s) =>
+            {
+                if (project != null && project != NoProject)
+                {
+                    s.CurrentProject = project.ProjectID;
+                    s.CurrentProjectName = project.DisplayText;
+                    return s;
+                }
+                else
+                    return null;
+            })
+            .Publish()
+            .PermaRef();
+
+            CredentialsWithProject = LatestCredentialsWithProject.Where(creds => creds != null);
+        }
+    }
+
+    public class ProfileLoader : ReactiveObject, IGetUserProfile
+    {
+        public IObservable<bool> IsProfileValid
+        {
+            get;
+            private set;
+        }
+
+        public IObservable<AppSettings> CredentialsWithProfile
+        {
+            get
+            {
+                return LatestCredentialsWithProfile.Where(login => login != null);
+            }
+        }
+
+        public IObserver<AppSettings> CredentialsWithDatabase { get; private set; }
+
+        private IObservable<AppSettings> LatestCredentialsWithProfile;
+
+        public ProfileLoader(
+            IMessageBus Messenger,
+            IConnectivityService Connectivity,
+            INotificationService Notifications,
+            IDiversityServiceClient Repository
+            )
+        {
+            var credentialsWithDB = new Subject<AppSettings>();
+            LatestCredentialsWithProfile =
+            credentialsWithDB
+            .SelectMany(s =>
+            {
+                return
+                Repository
+                .GetUserInfo(s.ToCreds())
+                .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingProfile)
+                .HandleServiceErrors(Notifications, Messenger, Observable.Return<UserProfile>(null))
+                .Select(profile =>
+                {
+                    if (profile != null)
+                    {
+                        s.AgentName = profile.UserName;
+                        s.AgentURI = profile.AgentUri;
+                        return s;
+                    }
+                    else
+                        return null;
+                });
+            })
+            .Publish()
+            .PermaRef();
+
+            CredentialsWithDatabase = credentialsWithDB;
+
+            IsProfileValid = LatestCredentialsWithProfile.Select(login => login != null).StartWith(false);
+        }
+
+
+
+    }
+
 
 }

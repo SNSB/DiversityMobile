@@ -106,11 +106,14 @@ namespace DiversityPhone
 
                 BindAndActivateSingleton<SettingsVM>();
 
+                var loginANDdb = Kernel.Get<LoginValidator>();
+                Bind<IValidateLogin>().ToConstant(loginANDdb);
+                Bind<ISelectDatabase>().ToConstant(loginANDdb);
+                Bind<ISelectProject>().To<ProjectSelector>();
+                Bind<IGetUserProfile>().To<ProfileLoader>();
                 BindAndActivateSingleton<SetupVM>();
 
                 Bind<TaxonManagementVM>().ToSelf().InTransientScope();
-
-
             }
 
         }
@@ -132,7 +135,7 @@ namespace DiversityPhone
 
                 Bind<SettingsService>().ToSelf().InSingletonScope();
                 Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());
-                Bind<ICurrentCredentials>().ToConstant(Kernel.Get<SettingsService>());
+                Bind<ICredentialsService>().ToConstant(Kernel.Get<SettingsService>());
 
                 BindAndActivateSingleton<NavigationService>();
                 BindAndActivateSingleton<DialogService>();
@@ -141,9 +144,9 @@ namespace DiversityPhone
 
                 Bind<IStoreImages>().To<MultimediaStorageService>().InSingletonScope();
                 Bind<IStoreMultimedia>().ToConstant(Kernel.Get<IStoreImages>());
-                Bind<OfflineStorage>().ToSelf().InSingletonScope();
-                Bind<IFieldDataService>().ToConstant(Kernel.Get<OfflineStorage>());
-                Bind<IKeyMappingService>().ToConstant(Kernel.Get<OfflineStorage>());
+                Bind<FieldDataService>().ToSelf().InSingletonScope();
+                Bind<IFieldDataService>().ToConstant(Kernel.Get<FieldDataService>());
+                Bind<IKeyMappingService>().ToConstant(Kernel.Get<FieldDataService>());
 
                 Bind<IVocabularyService>().To<VocabularyService>().InSingletonScope();
                 Bind<ITaxonService>().To<TaxonService>().InSingletonScope();
@@ -155,7 +158,7 @@ namespace DiversityPhone
                 var location = Kernel.Get<LocationService>();
 
                 Kernel.Get<ISettingsService>()
-                    .CurrentSettings()
+                    .SettingsObservable()
                     .Where(s => s != null)
                     .Select(s => s.UseGPS)
                     .Subscribe(gps => location.IsEnabled = gps);
@@ -163,6 +166,8 @@ namespace DiversityPhone
                 Bind<ILocationService>().ToConstant(location);
 
                 Bind<IRefreshVocabularyTask>().To<RefreshVocabularyTask>();
+
+                Bind<ICleanupData>().To<CleanupService>();
             }
         }
 
@@ -171,7 +176,7 @@ namespace DiversityPhone
         {
             public override void Load()
             {
-                Kernel.Get<OfflineStorage>().CheckAndRepairDatabase();
+                Kernel.Get<FieldDataService>().CheckAndRepairDatabase();
                 Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
 
             }
@@ -179,6 +184,9 @@ namespace DiversityPhone
 
         public static void Initialize()
         {
+            if (Kernel != null) // Already Initialized
+                return;
+
             //Work around an Issue with ReactiveUI
             //The WriteableBitmapEx library is recognized as the Pex Unit Test Runner
             RxApp.DeferredScheduler = null;
@@ -194,7 +202,6 @@ namespace DiversityPhone
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
             Kernel.Load<InitModule>();
-
         }
 
 

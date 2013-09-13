@@ -2,7 +2,6 @@
 {
     public static class AppSettingsMixin
     {
-
         public static UserCredentials ToCreds(this AppSettings settings)
         {
             return new UserCredentials()
@@ -22,7 +21,7 @@
         public AppSettings()
         {
             UseGPS = true;
-            SaveMultimediaExtrnally = true;
+            SaveMultimediaExternally = true;
         }
 
         public string UserName { get; set; }
@@ -31,7 +30,7 @@
         public string AgentURI { get; set; }        
         public bool UseGPS { get; set; }
 
-        public bool SaveMultimediaExtrnally { get; set; }
+        public bool SaveMultimediaExternally { get; set; }
         
         public string HomeDBName { get; set; }
 

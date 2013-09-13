@@ -24,33 +24,18 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
-        <Grid Grid.Row="0" Margin="{StaticResource PhoneMargin}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Text="DIVERSITYMOBILE" 
-                       Style="{StaticResource PhoneTextNormalStyle}"
-                       HorizontalAlignment="Left" />
-            <Image Grid.Row="0" Grid.RowSpan="2" 
-                   Source="/Images/AppIcons/Diversity_allein_tr.png"
-                   Height="120" Width="140"  
-                   Stretch="Fill" 
-                   HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBlock Grid.Row="1" Text="home"
-                       Style="{StaticResource PhoneTextTitle1Style}"/>
-            <vw:CommandNotAvailableLabel Grid.Row="2" 
-                                         Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
-        </Grid>
-
+        <vw:DiversityMobilePageHeader Grid.Row="0"
+                                      Text="{Binding Resources.Home_PageHeader, Source={StaticResource LocalizedStrings}}"/>
         
-        <Grid Grid.Row="1" Margin="12,0,0,0">
+        <vw:CommandNotAvailableLabel Grid.Row="1" 
+                                         Text="{Binding Resources.Home_Info_CantOpenNewSeries, Source={StaticResource LocalizedStrings}}" Command="{Binding Add}"/>
+        
+        <Grid Grid.Row="2" Margin="12,0,0,0">
             
             <ListBox ItemsSource="{Binding SeriesList}" Height="479" >
                 <ListBox.ItemTemplate>

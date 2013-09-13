@@ -172,7 +172,7 @@ namespace DiversityPhone.ViewModels
 
             var identificationQuery =
                 this.WhenAny(x => x.QueryString, x => x.Value)
-                    .CombineLatest(TaxonomicGroup, (query, tg) => System.Tuple.Create(query, tg))
+                    .CombineLatest(TaxonomicGroup.SelectedItemObservable, (query, tg) => System.Tuple.Create(query, tg))
                     .Publish();
 
             identificationQuery
@@ -190,9 +190,9 @@ namespace DiversityPhone.ViewModels
             noUpdatesInFlight.Connect();
 
             var canSave = Observable.CombineLatest(
-                              (from tg in TaxonomicGroup
+                              (from tg in TaxonomicGroup.SelectedItemObservable
                                select tg != null),
-                              (from id in Identification
+                              (from id in Identification.SelectedItemObservable
                                select id != null && !string.IsNullOrWhiteSpace(id.TaxonNameCache)),
                               (from q in identificationQuery
                                select noUpdatesInFlight.StartWith(false))
@@ -258,21 +258,21 @@ namespace DiversityPhone.ViewModels
                         return candidates as IList<TaxonName>;
                     }, ThreadPool)
             .ObserveOn(Dispatcher)
-            .Subscribe(Identification);
+            .Subscribe(Identification.ItemsObserver);
 
             ActivationObservable
                 .Take(1)
                 .Select(_ => Vocabulary.getTerms(TermList.TaxonomicGroups).ToList() as IList<Term>)
-                .Subscribe(TaxonomicGroup);
+                .Subscribe(TaxonomicGroup.ItemsObserver);
 
             this.FirstActivation()
                 .Select(_ => Vocabulary.getQualifications().ToList() as IList<Qualification>)
-                .Subscribe(Qualifications);
+                .Subscribe(Qualifications.ItemsObserver);
 
             _IsToplevel
                 .Where(isToplevel => !isToplevel)
                 .Select(isToplevel => Vocabulary.getTerms(TermList.RelationshipTypes).ToList() as IList<Term>)
-                .Subscribe(RelationshipType);
+                .Subscribe(RelationshipType.ItemsObserver);
             #endregion
 
             #region Preserve Selections
@@ -314,7 +314,7 @@ namespace DiversityPhone.ViewModels
 
             saveTaxonGroupSelection
                 .Select(g => bringItemToTop(TaxonomicGroup.Items, g))
-                .Subscribe(TaxonomicGroup);
+                .Subscribe(TaxonomicGroup.ItemsObserver);
 
             Messenger.RegisterMessageSource(
                 Save

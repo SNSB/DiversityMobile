@@ -15,7 +15,7 @@ namespace DiversityPhone.Services
 {
 
 
-    public partial class OfflineStorage : IFieldDataService, IKeyMappingService
+    public partial class FieldDataService : IFieldDataService, IKeyMappingService
     {
         readonly CascadingDeleter CascadingDelete;
         private IList<IDisposable> _subscriptions;
@@ -23,7 +23,7 @@ namespace DiversityPhone.Services
         readonly INotificationService Notifications;
 
 
-        public OfflineStorage(
+        public FieldDataService(
             IMessageBus Messenger,
             INotificationService Notifications,
             CascadingDeleter CascadingDelete
@@ -571,7 +571,7 @@ namespace DiversityPhone.Services
 
         #endregion
 
-        public void clearDatabase()
+        public void ClearDatabase()
         {
             using (var context = new DiversityDataContext())
             {

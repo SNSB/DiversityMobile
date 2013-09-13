@@ -17,9 +17,9 @@ namespace DiversityPhone.Services
         void addMap(Map map, Stream mapContent);
 
         /// <summary>
-        /// Deletes all Maps and derigesteres the entries in the database
+        /// Deletes all Maps and removes the entries from the database
         /// </summary>
-        void clearMaps();
+        void ClearMaps();
 
         /// <summary>
         /// Removes a Map in isolated storage and deletes the entry from the MapTable 

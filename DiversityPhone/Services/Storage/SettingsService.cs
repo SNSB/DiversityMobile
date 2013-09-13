@@ -1,20 +1,19 @@
-﻿using System;
-using System.IO.IsolatedStorage;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using ReactiveUI;
+using System;
+using System.IO.IsolatedStorage;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {
     
 
-    public class SettingsService : ISettingsService, ICurrentCredentials
+    public class SettingsService : ISettingsService, ICredentialsService
     {
         private const string SETTINGS_KEY = "Settings";
 
-        ISubject<AppSettings> _SettingSubject = new BehaviorSubject<AppSettings>(null);
+        BehaviorSubject<AppSettings> _SettingSubject = new BehaviorSubject<AppSettings>(null);
         public SettingsService()
 	    {
             AppSettings settings;
@@ -23,10 +22,15 @@ namespace DiversityPhone.Services
                 _SettingSubject.OnNext(settings);
 	    }
 
+        public void ClearSettings()
+        {
+            SaveSettings(null);
+        }
+
 
 
         public void SaveSettings(AppSettings settings)
-        {   
+        {
             IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
             IsolatedStorageSettings.ApplicationSettings.Save();
             _SettingSubject.OnNext(settings);
@@ -42,9 +46,10 @@ namespace DiversityPhone.Services
             return null;
         }
 
-        public IObservable<AppSettings> CurrentSettings()
+        public IObservable<AppSettings> SettingsObservable()
         {
             return _SettingSubject.AsObservable();
         }
+        public AppSettings CurrentSettings { get { return _SettingSubject.FirstOrDefault(); } }
     }
 }

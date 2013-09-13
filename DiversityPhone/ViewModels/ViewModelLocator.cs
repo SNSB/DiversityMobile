@@ -45,5 +45,7 @@ namespace DiversityPhone.ViewModels
 
         public SetupVM Setup { get { return IOC.Get<SetupVM>(); } }
 
+        public RefreshVocabularyVM Vocabulary { get { return IOC.Get<RefreshVocabularyVM>(); } }
+
     }
 }

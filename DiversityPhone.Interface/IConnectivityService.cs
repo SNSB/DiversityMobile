@@ -24,7 +24,7 @@ namespace DiversityPhone.Interface
     {
         public static IObservable<bool> WifiAvailable(this IConnectivityService svc)
         {
-            Contract.Requires<ArgumentNullException>(svc != null);
+            Contract.Requires(svc != null);
 
             return svc.Status().Select(s => s == ConnectionStatus.Wifi);
         }

@@ -17,7 +17,7 @@ namespace DiversityPhone.Services
     public partial class MapTransferService : IMapTransferService, IEnableLogger
     {
         private IMapStorageService MapStorage;
-        private ICurrentCredentials CredentialsProvider;
+        private ICredentialsService CredentialsProvider;
         private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
 
 
@@ -25,7 +25,7 @@ namespace DiversityPhone.Services
         private IObservable<EventPattern<GetMapUrlCompletedEventArgs>> GetMapUrlCompletedObservable;
         private IObservable<EventPattern<GetXmlUrlCompletedEventArgs>> GetXmlUrlCompletedObservable;
 
-        public MapTransferService(IMapStorageService storage, ICurrentCredentials creds)
+        public MapTransferService(IMapStorageService storage, ICredentialsService creds)
         {
             MapStorage = storage;
             CredentialsProvider = creds;

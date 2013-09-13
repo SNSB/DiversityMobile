@@ -28,9 +28,9 @@ namespace DiversityPhone.Test
         {
             if (enumerated)
             {
-                foreach(var item in Enumerable.Empty<T>())
+                foreach (var item in Enumerable.Empty<T>())
                     yield return item;
-            }                
+            }
             else
             {
                 enumerated = true;
@@ -61,7 +61,7 @@ namespace DiversityPhone.Test
         public UnitTestKernel()
         {
 
-            
+
         }
     }
 
@@ -91,7 +91,7 @@ namespace DiversityPhone.Test
         protected readonly Mock<ITaxonService> Taxa;
         protected readonly Mock<ISettingsService> Settings;
 
-        
+
 
         protected IObservable<T> Return<T>(T value)
         {
@@ -103,7 +103,16 @@ namespace DiversityPhone.Test
             return Observable.Return(value, Scheduler).Concat(Observable.Never<T>());
         }
 
-       
+        protected Mock<Q> RecursiveMock<Q>() where Q : class
+        {
+            var s = K.GetMock<Q>();
+            s.DefaultValue = DefaultValue.Mock;
+            return s;
+        }
+        protected Mock<Q> Mock<Q>() where Q : class
+        {
+            return K.GetMock<Q>();
+        }
 
         protected void GetT()
         {
@@ -112,15 +121,15 @@ namespace DiversityPhone.Test
 
         public DiversityTestBase()
         {
-            K = new UnitTestKernel();            
+            K = new UnitTestKernel();
             K.Load<TestServiceModule>();
 
             Scheduler = new TestScheduler();
 
             Service = K.GetMock<IDiversityServiceClient>();
             Service.DefaultValue = DefaultValue.Mock;
-            
-           
+
+
 
             Connectivity = K.GetMock<IConnectivityService>();
             Notifications = K.GetMock<INotificationService>();

@@ -14,6 +14,7 @@ namespace DiversityPhone.ViewModels.Utility
     public partial class SettingsVM : PageVMBase
     {
         readonly ISettingsService Settings;
+        readonly ICleanupData Cleanup;
         readonly IConnectivityService Connectivity;
 
 
@@ -65,9 +66,11 @@ namespace DiversityPhone.ViewModels.Utility
 
         public SettingsVM(
             ISettingsService Settings,
+            ICleanupData Cleanup,
             IConnectivityService Connectivity
             )
         {
+            this.Cleanup = Cleanup;
             this.Settings = Settings;
             this.Connectivity = Connectivity;
 
@@ -105,7 +108,7 @@ namespace DiversityPhone.ViewModels.Utility
             RefreshVocabulary
                 .Subscribe(_ =>
                 {
-                    Messenger.SendMessage(Page.Setup);
+                    Messenger.SendMessage(Page.SetupVocabulary);
                 });
 
 
@@ -137,7 +140,7 @@ namespace DiversityPhone.ViewModels.Utility
                 );
 
             Settings
-                .CurrentSettings()
+                .SettingsObservable()
                 .Subscribe(x => Model = x);            
         }
 
@@ -152,8 +155,8 @@ namespace DiversityPhone.ViewModels.Utility
 
         private void OnReset()
         {
-            Settings.SaveSettings(null);
-            Messenger.SendMessage(Page.Setup);
+            Cleanup.ClearLocalData();
+            Messenger.SendMessage(Page.SetupWelcome);
         }
     }
 }

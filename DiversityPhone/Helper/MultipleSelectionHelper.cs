@@ -24,7 +24,7 @@ namespace DiversityPhone.ViewModels
     /// an asynchronous stream of Items that are accumulated into a Collection
     /// </summary>
     /// <remarks>
-    /// Can marshal new Items to the Dispatcher Thread for IU safety
+    /// Can marshal new Items to the Dispatcher Thread for UI safety
     /// </remarks>
     /// <typeparam name="T"></typeparam>
     public class MultipleSelectionHelper<T> : ReactiveObject, IObserver<IObservable<T>>

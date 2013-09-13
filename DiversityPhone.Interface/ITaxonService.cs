@@ -52,6 +52,6 @@ namespace DiversityPhone.Interface
         /// <summary>
         /// Deletes all Taxon list selections and Databases.
         /// </summary>
-        void clearTaxonLists();
+        void ClearTaxonLists();
     }
 }

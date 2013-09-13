@@ -8,7 +8,9 @@ namespace DiversityPhone.Interface
 {
     public interface ISettingsService
     {
-        IObservable<AppSettings> CurrentSettings();
+        IObservable<AppSettings> SettingsObservable();
+        AppSettings CurrentSettings { get; }
         void SaveSettings(AppSettings settings);
+        void ClearSettings();
     }
 }

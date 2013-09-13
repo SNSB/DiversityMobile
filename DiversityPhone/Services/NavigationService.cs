@@ -149,8 +149,23 @@ namespace DiversityPhone.Services
                 case Page.EditEventProperty:
                     destination = "/View/EditEventProperty.xaml";
                     break;
-                case Page.Setup:
-                    destination = "/View/Setup.xaml";
+                case Page.SetupWelcome:
+                    destination = "/View/Setup/WelcomeSplash.xaml";
+                    break;
+                case Page.SetupLogin:
+                    destination = "/View/Setup/Login.xaml";
+                    break;
+                case Page.SetupDatabase:
+                    destination = "/View/Setup/DatabaseServer.xaml";
+                    break;
+                case Page.SetupProject:
+                    destination = "/View/Setup/Project.xaml";
+                    break;
+                case Page.SetupGPS:
+                    destination = "/View/Setup/AskGPS.xaml";
+                    break;
+                case Page.SetupVocabulary:
+                    destination = "/View/Setup/Vocabulary.xaml";
                     break;
                 case Page.Info:
                     destination = "/View/Info.xaml";

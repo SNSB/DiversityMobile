@@ -148,7 +148,7 @@ namespace DiversityPhone.Services
             return getTaxonNames(tableID, query);
         }
 
-        public void clearTaxonLists()
+        public void ClearTaxonLists()
         {
             withSelections(sel => 
                 {
