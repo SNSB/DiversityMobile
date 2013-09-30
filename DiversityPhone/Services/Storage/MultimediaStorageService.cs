@@ -132,6 +132,7 @@ namespace DiversityPhone
             return library
                 .RootPictureAlbum
                 .Albums
+                // TODO Find a mor robust way to identify the CameraRoll
                 .Where(a => a.Name == "Camera Roll" || a.Name == "Kamerarolle")
                 .FirstOrDefault();
         }
@@ -167,12 +168,13 @@ namespace DiversityPhone
         public string StoreImage(string fileNameHint, PhotoResult image)
         {
             StorageDescriptor fileDescriptor;
+            var cameraRoll = Library.CameraRoll();
             //On WP8 the image is already saved, check for that...
-            if (IsWP8)
+            //On Devices without Camera Roll fall back to saving anyway            
+            if (IsWP8 && cameraRoll != null)
             {
                 // ... and use the Image in the Camera Roll
-                var lib = Library;
-                var crImage = lib.CameraRoll().Pictures.OrderByDescending(p => p.Date).First();
+                var crImage = cameraRoll.Pictures.OrderByDescending(p => p.Date).First();
                 fileDescriptor = new StorageDescriptor() { Type = StorageType.CameraRoll, FileName = crImage.Name };
             }
             else
