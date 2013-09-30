@@ -166,6 +166,9 @@ namespace DiversityPhone
 
                 Bind<IDiversityServiceClient>().To<DiversityServiceClient>().InSingletonScope();
 
+                Bind<CloudStorageService>().ToSelf().InSingletonScope();
+                Bind<ICloudStorageService>().ToConstant(Kernel.Get<CloudStorageService>());
+
                 var location = Kernel.Get<LocationService>();
 
                 Kernel.Get<ISettingsService>()

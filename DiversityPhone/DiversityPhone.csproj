@@ -136,6 +136,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-core.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI_WP7.dll</HintPath>
     </Reference>
+    <Reference Include="SharpZipLib.WindowsPhone7, Version=0.86.0.518, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\ICSharpCode.SharpZipLib.Silverlight\SharpZipLib.WindowsPhone7.dll</HintPath>
+    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Device" />
     <Reference Include="System.IO">
@@ -196,6 +200,10 @@
     <Compile Include="Helper\IsolatedStorageExtensions.cs" />
     <Compile Include="Helper\ObservableMixin.cs" />
     <Compile Include="Helper\PercentageReporter.cs" />
+    <Compile Include="LiveSDKTaskAsync\ApiMethod.cs" />
+    <Compile Include="LiveSDKTaskAsync\LiveAuthClientTaskAsync.cs" />
+    <Compile Include="LiveSDKTaskAsync\LiveConnectClientTaskAsync.cs" />
+    <Compile Include="Services\CloudStorageService.cs" />
     <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\Storage\BackupService.cs" />
     <Compile Include="Services\Storage\CleanupService.cs" />
