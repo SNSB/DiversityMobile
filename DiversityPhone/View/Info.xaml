@@ -27,43 +27,7 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <TextBlock TextWrapping="Wrap" 
-                           Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding Resources.App_Info, Source={StaticResource LocalizedStrings}}"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding Resources.App_Map_Text, Source={StaticResource LocalizedStrings}}"/>
-                <HyperlinkButton Content="{Binding Resources.App_Map_LinkTitle, Source={StaticResource LocalizedStrings}}" 
-                                 Margin="{StaticResource PhoneHorizontalMargin}"
-                                 Click="MapWiki_Click"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding Resources.App_Taxa_Text, Source={StaticResource LocalizedStrings}}"/>
-                <HyperlinkButton Content="{Binding Resources.App_Taxa_LinkTitle, Source={StaticResource LocalizedStrings}}" 
-                                 Margin="{StaticResource PhoneHorizontalMargin}"
-                                 Click="TaxWiki_Click"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Margin="{StaticResource PhoneVerticalMargin}"
-                           Text="{Binding Resources.App_CreatedBy, Source={StaticResource LocalizedStrings}}"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding Resources.App_Credits, Source={StaticResource LocalizedStrings}}"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Margin="{StaticResource PhoneVerticalMargin}"
-                           Text="{Binding Resources.App_Homepage_Title, Source={StaticResource LocalizedStrings}}"/>
-                <HyperlinkButton Margin="{StaticResource PhoneHorizontalMargin}"
-                                 Content="{Binding Resources.App_Homepage_URL, Source={StaticResource LocalizedStrings}}"
-                                 Click="Homepage_Click"/>
-                <TextBlock TextWrapping="Wrap" 
-                           Margin="{StaticResource PhoneVerticalMargin}"
-                           Text="{Binding Resources.App_Mail_Title, Source={StaticResource LocalizedStrings}}"/>
-                <HyperlinkButton Content="{Binding Resources.App_Mail_Address, Source={StaticResource LocalizedStrings}}" 
-                                 Margin="{StaticResource PhoneHorizontalMargin}"
-                                 Click="Mail_Click"/>
-            </StackPanel>
-        </ScrollViewer>
+        
     </Grid>
 
 </phone:PhoneApplicationPage>

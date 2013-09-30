@@ -18,37 +18,6 @@ namespace DiversityPhone.View
             InitializeComponent();
         }
 
-        private void MapWiki_Click(object sender, RoutedEventArgs e)
-        {
-            new WebBrowserTask()
-            {
-                Uri = new Uri(DiversityResources.App_Map_URL, UriKind.Absolute)
-            }.Show();
-        }
-
-        private void TaxWiki_Click(object sender, RoutedEventArgs e)
-        {
-            new WebBrowserTask()
-            {
-                Uri = new Uri(DiversityResources.App_Taxa_URL, UriKind.Absolute)
-            }.Show();
-        }
-
-        private void Mail_Click(object sender, RoutedEventArgs e)
-        {
-            new EmailComposeTask()
-            {
-                To = DiversityResources.App_Mail_Address,
-                Subject = "DiversityMobile"
-            }.Show();
-        }
-
-        private void Homepage_Click(object sender, RoutedEventArgs e)
-        {
-            new WebBrowserTask()
-            {
-                Uri = new Uri(DiversityResources.App_Homepage_URL, UriKind.Absolute)
-            }.Show();
-        }
+        
     }
 }
