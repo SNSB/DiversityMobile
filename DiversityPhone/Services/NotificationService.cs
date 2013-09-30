@@ -23,15 +23,15 @@ namespace DiversityPhone.Services
     /// </summary>
     public class NotificationService : INotificationService
     {
-        private readonly TimeSpan UPDATE_INTERVAL = TimeSpan.FromSeconds(3);
+        private static readonly ProgressState IDLE_STATE = new ProgressState(0, string.Empty);
 
         ProgressIndicator _Progress = new ProgressIndicator() { IsVisible = true };
 
         int _ProgressCount = 0;
         ISubject<int> _ProgressCountSubject = new Subject<int>();
-        IScheduler _Dispatcher;
-        Stack<IObservable<string>> _Notifications = new Stack<IObservable<string>>();
-        IObservable<string> _CurrentNotification;
+        public IScheduler NotificationScheduler { get; private set; }
+        Stack<IObservable<ProgressState>> _Notifications = new Stack<IObservable<ProgressState>>();
+        IObservable<ProgressState> _CurrentNotification;
         IDisposable _CurrentNotificationSubscription = Disposable.Empty;
 
         public NotificationService(
@@ -40,7 +40,7 @@ namespace DiversityPhone.Services
             )
         {
             RootFrame.Navigated += OnFrameNavigated;
-            _Dispatcher = Dispatcher;
+            NotificationScheduler = Dispatcher;
 
             _ProgressCountSubject
                 .Select(c => c > 0)
@@ -59,7 +59,7 @@ namespace DiversityPhone.Services
 
         private void setProgressindicator(bool show)
         {
-            _Dispatcher.Schedule(() =>
+            NotificationScheduler.Schedule(() =>
                 {
                     if (show)
                     {
@@ -74,14 +74,19 @@ namespace DiversityPhone.Services
                 });
         }
 
-        private void setNotification(string text)
+        private void setNotification(ProgressState state)
         {
-            _Dispatcher.Schedule(() => _Progress.Text = text);
+            NotificationScheduler.Schedule(() =>
+                {
+                    _Progress.Text = state.ProgressMessage;
+                    _Progress.Value = state.ProgressPercentage ?? 0;
+                    _Progress.IsIndeterminate = !state.ProgressPercentage.HasValue;
+                });
         }
 
         private void updateNotification()
         {
-            _Dispatcher.Schedule(() =>
+            NotificationScheduler.Schedule(() =>
                 {
                     lock (this)
                     {
@@ -92,7 +97,7 @@ namespace DiversityPhone.Services
                         // Check for active Notifications
                         if (_Notifications.Count > 0)
                         {
-                            
+
 
                             _CurrentNotificationSubscription.Dispose();
                             _CurrentNotification = _Notifications.Peek();
@@ -105,13 +110,13 @@ namespace DiversityPhone.Services
                         {
                             _CurrentNotification = null;
                             _CurrentNotificationSubscription.Dispose();
-                            setNotification("");
+                            setNotification(IDLE_STATE);
                         }
                     }
                 });
         }
 
-        private void addNotification(IObservable<string> notification)
+        private void addNotification(IObservable<ProgressState> notification)
         {
             var replays = notification.Replay(1);
             replays.Connect();
@@ -132,33 +137,13 @@ namespace DiversityPhone.Services
             _ProgressCountSubject.OnNext(_ProgressCount);
         }
 
-        public IDisposable showProgress(string text)
-        {
-            var observable = new BehaviorSubject<string>(text);
-            showProgress(observable);
-            return Disposable.Create(observable.OnCompleted);
-        }
-
-        public void showNotification(string text)
-        {
-            showNotification(text, UPDATE_INTERVAL);
-        }
-
-        public void showNotification(string text, TimeSpan duration)
-        {
-            var obs = Observable.Delay(Observable.Empty<string>(), duration)
-                .StartWith(text);
-
-            addNotification(obs);
-        }
-
-        public void showProgress(IObservable<string> text)
+        public void showProgress(IObservable<ProgressState> progress)
         {
             adjustProgressCounter(true);
 
-            text.Subscribe(_ => { }, () => adjustProgressCounter(false));
+            progress.Subscribe(_ => { }, () => adjustProgressCounter(false));
 
-            addNotification(text);
+            addNotification(progress);
         }
     }
 }
