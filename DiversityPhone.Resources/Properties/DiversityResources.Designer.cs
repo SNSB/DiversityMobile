@@ -553,6 +553,186 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string ImportExport_Button_Delete {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to download.
+        /// </summary>
+        public static string ImportExport_Button_Download {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to refresh.
+        /// </summary>
+        public static string ImportExport_Button_RefreshRemote {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_RefreshRemote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to restore.
+        /// </summary>
+        public static string ImportExport_Button_Restore {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to snapshot.
+        /// </summary>
+        public static string ImportExport_Button_Take {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_Take", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to upload.
+        /// </summary>
+        public static string ImportExport_Button_Upload {
+            get {
+                return ResourceManager.GetString("ImportExport_Button_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deletion Failed..
+        /// </summary>
+        public static string ImportExport_Failed_Delete {
+            get {
+                return ResourceManager.GetString("ImportExport_Failed_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Download Failed..
+        /// </summary>
+        public static string ImportExport_Failed_Download {
+            get {
+                return ResourceManager.GetString("ImportExport_Failed_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore Failed..
+        /// </summary>
+        public static string ImportExport_Failed_Restore {
+            get {
+                return ResourceManager.GetString("ImportExport_Failed_Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snapshotting Failed..
+        /// </summary>
+        public static string ImportExport_Failed_Take {
+            get {
+                return ResourceManager.GetString("ImportExport_Failed_Take", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Upload Failed..
+        /// </summary>
+        public static string ImportExport_Failed_Upload {
+            get {
+                return ResourceManager.GetString("ImportExport_Failed_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Querying SkyDrive ....
+        /// </summary>
+        public static string ImportExport_Info_QueryingRemote {
+            get {
+                return ResourceManager.GetString("ImportExport_Info_QueryingRemote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Connection to SkyDrive.
+        /// </summary>
+        public static string ImportExport_Info_SkyDriveUnavailable {
+            get {
+                return ResourceManager.GetString("ImportExport_Info_SkyDriveUnavailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to im/export.
+        /// </summary>
+        public static string ImportExport_PageHeader {
+            get {
+                return ResourceManager.GetString("ImportExport_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deleting Snapshot....
+        /// </summary>
+        public static string ImportExport_Status_Delete {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading Snapshot....
+        /// </summary>
+        public static string ImportExport_Status_Download {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_Download", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restoring Snapshot....
+        /// </summary>
+        public static string ImportExport_Status_Restore {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving Application Data....
+        /// </summary>
+        public static string ImportExport_Status_TakeAppData {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_TakeAppData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving External Images....
+        /// </summary>
+        public static string ImportExport_Status_TakeExternal {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_TakeExternal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Uploading Snapshot....
+        /// </summary>
+        public static string ImportExport_Status_Upload {
+            get {
+                return ResourceManager.GetString("ImportExport_Status_Upload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This item can not be changed, it has already been uploaded..
         /// </summary>
         public static string Info_CantEditItem {
@@ -769,11 +949,74 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Project.
+        /// </summary>
+        public static string Settings_Header_Project {
+            get {
+                return ResourceManager.GetString("Settings_Header_Project", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Repository.
+        /// </summary>
+        public static string Settings_Header_Repository {
+            get {
+                return ResourceManager.GetString("Settings_Header_Repository", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SkyDrive Integration.
+        /// </summary>
+        public static string Settings_Header_SkyDrive {
+            get {
+                return ResourceManager.GetString("Settings_Header_SkyDrive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upload Data.
         /// </summary>
         public static string Settings_Header_UploadData {
             get {
                 return ResourceManager.GetString("Settings_Header_UploadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User.
+        /// </summary>
+        public static string Settings_Header_User {
+            get {
+                return ResourceManager.GetString("Settings_Header_User", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string Settings_Header_Version {
+            get {
+                return ResourceManager.GetString("Settings_Header_Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import / Export.
+        /// </summary>
+        public static string Settings_Menu_ImExport {
+            get {
+                return ResourceManager.GetString("Settings_Menu_ImExport", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
+        public static string Settings_PageHeader {
+            get {
+                return ResourceManager.GetString("Settings_PageHeader", resourceCulture);
             }
         }
         

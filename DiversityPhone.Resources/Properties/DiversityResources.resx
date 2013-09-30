@@ -289,6 +289,66 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="IdentificationUnit_Info_NoAnalyses" xml:space="preserve">
     <value>no analyses available.</value>
   </data>
+  <data name="ImportExport_Button_Delete" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="ImportExport_Button_Download" xml:space="preserve">
+    <value>download</value>
+  </data>
+  <data name="ImportExport_Button_RefreshRemote" xml:space="preserve">
+    <value>refresh</value>
+  </data>
+  <data name="ImportExport_Button_Restore" xml:space="preserve">
+    <value>restore</value>
+  </data>
+  <data name="ImportExport_Button_Take" xml:space="preserve">
+    <value>snapshot</value>
+  </data>
+  <data name="ImportExport_Button_Upload" xml:space="preserve">
+    <value>upload</value>
+  </data>
+  <data name="ImportExport_Failed_Delete" xml:space="preserve">
+    <value>Deletion Failed.</value>
+  </data>
+  <data name="ImportExport_Failed_Download" xml:space="preserve">
+    <value>Download Failed.</value>
+  </data>
+  <data name="ImportExport_Failed_Restore" xml:space="preserve">
+    <value>Restore Failed.</value>
+  </data>
+  <data name="ImportExport_Failed_Take" xml:space="preserve">
+    <value>Snapshotting Failed.</value>
+  </data>
+  <data name="ImportExport_Failed_Upload" xml:space="preserve">
+    <value>Upload Failed.</value>
+  </data>
+  <data name="ImportExport_Info_QueryingRemote" xml:space="preserve">
+    <value>Querying SkyDrive ...</value>
+  </data>
+  <data name="ImportExport_Info_SkyDriveUnavailable" xml:space="preserve">
+    <value>No Connection to SkyDrive</value>
+  </data>
+  <data name="ImportExport_PageHeader" xml:space="preserve">
+    <value>im/export</value>
+  </data>
+  <data name="ImportExport_Status_Delete" xml:space="preserve">
+    <value>Deleting Snapshot...</value>
+  </data>
+  <data name="ImportExport_Status_Download" xml:space="preserve">
+    <value>Downloading Snapshot...</value>
+  </data>
+  <data name="ImportExport_Status_Restore" xml:space="preserve">
+    <value>Restoring Snapshot...</value>
+  </data>
+  <data name="ImportExport_Status_TakeAppData" xml:space="preserve">
+    <value>Saving Application Data...</value>
+  </data>
+  <data name="ImportExport_Status_TakeExternal" xml:space="preserve">
+    <value>Saving External Images...</value>
+  </data>
+  <data name="ImportExport_Status_Upload" xml:space="preserve">
+    <value>Uploading Snapshot...</value>
+  </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
@@ -361,8 +421,29 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Settings_Header_ManageTaxa" xml:space="preserve">
     <value>Manage Taxon Lists</value>
   </data>
+  <data name="Settings_Header_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="Settings_Header_Repository" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="Settings_Header_SkyDrive" xml:space="preserve">
+    <value>SkyDrive Integration</value>
+  </data>
   <data name="Settings_Header_UploadData" xml:space="preserve">
     <value>Upload Data</value>
+  </data>
+  <data name="Settings_Header_User" xml:space="preserve">
+    <value>User</value>
+  </data>
+  <data name="Settings_Header_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Settings_Menu_ImExport" xml:space="preserve">
+    <value>Import / Export</value>
+  </data>
+  <data name="Settings_PageHeader" xml:space="preserve">
+    <value>settings</value>
   </data>
   <data name="Setup_Database_PageHeader" xml:space="preserve">
     <value>repository</value>

@@ -1,13 +1,14 @@
-﻿using DiversityPhone.View.Appbar;
+﻿using DiversityPhone.Services;
+using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels.Utility;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Ninject;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Input;
 
 
 namespace DiversityPhone.View
@@ -28,12 +29,11 @@ namespace DiversityPhone.View
 
             version_info.Text = GetVersionNumber();
 
-            var version_taps = Observable.FromEventPattern<System.Windows.Input.GestureEventArgs>(h => VersionTextBlock.DoubleTap += h, h => VersionTextBlock.DoubleTap -= h)
-                .Select(_ => Unit.Default)
-                .Window(TimeSpan.FromSeconds(5), 3)
-                .SelectMany(window => window.Count())
-                .Where(count => count == 3)
-                .Subscribe(_ => NavigationService.Navigate(new Uri("/View/Admin.xaml", UriKind.RelativeOrAbsolute)));
+            this.SigninButton.SessionChanged += (s, args) =>
+            {
+                var cloud = App.Kernel.Get<CloudStorageService>();
+                cloud.Session = args.Session;
+            };
         }
 
         private void ManageTaxa_Click()
@@ -99,7 +99,21 @@ namespace DiversityPhone.View
                 };
                 downloadData.Click += (s, args) => Download_Click();
                 ApplicationBar.MenuItems.Add(downloadData);
+
+                var importExport = new ApplicationBarMenuItem()
+                {
+                    Text = DiversityResources.Settings_Menu_ImExport
+                };
+                importExport.Click += (s, args) => ImportExport();
+                ApplicationBar.MenuItems.Add(importExport);
             }
+        }
+
+        void ImportExport()
+        {
+            var vm = VM;
+            if (vm != null && vm.ImportExport.CanExecute(null))
+                vm.ImportExport.Execute(null);
         }
 
         private void Download_Click()

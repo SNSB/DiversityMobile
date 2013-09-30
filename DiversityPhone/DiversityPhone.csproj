@@ -270,6 +270,7 @@
     <Compile Include="ViewModels\Multimedia\VideoVM.cs" />
     <Compile Include="ViewModels\Utility\DownloadVM.cs" />
     <Compile Include="ViewModels\Utility\FieldDataUploadVM.cs" />
+    <Compile Include="ViewModels\Utility\ImportExportVM.cs" />
     <Compile Include="ViewModels\Utility\RefreshVocabularyVM.cs" />
     <Compile Include="ViewModels\Utility\SettingsVM.cs" />
     <Compile Include="ViewModels\Utility\SetupVM.cs" />
@@ -284,9 +285,6 @@
     <Compile Include="ViewModels\View\ViewESVM.cs" />
     <Compile Include="ViewModels\View\ViewEVVM.cs" />
     <Compile Include="ViewModels\View\ViewIUVM.cs" />
-    <Compile Include="View\Admin.xaml.cs">
-      <DependentUpon>Admin.xaml</DependentUpon>
-    </Compile>
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
@@ -317,9 +315,11 @@
       <DependentUpon>SearchBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\ImportExportStateConverter.cs" />
     <Compile Include="View\Converters\GeoCoordinatesConverter.cs" />
     <Compile Include="View\Converters\IconPathToImageConverter.cs" />
     <Compile Include="View\Converters\IconToImageConverter.cs" />
+    <Compile Include="View\Converters\ImportExportPivotConverter.cs" />
     <Compile Include="View\Converters\InvertBooleanConverter.cs" />
     <Compile Include="View\Converters\MapManagementPivotConverter.cs" />
     <Compile Include="View\Converters\MultiplyConverter.cs" />
@@ -362,6 +362,9 @@
     <Compile Include="Helper\StorageMigration.cs" />
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ImportExport.xaml.cs">
+      <DependentUpon>ImportExport.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Setup\AskGPS.xaml.cs">
       <DependentUpon>AskGPS.xaml</DependentUpon>
@@ -606,10 +609,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\Admin.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="View\Audio.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -665,6 +664,10 @@
     <Page Include="View\Home.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ImportExport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Setup\AskGPS.xaml">
       <SubType>Designer</SubType>

@@ -34,6 +34,7 @@ namespace DiversityPhone.Model
         TaxonManagement,
         Upload,
         Info,
-        Download
+        Download,
+        ImportExport
     }
 }

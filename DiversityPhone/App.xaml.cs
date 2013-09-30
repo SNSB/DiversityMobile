@@ -123,6 +123,8 @@ namespace DiversityPhone
                 BindAndActivateSingleton<SetupVM>();
 
                 Bind<TaxonManagementVM>().ToSelf().InTransientScope();
+
+                BindAndActivateSingleton<ImportExportVM>();
             }
 
         }

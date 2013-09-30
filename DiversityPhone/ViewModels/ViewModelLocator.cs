@@ -47,5 +47,7 @@ namespace DiversityPhone.ViewModels
 
         public RefreshVocabularyVM Vocabulary { get { return IOC.Get<RefreshVocabularyVM>(); } }
 
+        public ImportExportVM ImportExport { get { return IOC.Get<ImportExportVM>(); } }
+
     }
 }

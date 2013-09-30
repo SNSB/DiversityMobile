@@ -170,6 +170,9 @@ namespace DiversityPhone.Services
                 case Page.Info:
                     destination = "/View/Info.xaml";
                     break;
+                case Page.ImportExport:
+                    destination = "/View/ImportExport.xaml";
+                    break;
 
 #if DEBUG
                 default:
