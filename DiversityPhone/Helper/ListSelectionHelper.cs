@@ -10,7 +10,7 @@ namespace DiversityPhone.ViewModels
 {
     public interface IListSelector<T> : IReactiveNotifyPropertyChanged
     {
-        IList<T> Items { get; set; }
+        IList<T> Items { get; }
         int SelectedIndex { get; set; }
         T SelectedItem { get; set; }
 
@@ -46,7 +46,7 @@ namespace DiversityPhone.ViewModels
             {
                 return _Items;
             }
-            set
+            private set
             {
                 this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value ?? new List<T>());
             }
