@@ -1,21 +1,33 @@
-﻿namespace DiversityPhone.Services
+﻿using DiversityPhone.Model;
+using System.Data.Linq;
+
+namespace DiversityPhone.Services
 {
-    using System.Data.Linq;
-    using System.Collections.Generic;
-    using System.Data.Linq.Mapping;
-    using System;
-    using System.Reflection;
-    using DiversityPhone.Model;
+    
 
     public class DiversityDataContext : DataContext
     {
-        public static readonly string DB_FILENAME = "diversityDB.sdf";
-        public static readonly string DB_URI = "isostore:/diversityDB.sdf";
+        public const string DB_FILENAME = "DiversityDB.sdf";
+        private static readonly string DB_URI_PROTOCOL = "isostore:";
+
+        private static string GetCurrentProfileDBPath()
+        {
+            var profilePath = App.Profile.CurrentProfilePath();
+            return string.Format("{0}/{1}/{2}", DB_URI_PROTOCOL, profilePath.Trim('/'), DB_FILENAME);
+        }
 
         public DiversityDataContext()
-            : base(DB_URI)
+            : base(GetCurrentProfileDBPath())
         {
-            
+
+        }
+
+        public DiversityDataContext(
+            string DatabaseFilePath
+            )
+            : base(string.Format("isostore:/{0}", DatabaseFilePath.TrimStart('/')))
+        {
+
         }
 
         public Table<EventSeries> EventSeries;
@@ -23,13 +35,12 @@
 
         public Table<Event> Events;
         public Table<EventProperty> EventProperties;
-        
-        
+
         public Table<Specimen> Specimen;
 
         public Table<IdentificationUnit> IdentificationUnits;
-        public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;        
+        public Table<IdentificationUnitAnalysis> IdentificationUnitAnalyses;
 
-        public Table<MultimediaObject> MultimediaObjects;        
+        public Table<MultimediaObject> MultimediaObjects;
     }
 }

@@ -1,27 +1,39 @@
-﻿using System.Windows;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using DiversityPhone.Services;
-using ReactiveUI;
-using System.Reactive.Linq;
+using DiversityPhone.Services.BackgroundTasks;
 using DiversityPhone.ViewModels;
 using DiversityPhone.ViewModels.Utility;
-using System.Reactive.Concurrency;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 using Ninject;
-using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using DiversityPhone.Services.BackgroundTasks;
-using System;
 using Ninject.Extensions.Factory;
+using ReactiveUI;
+using System;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Windows;
 
 
 namespace DiversityPhone
 {
     public partial class App : Application
     {
-        private const string TASK_KEY = "BackgroundTasks";
-
         public static IKernel Kernel { get; private set; }
+
+
+        private static ICurrentProfile _Profile = null;
+        public static ICurrentProfile Profile
+        {
+            get
+            {
+                if (_Profile == null)
+                {
+                    _Profile = Kernel.Get<ICurrentProfile>();
+                }
+                return _Profile;
+            }
+        }
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -37,11 +49,8 @@ namespace DiversityPhone
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 
-
-
             // Standard Silverlight initialization
             InitializeComponent();
-
 
             // Phone-specific initialization
             InitializePhoneApplication();
@@ -133,6 +142,8 @@ namespace DiversityPhone
                 Bind<INotificationService>().To<NotificationService>().InSingletonScope();
                 Bind<IMessageBus>().ToConstant(MessageBus.Current);
 
+                Bind<ICurrentProfile>().To<ProfileService>().InSingletonScope();
+
                 Bind<SettingsService>().ToSelf().InSingletonScope();
                 Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());
                 Bind<ICredentialsService>().ToConstant(Kernel.Get<SettingsService>());
@@ -176,9 +187,10 @@ namespace DiversityPhone
         {
             public override void Load()
             {
+                StorageMigration.ApplyMigrationIfNecessary();
+
                 Kernel.Get<FieldDataService>().CheckAndRepairDatabase();
                 Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
-
             }
         }
 

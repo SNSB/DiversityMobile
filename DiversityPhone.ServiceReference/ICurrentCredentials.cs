@@ -1,9 +1,10 @@
 ﻿namespace DiversityPhone.Services
 {
     using DiversityPhone.Model;
+    using System;
 
     public interface ICredentialsService
     {
-        UserCredentials CurrentCredentials();
+        IObservable<UserCredentials> CurrentCredentials();
     }
 }

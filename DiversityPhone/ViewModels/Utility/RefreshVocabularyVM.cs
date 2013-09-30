@@ -17,7 +17,7 @@ namespace DiversityPhone.ViewModels
             )
         {
             this.OnActivation()
-                .Select(_ => Credentials.CurrentCredentials())
+                .SelectMany(_ => Credentials.CurrentCredentials().Where(cred => cred != null))
                 .Subscribe(login =>
                     {
                         var refreshTask = refreshVocabluaryTaskFactory();

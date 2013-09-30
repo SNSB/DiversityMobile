@@ -6,6 +6,7 @@ using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.ServiceModel;
+using System.Linq;
 
 namespace DiversityPhone.Services
 {
@@ -98,15 +99,24 @@ namespace DiversityPhone.Services
 
         public static IObservable<WebResponse> DownloadWithCredentials(this IObservable<string> uriObservable, ICredentialsService CredentialsProvider)
         {
+            var mostRecentUserCreds = CredentialsProvider.CurrentCredentials().MostRecent(null);
+
             return uriObservable
                 .SelectMany(uri =>
                     {
-                        var creds = CredentialsProvider.CurrentCredentials();
-                        var request = WebRequest.CreateHttp(uri);
-                        string credentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
-                        request.Headers["Authorization"] = "Basic " + credentials;
+                        var creds = mostRecentUserCreds.First();
+                        if (creds != null)
+                        {
+                            var request = WebRequest.CreateHttp(uri);
+                            string httpCredentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
+                            request.Headers["Authorization"] = "Basic " + httpCredentials;
 
-                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
+                            return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
+                        }
+                        else
+                        {
+                            return Observable.Empty<WebResponse>();
+                        }
                     });
         }
     }

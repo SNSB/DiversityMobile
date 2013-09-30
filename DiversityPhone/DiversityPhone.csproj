@@ -197,6 +197,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper\FileTimeStampMixin.cs" />
+    <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\Storage\CleanupService.cs" />
     <Compile Include="Services\Storage\DiversityDataContext.cs" />
     <Compile Include="Services\Storage\OfflineStorage.CascadingDelete.cs" />
@@ -350,6 +352,7 @@
     <Compile Include="View\Helper\INPCBindingTrigger.cs" />
     <Compile Include="View\Helper\ProgressBinding.cs" />
     <Compile Include="View\Helper\RelativeLocationBinding.cs" />
+    <Compile Include="Helper\StorageMigration.cs" />
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>

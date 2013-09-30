@@ -281,10 +281,17 @@ namespace DiversityPhone.Services
 
         private class VocabularyDataContext : DataContext
         {
-            private static string connStr = "isostore:/vocabularyDB.sdf";
+            public const string VOCABULARYDB_FILE = "VocabularyDB.sdf";
+            private static readonly string DB_URI_PROTOCOL = "isostore:";
+
+            private static string GetCurrentProfileDBPath()
+            {
+                var profilePath = App.Profile.CurrentProfilePath();
+                return string.Format("{0}/{1}/{2}", DB_URI_PROTOCOL, profilePath.Trim('/'), VOCABULARYDB_FILE);
+            }
 
             public VocabularyDataContext()
-                : base(connStr)
+                : base(GetCurrentProfileDBPath())
             {
                 if (!this.DatabaseExists())
                     this.CreateDatabase();

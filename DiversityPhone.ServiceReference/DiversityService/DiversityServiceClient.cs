@@ -60,12 +60,15 @@ namespace DiversityPhone.Services
         readonly IKeyMappingService Mapping;
         readonly ICredentialsService Credentials;
 
-        private Client.UserCredentials GetCreds() { return Credentials.CurrentCredentials(); }
+        private Client.UserCredentials _CurrentCredentials;
+        private Client.UserCredentials GetCreds() { return _CurrentCredentials; }
 
         public DiversityServiceClient(ICredentialsService Credentials, IKeyMappingService Mapping)
         {            
             this.Mapping = Mapping;
             this.Credentials = Credentials;
+
+            Credentials.CurrentCredentials().Where(c => c != null).Subscribe(c => _CurrentCredentials = c);
 
             GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h);
             GetRepositoriesCompleted = Observable.FromEventPattern<GetRepositoriesCompletedEventArgs>(h => _svc.GetRepositoriesCompleted += h, h => _svc.GetRepositoriesCompleted -= h);

@@ -1,55 +1,142 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
 using System;
+using System.Diagnostics.Contracts;
+using System.IO;
 using System.IO.IsolatedStorage;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace DiversityPhone.Services
 {
-    
-
     public class SettingsService : ISettingsService, ICredentialsService
     {
-        private const string SETTINGS_KEY = "Settings";
+        public const string SETTINGS_FILE = "AppSettings.xml";
 
-        BehaviorSubject<AppSettings> _SettingSubject = new BehaviorSubject<AppSettings>(null);
-        public SettingsService()
-	    {
-            AppSettings settings;
+        private readonly ICurrentProfile Profile;
+        private readonly XmlSerializer SettingsSerializer;
 
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue(SETTINGS_KEY, out settings))
-                _SettingSubject.OnNext(settings);
-	    }
+        private ISubject<AppSettings> _SettingsIn;
+        private ISubject<AppSettings> _SettingsOut = new BehaviorSubject<AppSettings>(null);
+        public SettingsService(
+            ICurrentProfile Profile,
+            [Dispatcher] IScheduler Dispatcher,
+            [ThreadPool] IScheduler ThreadPool
+            )
+        {
+            Contract.Requires(Profile != null);
+            Contract.Requires(Dispatcher != null);
+            Contract.Requires(ThreadPool != null);
+
+            this.Profile = Profile;
+            this.SettingsSerializer = new XmlSerializer(typeof(AppSettings));
+
+            _SettingsIn = new Subject<AppSettings>();
+
+            _SettingsIn
+                .ObserveOn(ThreadPool)
+                .Select(PersistSettings)
+                .ObserveOn(Dispatcher)
+                .Subscribe(_SettingsOut);
+
+            Profile
+                .CurrentProfilePathObservable()
+                .Select(ProfileToSettingsPath)
+                .ObserveOn(ThreadPool)
+                .Select(LoadSettingsFromFile)
+                .ObserveOn(Dispatcher)
+                .Subscribe(_SettingsOut);
+        }
+
+        public AppSettings LoadSettingsFromFile(string FilePath)
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                try
+                {
+                    if (iso.FileExists(FilePath))
+                    {
+                        using (var settingsFile = iso.OpenFile(FilePath, FileMode.Open, FileAccess.Read))
+                        {
+                            AppSettings settings;
+                            var settingsXml = XmlReader.Create(settingsFile);
+                            if (SettingsSerializer.CanDeserialize(settingsXml))
+                            {
+                                settings = (AppSettings)SettingsSerializer.Deserialize(settingsXml);
+                                return settings;
+                            }
+                        }
+                    }
+                }
+                catch (IsolatedStorageException) { /*TODO Log*/ }
+                catch (XmlException) { /*TODO Log*/ }
+
+                return null;
+            }
+        }
+
+        private AppSettings PersistSettings(AppSettings s)
+        {
+            var settingsPath = GetSettingsPath();
+
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (s == null)
+                {
+                    if (iso.FileExists(settingsPath))
+                    {
+                        iso.DeleteFile(settingsPath);
+                    }
+                }
+                else
+                {
+                    using (var settingsFile = iso.OpenFile(settingsPath, FileMode.Create))
+                    {
+                        SettingsSerializer.Serialize(settingsFile, s);
+                    }
+                }
+            }
+
+            return s;
+        }
+
+        private string GetSettingsPath()
+        {
+            var currentProfile = Profile.CurrentProfilePath();
+            return ProfileToSettingsPath(currentProfile);
+        }
+
+        private static string ProfileToSettingsPath(string currentProfile)
+        {
+            return Path.Combine(currentProfile, SETTINGS_FILE);
+        }
 
         public void ClearSettings()
         {
             SaveSettings(null);
         }
 
-
-
         public void SaveSettings(AppSettings settings)
         {
-            IsolatedStorageSettings.ApplicationSettings[SETTINGS_KEY] = settings;
-            IsolatedStorageSettings.ApplicationSettings.Save();
-            _SettingSubject.OnNext(settings);
+            _SettingsIn.OnNext(settings);
         }
 
 
 
-        public UserCredentials CurrentCredentials()
+        public IObservable<UserCredentials> CurrentCredentials()
         {
-            var settings = _SettingSubject.FirstOrDefault();
-            if (settings != null)
-                return settings.ToCreds();
-            return null;
+            return _SettingsOut.Select(s => s.ToCreds());
         }
 
         public IObservable<AppSettings> SettingsObservable()
         {
-            return _SettingSubject.AsObservable();
+            return _SettingsOut
+                .AsObservable();
         }
-        public AppSettings CurrentSettings { get { return _SettingSubject.FirstOrDefault(); } }
+        public AppSettings CurrentSettings { get { return _SettingsOut.FirstOrDefault(); } }
     }
 }

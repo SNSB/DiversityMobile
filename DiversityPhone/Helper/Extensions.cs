@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive.Linq;
-using System.ServiceModel;
-using ReactiveUI;
-using DiversityPhone.Interface;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using Ninject.Modules;
-using Ninject.Activation;
-using Ninject.Parameters;
-using Ninject;
-using System.Linq;
+using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {
     public class DispatcherAttribute : Attribute { }
     public class ThreadPoolAttribute : Attribute { }
 
-   
+
     static class Extensions
     {
         private static readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);
@@ -80,9 +75,9 @@ namespace DiversityPhone.ViewModels
                         .FirstAsync()
                         .Where(s =>
                             {
-                                if(s != ConnectionStatus.Wifi) 
+                                if (s != ConnectionStatus.Wifi)
                                 {
-                                    Notification.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION );
+                                    Notification.showNotification(DiversityResources.Info_NoInternet, NOTIFICATION_DURATION);
                                     return false;
                                 }
                                 return true;
