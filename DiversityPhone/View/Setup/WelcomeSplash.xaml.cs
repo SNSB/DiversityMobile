@@ -3,9 +3,12 @@ using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using Microsoft.Phone.Tasks;
 using Ninject;
 using ReactiveUI;
+using System;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Windows;
 
 namespace DiversityPhone.View.Setup
@@ -30,15 +33,20 @@ namespace DiversityPhone.View.Setup
 
             InitializeServicesIfNecessary();
 
-
-            if (Settings.CurrentSettings == null) //No settings found -> enter first time setup
-            {
-                ShowSetup();
-            }
-            else // skip setup and enter main app
-            {
-                NavigateHome();
-            }
+            Settings.SettingsObservable()
+                .Skip(1)
+                .Take(1)
+                .Subscribe(s =>
+                    {
+                        if (s == null) //No settings found -> enter first time setup
+                        {
+                            ShowSetup();
+                        }
+                        else // skip setup and enter main app
+                        {
+                            NavigateHome();
+                        }
+                    });
         }
 
         private void NavigateHome()
@@ -74,6 +82,41 @@ namespace DiversityPhone.View.Setup
             SplashImage.Visibility = System.Windows.Visibility.Visible;
             SetupWelcome.Visibility = System.Windows.Visibility.Collapsed;
             this.ApplicationBar.IsVisible = false;
+        }
+
+
+
+        private void MapWiki_Click(object sender, RoutedEventArgs e)
+        {
+            new WebBrowserTask()
+            {
+                Uri = new Uri(DiversityResources.App_Map_URL, UriKind.Absolute)
+            }.Show();
+        }
+
+        private void TaxWiki_Click(object sender, RoutedEventArgs e)
+        {
+            new WebBrowserTask()
+            {
+                Uri = new Uri(DiversityResources.App_Taxa_URL, UriKind.Absolute)
+            }.Show();
+        }
+
+        private void Mail_Click(object sender, RoutedEventArgs e)
+        {
+            new EmailComposeTask()
+            {
+                To = DiversityResources.App_Mail_Address,
+                Subject = "DiversityMobile"
+            }.Show();
+        }
+
+        private void Homepage_Click(object sender, RoutedEventArgs e)
+        {
+            new WebBrowserTask()
+            {
+                Uri = new Uri(DiversityResources.App_Homepage_URL, UriKind.Absolute)
+            }.Show();
         }
     }
 }

@@ -14,7 +14,6 @@
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False"
     Loaded="PhoneApplicationPage_Loaded">
-
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
         <Grid x:Name="SetupWelcome" Visibility="Collapsed" >
@@ -28,8 +27,43 @@
                                           Text="{Binding Resources.Setup_Welcome_PageHeader, Source={StaticResource LocalizedStrings}}"/>
 
 
-            <TextBlock Grid.Row="1" Margin="{StaticResource PhoneMargin}"
-                       Text="Welcome To DM ... Test Text"/>
+            <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="{StaticResource PhoneHorizontalMargin}">
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" 
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding Resources.App_Info, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding Resources.App_Map_Text, Source={StaticResource LocalizedStrings}}"/>
+                    <HyperlinkButton Content="{Binding Resources.App_Map_LinkTitle, Source={StaticResource LocalizedStrings}}" 
+                                 Margin="{StaticResource PhoneHorizontalMargin}"
+                                 Click="MapWiki_Click"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding Resources.App_Taxa_Text, Source={StaticResource LocalizedStrings}}"/>
+                    <HyperlinkButton Content="{Binding Resources.App_Taxa_LinkTitle, Source={StaticResource LocalizedStrings}}" 
+                                 Margin="{StaticResource PhoneHorizontalMargin}"
+                                 Click="TaxWiki_Click"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Margin="{StaticResource PhoneVerticalMargin}"
+                           Text="{Binding Resources.App_CreatedBy, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding Resources.App_Credits, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Margin="{StaticResource PhoneVerticalMargin}"
+                           Text="{Binding Resources.App_Homepage_Title, Source={StaticResource LocalizedStrings}}"/>
+                    <HyperlinkButton Margin="{StaticResource PhoneHorizontalMargin}"
+                                 Content="{Binding Resources.App_Homepage_URL, Source={StaticResource LocalizedStrings}}"
+                                 Click="Homepage_Click"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Margin="{StaticResource PhoneVerticalMargin}"
+                           Text="{Binding Resources.App_Mail_Title, Source={StaticResource LocalizedStrings}}"/>
+                    <HyperlinkButton Content="{Binding Resources.App_Mail_Address, Source={StaticResource LocalizedStrings}}" 
+                                 Margin="{StaticResource PhoneHorizontalMargin}"
+                                 Click="Mail_Click"/>
+                </StackPanel>
+            </ScrollViewer>
         </Grid>
         <Image x:Name="SplashImage" Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"                 
                HorizontalAlignment="Stretch" 
