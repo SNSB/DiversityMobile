@@ -12,5 +12,6 @@ namespace DiversityPhone.Interface
         AppSettings CurrentSettings { get; }
         void SaveSettings(AppSettings settings);
         void ClearSettings();
+        AppSettings LoadSettingsFromFile(string FilePath);
     }
 }

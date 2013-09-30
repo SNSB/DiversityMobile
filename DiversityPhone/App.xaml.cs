@@ -179,6 +179,8 @@ namespace DiversityPhone
                 Bind<IRefreshVocabularyTask>().To<RefreshVocabularyTask>();
 
                 Bind<ICleanupData>().To<CleanupService>();
+
+                Bind<IBackupService>().To<BackupService>();
             }
         }
 
