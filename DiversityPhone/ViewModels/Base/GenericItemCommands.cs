@@ -15,8 +15,8 @@ namespace DiversityPhone.ViewModels
             var Delete = new ReactiveCommand(CanDelete);
             var ConfirmedDelete = new Subject<IElementVM<T>>();
 
-            Delete
-                .CombineLatest(CurrentElement, (_, current) => current)
+            CurrentElement
+                .SampleMostRecent(Delete)
                 .Select(toBeDeleted => new DialogMessage(DialogType.YesNo, "", DiversityResources.Message_ConfirmDelete, 
                     (res) => { 
                         if (res == DialogResult.OKYes) 

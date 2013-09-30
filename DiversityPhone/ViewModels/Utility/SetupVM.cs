@@ -89,11 +89,11 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Profile.CredentialsWithDatabase);
 
             var canSave = Profile.IsProfileValid
-                .Sample(Profile.CredentialsWithProfile.Where(p => p != null));
+                .SampleMostRecent(Profile.CredentialsWithProfile.Where(p => p != null));
 
             Save = new ReactiveCommand(canSave, initialCondition: false);
             Profile.CredentialsWithProfile
-                .Sample(Save)
+                .SampleMostRecent(Save)
                 .Subscribe(s =>
                     {
                         s.UseGPS = this.UseGPS;
