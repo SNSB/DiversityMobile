@@ -38,9 +38,9 @@
                 </Run>
                 <Run x:Name="version_info"/>
             </TextBlock>
-            <HyperlinkButton Margin="{StaticResource PhoneVerticalMargin}"
+            <!--HyperlinkButton Margin="{StaticResource PhoneVerticalMargin}"
                              Content="{Binding Resources.Settings_Header_Info, Source={StaticResource LocalizedStrings}}" 
-                             Click="Info_Click"/>
+                             Click="Info_Click"/-->
 
             <TextBlock Text="{Binding Resources.Settings_Header_User, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Text="{Binding Model.AgentName}" Style="{StaticResource PhoneTextLargeStyle}"/>
