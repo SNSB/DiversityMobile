@@ -64,7 +64,7 @@ namespace DiversityPhone.Services
                 .PipeErrors()
                 .Select(res => res.Result)
                 .DownloadWithCredentials(CredentialsProvider)
-                .Select(response => parseXMLtoMap(response.GetResponseStream()));
+                .Select(response => parseXMLtoMap(response));
             var image =
                 GetMapUrlCompletedObservable
                 .FilterByUserState(dl)
@@ -76,13 +76,11 @@ namespace DiversityPhone.Services
             var combined =
             Observable.CombineLatest(map, image,
                 (m, i) => new { Map = m, ImageResponse = i })
+                .Do(resps => resps.Map.ServerKey = serverKey)
                 .SelectMany(resps =>
-                    Observable.Start(() =>
-                            {
-                                resps.Map.ServerKey = serverKey;
-                                MapStorage.addMap(resps.Map, resps.ImageResponse.GetResponseStream());
-                                return resps.Map;
-                            }));
+                                MapStorage.addMap(resps.Map, resps.ImageResponse.GetResponseStream())
+                                    .Do(_ => resps.ImageResponse.Close())
+                                    .Select(_ => resps.Map));
             var obs = combined
                 .ReplayOnlyFirst();
 
@@ -95,29 +93,39 @@ namespace DiversityPhone.Services
 
 
 
-        private Map parseXMLtoMap(Stream contentStream)
+        private Map parseXMLtoMap(WebResponse xmlResponse)
         {
-            XDocument load = XDocument.Load(contentStream);
-            var data = from query in load.Descendants("ImageOptions")
-                       select new Map
-                       {
-                           Name = (string)query.Element("Name"),
-                           Description = (string)query.Element("Description"),
-                           NWLat = (double)query.Element("NWLat"),
-                           NWLong = (double)query.Element("NWLong"),
-                           SELat = (double)query.Element("SELat"),
-                           SELong = (double)query.Element("SELong"),
-                           SWLat = (double)query.Element("SWLat"),
-                           SWLong = (double)query.Element("SWLong"),
-                           NELat = (double)query.Element("NELat"),
-                           NELong = (double)query.Element("NELong"),
-                           ZoomLevel = (int?)query.Element("ZommLevel"),
-                           Transparency = (int?)query.Element("Transparency")
-                       };
-            if (data.Count() > 1)
-                this.Log().Debug("Multiple Map XML Elements in content stream");
+            try
+            {
+                using (var contentStream = xmlResponse.GetResponseStream())
+                {
+                    XDocument load = XDocument.Load(contentStream);
+                    var data = from query in load.Descendants("ImageOptions")
+                               select new Map
+                               {
+                                   Name = (string)query.Element("Name"),
+                                   Description = (string)query.Element("Description"),
+                                   NWLat = (double)query.Element("NWLat"),
+                                   NWLong = (double)query.Element("NWLong"),
+                                   SELat = (double)query.Element("SELat"),
+                                   SELong = (double)query.Element("SELong"),
+                                   SWLat = (double)query.Element("SWLat"),
+                                   SWLong = (double)query.Element("SWLong"),
+                                   NELat = (double)query.Element("NELat"),
+                                   NELong = (double)query.Element("NELong"),
+                                   ZoomLevel = (int?)query.Element("ZommLevel"),
+                                   Transparency = (int?)query.Element("Transparency")
+                               };
+                    if (data.Count() > 1)
+                        this.Log().Debug("Multiple Map XML Elements in content stream");
 
-            return data.FirstOrDefault();
+                    return data.FirstOrDefault();
+                }
+            }
+            finally
+            {
+                xmlResponse.Dispose();
+            }
         }
 
     }

@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using DiversityPhone.Model;
 using System.IO.IsolatedStorage;
 using System.Data.Linq;
+using System;
+using System.Reactive;
+using System.Threading.Tasks;
+using System.Reactive.Threading.Tasks;
 
 namespace DiversityPhone.Services
 {
     class MapDataContext : DataContext
     {
         public MapDataContext(string fileOrConnection)
-            : base(fileOrConnection) 
+            : base(fileOrConnection)
         {
             if (!this.DatabaseExists())
             {
@@ -19,7 +23,7 @@ namespace DiversityPhone.Services
 
 #pragma warning disable 0649
         public Table<Map> Maps;
-#pragma warning restore 0649    
+#pragma warning restore 0649
     }
 
     public class MapStorageService : IMapStorageService
@@ -54,25 +58,37 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void addMap(Map map, System.IO.Stream mapContent)
+        public IObservable<Unit> addMap(Map map, System.IO.Stream mapContent)
         {
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            Func<Task> impl = async () =>
             {
-                var filename = fileNameForMap(map);
-                if (iso.FileExists(filename))
-                    iso.DeleteFile(filename);
-
-                using (var file = iso.CreateFile(filename))
+                try
                 {
-                    mapContent.CopyTo(file);
-                }
-            }
+                    using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        var filename = fileNameForMap(map);
+                        if (iso.FileExists(filename))
+                            iso.DeleteFile(filename);
 
-            using (var ctx = getContext())
-            {
-                ctx.Maps.InsertOnSubmit(map);
-                ctx.SubmitChanges();
-            }
+                        using (var file = iso.CreateFile(filename))
+                        {
+                            await file.CopyToAsync(file, 1024 * 1024);
+                        }
+                    }
+                }
+                catch (IsolatedStorageException)
+                {
+                    mapContent.Dispose();
+                }
+
+                using (var ctx = getContext())
+                {
+                    ctx.Maps.InsertOnSubmit(map);
+                    ctx.SubmitChanges();
+                }
+            };
+
+            return impl().ToObservable();
         }
 
         public void ClearMaps()
@@ -119,8 +135,8 @@ namespace DiversityPhone.Services
                 return iso.OpenFile(filename, System.IO.FileMode.Open);
             }
             else
-                return null;                    
-            
+                return null;
+
         }
-    }        
+    }
 }

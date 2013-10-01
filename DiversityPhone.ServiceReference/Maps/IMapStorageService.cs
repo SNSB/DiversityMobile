@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using DiversityPhone.Model;
 using System.IO;
+using System.Reactive;
+using System;
 namespace DiversityPhone.Services
 {
     public interface IMapStorageService
@@ -14,7 +16,7 @@ namespace DiversityPhone.Services
         /// Adds an entry with corresponding Data in the MapTable
         /// </summary>
         /// <returns></returns>
-        void addMap(Map map, Stream mapContent);
+        IObservable<Unit> addMap(Map map, Stream mapContent);
 
         /// <summary>
         /// Deletes all Maps and removes the entries from the database

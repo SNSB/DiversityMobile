@@ -145,6 +145,7 @@ namespace DiversityPhone.ViewModels
 
             DownloadMap = new ReactiveCommand<MapVM>(vm => canBeDownloaded(vm as MapVM), Observable.Empty<Unit>());
             DownloadMap
+                .Where(downloadMap.CanExecute)
                 .CheckConnectivity(Network, Notifications)
                 .Do(vm => vm.IsDownloading = true)
                 .Do(_ => CurrentPivot = Pivot.Local)
