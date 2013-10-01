@@ -21,7 +21,8 @@ namespace DiversityPhone.Services
         private readonly XmlSerializer SettingsSerializer;
 
         private ISubject<AppSettings> _SettingsIn;
-        private ISubject<AppSettings> _SettingsOut = new BehaviorSubject<AppSettings>(null);
+        private ISubject<AppSettings> _SettingsOut = new Subject<AppSettings>();
+        private IObservable<AppSettings> _SettingsReplay;
         public SettingsService(
             ICurrentProfile Profile,
             [Dispatcher] IScheduler Dispatcher,
@@ -34,6 +35,11 @@ namespace DiversityPhone.Services
 
             this.Profile = Profile;
             this.SettingsSerializer = new XmlSerializer(typeof(AppSettings));
+
+            _SettingsReplay = _SettingsOut
+                .ObserveOn(Dispatcher)
+                .Replay(1)
+                .RefCount();
 
             _SettingsIn = new Subject<AppSettings>();
 
@@ -129,14 +135,13 @@ namespace DiversityPhone.Services
 
         public IObservable<UserCredentials> CurrentCredentials()
         {
-            return _SettingsOut.Select(s => s.ToCreds());
+            return _SettingsReplay.Select(s => s.ToCreds());
         }
 
         public IObservable<AppSettings> SettingsObservable()
         {
-            return _SettingsOut
-                .AsObservable();
+            return _SettingsReplay;
         }
-        public AppSettings CurrentSettings { get { return _SettingsOut.FirstOrDefault(); } }
+        public AppSettings CurrentSettings { get { return _SettingsReplay.FirstOrDefault(); } }
     }
 }

@@ -15,7 +15,7 @@ namespace DiversityPhone.View.Setup
 {
     public partial class WelcomeSplash : PhoneApplicationPage
     {
-
+        private bool Initialized = false;
         private ApplicationBarIconButton OKNext;
         private ISettingsService Settings;
         private IMessageBus Messenger;
@@ -23,30 +23,37 @@ namespace DiversityPhone.View.Setup
         public WelcomeSplash()
         {
             InitializeComponent();
+            ShowSplash();
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
-            ShowSplash();
+            if (!Initialized)
+            {
+                Initialized = true;
+                CheckSettings();
+            }
+        }
 
+        private void CheckSettings()
+        {
             ClearBackStack();
 
             InitializeServicesIfNecessary();
 
             Settings.SettingsObservable()
-                .Skip(1)
                 .Take(1)
                 .Subscribe(s =>
+                {
+                    if (s == null) //No settings found -> enter first time setup
                     {
-                        if (s == null) //No settings found -> enter first time setup
-                        {
-                            ShowSetup();
-                        }
-                        else // skip setup and enter main app
-                        {
-                            NavigateHome();
-                        }
-                    });
+                        ShowSetup();
+                    }
+                    else // skip setup and enter main app
+                    {
+                        NavigateHome();
+                    }
+                });
         }
 
         private void NavigateHome()
