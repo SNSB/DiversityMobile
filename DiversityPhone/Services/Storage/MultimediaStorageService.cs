@@ -11,6 +11,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Reactive.Linq;
+using System.Diagnostics;
 
 namespace DiversityPhone
 {
@@ -241,13 +242,23 @@ namespace DiversityPhone
             {
                 var fullPath = Path.Combine(CurrentMultimediaFolder, FileName);
 
-                UsingIsolatedStorage(store =>
+                try
                 {
+                    // On Successful Open the Caller has resonsibility to close the Stream
+                    var store = IsolatedStorageFile.GetUserStoreForApplication();
                     if (store.FileExists(fullPath))
                     {
                         result = store.OpenFile(fullPath, FileMode.Open, FileAccess.Read);
                     }
-                });
+                    else
+                    {
+                        store.Dispose();
+                    }
+                }
+                catch (IsolatedStorageException)
+                {
+                    Debugger.Break();
+                }
             }
             return result;
         }
@@ -263,13 +274,24 @@ namespace DiversityPhone
             }
         }
 
+        private string FilePathForDescriptor(StorageDescriptor desc)
+        {
+            if (desc.Type != StorageType.IsolatedStorage)
+            {
+                throw new ArgumentException("desc");
+            }
+            Contract.Requires(CurrentMultimediaFolder != null, "Invalid Profile Folder");
+
+            return Path.Combine(CurrentMultimediaFolder, desc.FileName);
+        }
+
         public string StoreMultimedia(string FileName, Stream data)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(FileName), "Invalid Filename");
-            Contract.Requires(CurrentMultimediaFolder != null, "Invalid Profile Folder");
 
-            var filePath = Path.Combine(CurrentMultimediaFolder, FileName);
+            
             var fileDescriptor = new StorageDescriptor() { Type = StorageType.IsolatedStorage, FileName = FileName };
+            var filePath = FilePathForDescriptor(fileDescriptor);
             UsingIsolatedStorage(store =>
                 {
                     if (store.FileExists(filePath))
@@ -289,11 +311,11 @@ namespace DiversityPhone
             return fileDescriptor.ToString();
         }
 
-        public Stream GetMultimedia(string filePath)
+        public Stream GetMultimedia(string uri)
         {
-            if (filePath != null)
+            if (uri != null)
             {
-                var storageDescriptor = StorageDescriptor.FromURI(filePath);
+                var storageDescriptor = StorageDescriptor.FromURI(uri);
 
                 return GetMultimediaFromDescriptor(ref storageDescriptor);
             }
@@ -319,12 +341,10 @@ namespace DiversityPhone
         {
             UsingIsolatedStorage(store =>
                 {
-                    if (store.DirectoryExists(MEDIA_FOLDER))
+                    if ( CurrentMultimediaFolder != null && store.DirectoryExists(CurrentMultimediaFolder))
                     {
-                        foreach (var file in store.GetFileNames(MEDIA_FOLDER))
-                        {
-                            store.DeleteFile(string.Format(MEDIA_FOLDER, file));
-                        }
+                        store.DeleteDirectoryRecursiveAsync(CurrentMultimediaFolder).Wait();
+                        CreateDirIfNecessary(CurrentMultimediaFolder);
                     }
                 });
         }
@@ -337,10 +357,11 @@ namespace DiversityPhone
 
                 if (storageDescriptor.Type == StorageType.IsolatedStorage)
                 {
+                    var filePath = FilePathForDescriptor(storageDescriptor);
                     UsingIsolatedStorage(store =>
                         {
-                            if (store.FileExists(storageDescriptor.FileName))
-                                store.DeleteFile(storageDescriptor.FileName);
+                            if (store.FileExists(filePath))
+                                store.DeleteFile(filePath);
                         });
 
                 }
