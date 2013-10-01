@@ -91,14 +91,21 @@ namespace DiversityPhone.ViewModels
             return This
                 .Catch((Exception ex) =>
                 {
+                    bool handled = false;
                     ErrorValue = ErrorValue ?? Observable.Empty<T>();
                     if (ex is ServiceNotAvailableException)
                     {
                         Notification.showNotification(DiversityResources.Info_ServiceUnavailable, NOTIFICATION_DURATION);
+                        handled = true;
                     }
                     else if (ex is ServiceOperationException)
                     {
                         Messenger.SendMessage(new DialogMessage(DialogType.OK, DiversityResources.Message_SorryHeader, DiversityResources.Message_ServiceProblem + ex.Message));
+                        handled = true;
+                    }
+                    if (!handled)
+                    {
+                        return Observable.Throw<T>(ex);
                     }
                     return ErrorValue;
                 });
