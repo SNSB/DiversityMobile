@@ -123,12 +123,6 @@ namespace DiversityPhone.View
                 vm.DownloadData.Execute(null);
         }
 
-        private void Info_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = VM;
-            if (vm != null && vm.Info.CanExecute(null))
-                vm.Info.Execute(null);
-        }
 
         private static string GetVersionNumber()
         {

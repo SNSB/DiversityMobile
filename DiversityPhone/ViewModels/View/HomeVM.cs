@@ -27,6 +27,7 @@ namespace DiversityPhone.ViewModels
         public ReactiveCommand Settings { get; private set; }
         public ReactiveCommand Add { get; private set; }       
         public ReactiveCommand Maps { get; private set; }
+        public ReactiveCommand Help { get; private set; }
 
         public ReactiveCommand<IElementVM<EventSeries>> SelectSeries { get; private set; }
         public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
@@ -110,6 +111,10 @@ namespace DiversityPhone.ViewModels
             Maps = new ReactiveCommand();
             Maps.Select(_ => null as ILocalizable)
                 .ToMessage(MessageContracts.VIEW);
+
+            Help = new ReactiveCommand();
+            Help.Select(_ => Page.Info)
+               .ToMessage();
 
             
             Messenger.Listen<EventMessage>(MessageContracts.INIT)

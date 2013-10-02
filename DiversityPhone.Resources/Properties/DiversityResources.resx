@@ -250,6 +250,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="GeoCoordinates_Suffix_W" xml:space="preserve">
     <value>W</value>
   </data>
+  <data name="Help_PageHeader" xml:space="preserve">
+    <value>help</value>
+  </data>
   <data name="Home_Header_ButtonAdd" xml:space="preserve">
     <value>add series</value>
   </data>
@@ -258,6 +261,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Home_Header_ButtonSettings" xml:space="preserve">
     <value>settings</value>
+  </data>
+  <data name="Home_Header_Help" xml:space="preserve">
+    <value>help</value>
   </data>
   <data name="Home_Info_CantOpenNewSeries" xml:space="preserve">
     <value>Can't open a new Series while there is still an unfinished one.</value>

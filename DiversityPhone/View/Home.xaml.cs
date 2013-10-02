@@ -70,7 +70,21 @@ namespace DiversityPhone
                     };
                 maps.Click += LoadedMaps_Click;
                 ApplicationBar.Buttons.Add(maps);
+
+                var help =
+                    new ApplicationBarIconButton(new Uri("/Images/appbar.questionmark.rest.png", UriKind.RelativeOrAbsolute))
+                    {
+                        Text = DiversityResources.Home_Header_Help
+                    };
+                help.Click += help_Click;
+                ApplicationBar.Buttons.Add(help);
             }
+        }
+
+        void help_Click(object sender, EventArgs e)
+        {
+            if (VM != null)
+                VM.Help.Execute(null);
         }
     }
 }

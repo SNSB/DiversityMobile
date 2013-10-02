@@ -278,9 +278,18 @@ namespace DiversityPhone
 
             e.Handled = true;
 
-            var messenger = Kernel.Get<IMessageBus>();
-            if (messenger != null)
-                messenger.SendMessage(new DialogMessage(DialogType.OK, "", string.Format("{0} {1}", DiversityResources.Message_FatalException, e.ExceptionObject.Message)));
+            //Filter unhelpful Errors 
+            // This might be because the user tapped a link twice too fast, before the browser could be launched (Info Page for example)
+            // TODO Log
+            if (e.ExceptionObject.Message != "Unspecified error ")
+            {
+
+                var messenger = Kernel.Get<IMessageBus>();
+                if (messenger != null)
+                    messenger.SendMessage(
+                        new DialogMessage(DialogType.OK, "", string.Format("{0} {1}", DiversityResources.Message_FatalException, e.ExceptionObject.Message)));
+
+            }
         }
 
         #region Phone application initialization

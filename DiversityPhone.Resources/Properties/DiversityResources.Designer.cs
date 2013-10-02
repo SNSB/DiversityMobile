@@ -436,6 +436,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to help.
+        /// </summary>
+        public static string Help_PageHeader {
+            get {
+                return ResourceManager.GetString("Help_PageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add series.
         /// </summary>
         public static string Home_Header_ButtonAdd {
@@ -459,6 +468,15 @@ namespace DiversityPhone {
         public static string Home_Header_ButtonSettings {
             get {
                 return ResourceManager.GetString("Home_Header_ButtonSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to help.
+        /// </summary>
+        public static string Home_Header_Help {
+            get {
+                return ResourceManager.GetString("Home_Header_Help", resourceCulture);
             }
         }
         
