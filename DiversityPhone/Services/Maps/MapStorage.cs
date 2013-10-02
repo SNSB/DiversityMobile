@@ -72,7 +72,7 @@ namespace DiversityPhone.Services
 
                         using (var file = iso.CreateFile(filename))
                         {
-                            await file.CopyToAsync(file, 1024 * 1024);
+                            await mapContent.CopyToAsync(file, 4* 1024 * 1024);
                         }
                     }
                 }
