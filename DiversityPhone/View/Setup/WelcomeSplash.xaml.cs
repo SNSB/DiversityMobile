@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
+using System.Reactive.Concurrency;
 
 namespace DiversityPhone.View.Setup
 {
@@ -31,16 +32,19 @@ namespace DiversityPhone.View.Setup
             if (!Initialized)
             {
                 Initialized = true;
-                CheckSettings();
+
+                ClearBackStack();
+
+                InitializeServicesIfNecessary();
+
+                var dispatcher = new DispatcherScheduler(Dispatcher);
+
+                dispatcher.Schedule(dispatcher.Now.AddSeconds(2), CheckSettings);
             }
         }
 
         private void CheckSettings()
         {
-            ClearBackStack();
-
-            InitializeServicesIfNecessary();
-
             Settings.SettingsObservable()
                 .Take(1)
                 .Subscribe(s =>
