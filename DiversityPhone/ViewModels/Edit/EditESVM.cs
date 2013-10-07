@@ -54,7 +54,7 @@
         {
 
             ModelByVisitObservable
-                .Select(es => es.Description ?? String.Empty)
+                .Select(es => es.Description ?? string.Empty)
                 .Subscribe(x => Description = x);
 
             ModelByVisitObservable
@@ -68,7 +68,7 @@
             _SeriesStart = this.ObservableToProperty(
                 CurrentModelObservable
                 .Select(es => es.SeriesStart)
-                .Select(start => String.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString())),
+                .Select(start => string.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString())),
                 x => x.SeriesStart);
 
             (FinishSeries = new ReactiveCommand(CurrentModelObservable.Select(es => es.SeriesEnd == null)))            

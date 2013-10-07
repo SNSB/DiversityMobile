@@ -14,7 +14,7 @@ namespace DiversityPhone.ViewModels
         public T Model { get; protected set; }
 
         /// <summary>
-        /// String to Display for this Object
+        /// string to Display for this Object
         /// </summary>
         public abstract string Description { get; }
 

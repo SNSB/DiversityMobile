@@ -165,7 +165,7 @@ namespace DiversityPhone.Model
 		}
 		
 		[Column]
-		private String CollectionUri { get; set; }
+		private string CollectionUri { get; set; }
 		
 		
 		public Uri CollectionURI

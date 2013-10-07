@@ -8,8 +8,8 @@ namespace DiversityService.Model
         public DateTime AnalysisDate { get; set; }
         public int IdentificationUnitID { get; set; }
         public int CollectionSpecimenID { get; set; }
-        public String ResponsibleName { get; set; }
-        public String ResponsibleAgentURI { get; set; }
+        public string ResponsibleName { get; set; }
+        public string ResponsibleAgentURI { get; set; }
     }
     public class Identification
     {
@@ -19,12 +19,12 @@ namespace DiversityService.Model
         public byte? IdentificationDay { get; set; }
         public byte? IdentificationMonth { get; set; }
         public short? IdentificationYear { get; set; }
-        public String IdentificationDateCategory { get; set; }
-        public String TaxonomicName { get; set; }
-        public String NameURI { get; set; }
-        public String IdentificationCategory { get; set; }
-        public String ResponsibleName { get; set; }
-        public String ResponsibleAgentURI { get; set; }
+        public string IdentificationDateCategory { get; set; }
+        public string TaxonomicName { get; set; }
+        public string NameURI { get; set; }
+        public string IdentificationCategory { get; set; }
+        public string ResponsibleName { get; set; }
+        public string ResponsibleAgentURI { get; set; }
         public string IdentificationQualifier { get; set; }
     }
 
@@ -38,15 +38,15 @@ namespace DiversityService.Model
     {
         public int CollectionEventID { get; set; }
         public int LocalisationSystemID { get; set; }
-        public String Location1 { get; set; }
-        public String Location2 { get; set; }
+        public string Location1 { get; set; }
+        public string Location2 { get; set; }
         public DateTime? DeterminationDate { get; set; }
-        public String ResponsibleName { get; set; }
-        public String ResponsibleAgentURI { get; set; }
-        public String RecordingMethod { get; set; }
+        public string ResponsibleName { get; set; }
+        public string ResponsibleAgentURI { get; set; }
+        public string RecordingMethod { get; set; }
 
         [Ignore]
-        public String Geography { get; set; }
+        public string Geography { get; set; }
         public double? AverageAltitudeCache { get; set; }
         public double? AverageLatitudeCache { get; set; }
         public double? AverageLongitudeCache { get; set; }
@@ -56,8 +56,8 @@ namespace DiversityService.Model
     public class CollectionAgent
     {
         public int CollectionSpecimenID { get; set; }
-        public String CollectorsAgentURI { get; set; }
-        public String CollectorsName { get; set; }
+        public string CollectorsAgentURI { get; set; }
+        public string CollectorsName { get; set; }
     }
 
    

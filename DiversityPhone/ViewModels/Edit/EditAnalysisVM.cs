@@ -125,7 +125,7 @@ namespace DiversityPhone.ViewModels
                 .Merge(
                     this.WhenAny(x => x.IsCustomResult, x => x.Value)
                     .Where(custom => !custom)
-                    .Select(_ => String.Empty)
+                    .Select(_ => string.Empty)
                 )
                 .Subscribe(x => CustomResult = x);
 

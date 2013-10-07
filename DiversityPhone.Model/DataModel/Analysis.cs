@@ -26,24 +26,24 @@ namespace DiversityPhone.Model
         public int AnalysisID { get; set; }
 
         [Column]
-        public String DisplayText { get; set; }
+        public string DisplayText { get; set; }
 
         [Column]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         [Column]
-        public String MeasurementUnit { get; set; }
+        public string MeasurementUnit { get; set; }
 
 
         [Column]
         public DateTime LastUsed { get; set; }
 
-        public String TextAndUnit
+        public string TextAndUnit
         {
             get
             {
                 StringBuilder sb = new StringBuilder(DisplayText);
-                if (!String.IsNullOrWhiteSpace(MeasurementUnit))
+                if (!string.IsNullOrWhiteSpace(MeasurementUnit))
                 {
                     sb.Append(" in ").Append(MeasurementUnit);
                 }

@@ -1,12 +1,10 @@
-﻿using DiversityPhone.Model;
-using DiversityService.Model;
-using System;
-using System.Collections.Generic;
-using System.ServiceModel;
-
-namespace DiversityService
+﻿namespace DiversityService
 {
-    // HINWEIS: Mit dem Befehl "Umbenennen" im Menü "Umgestalten" können Sie den Schnittstellennamen "IDivService" sowohl im Code als auch in der Konfigurationsdatei ändern.    
+    using DiversityPhone.Model;
+    using Model;
+    using System.Collections.Generic;
+    using System.ServiceModel;
+
     [ServiceContract]
     public interface IDiversityService
     {
@@ -26,7 +24,7 @@ namespace DiversityService
 
         [OperationContract]
         IEnumerable<Project> GetProjectsForUser(UserCredentials login);
-        
+
         [OperationContract]
         IEnumerable<AnalysisTaxonomicGroup> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login);
         [OperationContract]
@@ -62,7 +60,7 @@ namespace DiversityService
         IEnumerable<Localization> LocalizationsForSeries(int collectionSeriesID, UserCredentials login);
 
         [OperationContract]
-        IEnumerable<Event> EventsByLocality(String locality, UserCredentials login);
+        IEnumerable<Event> EventsByLocality(string locality, UserCredentials login);
 
         [OperationContract]
         IEnumerable<EventProperty> PropertiesForEvent(int collectionEventID, UserCredentials login);
@@ -85,7 +83,7 @@ namespace DiversityService
         #region DB "DiversityMobile" Attribute SNSB
 
         [OperationContract]
-        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);       
+        IEnumerable<TaxonList> GetTaxonListsForUser(UserCredentials login);
         [OperationContract]
         IEnumerable<TaxonName> DownloadTaxonList(TaxonList list, int page, UserCredentials login);
         [OperationContract]
@@ -94,6 +92,5 @@ namespace DiversityService
         IEnumerable<PropertyValue> DownloadPropertyNames(Property p, int page, UserCredentials login);
 
         #endregion
-
-    }   
+    }
 }

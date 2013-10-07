@@ -236,7 +236,7 @@ string GetConnectionString(ref string connectionStringName, out string providerN
         }
     }
 
-//	if (String.IsNullOrEmpty(providerName))
+//	if (string.IsNullOrEmpty(providerName))
 //		providerName="System.Data.SqlClient";
     
     return result;
@@ -247,7 +247,7 @@ string _providerName="";
 
 void InitConnectionString()
 {
-    if(String.IsNullOrEmpty(_connectionString))
+    if(string.IsNullOrEmpty(_connectionString))
     {
         _connectionString=GetConnectionString(ref ConnectionStringName, out _providerName);
 
@@ -316,7 +316,7 @@ private string GetConfigPath()
         if (item.Name.Equals("App.config",StringComparison.InvariantCultureIgnoreCase) || item.Name.Equals("Web.config",StringComparison.InvariantCultureIgnoreCase))
 			return GetProjectPath() + "\\" + item.Name;
     }
-    return String.Empty;
+    return string.Empty;
 }
 
 public string GetDataDirectory()
@@ -342,9 +342,9 @@ Tables LoadTables()
 	WriteLine("// ");
 	WriteLine("// The following connection settings were used to generate this file");
 	WriteLine("// ");
-	WriteLine("//     Connection String Name: `{0}`", ConnectionStringName);
+	WriteLine("//     Connection string Name: `{0}`", ConnectionStringName);
 	WriteLine("//     Provider:               `{0}`", ProviderName);
-	WriteLine("//     Connection String:      `{0}`", zap_password(ConnectionString));
+	WriteLine("//     Connection string:      `{0}`", zap_password(ConnectionString));
 	WriteLine("//     Schema:                 `{0}`", SchemaName);
 	WriteLine("//     Include Views:          `{0}`", IncludeViews);
 	WriteLine("");
@@ -1374,7 +1374,7 @@ public static class Inflector {
         AddPluralRule("^(ox)$", "$1en");
         AddPluralRule("(quiz)$", "$1zes");
 
-        AddSingularRule("s$", String.Empty);
+        AddSingularRule("s$", string.Empty);
         AddSingularRule("ss$", "ss");
         AddSingularRule("(n)ews$", "$1ews");
         AddSingularRule("([ti])a$", "$1um");
@@ -1424,8 +1424,8 @@ public static class Inflector {
     /// <param name="singular">The singular.</param>
     /// <param name="plural">The plural.</param>
     private static void AddIrregularRule(string singular, string plural) {
-        AddPluralRule(String.Concat("(", singular[0], ")", singular.Substring(1), "$"), String.Concat("$1", plural.Substring(1)));
-        AddSingularRule(String.Concat("(", plural[0], ")", plural.Substring(1), "$"), String.Concat("$1", singular.Substring(1)));
+        AddPluralRule(string.Concat("(", singular[0], ")", singular.Substring(1), "$"), string.Concat("$1", plural.Substring(1)));
+        AddSingularRule(string.Concat("(", plural[0], ")", plural.Substring(1), "$"), string.Concat("$1", singular.Substring(1)));
     }
 
     /// <summary>
@@ -1527,7 +1527,7 @@ public static class Inflector {
     /// <param name="word">The word.</param>
     /// <returns></returns>
     public static string MakeInitialCaps(string word) {
-        return String.Concat(word.Substring(0, 1).ToUpper(), word.Substring(1).ToLower());
+        return string.Concat(word.Substring(0, 1).ToUpper(), word.Substring(1).ToLower());
     }
 
     /// <summary>
@@ -1536,7 +1536,7 @@ public static class Inflector {
     /// <param name="word">The word.</param>
     /// <returns></returns>
     public static string MakeInitialLowerCase(string word) {
-        return String.Concat(word.Substring(0, 1).ToLower(), word.Substring(1));
+        return string.Concat(word.Substring(0, 1).ToLower(), word.Substring(1));
     }
 
 
@@ -1563,17 +1563,17 @@ public static class Inflector {
             int nMod100 = n % 100;
 
             if (nMod100 >= 11 && nMod100 <= 13)
-                return String.Concat(number, "th");
+                return string.Concat(number, "th");
 
             switch (n % 10) {
                 case 1:
-                    return String.Concat(number, "st");
+                    return string.Concat(number, "st");
                 case 2:
-                    return String.Concat(number, "nd");
+                    return string.Concat(number, "nd");
                 case 3:
-                    return String.Concat(number, "rd");
+                    return string.Concat(number, "rd");
                 default:
-                    return String.Concat(number, "th");
+                    return string.Concat(number, "th");
             }
         }
         return number;

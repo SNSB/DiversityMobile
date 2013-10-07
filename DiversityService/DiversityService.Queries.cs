@@ -61,15 +61,15 @@ namespace DiversityService
                 if (cel.LocalisationSystemID == 4)
                     try
                     {
-                        ev.Altitude = Double.Parse(cel.Location1);
+                        ev.Altitude = double.Parse(cel.Location1);
                     }
                     catch (Exception) { ev.Altitude = null; }
                 if (cel.LocalisationSystemID == 8)
                 {
                     try
                     {
-                        ev.Longitude = Double.Parse(cel.Location1);
-                        ev.Latitude = Double.Parse(cel.Location2);
+                        ev.Longitude = double.Parse(cel.Location1);
+                        ev.Latitude = double.Parse(cel.Location2);
                     }
                     catch (Exception) { ev.Longitude = null; ev.Latitude = null; }
                 }
@@ -107,7 +107,7 @@ namespace DiversityService
                 return Enumerable.Empty<T>();  //SQL Injection ?
 
             var sql = PetaPoco.Sql.Builder
-                .From(String.Format("[dbo].[{0}] AS [{1}]", table, typeof(T).Name))
+                .From(string.Format("[dbo].[{0}] AS [{1}]", table, typeof(T).Name))
                 .SQL;
             return db.Page<T>(page, 1000, sql).Items;
         }       

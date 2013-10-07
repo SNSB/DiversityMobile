@@ -16,23 +16,33 @@ namespace DiversityService.Model
     {
 
         public double? Altitude { get; set; }
+
         public double? Latitude { get; set; }
+
         public double? Longitude { get; set; }
 
         public bool Equals(Localization other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
             if (this.Altitude.HasValue != other.Altitude.HasValue ||
                 (this.Altitude.HasValue && !AboutEqual(this.Altitude.Value, other.Altitude.Value)))
+            {
                 return false;
+            }
             if (this.Latitude.HasValue != other.Latitude.HasValue ||
                 (this.Latitude.HasValue && !AboutEqual(this.Latitude.Value, other.Latitude.Value)))
+            {
                 return false;
+            }
             if (this.Longitude.HasValue != other.Longitude.HasValue ||
                 (this.Longitude.HasValue && !AboutEqual(this.Longitude.Value, other.Longitude.Value)))
+            {
                 return false;
+            }
 
             return true;
         }
@@ -40,9 +50,13 @@ namespace DiversityService.Model
         public override bool Equals(object obj)
         {
             if (obj == null)
+            {
                 return false;
+            }
             if (obj is Localization)
+            {
                 return this.Equals(obj as Localization);
+            }
             return false;
         }
 
@@ -56,7 +70,9 @@ namespace DiversityService.Model
         private static bool AboutEqual(double x, double y)
         {
             if (double.IsNaN(x))
+            {
                 return double.IsNaN(y);
+            }
 
             double epsilon = Math.Max(Math.Abs(x), Math.Abs(y)) * 1E-15;
             return Math.Abs(x - y) <= epsilon;
@@ -95,9 +111,13 @@ namespace DiversityService.Model
             get
             {
                 if (CollectionYear.HasValue && CollectionMonth.HasValue && CollectionDay.HasValue)
+                {
                     return new DateTime(CollectionYear.Value, CollectionMonth.Value, CollectionDay.Value);
+                }
+
                 return null;
             }
+
             set
             {
                 if (value.HasValue)
@@ -112,10 +132,11 @@ namespace DiversityService.Model
                     CollectionMonth = null;
                     CollectionDay = null;
                 }
-
             }
         }
+
         public string LocalityDescription { get; set; }
+
         public string HabitatDescription { get; set; }
 
         //Georeferenzierung anstelle der KLasse CollectionEventLocalisation
@@ -133,8 +154,10 @@ namespace DiversityService.Model
         //reading from the DB fails when trying to cast
         [IgnoreDataMember]
         public int? CollectionYear { get; set; }
+
         [IgnoreDataMember]
         public int? CollectionMonth { get; set; }
+
         [IgnoreDataMember]
         public int? CollectionDay { get; set; }
     }
@@ -143,9 +166,12 @@ namespace DiversityService.Model
     public class EventProperty
     {
         public int CollectionEventID { get; set; }
+
         public int PropertyID { get; set; }
-        public String DisplayText { get; set; }
-        public String PropertyUri { get; set; }
+
+        public string DisplayText { get; set; }
+
+        public string PropertyUri { get; set; }
     }
 
     [TableName("CollectionSpecimen")]
@@ -179,9 +205,13 @@ namespace DiversityService.Model
     public class MultimediaObject
     {
         public MultimediaOwner OwnerType { get; set; }
+
         public Int32 RelatedCollectionID { get; set; }
+
         public Uri Uri { get; set; }
-        public String Description { get; set; }
+
+        public string Description { get; set; }
+
         public MultimediaType MediaType { get; set; }
     }
 
@@ -197,11 +227,11 @@ namespace DiversityService.Model
         public int? CollectionRelatedUnitID { get; set; }
 
         public bool OnlyObserved { get; set; }
+
         public string TaxonomicGroup { get; set; }
+
         public string RelationType { get; set; } //Only on Non-Toplevel
-        //public string ColonisedSubstratePart { get; set; }
-        //public string LifeStage { get; set; }
-        //public string Gender { get; set; }
+
         public string LastIdentificationCache { get; set; }
 
         //Identification         
@@ -238,7 +268,7 @@ namespace DiversityService.Model
         public int AnalysisNumber { get; set; }
 
         public string AnalysisResult { get; set; }
-        
+
         [Ignore]
         public DateTime AnalysisDate { get; set; } //Datum mit Uhrzeit
 

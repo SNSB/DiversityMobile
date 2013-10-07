@@ -291,12 +291,12 @@ namespace DiversityPhone.Services
 
             public static string getDBPath(int idx)
             {
-                return String.Format(TAXON_DB_NAME_PATTERN, idx);
+                return string.Format(TAXON_DB_NAME_PATTERN, idx);
             }
 
 
             public TaxonDataContext(int idx)
-                : base(String.Format("{0}{1}",ISOSTORE_PROTOCOL,getDBPath(idx)))
+                : base(string.Format("{0}{1}",ISOSTORE_PROTOCOL,getDBPath(idx)))
             {
                 if (!this.DatabaseExists())
                 {

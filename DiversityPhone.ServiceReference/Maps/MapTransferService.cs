@@ -41,7 +41,7 @@ namespace DiversityPhone.Services
             GetXmlUrlCompletedObservable = Observable.FromEventPattern<GetXmlUrlCompletedEventArgs>(d => MapService.GetXmlUrlCompleted += d, d => MapService.GetXmlUrlCompleted -= d);
         }
 
-        public IObservable<IEnumerable<String>> GetAvailableMaps(String searchString)
+        public IObservable<IEnumerable<string>> GetAvailableMaps(string searchString)
         {
             object request = new object();
             var res = GetMapsListCompletedObservable
@@ -51,7 +51,7 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<Map> downloadMap(String serverKey)
+        public IObservable<Map> downloadMap(string serverKey)
         {
             object dl = new object();
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Linq.Mapping;
+﻿using System.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {
@@ -8,13 +7,13 @@ namespace DiversityPhone.Model
     {
 
         [Column(IsPrimaryKey = true)]
-        public String ServerKey { get; set; }
+        public string ServerKey { get; set; }
 
         [Column]
-        public String Name { get; set; }
+        public string Name { get; set; }
 
         [Column]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         [Column]
         public double NWLat { get; set; }

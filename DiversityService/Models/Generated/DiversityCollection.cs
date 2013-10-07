@@ -23,9 +23,9 @@
 // 
 // The following connection settings were used to generate this file
 // 
-//     Connection String Name: `DiversityService.Properties.Settings.DiversityCollection_TestConnectionString`
+//     Connection string Name: `DiversityService.Properties.Settings.DiversityCollection_TestConnectionString`
 //     Provider:               `System.Data.SqlClient`
-//     Connection String:      `Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_Test;Persist Security Info=True;`
+//     Connection string:      `Data Source=141.84.65.107,5432;Initial Catalog=DiversityCollection_Test;Persist Security Info=True;`
 //     Schema:                 ``
 //     Include Views:          `False`
 

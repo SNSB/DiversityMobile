@@ -15,11 +15,11 @@ namespace DiversityService.Model
         public int AnalysisParentID { get; set; }
 
         [Column("DisplayText")]
-        public String DisplayText { get; set; }
+        public string DisplayText { get; set; }
         [Column("Description")]
-        public String Description { get; set; }
+        public string Description { get; set; }
         [Column("MeasurementUnit")]
-        public String MeasurementUnit { get; set; }
+        public string MeasurementUnit { get; set; }
     }
 
     public class AnalysisResult

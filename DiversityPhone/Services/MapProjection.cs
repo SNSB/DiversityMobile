@@ -257,7 +257,7 @@ namespace DiversityPhone.Services
                 Coordinate gps = new Coordinate();
                 gps.Longitude = p.Value.X;
                 gps.Latitude = p.Value.Y;
-                gps.Altitude = Double.NaN;
+                gps.Altitude = double.NaN;
                 return gps;
             }
             else

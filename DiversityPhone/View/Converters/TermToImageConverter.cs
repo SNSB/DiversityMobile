@@ -16,7 +16,7 @@ namespace DiversityPhone.View
         {            
             if (value != null)                
             {
-                var computedPath = String.Format("/Images/SNSBIcons/Taxa/{0}_80.png", value.ToString());
+                var computedPath = string.Format("/Images/SNSBIcons/Taxa/{0}_80.png", value.ToString());
                 if(CanLoadResource(computedPath))
                     return computedPath;
             }

@@ -133,7 +133,7 @@ namespace DiversityService
             }
         }
 
-        private static String SerializeLocalizations(IEnumerable<Localization> locs)
+        private static string SerializeLocalizations(IEnumerable<Localization> locs)
         {
             var uniqueLocs = (locs != null) ? locs.Distinct().ToList() : new List<Localization>();
 
@@ -144,34 +144,34 @@ namespace DiversityService
                         string.Join(", ", locs.Select(gp => string.Format(cult, "{0} {1}", gp.Longitude, gp.Latitude)))
                     );
             }
-            else return String.Empty;
+            else return string.Empty;
         }
 
-        private static String SerializeLocalization(double? latitude, double? longitude, double? altitude)
+        private static string SerializeLocalization(double? latitude, double? longitude, double? altitude)
         {
             if (!latitude.HasValue || !longitude.HasValue ||
-                Double.IsNaN(latitude.Value) || Double.IsNaN(longitude.Value))
-                return String.Empty;
+                double.IsNaN(latitude.Value) || double.IsNaN(longitude.Value))
+                return string.Empty;
 
             var cult = new CultureInfo("en-US");
-            String longitudeStr = longitude.Value.ToString(cult);
+            string longitudeStr = longitude.Value.ToString(cult);
 
-            String latStr = latitude.Value.ToString(cult);
+            string latStr = latitude.Value.ToString(cult);
             latStr = latStr.Replace(',', '.');
 
             StringBuilder builder = new StringBuilder("POINT(");
             builder.Append(longitudeStr);
             builder.Append(" ");
             builder.Append(latStr);
-            if (altitude.HasValue && Double.IsNaN((double)altitude) == false)
+            if (altitude.HasValue && double.IsNaN((double)altitude) == false)
             {
-                String altStr = altitude.Value.ToString(cult);
+                string altStr = altitude.Value.ToString(cult);
                 altStr = altStr.Replace(',', '.');
                 builder.Append(" ");
                 builder.Append(altStr);
             }
             builder.Append(")");
-            String s = builder.ToString();
+            string s = builder.ToString();
             return builder.ToString();
         }
     }

@@ -1,16 +1,25 @@
-﻿using DiversityPhone.Model;
-using DiversityService.Model;
-using System;
-using System.Collections.Generic;
-
-namespace DiversityService
+﻿namespace DiversityService
 {
-    public static class CollectionExtensions
+    using DiversityPhone.Model;
+    using Model;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Contains methods to convert the Client Objects that might differ in structure to their counterparts used in DiversityCollection
+    /// </summary>
+    public static class ClientServiceConversions
     {
+        /// <summary>
+        /// Extracts the geo location information stored in the client-side <see cref="Event"/> Object
+        /// And converts it to its <see cref="CollectionEventLocalisation"/> representation.
+        /// </summary>
+        /// <param name="ev">The client-side Event object possibly containing location information.</param>
+        /// <param name="profile">The Profile of the User responsible for creating this object.</param>        
+        /// <returns>Between 0 and 2 <see cref="CollectionEventLocalisation"/> objects depending on the amount of information in the Input object.</returns>
         public static IEnumerable<CollectionEventLocalisation> GetLocalisations(this Event ev, UserCredentials profile)
         {
             IList<CollectionEventLocalisation> localisations = new List<CollectionEventLocalisation>();
-            if (ev.Altitude.HasValue && !Double.IsNaN(ev.Altitude.Value))
+            if (ev.Altitude.HasValue && !double.IsNaN(ev.Altitude.Value))
             {
                 CollectionEventLocalisation altitude = new CollectionEventLocalisation();
                 altitude.AverageAltitudeCache = ev.Altitude;
@@ -25,19 +34,24 @@ namespace DiversityService
                 altitude.RecordingMethod = "Generated via DiversityMobile";
                 localisations.Add(altitude);
             }
-            if (ev.Latitude.HasValue && !Double.IsNaN(ev.Latitude.Value) 
-                && ev.Longitude.HasValue && !Double.IsNaN(ev.Longitude.Value))
+
+            if (ev.Latitude.HasValue && !double.IsNaN(ev.Latitude.Value)
+                && ev.Longitude.HasValue && !double.IsNaN(ev.Longitude.Value))
             {
                 CollectionEventLocalisation wgs84 = new CollectionEventLocalisation();
-                if (ev.Altitude!=null && Double.IsNaN((double)ev.Altitude) == false)
+                if (ev.Altitude != null && double.IsNaN((double)ev.Altitude) == false)
+                {
                     wgs84.AverageAltitudeCache = ev.Altitude;
-                else 
+                }
+                else
+                {
                     wgs84.AverageAltitudeCache = null;
+                }
 
                 wgs84.AverageLatitudeCache = ev.Latitude;
                 wgs84.AverageLongitudeCache = ev.Longitude;
                 wgs84.CollectionEventID = ev.CollectionEventID;
-                wgs84.DeterminationDate = ev.CollectionDate;                
+                wgs84.DeterminationDate = ev.CollectionDate;
                 wgs84.LocalisationSystemID = 8;
                 wgs84.Location1 = ev.Longitude.ToString();
                 wgs84.Location2 = ev.Latitude.ToString();
@@ -46,6 +60,7 @@ namespace DiversityService
                 wgs84.RecordingMethod = "Generated via DiversityMobile";
                 localisations.Add(wgs84);
             }
+
             return localisations;
         }
 
@@ -69,7 +84,7 @@ namespace DiversityService
         }
 
         public static Identification GetIdentification(this IdentificationUnit iu, UserCredentials profile)
-        {           
+        {
             return new Identification()
             {
                 CollectionSpecimenID = iu.CollectionSpecimenID,
@@ -99,6 +114,5 @@ namespace DiversityService
                 ResponsibleAgentURI = profile.AgentURI,
             };
         }
-
     }
 }

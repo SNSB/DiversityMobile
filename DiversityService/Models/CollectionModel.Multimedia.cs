@@ -33,7 +33,7 @@ namespace DiversityService.Model
 
     public static class MultimediaObjectExtensions
     {
-        private static String MediaTypeToString(MultimediaType type)
+        private static string MediaTypeToString(MultimediaType type)
         {
             switch (type)
             {
