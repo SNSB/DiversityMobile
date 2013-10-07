@@ -1,20 +1,16 @@
-﻿using System;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+using ReactiveUI;
+using ReactiveUI.Xaml;
+using System;
 using System.IO;
-using System.IO.IsolatedStorage;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using DiversityPhone.Model;
-using DiversityPhone.Services;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System.Reactive.Threading.Tasks;
-using Microsoft.Phone.BackgroundAudio;
-using Microsoft.Xna.Framework.Media;
-using DiversityPhone.Interface;
 
 
 namespace DiversityPhone.ViewModels

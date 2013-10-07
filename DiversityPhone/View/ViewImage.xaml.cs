@@ -1,18 +1,6 @@
-﻿using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System;
-using System.Xml.Linq;
+﻿using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
-using DiversityPhone.Model;
-using System.Windows.Data;
-using System.Windows;
-using Microsoft.Devices;
-using System.Windows.Media.Imaging;
-using System.Windows.Media;
-using Microsoft.Xna.Framework.Media;
-using DiversityPhone.View.Appbar;
-using Microsoft.Phone.Shell;
+using Microsoft.Phone.Controls;
 
 namespace DiversityPhone.View
 {

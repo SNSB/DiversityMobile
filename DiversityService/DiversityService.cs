@@ -1,19 +1,10 @@
-﻿using System;
-using System.IO;
+﻿using DiversityORM;
+using DiversityPhone.Model;
+using DiversityService.Configuration;
+using DiversityService.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using DiversityService.Model;
-using DiversityPhone.Model;
-using DiversityORM;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Serialization;
-using System.ServiceModel;
-using System.Runtime.Serialization;
-using System.Data.EntityClient;
-using System.Globalization;
-using DiversityService.Configuration;
 using System.Threading.Tasks;
 
 

@@ -1,8 +1,8 @@
 ﻿namespace DiversityPhone.Interface
 {
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using System;
+    using DiversityPhone.Model;
+    using System;
+    using System.Collections.Generic;
     using System.Diagnostics.Contracts;
 
     public interface IFieldDataService

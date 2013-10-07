@@ -1,6 +1,6 @@
-﻿using System.Reactive.Linq;
+﻿using DiversityPhone.Model;
 using System;
-using DiversityPhone.Model;
+using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels
 {

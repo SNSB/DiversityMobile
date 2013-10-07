@@ -5,8 +5,6 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Ninject;
 using System;
-using System.Reactive;
-using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows;
 

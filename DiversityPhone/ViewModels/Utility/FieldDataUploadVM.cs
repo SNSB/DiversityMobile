@@ -1,7 +1,6 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using DiversityPhone.Services;
-using ReactiveUI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;

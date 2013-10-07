@@ -1,14 +1,12 @@
 ﻿namespace DiversityPhone.ViewModels
 {
-    using System;
-    using ReactiveUI;
-    using System.Reactive.Linq;
-    using DiversityPhone.Model;
-    using ReactiveUI.Xaml;
-    using System.Linq;
-
-    
     using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Linq;
+    using System.Reactive.Linq;
 
     public class ViewEVVM : ViewPageVMBase<Event>
     {

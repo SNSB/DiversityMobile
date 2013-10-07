@@ -2,9 +2,9 @@
 
 using ReactiveUI;
 using System;
-using System.Linq;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
+using System.Linq;
 
 namespace DiversityPhone.Model
 {

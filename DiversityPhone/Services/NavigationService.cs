@@ -1,10 +1,10 @@
-﻿using System;
+﻿using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using ReactiveUI;
-using DiversityPhone.Model;
-using DiversityPhone.ViewModels;
-using System.Reactive.Linq;
+using System;
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
 
 namespace DiversityPhone.Services

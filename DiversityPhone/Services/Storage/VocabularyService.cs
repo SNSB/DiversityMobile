@@ -1,12 +1,12 @@
 ﻿
+using DiversityPhone.Interface;
+using DiversityPhone.Model;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
 using System.Linq;
-using DiversityPhone.Model;
-using ReactiveUI;
 using System.Reactive.Disposables;
-using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {

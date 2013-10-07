@@ -1,11 +1,10 @@
-﻿using DiversityPhone.View;
-
+﻿
 namespace DiversityPhone
 {
-    using System;
-    using Microsoft.Phone.Controls;
+    using DiversityPhone.View.Appbar;
     using DiversityPhone.ViewModels;
-using DiversityPhone.View.Appbar;
+    using Microsoft.Phone.Controls;
+    using System;
 
     public partial class ViewEV : PhoneApplicationPage
     {

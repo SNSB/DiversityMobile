@@ -1,11 +1,5 @@
-﻿using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using DiversityPhone.Model;
 using ReactiveUI;
-using DiversityPhone.DiversityService;
-using ReactiveUI.Xaml;
-using DiversityPhone.Model;
 using System;
 
 namespace DiversityPhone.ViewModels

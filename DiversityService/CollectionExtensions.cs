@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using DiversityPhone.Model;
 using DiversityService.Model;
-using DiversityPhone.Model;
+using System;
+using System.Collections.Generic;
 
 namespace DiversityService
 {

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Reactive.Linq;
-using ReactiveUI;
-using System.Linq;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
-using DiversityPhone.Services;
-
-using System.Reactive.Concurrency;
-using System.Reactive.Subjects;
-using DiversityPhone.Interface;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {

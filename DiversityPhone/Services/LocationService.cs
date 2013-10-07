@@ -1,14 +1,14 @@
 ﻿namespace DiversityPhone.Services
 {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
     using System;
+    using System.Collections.Generic;
     using System.Device.Location;
     using System.Reactive.Concurrency;
-    using System.Reactive.Linq;
-    using ReactiveUI;
-    using System.Collections.Generic;
-    using DiversityPhone.Model;
-    using DiversityPhone.Interface;
     using System.Reactive.Disposables;
+    using System.Reactive.Linq;
 
 
 

@@ -1,8 +1,8 @@
 ﻿using ReactiveUI.Xaml;
-using System.Windows.Input;
 using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Windows.Input;
 
 namespace DiversityPhone.ViewModels
 {

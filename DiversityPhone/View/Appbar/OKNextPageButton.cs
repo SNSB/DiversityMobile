@@ -2,10 +2,7 @@
 using Microsoft.Phone.Shell;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
 
 namespace DiversityPhone.View.Appbar
 {

@@ -1,12 +1,12 @@
-﻿using DiversityPhone.Model;
-using DiversityPhone.Interface;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Net;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.ServiceModel;
-using System.Linq;
 
 namespace DiversityPhone.Services
 {

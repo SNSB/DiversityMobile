@@ -1,9 +1,8 @@
-﻿using System;
-using ReactiveUI;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using DiversityPhone.Services;
+using ReactiveUI;
+using System;
 using System.Reactive.Linq;
-using DiversityPhone.Interface;
 
 namespace DiversityPhone.ViewModels
 {

@@ -4,14 +4,13 @@ using DiversityPhone.Services;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.Contracts;
-using System.Globalization;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Reactive.Linq;
-using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace DiversityPhone
 {

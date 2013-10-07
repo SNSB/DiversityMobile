@@ -1,15 +1,13 @@
-﻿using System;
-using ReactiveUI;
-using System.Linq;
-using System.Reactive.Linq;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using System.Collections.Generic;
-using DiversityPhone.Services;
+using ReactiveUI;
 using ReactiveUI.Xaml;
-
-using System.Reactive.Concurrency;
-using DiversityPhone.Interface;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 
 
 

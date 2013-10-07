@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DiversityPhone.Model;
+using ReactiveUI;
+using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Reactive.Subjects;
-using System.Text;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Reactive.Linq;
-using ReactiveUI;
-using DiversityPhone.Model;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.Services
 {

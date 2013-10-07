@@ -43,7 +43,6 @@ namespace DiversityPhone.ViewModels
             IObservable<Unit> props_future = downloadProperties(event_future);
             IObservable<Specimen> specimen_future = downloadSpecimen(event_future);
             IObservable<IdentificationUnit> iu_future = downloadUnits(specimen_future);
-
             IObservable<Unit> an_future = downloadAnalyses(iu_future);
 
 

@@ -1,5 +1,5 @@
-﻿using System;
-using DiversityPhone.Model;
+﻿using DiversityPhone.Model;
+using System;
 using System.Windows;
 
 namespace DiversityPhone.Services

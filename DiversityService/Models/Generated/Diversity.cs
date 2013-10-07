@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DiversityService.Model;
-using System.Configuration;
-using Config = DiversityServiceConfiguration;
-using DiversityService.Configuration;
+﻿using Config = DiversityServiceConfiguration;
 
 namespace DiversityORM
 {

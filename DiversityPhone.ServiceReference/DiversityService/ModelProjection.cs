@@ -2,7 +2,6 @@
 {
     using DiversityPhone.Interface;
     using System;
-    using System.Collections.Generic;
     using Svc = DiversityPhone.DiversityService;
 
     public static class ServiceProjectionExtensions

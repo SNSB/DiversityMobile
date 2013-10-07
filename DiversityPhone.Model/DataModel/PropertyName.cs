@@ -1,5 +1,5 @@
-﻿using System.Data.Linq.Mapping;
-using Microsoft.Phone.Data.Linq.Mapping;
+﻿using Microsoft.Phone.Data.Linq.Mapping;
+using System.Data.Linq.Mapping;
 
 namespace DiversityPhone.Model
 {

@@ -1,7 +1,7 @@
-﻿using System;
-using ReactiveUI;
+﻿using DiversityPhone.ViewModels;
 using Microsoft.Phone.Shell;
-using DiversityPhone.ViewModels;
+using ReactiveUI;
+using System;
 using System.Reactive.Linq;
 
 namespace DiversityPhone.View.Appbar

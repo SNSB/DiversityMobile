@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Data.Linq.Mapping;
-using DiversityPhone.Services;
-using System.Linq;
-using System.IO.IsolatedStorage;
-using System.Xml.Linq;
-using System.IO;
-using System.Windows;
 
 namespace DiversityPhone.Model
 {

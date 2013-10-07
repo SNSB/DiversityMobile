@@ -1,6 +1,6 @@
-﻿using System;
-using DiversityPhone.Model;
+﻿using DiversityPhone.Model;
 using ReactiveUI;
+using System;
 
 namespace DiversityPhone.ViewModels
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Windows.Data;
-using DiversityPhone.ViewModels;
-using System.Windows.Media;
-using DiversityPhone.Model;
+﻿using DiversityPhone.Model;
+using System;
 using System.Windows;
-using System.Linq;
+using System.Windows.Data;
 
 namespace DiversityPhone.View
 {

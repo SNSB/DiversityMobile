@@ -1,13 +1,8 @@
-﻿using DiversityPhone.Model;
-using System;
-using System.Collections.Generic;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using Ninject;
-using DiversityPhone.Interface;
-using DiversityPhone.Services;
 using System.IO;
+using System.IO.IsolatedStorage;
 
 namespace DiversityPhone.Services
 {

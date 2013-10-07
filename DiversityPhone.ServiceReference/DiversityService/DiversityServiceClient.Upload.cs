@@ -1,14 +1,13 @@
 ﻿
-using System.Collections.Generic;
+using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using System;
-using System.Reactive.Linq;
-using Svc = DiversityPhone.DiversityService;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.ComponentModel;
 using System.Reactive;
-using DiversityPhone.Interface;
+using System.Reactive.Linq;
+using Svc = DiversityPhone.DiversityService;
 
 namespace DiversityPhone.Services
 {

@@ -1,13 +1,10 @@
-﻿using System.Data.Linq;
-using Svc = DiversityPhone.DiversityService;
-using System.Collections.Generic;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using System;
+using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
-using System.Data.Linq.SqlClient;
-using System.IO.IsolatedStorage;
 using System.Threading;
-using DiversityPhone.Interface;
 
 namespace DiversityPhone.Services
 {

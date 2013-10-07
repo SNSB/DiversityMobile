@@ -1,8 +1,8 @@
 ﻿namespace DiversityPhone.ViewModels
 {
-    using System;
-    using ReactiveUI;
     using DiversityPhone.Model;
+    using ReactiveUI;
+    using System;
 
     public class SpecimenVM : ElementVMBase<Specimen>
     {

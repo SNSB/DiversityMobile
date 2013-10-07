@@ -1,16 +1,12 @@
 ﻿
-using System.Collections.Generic;
-using Client = DiversityPhone.Model;
-using System;
-using System.Reactive.Linq;
 using DiversityPhone.DiversityService;
+using DiversityPhone.Interface;
 using DiversityPhone.MultimediaService;
-using System.Linq;
-using ReactiveUI;
+using System;
 using System.ComponentModel;
 using System.Reactive;
-using System.Reactive.Disposables;
-using DiversityPhone.Interface;
+using System.Reactive.Linq;
+using Client = DiversityPhone.Model;
 
 namespace DiversityPhone.Services
 {

@@ -1,11 +1,9 @@
-﻿using ReactiveUI;
+﻿using Ninject;
+using ReactiveUI;
 using System;
-using System.IO;
-using System.IO.IsolatedStorage;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ninject;
 
 namespace DiversityPhone.View
 {

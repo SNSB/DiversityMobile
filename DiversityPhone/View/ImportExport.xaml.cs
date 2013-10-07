@@ -1,13 +1,12 @@
-﻿using DiversityPhone.View.Appbar;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System;
-using ReactiveUI;
 using Ninject;
+using ReactiveUI;
+using System;
 using System.Reactive.Linq;
-using DiversityPhone.Services;
-using DiversityPhone.Interface;
 
 namespace DiversityPhone.View
 {

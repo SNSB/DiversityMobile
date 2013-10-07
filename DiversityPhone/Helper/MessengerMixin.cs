@@ -1,7 +1,7 @@
 ﻿namespace DiversityPhone.Model
 {
-    using System;
     using ReactiveUI;
+    using System;
 
 
 

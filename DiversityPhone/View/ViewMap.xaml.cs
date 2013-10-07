@@ -1,18 +1,16 @@
-﻿using System;
-using System.Linq;
+﻿using DiversityPhone.View.Appbar;
+using DiversityPhone.ViewModels;
+using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
+using ReactiveUI;
+using System;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media.Imaging;
-using DiversityPhone.View.Appbar;
-using DiversityPhone.ViewModels;
-using Microsoft.Phone.Controls;
-using ReactiveUI;
-using Microsoft.Phone.Shell;
 using System.Windows.Media;
-using System.Reactive;
+using System.Windows.Media.Imaging;
 
 namespace DiversityPhone.View
 {

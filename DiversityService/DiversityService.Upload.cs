@@ -1,13 +1,12 @@
-﻿using DiversityORM;
+﻿using DiversityPhone.Model;
 using DiversityService.Model;
-using DiversityPhone.Model;
 using PetaPoco;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Data.SqlClient;
 
 namespace DiversityService
 {

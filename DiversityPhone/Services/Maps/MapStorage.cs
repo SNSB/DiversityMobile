@@ -1,12 +1,12 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using DiversityPhone.Model;
-using System.IO.IsolatedStorage;
-using System.Data.Linq;
+﻿using DiversityPhone.Model;
 using System;
+using System.Collections.Generic;
+using System.Data.Linq;
+using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Reactive;
-using System.Threading.Tasks;
 using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.Services
 {
@@ -72,7 +72,7 @@ namespace DiversityPhone.Services
 
                         using (var file = iso.CreateFile(filename))
                         {
-                            await mapContent.CopyToAsync(file, 4* 1024 * 1024);
+                            await mapContent.CopyToAsync(file, 4 * 1024 * 1024);
                         }
                     }
                 }
@@ -95,7 +95,10 @@ namespace DiversityPhone.Services
         {
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                iso.DeleteDirectory(MapFolder);
+                if (iso.DirectoryExists(MapFolder))
+                {
+                    iso.DeleteDirectory(MapFolder);
+                }
                 iso.CreateDirectory(MapFolder);
             }
 

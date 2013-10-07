@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Microsoft.Phone.Shell;
 using ReactiveUI;
-using ReactiveUI.Xaml;
+using System;
 using System.Linq.Expressions;
-using Microsoft.Phone.Shell;
 
 namespace DiversityPhone.View
 {

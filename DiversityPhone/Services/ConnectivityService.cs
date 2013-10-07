@@ -1,14 +1,12 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System;
-    using Microsoft.Phone.Net.NetworkInformation;
-    using System.Reactive.Disposables;
-    using System.Reactive.Subjects;
-    
-    using System.Reactive.Linq;
-    using System.Reactive.Concurrency;
-    using System.Reactive;
     using DiversityPhone.Interface;
+    using Microsoft.Phone.Net.NetworkInformation;
+    using System;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
     
     

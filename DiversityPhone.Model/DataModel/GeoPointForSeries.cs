@@ -2,11 +2,8 @@
 
 namespace DiversityPhone.Model
 {
-    using System;
-    using System.Linq;
-    using System.Data.Linq;
     using System.Data.Linq.Mapping;
-    using ReactiveUI;
+    using System.Linq;
 
     [Table]
     public class GeoPointForSeries : IModifyable, ILocalizable

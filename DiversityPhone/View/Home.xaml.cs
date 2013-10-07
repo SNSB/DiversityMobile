@@ -1,15 +1,11 @@
 ﻿
+using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
-using ReactiveUI;
-using DiversityPhone.Services;
-using System.Windows;
-using System;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Reactive.Linq;
-using DiversityPhone.Services.BackgroundTasks;
-using DiversityPhone.View.Appbar;
+using System;
 using System.Linq;
+using System.Windows;
 
 
 

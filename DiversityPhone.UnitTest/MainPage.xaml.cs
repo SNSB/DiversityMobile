@@ -1,8 +1,7 @@
-﻿using System;
-using System.Windows;
-using Microsoft.Phone.Controls;
+﻿using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using Microsoft.Silverlight.Testing;
+using System.Windows;
 
 namespace DiversityPhone.UnitTest
 {

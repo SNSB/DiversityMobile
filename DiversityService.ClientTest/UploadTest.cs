@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
+﻿using DiversityService.Test.ServiceReference;
+using System;
 using Xunit;
-using DiversityService.Test.ServiceReference;
 
 namespace DiversityService.Test
 {

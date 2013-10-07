@@ -1,14 +1,9 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using System;
-using System.Collections.Generic;
-using System.Data.Linq;
-using System.Diagnostics;
-using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Text;
 
 namespace DiversityPhone.Services
 {

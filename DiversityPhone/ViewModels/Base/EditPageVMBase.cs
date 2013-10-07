@@ -1,10 +1,10 @@
-﻿using ReactiveUI;
-using System.Reactive.Linq;
+﻿using DiversityPhone.Model;
+using ReactiveUI;
 using ReactiveUI.Xaml;
-using DiversityPhone.Model;
-using System.Reactive.Subjects;
-using System.Reactive;
 using System;
+using System.Reactive;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {

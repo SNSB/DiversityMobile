@@ -1,5 +1,4 @@
 ﻿using DiversityPhone.Model;
-using DiversityPhone.Services;
 using System.Linq;
 
 namespace DiversityPhone.Services

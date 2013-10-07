@@ -1,12 +1,11 @@
 ﻿namespace DiversityPhone.ViewModels
 {
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
     using System;
     using System.Reactive.Linq;
-    using ReactiveUI;
-    using DiversityPhone.Model;
-    using ReactiveUI.Xaml;
-    
-    using DiversityPhone.Interface;
+
 
     public class EditESVM : EditPageVMBase<EventSeries>
     {

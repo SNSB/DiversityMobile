@@ -1,16 +1,10 @@
-﻿using System;
+﻿using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
-using DiversityPhone.Model;
+using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows.Media.Imaging;
-using System.IO.IsolatedStorage;
-using System.IO;
-using Microsoft.Phone.Tasks;
-using System.Reactive;
-using Microsoft.Xna.Framework.Media;
-using DiversityPhone.Services;
-using System.Reactive.Concurrency;
 
 namespace DiversityPhone.ViewModels
 {

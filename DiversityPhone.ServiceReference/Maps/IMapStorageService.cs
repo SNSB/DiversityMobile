@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using DiversityPhone.Model;
+﻿using DiversityPhone.Model;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reactive;
-using System;
 namespace DiversityPhone.Services
 {
     public interface IMapStorageService

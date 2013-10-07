@@ -30,11 +30,9 @@
 //     Include Views:          `False`
 
 
+using PetaPoco;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using PetaPoco;
 
 namespace DiversityORM
 {

@@ -1,6 +1,6 @@
 ﻿
-using DiversityPhone.ViewModels;
 using DiversityPhone.View.Appbar;
+using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 

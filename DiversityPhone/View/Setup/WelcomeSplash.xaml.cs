@@ -8,9 +8,9 @@ using Ninject;
 using ReactiveUI;
 using System;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows;
-using System.Reactive.Concurrency;
 
 namespace DiversityPhone.View.Setup
 {

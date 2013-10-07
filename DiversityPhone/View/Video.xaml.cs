@@ -1,20 +1,14 @@
-﻿using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using Microsoft.Phone.Controls;
-using System;
-using System.Xml.Linq;
-using DiversityPhone.ViewModels;
-using DiversityPhone.Model;
-using System.Windows.Data;
-using System.Windows.Media;
-using System.Windows.Navigation;
-using ReactiveUI.Xaml;
+﻿using DiversityPhone.Model;
 using DiversityPhone.View.Appbar;
-using System.IO.IsolatedStorage;
-using System.IO;
-using System.Windows;
-using System.Reactive.Disposables;
+using DiversityPhone.ViewModels;
+using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System;
+using System.IO;
+using System.IO.IsolatedStorage;
+using System.Reactive.Disposables;
+using System.Windows;
+using System.Windows.Media;
 
 namespace DiversityPhone.View
 {

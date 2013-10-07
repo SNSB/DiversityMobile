@@ -3,7 +3,6 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Reactive.Linq;
 
 namespace DiversityPhone.ViewModels

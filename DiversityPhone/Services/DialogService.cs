@@ -1,12 +1,12 @@
 ﻿namespace DiversityPhone.Services
 {
-    using System;
-    using System.Windows;
-    using ReactiveUI;
     using DiversityPhone.Model;
     using DiversityPhone.ViewModels;
+    using ReactiveUI;
+    using System;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Windows;
 
     public class DialogService
     {

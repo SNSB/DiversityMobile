@@ -1,16 +1,14 @@
-﻿using System;
-using System.Linq;
-using ReactiveUI;
-using DiversityPhone.MapService;
-using System.IO.IsolatedStorage;
-using System.IO;
+﻿using DiversityPhone.MapService;
 using DiversityPhone.Model;
+using ReactiveUI;
+using System;
 using System.Collections.Generic;
+using System.IO.IsolatedStorage;
+using System.Linq;
+using System.Net;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Xml.Linq;
-using System.Net;
-using System.Reactive.Threading.Tasks;
-using System.Reactive;
 
 namespace DiversityPhone.Services
 {

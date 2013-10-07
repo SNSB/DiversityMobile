@@ -1,13 +1,13 @@
 ﻿
-using System.Reactive.Linq;
+using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System.Collections.Generic;
-using System.Collections;
 using System;
-using DiversityPhone.ViewModels;
+using System.Collections;
+using System.Collections.Generic;
 using System.Reactive.Disposables;
-using DiversityPhone.Model;
+using System.Reactive.Linq;
 namespace DiversityPhone.View.Appbar
 {
     public class NewMultimediaAppBarUpdater

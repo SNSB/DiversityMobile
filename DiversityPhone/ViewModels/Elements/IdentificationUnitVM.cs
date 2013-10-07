@@ -1,6 +1,6 @@
-﻿using System;
+﻿using DiversityPhone.Model;
 using ReactiveUI;
-using DiversityPhone.Model;
+using System;
 using System.Reactive.Linq;
 
 

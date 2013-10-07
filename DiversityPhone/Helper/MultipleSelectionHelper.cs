@@ -1,13 +1,10 @@
 ﻿using ReactiveUI;
-using System.Collections.Generic;
-using System.Reactive.Subjects;
-using System.Reactive.Linq;
-using System.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
-using System.Diagnostics.Contracts;
-using System.Reactive;
-using System.Threading;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.ViewModels
 {
