@@ -1,24 +1,20 @@
-﻿using DiversityPhone.View.Appbar;
-using DiversityPhone.View.Helper;
-using DiversityPhone.ViewModels;
-using Microsoft.Phone.Controls;
-using System.Globalization;
-using System.Threading;
-using System.Windows.Controls;
+﻿namespace DiversityPhone.View {
+    using DiversityPhone.View.Appbar;
+    using DiversityPhone.ViewModels;
+    using Microsoft.Phone.Controls;
+    using System.Globalization;
+    using System.Threading;
+    using System.Windows.Controls;
 
-namespace DiversityPhone.View
-{
-    public partial class EditES : PhoneApplicationPage
-    {
+    public partial class EditES : PhoneApplicationPage {
         private EditESVM VM { get { return this.DataContext as EditESVM; } }
 
         private EditPageSaveEditButton _appbarupd;
         private EditPageDeleteButton _delete;
 
-        private INPCBindingTrigger _DescriptionBinding, _CodeBinding;
-       
-        public EditES()
-        {
+        private EventBindingTrigger<TextBox> _DescriptionBinding, _CodeBinding;
+
+        public EditES() {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-De");//Zum setzen eines Default gut genug. Über UserProfile Customizable machen.
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-De");
             InitializeComponent();
@@ -27,17 +23,16 @@ namespace DiversityPhone.View
 
             _delete = new EditPageDeleteButton(ApplicationBar, VM);
 
-            _DescriptionBinding = new INPCBindingTrigger(DescTB);
-            _CodeBinding = new INPCBindingTrigger(SeriesCodeTB);
+            _DescriptionBinding = EventBindingTrigger<TextBox>.Create(DescTB);
+            _CodeBinding = EventBindingTrigger<TextBox>.Create(SeriesCodeTB);
 
-            DPControlBackGround.setTBBackgroundColor(DescTB);         
-        }       
-
-        private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
-        {            
             DPControlBackGround.setTBBackgroundColor(DescTB);
         }
 
-       
+        private void DescTB_TextChanged(object sender, TextChangedEventArgs e) {
+            DPControlBackGround.setTBBackgroundColor(DescTB);
+        }
+
+
     }
 }

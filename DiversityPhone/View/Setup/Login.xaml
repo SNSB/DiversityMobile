@@ -19,23 +19,27 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-       
+
         <vw:DiversityMobilePageHeader Grid.Row="0"
                                       Text="{Binding Resources.Setup_Login_PageHeader, Source={StaticResource LocalizedStrings}}"/>
 
-
-        <StackPanel Grid.Row="1">
+        <vw:ConditionalLabel Grid.Row="1" 
+                             Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
+                             IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
+        <StackPanel Grid.Row="2">
             <TextBlock Text="{Binding Resources.Setup_Header_Username, Source={StaticResource LocalizedStrings}}" 
                                    Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBox x:Name="Username"  
-                                 Text="{Binding Login.UserName, Mode=TwoWay}"/>
+                                 Text="{Binding UserName, Mode=TwoWay}"/>
             <TextBlock Text="{Binding Resources.Setup_Header_Password, Source={StaticResource LocalizedStrings}}" 
                                    Style="{StaticResource PhoneTextSmallStyle}"/>
-            <TextBox x:Name="Password" 
-                                 Text="{Binding Login.Password, Mode=TwoWay}"/>
+            <PasswordBox x:Name="Password" Password="{Binding Password, Mode=TwoWay}"/>
+            <!--<TextBox x:Name="Password" 
+                                 Text="{Binding Password, Mode=TwoWay}"/>-->
         </StackPanel>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>

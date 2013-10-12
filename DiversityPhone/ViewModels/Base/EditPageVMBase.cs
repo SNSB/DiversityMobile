@@ -6,10 +6,8 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels
-{
-    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable, IReactiveNotifyPropertyChanged
-    {
+namespace DiversityPhone.ViewModels {
+    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable, IReactiveNotifyPropertyChanged {
         public IReactiveCommand Save { get; private set; }
         public IReactiveCommand ToggleEditable { get; private set; }
         public IReactiveCommand Delete { get; private set; }
@@ -19,10 +17,8 @@ namespace DiversityPhone.ViewModels
         /// <summary>
         /// Shows, whether the current Object can be Edited
         /// </summary>
-        public bool IsEditable
-        {
-            get
-            {
+        public bool IsEditable {
+            get {
                 return _IsEditable.Value;
             }
         }
@@ -30,16 +26,15 @@ namespace DiversityPhone.ViewModels
         protected ISubject<bool> CanSaveSubject { get; private set; }
         private ISubject<Unit> DeleteSubject = new Subject<Unit>();
 
-        public EditPageVMBase(Predicate<T> filter = null)
-        {
+        public EditPageVMBase(Predicate<T> filter = null) {
             CanSaveSubject = new Subject<bool>();
             Save = new ReactiveCommand(CanSaveSubject);
             Save
                 .Do(_ => UpdateModel())
                 .Select(_ => Current)
-                .ToMessage(MessageContracts.SAVE);
+                .ToMessage(Messenger, MessageContracts.SAVE);
 
-            ToggleEditable = new ReactiveCommand(ModelByVisitObservable.Select(m=> !m.IsUnmodified()));
+            ToggleEditable = new ReactiveCommand(ModelByVisitObservable.Select(m => !m.IsUnmodified()));
             _IsEditable = this.ObservableToProperty(
                     Observable.Merge(
                         ModelByVisitObservable
@@ -48,18 +43,16 @@ namespace DiversityPhone.ViewModels
                     ),
                 x => x.IsEditable);
 
-            Delete = new ReactiveCommand(ModelByVisitObservable.Select(m => !m.IsNew()));            
+            Delete = new ReactiveCommand(ModelByVisitObservable.Select(m => !m.IsNew()));
             Delete
-                .Select(_ => new DialogMessage(DialogType.YesNo, "", DiversityResources.Message_ConfirmDelete,(res) => {if(res == DialogResult.OKYes) DeleteSubject.OnNext(Unit.Default);}))
-                .ToMessage();
-               
-            DeleteSubject               
-                .Select(_ => Current)
-                .ToMessage(MessageContracts.DELETE);
+                .SelectMany(_ =>
+                    Notifications.showDecision(DiversityResources.Message_ConfirmDelete)
+                    .Where(x => x)
+                    .Select(_2 => Current)
+                    .Do(_2 => Messenger.SendMessage(Page.Previous))
+                )
+                .ToMessage(Messenger, MessageContracts.DELETE);
 
-            Observable.Merge(Save.Select(_ => Unit.Default), DeleteSubject)
-                .Select(_ => Page.Previous)
-                .ToMessage();
 
             Messenger.Listen<IElementVM<T>>(MessageContracts.EDIT)
                 .Where(vm => vm != null)
@@ -67,6 +60,6 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(x => Current = x);
         }
 
-        protected virtual void UpdateModel() {}
+        protected virtual void UpdateModel() { }
     }
 }

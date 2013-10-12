@@ -1,16 +1,12 @@
-﻿using DiversityPhone.Model;
-using ReactiveUI;
-using System;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using System;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels
-{    
-    
-    public static class ReactiveCollectionListenerMixin
-    {
-        public static IDisposable ListenToChanges<T,VM>(this ReactiveCollection<VM> This, Func<T,bool> filter = null) where VM : class, IElementVM<T>
-        {
+    public static class ReactiveCollectionListenerMixin {
+        public static IDisposable ListenToChanges<T, VM>(this ReactiveCollection<VM> This, Func<T, bool> filter = null) where VM : class, IElementVM<T> {
             if (This == null)
                 throw new ArgumentNullException("This");
             if (filter == null)
@@ -19,7 +15,7 @@ namespace DiversityPhone.ViewModels
             var messenger = MessageBus.Current;
 
             return new CompositeDisposable(
-                   messenger.Listen<IElementVM<T>>(MessageContracts.SAVE)                        
+                   messenger.Listen<IElementVM<T>>(MessageContracts.SAVE)
                         .Where(vm => filter(vm.Model))
                         .Select(vm => vm as VM)
                         .Where(vm => vm != null && !This.Contains(vm))

@@ -8,10 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DiversityPhone
-{
-
-
+namespace DiversityPhone {
+    using System;
+    
+    
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -778,6 +778,15 @@ namespace DiversityPhone
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An Error Ocurred..
+        /// </summary>
+        public static string Info_ErrorOcurred {
+            get {
+                return ResourceManager.GetString("Info_ErrorOcurred", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string Info_MissingRights {
@@ -909,6 +918,15 @@ namespace DiversityPhone
         public static string RefreshVocabularyTask_State_LoadingVocabulary {
             get {
                 return ResourceManager.GetString("RefreshVocabularyTask_State_LoadingVocabulary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All diversity data you have not already uploaded will be lost!.
+        /// </summary>
+        public static string Settings_ConfirmReset {
+            get {
+                return ResourceManager.GetString("Settings_ConfirmReset", resourceCulture);
             }
         }
         

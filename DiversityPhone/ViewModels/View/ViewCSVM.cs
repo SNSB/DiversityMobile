@@ -1,25 +1,20 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels
-{
-
-
-    public class ViewCSVM : ViewPageVMBase<Specimen>
-    {
+    public class ViewCSVM : ViewPageVMBase<Specimen> {
         private readonly IFieldDataService Storage;
 
         private ReactiveAsyncCommand getSubunits = new ReactiveAsyncCommand();
 
-        public enum Pivots
-        {
+        public enum Pivots {
             Units,
             Multimedia
         }
@@ -34,14 +29,11 @@ namespace DiversityPhone.ViewModels
 
         #region Properties
         private Pivots _SelectedPivot;
-        public Pivots SelectedPivot
-        {
-            get
-            {
+        public Pivots SelectedPivot {
+            get {
                 return _SelectedPivot;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
         }
@@ -55,13 +47,12 @@ namespace DiversityPhone.ViewModels
             IFieldDataService Storage,
             [Dispatcher] IScheduler Dispatcher,
             ElementMultimediaVM MultimediaList
-            )
-        {
+            ) {
             this.Storage = Storage;
 
             EditSpecimen = new ReactiveCommand<IElementVM<Specimen>>(vm => !vm.Model.IsObservation());
             EditSpecimen
-                .ToMessage(MessageContracts.EDIT);
+                .ToMessage(Messenger, MessageContracts.EDIT);
 
             //SubUnits
             UnitList = getSubunits.RegisterAsyncFunction(spec => buildIUTree(spec as Specimen))
@@ -77,7 +68,7 @@ namespace DiversityPhone.ViewModels
 
             SelectUnit = new ReactiveCommand<IElementVM<IdentificationUnit>>();
             SelectUnit
-                .ToMessage(MessageContracts.VIEW);
+                .ToMessage(Messenger, MessageContracts.VIEW);
 
             //Multimedia
             this.MultimediaList = MultimediaList;
@@ -90,40 +81,34 @@ namespace DiversityPhone.ViewModels
             Add = new ReactiveCommand();
             Add.Where(_ => SelectedPivot == Pivots.Units)
                 .Select(_ => new IdentificationUnitVM(new IdentificationUnit() { SpecimenID = Current.Model.SpecimenID, RelatedUnitID = null }) as IElementVM<IdentificationUnit>)
-                .ToMessage(MessageContracts.EDIT);
+                .ToMessage(Messenger, MessageContracts.EDIT);
             Add.Where(_ => SelectedPivot == Pivots.Multimedia)
                 .Subscribe(MultimediaList.AddMultimedia.Execute);
         }
 
 
-        private IEnumerable<IdentificationUnitVM> buildIUTree(Specimen spec)
-        {
+        private IEnumerable<IdentificationUnitVM> buildIUTree(Specimen spec) {
             IDictionary<int, IdentificationUnitVM> vmMap = new Dictionary<int, IdentificationUnitVM>();
             IList<IdentificationUnitVM> toplevel = new List<IdentificationUnitVM>();
 
             Queue<IdentificationUnit> work_left = new Queue<IdentificationUnit>(Storage.getIUForSpecimen(spec.SpecimenID));
 
-            while (work_left.Any())
-            {
+            while (work_left.Any()) {
                 var unit = work_left.Dequeue();
                 IdentificationUnitVM vm;
 
-                if (unit.RelatedUnitID.HasValue)
-                {
+                if (unit.RelatedUnitID.HasValue) {
                     IdentificationUnitVM parent;
-                    if (vmMap.TryGetValue(unit.RelatedUnitID.Value, out parent))
-                    {
+                    if (vmMap.TryGetValue(unit.RelatedUnitID.Value, out parent)) {
                         vm = new IdentificationUnitVM(unit);
                         parent.SubUnits.Add(vm);
                     }
-                    else
-                    {
+                    else {
                         work_left.Enqueue(unit);
                         continue;
                     }
                 }
-                else
-                {
+                else {
                     vm = new IdentificationUnitVM(unit);
                     toplevel.Add(vm);
                 }

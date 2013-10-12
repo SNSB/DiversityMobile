@@ -1,15 +1,13 @@
-﻿using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+﻿namespace DiversityPhone.ViewModels {
+    using ReactiveUI;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels
-{
-    public interface IListSelector<T> : IReactiveNotifyPropertyChanged
-    {
+    public interface IListSelector<T> : IReactiveNotifyPropertyChanged {
         IList<T> Items { get; }
         int SelectedIndex { get; set; }
         T SelectedItem { get; set; }
@@ -19,18 +17,14 @@ namespace DiversityPhone.ViewModels
         IObservable<T> SelectedItemObservable { get; }
     }
 
-    public class ListSelectionHelper<T> : ReactiveObject, IListSelector<T>
-    {
+    public class ListSelectionHelper<T> : ReactiveObject, IListSelector<T> {
         private int deferredIndex = -1;
         private bool _UpdatingItems;
-        private bool UpdatingItems
-        {
-            get
-            {
+        private bool UpdatingItems {
+            get {
                 return _UpdatingItems;
             }
-            set
-            {
+            set {
                 _UpdatingItems = value;
                 if (!_UpdatingItems)
                     SelectedIndex = deferredIndex;
@@ -40,14 +34,11 @@ namespace DiversityPhone.ViewModels
         }
 
         private IList<T> _Items = new List<T>();
-        public IList<T> Items
-        {
-            get
-            {
+        public IList<T> Items {
+            get {
                 return _Items;
             }
-            private set
-            {
+            private set {
                 this.RaiseAndSetIfChanged(x => x.Items, ref _Items, value ?? new List<T>());
             }
         }
@@ -55,18 +46,14 @@ namespace DiversityPhone.ViewModels
 
 
         private int _SelectedIndex = -1;
-        public int SelectedIndex
-        {
-            get
-            {
+        public int SelectedIndex {
+            get {
                 return _SelectedIndex;
             }
-            set
-            {
+            set {
                 if (UpdatingItems)
                     deferredIndex = value;
-                else
-                {
+                else {
                     _SelectedIndex = value;
 
                     _SelectedItem = (value > -1) ? Items[value] : default(T);
@@ -83,14 +70,11 @@ namespace DiversityPhone.ViewModels
         private ISubject<T> _SelectedItemSubject;
 
         private T _SelectedItem;
-        public T SelectedItem
-        {
-            get
-            {
+        public T SelectedItem {
+            get {
                 return _SelectedItem;
             }
-            set
-            {
+            set {
                 correctSelectedIndex(Items, value);
             }
         }
@@ -99,26 +83,23 @@ namespace DiversityPhone.ViewModels
 
         public IObserver<IList<T>> ItemsObserver { get; private set; }
 
-        public ListSelectionHelper(IScheduler Scheduler = null)
-        {
+        public ListSelectionHelper(IScheduler Scheduler = null) {
             Scheduler = Scheduler ?? DefaultScheduler.Instance;
 
             _ItemsSubject = new ScheduledSubject<IList<T>>(Scheduler);
             ItemsObserver = _ItemsSubject;
 
             var itemsObservable = _ItemsSubject
-                .Do(items =>
-                    {
+                .Do(items => {
                         UpdatingItems = true;
                         var emptySelection = (items != null && !items.Any()) || (items == null);
 
-                        try
-                        {
+                        try {
                             Items = items;
                         }
                         catch (InvalidOperationException)
-                        // Exception thrown by the bound ListBox Control when swapping the items list with empty selection
-                        // Empty Selection is not technically supported ( SelectedIndex == -1 && SelectedItem == null)
+                            // Exception thrown by the bound ListBox Control when swapping the items list with empty selection
+                            // Empty Selection is not technically supported ( SelectedIndex == -1 && SelectedItem == null)
                         {
                             if (!emptySelection)
                                 throw;
@@ -136,14 +117,11 @@ namespace DiversityPhone.ViewModels
             SelectedItemObservable = _SelectedItemSubject.AsObservable();
         }
 
-        private void correctSelectedIndex(IList<T> items, T selectedItem)
-        {
-            if (items != null)
-            {
+        private void correctSelectedIndex(IList<T> items, T selectedItem) {
+            if (items != null) {
                 if (items.Count == 0)
                     SelectedIndex = -1;
-                else
-                {
+                else {
                     var selectedIdx = items.IndexOf(selectedItem);
                     if (selectedIdx != -1)
                         SelectedIndex = selectedIdx;
@@ -155,8 +133,7 @@ namespace DiversityPhone.ViewModels
                 SelectedIndex = -1;
         }
 
-        public IDisposable Subscribe(IObserver<T> observer)
-        {
+        public IDisposable Subscribe(IObserver<T> observer) {
             return _SelectedItemSubject.Subscribe(observer);
         }
     }

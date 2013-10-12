@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage
-    x:Class="DiversityPhone.View.Setup.WelcomeSplash"
+    x:Class="DiversityPhone.View.Setup.Welcome"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -13,10 +13,12 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="False"
-    Loaded="PhoneApplicationPage_Loaded">
+    DataContext="{Binding Setup, Source= {StaticResource Locator}}"
+    Loaded="PhoneApplicationPage_Loaded"
+    >
     <!--LayoutRoot ist das Stammraster, in dem alle anderen Seiteninhalte platziert werden-->
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneBackgroundBrush}">
-        <Grid x:Name="SetupWelcome" Visibility="Collapsed" >
+        <Grid x:Name="SetupWelcome" >
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -65,11 +67,8 @@
                 </StackPanel>
             </ScrollViewer>
         </Grid>
-        <Image x:Name="SplashImage" Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"                 
-               HorizontalAlignment="Stretch" 
-               VerticalAlignment="Center" />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="False" IsVisible="False"/>
+        <shell:ApplicationBar IsMenuEnabled="False" IsVisible="True"/>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

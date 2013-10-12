@@ -1,5 +1,4 @@
-﻿namespace DiversityPhone.ViewModels
-{
+﻿namespace DiversityPhone.ViewModels {
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -9,8 +8,7 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
 
-    public class ViewESVM : ViewPageVMBase<EventSeries>
-    {
+    public class ViewESVM : ViewPageVMBase<EventSeries> {
         private readonly IFieldDataService Storage;
 
         private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
@@ -24,15 +22,12 @@
 
         public ReactiveCollection<EventVM> EventList { get; private set; }
 
-        public ViewESVM(
-            IFieldDataService Storage
-            )
-        {
+        public ViewESVM(IFieldDataService Storage) {
             this.Storage = Storage;
 
             EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !vm.Model.IsNoEventSeries());
             EditSeries
-                .ToMessage(MessageContracts.EDIT);
+                .ToMessage(Messenger, MessageContracts.EDIT);
 
             EventList = new ReactiveCollection<EventVM>();
             EventList
@@ -56,7 +51,7 @@
 
             SelectEvent = new ReactiveCommand<IElementVM<Event>>();
             SelectEvent
-                .ToMessage(MessageContracts.VIEW);
+                .ToMessage(Messenger, MessageContracts.VIEW);
 
             AddEvent = new ReactiveCommand();
             AddEvent
@@ -65,12 +60,12 @@
                     {
                         SeriesID = Current.Model.IsNoEventSeries() ? null : Current.Model.SeriesID as int?
                     }) as IElementVM<Event>)
-                .ToMessage(MessageContracts.EDIT);
+                .ToMessage(Messenger, MessageContracts.EDIT);
 
             Maps = new ReactiveCommand(CurrentModelObservable.Select(es => !es.IsNoEventSeries()));
             Maps
                 .Select(_ => Current.Model as ILocationOwner)
-                .ToMessage(MessageContracts.VIEW);
+                .ToMessage(Messenger, MessageContracts.VIEW);
         }
     }
 }

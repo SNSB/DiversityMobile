@@ -6,31 +6,22 @@ using ReactiveUI.Xaml;
 using System;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels.Utility
-{
-    public partial class SettingsVM : PageVMBase
-    {
+namespace DiversityPhone.ViewModels.Utility {
+    public partial class SettingsVM : PageVMBase {
         readonly ISettingsService Settings;
         readonly ICleanupData Cleanup;
         readonly IConnectivityService Connectivity;
-
-
-
-
 
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
 
         private bool _UseGPS;
 
-        public bool UseGPS
-        {
-            get
-            {
+        public bool UseGPS {
+            get {
                 return _UseGPS;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.UseGPS, ref _UseGPS, value);
             }
         }
@@ -51,14 +42,11 @@ namespace DiversityPhone.ViewModels.Utility
 
         private AppSettings _Model;
 
-        public AppSettings Model
-        {
-            get
-            {
+        public AppSettings Model {
+            get {
                 return _Model;
             }
-            private set
-            {
+            private set {
                 this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
             }
         }
@@ -67,8 +55,7 @@ namespace DiversityPhone.ViewModels.Utility
             ISettingsService Settings,
             ICleanupData Cleanup,
             IConnectivityService Connectivity
-            )
-        {
+            ) {
             this.Cleanup = Cleanup;
             this.Settings = Settings;
             this.Connectivity = Connectivity;
@@ -79,21 +66,15 @@ namespace DiversityPhone.ViewModels.Utility
                 .Subscribe(x => UseGPS = x);
 
             Reset = new ReactiveCommand(Connectivity.WifiAvailable());
-            Messenger.RegisterMessageSource(
-                Reset
-                .Select(_ => new DialogMessage(
-                    DialogType.YesNo,
-                    "Are you sure?",
-                    "All diversity data you have not already uploaded will be lost!",
-                    res =>
-                    {
-                        if (res == DialogResult.OKYes)
-                            OnReset();
-                    }
-                    )));
+
+            Reset
+            .SelectMany(_ => Notifications.showDecision(DiversityResources.Settings_ConfirmReset)
+                .Where(x => x)
+                )
+                .Subscribe(_ => OnReset());
 
             var setting_changed =
-                this.WhenAny(x => x.UseGPS, x => x.Model, 
+                this.WhenAny(x => x.UseGPS, x => x.Model,
                     (gps, model) => (model.Value != null) ? model.Value.UseGPS != gps.Value : false);
 
             Save = new ReactiveCommand(setting_changed);
@@ -105,8 +86,7 @@ namespace DiversityPhone.ViewModels.Utility
 
             RefreshVocabulary = new ReactiveCommand(Connectivity.WifiAvailable());
             RefreshVocabulary
-                .Subscribe(_ =>
-                {
+                .Subscribe(_ => {
                     Messenger.SendMessage(Page.SetupVocabulary);
                 });
 
@@ -146,20 +126,18 @@ namespace DiversityPhone.ViewModels.Utility
 
             Settings
                 .SettingsObservable()
-                .Subscribe(x => Model = x);            
+                .Subscribe(x => Model = x);
         }
 
 
 
-        private void saveModel()
-        {
+        private void saveModel() {
             Model.UseGPS = UseGPS;
             Settings.SaveSettings(Model);
         }
 
 
-        private void OnReset()
-        {
+        private void OnReset() {
             Cleanup.ClearLocalData();
             Messenger.SendMessage(Page.SetupWelcome);
         }

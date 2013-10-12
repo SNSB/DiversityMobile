@@ -1,15 +1,13 @@
-﻿using ReactiveUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+﻿namespace DiversityPhone.ViewModels {
+    using ReactiveUI;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels
-{
-    public interface ISelectable<T>
-    {
+    public interface ISelectable<T> {
         T Value { get; }
         bool IsSelected { get; set; }
     }
@@ -24,8 +22,7 @@ namespace DiversityPhone.ViewModels
     /// Can marshal new Items to the Dispatcher Thread for UI safety
     /// </remarks>
     /// <typeparam name="T"></typeparam>
-    public class MultipleSelectionHelper<T> : ReactiveObject, IObserver<IObservable<T>>
-    {
+    public class MultipleSelectionHelper<T> : ReactiveObject, IObserver<IObservable<T>> {
         public readonly IScheduler Dispatcher;
         private readonly ISubject<IObservable<T>> _ItemStreams = new Subject<IObservable<T>>();
 
@@ -36,25 +33,20 @@ namespace DiversityPhone.ViewModels
         /// Needs to be public to enable Binding in Windows Phone 7
         /// </remarks>
         /// <typeparam name="U"></typeparam>
-        public class Selectable<U> : ReactiveObject, ISelectable<U>
-        {
+        public class Selectable<U> : ReactiveObject, ISelectable<U> {
             public U Value { get; private set; }
 
             private bool _IsSelected;
-            public bool IsSelected
-            {
-                get
-                {
+            public bool IsSelected {
+                get {
                     return _IsSelected;
                 }
-                set
-                {
+                set {
                     this.RaiseAndSetIfChanged(x => x.IsSelected, ref _IsSelected, value);
                 }
             }
 
-            public Selectable(MultipleSelectionHelper<U> owner, U value)
-            {
+            public Selectable(MultipleSelectionHelper<U> owner, U value) {
                 Value = value;
                 IsSelected = false;
             }
@@ -67,10 +59,8 @@ namespace DiversityPhone.ViewModels
 
         public bool IsSelecting { get; set; }
 
-        public IObservable<IEnumerable<T>> SelectedItems
-        {
-            get
-            {
+        public IObservable<IEnumerable<T>> SelectedItems {
+            get {
                 return Observable.Defer(() =>
                    Observable.Start<IEnumerable<T>>(() => (from i in _SelectableItems
                                                            where !IsSelecting || i.IsSelected
@@ -79,10 +69,8 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        public IObservable<IEnumerable<T>> UnSelectedItems
-        {
-            get
-            {
+        public IObservable<IEnumerable<T>> UnSelectedItems {
+            get {
                 return Observable.Defer(() =>
                     Observable.Start<IEnumerable<T>>(() => (from i in _SelectableItems
                                                             where IsSelecting && !i.IsSelected
@@ -100,8 +88,7 @@ namespace DiversityPhone.ViewModels
         /// </param>
         public MultipleSelectionHelper(
             [Dispatcher] IScheduler Dispatcher = null
-            )
-        {
+            ) {
             Dispatcher = Dispatcher ?? DispatcherScheduler.Current;
             this.Dispatcher = Dispatcher;
 
@@ -126,28 +113,23 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(Items.Add);
         }
 
-        public void Add(T item)
-        {
+        public void Add(T item) {
             Dispatcher.Schedule(() => Items.Add(item));
         }
 
-        public void Remove(T item)
-        {
+        public void Remove(T item) {
             Dispatcher.Schedule(() => Items.Remove(item));
         }
 
-        public void OnCompleted()
-        {
+        public void OnCompleted() {
             _ItemStreams.OnCompleted();
         }
 
-        public void OnError(Exception exception)
-        {
+        public void OnError(Exception exception) {
             _ItemStreams.OnError(exception);
         }
 
-        public void OnNext(IObservable<T> value)
-        {
+        public void OnNext(IObservable<T> value) {
             _ItemStreams.OnNext(value);
         }
     }

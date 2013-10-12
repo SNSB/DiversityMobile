@@ -200,6 +200,7 @@
     <Compile Include="Helper\IsolatedStorageExtensions.cs" />
     <Compile Include="Helper\ObservableMixin.cs" />
     <Compile Include="Helper\PercentageReporter.cs" />
+    <Compile Include="Helper\ReactiveCommandMixin.cs" />
     <Compile Include="LiveSDKTaskAsync\ApiMethod.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveAuthClientTaskAsync.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveConnectClientTaskAsync.cs" />
@@ -225,8 +226,6 @@
     <Compile Include="Services\BackgroundTasks\IRefreshVocabularyTask.cs" />
     <Compile Include="Services\BackgroundTasks\RefreshVocabularyTask.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
-    <Compile Include="Services\DialogMessage.cs" />
-    <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\LocationService.cs" />
     <Compile Include="Services\MapProjection.cs" />
     <Compile Include="Services\Maps\MapStorage.cs" />
@@ -288,7 +287,7 @@
     <Compile Include="View\Appbar\CommandButtonAdapter.cs" />
     <Compile Include="View\Appbar\EditPageDeleteButton.cs" />
     <Compile Include="View\Appbar\EditPageSaveEditButton.cs" />
-    <Compile Include="View\Appbar\OKNextPageButton.cs" />
+    <Compile Include="View\Appbar\OKNextPageCommandButton.cs" />
     <Compile Include="View\Appbar\NewMultimediaAppBarUpdater.cs" />
     <Compile Include="View\Appbar\PlayStopButton.cs" />
     <Compile Include="View\Appbar\SaveDeleteButton.cs" />
@@ -356,7 +355,7 @@
     <Compile Include="View\EditIU.xaml.cs">
       <DependentUpon>EditIU.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Helper\INPCBindingTrigger.cs" />
+    <Compile Include="View\Helper\EventBindingTrigger.cs" />
     <Compile Include="View\Helper\ProgressBinding.cs" />
     <Compile Include="View\Helper\RelativeLocationBinding.cs" />
     <Compile Include="Helper\StorageMigration.cs" />
@@ -381,8 +380,11 @@
     <Compile Include="View\Setup\Vocabulary.xaml.cs">
       <DependentUpon>Vocabulary.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Setup\WelcomeSplash.xaml.cs">
-      <DependentUpon>WelcomeSplash.xaml</DependentUpon>
+    <Compile Include="View\Setup\Splash.xaml.cs">
+      <DependentUpon>Splash.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Setup\Welcome.xaml.cs">
+      <DependentUpon>Welcome.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewImage.xaml.cs">
       <DependentUpon>ViewImage.xaml</DependentUpon>
@@ -689,7 +691,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Setup\WelcomeSplash.xaml">
+    <Page Include="View\Setup\Splash.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Setup\Welcome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

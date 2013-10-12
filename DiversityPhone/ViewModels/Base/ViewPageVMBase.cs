@@ -2,12 +2,9 @@
 using System;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels
-{
-    public abstract class ViewPageVMBase<T> : ElementPageVMBase<T>
-    {
-        public ViewPageVMBase(Predicate<T> filter = null)
-        {
+namespace DiversityPhone.ViewModels {
+    public abstract class ViewPageVMBase<T> : ElementPageVMBase<T> {
+        public ViewPageVMBase(Predicate<T> filter = null) {
             Messenger.Listen<IElementVM<T>>(MessageContracts.VIEW)
                 .Where(vm => vm != null && vm.Model != null)
                 .Where(vm => filter == null || filter(vm.Model))
@@ -22,7 +19,7 @@ namespace DiversityPhone.ViewModels
             )
                 .Where(current_deleted => current_deleted)
                 .Select(_ => Page.Previous)
-                .ToMessage(); 
+                .ToMessage(Messenger);
         }
     }
 }

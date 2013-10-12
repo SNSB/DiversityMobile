@@ -1,18 +1,17 @@
-﻿using System;
+﻿namespace DiversityPhone.Model {
+    using System;
 
-namespace DiversityPhone.Model
-{
-    static class NoEventSeriesMixin
-    {
-        public static EventSeries NoEventSeries { 
-            get; private set; }
+    static class NoEventSeriesMixin {
+        public static EventSeries NoEventSeries {
+            get;
+            private set;
+        }
 
-        public static bool IsNoEventSeries(this EventSeries This)
-        {
+        public static bool IsNoEventSeries(this EventSeries This) {
             return This == NoEventSeries;
         }
 
-        static NoEventSeriesMixin()  {
+        static NoEventSeriesMixin() {
             NoEventSeries = new EventSeries()
             {
                 CollectionSeriesID = null,
@@ -24,8 +23,7 @@ namespace DiversityPhone.Model
             };
         }
 
-        public static int? EventSeriesID(this EventSeries This)
-        {
+        public static int? EventSeriesID(this EventSeries This) {
             if (This.IsNoEventSeries())
                 return null;
             else

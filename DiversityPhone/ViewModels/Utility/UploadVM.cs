@@ -7,19 +7,15 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels.Utility
-{
-    public interface IUploadVM<T>
-    {
+namespace DiversityPhone.ViewModels.Utility {
+    public interface IUploadVM<T> {
         MultipleSelectionHelper<T> Items { get; }
         IObservable<Unit> Refresh();
-        IObservable<Tuple<int,int>> Upload();
+        IObservable<Tuple<int, int>> Upload();
     }
 
-    public class UploadVM : PageVMBase
-    {
-        public enum Pivots
-        {
+    public class UploadVM : PageVMBase {
+        public enum Pivots {
             data,
             multimedia
         }
@@ -43,14 +39,11 @@ namespace DiversityPhone.ViewModels.Utility
 
         private Pivots _CurrentPivot;
 
-        public Pivots CurrentPivot
-        {
-            get
-            {
+        public Pivots CurrentPivot {
+            get {
                 return _CurrentPivot;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
         }
@@ -79,8 +72,7 @@ namespace DiversityPhone.ViewModels.Utility
             IDiversityServiceClient Service,
             IKeyMappingService Mapping,
             [Dispatcher] IScheduler Dispatcher
-            )
-        {
+            ) {
             this.Storage = Storage;
             this.Notifications = Notifications;
             this.Connectivity = Connectivity;
@@ -97,8 +89,7 @@ namespace DiversityPhone.ViewModels.Utility
                 );
 
             pivotOnChangeAndActivation
-                .Select(pivot =>
-                {
+                .Select(pivot => {
                     if (pivot == Pivots.data)
                         return _FieldData.Refresh().DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
                     else
@@ -107,7 +98,7 @@ namespace DiversityPhone.ViewModels.Utility
                 .SelectMany(refresh => refresh.TakeUntil(this.OnDeactivation()))
                 .Subscribe();
 
-                    
+
 
 
 
@@ -120,37 +111,37 @@ namespace DiversityPhone.ViewModels.Utility
 
             _IsUploading =
                 StartUpload
-                .Select(_ =>
-                {
+                .Select(_ => {
                     if (CurrentPivot == Pivots.data)
                         return _FieldData.Upload();
                     else
                         return _Multimedia.Upload();
                 })
-                .Select(upload => upload.HandleServiceErrors(Notifications, Messenger, Observable.Empty<Tuple<int,int>>())
+                .Select(upload => upload
+                    .ShowServiceErrorNotifications(Notifications)
+                    .ShowErrorNotifications(Notifications)
                     .TakeUntil(CancelUpload))
-                .Do(upload =>
-                {
+                .Do(upload => {
                     IObservable<string> notificationStream;
                     if (CurrentPivot == Pivots.data)
-                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2}", DiversityResources.Sync_Info_UploadingElement, progress.Item1, progress.Item2));
+                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingElement, progress.Item1, progress.Item2));
                     else
-                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2}", DiversityResources.Sync_Info_UploadingMultimedia, progress.Item1, progress.Item2));
+                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingMultimedia, progress.Item1, progress.Item2));
 
                     Notifications.showProgress(notificationStream);
                 })
-                .SelectMany(upload => 
+                .SelectMany(upload =>
                     upload.IgnoreElements()
                     .Select(_ => false)
                     .StartWith(true)
                     .Concat(Observable.Return(false))
                     )
                     .ToProperty(this, x => x.IsUploading, scheduler: Dispatcher);
-                
+
 
             this.OnDeactivation()
                 .Select(_ => EventMessage.Default)
-                .ToMessage(MessageContracts.INIT);
+                .ToMessage(Messenger, MessageContracts.INIT);
         }
 
 

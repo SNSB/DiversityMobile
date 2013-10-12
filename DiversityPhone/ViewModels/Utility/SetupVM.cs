@@ -4,351 +4,285 @@ using ReactiveUI;
 using ReactiveUI.Xaml;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 
-namespace DiversityPhone.ViewModels
-{
-    public interface IValidateLogin : INotifyPropertyChanged
-    {
-        string UserName { get; set; }
-        string Password { get; set; }
-        IObservable<bool> IsLoginValid { get; }
-        IObservable<AppSettings> ValidCredentials { get; }
-    }
+namespace DiversityPhone.ViewModels {
 
-    public interface ISelectDatabase : IListSelector<string>
-    {
-        IObservable<bool> IsDatabaseSelected { get; }
-        IObserver<AppSettings> ValidCredentials { get; }
-        IObservable<AppSettings> CredentialsWithDatabase { get; }
-    }
+    public class SetupVM : PageVMBase {
+        private readonly IDiversityServiceClient Repository;
+        private readonly ISettingsService Settings;
 
-    public interface ISelectProject : IListSelector<Project>
-    {
-        IObservable<bool> IsProjectSelected { get; }
-        IObserver<AppSettings> CredentialsWithDatabase { get; }
-        IObservable<AppSettings> CredentialsWithProject { get; }
-    }
+        private IEnumerator<AppSettings> LatestLogin, LatestLoginWithRepo, LatestLoginWithProfile;
 
-    public interface IGetUserProfile
-    {
-        IObserver<AppSettings> CredentialsWithDatabase { get; }
-        IObservable<bool> IsProfileValid { get; }
-        IObservable<AppSettings> CredentialsWithProfile { get; }
-    }
+        public IReactiveCommand ShowLogin { get; set; }
+        public ReactiveAsyncCommand GetRepositories { get; private set; }
+        public ReactiveAsyncCommand GetProjects { get; private set; }
+        public ReactiveAsyncCommand GetProfile { get; private set; }
+        public ReactiveAsyncCommand Save { get; private set; }
 
-    public class SetupVM : PageVMBase
-    {
-        public IValidateLogin Login { get; private set; }
-        public ISelectDatabase Database { get; private set; }
-        public ISelectProject Project { get; private set; }
-        public IGetUserProfile Profile { get; private set; }
+        private string NoRepo = DiversityResources.Setup_Item_PleaseChoose;
+        public IListSelector<string> Database { get; private set; }
 
-        #region Setup Properties
+        private Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
+        public IListSelector<Project> Project { get; private set; }
 
-
-        private bool _UseGPS = true;
-
-        public bool UseGPS
-        {
-            get { return _UseGPS; }
-            set { _UseGPS = value; }
-        }
-
-        public ReactiveCommand Save { get; private set; }
-        #endregion
-
-
-
-        public SetupVM(
-            IValidateLogin Login,
-            ISelectDatabase Database,
-            ISelectProject Project,
-            IGetUserProfile Profile,
-            ISettingsService Settings
-            )
-        {
-            this.Login = Login;
-            this.Database = Database;
-            this.Project = Project;
-            this.Profile = Profile;
-
-            Login.ValidCredentials
-                .Subscribe(Database.ValidCredentials);
-
-            Database.CredentialsWithDatabase
-                .Subscribe(Project.CredentialsWithDatabase);
-
-            Project.CredentialsWithProject
-                .Subscribe(Profile.CredentialsWithDatabase);
-
-            var canSave = Profile.IsProfileValid
-                .SampleMostRecent(Profile.CredentialsWithProfile.Where(p => p != null));
-
-            Save = new ReactiveCommand(canSave, initialCondition: false);
-            Profile.CredentialsWithProfile
-                .SampleMostRecent(Save)
-                .Subscribe(s =>
-                    {
-                        s.UseGPS = this.UseGPS;
-                        Settings.SaveSettings(s);
-                        Messenger.SendMessage(Page.SetupVocabulary);
-                    });
-        }
-    }
-
-    public class LoginValidator : ListSelectionHelper<string>, IValidateLogin, ISelectDatabase
-    {
-        private string _UserName = "";
-        public string UserName
-        {
+        private string _UserName;
+        public string UserName {
             get { return _UserName; }
             set { this.RaiseAndSetIfChanged(x => x.UserName, ref _UserName, value); }
         }
 
         private string _Password;
-        public string Password
-        {
+        public string Password {
             get { return _Password; }
             set { this.RaiseAndSetIfChanged(x => x.Password, ref _Password, value); }
         }
 
-        public IObservable<bool> IsLoginValid
-        {
-            get { return _ValidCredentialsOut.Select(creds => creds != null).StartWith(false); }
+        private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
+        public bool IsOnlineAvailable {
+            get { return _IsOnlineAvailable.Value; }
         }
 
-        IObservable<AppSettings> IValidateLogin.ValidCredentials
-        {
-            get
+        private bool _UseGPS = true;
+        public bool UseGPS {
+            get { return _UseGPS; }
+            set { _UseGPS = value; }
+        }
+
+
+        private IObservable<Tuple<AppSettings, IList<string>>> GetRepositoriesObservable(object _) {
+            var user = UserName;
+            var pass = Password;
+            if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass)) {
+                // Invalid Argument
+                return Observable.Empty<Tuple<AppSettings, IList<string>>>();
+            }
+
+            var settings = new AppSettings()
             {
-                return _ValidCredentialsOut;
+                UserName = user,
+                Password = pass
+            };
+
+            return Repository.GetRepositories(settings.ToCreds())
+                .Select(repos => repos.ToList() as IList<string>)
+                .Do(list => list.Insert(0, NoRepo))
+                .Select(list => Tuple.Create(settings, list));
+        }
+
+        private IObservable<Tuple<AppSettings, IList<Project>>> GetProjectsObservable(object _) {
+            var repo = Database.SelectedItem;
+            var login = LatestLogin.NextOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(repo) && repo != NoRepo && login != null) {
+                login.HomeDBName = repo;
+                return Repository.GetProjectsForUser(login.ToCreds())
+                    .Do(list => list.Insert(0, NoProject))
+                    .Select(projects => Tuple.Create(login, projects));
+            }
+            else {
+                return Observable.Empty<Tuple<AppSettings, IList<Project>>>();
+            }
+        }
+
+        private IObservable<AppSettings> GetProfileObservable(object _) {
+            var project = Project.SelectedItem;
+            var login = LatestLoginWithRepo.NextOrDefault();
+
+            if (project != null && project != NoProject && login != null) {
+                login.CurrentProject = project.ProjectID;
+                login.CurrentProjectName = project.DisplayText;
+                return Repository.GetUserInfo(login.ToCreds())
+                    .Select(profile => {
+                        login.AgentName = profile.UserName;
+                        login.AgentURI = profile.AgentUri;
+                        return login;
+                    });
+            }
+            else {
+                return Observable.Empty<AppSettings>();
+            }
+        }
+
+        private void SetLogin(AppSettings settings) {
+            if (settings != null) {
+                this.UserName = settings.UserName;
+                this.Password = settings.Password;
+            }
+        }
+
+        private IObservable<Unit> SaveSettings(object _) {
+            var settings = LatestLoginWithProfile.NextOrDefault();
+
+            if (settings != null) {
+                settings.UseGPS = this.UseGPS;
+                return Observable.Start(() => Settings.SaveSettings(settings));
+            }
+            else {
+                return Observable.Empty<Unit>();
             }
         }
 
 
-        public IObservable<bool> IsDatabaseSelected
-        {
-            get { return CredentialsWithDatabase.Select(creds => creds != null).StartWith(false); }
-        }
 
-        public IObserver<AppSettings> ValidCredentials
-        {
-            get;
-            private set;
-        }
-
-        public IObservable<AppSettings> CredentialsWithDatabase
-        {
-            get;
-            private set;
-        }
-
-        private IObservable<AppSettings> _ValidCredentialsOut;
-        private string NoRepo = DiversityResources.Setup_Item_PleaseChoose;
-        private IList<string> EmptyList = new List<string>();
-
-        public LoginValidator(
-            [Dispatcher] IScheduler Dispatcher,
-            IMessageBus Messenger,
+        public SetupVM(
+            ISettingsService Settings,
             IConnectivityService Connectivity,
-            INotificationService Notifications,
+            [Dispatcher] IScheduler Dispatcher,
             IDiversityServiceClient Repository
-            )
-            : base(Dispatcher)
-        {
-            //////////////// Login Validation
+            ) {
+            this.Repository = Repository;
+            this.Settings = Settings;
 
-            var credentials =
+            // On First Page Visit (App Launch)
+            // If There already is a configuration (Settings)
+            // Go To Home Page
+            this.FirstActivation()
+                .Zip(Settings.SettingsObservable(), (_, s) => s != null)
+                .Select(x => (x) ? Page.Home : Page.SetupWelcome)
+                .ToMessage(Messenger);
+
+            _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable, false, Dispatcher);
+
+            // Show current login data in case of Reset
+            Settings.SettingsObservable()
+                .ObserveOn(Dispatcher)
+                .Subscribe(SetLogin);
+
+            // Command To begin Setup
+            this.ShowLogin = new ReactiveCommand();
+            ShowLogin.Select(_ => Page.SetupLogin)
+                .ToMessage(Messenger);
+
+            // Command Condition
+            var userPassAndWifi =
                 Observable.CombineLatest(
-                this.ObservableForProperty(x => x.UserName).Throttle(TimeSpan.FromMilliseconds(500)),
-                this.ObservableForProperty(x => x.Password).Throttle(TimeSpan.FromMilliseconds(500)),
-                (user, pass) => new AppSettings() { UserName = user.Value, Password = pass.Value }
-            ).Publish().PermaRef();
+                Connectivity.WifiAvailable(),
+                this.WhenAny(x => x.UserName, x => x.GetValue()).Select(string.IsNullOrWhiteSpace),
+                this.WhenAny(x => x.Password, x => x.GetValue()).Select(string.IsNullOrWhiteSpace),
+                (wifi, a, b) => wifi & !(a | b));
 
-            var repositoryResults =
-            credentials
-            .CheckConnectivity(Connectivity, Notifications)
-            .Select(s =>
-            {
-                return
-                Repository
-                .GetRepositories(s.ToCreds())
-                .DisplayProgress(Notifications, DiversityResources.Setup_Info_ValidatingLogin)
-                .HandleServiceErrors(Notifications, Messenger, Observable.Return<IEnumerable<string>>(null))
-                .StartWith(new IEnumerable<string>[] { null })
-                .Select(repos => new { Credentials = s, Repositories = repos ?? Enumerable.Empty<string>() });
-            })
-            .Switch()
-            .Replay(1)
-            .PermaRef();
 
-            _ValidCredentialsOut = repositoryResults
-                .Select(t => (t.Repositories.Any()) ? t.Credentials : null);
+            // Command and Errorhandling
+            this.GetRepositories = new ReactiveAsyncCommand(userPassAndWifi);
+            GetRepositories.ShowInFlightNotification(Notifications, DiversityResources.Setup_Info_ValidatingLogin);
+            GetRepositories.ThrownExceptions
+                .ShowServiceErrorNotifications(Notifications)
+                .ShowErrorNotifications(Notifications)
+                .Subscribe();
+            var loginAndRepo = GetRepositories.RegisterAsyncObservable(GetRepositoriesObservable).Publish().PermaRef();
 
-            ////////////// Database Selection
+            // Page Navigation if Login Successful
+            // i.e. Any repositories have been returned
+            loginAndRepo
+                .Snd()
+                .Subscribe(NavigateOrNotifyInvalidCredentials);
 
-            repositoryResults
-                .Select(t =>
-                        Enumerable.Repeat(NoRepo, 1)
-                        .Concat(t.Repositories)
-                        .ToList() as IList<string>)
-                .Subscribe(this.ItemsObserver);
+            // Repo Selection
+            this.Database = new ListSelectionHelper<string>();
+            loginAndRepo
+                .Select(t => t.Item2)
+                .Merge(EmptyProjectsOnLoginStart())
+                .Subscribe(Database.ItemsObserver);
 
-            var validCredentialsIn = new Subject<AppSettings>();
-            ValidCredentials = validCredentialsIn;
+            // Settings Propagation
+            LatestLogin = loginAndRepo
+               .Fst()
+               .MostRecent(null)
+               .GetEnumerator();
 
-            CredentialsWithDatabase =
-                validCredentialsIn.CombineLatest(this.SelectedItemObservable, (s, repo) =>
-                {
-                    if (repo != null && repo != NoRepo)
-                    {
-                        s.HomeDBName = repo;
+            // Command Condition
+            var repoSelected = Database.SelectedItemObservable
+                .Select(repo => repo != NoRepo)
+                .AndNoItemsInFlight(GetRepositories);
 
-                        return s;
-                    }
-                    else
-                        return null;
-                })
-                .Replay(1)
-                .PermaRef();
+            // Command and Errorhandling
+            this.GetProjects = new ReactiveAsyncCommand(repoSelected);
+            GetProjects.ShowInFlightNotification(Notifications, DiversityResources.Setup_Info_GettingProjects);
+            GetProjects.ThrownExceptions
+                .ShowServiceErrorNotifications(Notifications)
+                .ShowErrorNotifications(Notifications)
+                .Subscribe();
+            var loginAndProjects = GetProjects.RegisterAsyncObservable(GetProjectsObservable).Publish().PermaRef();
+
+            // Page Navigation
+            loginAndProjects
+                .Select(_ => Page.SetupProject)
+                .ToMessage(Messenger);
+
+            // Project Selection
+            Project = new ListSelectionHelper<Project>(Dispatcher);
+            loginAndProjects
+                .Snd()
+                .Merge(
+                   EmptyReposOnRepoChange()
+                   )
+                   .Subscribe(Project.ItemsObserver);
+
+
+            // Settings Propagation
+            LatestLoginWithRepo = loginAndProjects
+                .Fst()
+                .MostRecent(null)
+                .GetEnumerator();
+
+            // Command Condition
+            var projectSelected = Project.SelectedItemObservable
+                .Select(p => p != NoProject)
+                .AndNoItemsInFlight(GetProjects);
+
+            // Command and Errorhandling
+            this.GetProfile = new ReactiveAsyncCommand(projectSelected);
+            GetProfile.ShowInFlightNotification(Notifications, DiversityResources.Setup_Info_GettingProfile);
+            GetProfile.ThrownExceptions
+                .ShowServiceErrorNotifications(Notifications)
+                .ShowErrorNotifications(Notifications)
+                .Subscribe();
+            var loginWithProfile = GetProfile.RegisterAsyncObservable(GetProfileObservable).Publish().PermaRef();
+
+            // Page Navigation
+            loginWithProfile
+                .Select(_ => Page.SetupGPS)
+                .ToMessage(Messenger);
+
+            // Settings Propagation
+            LatestLoginWithProfile = loginWithProfile
+                .MostRecent(null)
+                .GetEnumerator();
+
+            // Command And Page Navigation
+            this.Save = new ReactiveAsyncCommand();
+            Save.RegisterAsyncObservable(SaveSettings)
+                .Select(_ => Page.SetupVocabulary)
+                .ToMessage(Messenger);
         }
 
-
-
-
-
-
-    }
-
-    public class ProjectSelector : ListSelectionHelper<Project>, ISelectProject
-    {
-        public IObservable<bool> IsProjectSelected
-        {
-            get { return LatestCredentialsWithProject.Select(c => c != null).StartWith(false); }
-        }
-
-        public IObserver<AppSettings> CredentialsWithDatabase { get; private set; }
-        public IObservable<AppSettings> CredentialsWithProject { get; private set; }
-
-
-        private Project NoProject = new Project() { DisplayText = DiversityResources.Setup_Item_PleaseChoose, ProjectID = -1 };
-        private IList<Project> EmptyList = new List<Project>();
-        private IObservable<AppSettings> LatestCredentialsWithProject;
-
-        public ProjectSelector(
-            [Dispatcher] IScheduler Dispatcher,
-            IDiversityServiceClient Repository,
-            INotificationService Notifications,
-            IMessageBus Messenger
-        )
-            : base(Dispatcher)
-        {
-            var validCredentialsSubject = new Subject<AppSettings>();
-            var validCredentials = validCredentialsSubject
-                .Where(c => c != null);
-            var projectsForCredentials =
-                validCredentials
-                .Select(s =>
-                    Repository
-                    .GetProjectsForUser(s.ToCreds())
-                    .Select(l => l.AsEnumerable())
-                    .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingProjects)
-                    .HandleServiceErrors(Notifications, Messenger, Observable.Return(Enumerable.Empty<Project>()))
-                    .StartWith(Enumerable.Empty<Project>())
-                    .Select(projects => new { Credentials = s, Projects = projects ?? Enumerable.Empty<Project>() })
-                    )
-                .Switch()
-                .Select(t => Enumerable.Repeat(NoProject, 1).Concat(t.Projects).ToList() as IList<Project>)
-                .Subscribe(this.ItemsObserver);
-
-            CredentialsWithDatabase = validCredentialsSubject;
-
-            LatestCredentialsWithProject =
-            this.SelectedItemObservable
-            .CombineLatest(validCredentials, (project, s) =>
-            {
-                if (project != null && project != NoProject)
-                {
-                    s.CurrentProject = project.ProjectID;
-                    s.CurrentProjectName = project.DisplayText;
-                    return s;
-                }
-                else
-                    return null;
-            })
-            .Publish()
-            .PermaRef();
-
-            CredentialsWithProject = LatestCredentialsWithProject.Where(creds => creds != null);
-        }
-    }
-
-    public class ProfileLoader : ReactiveObject, IGetUserProfile
-    {
-        public IObservable<bool> IsProfileValid
-        {
-            get;
-            private set;
-        }
-
-        public IObservable<AppSettings> CredentialsWithProfile
-        {
-            get
-            {
-                return LatestCredentialsWithProfile.Where(login => login != null);
+        private void NavigateOrNotifyInvalidCredentials(IList<string> repos) {
+            // Don't count the "NoRepo" Entry
+            if (repos != null && repos.Count > 1) {
+                // Navigate Forward to Login
+                Messenger.SendMessage(Page.SetupLogin);
+            }
+            else {
+                // Notify user of invalid Credentials
+                Notifications.showNotification(DiversityResources.Setup_Info_InvalidCredentials);
             }
         }
 
-        public IObserver<AppSettings> CredentialsWithDatabase { get; private set; }
-
-        private IObservable<AppSettings> LatestCredentialsWithProfile;
-
-        public ProfileLoader(
-            IMessageBus Messenger,
-            IConnectivityService Connectivity,
-            INotificationService Notifications,
-            IDiversityServiceClient Repository
-            )
-        {
-            var credentialsWithDB = new Subject<AppSettings>();
-            LatestCredentialsWithProfile =
-            credentialsWithDB
-            .SelectMany(s =>
-            {
-                return
-                Repository
-                .GetUserInfo(s.ToCreds())
-                .DisplayProgress(Notifications, DiversityResources.Setup_Info_GettingProfile)
-                .HandleServiceErrors(Notifications, Messenger, Observable.Return<UserProfile>(null))
-                .Select(profile =>
-                {
-                    if (profile != null)
-                    {
-                        s.AgentName = profile.UserName;
-                        s.AgentURI = profile.AgentUri;
-                        return s;
-                    }
-                    else
-                        return null;
-                });
-            })
-            .Publish()
-            .PermaRef();
-
-            CredentialsWithDatabase = credentialsWithDB;
-
-            IsProfileValid = LatestCredentialsWithProfile.Select(login => login != null).StartWith(false);
+        private IObservable<IList<Project>> EmptyReposOnRepoChange() {
+            return GetProjects.AsyncStartedNotification
+                               .Select(_ => new List<Project>() as IList<Project>)
+                               .Do(l => l.Add(NoProject));
         }
 
-
-
+        private IObservable<IList<string>> EmptyProjectsOnLoginStart() {
+            return GetRepositories.AsyncStartedNotification
+                                .Select(_ => new List<string>() as IList<string>)
+                                .Do(l => l.Add(NoRepo));
+        }
     }
-
-
 }

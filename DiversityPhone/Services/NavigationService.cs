@@ -7,21 +7,16 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
 
-namespace DiversityPhone.Services
-{
-    public class NavigationService
-    {
+namespace DiversityPhone.Services {
+    public class NavigationService {
         readonly IMessageBus Messenger;
         readonly PhoneApplicationFrame _frame;
 
         private PageVMBase _CurrentVM;
-        public PageVMBase CurrentVM
-        {
+        public PageVMBase CurrentVM {
             get { return _CurrentVM; }
-            set
-            {
-                if (value != null && _CurrentVM != value)
-                {
+            set {
+                if (value != null && _CurrentVM != value) {
                     if (_CurrentVM != null)
                         _CurrentVM.Deactivate();
                     _CurrentVM = value;
@@ -36,8 +31,7 @@ namespace DiversityPhone.Services
             IMessageBus messenger,
             PhoneApplicationFrame RootFrame,
             [Dispatcher] IScheduler Dispatcher
-            )
-        {
+            ) {
             Messenger = messenger;
             _frame = RootFrame;
 
@@ -58,7 +52,7 @@ namespace DiversityPhone.Services
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW).Select(_ => Page.ViewIU),
                     Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.EDIT).Select(_ => Page.EditIU),
                     Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.EDIT).Select(_ => Page.EditEventProperty),
-                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),  
+                    Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.EDIT).Select(_ => Page.EditIUAN),
                     Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.VIEW).Select(_ => Page.ViewImage),
                     mmoEdit.Where(vm => vm.Model.MediaType == MediaType.Video).Select(_ => Page.NewVideo),
                     mmoEdit.Where(vm => vm.Model.MediaType == MediaType.Audio).Select(_ => Page.NewAudio),
@@ -72,18 +66,15 @@ namespace DiversityPhone.Services
                .Subscribe(NavigateToPage);
         }
 
-        void NavigationFinished()
-        {
+        void NavigationFinished() {
             var page = _frame.Content as PhoneApplicationPage;
             if (page != null)
                 CurrentVM = page.DataContext as PageVMBase;
         }
 
-        private void NavigateToPage(Page p)
-        {
+        private void NavigateToPage(Page p) {
             string destination = null;
-            switch (p)
-            {
+            switch (p) {
                 case Page.Current:
                     return;
                 case Page.Previous:
@@ -150,7 +141,7 @@ namespace DiversityPhone.Services
                     destination = "/View/EditEventProperty.xaml";
                     break;
                 case Page.SetupWelcome:
-                    destination = "/View/Setup/WelcomeSplash.xaml";
+                    destination = "/View/Setup/Welcome.xaml";
                     break;
                 case Page.SetupLogin:
                     destination = "/View/Setup/Login.xaml";
@@ -181,18 +172,15 @@ namespace DiversityPhone.Services
 #endif
             }
 
-            if (destination != null && _frame != null)
-            {
+            if (destination != null && _frame != null) {
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
-                if (destURI != _frame.CurrentSource)
-                {
+                if (destURI != _frame.CurrentSource) {
                     _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
                 }
             }
         }
 
-        public void NavigateBack()
-        {
+        public void NavigateBack() {
             if (_frame.CanGoBack)
                 _frame.GoBack();
         }

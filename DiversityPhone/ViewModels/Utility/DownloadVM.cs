@@ -1,20 +1,15 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
-
-namespace DiversityPhone.ViewModels
-{
-    public class DownloadVM : PageVMBase
-    {
+    public class DownloadVM : PageVMBase {
         private readonly IDiversityServiceClient Service;
-        private readonly INotificationService Notifications;
         private readonly IConnectivityService Connectivity;
         private readonly IFieldDataService Storage;
         private readonly IKeyMappingService Mappings;
@@ -43,16 +38,13 @@ namespace DiversityPhone.ViewModels
 
         public DownloadVM(
             IDiversityServiceClient Service,
-            INotificationService Notifications,
             IConnectivityService Connectivity,
             IFieldDataService Storage,
             IKeyMappingService Mappings,
             EventHierarchyLoader HierarchyLoader,
             [Dispatcher] IScheduler Dispatcher
-            )
-        {
+            ) {
             this.Service = Service;
-            this.Notifications = Notifications;
             this.Connectivity = Connectivity;
             this.Storage = Storage;
             this.Mappings = Mappings;
@@ -64,11 +56,14 @@ namespace DiversityPhone.ViewModels
                 .ToProperty(this, x => x.IsOnlineAvailable);
 
             SearchEvents = new ReactiveAsyncCommand(this.WhenAny(x => x.IsOnlineAvailable, x => x.Value));
+            SearchEvents.ShowInFlightNotification(Notifications, DiversityResources.Download_SearchingEvents);
+            SearchEvents.ThrownExceptions
+                    .ShowServiceErrorNotifications(Notifications)
+                    .ShowErrorNotifications(Notifications)
+                    .Subscribe();
             SearchEvents
                 .RegisterAsyncObservable(query =>
                     Service.GetEventsByLocality(query as string ?? string.Empty)
-                    .HandleServiceErrors(Notifications, Messenger, Observable.Empty<IEnumerable<Event>>())
-                    .DisplayProgress(Notifications, DiversityResources.Download_SearchingEvents)
                     .TakeUntil(this.OnDeactivation())
                 )
                 .Do(_ => QueryResult.Clear())
@@ -77,6 +72,10 @@ namespace DiversityPhone.ViewModels
             CancelDownload = new ReactiveCommand();
 
             DownloadElement = new ReactiveAsyncCommand(this.WhenAny(x => x.IsOnlineAvailable, x => x.Value));
+            DownloadElement.ThrownExceptions
+                .ShowServiceErrorNotifications(Notifications)
+                .ShowErrorNotifications(Notifications)
+                .Subscribe();
             DownloadElement
                 .RegisterAsyncObservable(ev => IfNotDownloadedYet(ev as Event)
                     .Select(HierarchyLoader.downloadAndStoreDependencies)
@@ -96,21 +95,17 @@ namespace DiversityPhone.ViewModels
             _ElementsDownloaded = _ElementsDownloadedSubject.ToProperty(this, x => x.ElementsDownloaded, 0, Dispatcher);
         }
 
-        private IObservable<Event> IfNotDownloadedYet(Event ev)
-        {
+        private IObservable<Event> IfNotDownloadedYet(Event ev) {
             if (ev == null)
                 return Observable.Empty<Event>();
 
             return
             Observable.Return(ev)
-                .Where(e =>
-                {
-                    if (!Mappings.ResolveToLocalKey(DBObjectType.Event, e.CollectionEventID.Value).HasValue)
-                    {
+                .Where(e => {
+                    if (!Mappings.ResolveToLocalKey(DBObjectType.Event, e.CollectionEventID.Value).HasValue) {
                         return true;
                     }
-                    else
-                    {
+                    else {
                         Notifications.showNotification(DiversityResources.Download_EventAlreadyDownloaded);
                         return false;
                     }

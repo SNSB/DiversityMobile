@@ -364,6 +364,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Info_DeletingObjects" xml:space="preserve">
     <value>deleting objects ...</value>
   </data>
+  <data name="Info_ErrorOcurred" xml:space="preserve">
+    <value>An Error Ocurred.</value>
+  </data>
   <data name="Info_MissingRights" xml:space="preserve">
     <value />
   </data>
@@ -408,6 +411,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="RefreshVocabularyTask_State_LoadingVocabulary" xml:space="preserve">
     <value>Loading Vocabulary</value>
+  </data>
+  <data name="Settings_ConfirmReset" xml:space="preserve">
+    <value>All diversity data you have not already uploaded will be lost!</value>
   </data>
   <data name="Settings_Header_ButtonClear" xml:space="preserve">
     <value>clear db</value>
