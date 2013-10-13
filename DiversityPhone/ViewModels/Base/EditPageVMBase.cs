@@ -32,6 +32,7 @@ namespace DiversityPhone.ViewModels {
             Save
                 .Do(_ => UpdateModel())
                 .Select(_ => Current)
+                .Do(_ => Messenger.SendMessage(Page.Previous))
                 .ToMessage(Messenger, MessageContracts.SAVE);
 
             ToggleEditable = new ReactiveCommand(ModelByVisitObservable.Select(m => !m.IsUnmodified()));

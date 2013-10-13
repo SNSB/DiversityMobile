@@ -2,18 +2,15 @@
 using System;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels
-{
-    public abstract class ElementPageVMBase<T> : PageVMBase
-    {
+namespace DiversityPhone.ViewModels {
+    public abstract class ElementPageVMBase<T> : PageVMBase {
         private IElementVM<T> _Current;
         /// <summary>
         /// Provides Access to the most recent Model Object
         /// </summary>
-        public IElementVM<T> Current
-        {
+        public IElementVM<T> Current {
             get { return _Current; }
-            set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); } //Public for Binding
+            protected set { this.RaiseAndSetIfChanged(x => x.Current, ref _Current, value); }
         }
 
         /// <summary>
@@ -33,12 +30,11 @@ namespace DiversityPhone.ViewModels
         /// </summary>
         protected IObservable<T> ModelByVisitObservable { get; private set; }
 
-        public ElementPageVMBase ()
-	    {    
+        public ElementPageVMBase() {
             var currentObs =
             this.ObservableForProperty(x => x.Current)
                 .Value()
-                .Publish();                
+                .Publish();
             CurrentObservable = currentObs;
             currentObs.Connect();
 
@@ -47,7 +43,7 @@ namespace DiversityPhone.ViewModels
                 .Select(vm => vm.ObservableForProperty(x => x.Model))
                 .Switch()
                 .Value()
-                .Merge(CurrentObservable.Select(vm => vm.Model))                
+                .Merge(CurrentObservable.Select(vm => vm.Model))
                 .Publish();
             CurrentModelObservable = modelObs;
             modelObs.Connect();
@@ -56,7 +52,7 @@ namespace DiversityPhone.ViewModels
                 .CombineLatest(CurrentModelObservable, (_, m) => m)
                 .Publish();
             ModelByVisitObservable = modelByVisit;
-            modelByVisit.Connect();            
+            modelByVisit.Connect();
         }
     }
 }
