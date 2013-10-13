@@ -264,8 +264,8 @@ namespace DiversityPhone.ViewModels {
         private void NavigateOrNotifyInvalidCredentials(IList<string> repos) {
             // Don't count the "NoRepo" Entry
             if (repos != null && repos.Count > 1) {
-                // Navigate Forward to Login
-                Messenger.SendMessage(Page.SetupLogin);
+                // Navigate Forward to Database Page
+                Messenger.SendMessage(Page.SetupDatabase);
             }
             else {
                 // Notify user of invalid Credentials
