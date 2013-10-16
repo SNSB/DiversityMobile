@@ -131,18 +131,21 @@
                             .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingList)
                             .ObserveOnDispatcher()
                             .ShowServiceErrorNotifications(Notification)
-                            .Subscribe(_ => { },
+                            .Subscribe(_ => {
+                            	//Download Succeeded
+                                taxonlist.IsDownloading = false;
+
+                                if (Select.CanExecute(taxonlist))
+                                    Select.Execute(taxonlist);
+                            },
                                 _ => //Download Failed
                                 {
                                     taxonlist.IsDownloading = false;
                                     removeLocalList(taxonlist);
                                 },
-                                () => //Download Succeeded
+                                () => 
                                 {
-                                    taxonlist.IsDownloading = false;
 
-                                    if (Select.CanExecute(taxonlist))
-                                        Select.Execute(taxonlist);
                                 });
                     }
                 });
@@ -165,12 +168,11 @@
 
             //Download all only on Personal pivot
             var canDownloadAll =
-                this.ObservableForProperty(x => x.CurrentPivot)
-                .Value()
+                this.WhenAny(x => x.CurrentPivot, x => x.GetValue())
                 .Select(p => p == Pivot.Personal)
                 .CombineLatest(Connectivity.WifiAvailable(), (p, wi) => p && wi);
 
-            DownloadAll = new ReactiveCommand(canDownloadAll);
+            DownloadAll = new ReactiveCommand(canDownloadAll, initialCondition: false);
             DownloadAll
                 .SelectMany(_ => PersonalLists.ToArray())
                 .Where(vm => Download.CanExecute(vm))
@@ -184,7 +186,7 @@
             .Do(chunk => Taxa.addTaxonNames(chunk, vm.Model), (Exception ex) => Taxa.deleteTaxonListIfExists(vm.Model))
             .IgnoreElements()
             .Select(_ => vm)
-            .StartWith(vm);
+            .Concat(Observable.Return(vm));
         }
 
         private void makeListLocal(TaxonListVM list) {

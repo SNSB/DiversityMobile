@@ -3,89 +3,77 @@ using DiversityPhone.Model;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
-namespace DiversityPhone.Services
-{
-    
+namespace DiversityPhone.Services {
 
-    public class TaxonService : ITaxonService
-    {
+
+    public class TaxonService : ITaxonService {
 
         private const string WILDCARD = "%";
         #region TaxonNames
 
-        public void addTaxonList(TaxonList list)
-        {
+        public void addTaxonList(TaxonList list) {
             if (TaxonList.ValidTableIDs.Contains(list.TableID))
                 throw new ArgumentException("list");
-            
-            lock (this)
-            {
-                withSelections(ctx =>
-                {                    
+
+            lock (this) {
+                withSelections(ctx => {
                     var unusedIDs = getUnusedTaxonTableIDs(ctx);
-                    if (unusedIDs.Count() > 0)
-                    {
+                    if (unusedIDs.Count() > 0) {
                         list.IsSelected = false;
                         list.TableID = unusedIDs.First();
                         ctx.TaxonLists.InsertOnSubmit(list);
-                        ctx.SubmitChanges();                        
+                        ctx.SubmitChanges();
                     }
                     else
-                        throw new InvalidOperationException("No Unused Taxon Table");                    
+                        throw new InvalidOperationException("No Unused Taxon Table");
                 });
             }
         }
 
-        public void addTaxonNames(IEnumerable<TaxonName> taxa, TaxonList list)
-        {
+        public void addTaxonNames(IEnumerable<TaxonName> taxa, TaxonList list) {
             if (!TaxonList.ValidTableIDs.Contains(list.TableID))
                 throw new ArgumentException("list");
 
-            using (var taxctx = new TaxonDataContext(list.TableID))
-            {
+            using (var taxctx = new TaxonDataContext(list.TableID)) {
                 taxctx.TaxonNames.InsertAllOnSubmit(taxa);
-                try
-                {
+                try {
                     taxctx.SubmitChanges();
                 }
-                catch (Exception)
-                {
+                catch (Exception) {
                     System.Diagnostics.Debugger.Break();
                     //TODO Log
                 }
             }
         }
 
-        public IEnumerable<TaxonList> getTaxonSelections()
-        {
-            using (var ctx = new TaxonSelectionDataContext())
-            {
+        public IEnumerable<TaxonList> getTaxonSelections() {
+            using (var ctx = new TaxonSelectionDataContext()) {
                 foreach (var list in ctx.TaxonLists)
                     yield return list;
             }
         }
 
-        public void selectTaxonList(TaxonList list)
-        {
-            if (list == null)
-                throw new ArgumentNullException("list");
-            if (!TaxonList.ValidTableIDs.Contains(list.TableID))
-                throw new ArgumentException("list");
+        public void selectTaxonList(TaxonList list) {
+            if (list != null || TaxonList.ValidTableIDs.Contains(list.TableID)) {
+                Debugger.Break();
+                return;
+            }
+
             if (list.IsSelected)
                 return;
 
 
-            withSelections(ctx =>
-            {
+
+            withSelections(ctx => {
                 var tables = from s in ctx.TaxonLists
                              where s.TaxonomicGroup == list.TaxonomicGroup
                              select s;
-                var oldSelection = tables.FirstOrDefault(s => s.IsSelected);                
-                if (oldSelection != null)
-                {
+                var oldSelection = tables.FirstOrDefault(s => s.IsSelected);
+                if (oldSelection != null) {
                     oldSelection.IsSelected = false;
                 }
 
@@ -93,27 +81,23 @@ namespace DiversityPhone.Services
                 ctx.TaxonLists.Attach(list);
                 list.IsSelected = true;
                 ctx.SubmitChanges();
-                               
+
             }
             );
         }
 
-        public void deleteTaxonListIfExists(TaxonList list)
-        {
+        public void deleteTaxonListIfExists(TaxonList list) {
             if (list == null || !TaxonList.ValidTableIDs.Contains(list.TableID))
                 return;
 
-            using (var isostore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication())
-            {
+            using (var isostore = System.IO.IsolatedStorage.IsolatedStorageFile.GetUserStoreForApplication()) {
                 var dbFile = TaxonDataContext.getDBPath(list.TableID);
-                if (isostore.FileExists(dbFile))
-                {
+                if (isostore.FileExists(dbFile)) {
                     isostore.DeleteFile(dbFile);
                 }
             }
 
-            withSelections(ctx =>
-            {                
+            withSelections(ctx => {
                 ctx.TaxonLists.Attach(list);
                 ctx.TaxonLists.DeleteOnSubmit(list);
                 ctx.SubmitChanges();
@@ -121,22 +105,18 @@ namespace DiversityPhone.Services
             });
         }
 
-        public int getTaxonTableFreeCount()
-        {
+        public int getTaxonTableFreeCount() {
             int result = 0;
-            withSelections(ctx =>
-            {
+            withSelections(ctx => {
                 result = getUnusedTaxonTableIDs(ctx).Count();
             });
             return result;
         }
 
-        public IEnumerable<TaxonName> getTaxonNames(Term taxonGroup, string query)
-        {
+        public IEnumerable<TaxonName> getTaxonNames(Term taxonGroup, string query) {
             int tableID;
             if (taxonGroup == null
-                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == TaxonList.InvalidTableID)
-            {
+                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == TaxonList.InvalidTableID) {
                 //System.Diagnostics.Debugger.Break();
                 //TODO Logging
                 return new List<TaxonName>();
@@ -145,63 +125,54 @@ namespace DiversityPhone.Services
             return getTaxonNames(tableID, query);
         }
 
-        public void ClearTaxonLists()
-        {
-            withSelections(sel => 
-                {
-                    foreach (var list in sel.TaxonLists)
-                    {
-                        withTaxonTable(list.TableID, taxa => taxa.DeleteDatabase());
-                    }
+        public void ClearTaxonLists() {
+            withSelections(sel => {
+                foreach (var list in sel.TaxonLists) {
+                    withTaxonTable(list.TableID, taxa => taxa.DeleteDatabase());
+                }
 
-                    sel.DeleteDatabase();
-                });
+                sel.DeleteDatabase();
+            });
         }
 
-        private IEnumerable<int> getUnusedTaxonTableIDs(TaxonSelectionDataContext ctx)
-        {
+        private IEnumerable<int> getUnusedTaxonTableIDs(TaxonSelectionDataContext ctx) {
             var usedTableIDs = from ts in ctx.TaxonLists
                                select ts.TableID;
             return TaxonList.ValidTableIDs.Except(usedTableIDs);
         }
 
-        private IEnumerable<TaxonName> getTaxonNames(int tableID, string query)
-        {
-            
-            var queryWords = (from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
-                             select word).ToArray();
+        private IEnumerable<TaxonName> getTaxonNames(int tableID, string query) {
 
-            using (var ctx = new TaxonDataContext(tableID))
-            {
+            var queryWords = (from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                              select word).ToArray();
+
+            using (var ctx = new TaxonDataContext(tableID)) {
 
                 var q = ctx.TaxonNames as IQueryable<TaxonName>;
 
                 //Match Genus
-                if (queryWords.Length > 0 && queryWords[0] != WILDCARD)
-                {
+                if (queryWords.Length > 0 && queryWords[0] != WILDCARD) {
                     q = from tn in q
-                            where tn.GenusOrSupragenic.StartsWith(queryWords[0])
-                            select tn;
+                        where tn.GenusOrSupragenic.StartsWith(queryWords[0])
+                        select tn;
                 }
 
                 //Match SpeciesEpithet
-                if (queryWords.Length > 1 && queryWords[1] != WILDCARD)
-                {   
+                if (queryWords.Length > 1 && queryWords[1] != WILDCARD) {
                     q = from tn in q
                         where tn.SpeciesEpithet.StartsWith(queryWords[1])
                         select tn;
                 }
 
                 //Match Infra
-                if (queryWords.Length > 2 && queryWords[2] != WILDCARD)
-                {
+                if (queryWords.Length > 2 && queryWords[2] != WILDCARD) {
                     q = from tn in q
                         where tn.InfraspecificEpithet.StartsWith(queryWords[2])
                         select tn;
                 }
 
                 //Order
-                q = from inf in q                        
+                q = from inf in q
                     orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
                     select inf;
 
@@ -210,27 +181,23 @@ namespace DiversityPhone.Services
                 // which is necessary, because "Contains" is not supported in SQL CE
                 // instead, it is evaluated in application code
                 var e = q.AsEnumerable();
-            
-                if (queryWords.Length > 3)
-                {
+
+                if (queryWords.Length > 3) {
                     e = from inf in e
-                        where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))                        
+                        where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))
                         select inf;
                 }
 
-                foreach (var item in e)
-                {
+                foreach (var item in e) {
                     yield return item;
                 }
             }
         }
 
-        private int getTaxonTableIDForGroup(string taxonGroup)
-        {
+        private int getTaxonTableIDForGroup(string taxonGroup) {
             int id = TaxonList.InvalidTableID;
             if (taxonGroup != null)
-                withSelections(ctx =>
-                {
+                withSelections(ctx => {
                     var assignment = from a in ctx.TaxonLists
                                      where a.TaxonomicGroup == taxonGroup && a.IsSelected
                                      select a.TableID;
@@ -241,38 +208,30 @@ namespace DiversityPhone.Services
         }
 
 
-        private void withSelections(Action<TaxonSelectionDataContext> operation)
-        {
-            using (var ctx = new TaxonSelectionDataContext())
-            {
+        private void withSelections(Action<TaxonSelectionDataContext> operation) {
+            using (var ctx = new TaxonSelectionDataContext()) {
                 operation(ctx);
             }
         }
 
-        private void withTaxonTable(int id, Action<TaxonDataContext> operation)
-        {
-            using (var ctx = new TaxonDataContext(id))
-            {
+        private void withTaxonTable(int id, Action<TaxonDataContext> operation) {
+            using (var ctx = new TaxonDataContext(id)) {
                 operation(ctx);
             }
         }
-        
+
         #endregion
 
-        private class TaxonSelectionDataContext : DataContext
-        {            
+        private class TaxonSelectionDataContext : DataContext {
             private static string connStr = "isostore:/taxonDB.sdf";
             private static object init_lock = new object();
-            
+
 
             public TaxonSelectionDataContext()
-                : base(connStr)
-            {
-                if (!this.DatabaseExists())
-                {
+                : base(connStr) {
+                if (!this.DatabaseExists()) {
                     Monitor.Enter(init_lock); // Not created, let 1 thread create it
-                    if (!this.DatabaseExists())
-                    {
+                    if (!this.DatabaseExists()) {
                         this.CreateDatabase();
                     }
                     Monitor.Exit(init_lock);
@@ -283,26 +242,21 @@ namespace DiversityPhone.Services
 #pragma warning restore 0649
         }
 
-        private class TaxonDataContext : DataContext
-        {
+        private class TaxonDataContext : DataContext {
             private static readonly string ISOSTORE_PROTOCOL = "isostore:/";
             private static readonly string TAXON_DB_NAME_PATTERN = "taxonDB{0}.sdf";
             private static object init_lock = new object();
 
-            public static string getDBPath(int idx)
-            {
+            public static string getDBPath(int idx) {
                 return string.Format(TAXON_DB_NAME_PATTERN, idx);
             }
 
 
             public TaxonDataContext(int idx)
-                : base(string.Format("{0}{1}",ISOSTORE_PROTOCOL,getDBPath(idx)))
-            {
-                if (!this.DatabaseExists())
-                {
+                : base(string.Format("{0}{1}", ISOSTORE_PROTOCOL, getDBPath(idx))) {
+                if (!this.DatabaseExists()) {
                     Monitor.Enter(init_lock); // Not created, let 1 thread create it
-                    if (!this.DatabaseExists())
-                    {
+                    if (!this.DatabaseExists()) {
                         this.CreateDatabase();
                     }
                     Monitor.Exit(init_lock);
@@ -316,6 +270,6 @@ namespace DiversityPhone.Services
 
 
 
-        
+
     }
 }
