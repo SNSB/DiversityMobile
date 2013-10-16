@@ -55,9 +55,13 @@
         <controls:Pivot Title="Taxon Lists" SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">           
             <!--Pivotelement eins-->
             <controls:PivotItem Header="local">
-                <StackPanel>
-                    <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
-                    <ItemsControl ItemsSource="{Binding LocalLists}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
+                    <ItemsControl Grid.Row="1" ItemsSource="{Binding LocalLists}" >
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
@@ -81,19 +85,24 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </StackPanel>
+                </Grid>
             </controls:PivotItem>
 
             
             <controls:PivotItem Header="personal">
-                <StackPanel>
-                    <Grid>
-                        <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock  Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
                         <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
                                          IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
                     </Grid>
-                    <ItemsControl ItemsSource="{Binding PersonalLists}">
-                        <ItemsControl.ItemTemplate>
+                    <ListBox Grid.Row="1" 
+                             ItemsSource="{Binding PersonalLists}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
@@ -106,19 +115,23 @@
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </ContentControl>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </controls:PivotItem>
             <controls:PivotItem Header="public" >
-                <StackPanel>
-                    <Grid>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
                         <TextBlock Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
                         <vw:ConditionalLabel Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
                                          IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
                     </Grid>
-                    <ItemsControl ItemsSource="{Binding PublicLists}">
-                        <ItemsControl.ItemTemplate>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding PublicLists}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
@@ -131,9 +144,9 @@
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </ContentControl>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </StackPanel>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
             </controls:PivotItem>
         </controls:Pivot>
     </Grid>  
