@@ -88,8 +88,12 @@
                                     Style="{StaticResource ItemButtonStyle}"
                                     Command="{Binding SearchMaps}"
                                     CommandParameter="{Binding Text, ElementName=QueryString}">
-                            <Image Source="/Images/MetroIcons/whitenocircle/search.png"  
-                                       Height ="40" Margin="0"/>
+                            <Rectangle Fill="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" 
+                                       Width="40" Height="40">
+                                <Rectangle.OpacityMask>
+                                    <ImageBrush ImageSource="/Images/MetroIcons/white/search.png" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
                         </Button>
                     </Grid>
                     <ListBox Grid.Row="2" 
