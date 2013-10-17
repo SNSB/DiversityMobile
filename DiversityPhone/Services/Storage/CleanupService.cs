@@ -2,9 +2,7 @@
     using DiversityPhone.Interface;
     using ReactiveUI;
 
-    public interface ICleanupData {
-        void ClearLocalData();
-    }
+
 
     public class CleanupService : ICleanupData {
         public void ClearLocalData() {

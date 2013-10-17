@@ -1,22 +1,17 @@
-﻿namespace DiversityPhone.Test.Tests
-{
+﻿namespace DiversityPhone.Test.Tests {
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using DiversityPhone.ViewModels;
-    using Moq;
-    using System.Collections.Generic;
-    using Xunit;
-    using System.Reactive.Linq;
     using FluentAssertions;
-    using System.Threading;
-    using Microsoft.Reactive.Testing;
-    using System.Reactive;
+    using Moq;
     using System;
+    using System.Collections.Generic;
     using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using Xunit;
 
     [Trait("ViewModels", "Download")]
-    public class DownloadVMFixture : DiversityTestBase<DownloadVM>
-    {
+    public class DownloadVMFixture : DiversityTestBase<DownloadVM> {
 
         IEnumerable<Event> SearchResult = new List<Event>()
         {
@@ -27,15 +22,13 @@
 
         const string TEST_QUERY = "TestEvent";
 
-        public DownloadVMFixture()
-        {
+        public DownloadVMFixture() {
 
         }
 
 
         [Fact]
-        public void CanOnlySearchWhenOnline()
-        {
+        public void CanOnlySearchWhenOnline() {
             // Setup
             var connectivityObs = Scheduler.CreateHotObservable(
                     OnNext(100, ConnectionStatus.None),
@@ -68,8 +61,7 @@
         }
 
         [Fact]
-        public void SearchQueriesTheService()
-        {
+        public void SearchQueriesTheService() {
             // Setup
             Connectivity.Setup(c => c.Status()).Returns(ReturnAndNever(ConnectionStatus.Wifi));
             Service.Setup(s => s.GetEventsByLocality(It.IsAny<string>())).Returns(Observable.Empty<IEnumerable<Event>>());
@@ -87,7 +79,7 @@
 
         }
 
-        
+
 
     }
 }

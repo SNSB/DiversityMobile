@@ -117,6 +117,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\DiversityPhone.Interface\ICleanupData.cs">
+      <Link>Implementation\Interface\ICleanupData.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone.Interface\IConnectivityService.cs">
       <Link>Implementation\Interface\IConnectivityService.cs</Link>
     </Compile>
@@ -255,6 +258,15 @@
     <Compile Include="..\DiversityPhone\Helper\NoEventSeriesMixin.cs">
       <Link>Implementation\Helper\NoEventSeriesMixin.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\Helper\ObservableMixin.cs">
+      <Link>Implementation\Helper\ObservableMixin.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Helper\ReactiveCommand.cs">
+      <Link>Implementation\Helper\ReactiveCommand.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\Helper\ReactiveCommandMixin.cs">
+      <Link>Implementation\Helper\ReactiveCommandMixin.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Services\BackgroundTasks\IRefreshVocabularyTask.cs">
       <Link>Implementation\Interface\IRefreshVocabularyTask.cs</Link>
     </Compile>
@@ -294,6 +306,9 @@
     <Compile Include="..\DiversityPhone\ViewModels\Utility\DownloadVM.cs">
       <Link>Implementation\ViewModels\DownloadVM.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Utility\SettingsVM.cs">
+      <Link>Implementation\ViewModels\SettingsVM.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Utility\SetupVM.cs">
       <Link>Implementation\ViewModels\SetupVM.cs</Link>
     </Compile>
@@ -309,6 +324,7 @@
     <Compile Include="Tests\DownloadVMFixture.cs" />
     <Compile Include="Tests\EditIUVMFixture.cs" />
     <Compile Include="Tests\EventHierarchyLoaderFixture.cs" />
+    <Compile Include="Tests\SettingsVMFixture.cs" />
     <Compile Include="Tests\SetupVMFixture.cs" />
     <Compile Include="UnitTestKernel.cs" />
   </ItemGroup>

@@ -105,6 +105,7 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ICleanupData.cs" />
     <Compile Include="IConnectivityService.cs" />
     <Compile Include="IDiversityServiceClient.cs" />
     <Compile Include="IFieldDataService.cs" />
