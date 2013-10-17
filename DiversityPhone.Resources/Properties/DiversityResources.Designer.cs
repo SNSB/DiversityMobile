@@ -184,6 +184,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to During data gathering, DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. All data remain only on the mobile phone unless you choose to send your data to the data repository at the SNSB IT Center using &quot;Upload Data&quot;. We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DWB virtual research envi [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string App_Policy {
+            get {
+                return ResourceManager.GetString("App_Policy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Diversity Mobile Wiki.
         /// </summary>
         public static string App_Taxa_LinkTitle {
@@ -976,6 +985,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use My Location.
+        /// </summary>
+        public static string Settings_Header_Localization {
+            get {
+                return ResourceManager.GetString("Settings_Header_Localization", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Manage Taxon Lists.
         /// </summary>
         public static string Settings_Header_ManageTaxa {
@@ -1017,6 +1035,15 @@ namespace DiversityPhone {
         public static string Settings_Header_UploadData {
             get {
                 return ResourceManager.GetString("Settings_Header_UploadData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data Usage Policy.
+        /// </summary>
+        public static string Settings_Header_UsagePolicy {
+            get {
+                return ResourceManager.GetString("Settings_Header_UsagePolicy", resourceCulture);
             }
         }
         
@@ -1359,6 +1386,15 @@ namespace DiversityPhone {
         public static string TaxonManagement_Title_DownloadAll {
             get {
                 return ResourceManager.GetString("TaxonManagement_Title_DownloadAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to policy.
+        /// </summary>
+        public static string UsagePolicy_PageHeader {
+            get {
+                return ResourceManager.GetString("UsagePolicy_PageHeader", resourceCulture);
             }
         }
     }

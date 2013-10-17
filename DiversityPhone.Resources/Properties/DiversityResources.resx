@@ -143,10 +143,7 @@ under supervision of Prof. Dr.-Ing. Stefan Jablonski.</value>
     <value>DiversityMobile – recording biological research data in nature
 
 DiversityMobile is an application for professional biologists and ecologists as well as citizen scientists, being experienced in recording observation data in nature. Information may be directly entered into the smartphone database. DiversityMobile is designed following Diversity Workbench (=DWB) concepts. Mechanisms of automated recording and storage of GPS data and the manual recording of multimedia data are included. During that process there is no need to be online. 
-In order to be able to use DiversityMobile, you need an account at the SNSB IT Center (http://www.snsb.info/). Accounts are restricted and set up for scientific purposes only. 
-During the gathering process, DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. All data remain only on the mobile phone unless you choose to send your data to the data repository at the SNSB IT Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DWB virtual research environment. You always keep control over your data.
-DiversityMobile communicates in several processes with the servers of the SNSB IT Center (see http://www.diversitymobile.net/wiki/DiversityMobile_Web_Services). To protect you from additional costs these web services are only available when you are using a Wi-Fi connection.
-IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.net/wiki/DiversityMobile_IPR_and_Licenses</value>
+In order to be able to use DiversityMobile, you need an account at the SNSB IT Center (http://www.snsb.info/). Accounts are restricted and set up for scientific purposes only. </value>
   </data>
   <data name="App_Mail_Address" xml:space="preserve">
     <value>diversitymobile@bsm.mwn.de</value>
@@ -165,6 +162,11 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="App_Name" xml:space="preserve">
     <value>DIVERSITYMOBILE</value>
+  </data>
+  <data name="App_Policy" xml:space="preserve">
+    <value>During data gathering, DiversityMobile will store personal data on your phone which may contain your position information if you have enabled this option in the settings. All data remain only on the mobile phone unless you choose to send your data to the data repository at the SNSB IT Center using "Upload Data". We do not transmit your location information or personal data without you taking explicit action. After the transmission you are able to edit and delete your data using the DWB virtual research environment. You always keep control over your data.
+DiversityMobile communicates in several processes with the servers of the SNSB IT Center (see http://www.diversitymobile.net/wiki/DiversityMobile_Web_Services). To protect you from additional costs these web services are only available when you are using a Wi-Fi connection.
+IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.net/wiki/DiversityMobile_IPR_and_Licenses</value>
   </data>
   <data name="App_Taxa_LinkTitle" xml:space="preserve">
     <value>Diversity Mobile Wiki</value>
@@ -430,6 +432,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Settings_Header_Info" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="Settings_Header_Localization" xml:space="preserve">
+    <value>Use My Location</value>
+  </data>
   <data name="Settings_Header_ManageTaxa" xml:space="preserve">
     <value>Manage Taxon Lists</value>
   </data>
@@ -444,6 +449,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="Settings_Header_UploadData" xml:space="preserve">
     <value>Upload Data</value>
+  </data>
+  <data name="Settings_Header_UsagePolicy" xml:space="preserve">
+    <value>Data Usage Policy</value>
   </data>
   <data name="Settings_Header_User" xml:space="preserve">
     <value>User</value>
@@ -558,5 +566,8 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="TaxonManagement_Title_DownloadAll" xml:space="preserve">
     <value>download all</value>
+  </data>
+  <data name="UsagePolicy_PageHeader" xml:space="preserve">
+    <value>policy</value>
   </data>
 </root>

@@ -48,7 +48,12 @@
             <TextBlock Text="{Binding Resources.Settings_Header_Project, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
             <TextBlock Text="{Binding Model.CurrentProjectName}" Style="{StaticResource PhoneTextLargeStyle}"/>
 
-            <toolkit:ToggleSwitch Header="GPS" IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
+            <toolkit:ToggleSwitch Header="{Binding Resources.Settings_Header_Localization, Source={StaticResource LocalizedStrings}}" 
+                                  IsChecked="{Binding UseGPS, Mode=TwoWay}"/>
+            <HyperlinkButton Margin="0,-10,0,0" 
+                             HorizontalAlignment="Left" 
+                             Content="{Binding Resources.Settings_Header_UsagePolicy, Source={StaticResource LocalizedStrings}}" 
+                             NavigateUri="/View/UsagePolicy.xaml"/>
 
             <TextBlock Text="{Binding Resources.Settings_Header_SkyDrive, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}"/>
             

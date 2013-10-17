@@ -36,6 +36,9 @@
                            Text="{Binding Resources.App_Info, Source={StaticResource LocalizedStrings}}"/>
                     <TextBlock TextWrapping="Wrap" 
                            Style="{StaticResource PhoneTextSmallStyle}"
+                           Text="{Binding Resources.App_Policy, Source={StaticResource LocalizedStrings}}"/>
+                    <TextBlock TextWrapping="Wrap" 
+                           Style="{StaticResource PhoneTextSmallStyle}"
                            Text="{Binding Resources.App_Map_Text, Source={StaticResource LocalizedStrings}}"/>
                     <HyperlinkButton Content="{Binding Resources.App_Map_LinkTitle, Source={StaticResource LocalizedStrings}}" 
                                  Margin="{StaticResource PhoneHorizontalMargin}"
