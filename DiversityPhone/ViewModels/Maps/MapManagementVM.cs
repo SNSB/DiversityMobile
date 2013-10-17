@@ -22,7 +22,6 @@ namespace DiversityPhone.ViewModels {
         readonly IConnectivityService Network;
         readonly IMapTransferService MapService;
         readonly IMapStorageService MapStorage;
-        readonly INotificationService Notifications;
 
         public ReactiveAsyncCommand SearchMaps { get; private set; }
         public ReactiveCommand<MapVM> SelectMap { get; private set; }
@@ -77,7 +76,6 @@ namespace DiversityPhone.ViewModels {
             this.Network = Network;
             this.MapService = MapService;
             this.MapStorage = MapStorage;
-            this.Notifications = Notifications;
 
 
 

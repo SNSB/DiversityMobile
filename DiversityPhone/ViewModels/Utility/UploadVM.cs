@@ -23,7 +23,6 @@ namespace DiversityPhone.ViewModels.Utility {
 
 
         private readonly IFieldDataService Storage;
-        private readonly INotificationService Notifications;
         private readonly IConnectivityService Connectivity;
         private readonly IDiversityServiceClient Service;
         private readonly IKeyMappingService Mapping;
@@ -74,7 +73,6 @@ namespace DiversityPhone.ViewModels.Utility {
             [Dispatcher] IScheduler Dispatcher
             ) {
             this.Storage = Storage;
-            this.Notifications = Notifications;
             this.Connectivity = Connectivity;
             this.Service = Service;
             this.Mapping = Mapping;

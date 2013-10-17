@@ -17,7 +17,7 @@
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding TaxonManagement, Source={StaticResource Locator}}"
     shell:SystemTray.ProgressIndicator="{StaticResource Progress}"    
-    x:Name="taxonPage" d:DataContext="{d:DesignData /SampleData/TaxonManagementVMSampleData.xaml}">
+    x:Name="taxonPage">
     <phone:PhoneApplicationPage.Resources>
         <vw:TaxonManagementPivotConverter x:Key="PivotConverter"/>
         <vw:TermToImageConverter x:Key="TermToImage"/>

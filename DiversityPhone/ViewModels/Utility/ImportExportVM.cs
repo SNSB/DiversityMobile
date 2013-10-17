@@ -13,17 +13,13 @@ using System.Reactive.Linq;
 using System.Reactive.Threading.Tasks;
 using System.Windows.Input;
 
-namespace DiversityPhone.ViewModels
-{
-    public class ImportExportVM : PageVMBase
-    {
-        public enum Pivot
-        {
+namespace DiversityPhone.ViewModels {
+    public class ImportExportVM : PageVMBase {
+        public enum Pivot {
             local,
             remote
         }
-        public enum Status
-        {
+        public enum Status {
             TakeAppData,
             TakeExternalImages,
             Restore,
@@ -43,22 +39,19 @@ namespace DiversityPhone.ViewModels
         public IListSelector<string> RemoteSnapshots { get; private set; }
 
         private Status _CurrentStatus;
-        public Status CurrentStatus
-        {
+        public Status CurrentStatus {
             get { return _CurrentStatus; }
             set { this.RaiseAndSetIfChanged(x => x.CurrentStatus, ref _CurrentStatus, value); }
         }
 
         private int? _ProgressPercentage;
-        public int? ProgressPercentage
-        {
+        public int? ProgressPercentage {
             get { return _ProgressPercentage; }
             set { this.RaiseAndSetIfChanged(x => x.ProgressPercentage, ref _ProgressPercentage, value); }
         }
 
         private Pivot _CurrentPivot;
-        public Pivot CurrentPivot
-        {
+        public Pivot CurrentPivot {
             get { return _CurrentPivot; }
             set { this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value); }
         }
@@ -66,7 +59,6 @@ namespace DiversityPhone.ViewModels
 
         public bool IsBusy { get { return _IsBusy; } }
 
-        private readonly INotificationService Notifications;
         private readonly IScheduler Dispatcher;
 
         private ReactiveCommand _TakeSnapshot, _DeleteSnapshot, _RestoreSnapshot, _UploadSnapshot, _DownloadSnapshot, _RefreshRemote;
@@ -75,17 +67,13 @@ namespace DiversityPhone.ViewModels
         private IProgress<int> _PercentageProgress;
         private IProgress<Tuple<BackupStage, int>> _BackupProgress;
 
-        private void RaiseIsBusyChanged()
-        {
+        private void RaiseIsBusyChanged() {
             Dispatcher.Schedule(() => this.RaisePropertyChanged(x => x.IsBusy));
         }
 
-        private void OperationFinished()
-        {
-            lock (this)
-            {
-                if (_IsBusy)
-                {
+        private void OperationFinished() {
+            lock (this) {
+                if (_IsBusy) {
                     _IsBusy = false;
                     RaiseIsBusyChanged();
                 }
@@ -97,12 +85,9 @@ namespace DiversityPhone.ViewModels
         /// Tries to acquire the right to run a new Operation
         /// </summary>
         /// <returns>true if the new operation is allowed to proceed, false if there is already an operation running</returns>
-        private bool TryStartOperation()
-        {
-            lock (this)
-            {
-                if (!_IsBusy)
-                {
+        private bool TryStartOperation() {
+            lock (this) {
+                if (!_IsBusy) {
                     _IsBusy = true;
 
                     RaiseIsBusyChanged();
@@ -112,10 +97,8 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-        private Status BackupStageToStatus(BackupStage stage)
-        {
-            switch (stage)
-            {
+        private Status BackupStageToStatus(BackupStage stage) {
+            switch (stage) {
                 case BackupStage.AppData:
                     return Status.TakeAppData;
                 case BackupStage.ExternalData:
@@ -127,11 +110,9 @@ namespace DiversityPhone.ViewModels
 
 
 
-        private string GetErrorStringForState()
-        {
+        private string GetErrorStringForState() {
             string failureNotification = string.Empty;
-            switch (CurrentStatus)
-            {
+            switch (CurrentStatus) {
                 case Status.TakeAppData:
                 case Status.TakeExternalImages:
                     failureNotification = DiversityResources.ImportExport_Failed_Take;
@@ -154,8 +135,7 @@ namespace DiversityPhone.ViewModels
             return failureNotification;
         }
 
-        private void ShowErrorForState()
-        {
+        private void ShowErrorForState() {
             var errorString = GetErrorStringForState();
             Notifications.showNotification(errorString);
         }
@@ -166,14 +146,12 @@ namespace DiversityPhone.ViewModels
             INotificationService Notifications,
             ICloudStorageService Cloud,
             [Dispatcher] IScheduler Dispatcher
-            )
-        {
+            ) {
             Contract.Requires(Profile != null);
             Contract.Requires(Backup != null);
             Contract.Requires(Notifications != null);
             Contract.Requires(Dispatcher != null);
 
-            this.Notifications = Notifications;
             this.Dispatcher = Dispatcher;
 
             Snapshots = new ListSelectionHelper<Snapshot>(Dispatcher);
@@ -182,11 +160,10 @@ namespace DiversityPhone.ViewModels
             _RefreshRemoteSnapshots = new ReactiveAsyncCommand();
 
             _PercentageProgress = new Progress<int>(p => ProgressPercentage = p);
-            _BackupProgress = new Progress<Tuple<BackupStage, int>>(t =>
-                {
-                    CurrentStatus = BackupStageToStatus(t.Item1);
-                    _PercentageProgress.Report(t.Item2);
-                });
+            _BackupProgress = new Progress<Tuple<BackupStage, int>>(t => {
+                CurrentStatus = BackupStageToStatus(t.Item1);
+                _PercentageProgress.Report(t.Item2);
+            });
 
             var snapshotSelected = Snapshots
                 .SelectedItemObservable
@@ -244,7 +221,7 @@ namespace DiversityPhone.ViewModels
                 .SubscribeCommand(_RefreshRemoteSnapshots);
 
             var remoteSnapshotSelectedAndOnline = Observable.CombineLatest(
-                RemoteSnapshots.SelectedItemObservable.Select(r => r != null),           
+                RemoteSnapshots.SelectedItemObservable.Select(r => r != null),
                 Cloud.IsConnectedObservable(), (a, b) => a & b);
 
             _DownloadSnapshot = new ReactiveCommand(remoteSnapshotSelectedAndOnline);
@@ -285,11 +262,9 @@ namespace DiversityPhone.ViewModels
 
         }
 
-        private IObservable<Unit> AddStartErrorHandlingAndCompletion<T, TResult>(IObservable<T> observable, Func<T, IObservable<TResult>> operation)
-        {
+        private IObservable<Unit> AddStartErrorHandlingAndCompletion<T, TResult>(IObservable<T> observable, Func<T, IObservable<TResult>> operation) {
             // Handle any error by displaying a notification
-            Func<Exception, IObservable<TResult>> handler = (ex) =>
-            {
+            Func<Exception, IObservable<TResult>> handler = (ex) => {
                 ShowErrorForState();
                 return Observable.Empty<TResult>();
             };
@@ -307,27 +282,23 @@ namespace DiversityPhone.ViewModels
 
         }
 
-        private IObservable<Unit> StartDownload(ICloudStorageService Cloud, string snap)
-        {
+        private IObservable<Unit> StartDownload(ICloudStorageService Cloud, string snap) {
             CurrentStatus = Status.Download;
             return Cloud.DownloadFolderAsync(snap, BackupService.SNAPSHOTS_DIRECTORY, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartUpload(ICloudStorageService Cloud, Snapshot snap)
-        {
+        private IObservable<Unit> StartUpload(ICloudStorageService Cloud, Snapshot snap) {
             CurrentStatus = Status.Upload;
             return Cloud.UploadFolderAsync(snap.FolderPath, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartRestore(IBackupService Backup, Snapshot snap)
-        {
+        private IObservable<Unit> StartRestore(IBackupService Backup, Snapshot snap) {
             CurrentStatus = Status.Restore;
             ProgressPercentage = null;
             return Backup.RestoreSnapshot(snap.FolderPath, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartDelete(IBackupService Backup, Snapshot snap)
-        {
+        private IObservable<Unit> StartDelete(IBackupService Backup, Snapshot snap) {
             CurrentStatus = Status.Delete;
             ProgressPercentage = null;
             return Backup.DeleteSnapshot(snap.FolderPath).ToObservable();
