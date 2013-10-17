@@ -34,7 +34,7 @@ namespace DiversityPhone.View.Appbar {
         }
 
         public SwitchingCommandButtonAdapter(IApplicationBar appbar)
-            : base(appbar) {
+            : base(appbar: appbar, button: new ApplicationBarIconButton() { IconUri = new Uri("/Images/appbar.add.rest.png", UriKind.Relative), Text = "tmp" }) {
 
         }
     }

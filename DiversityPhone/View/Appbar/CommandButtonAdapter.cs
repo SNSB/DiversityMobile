@@ -16,7 +16,7 @@ namespace DiversityPhone.View.Appbar {
         private IApplicationBarIconButton _Button;
         public IApplicationBarIconButton Button {
             get { return _Button; }
-            set {
+            private set {
                 if (_Button != null) {
                     _Button.Click -= this.Click;
                     if (_AppBar != null) {
@@ -61,16 +61,25 @@ namespace DiversityPhone.View.Appbar {
 
         public CommandButtonAdapter(
             IApplicationBar appbar,
-            IApplicationBarIconButton button = null,
+            IApplicationBarIconButton button,
             Mode hideMode = Mode.DisableButton,
             ICommand command = null) {
             if (appbar == null && hideMode != Mode.DisableButton)
                 throw new ArgumentException("Without an appbar reference I can only disable buttons not hide them");
+            if (button == null)
+                throw new ArgumentNullException("button");
 
             _AppBar = appbar;
             HideMode = hideMode;
             Button = button;
             Command = command;
+
+            if (_AppBar != null &&
+               HideMode == Mode.DisableButton) {
+                if (!_AppBar.Buttons.Contains(Button)) {
+                    _AppBar.Buttons.Add(Button);
+                }
+            }
         }
 
         public CommandButtonAdapter(IApplicationBarIconButton button, ICommand command = null)
