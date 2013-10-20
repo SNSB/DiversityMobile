@@ -20,10 +20,8 @@
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <vw:MapManagementPivotConverter x:Key="PivotConverter"/>
-            <DataTemplate x:Key="MapTemplate">
+            <DataTemplate x:Key="MapTemplate">                
                 <StackPanel Orientation="Horizontal">
-                    <ContentControl Content="{Binding}"
-                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
                     <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
                                                    Fill="{StaticResource PhoneForegroundBrush}" 
                                                    Width="40" Height="40">
@@ -31,6 +29,7 @@
                             <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
+                    <TextBlock Text="{Binding Description}" />                   
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
