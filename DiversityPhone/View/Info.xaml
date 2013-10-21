@@ -23,55 +23,55 @@
                 <vw:DiversityMobilePageHeader Text="{Binding Resources.Help_PageHeader, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Short Manual – Version in German"/>
+                           Text="{Binding Resources.Help_Text_Header1, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            TextWrapping="Wrap"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Sie haben sich erfolgreich angemeldet.  Eine Internetverbindung ist weiterhin nötig, falls Sie taxonomische Listen, topographischer Karten sowie früher aufgenommene Daten auf das Smartphone herunterladen wollen. Danach kann offline gearbeitet werden."/>
+                           Text="{Binding Resources.Help_Text_Paragraph1, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Manage Taxon Lists"/>
+                           Text="{Binding Resources.Help_Text_Header2, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            TextWrapping="Wrap"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Zunächst auf der Seite 'Settings' (Zahnrad-Button in der unteren Menüleiste) unten rechts die drei Punkte nach oben ziehen.  'Manage Taxon Lists' auswählen. Gewünschte Taxonliste im Bereich 'personal' oder 'public' einige Sekunden lang anklicken, das Download-Fenster öffnet sich. Alle bereits auf dem Smartphone gespeicherten Taxonomischen Listen erscheinen im Bereich 'local'. Während des Downloads erscheint ein Pfeil neben diesen."/>
+                           Text="{Binding Resources.Help_Text_Paragraph2, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Maps"/>
+                           Text="{Binding Resources.Help_Text_Header3, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="{StaticResource PhoneMargin}"
                            TextWrapping="Wrap"
-                           Text="Die verfügbaren topographischen Karten (Maps) können auf fast allen Seiten durch Klicken auf die Weltkugel in der unteren Menüleiste heruntergeladen werden."/>
+                           Text="{Binding Resources.Help_Text_Paragraph3, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            TextWrapping="Wrap"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Sind alle oben genannten 'Definitionen' auf dem Smartphone gespeichert, kann die Forschungsarbeit im Gelände offline beginnen. Der Plus-Button in der unteren Menüleiste ist immer der Befehl zum Hinzufügen. In der Überschrift / dem Reiter steht, was hinzugefügt werden soll."/>
+                           Text="{Binding Resources.Help_Text_Paragraph4, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="EventSeries/Events"/>
+                           Text="{Binding Resources.Help_Text_Header4, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="{StaticResource PhoneMargin}"
                            TextWrapping="Wrap"
-                           Text="Auf der ersten Seite 'Home' können durch den Plus-Button EventSeries (mehrere Beobachtungs- bzw. Sammelereignisse zu einer Gruppe oder Serie zusammengefügt) angelegt werden. Soll keine EventSeries dokumentiert werden, sondern nur einzelne Beobachtungsereignisse ('Events'), können diese durch Klicken auf 'Events' und anschließend auf den Plus-Button angelegt werden. Ist das Beobachtungs- bzw. Sammelereignis (Event) angelegt, kann man es anklicken. Es ist nun in der Überschrift zu sehen und dort – falls nötig – zum nachträglichen Editieren anwählbar (Bleistift-Button in der unteren Menüleiste anwählen)."/>
+                           Text="{Binding Resources.Help_Text_Paragraph5, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextNormalStyle}"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Specimen/Object"/>
+                           Text="{Binding Resources.Help_Text_Header5, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="{StaticResource PhoneMargin}"
                            TextWrapping="Wrap"
-                           Text="In dem Bereich 'Specimen' können nun entweder mittels Plus-Button Sammlungsdaten oder durch das Anklicken von 'Observation' Beobachtungsdaten angelegt werden. Bei den Sammlungsdaten kann eine sog. Feld- oder Sammelnummer eingegeben werden. Ist diese angelegt kann sie angeklickt und nun die zugehörigen Units, meist Taxa, erfasst werden. Steht ein Taxon (Unit) in Beziehung zu einem zuvor erfassten Taxon (Unit), so kann dies zum Ausdruck gebracht werden, indem man die bereits erfasste Unit anklickt. Diese steht nun in der Überschrift und es können 'related' Units aufgenommen werden."/>
+                           Text="{Binding Resources.Help_Text_Paragraph6, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            Margin="{StaticResource PhoneMargin}"
                            TextWrapping="Wrap"
-                           Text="Im Bereich 'Descriptions' können neben den automatisch gespeicherten geographischen Koordinaten aus dem geräteinternen GPS mittels Plus-Button sog. 'Analysen' wie Längenmessungen, floristischer Status, etc. angegeben werden."/>
+                           Text="{Binding Resources.Help_Text_Paragraph7, Source={StaticResource LocalizedStrings}}"/>
                 <TextBlock Style="{StaticResource PhoneTextSubtleStyle}"
                            TextWrapping="Wrap"
                            Margin="{StaticResource PhoneMargin}"
-                           Text="Auf allen Erfassungsebenen gibt es die Möglichkeit, Multimedia-Daten aufzunehmen (sowohl zu den Events als auch zu den einzelnen Objekten bzw. Specimens). Diese beziehen sich immer auf den Bereich, der als Überschrift angezeigt wird. Geographische Koordinaten (GPS) sowie Datum und Uhrzeit werden geräteintern automatisch aufgezeichnet. Sollte das Erfassen von Koordinaten fehlgeschlagen sein (zu schlechte Satellitenverbindung) oder die Ergebnisse zu ungenau sein, lassen sie sich nachträglich auf der Kartenansicht zum jeweiligen Objekt bearbeiten."/>
+                           Text="{Binding Resources.Help_Text_Paragraph8, Source={StaticResource LocalizedStrings}}"/>
 
-                <HyperlinkButton Content="Ausführliche Anleitung Online als PDF" 
+                <HyperlinkButton Content="{Binding Resources.Help_ManualLink_Header, Source={StaticResource LocalizedStrings}}"
                                  TargetName="Blank"
-                                 NavigateUri="http://www.diversitymobile.net/wiki/DiversityMobile_User_Manuals"/>
+                                 NavigateUri="{Binding Resources.Help_ManualLink_URI, Source={StaticResource LocalizedStrings}}"/>
             </StackPanel>
         </ScrollViewer>
 
