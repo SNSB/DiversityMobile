@@ -83,7 +83,7 @@
 
         public IObserver<IList<T>> ItemsObserver { get; private set; }
 
-        public ListSelectionHelper(IScheduler Scheduler = null) {
+        public ListSelectionHelper(IScheduler Scheduler) {
             Scheduler = Scheduler ?? DefaultScheduler.Instance;
 
             _ItemsSubject = new ScheduledSubject<IList<T>>(Scheduler);
@@ -91,23 +91,23 @@
 
             var itemsObservable = _ItemsSubject
                 .Do(items => {
-                        UpdatingItems = true;
-                        var emptySelection = (items != null && !items.Any()) || (items == null);
+                    UpdatingItems = true;
+                    var emptySelection = (items != null && !items.Any()) || (items == null);
 
-                        try {
-                            Items = items;
-                        }
-                        catch (InvalidOperationException)
-                            // Exception thrown by the bound ListBox Control when swapping the items list with empty selection
-                            // Empty Selection is not technically supported ( SelectedIndex == -1 && SelectedItem == null)
-                        {
-                            if (!emptySelection)
-                                throw;
-                        }
+                    try {
+                        Items = items;
+                    }
+                    catch (InvalidOperationException)
+                        // Exception thrown by the bound ListBox Control when swapping the items list with empty selection
+                        // Empty Selection is not technically supported ( SelectedIndex == -1 && SelectedItem == null)
+                    {
+                        if (!emptySelection)
+                            throw;
+                    }
 
-                        correctSelectedIndex(items, SelectedItem);
-                        UpdatingItems = false;
-                    })
+                    correctSelectedIndex(items, SelectedItem);
+                    UpdatingItems = false;
+                })
                 .Publish();
 
             ItemsObservable = itemsObservable;

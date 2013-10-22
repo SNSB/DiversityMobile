@@ -86,7 +86,7 @@
             _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
 
 
-            Properties = new ListSelectionHelper<Property>();
+            Properties = new ListSelectionHelper<Property>(Dispatcher);
             ModelByVisitObservable
                 .SelectMany(evprop => {
                     var isNew = evprop.IsNew();
@@ -108,7 +108,7 @@
                 .Select(items => items[0])
                 .Subscribe(i => Properties.SelectedItem = i);
 
-            Values = new ListSelectionHelper<PropertyName>();
+            Values = new ListSelectionHelper<PropertyName>(Dispatcher);
             Properties.SelectedItemObservable
                 .SelectMany(prop => {
                     return

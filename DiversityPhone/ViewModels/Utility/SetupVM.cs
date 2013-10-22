@@ -183,7 +183,7 @@ namespace DiversityPhone.ViewModels {
                 .Subscribe(NavigateOrNotifyInvalidCredentials);
 
             // Repo Selection
-            this.Database = new ListSelectionHelper<string>();
+            this.Database = new ListSelectionHelper<string>(Dispatcher);
             loginAndRepo
                 .Select(t => t.Item2)
                 .Merge(EmptyProjectsOnLoginStart())
