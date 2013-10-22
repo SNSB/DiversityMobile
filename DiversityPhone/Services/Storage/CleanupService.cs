@@ -1,36 +1,24 @@
 ﻿namespace DiversityPhone.Services {
     using DiversityPhone.Interface;
-    using ReactiveUI;
 
 
 
     public class CleanupService : ICleanupData {
         public void ClearLocalData() {
-            Taxa.ClearTaxonLists();
-            FieldData.ClearDatabase();
-            Multimedia.ClearAllMultimedia();
-            Maps.ClearMaps();
+            var newProfile = Profile.CreateProfileID();
+            Profile.SetCurrentProfileID(newProfile);
+            Cloud.Disconnect();
         }
 
-        private IFieldDataService FieldData;
-        private IMapStorageService Maps;
-        private IStoreMultimedia Multimedia;
-        private ITaxonService Taxa;
-        private IMessageBus Messenger;
+        private readonly ICurrentProfile Profile;
+        private readonly CloudStorageService Cloud;
 
         public CleanupService(
-            IFieldDataService FieldData,
-            IKeyMappingService Mapping,
-            IMapStorageService Maps,
-            ITaxonService Taxa,
-            IStoreMultimedia Multimedia,
-            IMessageBus Messenger
+            ICurrentProfile Profile,
+            CloudStorageService Cloud
             ) {
-            this.FieldData = FieldData;
-            this.Maps = Maps;
-            this.Taxa = Taxa;
-            this.Multimedia = Multimedia;
-            this.Messenger = Messenger;
+            this.Profile = Profile;
+            this.Cloud = Cloud;
         }
     }
 }
