@@ -514,13 +514,10 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>repository</value>
   </data>
   <data name="Setup_GPS_PageHeader" xml:space="preserve">
-    <value>GPS</value>
+    <value>location</value>
   </data>
   <data name="Setup_GPS_Text" xml:space="preserve">
     <value>Do you want to allow DiversityMobile to use your current location information? This information would be used for the localization of data you enter. This information would then be sent to the SNSB servers once you start the upload of that data. You can always change this behavior in the settings.</value>
-  </data>
-  <data name="Setup_GPS_ToggleHeader" xml:space="preserve">
-    <value>Use GPS</value>
   </data>
   <data name="Setup_Header_Password" xml:space="preserve">
     <value>password</value>

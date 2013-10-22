@@ -32,7 +32,7 @@
                        TextWrapping="Wrap"
                        Style="{StaticResource PhoneTextSubtleStyle}"/>
             <toolkit:ToggleSwitch IsChecked="{Binding UseGPS, Mode=TwoWay}" 
-                                  Content="{Binding Resources.Setup_GPS_ToggleHeader, Source={StaticResource LocalizedStrings}}"/>
+                                  Content="{Binding Resources.Settings_Header_Localization, Source={StaticResource LocalizedStrings}}"/>
         </StackPanel>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>

@@ -9,10 +9,8 @@ using System.Reflection;
 using System.Windows;
 
 
-namespace DiversityPhone.View
-{
-    public partial class Settings : PhoneApplicationPage
-    {
+namespace DiversityPhone.View {
+    public partial class Settings : PhoneApplicationPage {
         private SettingsVM VM { get { return DataContext as SettingsVM; } }
 
         private ApplicationBarIconButton saveBtn, clearBtn, refreshBtn;
@@ -21,35 +19,29 @@ namespace DiversityPhone.View
 
         private bool initialized = false;
 
-        public Settings()
-        {
+        public Settings() {
             InitializeComponent();
 
             version_info.Text = GetVersionNumber();
 
-            this.SigninButton.SessionChanged += (s, args) =>
-            {
+            this.SigninButton.SessionChanged += (s, args) => {
                 var cloud = App.Kernel.Get<CloudStorageService>();
                 cloud.Session = args.Session;
             };
         }
 
-        private void ManageTaxa_Click()
-        {
+        private void ManageTaxa_Click() {
             if (VM != null)
                 VM.ManageTaxa.Execute(null);
         }
 
-        private void Upload_Click()
-        {
+        private void Upload_Click() {
             if (VM != null)
                 VM.UploadData.Execute(null);
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (!initialized)
-            {
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) {
+            if (!initialized) {
                 initialized = true;
 
                 saveBtn = new ApplicationBarIconButton()
@@ -107,30 +99,26 @@ namespace DiversityPhone.View
             }
         }
 
-        void ImportExport()
-        {
+        void ImportExport() {
             var vm = VM;
             if (vm != null && vm.ImportExport.CanExecute(null))
                 vm.ImportExport.Execute(null);
         }
 
-        private void Download_Click()
-        {
+        private void Download_Click() {
             var vm = VM;
             if (vm != null && vm.DownloadData.CanExecute(null))
                 vm.DownloadData.Execute(null);
         }
 
 
-        private static string GetVersionNumber()
-        {
+        private static string GetVersionNumber() {
             var asm = Assembly.GetExecutingAssembly();
             var parts = asm.FullName.Split(',');
             return parts[1].Split('=')[1];
         }
 
-        private void PrivacyPolicy_Click(object sender, RoutedEventArgs e)
-        {
+        private void PrivacyPolicy_Click(object sender, RoutedEventArgs e) {
 
         }
     }

@@ -1228,7 +1228,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GPS.
+        ///   Looks up a localized string similar to location.
         /// </summary>
         public static string Setup_GPS_PageHeader {
             get {
@@ -1242,15 +1242,6 @@ namespace DiversityPhone {
         public static string Setup_GPS_Text {
             get {
                 return ResourceManager.GetString("Setup_GPS_Text", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Use GPS.
-        /// </summary>
-        public static string Setup_GPS_ToggleHeader {
-            get {
-                return ResourceManager.GetString("Setup_GPS_ToggleHeader", resourceCulture);
             }
         }
         
