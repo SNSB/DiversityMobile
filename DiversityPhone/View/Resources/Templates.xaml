@@ -12,10 +12,14 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" 
-                       Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" 
+            <Rectangle Grid.Column="0"                        
                        Height="40" 
-                       Width="40"/>
+                       Width="40"
+                       Fill="{StaticResource PhoneForegroundBrush}">
+                <Rectangle.OpacityMask>
+                    <ImageBrush ImageSource="{Binding Icon, Converter={StaticResource IconPathConverter}}"/>
+                </Rectangle.OpacityMask>
+            </Rectangle>
             <Image Grid.Column="0"
                        Source="{Binding Model.Uri, Converter={StaticResource ThumbNail}}"
                        Height="40"
