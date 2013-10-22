@@ -5,6 +5,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 
@@ -21,8 +22,10 @@ namespace DiversityPhone.Services {
 
 
         public void clearVocabulary() {
-            using (var ctx = new VocabularyDataContext()) {
-                ctx.DeleteDatabase();
+            using (var ctx = new VocabularyDataContext(createDB: false)) {
+                if (ctx.DatabaseExists()) {
+                    ctx.DeleteDatabase();
+                }
             }
         }
 
@@ -46,8 +49,15 @@ namespace DiversityPhone.Services {
 
         public void addAnalyses(IEnumerable<Analysis> analyses) {
             withDataContext(ctx => {
-                ctx.Analyses.InsertAllOnSubmit(analyses);
-                ctx.SubmitChanges();
+                try {
+                    ctx.Analyses.InsertAllOnSubmit(analyses);
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex) {
+                    Debugger.Break();
+
+                    // TODO Log
+                }
             });
         }
         #endregion
@@ -62,9 +72,9 @@ namespace DiversityPhone.Services {
         }
         public void addAnalysisResults(IEnumerable<AnalysisResult> results) {
             withDataContext(ctx => {
-                    ctx.AnalysisResults.InsertAllOnSubmit(results);
-                    ctx.SubmitChanges();
-                });
+                ctx.AnalysisResults.InsertAllOnSubmit(results);
+                ctx.SubmitChanges();
+            });
         }
         #endregion
         public void addAnalysisTaxonomicGroups(IEnumerable<AnalysisTaxonomicGroup> groups) {
@@ -93,16 +103,16 @@ namespace DiversityPhone.Services {
         public void addTerms(IEnumerable<Term> terms) {
             withDataContext(ctx => {
 
-                 ctx.Terms.InsertAllOnSubmit(terms);
-                 try {
-                     ctx.SubmitChanges();
-                 }
-                 catch (Exception ex) {
-                     System.Diagnostics.Debugger.Break();
-                     //TODO Log
-                 }
+                ctx.Terms.InsertAllOnSubmit(terms);
+                try {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex) {
+                    System.Diagnostics.Debugger.Break();
+                    //TODO Log
+                }
 
-             });
+            });
         }
 
         public void updateLastUsed(Term term) {
@@ -151,18 +161,18 @@ namespace DiversityPhone.Services {
 
         public void addPropertyNames(IEnumerable<PropertyName> properties) {
             withDataContext(ctx => {
-                    try {
+                try {
 
-                        ctx.PropertyNames.InsertAllOnSubmit(properties);
-                        ctx.SubmitChanges();
+                    ctx.PropertyNames.InsertAllOnSubmit(properties);
+                    ctx.SubmitChanges();
 
-                    }
-                    catch (Exception) {
+                }
+                catch (Exception) {
 
-                        throw;
-                    }
+                    throw;
+                }
 
-                });
+            });
 
         }
 
@@ -179,9 +189,9 @@ namespace DiversityPhone.Services {
 
         public void addProperties(IEnumerable<Property> props) {
             withDataContext(ctx => {
-                    ctx.Properties.InsertAllOnSubmit(props);
-                    ctx.SubmitChanges();
-                });
+                ctx.Properties.InsertAllOnSubmit(props);
+                ctx.SubmitChanges();
+            });
         }
         #endregion
 
@@ -191,14 +201,14 @@ namespace DiversityPhone.Services {
 
         public void addQualifications(IEnumerable<Qualification> qualis) {
             withDataContext(ctx => {
-                    ctx.Qualifications.InsertAllOnSubmit(qualis);
-                    try {
-                        ctx.SubmitChanges();
-                    }
-                    catch (Exception) {
-                        System.Diagnostics.Debugger.Break();
-                    }
-                });
+                ctx.Qualifications.InsertAllOnSubmit(qualis);
+                try {
+                    ctx.SubmitChanges();
+                }
+                catch (Exception) {
+                    System.Diagnostics.Debugger.Break();
+                }
+            });
         }
 
 
@@ -236,12 +246,12 @@ namespace DiversityPhone.Services {
 
             private static string GetCurrentProfileDBPath() {
                 var profilePath = App.Profile.CurrentProfilePath();
-                return string.Format("{0}/{1}/{2}", DB_URI_PROTOCOL, profilePath.Trim('/'), VOCABULARYDB_FILE);
+                return string.Format("{0}\\{1}\\{2}", DB_URI_PROTOCOL, profilePath.Trim('\\'), VOCABULARYDB_FILE);
             }
 
-            public VocabularyDataContext()
+            public VocabularyDataContext(bool createDB = true)
                 : base(GetCurrentProfileDBPath()) {
-                if (!this.DatabaseExists())
+                if (createDB && !this.DatabaseExists())
                     this.CreateDatabase();
             }
 
