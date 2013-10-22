@@ -58,7 +58,7 @@ namespace DiversityPhone.Services {
         }
 
         public void selectTaxonList(TaxonList list) {
-            if (list != null || TaxonList.ValidTableIDs.Contains(list.TableID)) {
+            if (list == null || !TaxonList.ValidTableIDs.Contains(list.TableID)) {
                 Debugger.Break();
                 return;
             }
