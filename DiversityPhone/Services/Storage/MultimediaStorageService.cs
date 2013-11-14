@@ -75,9 +75,18 @@ namespace DiversityPhone {
         private const string ISOSTORE_URI_FORMAT = "isostore:{0}";
         private static readonly Regex CAMERAROLL_URI_REGEX = new Regex("^cameraroll:/(?<name>.+)");
         private const string CAMERAROLL_URI_FORMAT = "cameraroll:/{0}";
+        private static readonly Regex IMAGE_FILENAME_REGEX = new Regex("(.+)\\.jpg$");
 
         public StorageType Type { get; set; }
         public string FileName { get; set; }
+        public bool IsImage {
+            get {
+                if (FileName != null) {
+                    return IMAGE_FILENAME_REGEX.IsMatch(FileName);
+                }
+                return false;
+            }
+        }
 
 
 
@@ -171,6 +180,10 @@ namespace DiversityPhone {
         public ImageSource GetImageThumbnail(string URI) {
             if (URI != null) {
                 var storageDescriptor = StorageDescriptor.FromURI(URI);
+
+                if (!storageDescriptor.IsImage) {
+                    return null;
+                }
 
                 switch (storageDescriptor.Type) {
                     case StorageType.CameraRoll:
