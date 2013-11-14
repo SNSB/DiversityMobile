@@ -323,8 +323,13 @@ namespace DiversityPhone {
                 if (storageDescriptor.Type == StorageType.IsolatedStorage) {
                     var filePath = FilePathForDescriptor(storageDescriptor);
                     UsingIsolatedStorage(store => {
-                        if (store.FileExists(filePath))
-                            store.DeleteFile(filePath);
+                        try {
+                            if (store.FileExists(filePath))
+                                store.DeleteFile(filePath);
+                        }
+                        catch (IsolatedStorageException) {
+                            //TODO Log
+                        }
                     });
 
                 }
