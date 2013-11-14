@@ -15,6 +15,15 @@
             MigrateDatabase(currentProfile);
             MigrateVocabulary(currentProfile);
             MigrateMultimedia(currentProfile);
+            CreateTempFolder();
+        }
+
+        private static void CreateTempFolder() {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
+                if (!iso.DirectoryExists("Temp")) {
+                    iso.CreateDirectory("Temp");
+                }
+            }
         }
 
         private static void MigrateVocabulary(string currentProfile) {

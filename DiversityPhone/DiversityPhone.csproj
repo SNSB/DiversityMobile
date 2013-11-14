@@ -196,6 +196,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper\SwitchableCommand.cs" />
     <Compile Include="Helper\FileTimeStampMixin.cs" />
     <Compile Include="Helper\IsolatedStorageExtensions.cs" />
     <Compile Include="Helper\ObservableMixin.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Services\NavigationService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\Storage\SettingsService.cs" />
+    <Compile Include="Services\VideoService.cs" />
     <Compile Include="ViewModels\Base\GenericItemCommands.cs" />
     <Compile Include="ViewModels\Base\EditPageVMBase.cs" />
     <Compile Include="ViewModels\Base\ElementPageVMBase.cs" />
