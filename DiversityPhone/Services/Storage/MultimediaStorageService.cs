@@ -1,6 +1,7 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using DiversityPhone.Services;
+using Microsoft.Phone;
 using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework.Media;
 using System;
@@ -11,14 +12,13 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 
-namespace DiversityPhone
-{
+namespace DiversityPhone {
     /// <summary>
     /// Interface for specialized handling of Images by the Multimedia Storage Service
     /// </summary>
-    public interface IStoreImages : IStoreMultimedia
-    {
+    public interface IStoreImages : IStoreMultimedia {
         /// <summary>
         /// Stores an Image directly from a PhotoResult
         /// </summary>
@@ -31,28 +31,24 @@ namespace DiversityPhone
         /// Retrieves an Image Thumbnail
         /// </summary>
         /// <param name="uri">A string URI identifying the image</param>        
-        Stream GetImageThumbnail(string uri);
+        ImageSource GetImageThumbnail(string uri);
     }
 
-    public enum StorageType
-    {
+    public enum StorageType {
         Unknown,
         IsolatedStorage,
         CameraRoll
     }
 
-    public static class MultimediaFileNameMixin
-    {
+    public static class MultimediaFileNameMixin {
         /// <summary>
         /// Generates a unique Name for a Multimedia File based on the type and owner of the MMO
         /// as well as a TimeStamp
         /// </summary>
-        public static string NewFileName(this MultimediaObject This)
-        {
+        public static string NewFileName(this MultimediaObject This) {
             string extension = "jpg";
 
-            switch (This.MediaType)
-            {
+            switch (This.MediaType) {
 
                 case MediaType.Audio:
                     extension = "wav";
@@ -74,8 +70,7 @@ namespace DiversityPhone
         }
     }
 
-    public struct StorageDescriptor
-    {
+    public struct StorageDescriptor {
         private static readonly Regex ISOSTORE_URI_REGEX = new Regex("^isostore:(?<name>.+)");
         private const string ISOSTORE_URI_FORMAT = "isostore:{0}";
         private static readonly Regex CAMERAROLL_URI_REGEX = new Regex("^cameraroll:/(?<name>.+)");
@@ -86,13 +81,11 @@ namespace DiversityPhone
 
 
 
-        public static StorageDescriptor FromURI(string uri)
-        {
+        public static StorageDescriptor FromURI(string uri) {
             Contract.Requires(!string.IsNullOrWhiteSpace(uri), "Cannot retrieve StorageDescriptor for empty uri");
 
             var matches = ISOSTORE_URI_REGEX.Match(uri);
-            if (matches.Success)
-            {
+            if (matches.Success) {
                 return new StorageDescriptor()
                 {
                     Type = StorageType.IsolatedStorage,
@@ -101,18 +94,15 @@ namespace DiversityPhone
             }
 
             matches = CAMERAROLL_URI_REGEX.Match(uri);
-            if (matches.Success)
-            {
+            if (matches.Success) {
                 return new StorageDescriptor() { Type = StorageType.CameraRoll, FileName = matches.Groups["name"].Value };
             }
 
             return new StorageDescriptor() { Type = StorageType.Unknown, FileName = string.Empty };
         }
 
-        public override string ToString()
-        {
-            switch (Type)
-            {
+        public override string ToString() {
+            switch (Type) {
                 case StorageType.IsolatedStorage:
                     return string.Format(ISOSTORE_URI_FORMAT, FileName);
                 case StorageType.CameraRoll:
@@ -125,10 +115,8 @@ namespace DiversityPhone
         }
     }
 
-    public static class CameraRollMixin
-    {
-        public static PictureAlbum CameraRoll(this MediaLibrary library)
-        {
+    public static class CameraRollMixin {
+        public static PictureAlbum CameraRoll(this MediaLibrary library) {
             return library
                 .RootPictureAlbum
                 .Albums
@@ -138,26 +126,24 @@ namespace DiversityPhone
         }
     }
 
-    public class MultimediaStorageService : IStoreImages
-    {
+    public class MultimediaStorageService : IStoreImages {
+        private const int THUMBNAIL_HEIGHT = 40,
+                          THUMBNAIL_WIDTH = 40;
         public const string MEDIA_FOLDER = "Multimedia";
         private string CurrentMultimediaFolder = null;
 
         private static Version WP8 = new Version(8, 0);
         private static bool IsWP8 { get { return Environment.OSVersion.Version >= WP8; } }
 
-        private MediaLibrary Library
-        {
-            get
-            {
+        private MediaLibrary Library {
+            get {
                 return new MediaLibrary();
             }
         }
 
         public MultimediaStorageService(
             ICurrentProfile Profile
-            )
-        {
+            ) {
             Profile
                 .CurrentProfilePathObservable()
                 .Select(p => Path.Combine(p, MEDIA_FOLDER))
@@ -165,118 +151,112 @@ namespace DiversityPhone
                 .Subscribe(p => CurrentMultimediaFolder = p);
         }
 
-        public string StoreImage(string fileNameHint, PhotoResult image)
-        {
+        public string StoreImage(string fileNameHint, PhotoResult image) {
             StorageDescriptor fileDescriptor;
             var cameraRoll = Library.CameraRoll();
             //On WP8 the image is already saved, check for that...
             //On Devices without Camera Roll fall back to saving anyway            
-            if (IsWP8 && cameraRoll != null)
-            {
+            if (IsWP8 && cameraRoll != null) {
                 // ... and use the Image in the Camera Roll
                 var crImage = cameraRoll.Pictures.OrderByDescending(p => p.Date).First();
                 fileDescriptor = new StorageDescriptor() { Type = StorageType.CameraRoll, FileName = crImage.Name };
             }
-            else
-            {
+            else {
                 var pic = Library.SavePictureToCameraRoll(fileNameHint, image.ChosenPhoto);
                 fileDescriptor = new StorageDescriptor() { Type = StorageType.CameraRoll, FileName = pic.Name };
             }
             return fileDescriptor.ToString();
         }
 
-        public Stream GetImageThumbnail(string URI)
-        {
-            if (URI != null)
-            {
+        public ImageSource GetImageThumbnail(string URI) {
+            if (URI != null) {
                 var storageDescriptor = StorageDescriptor.FromURI(URI);
 
-                switch (storageDescriptor.Type)
-                {
+                switch (storageDescriptor.Type) {
                     case StorageType.CameraRoll:
                         return GetThumbnailFromCameraRoll(storageDescriptor.FileName);
+                    case StorageType.IsolatedStorage:
+                        return GetThumbnailFromIsolatedStorage(storageDescriptor.FileName);
                     default: // No other Thumbnails supported
                         break;
                 }
             }
-            return Stream.Null;
+            return null;
         }
 
-        private Stream GetThumbnailFromCameraRoll(string FileName)
-        {
-            var picture = GetPictureFromCameraRoll(FileName);
-            if (picture != null)
-            {
-                return picture.GetThumbnail();
+        private ImageSource GetThumbnailFromIsolatedStorage(string fileName) {
+            using (var imageStream = GetMultimediaFromIsolatedStorage(fileName)) {
+                return GetThumbnailFromStream(imageStream);
             }
-            return Stream.Null;
         }
 
-        private Picture GetPictureFromCameraRoll(string FileName)
-        {
+        private ImageSource GetThumbnailFromCameraRoll(string FileName) {
+            using (var picture = GetPictureFromCameraRoll(FileName))
+            using (var pictureStream = picture.GetThumbnail()) {
+                return GetThumbnailFromStream(pictureStream);
+            }
+        }
+
+        private ImageSource GetThumbnailFromStream(Stream ImageStream) {
+            ImageSource result = null;
+            using (var stream = ImageStream) {
+                if (stream.Length > 0) {
+                    result = PictureDecoder.DecodeJpeg(stream, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT);
+                }
+            }
+            return result;
+        }
+
+        private Picture GetPictureFromCameraRoll(string FileName) {
             var cameraRoll = Library.CameraRoll();
 
-            if (cameraRoll != null)
-            {
+            if (cameraRoll != null) {
                 return cameraRoll.Pictures.Where(p => p.Name == FileName).FirstOrDefault();
             }
             return null;
         }
 
-        private Stream GetMultimediaFromCameraRoll(string FileName)
-        {
+        private Stream GetMultimediaFromCameraRoll(string FileName) {
             var picture = GetPictureFromCameraRoll(FileName);
-            if (picture != null)
-            {
+            if (picture != null) {
                 return picture.GetImage();
             }
             return Stream.Null;
         }
 
-        private Stream GetMultimediaFromIsolatedStorage(string FileName)
-        {
+        private Stream GetMultimediaFromIsolatedStorage(string FileName) {
             var result = Stream.Null;
 
-            if (CurrentMultimediaFolder != null)
-            {
+            if (CurrentMultimediaFolder != null) {
                 var fullPath = Path.Combine(CurrentMultimediaFolder, FileName);
 
-                try
-                {
+                try {
                     // On Successful Open the Caller has resonsibility to close the Stream
                     var store = IsolatedStorageFile.GetUserStoreForApplication();
-                    if (store.FileExists(fullPath))
-                    {
+                    if (store.FileExists(fullPath)) {
                         result = store.OpenFile(fullPath, FileMode.Open, FileAccess.Read);
                     }
-                    else
-                    {
+                    else {
                         store.Dispose();
                     }
                 }
-                catch (IsolatedStorageException)
-                {
+                catch (IsolatedStorageException) {
                     Debugger.Break();
                 }
             }
             return result;
         }
 
-        private void CreateDirIfNecessary(string dir)
-        {
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (!iso.DirectoryExists(dir))
-                {
+        private void CreateDirIfNecessary(string dir) {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
+                if (!iso.DirectoryExists(dir)) {
                     iso.CreateDirectory(dir);
                 }
             }
         }
 
-        private string FilePathForDescriptor(StorageDescriptor desc)
-        {
-            if (desc.Type != StorageType.IsolatedStorage)
-            {
+        private string FilePathForDescriptor(StorageDescriptor desc) {
+            if (desc.Type != StorageType.IsolatedStorage) {
                 throw new ArgumentException("desc");
             }
             Contract.Requires(CurrentMultimediaFolder != null, "Invalid Profile Folder");
@@ -284,36 +264,29 @@ namespace DiversityPhone
             return Path.Combine(CurrentMultimediaFolder, desc.FileName);
         }
 
-        public string StoreMultimedia(string FileName, Stream data)
-        {
+        public string StoreMultimedia(string FileName, Stream data) {
             Contract.Requires(!string.IsNullOrWhiteSpace(FileName), "Invalid Filename");
 
-            
+
             var fileDescriptor = new StorageDescriptor() { Type = StorageType.IsolatedStorage, FileName = FileName };
             var filePath = FilePathForDescriptor(fileDescriptor);
-            UsingIsolatedStorage(store =>
-                {
-                    if (store.FileExists(filePath))
-                    {
-                        throw new InvalidOperationException("Couldn't save Media. File already Exists!");
+            UsingIsolatedStorage(store => {
+                if (store.FileExists(filePath)) {
+                    throw new InvalidOperationException("Couldn't save Media. File already Exists!");
+                }
+                else {
+                    using (var file = store.CreateFile(filePath)) {
+                        data.Seek(0, SeekOrigin.Begin);
+                        data.CopyTo(file);
+                        file.Flush();
                     }
-                    else
-                    {
-                        using (var file = store.CreateFile(filePath))
-                        {
-                            data.Seek(0, SeekOrigin.Begin);
-                            data.CopyTo(file);
-                            file.Flush();
-                        }
-                    }
-                });
+                }
+            });
             return fileDescriptor.ToString();
         }
 
-        public Stream GetMultimedia(string uri)
-        {
-            if (uri != null)
-            {
+        public Stream GetMultimedia(string uri) {
+            if (uri != null) {
                 var storageDescriptor = StorageDescriptor.FromURI(uri);
 
                 return GetMultimediaFromDescriptor(ref storageDescriptor);
@@ -321,10 +294,8 @@ namespace DiversityPhone
             return Stream.Null;
         }
 
-        public Stream GetMultimediaFromDescriptor(ref StorageDescriptor storageDescriptor)
-        {
-            switch (storageDescriptor.Type)
-            {
+        public Stream GetMultimediaFromDescriptor(ref StorageDescriptor storageDescriptor) {
+            switch (storageDescriptor.Type) {
                 case StorageType.IsolatedStorage:
                     return GetMultimediaFromIsolatedStorage(storageDescriptor.FileName);
                 case StorageType.CameraRoll:
@@ -336,41 +307,32 @@ namespace DiversityPhone
             }
         }
 
-        public void ClearAllMultimedia()
-        {
-            UsingIsolatedStorage(store =>
-                {
-                    if ( CurrentMultimediaFolder != null && store.DirectoryExists(CurrentMultimediaFolder))
-                    {
-                        store.DeleteDirectoryRecursiveAsync(CurrentMultimediaFolder).Wait();
-                        CreateDirIfNecessary(CurrentMultimediaFolder);
-                    }
-                });
+        public void ClearAllMultimedia() {
+            UsingIsolatedStorage(store => {
+                if (CurrentMultimediaFolder != null && store.DirectoryExists(CurrentMultimediaFolder)) {
+                    store.DeleteDirectoryRecursiveAsync(CurrentMultimediaFolder).Wait();
+                    CreateDirIfNecessary(CurrentMultimediaFolder);
+                }
+            });
         }
 
-        public void DeleteMultimedia(string uri)
-        {
-            if (uri != null)
-            {
+        public void DeleteMultimedia(string uri) {
+            if (uri != null) {
                 var storageDescriptor = StorageDescriptor.FromURI(uri);
 
-                if (storageDescriptor.Type == StorageType.IsolatedStorage)
-                {
+                if (storageDescriptor.Type == StorageType.IsolatedStorage) {
                     var filePath = FilePathForDescriptor(storageDescriptor);
-                    UsingIsolatedStorage(store =>
-                        {
-                            if (store.FileExists(filePath))
-                                store.DeleteFile(filePath);
-                        });
+                    UsingIsolatedStorage(store => {
+                        if (store.FileExists(filePath))
+                            store.DeleteFile(filePath);
+                    });
 
                 }
             }
         }
 
-        private static void UsingIsolatedStorage(Action<IsolatedStorageFile> action)
-        {
-            using (var isostore = IsolatedStorageFile.GetUserStoreForApplication())
-            {
+        private static void UsingIsolatedStorage(Action<IsolatedStorageFile> action) {
+            using (var isostore = IsolatedStorageFile.GetUserStoreForApplication()) {
                 action(isostore);
             }
         }
