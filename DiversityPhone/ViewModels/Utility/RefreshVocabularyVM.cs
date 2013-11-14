@@ -13,15 +13,16 @@ namespace DiversityPhone.ViewModels {
             IMessageBus Messenger
             ) {
             this.OnActivation()
-                .SelectMany(_ => Credentials.CurrentCredentials().Where(cred => cred != null))
+                .SelectMany(_ => Credentials.CurrentCredentials().Where(cred => cred != null).FirstAsync())
+                .TakeUntil(this.OnDeactivation())
                 .Subscribe(login => {
-                        var refreshTask = refreshVocabluaryTaskFactory();
-                        refreshTask.Start(login)
-                            .Subscribe(_ => { }, () => {
-                                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
-                                Messenger.SendMessage<Page>(Page.Home);
-                            });
-                    });
+                    var refreshTask = refreshVocabluaryTaskFactory();
+                    refreshTask.Start(login)
+                        .Subscribe(_ => { }, () => {
+                            Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
+                            Messenger.SendMessage<Page>(Page.Home);
+                        });
+                });
 
         }
 
