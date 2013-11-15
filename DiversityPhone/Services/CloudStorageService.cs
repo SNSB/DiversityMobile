@@ -187,7 +187,7 @@ namespace DiversityPhone.Services {
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
             return Enumerable.Empty<string>();
 
         }

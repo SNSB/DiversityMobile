@@ -19,7 +19,7 @@ namespace DiversityPhone.ViewModels {
                     var refreshTask = refreshVocabluaryTaskFactory();
                     refreshTask.Start(login)
                         .Subscribe(_ => { }, () => {
-                            Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.REFRESH);
+                            Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
                             Messenger.SendMessage<Page>(Page.Home);
                         });
                 });

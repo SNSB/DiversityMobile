@@ -35,7 +35,7 @@
 
             CurrentModelObservable
                 .Merge(
-                    from refresh in Messenger.Listen<EventMessage>(MessageContracts.REFRESH)
+                    from refresh in Messenger.Listen<EventMessage>(MessageContracts.INIT)
                     from activation in this.OnActivation().TakeUntil(CurrentModelObservable)
                     select Current.Model
                     )

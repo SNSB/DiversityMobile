@@ -17,10 +17,6 @@
         /// i.e. when setup is finished, or new data has been downloaded
         /// </summary>
         public const string INIT = "Init";
-        /// <summary>
-        /// Signals that Vocabulary has been refreshed
-        /// </summary>
-        public const string REFRESH = "Refresh";
     }
 
     public class EventMessage {

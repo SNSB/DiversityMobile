@@ -53,7 +53,7 @@ namespace DiversityPhone.Services {
                     ctx.Analyses.InsertAllOnSubmit(analyses);
                     ctx.SubmitChanges();
                 }
-                catch (Exception ex) {
+                catch (Exception) {
                     Debugger.Break();
 
                     // TODO Log
@@ -107,7 +107,7 @@ namespace DiversityPhone.Services {
                 try {
                     ctx.SubmitChanges();
                 }
-                catch (Exception ex) {
+                catch (Exception) {
                     System.Diagnostics.Debugger.Break();
                     //TODO Log
                 }
