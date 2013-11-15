@@ -62,7 +62,6 @@ namespace DiversityPhone.Services {
 
         private readonly ISettingsService Settings;
         private readonly IStoreImages ImageStore;
-        private readonly ICleanupData Cleanup;
         private readonly ICurrentProfile Profile;
         private readonly IScheduler ThreadPool;
         private readonly XmlSerializer SettingsSerializer;
@@ -253,24 +252,20 @@ namespace DiversityPhone.Services {
         public BackupService(
             ISettingsService Settings,
             IStoreImages ImageStore,
-            ICleanupData Cleanup,
             ICurrentProfile Profile,
             [ThreadPool] IScheduler ThreadPool
             ) {
             Contract.Requires(Settings != null);
             Contract.Requires(ImageStore != null);
-            Contract.Requires(Cleanup != null);
             Contract.Requires(Profile != null);
             Contract.Requires(ThreadPool != null);
 
             this.Settings = Settings;
             this.ImageStore = ImageStore;
-            this.Cleanup = Cleanup;
             this.Profile = Profile;
             this.ThreadPool = ThreadPool;
             this.SettingsSerializer = new XmlSerializer(typeof(AppSettings));
             CreateSnapshotsDirIfNecessary();
         }
-
     }
 }

@@ -3,7 +3,9 @@ using DiversityPhone.Model;
 using ReactiveUI;
 using ReactiveUI.Xaml;
 using System;
+using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.ViewModels.Utility {
     public partial class SettingsVM : PageVMBase {
@@ -26,7 +28,7 @@ namespace DiversityPhone.ViewModels.Utility {
         }
         public ReactiveCommand Save { get; private set; }
 
-        public ReactiveCommand Reset { get; private set; }
+        public ReactiveAsyncCommand Reset { get; private set; }
 
         public ReactiveCommand ManageTaxa { get; private set; }
 
@@ -64,13 +66,9 @@ namespace DiversityPhone.ViewModels.Utility {
                 .Select(m => m.UseGPS)
                 .Subscribe(x => UseGPS = x);
 
-            Reset = new ReactiveCommand(Connectivity.WifiAvailable());
+            Reset = new ReactiveAsyncCommand(Connectivity.WifiAvailable());
 
-            Reset
-            .SelectMany(_ => Notifications.showDecision(DiversityResources.Settings_ConfirmReset)
-                .Where(x => x)
-                )
-                .Subscribe(_ => OnReset());
+            Reset.RegisterAsyncTask(OnReset);
 
             var setting_changed =
                 this.WhenAny(x => x.UseGPS, x => x.Model,
@@ -136,9 +134,14 @@ namespace DiversityPhone.ViewModels.Utility {
         }
 
 
-        private void OnReset() {
-            Cleanup.ClearLocalData();
-            Messenger.SendMessage(Page.SetupWelcome);
+        private async Task<Unit> OnReset(object _) {
+            var confirmReset = await Notifications.showDecision(DiversityResources.Settings_ConfirmReset);
+            if (confirmReset) {
+                await Cleanup.ClearLocalData();
+                Messenger.SendMessage(Page.SetupWelcome);
+            }
+
+            return Unit.Default;
         }
     }
 }

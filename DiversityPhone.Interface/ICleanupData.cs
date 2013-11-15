@@ -1,5 +1,6 @@
-﻿namespace DiversityPhone.Interface {
+﻿using System.Threading.Tasks;
+namespace DiversityPhone.Interface {
     public interface ICleanupData {
-        void ClearLocalData();
+        Task ClearLocalData();
     }
 }
