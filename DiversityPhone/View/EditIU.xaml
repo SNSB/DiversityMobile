@@ -68,7 +68,7 @@
         </Grid>
 
         <!--ContentPanel - place additional content here-->
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" IsEnabled="{Binding IsEditable}">
             <StackPanel x:Name="ContentPanel"  
                         Margin="{StaticResource PhoneHorizontalMargin}">
                 <toolkit:ListPicker  ItemsSource="{Binding TaxonomicGroup.Items}" 
@@ -77,7 +77,7 @@
                                 FullModeItemTemplate="{StaticResource TermListItemTemplateLarge}"
                                 Header="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
                                 FullModeHeader="{Binding Resources.IdentificationUnit_Header_TaxonomicGroup, Source={StaticResource LocalizedStrings}}"
-                                IsEnabled="{Binding IsEditable}"/>
+                                IsEnabled="{Binding IsNew}"/>
 
                 <TextBlock Text="{Binding Resources.IdentificationUnit_Header_NameQuery, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"  Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"/>
                 <TextBox x:Name="QueryString"

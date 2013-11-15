@@ -10,10 +10,8 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels
-{
-    public class EditIUVM : EditPageVMBase<IdentificationUnit>
-    {
+namespace DiversityPhone.ViewModels {
+    public class EditIUVM : EditPageVMBase<IdentificationUnit> {
         readonly ITaxonService Taxa;
         readonly IVocabularyService Vocabulary;
         readonly ILocationService Geolocation;
@@ -25,25 +23,27 @@ namespace DiversityPhone.ViewModels
         IDisposable _location_subscription = Disposable.Empty;
 
         #region Properties
+        private ObservableAsPropertyHelper<bool> _IsNew;
+        public bool IsNew {
+            get {
+                return _IsNew.Value;
+            }
+        }
+
         private ObservableAsPropertyHelper<bool> _IsObservation;
-        public bool IsObservation
-        {
-            get
-            {
+        public bool IsObservation {
+            get {
                 return _IsObservation.Value;
             }
         }
 
 
         private bool _OnlyObserved;
-        public bool OnlyObserved
-        {
-            get
-            {
+        public bool OnlyObserved {
+            get {
                 return _OnlyObserved;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.OnlyObserved, ref _OnlyObserved, value);
             }
         }
@@ -53,27 +53,21 @@ namespace DiversityPhone.ViewModels
         public ListSelectionHelper<Term> RelationshipType { get; private set; }
 
         private string _Description;
-        public string Description
-        {
-            get
-            {
+        public string Description {
+            get {
                 return _Description;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.Description, ref _Description, value);
             }
         }
 
         private string _QueryString;
-        public string QueryString
-        {
-            get
-            {
+        public string QueryString {
+            get {
                 return _QueryString;
             }
-            set
-            {
+            set {
                 this.RaiseAndSetIfChanged(x => x.QueryString, ref _QueryString, value);
             }
         }
@@ -87,8 +81,7 @@ namespace DiversityPhone.ViewModels
 
         private DateTime _AnalysisDate;
 
-        public DateTime AnalysisDate
-        {
+        public DateTime AnalysisDate {
             get { return _AnalysisDate; }
             set { this.RaiseAndSetIfChanged(x => x.AnalysisDate, ref _AnalysisDate, value); }
         }
@@ -105,8 +98,7 @@ namespace DiversityPhone.ViewModels
             IFieldDataService Storage,
             [Dispatcher] IScheduler Dispatcher,
             [ThreadPool] IScheduler ThreadPool
-            )
-        {
+            ) {
             this.Storage = Storage;
             this.Taxa = Taxa;
             this.Vocabulary = Vocabulary;
@@ -122,20 +114,21 @@ namespace DiversityPhone.ViewModels
                 ActivationObservable,
                 (_, act) => act
             )
-                .Subscribe(active =>
-                {
-                    if (active)
-                    {
+                .Subscribe(active => {
+                    if (active) {
                         _latest_location.OnNext(Coordinate.Unknown);
                         _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown()).Subscribe(_latest_location);
                     }
-                    else
-                    {
+                    else {
                         _location_subscription.Dispose();
                     }
                 });
 
             #region Update View
+            _IsNew = this.ModelByVisitObservable
+                .Select(iu => iu.IsNew())
+                .ToProperty(this, x => x.IsNew);
+
             _IsToplevel = this.ObservableToProperty(
                 CurrentModelObservable
                 .Select(m => m.RelatedUnitID == null),
@@ -197,33 +190,29 @@ namespace DiversityPhone.ViewModels
                                select noUpdatesInFlight.StartWith(false))
                               .Switch(),
                               (a, b, c) => a && b && c
-                                  
+
                               );
 
             canSave
                 .DistinctUntilChanged()
-                .Select(can_save =>
-                    {
-                        //immediately disable saving, delay reenabling it
-                        if (can_save)
-                            return Observable.Return(true).Delay(TimeSpan.FromMilliseconds(500), Dispatcher);
-                        else
-                            return Observable.Return(false);
-                    })
+                .Select(can_save => {
+                    //immediately disable saving, delay reenabling it
+                    if (can_save)
+                        return Observable.Return(true).Delay(TimeSpan.FromMilliseconds(500), Dispatcher);
+                    else
+                        return Observable.Return(false);
+                })
                 .Switch()
                 .StartWith(false)
                 .Subscribe(CanSaveSubject.OnNext);
 
             UpdateIdentifications
-                .RegisterAsyncFunction(t_obj =>
-                    {
-                        var t = (System.Tuple<string, Term>)t_obj;
-                        var candidates = Taxa.getTaxonNames(t.Item2, t.Item1).Take(10)
-                        .SelectMany(tn =>
-                            {
-                                if (!string.IsNullOrWhiteSpace(tn.AcceptedNameURI))
-                                {
-                                    return new TaxonName[]
+                .RegisterAsyncFunction(t_obj => {
+                    var t = (System.Tuple<string, Term>)t_obj;
+                    var candidates = Taxa.getTaxonNames(t.Item2, t.Item1).Take(10)
+                    .SelectMany(tn => {
+                        if (!string.IsNullOrWhiteSpace(tn.AcceptedNameURI)) {
+                            return new TaxonName[]
                                     {
                                         tn,
                                         new TaxonName() //Doesn't contain structured Information on Genus,...
@@ -233,29 +222,28 @@ namespace DiversityPhone.ViewModels
                                             Synonymy = DiversityPhone.Model.Synonymy.Accepted
                                         }
                                     };
-                                }
-                                else
-                                    return new TaxonName[] { tn };
-                            })
-                        .ToList();
-
-                        if (!string.IsNullOrWhiteSpace(t.Item1))
-                        {
-                            //Prepend WorkingName as Identification
-                            candidates.Insert(0,
-                                new TaxonName()
-                                {
-                                    TaxonNameCache = QueryString,
-                                    GenusOrSupragenic = null,
-                                    SpeciesEpithet = null,
-                                    Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
-                                    URI = null,
-                                    AcceptedNameCache = null,
-                                    AcceptedNameURI = null
-                                });
                         }
-                        return candidates as IList<TaxonName>;
-                    }, ThreadPool)
+                        else
+                            return new TaxonName[] { tn };
+                    })
+                    .ToList();
+
+                    if (!string.IsNullOrWhiteSpace(t.Item1)) {
+                        //Prepend WorkingName as Identification
+                        candidates.Insert(0,
+                            new TaxonName()
+                            {
+                                TaxonNameCache = QueryString,
+                                GenusOrSupragenic = null,
+                                SpeciesEpithet = null,
+                                Synonymy = DiversityPhone.Model.Synonymy.WorkingName,
+                                URI = null,
+                                AcceptedNameCache = null,
+                                AcceptedNameURI = null
+                            });
+                    }
+                    return candidates as IList<TaxonName>;
+                }, ThreadPool)
             .ObserveOn(Dispatcher)
             .Subscribe(Identification.ItemsObserver);
 
@@ -321,12 +309,10 @@ namespace DiversityPhone.ViewModels
                 MessageContracts.USE);
         }
 
-        private IList<T> bringItemToTop<T>(IEnumerable<T> oldlist, T item) where T : class
-        {
+        private IList<T> bringItemToTop<T>(IEnumerable<T> oldlist, T item) where T : class {
             IList<T> res = new List<T>();
             res.Add(item);
-            foreach (var other in oldlist.Where(x => x != item))
-            {
+            foreach (var other in oldlist.Where(x => x != item)) {
                 res.Add(other);
             }
             return res;
@@ -334,8 +320,7 @@ namespace DiversityPhone.ViewModels
 
 
 
-        protected override void UpdateModel()
-        {
+        protected override void UpdateModel() {
             if (!Current.Model.IsLocalized())
                 Current.Model.SetCoordinates(_latest_location.FirstOrDefaultAsync().Wait() ?? Coordinate.Unknown);
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
