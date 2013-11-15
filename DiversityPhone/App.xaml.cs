@@ -12,6 +12,7 @@ using ReactiveUI;
 using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 
@@ -175,14 +176,12 @@ namespace DiversityPhone {
 
         class InitModule : Ninject.Modules.NinjectModule {
             public override void Load() {
-                StorageMigration.ApplyMigrationIfNecessary();
-
                 Kernel.Get<FieldDataService>().CheckAndRepairDatabase();
                 Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
             }
         }
 
-        public static void Initialize() {
+        public static void StartInitialize() {
             if (Kernel != null) // Already Initialized
                 return;
 
@@ -194,16 +193,25 @@ namespace DiversityPhone {
             RxApp.DeferredScheduler = DispatcherScheduler.Current;
             RxApp.TaskpoolScheduler = ThreadPoolScheduler.Instance;
 
+            InitializeAsync();
+        }
 
+        private static async Task InitializeAsync() {
             Kernel = new StandardKernel();
             Kernel.Bind<PhoneApplicationFrame>().ToConstant(RootFrame);
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
+            await StorageMigration.ApplyMigrationIfNecessary();
             Kernel.Load<InitModule>();
+
+            var listeners = KernelInitialized;
+            if (listeners != null) {
+                listeners();
+            }
         }
 
-
+        public static event Action KernelInitialized;
 
 
         // Code to execute when the application is launching (eg, from Start)
