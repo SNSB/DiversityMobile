@@ -1,9 +1,5 @@
 ﻿namespace DiversityPhone.Model {
 
-    public static class VMMessages {
-        public const string USED_EVENTPROPERTY_IDS = "UEID";
-    }
-
     public static class MessageContracts {
         public const string SAVE = "Save";
         public const string DELETE = "Delete";

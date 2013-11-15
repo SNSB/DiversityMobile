@@ -228,6 +228,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="EventSeries_NoES_Header" xml:space="preserve">
     <value>events</value>
   </data>
+  <data name="Event_Info_NoProperties" xml:space="preserve">
+    <value>No (more) Properties available.</value>
+  </data>
   <data name="GeoCoordinates_NoAltitude" xml:space="preserve">
     <value>no altitude</value>
   </data>

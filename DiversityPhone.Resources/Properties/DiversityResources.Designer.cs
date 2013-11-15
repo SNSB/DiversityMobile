@@ -346,6 +346,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No (more) Properties available..
+        /// </summary>
+        public static string Event_Info_NoProperties {
+            get {
+                return ResourceManager.GetString("Event_Info_NoProperties", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to property.
         /// </summary>
         public static string EventProperty_Header_Property {

@@ -4,6 +4,7 @@
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Reactive.Linq;
 
@@ -80,7 +81,6 @@
 
             CurrentModelObservable
                 .Do(_ => PropertyList.Clear())
-                .Do(_ => Messenger.SendMessage(PropertyList.Select(vm => vm.Model.PropertyID), VMMessages.USED_EVENTPROPERTY_IDS))
                 .Subscribe(getProperties.Execute);
 
             SelectProperty = new ReactiveCommand<IElementVM<EventProperty>>();
@@ -94,8 +94,17 @@
                 .Select(m => m as IMultimediaOwner)
                 .Subscribe(MultimediaList);
 
+            // Receive Latest Property List broadcast by EditPropertyVM
+            var properties = Messenger.Listen<IList<Property>>();
+            var allPropertiesSet = properties.Select(list => list.Count)
+                .CombineLatest(PropertyList.CollectionCountChanged, (available, set) => available <= set);
+
+            var canAdd =
+                this.WhenAny(x => x.SelectedPivot, x => x.GetValue())
+                    .CombineLatest(allPropertiesSet, (piv, allSet) => piv != Pivots.Descriptions || !allSet);
+
             //Add New
-            Add = new ReactiveCommand();
+            Add = new ReactiveCommand(canAdd);
             Add.Where(_ => SelectedPivot == Pivots.Specimen)
                 .Select(_ => new SpecimenVM(new Specimen() { EventID = Current.Model.EventID }) as IElementVM<Specimen>)
                 .ToMessage(Messenger, MessageContracts.EDIT);

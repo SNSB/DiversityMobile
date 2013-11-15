@@ -41,7 +41,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
-                <toolkit:ListPicker IsEnabled="{Binding IsEditable}"
+                <toolkit:ListPicker IsEnabled="{Binding IsNew}"
                                 Header="{Binding Resources.EventProperty_Header_Property, Source={StaticResource LocalizedStrings}}"                                
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
                                 ItemsSource="{Binding Properties.Items}"

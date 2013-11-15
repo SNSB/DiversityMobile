@@ -8,17 +8,12 @@
     using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
-    using System.Reactive.Subjects;
 
     public class EditPropertyVM : EditPageVMBase<EventProperty> {
         readonly IVocabularyService Vocabulary;
         readonly IFieldDataService Storage;
 
         private ObservableAsyncMRUCache<int, IObservable<PropertyName>> _PropertyNamesCache;
-        private IObservable<Property> _Properties;
-        private BehaviorSubject<IEnumerable<int>> _UsedProperties;
-
-
 
         #region Properties
 
@@ -39,7 +34,8 @@
         }
 
 
-        private Property NoProperty = new Property() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
+        private readonly Property NoProperty = new Property() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
+        private readonly IList<Property> DefaultProperties;
         public ListSelectionHelper<Property> Properties { get; private set; }
 
         private PropertyName NoValue = new PropertyName() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
@@ -50,56 +46,65 @@
         public EditPropertyVM(
             IVocabularyService Vocabulary,
             IFieldDataService Storage,
-            IMessageBus Messenger,
-            [Dispatcher] IScheduler Dispatcher
+            [Dispatcher] IScheduler Dispatcher,
+            [ThreadPool] IScheduler ThreadPool
             ) {
             Contract.Requires(Vocabulary != null);
             Contract.Requires(Storage != null);
             this.Vocabulary = Vocabulary;
             this.Storage = Storage;
 
-            _UsedProperties = new BehaviorSubject<IEnumerable<int>>(Enumerable.Empty<int>());
-            Messenger.Listen<IEnumerable<int>>(VMMessages.USED_EVENTPROPERTY_IDS)
-                .Subscribe(_UsedProperties);
+            DefaultProperties = new List<Property>() { NoProperty };
 
+            var properties = Messenger.Listen<EventMessage>(MessageContracts.INIT)
+                .ObserveOn(ThreadPool)
+                .Select(_ => Vocabulary.getAllProperties().ToList() as IList<Property>
+                ).Publish();
+            properties.Connect();
 
-            var properties = Vocabulary.getAllProperties()
-                    .ToObservable(ThreadPoolScheduler.Instance)
-                    .Replay(ThreadPoolScheduler.Instance);
+            // Broadcast latest Properties for other VMs to use
+            Messenger.RegisterMessageSource(properties);
 
-            this.FirstActivation()
-                .Subscribe(_ => properties.Connect());
+            properties
+                .Select(props => new ObservableAsyncMRUCache<int, IObservable<PropertyName>>(
+                        propertyID =>
+                            Observable.Start(
+                            () => Vocabulary
+                            .getPropertyNames(propertyID)
+                            .ToObservable(ThreadPool)
+                            .Replay(ThreadPool))
+                            .Do(s => s.Connect())
+                            .Select(s => s as IObservable<PropertyName>),
+                            10
+                    ))
+                .Subscribe(cache => _PropertyNamesCache = cache);
 
-            _Properties = properties;
-
-            _PropertyNamesCache = new ObservableAsyncMRUCache<int, IObservable<PropertyName>>(
-                propertyID =>
-                    Observable.Start(
-                    () => Vocabulary
-                    .getPropertyNames(propertyID)
-                    .ToObservable(ThreadPoolScheduler.Instance)
-                    .Replay(ThreadPoolScheduler.Instance))
-                    .Do(s => s.Connect())
-                    .Select(s => s as IObservable<PropertyName>)
-                    , 3);
-
-            _IsNew = this.ObservableToProperty(CurrentModelObservable.Select(m => m.IsNew()), x => x.IsNew, false);
-
+            _IsNew = this.ObservableToProperty(ModelByVisitObservable.Select(m => m.IsNew()), x => x.IsNew, false);
 
             Properties = new ListSelectionHelper<Property>(Dispatcher);
-            ModelByVisitObservable
-                .SelectMany(evprop => {
-                    var isNew = evprop.IsNew();
-                    var usedProps = _UsedProperties.First();
 
-                    return
-                     _Properties
-                         .Where(p =>
-                             p.PropertyID == evprop.PropertyID //Editing property -> can't change type
-                             || (isNew && !usedProps.Contains(p.PropertyID)))//New Property, only show unused ones                            
-                         .ToList();
+            properties.SampleMostRecent(this.OnActivation())
+                .Zip(ModelByVisitObservable, (props, evprop) => {
+                    var isNew = evprop.IsNew();
+                    if (isNew) { //New Property, only show unused ones
+                        var usedPropertyIDs = (from p in Storage.getPropertiesForEvent(evprop.EventID)
+                                               select p.PropertyID).ToList();
+                        return from p in props
+                               where !usedPropertyIDs.Contains(p.PropertyID)
+                               select p;
+                    }
+                    else { //Editing property -> can't change type
+                        return from p in props
+                               where p.PropertyID == evprop.PropertyID
+                               select p;
+                    }
                 })
-                .Select(coll => coll as IList<Property>)
+                .Select(coll => coll.ToList() as IList<Property>)
+                .Do(list => {
+                    if (list.Count > 1) {
+                        list.Insert(0, NoProperty);
+                    }
+                })
                 .ObserveOn(Dispatcher)
                 .Subscribe(Properties.ItemsObserver);
 
@@ -112,7 +117,7 @@
             Properties.SelectedItemObservable
                 .SelectMany(prop => {
                     return
-                        (prop == null || prop == NoProperty)
+                        (prop == null || prop == NoProperty || _PropertyNamesCache == null)
                         ? Observable.Return(Observable.Return(NoValue))
                         : _PropertyNamesCache.AsyncGet(prop.PropertyID);
                 })
