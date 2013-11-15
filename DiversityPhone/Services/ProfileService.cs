@@ -4,9 +4,11 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.Services {
     public interface ICurrentProfile {
@@ -16,6 +18,7 @@ namespace DiversityPhone.Services {
         int CurrentProfileID();
         void SetCurrentProfileID(int profileID);
         int CreateProfileID();
+        Task ClearUnusedProfiles();
     }
 
     public class ProfileService : ICurrentProfile {
@@ -134,6 +137,22 @@ namespace DiversityPhone.Services {
         private static void CreateDirIfNecessary(IsolatedStorageFile iso, string dir) {
             if (!iso.DirectoryExists(dir)) {
                 iso.CreateDirectory(dir);
+            }
+        }
+
+
+        public async Task ClearUnusedProfiles() {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
+                var currentProfile = CurrentProfileID().ToString();
+                var profileQuery = string.Format("{0}/", PROFILE_DIR);
+                var unusedProfiles = from p in iso.GetDirectoryNames(profileQuery)
+                                     where p != currentProfile
+                                     select p;
+
+                foreach (var profile in unusedProfiles) {
+                    var profilePath = string.Format("{0}/{1}", PROFILE_DIR, profile);
+                    await iso.DeleteDirectoryRecursiveAsync(profilePath);
+                }
             }
         }
     }

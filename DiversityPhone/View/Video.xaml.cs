@@ -1,328 +1,46 @@
-﻿using DiversityPhone.Model;
+﻿using DiversityPhone.Services;
 using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using System;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Reactive.Disposables;
 using System.Windows;
-using System.Windows.Media;
 
-namespace DiversityPhone.View
-{
-    public partial class NewVideo : PhoneApplicationPage
-    {
-
-
-        private Stream isoVideoFile;
-        private VideoBrush videoRecorderBrush;
-        private CaptureSource captureSource;
-        private VideoCaptureDevice videoCaptureDevice;
-        private FileSink fileSink;
-
-        private IDisposable _subscriptions;
-
-
-        private VideoVM VM
-        {
-            get
-            {
+namespace DiversityPhone.View {
+    public partial class NewVideo : PhoneApplicationPage {
+        private VideoVM VM {
+            get {
                 return DataContext as VideoVM;
             }
         }
 
-        private CommandButtonAdapter _record;
-        private PlayStopButton _playstop;
-        private SaveDeleteButton _savedelete;
-        
-         
+        private CommandButtonAdapter _record, _play, _stop;
+        private SaveDeleteButton _save;
+        private VideoService _Svc;
 
-        public NewVideo()
-        {
+        public NewVideo() {
             InitializeComponent();
-           
-            _record = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, VM.Record);
-            _playstop = new PlayStopButton(ApplicationBar, VM);
-            _savedelete = new SaveDeleteButton(ApplicationBar, VM);
+
+            _Svc = new VideoService(this.viewfinderRectangle, this.videoPlayer);
+
+            _record = new CommandButtonAdapter(ApplicationBar.Buttons[0] as IApplicationBarIconButton, _Svc.Record);
+            _play = new CommandButtonAdapter(ApplicationBar.Buttons[1] as IApplicationBarIconButton, _Svc.Play);
+            _stop = new CommandButtonAdapter(ApplicationBar.Buttons[2] as IApplicationBarIconButton, _Svc.Stop);
+            _save = new SaveDeleteButton(
+                this.ApplicationBar,
+                VM);
+
+
+            VM.VideoService = _Svc as IVideoService;
         }
 
-        private void PageLoaded(object sender, RoutedEventArgs e)
-        {
-            initializeVideoRecorder();
 
-            _subscriptions = new CompositeDisposable()
-            {
-                VM.Record.Subscribe(_ => record()),
-                VM.Play.Subscribe(_ => play()),
-                VM.Stop.Subscribe(_ => stop()),
-                _record,
-                _playstop,
-                _savedelete
-            };
 
-            if (VM.Current.Model.IsNew())
-                startVideoPreview();
-            else
-                startPlayback();
-
-        }
-
-        private void PageUnloaded(object sender, RoutedEventArgs e)
-        {
-            // Dispose of camera and media objects.
-            _subscriptions.Dispose();
-            disposeVideoRecorder();
-            disposeVideoPlayer();            
-        }
-
-        #region Methods for Reactive Commands
-
-        private void record()
-        {
-            this.startVideoRecording();
-        }
-
-        private void play()
-        {
-            this.startPlayback();
-        }
-
-        private void stop()
-        {
-            if (VM.State == PlayStates.Recording)
-                stopVideoRecording();
-            else if (VM.State == PlayStates.Playing)
-                this.stopPlayback();
-        }
-
-        #endregion
-
-        private void startVideoRecording()
-        {
-            try
-            {
-                // Connect fileSink to captureSource.
-                if (captureSource.VideoCaptureDevice != null
-                    && captureSource.State == CaptureState.Started)
-                {
-                    captureSource.Stop();
-                    // Connect the input and output of fileSink.
-                    fileSink.CaptureSource = captureSource;
-                    fileSink.IsolatedStorageFileName = VM.TempFileName;
-                }
-                // Begin recording.
-                if (captureSource.VideoCaptureDevice != null
-                    && captureSource.State == CaptureState.Stopped)
-                {
-                    captureSource.Start();
-                }
-                VM.State = PlayStates.Recording;
+        private void PageUnloaded(object sender, RoutedEventArgs e) {
+            if (this._Svc != null) {
+                _Svc.Dispose();
+                _Svc = null;
             }
-
-            // If recording fails, display an error.
-            catch (Exception)
-            {
-                MessageBox.Show("Recording error");
-            }
+            VM.VideoService = null;
         }
-
-        public void stopVideoRecording()
-        {
-            try
-            {
-                // Stop recording.
-                if (captureSource.VideoCaptureDevice != null
-                && captureSource.State == CaptureState.Started)
-                {
-                    captureSource.Stop();
-
-                    // Disconnect fileSink.
-                    fileSink.CaptureSource = null;
-                    fileSink.IsolatedStorageFileName = null;
-                    VM.RecordPresent = true;
-
-                }
-                VM.State = PlayStates.Idle;
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Recording error");
-                VM.State = PlayStates.Idle;
-            }
-            startVideoPreview();
-        }
-
-
-        // Set the recording state: display the video on the viewfinder.
-        public void startVideoPreview()
-        {
-            try
-            {              
-
-                // Display the video on the viewfinder.
-                if (captureSource.VideoCaptureDevice != null
-                && captureSource.State == CaptureState.Stopped)
-                {
-                    videoRecorderBrush.SetSource(captureSource);
-                    viewfinderRectangle.Fill = videoRecorderBrush;
-                    captureSource.Start();
-                }
-            }
-            catch (Exception )
-            {
-                MessageBox.Show("Preview Error");
-            }
-        }        
-
-        #region Playback
-
-        void openTempFile()
-        {
-            using(var store = IsolatedStorageFile.GetUserStoreForApplication())
-                {
-                    if (store.FileExists(VM.TempFileName))
-                    {
-                        isoVideoFile = new IsolatedStorageFileStream(VM.TempFileName,
-                                                FileMode.Open, FileAccess.Read,
-                                                store);
-                    }
-
-            }
-        }
-
-        void openMediaFile()
-        {
-            isoVideoFile = VM.VideoStore.GetMultimedia(VM.Current.Model.Uri);
-        }
-
-        private void startPlayback()
-        {
-
-            // Start video playback when the file stream exists.
-            if (isoVideoFile != null)
-            {  
-                videoPlayer.Play();
-            }
-            // Try to Start the video for the first time.
-            else
-            {
-                if(VM.IsEditable)
-                {
-                    openTempFile();
-                }
-                else
-                {
-                    openMediaFile();
-                }
-
-                if (isoVideoFile != null)
-                {
-                    captureSource.Stop();
-                    // Remove VideoBrush from the tree.
-                    viewfinderRectangle.Fill = null;
-
-
-                    videoPlayer.SetSource(isoVideoFile);
-                    videoPlayer.MediaEnded += new RoutedEventHandler(VideoPlayerMediaEnded);
-                    videoPlayer.Play();
-                }
-                else
-                {
-                    return;
-                }                    
-            }
-            VM.State = PlayStates.Playing;
-        }
-
-        private void stopPlayback()
-        {
-            disposeVideoPlayer();
-            if(VM.IsEditable)
-                startVideoPreview();
-        }
-
-
-        #endregion
-
-
-
-        #region Events
-
-
-        private void OnCaptureFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-            MessageBox.Show("No VideoRecording device found:" + e.ErrorException.Message);
-        }
-
-        // Display the viewfinder when playback ends.
-        public void VideoPlayerMediaEnded(object sender, RoutedEventArgs e)
-        {
-            stopPlayback();
-        }
-
-        #endregion
-
-        #region Initialize
-
-        public void initializeVideoRecorder()
-        {
-            if (captureSource == null)
-            {
-                captureSource = new CaptureSource();
-                fileSink = new FileSink();
-                videoCaptureDevice = CaptureDeviceConfiguration.GetDefaultVideoCaptureDevice();
-
-                // Add eventhandlers for captureSource.
-                captureSource.CaptureFailed += new EventHandler<ExceptionRoutedEventArgs>(OnCaptureFailed);                
-                if (videoCaptureDevice != null)
-                {
-                    videoRecorderBrush = new VideoBrush();                    
-                }
-            }
-        }
-
-        #endregion
-
-        #region Dispose
-
-
-        private void disposeVideoPlayer()
-        {
-            if (videoPlayer != null)
-            {
-                videoPlayer.Stop();
-                videoPlayer.Source = null;
-                isoVideoFile = null;
-                videoPlayer.MediaEnded -= VideoPlayerMediaEnded;
-            }
-            VM.State = PlayStates.Idle;
-        }
-
-        public void disposeVideoRecorder()
-        {
-            if (captureSource != null)
-            {
-                if (captureSource.VideoCaptureDevice != null
-                    && captureSource.State == CaptureState.Started)
-                {
-                    captureSource.Stop();
-                }
-                captureSource.CaptureFailed -= OnCaptureFailed;
-                captureSource = null;
-                videoCaptureDevice = null;
-                fileSink = null;
-                videoRecorderBrush = null;
-            }
-        }
-
-        #endregion
-
-        
-        
-
-      
-
     }
 }

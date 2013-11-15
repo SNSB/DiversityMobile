@@ -13,14 +13,15 @@
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) {
             InititializeIfNecessary();
-            ActivateSetup();
+
         }
 
         private void InititializeIfNecessary() {
             if (!Initialized) {
+                App.KernelInitialized += ActivateSetup;
                 Initialized = true;
 
-                App.Initialize();
+                App.StartInitialize();
             }
         }
 
@@ -28,6 +29,7 @@
             var setup = App.Kernel.Get<SetupVM>();
 
             setup.Activate();
+            App.KernelInitialized -= ActivateSetup;
         }
     }
 }

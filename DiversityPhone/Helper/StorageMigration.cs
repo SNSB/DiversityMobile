@@ -4,9 +4,10 @@
     using Ninject;
     using System.IO;
     using System.IO.IsolatedStorage;
+    using System.Threading.Tasks;
 
     public static class StorageMigration {
-        public static void ApplyMigrationIfNecessary() {
+        public static async Task ApplyMigrationIfNecessary() {
             MigrateSettingsFromApplicationSettings();
 
             var profile = App.Kernel.Get<ICurrentProfile>();
@@ -15,6 +16,21 @@
             MigrateDatabase(currentProfile);
             MigrateVocabulary(currentProfile);
             MigrateMultimedia(currentProfile);
+            await CleanupTempFolder();
+            await profile.ClearUnusedProfiles();
+        }
+
+        private static async Task CleanupTempFolder() {
+            var TEMP_FOLDER = "Temp";
+
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
+                if (iso.DirectoryExists(TEMP_FOLDER)) {
+                    await iso.DeleteDirectoryRecursiveAsync(TEMP_FOLDER);
+                }
+                if (!iso.DirectoryExists(TEMP_FOLDER)) {
+                    iso.CreateDirectory(TEMP_FOLDER);
+                }
+            }
         }
 
         private static void MigrateVocabulary(string currentProfile) {

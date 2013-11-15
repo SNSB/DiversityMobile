@@ -3,6 +3,7 @@
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using System;
+    using System.IO;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Windows.Media.Imaging;
@@ -10,14 +11,32 @@
     public class ViewImageVM : ViewPageVMBase<MultimediaObject>, IDeletePageVM {
         readonly IStoreImages ImageStore;
 
-        private BitmapImage _CurrentImage;
+        private Tuple<Stream, BitmapImage> _CurrentImage;
+
+        private void SetCurrentImage(Tuple<Stream, BitmapImage> value) {
+            if (_CurrentImage != value) {
+                CleanupCurrentImage();
+                _CurrentImage = value;
+                this.RaisePropertyChanged(x => x.CurrentImage);
+            }
+        }
+
+        private void CleanupCurrentImage() {
+            var streamAndImage = _CurrentImage;
+            if (streamAndImage != null) {
+                if (streamAndImage.Item2 != null) {
+                    streamAndImage.Item2.UriSource = null;
+                }
+                if (streamAndImage.Item1 != null) {
+                    streamAndImage.Item1.Dispose();
+                }
+                _CurrentImage = null;
+            }
+        }
 
         public BitmapImage CurrentImage {
             get {
-                return _CurrentImage;
-            }
-            set {
-                this.RaiseAndSetIfChanged(x => x.CurrentImage, ref _CurrentImage, value);
+                return (_CurrentImage != null) ? _CurrentImage.Item2 : null;
             }
         }
 
@@ -41,18 +60,37 @@
                 .Where(mmo => !mmo.IsNew())
                 .Select(mmo => {
                     var img = new BitmapImage();
+                    Stream stream = null;
                     try {
-                        var fileStream = ImageStore.GetMultimedia(mmo.Uri);
-                        img.SetSource(fileStream);
-                        return img;
+                        stream = ImageStore.GetMultimedia(mmo.Uri);
+                        img.SetSource(stream);
+                        return Tuple.Create(stream, img);
                     }
                     catch (Exception) {
+                        if (stream != null) {
+                            stream.Dispose();
+                        }
                         return null;
                     }
                 })
-                .Subscribe(img => CurrentImage = img);
+                .Subscribe(SetCurrentImage);
 
-            Delete = this.CurrentObservable.DeleteCommand(Messenger, Notifications);
+            Delete = new ReactiveCommand();
+
+            CurrentObservable
+                .SampleMostRecent(Delete)
+                .SelectMany(toBeDeleted => Notifications.showDecision(DiversityResources.Message_ConfirmDelete)
+                    .Where(x => x)
+                    .Select(_ => toBeDeleted)
+                )
+                .ObserveOn(Dispatcher)
+                .Do(_ => SetCurrentImage(null))
+                .ToMessage(Messenger, MessageContracts.DELETE);
+
+            this.OnDeactivation()
+                .Subscribe(_ => CleanupCurrentImage());
         }
+
+
     }
 }
