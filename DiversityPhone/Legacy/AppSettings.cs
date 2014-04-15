@@ -1,8 +1,8 @@
 ﻿namespace DiversityPhone.Model
 {
-    public static class SettingsMixin
+    public static class AppSettingsMixin
     {
-        public static UserCredentials ToCreds(this Settings settings)
+        public static UserCredentials ToCreds(this AppSettings settings)
         {
             if (settings == null)
             {
@@ -21,11 +21,31 @@
                 };
             }
         }
+
+        public static Settings ToSettings(this AppSettings apps)
+        {
+            return new Settings()
+            {
+                UserName = apps.UserName,
+                Password = apps.Password,
+                AgentName = apps.AgentName,
+                AgentURI = apps.AgentURI,
+                UseGPS = apps.UseGPS,
+
+                SaveMultimediaExternally = apps.SaveMultimediaExternally,
+
+                HomeDBName = apps.HomeDBName,
+
+                CurrentProject = apps.CurrentProject,
+                CurrentProjectName = apps.CurrentProjectName,
+                CurrentSeriesID = apps.CurrentSeriesID
+            };
+        }
     }
 
-    public class Settings
+    public class AppSettings
     {
-        public Settings()
+        public AppSettings()
         {
             UseGPS = true;
             SaveMultimediaExternally = true;
@@ -45,9 +65,9 @@
         public string CurrentProjectName { get; set; }
         public int? CurrentSeriesID { get; set; }
 
-        public Settings Clone()
+        public AppSettings Clone()
         {
-            return (Settings)this.MemberwiseClone();
+            return (AppSettings)this.MemberwiseClone();
         }
 
     }

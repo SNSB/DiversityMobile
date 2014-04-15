@@ -20,9 +20,9 @@ namespace DiversityPhone.Services
         private readonly ICurrentProfile Profile;
         private readonly XmlSerializer SettingsSerializer;
 
-        private ISubject<AppSettings> _SettingsIn;
-        private ISubject<AppSettings> _SettingsOut = new Subject<AppSettings>();
-        private IObservable<AppSettings> _SettingsReplay;
+        private ISubject<Settings> _SettingsIn;
+        private ISubject<Settings> _SettingsOut = new Subject<Settings>();
+        private IObservable<Settings> _SettingsReplay;
         public SettingsService(
             ICurrentProfile Profile,
             [Dispatcher] IScheduler Dispatcher,
@@ -34,14 +34,14 @@ namespace DiversityPhone.Services
             Contract.Requires(ThreadPool != null);
 
             this.Profile = Profile;
-            this.SettingsSerializer = new XmlSerializer(typeof(AppSettings));
+            this.SettingsSerializer = new XmlSerializer(typeof(Settings));
 
             _SettingsReplay = _SettingsOut
                 .ObserveOn(Dispatcher)
                 .Replay(1)
                 .RefCount();
 
-            _SettingsIn = new Subject<AppSettings>();
+            _SettingsIn = new Subject<Settings>();
 
             _SettingsIn
                 .ObserveOn(ThreadPool)
@@ -58,7 +58,7 @@ namespace DiversityPhone.Services
                 .Subscribe(_SettingsOut);
         }
 
-        public AppSettings LoadSettingsFromFile(string FilePath)
+        public Settings LoadSettingsFromFile(string FilePath)
         {
             using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -68,11 +68,11 @@ namespace DiversityPhone.Services
                     {
                         using (var settingsFile = iso.OpenFile(FilePath, FileMode.Open, FileAccess.Read))
                         {
-                            AppSettings settings;
+                            Settings settings;
                             var settingsXml = XmlReader.Create(settingsFile);
                             if (SettingsSerializer.CanDeserialize(settingsXml))
                             {
-                                settings = (AppSettings)SettingsSerializer.Deserialize(settingsXml);
+                                settings = (Settings)SettingsSerializer.Deserialize(settingsXml);
                                 return settings;
                             }
                         }
@@ -85,7 +85,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        private AppSettings PersistSettings(AppSettings s)
+        private Settings PersistSettings(Settings s)
         {
             var settingsPath = GetSettingsPath();
 
@@ -126,7 +126,7 @@ namespace DiversityPhone.Services
             SaveSettings(null);
         }
 
-        public void SaveSettings(AppSettings settings)
+        public void SaveSettings(Settings settings)
         {
             _SettingsIn.OnNext(settings);
         }
@@ -138,10 +138,10 @@ namespace DiversityPhone.Services
             return _SettingsReplay.Select(s => s.ToCreds());
         }
 
-        public IObservable<AppSettings> SettingsObservable()
+        public IObservable<Settings> SettingsObservable()
         {
             return _SettingsReplay;
         }
-        public AppSettings CurrentSettings { get { return _SettingsReplay.FirstOrDefault(); } }
+        public Settings CurrentSettings { get { return _SettingsReplay.FirstOrDefault(); } }
     }
 }

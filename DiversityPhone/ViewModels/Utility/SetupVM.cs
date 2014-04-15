@@ -16,7 +16,7 @@ namespace DiversityPhone.ViewModels {
         private readonly IDiversityServiceClient Repository;
         private readonly ISettingsService Settings;
 
-        private IEnumerator<AppSettings> LatestLogin, LatestLoginWithRepo, LatestLoginWithProfile;
+        private IEnumerator<Settings> LatestLogin, LatestLoginWithRepo, LatestLoginWithProfile;
 
         public IReactiveCommand ShowLogin { get; set; }
         public ReactiveAsyncCommand GetRepositories { get; private set; }
@@ -54,15 +54,15 @@ namespace DiversityPhone.ViewModels {
         }
 
 
-        private IObservable<Tuple<AppSettings, IList<string>>> GetRepositoriesObservable(object _) {
+        private IObservable<Tuple<Settings, IList<string>>> GetRepositoriesObservable(object _) {
             var user = UserName;
             var pass = Password;
             if (string.IsNullOrWhiteSpace(user) || string.IsNullOrWhiteSpace(pass)) {
                 // Invalid Argument
-                return Observable.Empty<Tuple<AppSettings, IList<string>>>();
+                return Observable.Empty<Tuple<Settings, IList<string>>>();
             }
 
-            var settings = new AppSettings()
+            var settings = new Settings()
             {
                 UserName = user,
                 Password = pass
@@ -74,7 +74,7 @@ namespace DiversityPhone.ViewModels {
                 .Select(list => Tuple.Create(settings, list));
         }
 
-        private IObservable<Tuple<AppSettings, IList<Project>>> GetProjectsObservable(object _) {
+        private IObservable<Tuple<Settings, IList<Project>>> GetProjectsObservable(object _) {
             var repo = Database.SelectedItem;
             var login = LatestLogin.NextOrDefault();
 
@@ -85,11 +85,11 @@ namespace DiversityPhone.ViewModels {
                     .Select(projects => Tuple.Create(login, projects));
             }
             else {
-                return Observable.Empty<Tuple<AppSettings, IList<Project>>>();
+                return Observable.Empty<Tuple<Settings, IList<Project>>>();
             }
         }
 
-        private IObservable<AppSettings> GetProfileObservable(object _) {
+        private IObservable<Settings> GetProfileObservable(object _) {
             var project = Project.SelectedItem;
             var login = LatestLoginWithRepo.NextOrDefault();
 
@@ -104,11 +104,11 @@ namespace DiversityPhone.ViewModels {
                     });
             }
             else {
-                return Observable.Empty<AppSettings>();
+                return Observable.Empty<Settings>();
             }
         }
 
-        private void SetLogin(AppSettings settings) {
+        private void SetLogin(Settings settings) {
             if (settings != null) {
                 this.UserName = settings.UserName;
                 this.Password = settings.Password;

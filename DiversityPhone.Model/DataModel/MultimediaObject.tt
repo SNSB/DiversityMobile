@@ -28,7 +28,20 @@ namespace DiversityPhone.Model
 
 <# Row("ModificationState", "ModificationState"); #>
 
-<# Row("DateTime", "TimeStamp"); #>
+
+<# Row("DateTime?", "TimeStamp"); #>
+
+		public DateTime TimeCreated 
+		{
+			get { return TimeStamp ?? DateTime.MinValue; }
+			set 
+			{
+				this.raisePropertyChanging("TimeCreated");
+				TimeStamp = value; 
+				this.raisePropertyChanged("TimeCreated");
+			}
+		}
+
 
 		[Column]
 		private string CollectionUri { get; set; }
@@ -76,8 +89,8 @@ namespace DiversityPhone.Model
         }
 
 		public MultimediaObject()
-		{
-			TimeStamp = DateTime.Now;
+		{			
+			TimeStamp = DateTime.Now;			
 		}
 
         static MultimediaObject()

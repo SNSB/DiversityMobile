@@ -196,12 +196,15 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helper\DatabaseMigration.cs" />
+    <Compile Include="Helper\Maintenance.cs" />
     <Compile Include="Helper\SwitchableCommand.cs" />
     <Compile Include="Helper\FileTimeStampMixin.cs" />
     <Compile Include="Helper\IsolatedStorageExtensions.cs" />
     <Compile Include="Helper\ObservableMixin.cs" />
     <Compile Include="Helper\PercentageReporter.cs" />
     <Compile Include="Helper\ReactiveCommandMixin.cs" />
+    <Compile Include="Legacy\AppSettings.cs" />
     <Compile Include="LiveSDKTaskAsync\ApiMethod.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveAuthClientTaskAsync.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveConnectClientTaskAsync.cs" />
@@ -212,7 +215,6 @@
     <Compile Include="Services\Storage\DiversityDataContext.cs" />
     <Compile Include="Services\Storage\OfflineStorage.CascadingDelete.cs" />
     <Compile Include="Services\Storage\FieldDataService.cs" />
-    <Compile Include="Services\Storage\FieldDataService.Migration.cs" />
     <Compile Include="Services\Storage\FieldDataService.Queries.cs" />
     <Compile Include="Services\Storage\TaxonService.cs" />
     <Compile Include="Services\Storage\VocabularyService.cs" />
@@ -360,7 +362,7 @@
     <Compile Include="View\Helper\EventBindingTrigger.cs" />
     <Compile Include="View\Helper\ProgressBinding.cs" />
     <Compile Include="View\Helper\RelativeLocationBinding.cs" />
-    <Compile Include="Helper\StorageMigration.cs" />
+    <Compile Include="Helper\VersionMigration.cs" />
     <Compile Include="View\Home.xaml.cs">
       <DependentUpon>Home.xaml</DependentUpon>
     </Compile>

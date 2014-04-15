@@ -32,13 +32,13 @@
         [Fact]
         public void PushesValidCredentials() {
             // Setup
-            var validCredentials = new AppSettings()
+            var validCredentials = new Settings()
             {
                 UserName = VALID_USER,
                 Password = VALID_PASS
             };
 
-            var validWithDB = new AppSettings()
+            var validWithDB = new Settings()
             {
                 UserName = VALID_USER,
                 Password = VALID_PASS,
@@ -48,7 +48,7 @@
             GetT();
 
             //Execute
-
+            Assert.True(false);
         }
     }
 }

@@ -45,8 +45,8 @@ namespace DiversityPhone.Services
             return string.Format("DM-{0}-{1}-{2}-{3}.{4}",
                 ownerCode,
                 CollectionOwnerID,
-                mmo.TimeStamp.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
-                mmo.TimeStamp.ToString("HHmmss", CultureInfo.InvariantCulture),
+                mmo.TimeCreated.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
+                mmo.TimeCreated.ToString("HHmmss", CultureInfo.InvariantCulture),
                 extension
                 );
         }
@@ -65,7 +65,7 @@ namespace DiversityPhone.Services
                     });
             var collectionOwnerID = Mapping.EnsureKey(mmo.OwnerType, mmo.RelatedId);
             var filename = ServiceFileName(mmo, collectionOwnerID);
-            _multimedia.SubmitAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName,mmo.TimeStamp.ToString(CultureInfo.InvariantCulture), login.ProjectID, data, mmo);
+            _multimedia.SubmitAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName,mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, data, mmo);
             return res;
         }
     }

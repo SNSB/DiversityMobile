@@ -5,10 +5,10 @@ namespace DiversityPhone.Interface
 {
     public interface ISettingsService
     {
-        IObservable<AppSettings> SettingsObservable();
-        AppSettings CurrentSettings { get; }
-        void SaveSettings(AppSettings settings);
+        IObservable<Settings> SettingsObservable();
+        Settings CurrentSettings { get; }
+        void SaveSettings(Settings settings);
         void ClearSettings();
-        AppSettings LoadSettingsFromFile(string FilePath);
+        Settings LoadSettingsFromFile(string FilePath);
     }
 }

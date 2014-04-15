@@ -2,9 +2,9 @@
 
 using ReactiveUI;
 using System;
+using System.Linq;
 using System.Data.Linq;
 using System.Data.Linq.Mapping;
-using System.Linq;
 
 namespace DiversityPhone.Model
 {
@@ -137,11 +137,12 @@ namespace DiversityPhone.Model
 			}
 		}
 		
+
 		
-		private DateTime _TimeStamp;
+		private DateTime? _TimeStamp;
 		[Column]
 		
-		public DateTime TimeStamp
+		public DateTime? TimeStamp
 		{
 			get { return _TimeStamp; }
 			set 
@@ -164,6 +165,18 @@ namespace DiversityPhone.Model
 			}
 		}
 		
+		public DateTime TimeCreated 
+		{
+			get { return TimeStamp ?? DateTime.MinValue; }
+			set 
+			{
+				this.raisePropertyChanging("TimeCreated");
+				TimeStamp = value; 
+				this.raisePropertyChanged("TimeCreated");
+			}
+		}
+
+
 		[Column]
 		private string CollectionUri { get; set; }
 		
@@ -210,8 +223,8 @@ namespace DiversityPhone.Model
         }
 
 		public MultimediaObject()
-		{
-			TimeStamp = DateTime.Now;
+		{			
+			TimeStamp = DateTime.Now;			
 		}
 
         static MultimediaObject()

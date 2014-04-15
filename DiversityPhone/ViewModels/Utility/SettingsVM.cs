@@ -41,9 +41,9 @@ namespace DiversityPhone.ViewModels.Utility {
 
 
 
-        private AppSettings _Model;
+        private Settings _Model;
 
-        public AppSettings Model {
+        public Settings Model {
             get {
                 return _Model;
             }

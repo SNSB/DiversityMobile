@@ -22,7 +22,6 @@ namespace DiversityPhone.Services {
                     _CurrentVM = value;
                     _CurrentVM.Activate();
                 }
-
             }
         }
 

@@ -182,7 +182,7 @@ namespace DiversityPhone.Services {
             return EnumerateSnapshotsSynchronous().ToObservable(ThreadPool);
         }
 
-        private Snapshot SnapshotFromSettingsAndTime(AppSettings Settings, DateTime TimeTaken, string SnapshotDir) {
+        private Snapshot SnapshotFromSettingsAndTime(Settings Settings, DateTime TimeTaken, string SnapshotDir) {
             return new Snapshot()
             {
                 UserName = Settings.UserName,
@@ -237,7 +237,7 @@ namespace DiversityPhone.Services {
             isoStore.DeleteFile(restoredCompletedMarkerPath);
         }
 
-        private string GetSnapshotPath(AppSettings Settings) {
+        private string GetSnapshotPath(Settings Settings) {
             return string.Format("{0}/{1}-{2}", SNAPSHOTS_DIRECTORY, Settings.UserName, DateTime.Now.ToFileTimeStamp());
         }
 
@@ -264,7 +264,7 @@ namespace DiversityPhone.Services {
             this.ImageStore = ImageStore;
             this.Profile = Profile;
             this.ThreadPool = ThreadPool;
-            this.SettingsSerializer = new XmlSerializer(typeof(AppSettings));
+            this.SettingsSerializer = new XmlSerializer(typeof(Settings));
             CreateSnapshotsDirIfNecessary();
         }
     }

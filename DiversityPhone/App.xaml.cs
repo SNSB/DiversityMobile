@@ -202,7 +202,7 @@ namespace DiversityPhone {
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
-            await StorageMigration.ApplyMigrationIfNecessary();
+            await VersionMigration.ApplyMigrationIfNecessary();
             Kernel.Load<InitModule>();
 
             var listeners = KernelInitialized;

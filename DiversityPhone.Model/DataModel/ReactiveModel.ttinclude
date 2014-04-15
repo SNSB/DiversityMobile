@@ -34,7 +34,7 @@
 		string entityKey = ((rowkind & RowKind.Key) != RowKind.None) ? "[EntityKey]" : String.Empty;	
 		string valueCoersion = string.Empty;
 
-		if(type == "DateTime") 
+		if(type == "DateTime" || type == "DateTime?") 
 		{
 			valueCoersion = @"
 				var minSQLCEDate = new DateTime(1753, 01, 01);
