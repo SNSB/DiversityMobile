@@ -177,6 +177,7 @@ namespace DiversityPhone {
 
         class InitModule : Ninject.Modules.NinjectModule {
             public override void Load() {
+                Kernel.Get<SettingsService>().ReloadSettings();
                 Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
             }
         }

@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.IO.IsolatedStorage;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -19,6 +20,8 @@ namespace DiversityPhone.Services
 
         private readonly ICurrentProfile Profile;
         private readonly XmlSerializer SettingsSerializer;
+
+        private ISubject<Unit> _ReloadSettings = new Subject<Unit>();
 
         private ISubject<Settings> _SettingsIn;
         private ISubject<Settings> _SettingsOut = new Subject<Settings>();
@@ -36,10 +39,11 @@ namespace DiversityPhone.Services
             this.Profile = Profile;
             this.SettingsSerializer = new XmlSerializer(typeof(Settings));
 
-            _SettingsReplay = _SettingsOut
-                .ObserveOn(Dispatcher)
-                .Replay(1)
-                .RefCount();
+            _SettingsReplay = _ReloadSettings
+                .Select(_ => _SettingsOut.Replay(1).RefCount())
+                .Switch()                
+                .ObserveOn(Dispatcher);
+                
 
             _SettingsIn = new Subject<Settings>();
 
@@ -51,11 +55,17 @@ namespace DiversityPhone.Services
 
             Profile
                 .CurrentProfilePathObservable()
+                .Merge(_ReloadSettings.Select(_ => Profile.CurrentProfilePath()))
                 .Select(ProfileToSettingsPath)
                 .ObserveOn(ThreadPool)
                 .Select(LoadSettingsFromFile)
                 .ObserveOn(Dispatcher)
                 .Subscribe(_SettingsOut);
+        }
+
+        public void ReloadSettings() 
+        {
+            _ReloadSettings.OnNext(Unit.Default);
         }
 
         public Settings LoadSettingsFromFile(string FilePath)
