@@ -564,6 +564,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Specimen_Observation" xml:space="preserve">
     <value>observation</value>
   </data>
+  <data name="Splash_Migrating" xml:space="preserve">
+    <value>Migrating data to new version...</value>
+  </data>
   <data name="Sync_Dialog_UploadAll_Caption" xml:space="preserve">
     <value>upload all</value>
   </data>

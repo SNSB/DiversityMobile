@@ -441,7 +441,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
-    <None Include="DiversityPhone_2013_10_13_10_20_46.sap" />
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="Images\AudioIcons\Thumbs.db" />
     <None Include="Images\Screenshots\Thumbs.db" />

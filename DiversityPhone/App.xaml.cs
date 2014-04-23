@@ -1,4 +1,5 @@
-﻿using DiversityPhone.Interface;
+﻿using DiversityPhone.Helper;
+using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using DiversityPhone.Services;
 using DiversityPhone.Services.BackgroundTasks;
@@ -176,7 +177,6 @@ namespace DiversityPhone {
 
         class InitModule : Ninject.Modules.NinjectModule {
             public override void Load() {
-                Kernel.Get<FieldDataService>().CheckAndRepairDatabase();
                 Kernel.Get<IMessageBus>().SendMessage(EventMessage.Default, MessageContracts.INIT);
             }
         }
@@ -202,7 +202,13 @@ namespace DiversityPhone {
             Kernel.Load<FuncModule>();
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
+
+            var notifications = Kernel.Get<INotificationService>();
+
+            var migrating = notifications.showProgress(DiversityResources.Splash_Migrating);
             await VersionMigration.ApplyMigrationIfNecessary();
+            migrating.Dispose();
+
             Kernel.Load<InitModule>();
 
             var listeners = KernelInitialized;

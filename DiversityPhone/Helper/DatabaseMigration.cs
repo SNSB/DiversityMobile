@@ -9,65 +9,56 @@ using Ninject;
 using DiversityPhone.Model;
 using System.IO;
 using System.Threading.Tasks;
+using Microsoft;
 
 namespace DiversityPhone.Helper
 {
-    static class DatabaseMigration
-    {        
-        private const int CURRENT_SCHEMA_VERSION = 1; // As of Version 0.9.9.1
+    public static partial class VersionMigration
+    {  
+        public static readonly Version CURRENT_VERSION = new Version(0,9,9,1);
+        public const int CURRENT_SCHEMA_VERSION = 1; // As of Version 0.9.9.1
 
-        public static void CheckAndRepairDatabase()
+        public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
         {
-            bool MoveAndRecreateDB = false;
-            using (var ctx = new DiversityDataContext())
+            return Task.Factory.StartNew(() =>
             {
-                if (!ctx.DatabaseExists())
+                var ctx = (dbPath != null) ? new DiversityDataContext(dbPath) : new DiversityDataContext();
+                using (ctx)
                 {
-                    ctx.CreateDatabase();
-                    var schema = ctx.CreateDatabaseSchemaUpdater();
-                    schema.DatabaseSchemaVersion = CURRENT_SCHEMA_VERSION;
-                    schema.Execute();
-                }
-                else
-                {
-                    try
+                    if (!ctx.DatabaseExists())
+                    {
+                        ctx.CreateDatabase();
+                        var schema = ctx.CreateDatabaseSchemaUpdater();
+                        schema.DatabaseSchemaVersion = CURRENT_SCHEMA_VERSION;
+                        schema.Execute();
+                    }
+                    else
                     {
                         var schema = ctx.CreateDatabaseSchemaUpdater();
                         if (schema.DatabaseSchemaVersion != CURRENT_SCHEMA_VERSION)
                         {
-                            ApplyMigrations(schema);
-                            schema.DatabaseSchemaVersion = CURRENT_SCHEMA_VERSION;
+                            ApplyMigrations(schema, targetVersion);
                             schema.Execute();
                         }
                     }
-                    catch (Exception)
-                    {
-                        MoveAndRecreateDB = true;
-                    }
                 }
-            }
-
-            if (MoveAndRecreateDB)
-            {
-                MoveAndRecreateDatabase();
-            }
+            });
         }
 
-        private static async Task MoveAndRecreateDatabase()
-        {
-            var backup = App.Kernel.Get<IBackupService>();
-            var profile = App.Kernel.Get<ICurrentProfile>();
-
-            await backup.TakeSnapshot();
-        }
-
-        private static void ApplyMigrations(DatabaseSchemaUpdater schema)
+        private static void ApplyMigrations(DatabaseSchemaUpdater schema, Version targetVersion)
         {
             // Schema 0 is the default
             // This could be any Version from 0 up to 0.9.9 inclusive
             if (schema.DatabaseSchemaVersion == 0)
             {
-                AddMultimediaTimeStamp(schema);                
+                if (targetVersion >= new Version(0, 9, 8))
+                {
+                    AddMultimediaTimeStamp(schema);
+                }
+                if (targetVersion >= new Version(0, 9, 9, 1))
+                {
+                    schema.DatabaseSchemaVersion = 1;
+                }
             }            
         }
 
@@ -83,7 +74,7 @@ namespace DiversityPhone.Helper
                 var q = from mmo in schema.Context.GetTable<MultimediaObject>()
                         select mmo.TimeStamp;
 
-                if (q.Any())
+                if (q.Any(ts => ts.HasValue))
                 {
                     return;
                 }
