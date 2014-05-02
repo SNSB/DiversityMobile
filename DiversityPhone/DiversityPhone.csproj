@@ -444,7 +444,9 @@
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="Images\AudioIcons\Thumbs.db" />
     <None Include="Images\Screenshots\Thumbs.db" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
     <Content Include="ServiceReferences.ClientConfig">
@@ -783,6 +785,7 @@
     <ProjectReference Include="..\DiversityPhone.Model\DiversityPhone.Model.csproj">
       <Project>{F4FD53A5-06DF-4431-AA33-34AEB3CAC032}</Project>
       <Name>DiversityPhone.Model</Name>
+      <Aliases>global, Model</Aliases>
     </ProjectReference>
     <ProjectReference Include="..\DiversityPhone.Resources\DiversityPhone.Resource.csproj">
       <Project>{13B955B8-3DC1-4219-9824-AEFBEA3D2844}</Project>

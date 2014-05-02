@@ -79,7 +79,7 @@ namespace DiversityPhone.Helper
                     return;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 schema.AddColumn<MultimediaObject>("TimeStamp");
             }

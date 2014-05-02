@@ -159,6 +159,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Legacy\AppSettings.cs" />
     <Compile Include="LocalizableMixin.cs" />
     <Compile Include="Messages.cs" />
     <Compile Include="Page.cs" />

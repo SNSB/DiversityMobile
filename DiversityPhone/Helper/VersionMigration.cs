@@ -1,4 +1,6 @@
-﻿namespace DiversityPhone.Helper {
+﻿extern alias Model;
+
+namespace DiversityPhone.Helper {
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using DiversityPhone.Services;
@@ -11,8 +13,8 @@
     using System.Reflection;
     using System.Threading.Tasks;
     using System.Linq;
-using System.Collections.Generic;
-using System.Linq.Expressions;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
 
 
 
@@ -359,11 +361,30 @@ using System.Linq.Expressions;
             }
         }
 
-        private static void MigrateSettingsFromApplicationSettings() {
-            AppSettings settings;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<AppSettings>("Settings", out settings)) {
+        private static void MigrateSettingsFromApplicationSettings()
+        {
+#pragma warning disable 0436
+            // AppSettings in DiversityPhone Assembly (before 0.9.8)
+            try
+            {
+                AppSettings settings;
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<AppSettings>("Settings", out settings))
+                {
+                    var svc = App.Kernel.Get<ISettingsService>();
+                    svc.SaveSettings(AppSettingsMixin.ToSettings(settings));
+                    IsolatedStorageSettings.ApplicationSettings.Remove("Settings");
+                    IsolatedStorageSettings.ApplicationSettings.Save();
+                }
+            }
+            catch (InvalidCastException) { }
+#pragma warning restore 0436
+
+            // Appsettings in Model Assembly (in 0.9.8)
+            Model::DiversityPhone.Model.AppSettings settings2;
+            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<Model::DiversityPhone.Model.AppSettings>("Settings", out settings2))
+            {
                 var svc = App.Kernel.Get<ISettingsService>();
-                svc.SaveSettings(settings.ToSettings());
+                svc.SaveSettings(Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2));
                 IsolatedStorageSettings.ApplicationSettings.Remove("Settings");
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
