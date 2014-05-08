@@ -14,7 +14,7 @@ namespace DiversityPhone.Model
         [Column]
         public int SeriesID { get; set; }
 
-        [Column(IsPrimaryKey = true)]
+        [Column(IsPrimaryKey = true, IsDbGenerated=true)]
         public int PointID{get;set;}
 
 
