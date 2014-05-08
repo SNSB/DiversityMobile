@@ -213,6 +213,18 @@ namespace DiversityPhone.Helper {
                 }
             };
             CopyTableWithMappings(sourceCtx, targetCtx, mmoMappings);
+
+            // Set Created Times of MMOs to a sensible value if necessary
+            var mmos = targetCtx.GetTable<MultimediaObject>();
+            var untimed = from mmo in mmos
+                          where mmo.TimeStamp == null
+                          select mmo;
+            var now = DateTime.Now;
+            foreach (var mmo in untimed) {
+                mmo.TimeStamp = now;
+            }
+            targetCtx.SubmitChanges();  
+
         }        
 
         private static void CopyTableWithMappings<T>(DiversityDataContext sourceCtx, DiversityDataContext targetCtx, Action<T>[] mappings) where T : class {
