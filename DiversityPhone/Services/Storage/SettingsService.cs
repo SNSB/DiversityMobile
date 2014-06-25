@@ -39,10 +39,14 @@ namespace DiversityPhone.Services
             this.Profile = Profile;
             this.SettingsSerializer = new XmlSerializer(typeof(Settings));
 
-            _SettingsReplay = _ReloadSettings
-                .Select(_ => _SettingsOut.Replay(1).RefCount())
-                .Switch()                
-                .ObserveOn(Dispatcher);
+            _SettingsReplay = _SettingsOut
+                .Merge(
+                    _ReloadSettings
+                    .Select(x => null as Settings)
+                )
+                .ObserveOn(Dispatcher)
+                .Replay(1)
+                .PermaRef();
                 
 
             _SettingsIn = new Subject<Settings>();
@@ -145,7 +149,8 @@ namespace DiversityPhone.Services
 
         public IObservable<UserCredentials> CurrentCredentials()
         {
-            return _SettingsReplay.Select(s => s.ToCreds());
+            return _SettingsReplay
+                .Select(s => s.ToCreds());
         }
 
         public IObservable<Settings> SettingsObservable()

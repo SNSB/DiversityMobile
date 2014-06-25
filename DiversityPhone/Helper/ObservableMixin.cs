@@ -2,6 +2,7 @@
     using System;
     using System.Diagnostics.Contracts;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Windows.Input;
 
     public static class ObservableMixin {
@@ -72,5 +73,13 @@
             return This.Select(t => t.Item2);
         }
 
+        public static IObservable<T> PermaRef<T>(this IConnectableObservable<T> This)
+        {
+            Contract.Requires(This != null);
+
+            This.Connect();
+
+            return This;
+        }
     }
 }

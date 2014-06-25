@@ -13,7 +13,10 @@ namespace DiversityPhone.ViewModels {
             IMessageBus Messenger
             ) {
             this.OnActivation()
-                .SelectMany(_ => Credentials.CurrentCredentials().Where(cred => cred != null).FirstAsync())
+                .SelectMany(_ => 
+                    Credentials.CurrentCredentials()
+                    .Where(cred => cred != null)
+                    .FirstAsync())
                 .TakeUntil(this.OnDeactivation())
                 .Subscribe(login => {
                     var refreshTask = refreshVocabluaryTaskFactory();
