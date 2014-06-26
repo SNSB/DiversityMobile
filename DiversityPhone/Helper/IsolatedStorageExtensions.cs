@@ -75,7 +75,14 @@
                     var sourceFile = Path.Combine(SourceDirectory, relativeFile);
                     var targetFile = Path.Combine(TargetDirectory, relativeFile);
 
-                    Iso.CopyFile(sourceFile, targetFile, OverWrite);
+                    try
+                    {
+                        Iso.CopyFile(sourceFile, targetFile, OverWrite);
+                    }
+                    catch (IsolatedStorageException)
+                    {
+                        // Ignore
+                    }
                     reporter.Completed++;
                 }
             });

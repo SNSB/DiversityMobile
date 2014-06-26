@@ -14,7 +14,7 @@
     <RootNamespace>DiversityService.Service</RootNamespace>
     <AssemblyName>DiversityService.Service</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\DiversityPhone\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <FileUpgradeFlags>
@@ -140,7 +140,7 @@
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>7091</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:7091/</IISUrl>
+          <IISUrl>http://169.254.80.80/DiversityService</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

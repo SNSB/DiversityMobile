@@ -60,6 +60,7 @@ namespace DiversityPhone.ViewModels.Utility
                        {
                            var totalCount = elements.Count();
                            int idx = 0;
+                           obs.OnNext(Tuple.Create(idx, totalCount));
                            foreach (var e in elements)
                            {
                                uploadTree(e)

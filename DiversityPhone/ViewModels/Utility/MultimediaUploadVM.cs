@@ -53,12 +53,33 @@ namespace DiversityPhone.ViewModels.Utility
                                 {
                                     var cancel = cancelSource.Token;
                                     int idx = 0;
+                                    obs.OnNext(Tuple.Create(idx, totalCount));
                                     foreach (var mmo in mmos)
                                     {
-                                        uploadMultimedia(mmo)
-                                            .LastOrDefault();
+                                        try
+                                        {
+                                            uploadMultimedia(mmo)
+                                                .LastOrDefault();
 
-                                        Items.Remove(mmo);
+                                            Items.Remove(mmo);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (ex is ServiceNotAvailableException || ex is ServiceOperationException)
+                                            {
+                                                // Ignore Service Exceptions
+                                                Notifications.showPopup(
+                                                    string.Format("{0} {1}",
+                                                    DiversityResources.Sync_Error_Multimedia,
+                                                    ex.Message)
+                                                );
+                                            }
+                                            else
+                                            {
+                                                throw;
+                                            }
+                                        }
+
                                         if (cancel.IsCancellationRequested) return;
 
                                         obs.OnNext(Tuple.Create(++idx, totalCount));
@@ -117,15 +138,12 @@ namespace DiversityPhone.ViewModels.Utility
                     }
                 })
                 .SelectMany(obs =>
-                {
-                    var upload = obs.SelectMany(mmo => Service.InsertMultimediaObject(mmo).Select(_ => mmo))
+                    obs.SelectMany(mmo => Service.InsertMultimediaObject(mmo).Select(_ => mmo))
                         .Do(mmo => Storage.MarkUploaded(mmo))
-                        .DisplayProgress(Notifications, DiversityResources.Sync_Info_UploadingMultimedia)
                         .Select(_ => Unit.Default)
-                        .Publish();
-                    upload.Connect();
-                    return upload;
-                });
+                        .Publish()
+                        .PermaRef()
+                );
         }
     }
 }

@@ -1408,6 +1408,16 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An Error occured while uploading Multimedia: 
+        ///.
+        /// </summary>
+        public static string Sync_Error_Multimedia {
+            get {
+                return ResourceManager.GetString("Sync_Error_Multimedia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel Upload.
         /// </summary>
         public static string Sync_Header_CancelUpload {
@@ -1471,7 +1481,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uploading FieldData .
+        ///   Looks up a localized string similar to Uploading FieldData.
         /// </summary>
         public static string Sync_Info_UploadingElement {
             get {
@@ -1480,7 +1490,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Uploading Multimedia .
+        ///   Looks up a localized string similar to Uploading Multimedia.
         /// </summary>
         public static string Sync_Info_UploadingMultimedia {
             get {

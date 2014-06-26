@@ -573,6 +573,10 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Sync_Dialog_UploadAll_Text" xml:space="preserve">
     <value>Do you want to upload all new Multimedia? Only do this if the Phone is charging and connected via Wifi.</value>
   </data>
+  <data name="Sync_Error_Multimedia" xml:space="preserve">
+    <value>An Error occured while uploading Multimedia: 
+</value>
+  </data>
   <data name="Sync_Header_CancelUpload" xml:space="preserve">
     <value>Cancel Upload</value>
   </data>
@@ -595,10 +599,10 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Uploading ...</value>
   </data>
   <data name="Sync_Info_UploadingElement" xml:space="preserve">
-    <value>Uploading FieldData </value>
+    <value>Uploading FieldData</value>
   </data>
   <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
-    <value>Uploading Multimedia </value>
+    <value>Uploading Multimedia</value>
   </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>

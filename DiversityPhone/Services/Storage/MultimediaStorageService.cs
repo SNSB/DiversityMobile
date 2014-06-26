@@ -197,19 +197,32 @@ namespace DiversityPhone {
             return null;
         }
 
-        private ImageSource GetThumbnailFromIsolatedStorage(string fileName) {
-            using (var imageStream = GetMultimediaFromIsolatedStorage(fileName)) {
-                return GetThumbnailFromStream(imageStream);
-            }
+        private ImageSource GetThumbnailFromIsolatedStorage(string fileName)
+            var imageStream = GetMultimediaFromIsolatedStorage(fileName);
+            return GetThumbnailFromStream(imageStream);
         }
 
-        private ImageSource GetThumbnailFromCameraRoll(string FileName) {
+        private ImageSource GetThumbnailFromCameraRoll(string FileName)
+        {
             using (var picture = GetPictureFromCameraRoll(FileName))
-            using (var pictureStream = picture.GetThumbnail()) {
+            {
+                var pictureStream = Stream.Null;
+
+                if (picture != null)
+                {
+                    pictureStream = picture.GetThumbnail();
+                }
+
                 return GetThumbnailFromStream(pictureStream);
             }
         }
 
+        /// <summary>
+        /// Decodes a JPEG Image from the input stream into a thumbnail
+        /// </summary>
+        /// <param name="ImageStream"></param>
+        /// <returns></returns>   
+        /// <remarks>Disposes the Stream after use</remarks>
         private ImageSource GetThumbnailFromStream(Stream ImageStream) {
             ImageSource result = null;
             using (var stream = ImageStream) {

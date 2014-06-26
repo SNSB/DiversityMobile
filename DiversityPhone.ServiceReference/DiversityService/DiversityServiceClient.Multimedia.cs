@@ -42,11 +42,12 @@ namespace DiversityPhone.Services
                     throw new ArgumentException("Unsupported Media Owner");
             }
 
-            return string.Format("DM-{0}-{1}-{2}-{3}.{4}",
+            return string.Format("DM-{1}-{2}-{3}-{4}-{5}.{6}",
                 ownerCode,
                 CollectionOwnerID,
                 mmo.TimeCreated.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
                 mmo.TimeCreated.ToString("HHmmss", CultureInfo.InvariantCulture),
+                DateTime.UtcNow.ToString("yyyyMMddHHmmss"),
                 extension
                 );
         }

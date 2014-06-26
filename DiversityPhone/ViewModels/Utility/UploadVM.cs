@@ -89,16 +89,18 @@ namespace DiversityPhone.ViewModels.Utility {
             pivotOnChangeAndActivation
                 .Select(pivot => {
                     if (pivot == Pivots.data)
-                        return _FieldData.Refresh().DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
+                    {
+                        return _FieldData.Refresh()
+                            .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingModifications);
+                    }
                     else
-                        return _Multimedia.Refresh().DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingMultimedia);
+                    {
+                        return _Multimedia.Refresh()
+                            .DisplayProgress(Notifications, DiversityResources.Sync_Info_CollectingMultimedia);
+                    }
                 })
                 .SelectMany(refresh => refresh.TakeUntil(this.OnDeactivation()))
                 .Subscribe();
-
-
-
-
 
 
             _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable, false);
