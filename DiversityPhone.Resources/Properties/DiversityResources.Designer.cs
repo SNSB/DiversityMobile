@@ -1381,6 +1381,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cleaning App Storage....
+        /// </summary>
+        public static string Splash_Cleaning {
+            get {
+                return ResourceManager.GetString("Splash_Cleaning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Migrating data to new version....
         /// </summary>
         public static string Splash_Migrating {

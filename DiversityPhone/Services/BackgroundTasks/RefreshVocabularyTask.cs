@@ -1,14 +1,12 @@
-﻿using DiversityPhone.DiversityService;
-using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-
-namespace DiversityPhone.Services.BackgroundTasks
+﻿namespace DiversityPhone.Services
 {
-    
+    using DiversityPhone.DiversityService;
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using System;
+    using System.Reactive;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
     public class RefreshVocabularyTask : IRefreshVocabularyTask
     {

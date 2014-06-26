@@ -1,23 +1,18 @@
-﻿using DiversityPhone.Helper;
-using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using DiversityPhone.Services;
-using DiversityPhone.Services.BackgroundTasks;
-using DiversityPhone.ViewModels;
-using DiversityPhone.ViewModels.Utility;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using Ninject;
-using Ninject.Extensions.Factory;
-using ReactiveUI;
-using System;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿namespace DiversityPhone {
+    using DiversityPhone.Helper;
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using DiversityPhone.Services;
+    using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
+    using Ninject;
+    using Ninject.Extensions.Factory;
+    using ReactiveUI;
+    using System;
+    using System.Reactive.Concurrency;
+    using System.Threading.Tasks;
+    using System.Windows;
 
-
-namespace DiversityPhone {
     public partial class App : Application {
         public static IKernel Kernel { get; private set; }
 
@@ -71,109 +66,7 @@ namespace DiversityPhone {
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-        }
-
-        class ViewModelModule : Ninject.Modules.NinjectModule {
-            private void BindAndActivateSingleton<T>() {
-                var tmp = Kernel.Get<T>();
-                Bind<T>().ToConstant(tmp).InSingletonScope();
-            }
-
-            public override void Load() {
-                PageVMBase.Initialize(Kernel.Get<IMessageBus>(), Kernel.Get<INotificationService>());
-
-                BindAndActivateSingleton<HomeVM>();
-                BindAndActivateSingleton<ViewESVM>();
-                BindAndActivateSingleton<EditESVM>();
-                BindAndActivateSingleton<ViewEVVM>();
-                BindAndActivateSingleton<EditEVVM>();
-                BindAndActivateSingleton<ViewCSVM>();
-                BindAndActivateSingleton<EditCSVM>();
-                BindAndActivateSingleton<ViewIUVM>();
-                BindAndActivateSingleton<EditIUVM>();
-                BindAndActivateSingleton<EditPropertyVM>();
-                BindAndActivateSingleton<EditAnalysisVM>();
-
-                BindAndActivateSingleton<MapManagementVM>();
-                BindAndActivateSingleton<ViewMapVM>();
-
-                BindAndActivateSingleton<ViewImageVM>();
-                BindAndActivateSingleton<NewImageVM>();
-                BindAndActivateSingleton<AudioVM>();
-                BindAndActivateSingleton<VideoVM>();
-
-                Bind<IUploadVM<IElementVM>>().To<FieldDataUploadVM>().InSingletonScope();
-                Bind<IUploadVM<MultimediaObjectVM>>().To<MultimediaUploadVM>().InSingletonScope();
-                BindAndActivateSingleton<UploadVM>();
-                BindAndActivateSingleton<DownloadVM>();
-
-                BindAndActivateSingleton<SettingsVM>();
-
-                BindAndActivateSingleton<SetupVM>();
-
-                Bind<TaxonManagementVM>().ToSelf().InTransientScope();
-
-                BindAndActivateSingleton<ImportExportVM>();
-            }
-
-        }
-
-        class ServiceModule : Ninject.Modules.NinjectModule {
-            private void BindAndActivateSingleton<T>() {
-                Bind<T>().ToSelf().InSingletonScope();
-                Kernel.Get<T>();
-            }
-
-            public override void Load() {
-                Bind<IScheduler>().ToConstant(DispatcherScheduler.Current).WhenTargetHas<DispatcherAttribute>();
-                Bind<IScheduler>().ToConstant(ThreadPoolScheduler.Instance).WhenTargetHas<ThreadPoolAttribute>();
-                Bind<INotificationService>().To<NotificationService>().InSingletonScope();
-                Bind<IMessageBus>().ToConstant(MessageBus.Current);
-
-                Bind<ICurrentProfile>().To<ProfileService>().InSingletonScope();
-
-                Bind<SettingsService>().ToSelf().InSingletonScope();
-                Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());
-                Bind<ICredentialsService>().ToConstant(Kernel.Get<SettingsService>());
-
-                BindAndActivateSingleton<NavigationService>();
-
-                Bind<IConnectivityService>().To<ConnectivityService>().InSingletonScope();
-
-                Bind<IStoreImages>().To<MultimediaStorageService>().InSingletonScope();
-                Bind<IStoreMultimedia>().ToConstant(Kernel.Get<IStoreImages>());
-                Bind<FieldDataService>().ToSelf().InSingletonScope();
-                Bind<IFieldDataService>().ToConstant(Kernel.Get<FieldDataService>());
-                Bind<IKeyMappingService>().ToConstant(Kernel.Get<FieldDataService>());
-
-                Bind<IVocabularyService>().To<VocabularyService>().InSingletonScope();
-                Bind<ITaxonService>().To<TaxonService>().InSingletonScope();
-                Bind<IMapStorageService>().To<MapStorageService>().InSingletonScope();
-                Bind<IMapTransferService>().To<MapTransferService>().InSingletonScope();
-
-                Bind<IDiversityServiceClient>().To<DiversityServiceClient>().InSingletonScope();
-
-                Bind<CloudStorageService>().ToSelf().InSingletonScope();
-                Bind<ICloudStorageService>().ToConstant(Kernel.Get<CloudStorageService>());
-
-                var location = Kernel.Get<LocationService>();
-
-                Kernel.Get<ISettingsService>()
-                    .SettingsObservable()
-                    .Where(s => s != null)
-                    .Select(s => s.UseGPS)
-                    .Subscribe(gps => location.IsEnabled = gps);
-
-                Bind<ILocationService>().ToConstant(location);
-
-                Bind<IRefreshVocabularyTask>().To<RefreshVocabularyTask>();
-
-                Bind<ICleanupData>().To<CleanupService>();
-
-                Bind<IBackupService>().To<BackupService>();
-            }
-        }
-
+        } 
 
         class InitModule : Ninject.Modules.NinjectModule {
             public override void Load() {
@@ -206,9 +99,17 @@ namespace DiversityPhone {
 
             var notifications = Kernel.Get<INotificationService>();
 
-            var migrating = notifications.showProgress(DiversityResources.Splash_Migrating);
-            await VersionMigration.ApplyMigrationIfNecessary();
-            migrating.Dispose();
+            using (var migrating = notifications.showProgress(DiversityResources.Splash_Migrating))
+            {
+                await VersionMigration.ApplyMigrationIfNecessary();
+            }
+
+            using (var cleaning = notifications.showProgress(DiversityResources.Splash_Cleaning))
+            {
+                var profiles = Kernel.Get<ICurrentProfile>();
+                await profiles.ClearUnusedProfiles();
+            }
+
 
             Kernel.Load<InitModule>();
 
@@ -313,10 +214,5 @@ namespace DiversityPhone {
         }
 
         #endregion
-
-
-
-
-
     }
 }

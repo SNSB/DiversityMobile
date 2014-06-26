@@ -1,16 +1,14 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-
-
-namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
 
     public class SetupVM : PageVMBase {
         private readonly IDiversityServiceClient Repository;

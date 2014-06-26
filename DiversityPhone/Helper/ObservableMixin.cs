@@ -1,8 +1,10 @@
 ﻿namespace DiversityPhone {
     using System;
     using System.Diagnostics.Contracts;
+    using System.Reactive.Disposables;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
+    using System.Threading;
     using System.Windows.Input;
 
     public static class ObservableMixin {
@@ -80,6 +82,18 @@
             This.Connect();
 
             return This;
+        }
+
+        public static IObservable<T> StartWithCancellation<T>(Action<CancellationToken, IObserver<T>> task)
+        {
+            return Observable.Create<T>(obs =>
+            {
+                var cancelSource = new CancellationTokenSource();
+                Observable.Start(() => task(cancelSource.Token, obs))
+                    .Subscribe(_2 => { }, obs.OnError, obs.OnCompleted);
+
+                return Disposable.Create(cancelSource.Cancel);
+            });
         }
     }
 }

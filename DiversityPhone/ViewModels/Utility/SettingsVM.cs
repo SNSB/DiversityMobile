@@ -1,13 +1,13 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Reactive;
+    using System.Reactive.Linq;
+    using System.Threading.Tasks;
 
-namespace DiversityPhone.ViewModels.Utility {
     public partial class SettingsVM : PageVMBase {
         readonly ISettingsService Settings;
         readonly ICleanupData Cleanup;

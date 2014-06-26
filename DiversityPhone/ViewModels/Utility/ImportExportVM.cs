@@ -1,19 +1,19 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Services;
-using Microsoft;
-using ReactiveUI;
-using ReactiveUI.Xaml;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
-using System.Windows.Input;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Services;
+    using Microsoft;
+    using ReactiveUI;
+    using ReactiveUI.Xaml;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Threading.Tasks;
+    using System.Windows.Input;
 
-namespace DiversityPhone.ViewModels {
     public class ImportExportVM : PageVMBase {
         public enum Pivot {
             local,

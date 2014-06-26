@@ -1,9 +1,8 @@
-﻿using DiversityPhone.ViewModels.Utility;
-using System;
-using System.Windows.Data;
-
-namespace DiversityPhone.View
+﻿namespace DiversityPhone.View
 {
+    using DiversityPhone.ViewModels;
+    using System;
+    using System.Windows.Data;
     
     public class SyncVMPivotConverter :  IValueConverter
     {

@@ -1,11 +1,11 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using DiversityPhone.Services;
-using ReactiveUI;
-using System;
-using System.Reactive.Linq;
+﻿namespace DiversityPhone.ViewModels {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using DiversityPhone.Services;
+    using ReactiveUI;
+    using System;
+    using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels {
     public class RefreshVocabularyVM : PageVMBase {
         public RefreshVocabularyVM(
             ICredentialsService Credentials,

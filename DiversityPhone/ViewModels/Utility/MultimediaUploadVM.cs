@@ -1,16 +1,17 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using ReactiveUI;
-using System;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Threading;
-
-namespace DiversityPhone.ViewModels.Utility
+﻿namespace DiversityPhone.ViewModels
 {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using System;
+    using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using System.Threading;
+
+
     public class MultimediaUploadVM : IUploadVM<MultimediaObjectVM>
     {
         readonly IDiversityServiceClient Service;
@@ -125,8 +126,15 @@ namespace DiversityPhone.ViewModels.Utility
                         byte[] data;
                         using (var file = Multimedia.GetMultimedia(mmo.Uri))
                         {
-                            data = new byte[file.Length];
-                            file.Read(data, 0, data.Length);
+                            if (file.Length <= 0)
+                            {
+                                return Observable.Empty<MultimediaObject>();
+                            }
+                            else
+                            {
+                                data = new byte[file.Length];
+                                file.Read(data, 0, data.Length);
+                            }
                         }
                         return Service.UploadMultimedia(mmo, data)
                             .Do(uri => Storage.update(mmo, o => o.CollectionURI = uri))

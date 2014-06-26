@@ -1,33 +1,16 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using DiversityPhone.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Threading;
-
-
-
-namespace DiversityPhone.ViewModels.Utility
+﻿namespace DiversityPhone.ViewModels
 {
-    public static class ObservableMixin
-    {
-        public static IObservable<T> StartWithCancellation<T>(Action<CancellationToken, IObserver<T>> task)
-        {
-            return Observable.Create<T>(obs =>
-                       {
-                           var cancelSource = new CancellationTokenSource();
-                           Observable.Start(() => task(cancelSource.Token, obs))
-                               .Subscribe(_2 => { }, obs.OnError, obs.OnCompleted);
-
-                           return Disposable.Create(cancelSource.Cancel);
-                       });
-        }
-    }
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using DiversityPhone.Services;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using System.Threading;
 
     public class FieldDataUploadVM : IUploadVM<IElementVM>
     {

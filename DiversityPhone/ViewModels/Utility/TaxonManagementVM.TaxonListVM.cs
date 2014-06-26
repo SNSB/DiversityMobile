@@ -1,10 +1,9 @@
-﻿using DiversityPhone.Model;
-using ReactiveUI;
-using System;
+﻿namespace DiversityPhone.ViewModels
+{
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using System;
 
-
-namespace DiversityPhone.ViewModels
-{   
     public class TaxonListVM : ReactiveObject
     {
         public string TaxonomicGroup 

@@ -1,8 +1,7 @@
-﻿using DiversityPhone.ViewModels.Utility;
-using Ninject;
-
-namespace DiversityPhone.ViewModels
+﻿namespace DiversityPhone.ViewModels
 {
+    using Ninject;
+
     public partial class ViewModelLocator
     {
         private const string OFFLINE_STORAGE = "OfflineStorage";

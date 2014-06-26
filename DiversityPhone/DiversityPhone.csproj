@@ -208,6 +208,8 @@
     <Compile Include="LiveSDKTaskAsync\ApiMethod.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveAuthClientTaskAsync.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveConnectClientTaskAsync.cs" />
+    <Compile Include="Ninject\ServiceModule.cs" />
+    <Compile Include="Ninject\ViewModelModule.cs" />
     <Compile Include="Services\CloudStorageService.cs" />
     <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\Storage\BackupService.cs" />
