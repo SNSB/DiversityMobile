@@ -95,7 +95,7 @@ namespace DiversityService
         private static IdentificationUnitGeoAnalysis getGeoAnalysisForIU(Diversity db, int DiversityCollectionID)
         {
             //Attention: No Geodata
-            return db.SingleOrDefault<IdentificationUnitGeoAnalysis>("Select IdentificationUnitID,CollectionSpecimenID,AnalysisDate From IdentificationUnitGeoAnalysis WHERE IdentificationUNitID0=@0", DiversityCollectionID);
+            return db.SingleOrDefault<IdentificationUnitGeoAnalysis>("Select IdentificationUnitID,CollectionSpecimenID,AnalysisDate From IdentificationUnitGeoAnalysis WHERE IdentificationUnitID0=@0", DiversityCollectionID);
         }
 
         private static IEnumerable<T> loadTablePaged<T>(string table, int page, Diversity db)
