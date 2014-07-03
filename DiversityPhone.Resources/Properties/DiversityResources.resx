@@ -493,7 +493,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Repository</value>
   </data>
   <data name="Settings_Header_SkyDrive" xml:space="preserve">
-    <value>SkyDrive Integration</value>
+    <value>OneDrive Integration</value>
   </data>
   <data name="Settings_Header_UploadData" xml:space="preserve">
     <value>Upload Data</value>

@@ -1165,7 +1165,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SkyDrive Integration.
+        ///   Looks up a localized string similar to OneDrive Integration.
         /// </summary>
         public static string Settings_Header_SkyDrive {
             get {
