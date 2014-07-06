@@ -76,13 +76,19 @@
         }
 
         public void showProgress(IObservable<ProgressState> progress) {
-            var replays = progress.Replay(1);
-            progress.Finally(() => removeNotification(replays)).Subscribe();
-            lock (this) {
-                _Notifications.Insert(0, replays);
-            }
-            replays.Connect();
-            updateNotification();
+            NotificationScheduler.Schedule(() =>
+            {
+                var replays = progress.Replay(1);
+                progress
+                    .Finally(() => removeNotification(replays))
+                    .Subscribe();
+                lock (this)
+                {
+                    _Notifications.Insert(0, replays);
+                }
+                replays.Connect();
+                updateNotification();
+            });
         }
 
         public IObservable<Unit> showPopup(string text) {
