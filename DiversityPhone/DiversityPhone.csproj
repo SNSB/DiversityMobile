@@ -127,6 +127,10 @@
     <Reference Include="Ninject.Extensions.Factory">
       <HintPath>..\Lib\Ninject.Extensions.Factory\sl-wp71\Ninject.Extensions.Factory.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=2.1.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NLog.2.1.0\lib\sl4-windowsphone71\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="ReactiveUI.Blend_WP7, Version=4.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\reactiveui-xaml.4.5.0\lib\SL4-WindowsPhone71\ReactiveUI.Blend_WP7.dll</HintPath>
@@ -221,6 +225,8 @@
     <Compile Include="Ninject\ServiceModule.cs" />
     <Compile Include="Ninject\ViewModelModule.cs" />
     <Compile Include="Services\CloudStorageService.cs" />
+    <Compile Include="Services\Logging\LogFile.cs" />
+    <Compile Include="Services\Logging\NLogLogger.cs" />
     <Compile Include="Services\ProfileService.cs" />
     <Compile Include="Services\Storage\BackupService.cs" />
     <Compile Include="Services\Storage\CleanupService.cs" />
@@ -457,6 +463,9 @@
     <None Include="Fonts\LiveSymbol.ttf" />
     <None Include="Images\AudioIcons\Thumbs.db" />
     <None Include="Images\Screenshots\Thumbs.db" />
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

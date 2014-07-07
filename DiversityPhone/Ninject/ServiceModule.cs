@@ -7,6 +7,20 @@
     using System;
     using System.Reactive.Linq;
     using System.Reactive.Concurrency;
+using Ninject.Modules;
+
+    class BaseServiceModule : NinjectModule
+    {
+        public override void Load()
+        {
+            Bind<IScheduler>().ToConstant(DispatcherScheduler.Current); // Default Scheduler
+            Bind<IScheduler>().ToConstant(DispatcherScheduler.Current).WhenTargetHas<DispatcherAttribute>();
+            Bind<IScheduler>().ToConstant(ThreadPoolScheduler.Instance).WhenTargetHas<ThreadPoolAttribute>();
+            Bind<IMessageBus>().ToConstant(MessageBus.Current);
+
+            Bind<ICurrentProfile>().To<ProfileService>().InSingletonScope();
+        }
+    }
 
     class ServiceModule : Ninject.Modules.NinjectModule
     {
@@ -17,13 +31,8 @@
         }
 
         public override void Load()
-        {
-            Bind<IScheduler>().ToConstant(DispatcherScheduler.Current).WhenTargetHas<DispatcherAttribute>();
-            Bind<IScheduler>().ToConstant(ThreadPoolScheduler.Instance).WhenTargetHas<ThreadPoolAttribute>();
-            Bind<INotificationService>().To<NotificationService>().InSingletonScope();
-            Bind<IMessageBus>().ToConstant(MessageBus.Current);
-
-            Bind<ICurrentProfile>().To<ProfileService>().InSingletonScope();
+        {   
+            Bind<INotificationService>().To<NotificationService>().InSingletonScope();           
 
             Bind<SettingsService>().ToSelf().InSingletonScope();
             Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());

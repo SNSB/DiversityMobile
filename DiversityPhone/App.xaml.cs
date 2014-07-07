@@ -46,7 +46,6 @@
             // Phone-specific initialization
             InitializePhoneApplication();
 
-
             // Show graphics profiling information while debugging.
             if (System.Diagnostics.Debugger.IsAttached) {
                 // Display the current frame rate counters.
@@ -86,6 +85,11 @@
             RxApp.InUnitTestRunnerOverride = false;
             RxApp.DeferredScheduler = DispatcherScheduler.Current;
             RxApp.TaskpoolScheduler = ThreadPoolScheduler.Instance;
+                       
+            ReactiveUI.RxApp.LoggerFactory = (t) =>
+            {
+                return new NLogLogger(NLog.LogManager.GetLogger(t.Name));
+            };
 
             InitializeAsync();
         }
@@ -94,6 +98,11 @@
             Kernel = new StandardKernel();
             Kernel.Bind<PhoneApplicationFrame>().ToConstant(RootFrame);
             Kernel.Load<FuncModule>();
+            Kernel.Load<BaseServiceModule>();
+
+            // Enable Logging before creating ViewModels and higher level Services
+            LogFile.Profile = Kernel.Get<ICurrentProfile>();
+
             Kernel.Load<ServiceModule>();
             Kernel.Load<ViewModelModule>();
 
