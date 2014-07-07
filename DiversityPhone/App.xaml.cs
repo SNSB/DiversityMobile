@@ -12,6 +12,7 @@
     using System.Reactive.Concurrency;
     using System.Threading.Tasks;
     using System.Windows;
+    using ReactiveUI.NLog;
 
     public partial class App : Application, IEnableLogger {
         public static IKernel Kernel { get; private set; }

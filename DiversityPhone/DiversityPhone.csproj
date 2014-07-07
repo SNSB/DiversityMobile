@@ -449,7 +449,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BugSense\BugSense - SDK License Agreement.txt" />
     <Content Include="Images\SNSBIcons\Taxa\gall_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\soil_80.png" />
     <Content Include="Images\SNSBIcons\Taxa\unknown_80.png" />
@@ -461,8 +460,6 @@
     <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="app.config" />
     <None Include="Fonts\LiveSymbol.ttf" />
-    <None Include="Images\AudioIcons\Thumbs.db" />
-    <None Include="Images\Screenshots\Thumbs.db" />
     <Content Include="NLog.config">
       <SubType>Designer</SubType>
     </Content>
