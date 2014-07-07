@@ -13,7 +13,7 @@
     using System.Threading.Tasks;
     using System.Windows;
 
-    public partial class App : Application {
+    public partial class App : Application, IEnableLogger {
         public static IKernel Kernel { get; private set; }
 
 
@@ -174,6 +174,9 @@
             }
 
             e.Handled = true;
+
+            var instance = (App)App.Current;
+            instance.Log().FatalException("Unhandled Exception", e.ExceptionObject);
 
             //Filter unhelpful Errors 
             // This might be because the user tapped a link twice too fast, before the browser could be launched (Info Page for example)
