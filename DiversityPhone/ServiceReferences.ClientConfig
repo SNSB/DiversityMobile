@@ -54,11 +54,11 @@
       <endpoint address="http://dwbmobile.snsb.info:1111/DiversityService2/DiversityService.svc" binding="basicHttpBinding"
                     bindingConfiguration="BasicHttpBinding_IDiversityService"
                     contract="DiversityService.IDiversityService" 
-                    name="BasicHttpBinding_IDiversityService" />
-      <!--<endpoint address="http://localhost:7091/DiversityService.svc" binding="basicHttpBinding"
+                    name="BasicHttpBinding_IDiversityService" />    
+      <!--<endpoint address="http://169.254.80.80/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->
-      <!--<endpoint address="http://169.254.80.80/DiversityService/DiversityService.svc" binding="basicHttpBinding"
+      <!--<endpoint address="http://10.0.0.3/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->
       <!--<endpoint address="http://btn4nv38.inf.uni-bayreuth.de:7091/DiversityService.svc" binding="basicHttpBinding"
