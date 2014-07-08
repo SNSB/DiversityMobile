@@ -240,6 +240,12 @@
     <Compile Include="..\DiversityPhone.Model\Page.cs">
       <Link>Implementation\Model\Page.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone.Model\Service\ClientModel.Config.cs">
+      <Link>Implementation\Model\ClientModel.Config.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone.Model\Service\TermLists.cs">
+      <Link>Implementation\Model\TermLists.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone.ServiceReference\IKeyMappingService.cs">
       <Link>Implementation\Interface\IKeyMappingService.cs</Link>
     </Compile>
@@ -311,12 +317,6 @@
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Utility\SetupVM.cs">
       <Link>Implementation\ViewModels\SetupVM.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService\Models\ClientModel.Config.cs">
-      <Link>Implementation\Model\ClientModel.Config.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService\Models\TermLists.cs">
-      <Link>Implementation\Model\TermLists.cs</Link>
     </Compile>
     <Compile Include="Implementation\NamespaceDummies.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

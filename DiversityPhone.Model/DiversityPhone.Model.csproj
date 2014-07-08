@@ -105,12 +105,6 @@
     <Reference Include="mscorlib.extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\DiversityService\Models\ClientModel.Config.cs">
-      <Link>DataModel\ClientModel.Config.cs</Link>
-    </Compile>
-    <Compile Include="..\DiversityService\Models\TermLists.cs">
-      <Link>DataModel\TermLists.cs</Link>
-    </Compile>
     <Compile Include="AppSettings.cs" />
     <Compile Include="DataModel\Analysis.cs" />
     <Compile Include="DataModel\AnalysisResult.cs" />
@@ -177,6 +171,8 @@
     <Compile Include="DataModel\TaxonList.cs" />
     <Compile Include="DataModel\TaxonName.cs" />
     <Compile Include="DataModel\Term.cs" />
+    <Compile Include="Service\ClientModel.Config.cs" />
+    <Compile Include="Service\TermLists.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DataModel\Event.tt">
