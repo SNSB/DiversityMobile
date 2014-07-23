@@ -93,9 +93,14 @@
 
         private IObservable<Unit> uploadSpecimen(Specimen s)
         {
-            return Service.InsertSpecimen(s)
-                .SelectMany(_ => Storage.getTopLevelIUForSpecimen(s.SpecimenID).Select(iu => uploadIU(iu)))
-                .SelectMany(x => x);
+            return Observable.Start(() => Storage.getTopLevelIUForSpecimen(s.SpecimenID))
+                // Only Upload Specimen with at least one IU
+                .Where(ius => ius != null && ius.Any())
+                .SelectMany(ius => 
+                    Service.InsertSpecimen(s)
+                           .SelectMany(_ => ius)                           
+                )
+                .SelectMany(iu => uploadIU(iu));
         }
 
         private IObservable<Unit> uploadIU(IdentificationUnit iu)
@@ -146,9 +151,14 @@
                 foreach (var i in (from ev in ctx.Events
                                    where ev.CollectionEventID != null
                                    join s in ctx.Specimen on ev.EventID equals s.EventID
-                                   where s.CollectionSpecimenID == null
+                                   let hasUnits = (from iu in ctx.IdentificationUnits
+                                                   where iu.SpecimenID == s.SpecimenID
+                                                   select Unit.Default).Any()                                                      
+                                   where s.CollectionSpecimenID == null && hasUnits
                                    select new SpecimenVM(s) as IElementVM))
+                {
                     yield return i;
+                }
 
                 foreach (var i in (from iu in
                                        //New IU with parent Spec Uploaded
