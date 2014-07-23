@@ -98,6 +98,9 @@
                          Margin="{StaticResource PhoneHorizontalMargin}"
                          MaxHeight="170"/>
 
+                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_AnalysisDate, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
+                <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+
                 <toolkit:ListPicker ItemsSource="{Binding Qualifications.Items}"
                                 SelectedIndex="{Binding Qualifications.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"             
@@ -123,9 +126,7 @@
 
                 <ListBox ItemsSource="{Binding Circumstances}" 
                             SelectedItem="{Binding Circumstance, Mode=TwoWay}"
-                            IsEnabled="{Binding IsEditable}"/>
-                <TextBlock Text="{Binding Resources.IdentificationUnit_Header_AnalysisDate, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSubtleStyle}"/>
-                <toolkit:DatePicker Value="{Binding AnalysisDate, Mode=TwoWay}" IsEnabled="{Binding IsEditable}" />
+                            IsEnabled="{Binding IsEditable}"/>               
             </StackPanel>
         </ScrollViewer>
     </Grid>
