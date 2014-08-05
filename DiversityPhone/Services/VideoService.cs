@@ -311,6 +311,14 @@
 
 
         private string NewVideoFilePath() {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (!iso.DirectoryExists("Temp"))
+                {
+                    iso.CreateDirectory("Temp");
+                }
+            }
+
             return string.Format("Temp/{0}.mp4", Guid.NewGuid());
         }
 
