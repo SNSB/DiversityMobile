@@ -1,6 +1,7 @@
 ﻿using DiversityPhone.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reactive;
 namespace DiversityPhone.Interface
 {
@@ -71,7 +72,7 @@ namespace DiversityPhone.Interface
 
         IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);
 
-        IObservable<Uri> UploadMultimedia(MultimediaObject Owner, byte[] data);
+        IObservable<Uri> UploadMultimedia(MultimediaObject Owner, Stream data);
         #endregion
 
 

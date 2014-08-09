@@ -4,6 +4,7 @@
     using DiversityPhone.Model;
     using ReactiveUI;
     using System;
+    using System.IO;
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Concurrency;
@@ -123,20 +124,25 @@
                 {
                     if (mmo.CollectionURI == null)
                     {
-                        byte[] data;
-                        using (var file = Multimedia.GetMultimedia(mmo.Uri))
+                        Stream file = null;
+                        try
                         {
+                            file = Multimedia.GetMultimedia(mmo.Uri);
                             if (file.Length <= 0)
                             {
+                                file.Dispose();
                                 return Observable.Empty<MultimediaObject>();
                             }
-                            else
-                            {
-                                data = new byte[file.Length];
-                                file.Read(data, 0, data.Length);
-                            }
                         }
-                        return Service.UploadMultimedia(mmo, data)
+                        catch
+                        {
+                            if (file != null)
+                            {
+                                file.Dispose();
+                            }
+                            throw;
+                        }
+                        return Service.UploadMultimedia(mmo, file)
                             .Do(uri => Storage.update(mmo, o => o.CollectionURI = uri))
                             .Select(_ => mmo);
                     }

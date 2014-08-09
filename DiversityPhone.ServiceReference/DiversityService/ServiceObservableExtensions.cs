@@ -37,7 +37,7 @@ namespace DiversityPhone.Services
                 .ReplayOnlyFirst();
         }
 
-        public static IObservable<T> ConvertErrors<T>(this IObservable<T> This)
+        public static IObservable<T> ConvertToServiceErrors<T>(this IObservable<T> This)
         {
             return This
                .Catch((Exception ex) =>
@@ -88,7 +88,7 @@ namespace DiversityPhone.Services
                         subscription.Dispose();
                 }
                 return subscription;
-            }).ConvertErrors();
+            }).ConvertToServiceErrors();
         }
 
         public static IObservable<Unit> StoreMapping(this IObservable<int> This, IEntity owner, IKeyMappingService mappingService)

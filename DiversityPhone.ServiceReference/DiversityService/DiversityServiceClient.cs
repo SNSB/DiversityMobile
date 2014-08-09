@@ -52,6 +52,10 @@ namespace DiversityPhone.Services
 
         //MULTIMEDIA
         IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
+        IObservable<EventPattern<MultimediaService.BeginTransactionCompletedEventArgs>> BeginTransactionCompleted;
+        IObservable<EventPattern<MultimediaService.EncodeFileCompletedEventArgs>> EncodeFileCompleted;
+        IObservable<EventPattern<MultimediaService.CommitCompletedEventArgs>> CommitCompleted;
+        IObservable<EventPattern<AsyncCompletedEventArgs>> RollbackCompleted;
 
 
         readonly IKeyMappingService Mapping;
@@ -104,6 +108,13 @@ namespace DiversityPhone.Services
 
             UploadMultimediaCompleted = Observable.FromEventPattern<SubmitCompletedEventArgs>(h => _multimedia.SubmitCompleted += h, h => _multimedia.SubmitCompleted -= h);
             LogErrors<SubmitCompletedEventArgs>(UploadMultimediaCompleted);
+            BeginTransactionCompleted = Observable.FromEventPattern<BeginTransactionCompletedEventArgs>(h => _multimedia.BeginTransactionCompleted += h, h => _multimedia.BeginTransactionCompleted -= h);
+            LogErrors<BeginTransactionCompletedEventArgs>(BeginTransactionCompleted);
+            EncodeFileCompleted = Observable.FromEventPattern<EncodeFileCompletedEventArgs>(h => _multimedia.EncodeFileCompleted += h, h => _multimedia.EncodeFileCompleted -= h);
+            LogErrors<EncodeFileCompletedEventArgs>(EncodeFileCompleted);
+            CommitCompleted = Observable.FromEventPattern<CommitCompletedEventArgs>(h => _multimedia.CommitCompleted += h, h => _multimedia.CommitCompleted -= h);
+            LogErrors<CommitCompletedEventArgs>(CommitCompleted);
+            RollbackCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _multimedia.RollbackCompleted += h, h => _multimedia.RollbackCompleted -= h);
 
             EventSeriesByIDCompleted = Observable.FromEventPattern<EventSeriesByIDCompletedEventArgs>(h => _svc.EventSeriesByIDCompleted += h, h => _svc.EventSeriesByIDCompleted -= h);
             LogErrors<EventSeriesByIDCompletedEventArgs>(EventSeriesByIDCompleted);
