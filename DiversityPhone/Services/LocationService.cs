@@ -6,9 +6,9 @@
     using System;
     using System.Collections.Generic;
     using System.Device.Location;
-    using System.Reactive.Concurrency;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
 
 
 
@@ -22,11 +22,7 @@
         private static readonly TimeSpan DefaultLocationTimeout = TimeSpan.FromSeconds(20);
         private static readonly GeoPositionAccuracy DefaultAccuracy = GeoPositionAccuracy.High;
 
-        readonly IScheduler threadpool = ThreadPoolScheduler.Instance;
-
-
         private IDisposable current_watcher = Disposable.Empty;
-        private IObservable<GeoPosition<GeoCoordinate>> coordinate_observable;
 
         private bool _IsEnabled = true;
         public bool IsEnabled
@@ -44,45 +40,47 @@
             }
         }
 
+        private BehaviorSubject<GeoCoordinate> _LatestLocation = new BehaviorSubject<GeoCoordinate>(null);
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="LocationService"/> class with a default accuracy specified.
-        /// <param name="defaultAccuracy">
-        /// The default accuracy to be used for all requests for location information.
-        /// </param>
+        /// Initializes a new instance of the <see cref="LocationService"/> class with default values for all parameters
         /// </summary>
         public LocationService()
         {
+            this.WhenAny(x => x.IsEnabled, x => x.Value)
+                .Where(enabled => enabled)
+                .Select(_ => Observable.Create<GeoCoordinateWatcher>(obs =>
+                {
+                    var w = new GeoCoordinateWatcher(DefaultAccuracy);
+                    obs.OnNext(w);
+                    w.Start();
 
+                    this.Log().Info("New GeoCoordinateWatcher Created.");
 
-            var watcher = this.WhenAny(x => x.IsEnabled, x => x.Value)
-                    .Where(enabled => enabled)
-                    .Select(_ => Observable.Create<GeoCoordinateWatcher>(obs =>
-                    {
-                        var w = new GeoCoordinateWatcher(DefaultAccuracy);
-                        obs.OnNext(w);
-                        w.Start();
+                    current_watcher = Disposable.Create(() => w.Stop());
 
-                        current_watcher = Disposable.Create(() => w.Stop());
-
-                        return current_watcher;
-                    }))
-                .Switch()
-                .Replay(1)
-                .RefCount();
-
-
-
-            coordinate_observable = watcher
-                .Select(w => Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
-                    .Select(ev => ev.EventArgs.Position)
-                    ).Switch();
+                    return current_watcher;
+                }))
+            .Switch()
+            .Select(w =>
+                Observable.FromEventPattern<GeoPositionChangedEventArgs<GeoCoordinate>>(w, "PositionChanged")
+                .Select(ev => ev.EventArgs.Position)
+                .Select(pos => (pos != null) ? pos.Location : null)
+            ).Switch()
+            .Merge(
+                // When we are disabled, clear out location information.
+                this.WhenAny(x => x.IsEnabled, x => x.Value)
+                .Where(enabled => !enabled)
+                .Select(_ => null as GeoCoordinate)
+                )
+            .Subscribe(_LatestLocation);
         }
 
         public IObservable<Coordinate> LocationByDistanceThreshold(int distance)
         {
             var comparer = new DistanceThresholdComparer(distance);
 
-            return coordinate_observable.Select(p => p.Location)
+            return _LatestLocation
                 .DistinctUntilChanged(comparer)
                 .ToCoordinates()
                 .AsObservable();
@@ -90,7 +88,7 @@
 
         public IObservable<Coordinate> Location()
         {
-            return coordinate_observable.Select(p => p.Location)
+            return _LatestLocation
                  .ToCoordinates()
                  .AsObservable();
         }
@@ -122,12 +120,6 @@
                 return obj.GetHashCode();
             }
         }
-
-
-
-
-
-
     }
 
     static class GeoCoordinateMixin

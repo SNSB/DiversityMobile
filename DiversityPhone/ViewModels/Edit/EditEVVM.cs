@@ -10,8 +10,6 @@ using System.Reactive.Subjects;
 namespace DiversityPhone.ViewModels {
     public class EditEVVM : EditPageVMBase<Event> {
         readonly ILocationService Geolocation;
-        BehaviorSubject<Coordinate> _latest_location = new BehaviorSubject<Coordinate>(Coordinate.Unknown);
-        IDisposable _location_subscription = Disposable.Empty;
 
 
         #region Properties
@@ -40,21 +38,6 @@ namespace DiversityPhone.ViewModels {
             Contract.Requires(Geolocation != null);
             this.Geolocation = Geolocation;
 
-            Observable.CombineLatest(
-            CurrentModelObservable.Where(m => m.IsNew()),
-            ActivationObservable,
-            (_, act) => act
-            )
-                .Subscribe(active => {
-                        if (active) {
-                            _latest_location.OnNext(Coordinate.Unknown);
-                            _location_subscription = Geolocation.Location().Where(l => !l.IsUnknown()).Subscribe(_latest_location);
-                        }
-                        else {
-                            _location_subscription.Dispose();
-                        }
-                    });
-
             ModelByVisitObservable
                 .Select(ev => ev.CollectionDate)
                 .Subscribe(date => CollectionDate = date);
@@ -72,7 +55,9 @@ namespace DiversityPhone.ViewModels {
 
         protected override void UpdateModel() {
             if (!Current.Model.IsLocalized())
-                Current.Model.SetCoordinates(_latest_location.First());
+            {
+                Current.Model.SetCoordinates(Geolocation.Location().FirstOrDefault() ?? Coordinate.Unknown);
+            }
             Current.Model.LocalityDescription = LocalityDescription;
             Current.Model.HabitatDescription = HabitatDescription;
             Current.Model.CollectionDate = CollectionDate;
