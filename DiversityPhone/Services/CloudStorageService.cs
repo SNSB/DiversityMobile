@@ -39,6 +39,8 @@
     }
 
     public class CloudStorageService : ICloudStorageService
+    {
+        private const string CLIENT_ID = "00000000480F4F1E";
         private const string ZIP_TEMP_FILE = "FolderUpload.zip";
         private const string SKYDRIVE_ROOT_FOLDER = "me/skydrive";
         private const string DIVERSITY_FOLDER_NAME = "DiversityMobile";
@@ -63,11 +65,16 @@
             }
         }
 
-        public void Disconnect()
+        public async Task DisconnectAsync()
         {
-            var cl = new LiveAuthClient("00000000480F4F1E");
+            var cl = new LiveAuthClient(CLIENT_ID);
 
-            cl.Logout();
+            await cl.Initialize();
+
+            if (cl.Session != null)
+            {
+                cl.Logout();
+            }
         }
 
         private ISubject<bool> _IsConnected = new BehaviorSubject<bool>(false);

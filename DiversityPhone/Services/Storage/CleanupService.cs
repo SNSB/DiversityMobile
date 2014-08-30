@@ -12,7 +12,7 @@
         {
             var newProfile = Profile.CreateProfileID();
             Profile.SetCurrentProfileID(newProfile);
-            Cloud.Disconnect();
+            await Cloud.DisconnectAsync();
             await ClearBackups();
         }
 
