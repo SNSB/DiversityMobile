@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Templates.xaml"/>
+                <ResourceDictionary Source="../Resources/Templates.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="SelectMultimediaItemTemplate">
@@ -20,7 +20,7 @@
                     Command="{Binding DataContext.SelectMultimedia, ElementName=mmoList}"
                     CommandParameter="{Binding}">
                     <ContentControl Content="{Binding}"
-                                ContentTemplate="{StaticResource MultimediaItemTemplate}"/>
+                                ContentTemplate="{StaticResource MultimediaItemTemplate}" />
                 </Button>
             </DataTemplate>
         </ResourceDictionary>
@@ -32,6 +32,5 @@
              HorizontalContentAlignment="Left"
              VerticalAlignment="Stretch"
              VerticalContentAlignment="Top">
-
     </ListBox>
 </UserControl>

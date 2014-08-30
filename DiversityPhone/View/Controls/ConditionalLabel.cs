@@ -23,9 +23,7 @@ namespace DiversityPhone.View
                     {
                         var t = s as ConditionalLabel;
                         t.Visibility = ((bool)args.NewValue) ? Visibility.Visible : Visibility.Collapsed;
-                    }                        
+                    }
                 }));
-
-        
     }
 }

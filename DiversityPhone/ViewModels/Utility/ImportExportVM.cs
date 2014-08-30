@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Services;
     using Microsoft;
@@ -14,12 +15,16 @@
     using System.Reactive.Threading.Tasks;
     using System.Windows.Input;
 
-    public class ImportExportVM : PageVMBase {
-        public enum Pivot {
+    public class ImportExportVM : PageVMBase
+    {
+        public enum Pivot
+        {
             local,
             remote
         }
-        public enum Status {
+
+        public enum Status
+        {
             TakeAppData,
             TakeExternalImages,
             Restore,
@@ -29,33 +34,44 @@
         }
 
         public ICommand TakeSnapshot { get { return _TakeSnapshot; } }
+
         public ICommand DownloadSnapshot { get { return _DownloadSnapshot; } }
+
         public ICommand UploadSnapshot { get { return _UploadSnapshot; } }
+
         public ICommand DeleteSnapshot { get { return _DeleteSnapshot; } }
+
         public ICommand RestoreSnapshot { get { return _RestoreSnapshot; } }
+
         public ICommand RefreshRemote { get { return _RefreshRemote; } }
+
         public IListSelector<Snapshot> Snapshots { get; private set; }
 
         public IListSelector<string> RemoteSnapshots { get; private set; }
 
         private Status _CurrentStatus;
-        public Status CurrentStatus {
+
+        public Status CurrentStatus
+        {
             get { return _CurrentStatus; }
             set { this.RaiseAndSetIfChanged(x => x.CurrentStatus, ref _CurrentStatus, value); }
         }
 
         private int? _ProgressPercentage;
-        public int? ProgressPercentage {
+
+        public int? ProgressPercentage
+        {
             get { return _ProgressPercentage; }
             set { this.RaiseAndSetIfChanged(x => x.ProgressPercentage, ref _ProgressPercentage, value); }
         }
 
         private Pivot _CurrentPivot;
-        public Pivot CurrentPivot {
+
+        public Pivot CurrentPivot
+        {
             get { return _CurrentPivot; }
             set { this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value); }
         }
-
 
         public bool IsBusy { get { return _IsBusy; } }
 
@@ -67,13 +83,17 @@
         private IProgress<int> _PercentageProgress;
         private IProgress<Tuple<BackupStage, int>> _BackupProgress;
 
-        private void RaiseIsBusyChanged() {
+        private void RaiseIsBusyChanged()
+        {
             Dispatcher.Schedule(() => this.RaisePropertyChanged(x => x.IsBusy));
         }
 
-        private void OperationFinished() {
-            lock (this) {
-                if (_IsBusy) {
+        private void OperationFinished()
+        {
+            lock (this)
+            {
+                if (_IsBusy)
+                {
                     _IsBusy = false;
                     RaiseIsBusyChanged();
                 }
@@ -81,13 +101,16 @@
         }
 
         /// <summary>
-        /// Prevents more than one Operation from Running at the same time. 
+        /// Prevents more than one Operation from Running at the same time.
         /// Tries to acquire the right to run a new Operation
         /// </summary>
         /// <returns>true if the new operation is allowed to proceed, false if there is already an operation running</returns>
-        private bool TryStartOperation() {
-            lock (this) {
-                if (!_IsBusy) {
+        private bool TryStartOperation()
+        {
+            lock (this)
+            {
+                if (!_IsBusy)
+                {
                     _IsBusy = true;
 
                     RaiseIsBusyChanged();
@@ -97,45 +120,55 @@
             }
         }
 
-        private Status BackupStageToStatus(BackupStage stage) {
-            switch (stage) {
+        private Status BackupStageToStatus(BackupStage stage)
+        {
+            switch (stage)
+            {
                 case BackupStage.AppData:
                     return Status.TakeAppData;
+
                 case BackupStage.ExternalData:
                     return Status.TakeExternalImages;
+
                 default:
                     throw new NotImplementedException();
             }
         }
 
-
-
-        private string GetErrorStringForState() {
+        private string GetErrorStringForState()
+        {
             string failureNotification = string.Empty;
-            switch (CurrentStatus) {
+            switch (CurrentStatus)
+            {
                 case Status.TakeAppData:
                 case Status.TakeExternalImages:
                     failureNotification = DiversityResources.ImportExport_Failed_Take;
                     break;
+
                 case Status.Restore:
                     failureNotification = DiversityResources.ImportExport_Failed_Restore;
                     break;
+
                 case Status.Delete:
                     failureNotification = DiversityResources.ImportExport_Failed_Delete;
                     break;
+
                 case Status.Upload:
                     failureNotification = DiversityResources.ImportExport_Failed_Upload;
                     break;
+
                 case Status.Download:
                     failureNotification = DiversityResources.ImportExport_Failed_Download;
                     break;
+
                 default:
                     throw new NotImplementedException();
             }
             return failureNotification;
         }
 
-        private void ShowErrorForState() {
+        private void ShowErrorForState()
+        {
             var errorString = GetErrorStringForState();
             Notifications.showNotification(errorString);
         }
@@ -146,7 +179,8 @@
             INotificationService Notifications,
             ICloudStorageService Cloud,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             Contract.Requires(Profile != null);
             Contract.Requires(Backup != null);
             Contract.Requires(Notifications != null);
@@ -160,7 +194,8 @@
             _RefreshRemoteSnapshots = new ReactiveAsyncCommand();
 
             _PercentageProgress = new Progress<int>(p => ProgressPercentage = p);
-            _BackupProgress = new Progress<Tuple<BackupStage, int>>(t => {
+            _BackupProgress = new Progress<Tuple<BackupStage, int>>(t =>
+            {
                 CurrentStatus = BackupStageToStatus(t.Item1);
                 _PercentageProgress.Report(t.Item2);
             });
@@ -179,7 +214,6 @@
                 .CombineLatest(ActivationObservable, (connected, active) => connected & active)
                 .Where(x => x)
                 .SubscribeCommand(_RefreshRemoteSnapshots);
-
 
             _TakeSnapshot = new ReactiveCommand();
             AddStartErrorHandlingAndCompletion(
@@ -234,7 +268,6 @@
                     .Do(_ => CurrentPivot = Pivot.local)
                     .SubscribeCommand(_RefreshSnapshots);
 
-
             _RefreshSnapshots
                 .RegisterAsyncObservable(_ =>
                     Backup.EnumerateSnapshots().ToList()
@@ -259,12 +292,13 @@
             _RefreshRemoteSnapshots
                 .ThrownExceptions
                 .Subscribe(ex => { /*TODO Log*/ }); // Ignore Exceptions
-
         }
 
-        private IObservable<Unit> AddStartErrorHandlingAndCompletion<T, TResult>(IObservable<T> observable, Func<T, IObservable<TResult>> operation) {
+        private IObservable<Unit> AddStartErrorHandlingAndCompletion<T, TResult>(IObservable<T> observable, Func<T, IObservable<TResult>> operation)
+        {
             // Handle any error by displaying a notification
-            Func<Exception, IObservable<TResult>> handler = (ex) => {
+            Func<Exception, IObservable<TResult>> handler = (ex) =>
+            {
                 ShowErrorForState();
                 return Observable.Empty<TResult>();
             };
@@ -278,27 +312,29 @@
                     .Finally(OperationFinished) //Release "IsBusy" when done
                     .Concat(Observable.Return(Unit.Default)) // signal operation finished via output Observable
                     );
-
-
         }
 
-        private IObservable<Unit> StartDownload(ICloudStorageService Cloud, string snap) {
+        private IObservable<Unit> StartDownload(ICloudStorageService Cloud, string snap)
+        {
             CurrentStatus = Status.Download;
             return Cloud.DownloadFolderAsync(snap, BackupService.SNAPSHOTS_DIRECTORY, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartUpload(ICloudStorageService Cloud, Snapshot snap) {
+        private IObservable<Unit> StartUpload(ICloudStorageService Cloud, Snapshot snap)
+        {
             CurrentStatus = Status.Upload;
             return Cloud.UploadFolderAsync(snap.FolderPath, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartRestore(IBackupService Backup, Snapshot snap) {
+        private IObservable<Unit> StartRestore(IBackupService Backup, Snapshot snap)
+        {
             CurrentStatus = Status.Restore;
             ProgressPercentage = null;
             return Backup.RestoreSnapshot(snap.FolderPath, _PercentageProgress).ToObservable();
         }
 
-        private IObservable<Unit> StartDelete(IBackupService Backup, Snapshot snap) {
+        private IObservable<Unit> StartDelete(IBackupService Backup, Snapshot snap)
+        {
             CurrentStatus = Status.Delete;
             ProgressPercentage = null;
             return Backup.DeleteSnapshot(snap.FolderPath).ToObservable();

@@ -4,28 +4,37 @@ using DiversityPhone.Services;
 using ReactiveUI;
 using System;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
-namespace DiversityPhone.ViewModels {
-    public class VideoVM : EditPageVMBase<MultimediaObject> {
+namespace DiversityPhone.ViewModels
+{
+    public class VideoVM : EditPageVMBase<MultimediaObject>
+    {
         private readonly IStoreMultimedia VideoStore;
 
         private IVideoService _VideoService;
-        public IVideoService VideoService {
+
+        public IVideoService VideoService
+        {
             get { return _VideoService; }
             set { this.RaiseAndSetIfChanged(x => x.VideoService, ref _VideoService, value); }
         }
 
         public VideoVM(IStoreMultimedia VideoStore)
-            : base(mmo => mmo.MediaType == MediaType.Video) {
+            : base(mmo => mmo.MediaType == MediaType.Video)
+        {
             this.VideoStore = VideoStore;
 
             ModelByVisitObservable
                 .Where(_ => VideoService != null)
-                .Subscribe(m => {
-                    if (m.IsNew()) {
+                .Subscribe(m =>
+                {
+                    if (m.IsNew())
+                    {
                         VideoService.CreateRecording();
                     }
-                    else {
+                    else
+                    {
                         var videoFile = VideoStore.GetMultimedia(m.Uri);
                         VideoService.SetVideoFile(videoFile);
                     }
@@ -35,22 +44,21 @@ namespace DiversityPhone.ViewModels {
             CanSave().Subscribe(CanSaveSubject);
         }
 
-        protected override void UpdateModel() {
+        protected override async Task UpdateModel()
+        {
             var video = VideoService;
-            if (video != null) {
+            if (video != null)
+            {
                 var fileStream = video.GetRecording();
                 Current.Model.Uri = VideoStore.StoreMultimedia(Current.Model.NewFileName(), fileStream);
             }
         }
 
-        protected IObservable<bool> CanSave() {
+        protected IObservable<bool> CanSave()
+        {
             return this.WhenAny(x => x.VideoService, x => x.GetValue())
                 .Select(x => (x != null) ? x.HasRecording() : Observable.Empty<bool>())
                 .Switch();
         }
-
-
-
-
     }
 }

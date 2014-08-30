@@ -1,5 +1,6 @@
-﻿
-namespace DiversityPhone.Test.Tests {
-    class SettingsVMFixture {
+﻿namespace DiversityPhone.Test.Tests
+{
+    internal class SettingsVMFixture
+    {
     }
 }

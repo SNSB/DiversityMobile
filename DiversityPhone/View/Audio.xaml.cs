@@ -7,7 +7,6 @@ namespace DiversityPhone.View
 {
     public partial class NewAudio : PhoneApplicationPage
     {
-
         private AudioVM VM
         {
             get

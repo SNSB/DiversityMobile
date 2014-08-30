@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -8,21 +9,28 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
 
-    public class ViewESVM : ViewPageVMBase<EventSeries> {
+    public class ViewESVM : ViewPageVMBase<EventSeries>
+    {
         private readonly IFieldDataService Storage;
 
         private ReactiveAsyncCommand getEvents = new ReactiveAsyncCommand();
 
         #region Commands
+
         public ReactiveCommand AddEvent { get; private set; }
+
         public ReactiveCommand Maps { get; private set; }
+
         public ReactiveCommand<IElementVM<EventSeries>> EditSeries { get; private set; }
+
         public ReactiveCommand<IElementVM<Event>> SelectEvent { get; private set; }
-        #endregion
+
+        #endregion Commands
 
         public ReactiveCollection<EventVM> EventList { get; private set; }
 
-        public ViewESVM(IFieldDataService Storage) {
+        public ViewESVM(IFieldDataService Storage)
+        {
             this.Storage = Storage;
 
             EditSeries = new ReactiveCommand<IElementVM<EventSeries>>(vm => !vm.Model.IsNoEventSeries());

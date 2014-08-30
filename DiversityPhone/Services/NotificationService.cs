@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.Services {
+﻿namespace DiversityPhone.Services
+{
     using DiversityPhone.Interface;
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
@@ -10,37 +11,43 @@
     using System.Reactive.Linq;
     using System.Windows;
 
-
     /// <summary>
     /// Provides global Notifications and Progress reporting via the Notification Tray
     /// </summary>
-    public class NotificationService : INotificationService {
+    public class NotificationService : INotificationService
+    {
         private static readonly ProgressState IDLE_STATE = new ProgressState(0, string.Empty);
 
-        ProgressIndicator _Progress = new ProgressIndicator() { IsVisible = true };
+        private ProgressIndicator _Progress = new ProgressIndicator() { IsVisible = true };
 
         public IScheduler NotificationScheduler { get; private set; }
-        List<IObservable<ProgressState>> _Notifications = new List<IObservable<ProgressState>>();
-        IDisposable _CurrentNotificationSubscription = Disposable.Empty;
+
+        private List<IObservable<ProgressState>> _Notifications = new List<IObservable<ProgressState>>();
+        private IDisposable _CurrentNotificationSubscription = Disposable.Empty;
 
         public NotificationService(
             PhoneApplicationFrame RootFrame,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             RootFrame.Navigated += OnFrameNavigated;
             NotificationScheduler = Dispatcher;
         }
 
-        void OnFrameNavigated(object sender, System.Windows.Navigation.NavigationEventArgs e) {
+        private void OnFrameNavigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
+        {
             var page = e.Content as PhoneApplicationPage;
-            if (page != null) {
+            if (page != null)
+            {
                 page.SetValue(SystemTray.ProgressIndicatorProperty, _Progress);
                 page.SetValue(SystemTray.IsVisibleProperty, true);
             }
         }
 
-        private void setNotification(ProgressState state) {
-            NotificationScheduler.Schedule(() => {
+        private void setNotification(ProgressState state)
+        {
+            NotificationScheduler.Schedule(() =>
+            {
                 _Progress.Text = state.ProgressMessage;
                 _Progress.Value = state.ProgressPercentage ?? 0;
                 _Progress.IsIndeterminate = !state.ProgressPercentage.HasValue;
@@ -48,34 +55,43 @@
             });
         }
 
-        private void removeNotification(IObservable<ProgressState> noti) {
-            NotificationScheduler.Schedule(() => {
-                lock (this) {
+        private void removeNotification(IObservable<ProgressState> noti)
+        {
+            NotificationScheduler.Schedule(() =>
+            {
+                lock (this)
+                {
                     _Notifications.Remove(noti);
                 }
                 updateNotification();
             });
         }
 
-        private void updateNotification() {
-            NotificationScheduler.Schedule(() => {
-                lock (this) {
+        private void updateNotification()
+        {
+            NotificationScheduler.Schedule(() =>
+            {
+                lock (this)
+                {
                     _CurrentNotificationSubscription.Dispose();
                     // Check for active Notifications
-                    if (_Notifications.Count > 0) {
+                    if (_Notifications.Count > 0)
+                    {
                         var current = _Notifications[0];
                         _CurrentNotificationSubscription =
                             current
                                 .Subscribe(setNotification);
                     }
-                    else {
+                    else
+                    {
                         setNotification(IDLE_STATE);
                     }
                 }
             });
         }
 
-        public void showProgress(IObservable<ProgressState> progress) {
+        public void showProgress(IObservable<ProgressState> progress)
+        {
             NotificationScheduler.Schedule(() =>
             {
                 var replays = progress.Replay(1);
@@ -91,11 +107,13 @@
             });
         }
 
-        public IObservable<Unit> showPopup(string text) {
+        public IObservable<Unit> showPopup(string text)
+        {
             return Observable.Start(() => { MessageBox.Show(text); }, NotificationScheduler);
         }
 
-        public IObservable<bool> showDecision(string text) {
+        public IObservable<bool> showDecision(string text)
+        {
             return Observable.Start(() => MessageBox.Show(text, string.Empty, MessageBoxButton.OKCancel), NotificationScheduler)
                 .Select(res => (res == MessageBoxResult.OK || res == MessageBoxResult.Yes) ? true : false);
         }

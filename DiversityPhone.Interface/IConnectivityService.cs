@@ -14,6 +14,7 @@ namespace DiversityPhone.Interface
     public interface IConnectivityService
     {
         IObservable<ConnectionStatus> Status();
+
         void ForceUpdate();
     }
 
@@ -26,5 +27,4 @@ namespace DiversityPhone.Interface
             return svc.Status().Select(s => s == ConnectionStatus.Wifi);
         }
     }
-
 }

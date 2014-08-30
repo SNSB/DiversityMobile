@@ -2,8 +2,7 @@
 using System;
 
 namespace DiversityPhone.Interface
-{   
-
+{
     /// <summary>
     /// Interface defining the location service API.
     /// </summary>

@@ -1,7 +1,6 @@
 ﻿using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 
-
 namespace DiversityPhone.View
 {
     public partial class MapManagement : PhoneApplicationPage

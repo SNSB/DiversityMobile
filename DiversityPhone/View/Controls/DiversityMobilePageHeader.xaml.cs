@@ -6,8 +6,6 @@ namespace DiversityPhone.View
 {
     public partial class DiversityMobilePageHeader : UserControl
     {
-
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -17,8 +15,6 @@ namespace DiversityPhone.View
         // Using a DependencyProperty as the backing store for Text.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(DiversityMobilePageHeader), new PropertyMetadata(string.Empty));
-
-
 
         public DiversityMobilePageHeader()
         {

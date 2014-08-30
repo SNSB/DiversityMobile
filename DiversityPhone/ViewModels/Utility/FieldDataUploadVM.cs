@@ -14,9 +14,9 @@
 
     public class FieldDataUploadVM : IUploadVM<IElementVM>
     {
-        readonly IScheduler ThreadPool;
-        readonly IDiversityServiceClient Service;
-        readonly IFieldDataService Storage;
+        private readonly IScheduler ThreadPool;
+        private readonly IDiversityServiceClient Service;
+        private readonly IFieldDataService Storage;
 
         public MultipleSelectionHelper<IElementVM> Items { get; private set; }
 
@@ -76,7 +76,6 @@
             Items = new MultipleSelectionHelper<IElementVM>();
         }
 
-
         private IObservable<Unit> uploadES(EventSeries es)
         {
             return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID).Select(gp => gp as ILocalizable))
@@ -96,9 +95,9 @@
             return Observable.Start(() => Storage.getTopLevelIUForSpecimen(s.SpecimenID))
                 // Only Upload Specimen with at least one IU
                 .Where(ius => ius != null && ius.Any())
-                .SelectMany(ius => 
+                .SelectMany(ius =>
                     Service.InsertSpecimen(s)
-                           .SelectMany(_ => ius)                           
+                           .SelectMany(_ => ius)
                 )
                 .SelectMany(iu => uploadIU(iu));
         }
@@ -109,6 +108,7 @@
                 .SelectMany(_ => Storage.getSubUnits(iu).Select(sub => uploadIU(sub)))
                 .SelectMany(x => x);
         }
+
         private IObservable<Unit> uploadTree(IElementVM vm)
         {
             var model = vm.Model;
@@ -153,7 +153,7 @@
                                    join s in ctx.Specimen on ev.EventID equals s.EventID
                                    let hasUnits = (from iu in ctx.IdentificationUnits
                                                    where iu.SpecimenID == s.SpecimenID
-                                                   select Unit.Default).Any()                                                      
+                                                   select Unit.Default).Any()
                                    where s.CollectionSpecimenID == null && hasUnits
                                    select new SpecimenVM(s) as IElementVM))
                 {
@@ -177,10 +177,6 @@
                                    select new IdentificationUnitVM(iu) as IElementVM))
                     yield return i;
             }
-
         }
-
-
-
     }
 }

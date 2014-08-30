@@ -2,7 +2,6 @@
 using Microsoft.Reactive.Testing;
 using Moq;
 using Ninject;
-using Ninject.Extensions.Factory;
 using Ninject.MockingKernel;
 using Ninject.MockingKernel.Moq;
 using Ninject.Modules;
@@ -16,8 +15,9 @@ namespace DiversityPhone.Test
 {
     public class SingleUseEnumerable<T> : IEnumerable<T>
     {
-        readonly IEnumerable<T> _Inner;
-        bool enumerated;
+        private readonly IEnumerable<T> _Inner;
+        private bool enumerated;
+
         public SingleUseEnumerable(IEnumerable<T> inner)
         {
             _Inner = inner;
@@ -60,8 +60,6 @@ namespace DiversityPhone.Test
     {
         public UnitTestKernel()
         {
-
-
         }
     }
 
@@ -71,6 +69,7 @@ namespace DiversityPhone.Test
         protected readonly TestScheduler Scheduler;
         private TTest _T;
         private bool _GotT = false;
+
         protected TTest T
         {
             get
@@ -91,8 +90,6 @@ namespace DiversityPhone.Test
         protected readonly Mock<ITaxonService> Taxa;
         protected readonly Mock<ISettingsService> Settings;
 
-
-
         protected IObservable<T> Return<T>(T value)
         {
             return Observable.Return(value, Scheduler);
@@ -109,6 +106,7 @@ namespace DiversityPhone.Test
             s.DefaultValue = DefaultValue.Mock;
             return s;
         }
+
         protected Mock<Q> Mock<Q>() where Q : class
         {
             return K.GetMock<Q>();
@@ -128,8 +126,6 @@ namespace DiversityPhone.Test
 
             Service = K.GetMock<IDiversityServiceClient>();
             Service.DefaultValue = DefaultValue.Mock;
-
-
 
             Connectivity = K.GetMock<IConnectivityService>();
             Notifications = K.GetMock<INotificationService>();

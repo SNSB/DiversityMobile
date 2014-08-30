@@ -16,7 +16,6 @@ namespace DiversityPhone.View
 {
     public partial class ViewMap : PhoneApplicationPage
     {
-
         private ViewMapVM VM { get { return this.DataContext as ViewMapVM; } }
 
         private EditPageSaveEditButton _btn;
@@ -25,25 +24,23 @@ namespace DiversityPhone.View
         private ISubject<Transform> transform_subject = new Subject<Transform>();
         private IObservable<Transform> update_transform;
 
-
         // these two fields fully define the zoom state:
         private double TotalImageScale
         {
             get { return VM.ImageScale; }
             set { VM.ImageScale = value; }
         }
+
         private Point ImagePosition
         {
             get { return VM.ImageOffset; }
             set { VM.ImageOffset = value; }
         }
 
-
         private const double MAX_IMAGE_ZOOM = 10;
         private Point _oldFinger1;
         private Point _oldFinger2;
         private double _oldScaleFactor;
-
 
         #region Event handlers
 
@@ -59,7 +56,6 @@ namespace DiversityPhone.View
 
         private void OnPinchCompleted(object s, PinchGestureEventArgs args)
         {
-            
         }
 
         /// <summary>
@@ -109,7 +105,7 @@ namespace DiversityPhone.View
             ResetImagePosition();
         }
 
-        #endregion
+        #endregion Event handlers
 
         #region Utils
 
@@ -223,9 +219,8 @@ namespace DiversityPhone.View
             return (TotalImageScale * scaleDelta >= 1) && (TotalImageScale * scaleDelta <= MAX_IMAGE_ZOOM);
         }
 
-        #endregion     
+        #endregion Utils
 
-       
         public ViewMap()
         {
             InitializeComponent();
@@ -247,17 +242,16 @@ namespace DiversityPhone.View
                 VM.SelectMap.Execute(null);
         }
 
-        IDisposable subscriptions = Disposable.Empty;
-        CompositeDisposable additionallocalization_images;
+        private IDisposable subscriptions = Disposable.Empty;
+        private CompositeDisposable additionallocalization_images;
 
         private Point? ScaleToImage(Point? p)
         {
             if (p.HasValue)
                 return new Point() { X = p.Value.X * ImgZoom.ActualWidth, Y = p.Value.Y * ImgZoom.ActualHeight } as Point?;
             else
-                return null;                   
+                return null;
         }
-
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
@@ -265,13 +259,10 @@ namespace DiversityPhone.View
 
             var s = new CompositeDisposable(additionallocalization_images as IDisposable);
 
-            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value()              
+            var image_obs = VM.ObservableForProperty(x => x.MapImage).Value()
                 .StartWith(VM.MapImage).Where(img => img != null);
 
-
-
             s.Add(image_obs.Subscribe(img => { ImgZoom.Source = img; }));
-
 
             _currentPos = new RelativeLocationBinding(currentPosImg, update_transform, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation).Select(ScaleToImage));
             s.Add(_currentPos);
@@ -286,10 +277,10 @@ namespace DiversityPhone.View
                 .SelectMany(p => p)
                 .ObserveOnDispatcher()
                 .Subscribe(p =>
-                    {                        
+                    {
                         var it = ScaleToImage(p);
                         var source = this.Resources["GPSPointImage"] as BitmapImage;
-                        if(source != null)
+                        if (source != null)
                         {
                             var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
                             var binding = new RelativeLocationBinding(img, update_transform) { RelativeLocation = it };
@@ -304,8 +295,8 @@ namespace DiversityPhone.View
         private IDisposable clear_additional_locs()
         {
             return Disposable.Create(() =>
-                {                    
-                    MainCanvas.Children.Clear();                    
+                {
+                    MainCanvas.Children.Clear();
                     MainCanvas.Children.Add(currentPosImg);
                     MainCanvas.Children.Add(currentLocalizationImg);
                     additionallocalization_images = new CompositeDisposable(clear_additional_locs());
@@ -322,7 +313,7 @@ namespace DiversityPhone.View
             var point = e.GetPosition(ImgZoom);
             point.X /= ImgZoom.ActualWidth;
             point.Y /= ImgZoom.ActualHeight;
-            if(VM != null && VM.SetLocation.CanExecute(point))
+            if (VM != null && VM.SetLocation.CanExecute(point))
                 VM.SetLocation.Execute(point);
         }
 
@@ -330,8 +321,6 @@ namespace DiversityPhone.View
         {
             double x = (Canvas.GetLeft(currentPosImg) + currentPosImg.ActualWidth / 2);
             double y = (Canvas.GetTop(currentPosImg) + currentPosImg.ActualHeight / 2);
-
-            
         }
     }
 }

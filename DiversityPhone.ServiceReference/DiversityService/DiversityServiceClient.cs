@@ -1,5 +1,4 @@
-﻿
-using DiversityPhone.DiversityService;
+﻿using DiversityPhone.DiversityService;
 using DiversityPhone.Interface;
 using DiversityPhone.MultimediaService;
 using ReactiveUI;
@@ -13,59 +12,66 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient, IEnableLogger
     {
-        DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
-        MapService.PhoneMediaServiceClient _maps = new MapService.PhoneMediaServiceClient();
-        MultimediaService.MediaService4Client _multimedia = new MultimediaService.MediaService4Client();
+        private DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
+        private MapService.PhoneMediaServiceClient _maps = new MapService.PhoneMediaServiceClient();
+        private MultimediaService.MediaService4Client _multimedia = new MultimediaService.MediaService4Client();
 
         //MISC
-        IObservable<EventPattern<GetUserInfoCompletedEventArgs>> GetUserInfoCompleted;
-        IObservable<EventPattern<GetRepositoriesCompletedEventArgs>> GetRepositoriesCompleted;
-        IObservable<EventPattern<GetPropertiesForUserCompletedEventArgs>> GetPropertiesForUserCompleted;
-        IObservable<EventPattern<GetProjectsForUserCompletedEventArgs>> GetProjectsForUserCompleted;
+        private IObservable<EventPattern<GetUserInfoCompletedEventArgs>> GetUserInfoCompleted;
 
+        private IObservable<EventPattern<GetRepositoriesCompletedEventArgs>> GetRepositoriesCompleted;
+        private IObservable<EventPattern<GetPropertiesForUserCompletedEventArgs>> GetPropertiesForUserCompleted;
+        private IObservable<EventPattern<GetProjectsForUserCompletedEventArgs>> GetProjectsForUserCompleted;
 
         //VOCABULARY
-        IObservable<EventPattern<GetStandardVocabularyCompletedEventArgs>> GetStandardVocabularyCompleted;
-        IObservable<EventPattern<GetTaxonListsForUserCompletedEventArgs>> GetTaxonListsForUser;
-        IObservable<EventPattern<DownloadTaxonListCompletedEventArgs>> DownloadTaxonList;
-        IObservable<EventPattern<GetQualificationsCompletedEventArgs>> GetQualificationsCompleted;
-        IObservable<EventPattern<GetAnalysesForProjectCompletedEventArgs>> GetAnalysesForProjectCompleted;
-        IObservable<EventPattern<GetAnalysisResultsForProjectCompletedEventArgs>> GetAnalysisResultsForProjectCompleted;
-        IObservable<EventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>> GetAnalysisTaxonomicGroupsForProjectCompleted;
+        private IObservable<EventPattern<GetStandardVocabularyCompletedEventArgs>> GetStandardVocabularyCompleted;
+
+        private IObservable<EventPattern<GetTaxonListsForUserCompletedEventArgs>> GetTaxonListsForUser;
+        private IObservable<EventPattern<DownloadTaxonListCompletedEventArgs>> DownloadTaxonList;
+        private IObservable<EventPattern<GetQualificationsCompletedEventArgs>> GetQualificationsCompleted;
+        private IObservable<EventPattern<GetAnalysesForProjectCompletedEventArgs>> GetAnalysesForProjectCompleted;
+        private IObservable<EventPattern<GetAnalysisResultsForProjectCompletedEventArgs>> GetAnalysisResultsForProjectCompleted;
+        private IObservable<EventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>> GetAnalysisTaxonomicGroupsForProjectCompleted;
 
         // UPLOAD
-        IObservable<EventPattern<AsyncCompletedEventArgs>> InsertMMOCompleted;
-        IObservable<EventPattern<InsertEventSeriesCompletedEventArgs>> InsertESCompleted;
-        IObservable<EventPattern<InsertEventCompletedEventArgs>> InsertEVCompleted;
-        IObservable<EventPattern<InsertSpecimenCompletedEventArgs>> InsertSPCompleted;
-        IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
+        private IObservable<EventPattern<AsyncCompletedEventArgs>> InsertMMOCompleted;
+
+        private IObservable<EventPattern<InsertEventSeriesCompletedEventArgs>> InsertESCompleted;
+        private IObservable<EventPattern<InsertEventCompletedEventArgs>> InsertEVCompleted;
+        private IObservable<EventPattern<InsertSpecimenCompletedEventArgs>> InsertSPCompleted;
+        private IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
 
         //DOWNLOAD
-        IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
-        IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
-        IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
-        IObservable<EventPattern<PropertiesForEventCompletedEventArgs>> PropertiesForEventCompleted;
-        IObservable<EventPattern<SpecimenForEventCompletedEventArgs>> SpecimenForEventCompleted;
-        IObservable<EventPattern<UnitsForSpecimenCompletedEventArgs>> UnitsForSpecimenCompleted;
-        IObservable<EventPattern<SubUnitsForIUCompletedEventArgs>> SubUnitsForIUCompleted;
-        IObservable<EventPattern<AnalysesForIUCompletedEventArgs>> AnalysesForIUCompleted;
+        private IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
+
+        private IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
+        private IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
+        private IObservable<EventPattern<PropertiesForEventCompletedEventArgs>> PropertiesForEventCompleted;
+        private IObservable<EventPattern<SpecimenForEventCompletedEventArgs>> SpecimenForEventCompleted;
+        private IObservable<EventPattern<UnitsForSpecimenCompletedEventArgs>> UnitsForSpecimenCompleted;
+        private IObservable<EventPattern<SubUnitsForIUCompletedEventArgs>> SubUnitsForIUCompleted;
+        private IObservable<EventPattern<AnalysesForIUCompletedEventArgs>> AnalysesForIUCompleted;
 
         //MULTIMEDIA
-        IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
-        IObservable<EventPattern<MultimediaService.BeginTransactionCompletedEventArgs>> BeginTransactionCompleted;
-        IObservable<EventPattern<MultimediaService.EncodeFileCompletedEventArgs>> EncodeFileCompleted;
-        IObservable<EventPattern<MultimediaService.CommitCompletedEventArgs>> CommitCompleted;
-        IObservable<EventPattern<AsyncCompletedEventArgs>> RollbackCompleted;
+        private IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
 
+        private IObservable<EventPattern<MultimediaService.BeginTransactionCompletedEventArgs>> BeginTransactionCompleted;
+        private IObservable<EventPattern<MultimediaService.EncodeFileCompletedEventArgs>> EncodeFileCompleted;
+        private IObservable<EventPattern<MultimediaService.CommitCompletedEventArgs>> CommitCompleted;
+        private IObservable<EventPattern<AsyncCompletedEventArgs>> RollbackCompleted;
 
-        readonly IKeyMappingService Mapping;
-        readonly ICredentialsService Credentials;
+        private readonly IKeyMappingService Mapping;
+        private readonly ICredentialsService Credentials;
 
         private Client.UserCredentials _CurrentCredentials;
-        private Client.UserCredentials GetCreds() { return _CurrentCredentials; }
+
+        private Client.UserCredentials GetCreds()
+        {
+            return _CurrentCredentials;
+        }
 
         public DiversityServiceClient(ICredentialsService Credentials, IKeyMappingService Mapping)
-        {            
+        {
             this.Mapping = Mapping;
             this.Credentials = Credentials;
 
@@ -83,16 +89,16 @@ namespace DiversityPhone.Services
             LogErrors<GetStandardVocabularyCompletedEventArgs>(GetStandardVocabularyCompleted);
             GetAnalysesForProjectCompleted = Observable.FromEventPattern<GetAnalysesForProjectCompletedEventArgs>(d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d);
             LogErrors<GetAnalysesForProjectCompletedEventArgs>(GetAnalysesForProjectCompleted);
-            GetAnalysisResultsForProjectCompleted = Observable.FromEventPattern<GetAnalysisResultsForProjectCompletedEventArgs>( d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d);
+            GetAnalysisResultsForProjectCompleted = Observable.FromEventPattern<GetAnalysisResultsForProjectCompletedEventArgs>(d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d);
             LogErrors<GetAnalysisResultsForProjectCompletedEventArgs>(GetAnalysisResultsForProjectCompleted);
             GetAnalysisTaxonomicGroupsForProjectCompleted = Observable.FromEventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>(d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d);
             LogErrors<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>(GetAnalysisTaxonomicGroupsForProjectCompleted);
 
-            GetTaxonListsForUser = Observable.FromEventPattern<GetTaxonListsForUserCompletedEventArgs>( d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
+            GetTaxonListsForUser = Observable.FromEventPattern<GetTaxonListsForUserCompletedEventArgs>(d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d);
             LogErrors<GetTaxonListsForUserCompletedEventArgs>(GetTaxonListsForUser);
-            DownloadTaxonList = Observable.FromEventPattern<DownloadTaxonListCompletedEventArgs>( d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);
+            DownloadTaxonList = Observable.FromEventPattern<DownloadTaxonListCompletedEventArgs>(d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d);
             LogErrors<DownloadTaxonListCompletedEventArgs>(DownloadTaxonList);
-            GetQualificationsCompleted = Observable.FromEventPattern<GetQualificationsCompletedEventArgs>( d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d);
+            GetQualificationsCompleted = Observable.FromEventPattern<GetQualificationsCompletedEventArgs>(d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d);
             LogErrors<GetQualificationsCompletedEventArgs>(GetQualificationsCompleted);
 
             InsertMMOCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _svc.InsertMMOCompleted += h, h => _svc.InsertMMOCompleted -= h);
@@ -149,6 +155,5 @@ namespace DiversityPhone.Services
                     }
                 });
         }
-
     }
 }

@@ -1,12 +1,12 @@
-﻿<phone:PhoneApplicationPage 
+﻿<phone:PhoneApplicationPage
     x:Class="DiversityPhone.View.EditCS"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
-    xmlns:vw="clr-namespace:DiversityPhone.View"    
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -16,20 +16,20 @@
     DataContext="{Binding EditCS, Source={StaticResource Locator}}">
     <StackPanel>
         <Grid x:Name="TitlePanel" Margin="12,17,0,28">
-            <TextBlock Text="specimen" Margin="9,-7,0,0" 
+            <TextBlock Text="specimen" Margin="9,-7,0,0"
                        Style="{StaticResource PhoneTextTitle1Style}" HorizontalAlignment="Left" />
-            <Image Source="{Binding Current.Icon, Converter={StaticResource IconPathConverter}}" 
+            <Image Source="{Binding Current.Icon, Converter={StaticResource IconPathConverter}}"
                    HorizontalAlignment="Right" Stretch="Fill" VerticalAlignment="Center" Height="80" Width="80" />
             <vw:CommandNotAvailableLabel Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                         Command="{Binding ToggleEditable}"/>
+                                         Command="{Binding ToggleEditable}" />
         </Grid>
 
         <StackPanel Background="Transparent"
                     Margin="{StaticResource PhoneHorizontalMargin}">
-            <TextBlock Text="{Binding Resources.Specimen_Header_SpecimenCode, Source={StaticResource LocalizedStrings}}"/>
-            <TextBox x:Name="AN_TB" Background="#BFFFFFFF" 
-                     Text="{Binding AccessionNumber, Mode=TwoWay}" 
-                     TextChanged="DescTB_TextChanged" 
+            <TextBlock Text="{Binding Resources.Specimen_Header_SpecimenCode, Source={StaticResource LocalizedStrings}}" />
+            <TextBox x:Name="AN_TB" Background="#BFFFFFFF"
+                     Text="{Binding AccessionNumber, Mode=TwoWay}"
+                     TextChanged="DescTB_TextChanged"
                      IsEnabled="{Binding IsEditable}" />
         </StackPanel>
     </StackPanel>
@@ -37,7 +37,6 @@
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

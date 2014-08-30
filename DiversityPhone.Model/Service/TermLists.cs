@@ -1,6 +1,4 @@
-﻿
-
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
     public enum TermList
     {

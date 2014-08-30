@@ -5,7 +5,7 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" x:Name="phoneApplicationPage" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" x:Name="phoneApplicationPage"
     xmlns:vw="clr-namespace:DiversityPhone.View"
     x:Class="DiversityPhone.View.EditAnalysis"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
@@ -17,11 +17,11 @@
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml"/>
+                <ResourceDictionary Source="Resources/IdentificationUnitTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate x:Key="TextAndUnitItemTemplate">
-                <TextBlock Text="{Binding TextAndUnit}"/>
+                <TextBlock Text="{Binding TextAndUnit}" />
             </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
@@ -29,49 +29,47 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--TitlePanel contains the name of the application and page title-->
         <Grid x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="analysis" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
-            <vw:CommandNotAvailableLabel Grid.Row="1" 
+            <TextBlock Grid.Row="0" Text="analysis" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" />
+            <vw:CommandNotAvailableLabel Grid.Row="1"
                                          Text="{Binding Resources.Info_CantEditItem, Source={StaticResource LocalizedStrings}}"
-                                         Command="{Binding ToggleEditable}"/>
+                                         Command="{Binding ToggleEditable}" />
         </Grid>
-        <StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1" >
-            <ContentControl Content="{Binding Parent}" 
-                            ContentTemplate="{StaticResource UnitItemTemplate}" 
-                            HorizontalContentAlignment="Left"/>
+        <StackPanel x:Name="ContentPanel" Margin="12,0,12,0" Grid.Row="1">
+            <ContentControl Content="{Binding Parent}"
+                            ContentTemplate="{StaticResource UnitItemTemplate}"
+                            HorizontalContentAlignment="Left" />
 
-            <toolkit:ListPicker Header="Analysis" 
-                                IsEnabled="{Binding IsEditable}"                                
+            <toolkit:ListPicker Header="Analysis"
+                                IsEnabled="{Binding IsEditable}"
                                 ItemsSource="{Binding Analyses.Items}"
 								SelectedIndex="{Binding Analyses.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource TextAndUnitItemTemplate}"
-                                FullModeItemTemplate="{StaticResource TextAndUnitItemTemplate}"
-                                />
+                                FullModeItemTemplate="{StaticResource TextAndUnitItemTemplate}" />
 
-            <toolkit:ListPicker Header="Result"                                 
-                                ItemsSource="{Binding Results.Items}" 
-                                SelectedIndex="{Binding Results.SelectedIndex, Mode=TwoWay}"                                
+            <toolkit:ListPicker Header="Result"
+                                ItemsSource="{Binding Results.Items}"
+                                SelectedIndex="{Binding Results.SelectedIndex, Mode=TwoWay}"
                                 ItemTemplate="{StaticResource DisplayTextItemTemplate}"
-                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"                                
+                                FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"
                                 IsEnabled="{Binding IsEditable}"
-                                Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}"/>
-
+                                Visibility="{Binding IsCustomResult, ConverterParameter=true, Converter={StaticResource BoolToVis}}" />
 
             <StackPanel Orientation="Vertical" Visibility="{Binding IsCustomResult, ConverterParameter=false, Converter={StaticResource BoolToVis}}">
-                <TextBlock Margin="12,0,12,0" 
-                           TextWrapping="Wrap" 
+                <TextBlock Margin="12,0,12,0"
+                           TextWrapping="Wrap"
                            Style="{StaticResource InfoLabelTextStyle}"
-                           Text="Result"/>
-                <TextBox Name="TB_CustomResult" TextWrapping="Wrap" 
+                           Text="Result" />
+                <TextBox Name="TB_CustomResult" TextWrapping="Wrap"
                          Text="{Binding CustomResult, Mode=TwoWay}"
                          IsEnabled="{Binding IsEditable}" TextChanged="TB_CustomResult_TextChanged" />
             </StackPanel>
@@ -82,8 +80,6 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False">
-
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-
 </phone:PhoneApplicationPage>

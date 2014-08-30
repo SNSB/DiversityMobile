@@ -24,7 +24,6 @@ namespace DiversityPhone.Services
             return res;
         }
 
-
         public static IObservable<TEventArgs> MakeObservableServiceResult<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
         {
             return This.FilterByUserState(userState)
@@ -51,12 +50,10 @@ namespace DiversityPhone.Services
                    {
                        return Observable.Throw<T>(new ServiceNotAvailableException(ex.Message, ex));
                    }
-                  
+
                    return Observable.Throw<T>(ex);
                });
         }
-
-
 
         public static IObservable<TEventArgs> PipeErrors<TEventArgs>(this IObservable<TEventArgs> This) where TEventArgs : AsyncCompletedEventArgs
         {

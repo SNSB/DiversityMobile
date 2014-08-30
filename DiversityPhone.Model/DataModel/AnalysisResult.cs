@@ -1,13 +1,11 @@
 ﻿using System.Data.Linq.Mapping;
 using System.Linq;
 
-
 namespace DiversityPhone.Model
 {
     [Table]
     public class AnalysisResult
     {
-
         public AnalysisResult()
         {
             //LogUpdatedWhen = DateTime.Now;
@@ -32,8 +30,6 @@ namespace DiversityPhone.Model
         //[Column]
         //public DateTime LogUpdatedWhen { get; set; }
 
-
-
         public static IQueryOperations<AnalysisResult> Operations
         {
             get;
@@ -54,7 +50,7 @@ namespace DiversityPhone.Model
                 //FreeKey
                           (q, ar) =>
                           {
-                              //Nothing To Do. 
+                              //Nothing To Do.
                           });
         }
     }

@@ -7,6 +7,7 @@ namespace DiversityPhone.ViewModels
     public class MapVM : ElementVMBase<Map>
     {
         private string _ServerKey;
+
         public string ServerKey
         {
             get
@@ -20,6 +21,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private bool _IsDownloading;
+
         public bool IsDownloading
         {
             get
@@ -35,7 +37,6 @@ namespace DiversityPhone.ViewModels
         public MapVM(Map model)
             : base(model)
         {
-            
         }
 
         public void SetModel(Map model)
@@ -52,7 +53,6 @@ namespace DiversityPhone.ViewModels
             this.RaisePropertyChanged(x => x.Model);
             this.RaisePropertyChanged(x => x.Description);
         }
-
 
         public override string Description
         {

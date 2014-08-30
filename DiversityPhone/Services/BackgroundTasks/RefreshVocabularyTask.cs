@@ -21,8 +21,6 @@
         private UserCredentials _Credentials;
         public IObservable<Unit> _Execute;
 
-        
-
         public RefreshVocabularyTask(
             IVocabularyService Vocabulary,
             IDiversityServiceClient Repository,
@@ -42,7 +40,6 @@
             {
                 if (!_HasStarted)
                 {
-
                     _Credentials = login;
 
                     if (_Credentials != null)
@@ -70,10 +67,10 @@
                 _HasStarted = true;
 
                 return _Execute;
-            }            
+            }
         }
 
-        IObservable<Unit> clearVocabulary()
+        private IObservable<Unit> clearVocabulary()
         {
             return DeferStart(() =>
                 {
@@ -82,7 +79,7 @@
                 });
         }
 
-        IObservable<Unit> loadVocabulary()
+        private IObservable<Unit> loadVocabulary()
         {
             return DeferStart(() =>
                 {
@@ -91,10 +88,9 @@
 
                     Vocabulary.addTerms(voc);
                 });
-
         }
 
-        IObservable<Unit> loadAnalyses()
+        private IObservable<Unit> loadAnalyses()
         {
             return DeferStart(() =>
                 {
@@ -104,7 +100,7 @@
                 });
         }
 
-        IObservable<Unit> loadResults()
+        private IObservable<Unit> loadResults()
         {
             return DeferStart(() =>
                 {
@@ -117,7 +113,7 @@
                 });
         }
 
-        IObservable<Unit> loadQualifications()
+        private IObservable<Unit> loadQualifications()
         {
             return DeferStart(() =>
                 {
@@ -127,7 +123,7 @@
                 });
         }
 
-        IObservable<Unit> loadProperties()
+        private IObservable<Unit> loadProperties()
         {
             return DeferStart(() =>
                 {

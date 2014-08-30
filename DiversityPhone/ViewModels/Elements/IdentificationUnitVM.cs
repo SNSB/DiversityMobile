@@ -3,14 +3,13 @@ using ReactiveUI;
 using System;
 using System.Reactive.Linq;
 
-
 namespace DiversityPhone.ViewModels
 {
-   
     public class IdentificationUnitVM : ElementVMBase<IdentificationUnit>
-    {   
+    {
         public override string Description { get { return Model.WorkingName; } }
-        public override Icon Icon { get { return Icon.IdentificationUnit; } }        
+
+        public override Icon Icon { get { return Icon.IdentificationUnit; } }
 
         public ReactiveCollection<IdentificationUnitVM> SubUnits { get; private set; }
 
@@ -22,20 +21,17 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.HasSubUnits, ref _HasSubUnits, value); }
         }
 
-
-        
-        public IdentificationUnitVM (IdentificationUnit model)
+        public IdentificationUnitVM(IdentificationUnit model)
             : base(model)
-	    {
+        {
             model.ObservableForProperty(iu => iu.WorkingName)
-                .Subscribe(_=>this.RaisePropertyChanged(x => x.Description));  
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
 
             SubUnits = new ReactiveCollection<IdentificationUnitVM>();
             SubUnits
                 .CollectionCountChanged
                 .Select(c => c > 0)
                 .Subscribe(x => HasSubUnits = x);
-	    }
+        }
     }
-
 }

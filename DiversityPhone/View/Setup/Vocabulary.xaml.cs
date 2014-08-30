@@ -8,7 +8,7 @@ namespace DiversityPhone.View.Setup
     {
         public Vocabulary()
         {
-            InitializeComponent();            
+            InitializeComponent();
         }
 
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)

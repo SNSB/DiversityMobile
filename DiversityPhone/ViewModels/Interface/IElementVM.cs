@@ -7,7 +7,9 @@ namespace DiversityPhone.ViewModels
     public interface IElementVM
     {
         string Description { get; }
+
         Icon Icon { get; }
+
         object Model { get; }
     }
 
@@ -21,6 +23,6 @@ namespace DiversityPhone.ViewModels
         public static IObservable<T> Model<T>(this IObservable<IElementVM<T>> This)
         {
             return This.Select(vm => vm.Model);
-        }        
+        }
     }
 }

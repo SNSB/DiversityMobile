@@ -8,64 +8,70 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
-
-
-namespace DiversityPhone.ViewModels {
-    public class EditAnalysisVM : EditPageVMBase<IdentificationUnitAnalysis> {
-        readonly IVocabularyService Vocabulary;
-        readonly IFieldDataService Storage;
+namespace DiversityPhone.ViewModels
+{
+    public class EditAnalysisVM : EditPageVMBase<IdentificationUnitAnalysis>
+    {
+        private readonly IVocabularyService Vocabulary;
+        private readonly IFieldDataService Storage;
 
         private ObservableAsPropertyHelper<IElementVM<IdentificationUnit>> _Parent;
+
         public IElementVM<IdentificationUnit> Parent { get { return _Parent.Value; } }
 
         private readonly Analysis NoAnalysis = new Analysis() { DisplayText = DiversityResources.Analysis_NoAnalysis };
-        public ListSelectionHelper<Analysis> Analyses { get; private set; }
 
+        public ListSelectionHelper<Analysis> Analyses { get; private set; }
 
         private readonly AnalysisResult NoResult = new AnalysisResult() { DisplayText = DiversityResources.Analysis_Result_NoResult };
         private ListSelectionHelper<AnalysisResult> _Results;
+
         public ListSelectionHelper<AnalysisResult> Results { get { return _Results; } }
 
         private ObservableAsPropertyHelper<bool> _IsCustomResult;
+
         public bool IsCustomResult { get { return _IsCustomResult.Value; } }
 
         private string _CustomResult;
-        public string CustomResult {
-            get {
+
+        public string CustomResult
+        {
+            get
+            {
                 return _CustomResult;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(x => x.CustomResult, ref _CustomResult, value);
             }
         }
 
         public DateTime _AnalysisDate;
-        public DateTime AnalysisDate {
+
+        public DateTime AnalysisDate
+        {
             get { return _AnalysisDate; }
-            set {
-                this.RaiseAndSetIfChanged(x => x.AnalysisDate, value);
-            }
+            set { this.RaiseAndSetIfChanged(x => x.AnalysisDate, value); }
         }
 
-        ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
-
+        private ReactiveAsyncCommand getPossibleResults = new ReactiveAsyncCommand();
 
         public EditAnalysisVM(
             IFieldDataService Storage,
             IVocabularyService Vocabulary,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             Contract.Requires(Storage != null);
             Contract.Requires(Vocabulary != null);
             this.Storage = Storage;
             this.Vocabulary = Vocabulary;
 
-
             _Parent = this.ObservableToProperty(
                 Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.VIEW),
                 vm => vm.Parent);
-
 
             _Results = new ListSelectionHelper<AnalysisResult>(Dispatcher);
             Analyses = new ListSelectionHelper<Analysis>(Dispatcher);
@@ -82,7 +88,8 @@ namespace DiversityPhone.ViewModels {
 
             Analyses.SelectedItemObservable
                 .Where(an => an != null)
-                .SelectMany(selectedAN => {
+                .SelectMany(selectedAN =>
+                {
                     if (selectedAN != NoAnalysis)
                         return Observable.Start(() => Vocabulary.getPossibleAnalysisResults(selectedAN.AnalysisID) as IList<AnalysisResult>, ThreadPoolScheduler.Instance);
                     else
@@ -92,7 +99,6 @@ namespace DiversityPhone.ViewModels {
                 .ObserveOn(Dispatcher)
                 .Subscribe(Results.ItemsObserver);
 
-
             Results.ItemsObservable
                 .Where(results => results != null)
                 .CombineLatest(ModelByVisitObservable, (results, iuan) =>
@@ -101,8 +107,6 @@ namespace DiversityPhone.ViewModels {
                     .FirstOrDefault())
                 .Where(x => x != null)
                 .Subscribe(x => Results.SelectedItem = x);
-
-
 
             _IsCustomResult = this.ObservableToProperty(
                 Results.ItemsObservable
@@ -129,7 +133,8 @@ namespace DiversityPhone.ViewModels {
             CanSave().StartWith(false).Subscribe(CanSaveSubject);
         }
 
-        protected IObservable<bool> CanSave() {
+        protected IObservable<bool> CanSave()
+        {
             var vocabularyResultValid = Results.SelectedItemObservable
                 .Select(result => result != NoResult);
 
@@ -142,7 +147,8 @@ namespace DiversityPhone.ViewModels {
             return resultValid;
         }
 
-        protected override void UpdateModel() {
+        protected override async Task UpdateModel()
+        {
             Current.Model.AnalysisID = Analyses.SelectedItem.AnalysisID;
             Current.Model.AnalysisResult = (IsCustomResult) ? CustomResult : Results.SelectedItem.Result;
         }

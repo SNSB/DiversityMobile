@@ -1,26 +1,28 @@
 ﻿using DiversityPhone.Model;
 using System.Data.Linq;
 
-namespace DiversityPhone.Services {
-
-
-    public class DiversityDataContext : DataContext {
+namespace DiversityPhone.Services
+{
+    public class DiversityDataContext : DataContext
+    {
         public const string DB_FILENAME = "DiversityDB.sdf";
 
-        private static string GetCurrentProfileDBPath() {
+        private static string GetCurrentProfileDBPath()
+        {
             var profilePath = App.Profile.CurrentProfilePath();
             return string.Format("{0}/{1}", profilePath.Trim('/'), DB_FILENAME);
         }
 
         public DiversityDataContext()
-            : this(GetCurrentProfileDBPath()) {
-
+            : this(GetCurrentProfileDBPath())
+        {
         }
 
         public DiversityDataContext(
             string DatabaseFilePath
             )
-            : base(string.Format("isostore:/{0}", DatabaseFilePath.TrimStart('/'))) {
+            : base(string.Format("isostore:/{0}", DatabaseFilePath.TrimStart('/')))
+        {
         }
 
         public Table<EventSeries> EventSeries;

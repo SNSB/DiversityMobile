@@ -17,15 +17,14 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <vw:DiversityMobilePageHeader Grid.Row="0" 
-                                      Text="{Binding Resources.UsagePolicy_PageHeader, Source={StaticResource LocalizedStrings}}"/>
-        <TextBlock Grid.Row="1" TextWrapping="Wrap" 
+        <vw:DiversityMobilePageHeader Grid.Row="0"
+                                      Text="{Binding Resources.UsagePolicy_PageHeader, Source={StaticResource LocalizedStrings}}" />
+        <TextBlock Grid.Row="1" TextWrapping="Wrap"
                            Style="{StaticResource PhoneTextSmallStyle}"
-                           Text="{Binding Resources.App_Policy, Source={StaticResource LocalizedStrings}}"/>
+                           Text="{Binding Resources.App_Policy, Source={StaticResource LocalizedStrings}}" />
     </Grid>
-
 </phone:PhoneApplicationPage>

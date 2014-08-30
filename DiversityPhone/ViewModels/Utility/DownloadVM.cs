@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -8,24 +9,26 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
 
-    public class DownloadVM : PageVMBase {
+    public class DownloadVM : PageVMBase
+    {
         private readonly IDiversityServiceClient Service;
         private readonly IConnectivityService Connectivity;
         private readonly IFieldDataService Storage;
         private readonly IKeyMappingService Mappings;
         private readonly EventHierarchyLoader HierarchyLoader;
 
-
         public bool IsDownloading { get { return _IsDownloading.Value; } }
+
         private ObservableAsPropertyHelper<bool> _IsDownloading;
 
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
+
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
 
         public int ElementsDownloaded { get { return _ElementsDownloaded.Value; } }
+
         private ISubject<int> _ElementsDownloadedSubject;
         private ObservableAsPropertyHelper<int> _ElementsDownloaded;
-
 
         public ReactiveAsyncCommand SearchEvents { get; private set; }
 
@@ -35,7 +38,6 @@
 
         public ReactiveCommand CancelDownload { get; private set; }
 
-
         public DownloadVM(
             IDiversityServiceClient Service,
             IConnectivityService Connectivity,
@@ -43,7 +45,8 @@
             IKeyMappingService Mappings,
             EventHierarchyLoader HierarchyLoader,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             this.Service = Service;
             this.Connectivity = Connectivity;
             this.Storage = Storage;
@@ -95,25 +98,25 @@
             _ElementsDownloaded = _ElementsDownloadedSubject.ToProperty(this, x => x.ElementsDownloaded, 0, Dispatcher);
         }
 
-        private IObservable<Event> IfNotDownloadedYet(Event ev) {
+        private IObservable<Event> IfNotDownloadedYet(Event ev)
+        {
             if (ev == null)
                 return Observable.Empty<Event>();
 
             return
             Observable.Return(ev)
-                .Where(e => {
-                    if (!Mappings.ResolveToLocalKey(DBObjectType.Event, e.CollectionEventID.Value).HasValue) {
+                .Where(e =>
+                {
+                    if (!Mappings.ResolveToLocalKey(DBObjectType.Event, e.CollectionEventID.Value).HasValue)
+                    {
                         return true;
                     }
-                    else {
+                    else
+                    {
                         Notifications.showNotification(DiversityResources.Download_EventAlreadyDownloaded);
                         return false;
                     }
                 });
         }
-
-
-
-
     }
 }

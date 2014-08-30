@@ -19,7 +19,9 @@
     public class TransferProgress
     {
         public string LocalFolderPath { get; private set; }
+
         public string RemoteFolderPath { get; private set; }
+
         public IObservable<int> Progress { get; private set; }
 
         public TransferProgress(string local, string remote, IObservable<int> p)
@@ -33,8 +35,11 @@
     public interface ICloudStorageService
     {
         IObservable<bool> IsConnectedObservable();
+
         Task<IEnumerable<string>> GetRemoteFolders();
+
         Task UploadFolderAsync(string LocalFolderPath, IProgress<int> PercentageProgress);
+
         Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<int> PercentageProgress);
     }
 
@@ -50,9 +55,13 @@
 
         private LiveConnectSession _Session;
         private LiveConnectClient _Client;
+
         public LiveConnectSession Session
         {
-            get { return _Session; }
+            get
+            {
+                return _Session;
+            }
             set
             {
                 _Session = value;
@@ -79,7 +88,10 @@
 
         private ISubject<bool> _IsConnected = new BehaviorSubject<bool>(false);
 
-        public IObservable<bool> IsConnectedObservable() { return _IsConnected.DistinctUntilChanged(); }
+        public IObservable<bool> IsConnectedObservable()
+        {
+            return _IsConnected.DistinctUntilChanged();
+        }
 
         public class LiveFileOrFolder
         {
@@ -87,8 +99,11 @@
             public const string TYPE_FOLDER = "folder";
 
             public string name { get; set; }
+
             public string upload_location { get; set; }
+
             public string id { get; set; }
+
             public string type { get; set; }
         }
 
@@ -221,7 +236,6 @@
             }
             catch (Exception) { }
             return Enumerable.Empty<string>();
-
         }
 
         public async Task UploadFolderAsync(string LocalFolderPath, IProgress<int> PercentageProgress)

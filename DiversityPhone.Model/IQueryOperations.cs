@@ -5,7 +5,9 @@ namespace DiversityPhone.Model
     public interface IQueryOperations<T>
     {
         IQueryable<T> WhereKeySmallerThan(IQueryable<T> query, T item);
+
         IQueryable<T> WhereKeyEquals(IQueryable<T> query, T item);
+
         IQueryable<T> OrderbyKey(IQueryable<T> query, bool asc = true);
 
         /// <summary>

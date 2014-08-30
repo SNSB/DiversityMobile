@@ -35,8 +35,6 @@ namespace DiversityPhone.View
                     newC.CanExecuteChanged += sender.commandCanExecuteChanged;
                     sender.commandCanExecuteChanged(newC, null);
                 }
-
-
             }));
 
         private void commandCanExecuteChanged(object sender, EventArgs args)

@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -8,47 +9,53 @@
     using System.Linq;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Threading.Tasks;
 
-    public class EditPropertyVM : EditPageVMBase<EventProperty> {
-        readonly IVocabularyService Vocabulary;
-        readonly IFieldDataService Storage;
+    public class EditPropertyVM : EditPageVMBase<EventProperty>
+    {
+        private readonly IVocabularyService Vocabulary;
+        private readonly IFieldDataService Storage;
 
         private ObservableAsyncMRUCache<int, IObservable<PropertyName>> _PropertyNamesCache;
 
         #region Properties
 
-
         public bool IsNew { get { return _IsNew.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsNew;
 
+        private ObservableAsPropertyHelper<bool> _IsNew;
 
         private string _FilterString;
 
-        public string FilterString {
-            get {
+        public string FilterString
+        {
+            get
+            {
                 return _FilterString;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(x => x.FilterString, ref _FilterString, value);
             }
         }
 
-
         private readonly Property NoProperty = new Property() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
         private readonly IList<Property> DefaultProperties;
+
         public ListSelectionHelper<Property> Properties { get; private set; }
 
         private PropertyName NoValue = new PropertyName() { DisplayText = DiversityResources.Setup_Item_PleaseChoose };
-        public ListSelectionHelper<PropertyName> Values { get; private set; }
-        #endregion
 
+        public ListSelectionHelper<PropertyName> Values { get; private set; }
+
+        #endregion Properties
 
         public EditPropertyVM(
             IVocabularyService Vocabulary,
             IFieldDataService Storage,
             [Dispatcher] IScheduler Dispatcher,
             [ThreadPool] IScheduler ThreadPool
-            ) {
+            )
+        {
             Contract.Requires(Vocabulary != null);
             Contract.Requires(Storage != null);
             this.Vocabulary = Vocabulary;
@@ -84,24 +91,29 @@
             Properties = new ListSelectionHelper<Property>(Dispatcher);
 
             properties.SampleMostRecent(this.OnActivation())
-                .Zip(ModelByVisitObservable, (props, evprop) => {
+                .Zip(ModelByVisitObservable, (props, evprop) =>
+                {
                     var isNew = evprop.IsNew();
-                    if (isNew) { //New Property, only show unused ones
+                    if (isNew)
+                    { //New Property, only show unused ones
                         var usedPropertyIDs = (from p in Storage.getPropertiesForEvent(evprop.EventID)
                                                select p.PropertyID).ToList();
                         return from p in props
                                where !usedPropertyIDs.Contains(p.PropertyID)
                                select p;
                     }
-                    else { //Editing property -> can't change type
+                    else
+                    { //Editing property -> can't change type
                         return from p in props
                                where p.PropertyID == evprop.PropertyID
                                select p;
                     }
                 })
                 .Select(coll => coll.ToList() as IList<Property>)
-                .Do(list => {
-                    if (list.Count > 1) {
+                .Do(list =>
+                {
+                    if (list.Count > 1)
+                    {
                         list.Insert(0, NoProperty);
                     }
                 })
@@ -115,7 +127,8 @@
 
             Values = new ListSelectionHelper<PropertyName>(Dispatcher);
             Properties.SelectedItemObservable
-                .SelectMany(prop => {
+                .SelectMany(prop =>
+                {
                     return
                         (prop == null || prop == NoProperty || _PropertyNamesCache == null)
                         ? Observable.Return(Observable.Return(NoValue))
@@ -127,7 +140,8 @@
                         .Select(filter => (filter ?? string.Empty).ToLowerInvariant())
                         .Throttle(TimeSpan.FromMilliseconds(500))
                         .DistinctUntilChanged(),
-                        (props, filter) => {
+                        (props, filter) =>
+                        {
                             var separators = new char[] { ' ', '-' };
                             int max_values = 10;
                             return (from x in props
@@ -139,7 +153,7 @@
                                     .ToList()
                                     .First();
                         })
-                //Reselect value that was selected                    
+                //Reselect value that was selected
                     .Select(coll => coll as IList<PropertyName>)
                     .ObserveOn(Dispatcher)
                     .Do(values => Values.SelectedItem =
@@ -149,13 +163,12 @@
                         )
                 .Subscribe(Values.ItemsObserver);
 
-
             CanSaveObs()
                 .Subscribe(CanSaveSubject.OnNext);
         }
 
-
-        private IObservable<bool> CanSaveObs() {
+        private IObservable<bool> CanSaveObs()
+        {
             var propSelected = Properties.SelectedItemObservable
                 .Select(x => x != NoProperty && x != null)
                 .StartWith(false);
@@ -167,8 +180,8 @@
             return Extensions.BooleanAnd(propSelected, valueSelected);
         }
 
-
-        protected override void UpdateModel() {
+        protected override async Task UpdateModel()
+        {
             Current.Model.PropertyID = Properties.SelectedItem.PropertyID;
             Current.Model.PropertyUri = Values.SelectedItem.PropertyUri;
             Current.Model.DisplayText = Values.SelectedItem.DisplayText;

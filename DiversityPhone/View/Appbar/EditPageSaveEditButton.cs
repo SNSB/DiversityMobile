@@ -28,7 +28,7 @@ namespace DiversityPhone.View.Appbar
                 Command = vm.ToggleEditable
             };
 
-            _subscription = 
+            _subscription =
             vm.ObservableForProperty(x => x.IsEditable)
                 .Value()
                 .StartWith(vm.IsEditable)

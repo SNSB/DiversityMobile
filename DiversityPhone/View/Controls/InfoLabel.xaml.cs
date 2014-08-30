@@ -13,14 +13,10 @@ namespace DiversityPhone.View
             var b = new Binding("Text")
             {
                 Source = this,
-                Mode = BindingMode.OneWay                
+                Mode = BindingMode.OneWay
             };
-            textField.SetBinding(TextBlock.TextProperty,b);
-
-
+            textField.SetBinding(TextBlock.TextProperty, b);
         }
-
-
 
         public string Text
         {

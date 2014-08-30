@@ -10,9 +10,6 @@
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
 
-
-
-
     /// <summary>
     /// The location service, uses reactive extensions to publish the current location.
     /// </summary>
@@ -25,9 +22,13 @@
         private IDisposable current_watcher = Disposable.Empty;
 
         private bool _IsEnabled = true;
+
         public bool IsEnabled
         {
-            get { return _IsEnabled; }
+            get
+            {
+                return _IsEnabled;
+            }
             set
             {
                 if (_IsEnabled != value)
@@ -100,7 +101,7 @@
 
         private class DistanceThresholdComparer : IEqualityComparer<GeoCoordinate>
         {
-            double distance_threshold;
+            private double distance_threshold;
 
             public DistanceThresholdComparer(double threshold)
             {
@@ -122,7 +123,7 @@
         }
     }
 
-    static class GeoCoordinateMixin
+    internal static class GeoCoordinateMixin
     {
         public static IObservable<Coordinate> ToCoordinates(this IObservable<GeoCoordinate> This)
         {

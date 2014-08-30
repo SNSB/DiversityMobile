@@ -1,22 +1,20 @@
 ﻿extern alias Model;
 
-namespace DiversityPhone.Helper {
+namespace DiversityPhone.Helper
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using DiversityPhone.Services;
-    using Microsoft.Phone.Data.Linq;
     using Ninject;
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.IO.IsolatedStorage;
+    using System.Linq;
+    using System.Linq.Expressions;
     using System.Reflection;
     using System.Threading.Tasks;
-    using System.Linq;
-    using System.Collections.Generic;
-    using System.Linq.Expressions;
-
-
 
     public static partial class VersionMigration
     {
@@ -29,7 +27,8 @@ namespace DiversityPhone.Helper {
             return new Version(parts[1].Split('=')[1]);
         }
 
-        public static Task ApplyMigrationIfNecessary() {
+        public static Task ApplyMigrationIfNecessary()
+        {
             return Task.Factory.StartNew(async () =>
             {
                 var currentProfile = App.Kernel.Get<ICurrentProfile>().CurrentProfilePath();
@@ -60,23 +59,24 @@ namespace DiversityPhone.Helper {
             }).Unwrap();
         }
 
-        private static void MoveVocabularyToProfile(string currentProfile) {
+        private static void MoveVocabularyToProfile(string currentProfile)
+        {
             var sourceLocation = "vocabularyDB.sdf";
             var targetLocation = Path.Combine(currentProfile, "VocabularyDB.sdf");
 
             MoveFileIfExists(sourceLocation, targetLocation);
         }
 
-
         /// <summary>
         /// Moves a FieldData DB File from its location in older versions (root folder)
         /// into the Profile Folder (Added in Version 0.9.9)
-        /// Note: Checks, if the PrimaryKey Columns in the DB have been marked with IsDbGenerated 
+        /// Note: Checks, if the PrimaryKey Columns in the DB have been marked with IsDbGenerated
         /// as introduced in Version 0.9.7
         /// if not, then the DB is copied over Entity by Entity into a newly created Instance
         /// </summary>
         /// <param name="currentProfile"></param>
-        private static async Task MoveDatabaseToProfile(string currentProfile) {
+        private static async Task MoveDatabaseToProfile(string currentProfile)
+        {
             var sourceLocation = "diversityDB.sdf";
             var targetLocation = Path.Combine(currentProfile, DiversityDataContext.DB_FILENAME);
 
@@ -86,7 +86,7 @@ namespace DiversityPhone.Helper {
                 {
                     if (iso.FileExists(targetLocation))
                     {
-                        iso.DeleteFile(targetLocation);                        
+                        iso.DeleteFile(targetLocation);
                     }
 
                     if (!iso.DirectoryExists("Temp"))
@@ -137,14 +137,13 @@ namespace DiversityPhone.Helper {
                         iso.CopyFile(sourceLocation, tmpSourceLocation);
                         await CreateOrUpgradeSchema(tmpSourceLocation, new Version(0, 9, 8));
 
-
-                        // Create target DB using the most recent schema                            
+                        // Create target DB using the most recent schema
                         await CreateOrUpgradeSchema(targetLocation);
 
-                        using( var sourceCtx = new DiversityDataContext(tmpSourceLocation))
-                        using( var targetCtx = new DiversityDataContext(targetLocation))
+                        using (var sourceCtx = new DiversityDataContext(tmpSourceLocation))
+                        using (var targetCtx = new DiversityDataContext(targetLocation))
                         {
-                            CopyDatabase(sourceCtx, targetCtx);                            
+                            CopyDatabase(sourceCtx, targetCtx);
                         }
 
                         //cleanup
@@ -163,28 +162,28 @@ namespace DiversityPhone.Helper {
             var esMap = CopyTableAndCreateMapping<EventSeries>(sourceCtx, targetCtx, x => x.SeriesID, new Action<EventSeries>[0]);
 
             // GeoPoints
-            var geopointMappings = new Action<GeoPointForSeries>[] {(g) => { g.SeriesID = esMap[g.SeriesID]; }}; 
+            var geopointMappings = new Action<GeoPointForSeries>[] { (g) => { g.SeriesID = esMap[g.SeriesID]; } };
             CopyTableWithMappings<GeoPointForSeries>(sourceCtx, targetCtx, geopointMappings);
 
             //Events
-            var evMappings = new Action<Event>[] { (g) => { 
+            var evMappings = new Action<Event>[] { (g) => {
                 if(g.SeriesID.HasValue) {
-                    g.SeriesID = esMap[g.SeriesID.Value]; 
-                } 
-            }}; 
+                    g.SeriesID = esMap[g.SeriesID.Value];
+                }
+            }};
             var evMap = CopyTableAndCreateMapping<Event>(sourceCtx, targetCtx, x => x.EventID, evMappings);
 
             // Event Properties
-            var propMappings = new Action<EventProperty>[] { (g) => { g.EventID = evMap[g.EventID]; } }; 
+            var propMappings = new Action<EventProperty>[] { (g) => { g.EventID = evMap[g.EventID]; } };
             CopyTableWithMappings<EventProperty>(sourceCtx, targetCtx, propMappings);
 
             // Specimen
-            var spMapping = new Action<Specimen>[] { (g) => { g.EventID = evMap[g.EventID]; } }; 
+            var spMapping = new Action<Specimen>[] { (g) => { g.EventID = evMap[g.EventID]; } };
             var spMap = CopyTableAndCreateMapping<Specimen>(sourceCtx, targetCtx, x => x.SpecimenID, spMapping);
 
             // IUs
-            var iuMappings = new Action<IdentificationUnit>[] { (g) => { g.SpecimenID = spMap[g.SpecimenID]; } }; 
-            var iuMap = CopyTableAndCreateMapping<IdentificationUnit>(sourceCtx, targetCtx, x => x.UnitID, iuMappings);            
+            var iuMappings = new Action<IdentificationUnit>[] { (g) => { g.SpecimenID = spMap[g.SpecimenID]; } };
+            var iuMap = CopyTableAndCreateMapping<IdentificationUnit>(sourceCtx, targetCtx, x => x.UnitID, iuMappings);
             RemapColumn<IdentificationUnit>(targetCtx, iuMap, x => x.RelatedUnitID, (x, k) => x.RelatedUnitID = k);
 
             // IUAN
@@ -192,19 +191,22 @@ namespace DiversityPhone.Helper {
             CopyTableWithMappings(sourceCtx, targetCtx, iuanMappings);
 
             // MMO
-            var mmoMappings = new Action<MultimediaObject>[] { 
-                (m) => { 
+            var mmoMappings = new Action<MultimediaObject>[] {
+                (m) => {
                     var map = esMap;
                     switch(m.OwnerType) {
                         case DBObjectType.EventSeries:
                             map = esMap;
                         break;
+
                         case DBObjectType.Event:
                             map = evMap;
                             break;
+
                         case DBObjectType.IdentificationUnit:
                             map = iuMap;
                             break;
+
                         case DBObjectType.Specimen:
                             map = spMap;
                             break;
@@ -220,14 +222,15 @@ namespace DiversityPhone.Helper {
                           where mmo.TimeStamp == null
                           select mmo;
             var now = DateTime.Now;
-            foreach (var mmo in untimed) {
+            foreach (var mmo in untimed)
+            {
                 mmo.TimeStamp = now;
             }
-            targetCtx.SubmitChanges();  
+            targetCtx.SubmitChanges();
+        }
 
-        }        
-
-        private static void CopyTableWithMappings<T>(DiversityDataContext sourceCtx, DiversityDataContext targetCtx, Action<T>[] mappings) where T : class {
+        private static void CopyTableWithMappings<T>(DiversityDataContext sourceCtx, DiversityDataContext targetCtx, Action<T>[] mappings) where T : class
+        {
             var source = sourceCtx.GetTable<T>().AsEnumerable();
             var mapped = source.Select(x =>
             {
@@ -237,7 +240,7 @@ namespace DiversityPhone.Helper {
                 }
                 return x;
             });
-            
+
             targetCtx.GetTable<T>().InsertAllOnSubmit(mapped);
             targetCtx.SubmitChanges();
         }
@@ -290,24 +293,26 @@ namespace DiversityPhone.Helper {
 
         private static void MoveMultimediaToProfile(string currentProfile)
         {
-            
             var targetLocation = Path.Combine(currentProfile, MultimediaStorageService.MEDIA_FOLDER);
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
                 var multimediaDir = "/multimedia/";
                 if (iso.DirectoryExists(multimediaDir))
                 {
                     // For Version 0.9.8
                     // Multimedia stored in /multimedia/
 
-                    foreach (var file in iso.GetFileNames("/multimedia/*")) {
+                    foreach (var file in iso.GetFileNames("/multimedia/*"))
+                    {
                         var sourcePath = Path.Combine(multimediaDir, file);
                         var targetPath = Path.Combine(targetLocation, file);
 
                         iso.MoveFile(sourcePath, targetPath);
                     }
-                } else {
-
+                }
+                else
+                {
                     // For Versions earlier than 0.9.8
                     // Multimedia stored directly in the Root Folder
                     foreach (var file in iso.GetFileNames("/*.jpg"))
@@ -356,7 +361,7 @@ namespace DiversityPhone.Helper {
                             }
                         }
                         ctx.SubmitChanges();
-                    } 
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -365,9 +370,12 @@ namespace DiversityPhone.Helper {
             }
         }
 
-        private static void MoveFileIfExists(string sourceLocation, string targetLocation) {
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication()) {
-                if (iso.FileExists(sourceLocation)) {
+        private static void MoveFileIfExists(string sourceLocation, string targetLocation)
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (iso.FileExists(sourceLocation))
+                {
                     iso.MoveFile(sourceLocation, targetLocation);
                 }
             }
@@ -401,6 +409,5 @@ namespace DiversityPhone.Helper {
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }
         }
-
     }
 }

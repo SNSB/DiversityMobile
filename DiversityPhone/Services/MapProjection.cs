@@ -9,8 +9,11 @@ namespace DiversityPhone.Services
         private class Line
         {
             private Point basePoint;
+
             public Point BasePoint { get { return basePoint; } set { basePoint = value; } }
+
             private Vector direction;
+
             public Vector Direction { get { return direction; } set { direction = value; } }
 
             public Line()
@@ -36,8 +39,6 @@ namespace DiversityPhone.Services
                     return null;
                 else
                 {
-
-
                     double a = l1.BasePoint.X;
                     double b = l1.Direction.X;
                     double c = l2.BasePoint.X;
@@ -75,15 +76,16 @@ namespace DiversityPhone.Services
                     return new Point(x, y);
                 }
             }
-
         }
 
         private class Vector
         {
             private double x;
+
             public double X { get { return x; } set { x = value; } }
 
             private double y;
+
             public double Y { get { return y; } set { y = value; } }
 
             public Vector()
@@ -95,8 +97,6 @@ namespace DiversityPhone.Services
                 x = destination.X - origin.X;
                 y = destination.Y - origin.Y;
             }
-
-
 
             public static bool isParallel(Vector v1, Vector v2)
             {
@@ -113,7 +113,6 @@ namespace DiversityPhone.Services
             }
         }
 
-
         public static Point? PercentilePositionOnMap(this Map This, ILocalizable loc)
         {
             if (This == null || loc == null || !loc.Latitude.HasValue || !loc.Longitude.HasValue)
@@ -124,8 +123,6 @@ namespace DiversityPhone.Services
                 return null;
             return p;
         }
-
-
 
         //The corner coordinates of the map dont define an exact rectangle in all cases. Generally, a convex quadrangle is defined.
         //The represetation on the screen will be in an rectangle. Hence, the corresponding position is calculated. To perform This,
@@ -228,7 +225,6 @@ namespace DiversityPhone.Services
             }
         }
 
-
         public static Coordinate GPSFromPercentilePosition(this Map This, Point pos)
         {
             double percX = pos.X;
@@ -265,6 +261,5 @@ namespace DiversityPhone.Services
                 throw new ArithmeticException("Lines do not cross. Mapdata are corrupted");
             }
         }
-
     }
 }

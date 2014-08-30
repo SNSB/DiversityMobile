@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 
-
 namespace DiversityPhone.Model
 {
     using System.Data.Linq.Mapping;
@@ -45,7 +44,7 @@ namespace DiversityPhone.Model
         {
             Operations = new QueryOperations<TaxonName>(
                 //Smallerthan
-                          (q, es) => q.Where(row => row.URI.CompareTo(es.URI) <0),
+                          (q, es) => q.Where(row => row.URI.CompareTo(es.URI) < 0),
                 //Equals
                           (q, es) => q.Where(row => row.URI == es.URI),
                 //Orderby
@@ -55,6 +54,6 @@ namespace DiversityPhone.Model
                           {
                               //Not Applicable
                           });
-        }      
+        }
     }
 }

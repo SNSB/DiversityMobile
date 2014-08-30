@@ -13,15 +13,14 @@ namespace DiversityPhone.View
         private const string DEFAULT_IMAGE = "/Images/SNSBIcons/Taxa/other_80.png";
 
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {            
-            if (value != null)                
+        {
+            if (value != null)
             {
                 var computedPath = string.Format("/Images/SNSBIcons/Taxa/{0}_80.png", value.ToString());
-                if(CanLoadResource(computedPath))
+                if (CanLoadResource(computedPath))
                     return computedPath;
             }
-            return DEFAULT_IMAGE;     
-            
+            return DEFAULT_IMAGE;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -34,7 +33,7 @@ namespace DiversityPhone.View
         /// </summary>
         /// <remarks>
         /// Implementation is crude, but it works.
-        /// </remarks> 
+        /// </remarks>
         /// <param name="uri">resource uri</param>
         /// <returns>Whether or not the Resource exists.</returns>
         private static bool CanLoadResource(string uri)
@@ -49,6 +48,5 @@ namespace DiversityPhone.View
                 return false;
             }
         }
-
     }
 }

@@ -10,7 +10,7 @@
     xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}"       
+    Foreground="{StaticResource PhoneForegroundBrush}"
     DataContext="{Binding Setup, Source={StaticResource Locator}}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d"
@@ -19,20 +19,19 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <vw:DiversityMobilePageHeader Grid.Row="0"
-                                      Text="{Binding Resources.Setup_Database_PageHeader, Source={StaticResource LocalizedStrings}}"/>
+                                      Text="{Binding Resources.Setup_Database_PageHeader, Source={StaticResource LocalizedStrings}}" />
 
-        <toolkit:ListPicker Grid.Row="1" 
+        <toolkit:ListPicker Grid.Row="1"
                             ItemsSource="{Binding Database.Items}"
                             SelectedIndex="{Binding Database.SelectedIndex, Mode=TwoWay}"
-                            FullModeHeader="{Binding Resources.Setup_Database_PageHeader, Source={StaticResource LocalizedStrings}}"
-                            />
+                            FullModeHeader="{Binding Resources.Setup_Database_PageHeader, Source={StaticResource LocalizedStrings}}" />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="False"/>
+        <shell:ApplicationBar IsMenuEnabled="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

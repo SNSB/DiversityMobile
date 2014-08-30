@@ -6,11 +6,11 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.View
 {
-    public class ViewAudioVideoPageAppbarUpdater 
+    public class ViewAudioVideoPageAppbarUpdater
     {
-        IApplicationBar _appbar;
-        IAudioVideoPageVM _vm;
-        ApplicationBarIconButton  _edit, _delete,_play,_stop;
+        private IApplicationBar _appbar;
+        private IAudioVideoPageVM _vm;
+        private ApplicationBarIconButton _edit, _delete, _play, _stop;
 
         public ViewAudioVideoPageAppbarUpdater(IApplicationBar appbar, IAudioVideoPageVM viewmodel)
         {
@@ -19,7 +19,6 @@ namespace DiversityPhone.View
 
             if (_vm == null)
                 return;
-
 
             _play = new ApplicationBarIconButton()
             {
@@ -38,7 +37,6 @@ namespace DiversityPhone.View
             };
             _stop.Click += (s, args) => _vm.Stop.Execute(null);
             _stop.Click += (s, args) => this.adjustPlaying(false);
-
 
             _vm.ObservableForProperty(x => x.IsEditable)
                 .Select(change => change.Value)
@@ -60,7 +58,6 @@ namespace DiversityPhone.View
             _delete.Click += (s, args) => _vm.Delete.Execute(null);
 
             adjustApplicationBar(_vm.IsEditable);
-
         }
 
         private void adjustApplicationBar(bool editable)
@@ -95,6 +92,5 @@ namespace DiversityPhone.View
                 _edit.IsEnabled = true;
             }
         }
-
     }
 }

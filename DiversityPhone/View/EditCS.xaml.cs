@@ -1,10 +1,12 @@
-﻿namespace DiversityPhone.View {
+﻿namespace DiversityPhone.View
+{
     using DiversityPhone.View.Appbar;
     using DiversityPhone.ViewModels;
     using Microsoft.Phone.Controls;
     using System.Windows.Controls;
 
-    public partial class EditCS : PhoneApplicationPage {
+    public partial class EditCS : PhoneApplicationPage
+    {
         public EditCSVM VM { get { return DataContext as EditCSVM; } }
 
         private EditPageSaveEditButton _SaveEditBtn;
@@ -12,7 +14,8 @@
 
         private EventBindingTrigger<TextBox> _AccessionNumberBinding;
 
-        public EditCS() {
+        public EditCS()
+        {
             InitializeComponent();
 
             _SaveEditBtn = new EditPageSaveEditButton(this.ApplicationBar, VM);
@@ -23,7 +26,8 @@
             DPControlBackGround.setTBBackgroundColor(AN_TB);
         }
 
-        private void DescTB_TextChanged(object sender, TextChangedEventArgs e) {
+        private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
             DPControlBackGround.setTBBackgroundColor(AN_TB);
         }
     }

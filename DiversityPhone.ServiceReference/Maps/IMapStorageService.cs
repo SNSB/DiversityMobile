@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reactive;
+
 namespace DiversityPhone.Services
 {
     public interface IMapStorageService
@@ -24,11 +25,10 @@ namespace DiversityPhone.Services
         void ClearMaps();
 
         /// <summary>
-        /// Removes a Map in isolated storage and deletes the entry from the MapTable 
+        /// Removes a Map in isolated storage and deletes the entry from the MapTable
         /// </summary>
         /// <param name="uri"></param>
         void deleteMap(Map map);
-
 
         Stream loadMap(Map map);
     }

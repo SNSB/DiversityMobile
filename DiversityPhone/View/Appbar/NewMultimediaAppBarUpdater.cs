@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.View.Appbar {
+﻿namespace DiversityPhone.View.Appbar
+{
     using DiversityPhone.Model;
     using DiversityPhone.ViewModels;
     using Microsoft.Phone.Controls;
@@ -10,17 +11,19 @@
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
 
-    public class NewMultimediaAppBarUpdater {
-        PhoneApplicationPage _page;
-        IApplicationBar _appbar;
-        ElementMultimediaVM _vm;
-        IMultimediaOwner _mmowner;
+    public class NewMultimediaAppBarUpdater
+    {
+        private PhoneApplicationPage _page;
+        private IApplicationBar _appbar;
+        private ElementMultimediaVM _vm;
+        private IMultimediaOwner _mmowner;
 
-        ApplicationBarIconButton _image, _audio, _video;
-        IList _buttons, _mmobuttons;
-        IDisposable _back_key;
+        private ApplicationBarIconButton _image, _audio, _video;
+        private IList _buttons, _mmobuttons;
+        private IDisposable _back_key;
 
-        public NewMultimediaAppBarUpdater(IMessageBus Messenger, PhoneApplicationPage page, ElementMultimediaVM vm) {
+        public NewMultimediaAppBarUpdater(IMessageBus Messenger, PhoneApplicationPage page, ElementMultimediaVM vm)
+        {
             _page = page;
             _appbar = _page.ApplicationBar;
             _vm = vm;
@@ -73,30 +76,34 @@
                     .Select(media => new MultimediaObjectVM(new MultimediaObject() { MediaType = media, OwnerType = _mmowner.EntityType, RelatedId = _mmowner.EntityID }) as IElementVM<MultimediaObject>)
                     .ToMessage(Messenger, MessageContracts.EDIT);
 
-
             _buttons = new List<object>();
             foreach (var btn in _appbar.Buttons)
                 _buttons.Add(btn);
         }
 
-        void show_mmo_buttons(IMultimediaOwner mmowner) {
+        private void show_mmo_buttons(IMultimediaOwner mmowner)
+        {
             _mmowner = mmowner;
             _appbar.Buttons.Clear();
-            foreach (var btn in _mmobuttons) {
+            foreach (var btn in _mmobuttons)
+            {
                 _appbar.Buttons.Add(btn);
             }
             _back_key = Disposable.Create(() => _page.BackKeyPress -= backkeyhandler);
             _page.BackKeyPress += backkeyhandler;
         }
 
-        void backkeyhandler(object sender, System.ComponentModel.CancelEventArgs e) {
+        private void backkeyhandler(object sender, System.ComponentModel.CancelEventArgs e)
+        {
             e.Cancel = true;
             restore_buttons();
         }
 
-        void restore_buttons() {
+        private void restore_buttons()
+        {
             _appbar.Buttons.Clear();
-            foreach (var btn in _buttons) {
+            foreach (var btn in _buttons)
+            {
                 _appbar.Buttons.Add(btn);
             }
             _back_key.Dispose();

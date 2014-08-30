@@ -6,23 +6,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.ViewModels
 {
     public class EditIUVM : EditPageVMBase<IdentificationUnit>
     {
-        readonly ITaxonService Taxa;
-        readonly IVocabularyService Vocabulary;
-        readonly ILocationService Geolocation;
-        readonly IFieldDataService Storage;
+        private readonly ITaxonService Taxa;
+        private readonly IVocabularyService Vocabulary;
+        private readonly ILocationService Geolocation;
+        private readonly IFieldDataService Storage;
 
         private ReactiveAsyncCommand UpdateIdentifications = new ReactiveAsyncCommand();
 
         #region Properties
+
         private ObservableAsPropertyHelper<bool> _IsNew;
+
         public bool IsNew
         {
             get
@@ -32,6 +33,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private ObservableAsPropertyHelper<bool> _IsObservation;
+
         public bool IsObservation
         {
             get
@@ -40,8 +42,8 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
         private bool _OnlyObserved;
+
         public bool OnlyObserved
         {
             get
@@ -59,6 +61,7 @@ namespace DiversityPhone.ViewModels
         public ListSelectionHelper<Term> RelationshipType { get; private set; }
 
         private string _Description;
+
         public string Description
         {
             get
@@ -72,6 +75,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private string _QueryString;
+
         public string QueryString
         {
             get
@@ -89,6 +93,7 @@ namespace DiversityPhone.ViewModels
         public ListSelectionHelper<Qualification> Qualifications { get; private set; }
 
         public bool IsToplevel { get { return _IsToplevel.Value; } }
+
         private ObservableAsPropertyHelper<bool> _IsToplevel;
 
         private DateTime _AnalysisDate;
@@ -99,8 +104,7 @@ namespace DiversityPhone.ViewModels
             set { this.RaiseAndSetIfChanged(x => x.AnalysisDate, ref _AnalysisDate, value); }
         }
 
-
-        #endregion
+        #endregion Properties
 
         public EditIUVM(
             ITaxonService Taxa,
@@ -122,6 +126,7 @@ namespace DiversityPhone.ViewModels
             Qualifications = new ListSelectionHelper<Model.Qualification>(Dispatcher);
 
             #region Update View
+
             _IsNew = this.ModelByVisitObservable
                 .Select(iu => iu.IsNew())
                 .ToProperty(this, x => x.IsNew);
@@ -155,7 +160,8 @@ namespace DiversityPhone.ViewModels
             ModelByVisitObservable
                 .Select(iu => iu.AnalysisDate)
                 .Subscribe(date => AnalysisDate = date);
-            #endregion
+
+            #endregion Update View
 
             #region Vocabulary
 
@@ -169,7 +175,6 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(UpdateIdentifications.Execute);
 
             identificationQuery.Connect();
-
 
             var noUpdatesInFlight = UpdateIdentifications.ItemsInflight
                 .Select(count => count == 0)
@@ -262,7 +267,8 @@ namespace DiversityPhone.ViewModels
                 .Where(isToplevel => !isToplevel)
                 .Select(isToplevel => Vocabulary.getTerms(TermList.RelationshipTypes).ToList() as IList<Term>)
                 .Subscribe(RelationshipType.ItemsObserver);
-            #endregion
+
+            #endregion Vocabulary
 
             #region Preserve Selections
 
@@ -272,13 +278,11 @@ namespace DiversityPhone.ViewModels
                 (ids, model) => ids.FirstOrDefault(id => id.URI == Current.Model.IdentificationUri) ?? ids.FirstOrDefault())
                 .Subscribe(x => Identification.SelectedItem = x);
 
-
             TaxonomicGroup.ItemsObservable
                 .Where(x => x != null)
                 .CombineLatest(ModelByVisitObservable.Where(m => m.TaxonomicGroup != null),
                 (tgs, m) => tgs.FirstOrDefault(tg => tg.Code == Current.Model.TaxonomicGroup))
                 .Subscribe(x => TaxonomicGroup.SelectedItem = x);
-
 
             RelationshipType.ItemsObservable
                 .Where(x => x != null)
@@ -293,7 +297,8 @@ namespace DiversityPhone.ViewModels
                 (qualis, m) => qualis.FirstOrDefault(q => q.Code == m.Qualification))
                 .Where(x => x != null)
                 .Subscribe(x => Qualifications.SelectedItem = x);
-            #endregion
+
+            #endregion Preserve Selections
 
             var saveTaxonGroupSelection = Save
                 .Select(_ => TaxonomicGroup.SelectedItem);
@@ -322,13 +327,11 @@ namespace DiversityPhone.ViewModels
             return res;
         }
 
-
-
-        protected override void UpdateModel()
+        protected override async Task UpdateModel()
         {
             if (!Current.Model.IsLocalized())
             {
-                Current.Model.SetCoordinates(Geolocation.Location().First() ?? Coordinate.Unknown);
+                Current.Model.SetCoordinates(await Geolocation.Location().FirstOrDefaultAsync() ?? Coordinate.Unknown);
             }
             Current.Model.TaxonomicGroup = TaxonomicGroup.SelectedItem.Code;
             Current.Model.WorkingName = Identification.SelectedItem.TaxonNameCache.TrimStart(new[] { ' ', '=' });

@@ -11,7 +11,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait" Orientation="Portrait"       
+    SupportedOrientations="Portrait" Orientation="Portrait"
     DataContext="{Binding Setup, Source={StaticResource Locator}}"
     mc:Ignorable="d"
     shell:SystemTray.IsVisible="True">
@@ -19,22 +19,21 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <vw:DiversityMobilePageHeader Grid.Row="0"
-                                      Text="{Binding Resources.Setup_Project_PageHeader, Source={StaticResource LocalizedStrings}}"/>
+                                      Text="{Binding Resources.Setup_Project_PageHeader, Source={StaticResource LocalizedStrings}}" />
 
-
-        <toolkit:ListPicker Grid.Row="1" 
+        <toolkit:ListPicker Grid.Row="1"
                             ItemsSource="{Binding Project.Items}"
                             SelectedIndex="{Binding Project.SelectedIndex, Mode=TwoWay}"
                             ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                             FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
-                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}"/>
+                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}" />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="False"/>
+        <shell:ApplicationBar IsMenuEnabled="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

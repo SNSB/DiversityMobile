@@ -32,7 +32,7 @@ namespace DiversityPhone
         /// <summary>
         /// Retrieves an Image Thumbnail
         /// </summary>
-        /// <param name="uri">A string URI identifying the image</param>        
+        /// <param name="uri">A string URI identifying the image</param>
         ImageSource GetImageThumbnail(string uri);
     }
 
@@ -55,15 +55,17 @@ namespace DiversityPhone
 
             switch (This.MediaType)
             {
-
                 case MediaType.Audio:
                     extension = "wav";
                     break;
+
                 case MediaType.Video:
                     extension = "mp4";
                     break;
+
                 case MediaType.Image:
                     break;
+
                 default:
                     break;
             }
@@ -85,7 +87,9 @@ namespace DiversityPhone
         private static readonly Regex IMAGE_FILENAME_REGEX = new Regex("(.+)\\.jpg$");
 
         public StorageType Type { get; set; }
+
         public string FileName { get; set; }
+
         public bool IsImage
         {
             get
@@ -97,8 +101,6 @@ namespace DiversityPhone
                 return false;
             }
         }
-
-
 
         public static StorageDescriptor FromURI(string uri)
         {
@@ -129,10 +131,13 @@ namespace DiversityPhone
             {
                 case StorageType.IsolatedStorage:
                     return string.Format(ISOSTORE_URI_FORMAT, FileName);
+
                 case StorageType.CameraRoll:
                     return string.Format(CAMERAROLL_URI_FORMAT, FileName);
+
                 case StorageType.Unknown:
                     return string.Empty;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -156,10 +161,12 @@ namespace DiversityPhone
     {
         private const int THUMBNAIL_HEIGHT = 40,
                           THUMBNAIL_WIDTH = 40;
+
         public const string MEDIA_FOLDER = "Multimedia";
         private string CurrentMultimediaFolder = null;
 
         private static Version WP8 = new Version(8, 0);
+
         private static bool IsWP8 { get { return Environment.OSVersion.Version >= WP8; } }
 
         private MediaLibrary Library
@@ -186,7 +193,7 @@ namespace DiversityPhone
             StorageDescriptor fileDescriptor;
             var cameraRoll = Library.CameraRoll();
             //On WP8 the image is already saved, check for that...
-            //On Devices without Camera Roll fall back to saving anyway            
+            //On Devices without Camera Roll fall back to saving anyway
             if (IsWP8 && cameraRoll != null)
             {
                 // ... and use the Image in the Camera Roll
@@ -216,8 +223,10 @@ namespace DiversityPhone
                 {
                     case StorageType.CameraRoll:
                         return GetThumbnailFromCameraRoll(storageDescriptor.FileName);
+
                     case StorageType.IsolatedStorage:
                         return GetThumbnailFromIsolatedStorage(storageDescriptor.FileName);
+
                     default: // No other Thumbnails supported
                         break;
                 }
@@ -250,7 +259,7 @@ namespace DiversityPhone
         /// Decodes a JPEG Image from the input stream into a thumbnail
         /// </summary>
         /// <param name="ImageStream"></param>
-        /// <returns></returns>   
+        /// <returns></returns>
         /// <remarks>Disposes the Stream after use</remarks>
         private ImageSource GetThumbnailFromStream(Stream ImageStream)
         {
@@ -341,7 +350,6 @@ namespace DiversityPhone
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(FileName), "Invalid Filename");
 
-
             var fileDescriptor = new StorageDescriptor() { Type = StorageType.IsolatedStorage, FileName = FileName };
             var filePath = FilePathForDescriptor(fileDescriptor);
             UsingIsolatedStorage(store =>
@@ -380,10 +388,13 @@ namespace DiversityPhone
             {
                 case StorageType.IsolatedStorage:
                     return GetMultimediaFromIsolatedStorage(storageDescriptor.FileName);
+
                 case StorageType.CameraRoll:
                     return GetMultimediaFromCameraRoll(storageDescriptor.FileName);
+
                 case StorageType.Unknown:
                     return Stream.Null;
+
                 default:
                     return Stream.Null;
             }
@@ -422,7 +433,6 @@ namespace DiversityPhone
                             //TODO Log
                         }
                     });
-
                 }
             }
         }

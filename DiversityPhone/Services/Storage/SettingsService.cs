@@ -1,6 +1,5 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using DiversityPhone.ViewModels;
 using System;
 using System.Diagnostics.Contracts;
 using System.IO;
@@ -26,6 +25,7 @@ namespace DiversityPhone.Services
         private ISubject<Settings> _SettingsIn;
         private ISubject<Settings> _SettingsOut = new Subject<Settings>();
         private IObservable<Settings> _SettingsReplay;
+
         public SettingsService(
             ICurrentProfile Profile,
             [Dispatcher] IScheduler Dispatcher,
@@ -47,7 +47,6 @@ namespace DiversityPhone.Services
                 .ObserveOn(Dispatcher)
                 .Replay(1)
                 .PermaRef();
-                
 
             _SettingsIn = new Subject<Settings>();
 
@@ -67,7 +66,7 @@ namespace DiversityPhone.Services
                 .Subscribe(_SettingsOut);
         }
 
-        public void ReloadSettings() 
+        public void ReloadSettings()
         {
             _ReloadSettings.OnNext(Unit.Default);
         }
@@ -145,8 +144,6 @@ namespace DiversityPhone.Services
             _SettingsIn.OnNext(settings);
         }
 
-
-
         public IObservable<UserCredentials> CurrentCredentials()
         {
             return _SettingsReplay
@@ -157,6 +154,7 @@ namespace DiversityPhone.Services
         {
             return _SettingsReplay;
         }
+
         public Settings CurrentSettings { get { return _SettingsReplay.FirstOrDefault(); } }
     }
 }

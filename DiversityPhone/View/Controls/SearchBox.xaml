@@ -11,13 +11,13 @@
     x:Name="controlInstance">
     <UserControl.Resources>
         <Style x:Key="NoButtonStyle" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
-            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}" />
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}" />
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}" />
+            <Setter Property="Padding" Value="0" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
@@ -25,35 +25,35 @@
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
                                     <VisualState x:Name="Normal">
-                                    	<Storyboard>
-                                    		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
-                                    			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}"/>
-                                    		</ObjectAnimationUsingKeyFrames>
-                                    	</Storyboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
                                     </VisualState>
-                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="MouseOver" />
                                     <VisualState x:Name="Pressed">
-                                    	<Storyboard>
-                                    		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
-                                    			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneInverseBackgroundBrush}"/>
-                                    		</ObjectAnimationUsingKeyFrames>
-                                    	</Storyboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneInverseBackgroundBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
                                     </VisualState>
                                     <VisualState x:Name="Disabled">
-                                    	<Storyboard>
-                                    		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
-                                    			<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
-                                    		</ObjectAnimationUsingKeyFrames>
-                                    	</Storyboard>
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(Shape.Fill)" Storyboard.TargetName="rectangle">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}" />
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
-                                <VisualStateGroup x:Name="FocusStates"/>
+                                <VisualStateGroup x:Name="FocusStates" />
                             </VisualStateManager.VisualStateGroups>
-                        	<Rectangle x:Name="rectangle"  >
-                        		<Rectangle.OpacityMask>
-                        			<ImageBrush Stretch="Uniform" ImageSource="/Images/MetroIcons/whitenocircle/search.png"/>
-                        		</Rectangle.OpacityMask>
-                        	</Rectangle>
+                            <Rectangle x:Name="rectangle">
+                                <Rectangle.OpacityMask>
+                                    <ImageBrush Stretch="Uniform" ImageSource="/Images/MetroIcons/whitenocircle/search.png" />
+                                </Rectangle.OpacityMask>
+                            </Rectangle>
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -62,14 +62,14 @@
     </UserControl.Resources>
 
     <Grid x:Name="LayoutRoot">
-        <TextBox x:Name="QueryString" Text="{Binding Text, ElementName=controlInstance}"/>
-        <Button x:Name="button" HorizontalAlignment="Right" 
+        <TextBox x:Name="QueryString" Text="{Binding Text, ElementName=controlInstance}" />
+        <Button x:Name="button" HorizontalAlignment="Right"
                 Background="{StaticResource PhoneTextBoxEditBackgroundBrush}"
-				
+
                 Command="{Binding SearchCommand, ElementName=controlInstance}"
                 CommandParameter="{Binding Text, ElementName=QueryString}"
-                Height="48" Width="48" 
-                Margin="{StaticResource PhoneHorizontalMargin}" 
-                Style="{StaticResource NoButtonStyle}" Foreground="{StaticResource PhoneBackgroundBrush}"/>
+                Height="48" Width="48"
+                Margin="{StaticResource PhoneHorizontalMargin}"
+                Style="{StaticResource NoButtonStyle}" Foreground="{StaticResource PhoneBackgroundBrush}" />
     </Grid>
 </UserControl>

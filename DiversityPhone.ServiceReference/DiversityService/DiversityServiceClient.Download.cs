@@ -9,8 +9,6 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient
     {
-
-
         public IObservable<EventSeries> GetEventSeriesByID(int seriesID)
         {
             object request = new object();
@@ -38,7 +36,6 @@ namespace DiversityPhone.Services
                              select ev.ToClientObject(ev.CollectionSeriesID);
             _svc.EventsByLocalityAsync(localityQuery, GetCreds(), request);
             return res;
-
         }
 
         public IObservable<IEnumerable<EventProperty>> GetEventProperties(int eventID)

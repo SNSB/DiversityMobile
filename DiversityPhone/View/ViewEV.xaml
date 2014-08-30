@@ -1,5 +1,5 @@
-﻿<phone:PhoneApplicationPage 
-    
+﻿<phone:PhoneApplicationPage
+
     x:Class="DiversityPhone.ViewEV"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -7,40 +7,40 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"    
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
     xmlns:vw="clr-namespace:DiversityPhone.View"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
-    shell:SystemTray.IsVisible="True"	
+    shell:SystemTray.IsVisible="True"
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewEV}"
     x:Name="currentPage">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/GeoRefTemplates.xaml"/>
+                <ResourceDictionary Source="Resources/GeoRefTemplates.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <vw:ViewEVPivotConverter x:Key="PivotConverter"/>
+            <vw:ViewEVPivotConverter x:Key="PivotConverter" />
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height = "Auto"/>
-            <RowDefinition Height = "*"/>
+            <RowDefinition Height = "Auto" />
+            <RowDefinition Height = "*" />
         </Grid.RowDefinitions>
 
-        <Button Grid.Row="0"  
+        <Button Grid.Row="0"
                 Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding EditEvent}"
                 CommandParameter="{Binding Current}">
             <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
-                            Content="{Binding Current}"/>
+                            Content="{Binding Current}" />
         </Button>
 
-        <controls:Pivot Grid.Row="1"  
+        <controls:Pivot Grid.Row="1"
                         Margin="0"
                         SelectedIndex="{Binding SelectedPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}">
             <controls:PivotItem Header="specimen">
@@ -51,26 +51,26 @@
                                     Command="{Binding DataContext.SelectSpecimen, ElementName=currentPage}"
                                     CommandParameter="{Binding}">
                                 <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                                ContentTemplate="{StaticResource ElementItemTemplate}" />
                             </Button>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
             </controls:PivotItem>
 
-            <controls:PivotItem Header="descriptions" >
+            <controls:PivotItem Header="descriptions">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <vw:CommandNotAvailableLabel Grid.Row="0" 
-                                                 Command="{Binding Add}" 
-                                                 Text="{Binding Resources.Event_Info_NoProperties, Source={StaticResource LocalizedStrings}}"/>
-                    <ContentControl Grid.Row="1" 
+                    <vw:CommandNotAvailableLabel Grid.Row="0"
+                                                 Command="{Binding Add}"
+                                                 Text="{Binding Resources.Event_Info_NoProperties, Source={StaticResource LocalizedStrings}}" />
+                    <ContentControl Grid.Row="1"
                                     ContentTemplate="{StaticResource GeoRefItemTemplate}"
-                                    Content="{Binding Current.Model}"/>
+                                    Content="{Binding Current.Model}" />
                     <ListBox  Grid.Row="2" ItemsSource="{Binding PropertyList}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
@@ -78,7 +78,7 @@
                                         Command="{Binding DataContext.SelectProperty, ElementName=currentPage}"
                                         CommandParameter="{Binding}">
                                     <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource ElementItemTemplate}"/>
+                                                    ContentTemplate="{StaticResource ElementItemTemplate}" />
                                 </Button>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -87,18 +87,16 @@
             </controls:PivotItem>
             <!--Pivot item two-->
             <controls:PivotItem Header="multimedia">
-                <vw:MultimediaListControl DataContext="{Binding MultimediaList}"/>
+                <vw:MultimediaListControl DataContext="{Binding MultimediaList}" />
             </controls:PivotItem>
         </controls:Pivot>
-
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="map" Click="Map_Click"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="map" Click="Map_Click" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-
 </phone:PhoneApplicationPage>

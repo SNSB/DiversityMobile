@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<phone:PhoneApplicationPage
     x:Class="DiversityPhone.View.MapManagement"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -19,24 +19,24 @@
     DataContext="{Binding Source={StaticResource Locator}, Path=MapManagement}">
     <phone:PhoneApplicationPage.Resources>
         <ResourceDictionary>
-            <vw:MapManagementPivotConverter x:Key="PivotConverter"/>
-            <DataTemplate x:Key="MapTemplate">                
+            <vw:MapManagementPivotConverter x:Key="PivotConverter" />
+            <DataTemplate x:Key="MapTemplate">
                 <StackPanel Orientation="Horizontal">
                     <Rectangle Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
-                                                   Fill="{StaticResource PhoneForegroundBrush}" 
+                                                   Fill="{StaticResource PhoneForegroundBrush}"
                                                    Width="40" Height="40">
                         <Rectangle.OpacityMask>
                             <ImageBrush ImageSource="/Images/appbar.download.rest.png" />
                         </Rectangle.OpacityMask>
                     </Rectangle>
-                    <TextBlock Text="{Binding Description}" />                   
+                    <TextBlock Text="{Binding Description}" />
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
     </phone:PhoneApplicationPage.Resources>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <controls:Pivot Name="pivotControl" 
+        <controls:Pivot Name="pivotControl"
                         Margin="{StaticResource PhoneHorizontalMargin}"
                         SelectedIndex="{Binding CurrentPivot, Converter={StaticResource PivotConverter}, Mode=TwoWay}"
                         HorizontalAlignment="Stretch"
@@ -46,17 +46,17 @@
                 <ListBox ItemsSource="{Binding MapList}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Button Style="{StaticResource ItemButtonStyle}" 
+                            <Button Style="{StaticResource ItemButtonStyle}"
                                 Command="{Binding DataContext.SelectMap, ElementName=currentPage}"
                                 CommandParameter="{Binding}">
                                 <ContentControl Content="{Binding}"
-                                                ContentTemplate="{StaticResource MapTemplate}"/>
+                                                ContentTemplate="{StaticResource MapTemplate}" />
                                 <toolkit:ContextMenuService.ContextMenu>
                                     <toolkit:ContextMenu>
-                                        <toolkit:MenuItem Header="delete" 
-                                                              Command="{Binding ElementName=currentPage, Path=DataContext.DeleteMap}" 
+                                        <toolkit:MenuItem Header="delete"
+                                                              Command="{Binding ElementName=currentPage, Path=DataContext.DeleteMap}"
                                                               CommandParameter="{Binding}"
-                                                              IsEnabled="{Binding IsDownloaded}"/>
+                                                              IsEnabled="{Binding IsDownloaded}" />
                                     </toolkit:ContextMenu>
                                 </toolkit:ContextMenuService.ContextMenu>
                             </Button>
@@ -67,27 +67,27 @@
             <controls:PivotItem Header="online">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <vw:ConditionalLabel Grid.Row="0" Text="{Binding Resources.Info_NoWifi, Source={StaticResource LocalizedStrings}}"
-                                             IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}"/>
+                                             IsVisible="{Binding IsOnlineAvailable, Converter={StaticResource InvertBoolean}}" />
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <TextBox x:Name="QueryString"
                                      Grid.Column="0"
                                      IsEnabled="{Binding IsOnlineAvailable}" />
-                        <Button Grid.Column="1"  
+                        <Button Grid.Column="1"
                                     HorizontalAlignment="Right"
-                                   
+
                                     Style="{StaticResource ItemButtonStyle}"
                                     Command="{Binding SearchMaps}"
                                     CommandParameter="{Binding Text, ElementName=QueryString}">
-                            <Rectangle Fill="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center" 
+                            <Rectangle Fill="{StaticResource PhoneForegroundBrush}" VerticalAlignment="Center"
                                        Width="40" Height="40">
                                 <Rectangle.OpacityMask>
                                     <ImageBrush ImageSource="/Images/MetroIcons/white/search.png" />
@@ -95,15 +95,15 @@
                             </Rectangle>
                         </Button>
                     </Grid>
-                    <ListBox Grid.Row="2" 
+                    <ListBox Grid.Row="2"
                                  ItemsSource="{Binding SearchResults}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Button Style="{StaticResource ItemButtonStyle}" 
+                                <Button Style="{StaticResource ItemButtonStyle}"
                                     Command="{Binding DataContext.DownloadMap, ElementName=currentPage}"
                                     CommandParameter="{Binding}">
                                     <ContentControl Content="{Binding}"
-                                                    ContentTemplate="{StaticResource MapTemplate}"/>
+                                                    ContentTemplate="{StaticResource MapTemplate}" />
                                 </Button>
                             </DataTemplate>
                         </ListBox.ItemTemplate>

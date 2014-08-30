@@ -9,20 +9,19 @@ using System;
 using System.IO;
 using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-
 
 namespace DiversityPhone.ViewModels
 {
     public class AudioVM : EditPageVMBase<MultimediaObject>, IAudioVideoPageVM
     {
-
         private readonly IStoreMultimedia MultimediaStore;
-
 
         //Audio Components
         private Microphone microphone = Microphone.Default;
+
         private DispatcherTimer timer;
 
         private MemoryStream audioStream = new MemoryStream();  // Stores the audio data for later playback
@@ -33,9 +32,11 @@ namespace DiversityPhone.ViewModels
         private BitmapImage speakerImage = new BitmapImage(new Uri("/Images/AudioIcons/speaker.png", UriKind.RelativeOrAbsolute));
 
         #region Properties
+
         private bool _MusicWasPlaying = false;
 
         private string _Uri;
+
         public string Uri
         {
             get { return _Uri; }
@@ -43,6 +44,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private byte[] _audioBuffer;                             // Dynamic buffer to retrieve audio data from the microphone
+
         public byte[] AudioBuffer
         {
             get
@@ -70,6 +72,7 @@ namespace DiversityPhone.ViewModels
         }
 
         private PlayStates _state = PlayStates.Idle; // Flag to monitor the state of sound playback and recording
+
         public PlayStates State
         {
             get
@@ -96,19 +99,17 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
-
-        #endregion
-
+        #endregion Properties
 
         #region Commands
 
-
         public IReactiveCommand Record { get; private set; }
+
         public IReactiveCommand Play { get; private set; }
+
         public IReactiveCommand Stop { get; private set; }
 
-        #endregion
+        #endregion Commands
 
         #region Constructor
 
@@ -116,8 +117,8 @@ namespace DiversityPhone.ViewModels
             : base(mmo => mmo.MediaType == MediaType.Audio)
         {
             this.MultimediaStore = MultimediaStore;
-            // Timer to simulate the XNA Framework game loop (Microphone is 
-            // from the XNA Framework). We also use this timer to monitor the 
+            // Timer to simulate the XNA Framework game loop (Microphone is
+            // from the XNA Framework). We also use this timer to monitor the
             // state of audio playback so we can update the UI appropriately.
             timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromMilliseconds(33);
@@ -158,17 +159,13 @@ namespace DiversityPhone.ViewModels
                         stop();
                         audioStream.SetLength(0);
                     });
-
-
-
-
         }
 
-        #endregion
+        #endregion Constructor
 
         #region Inherited
 
-        protected override void UpdateModel()
+        protected override async Task UpdateModel()
         {
             UpdateWavHeader(audioStream);
 
@@ -187,7 +184,7 @@ namespace DiversityPhone.ViewModels
             return idle.BooleanAnd(bufferReady);
         }
 
-        #endregion
+        #endregion Inherited
 
         #region WavHandling
 
@@ -254,7 +251,7 @@ namespace DiversityPhone.ViewModels
             stream.Seek(oldPos, SeekOrigin.Begin);
         }
 
-        #endregion
+        #endregion WavHandling
 
         #region Events
 
@@ -266,17 +263,14 @@ namespace DiversityPhone.ViewModels
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void microphone_BufferReady(object sender, EventArgs e)
+        private void microphone_BufferReady(object sender, EventArgs e)
         {
-
             // Retrieve audio data
             microphone.GetData(this.AudioBuffer);
 
             // Store the audio data in a stream
             audioStream.Write(AudioBuffer, 0, AudioBuffer.Length);
         }
-
-
 
         /// <summary>
         /// Updates the XNA FrameworkDispatcher and checks to see if a sound is playing.
@@ -296,26 +290,24 @@ namespace DiversityPhone.ViewModels
                     // Audio has finished playing
                     State = PlayStates.Idle;
 
-                    // Update the UI to reflect that the 
+                    // Update the UI to reflect that the
                     // sound has stopped playing
                     AudioStatusImage = blankImage;
                 }
             }
         }
 
-
-        #endregion
-
+        #endregion Events
 
         #region Methods for ReactiveCommands
 
         /// <summary>
-        /// Plays the audio using SoundEffectInstance 
+        /// Plays the audio using SoundEffectInstance
         /// so we can monitor the playback status.
         /// </summary>
         private void playSound()
         {
-            // Play audio using SoundEffectInstance so we can monitor it's State 
+            // Play audio using SoundEffectInstance so we can monitor it's State
             // and update the UI in the dt_Tick handler when it is done playing.
             SoundEffect sound = new SoundEffect(audioStream.ToArray(), microphone.SampleRate, AudioChannels.Mono);
             soundInstance = sound.CreateInstance();
@@ -335,7 +327,6 @@ namespace DiversityPhone.ViewModels
             }
         }
 
-
         private void recordAudio()
         {
             microphone.BufferDuration = TimeSpan.FromMilliseconds(500);
@@ -351,14 +342,13 @@ namespace DiversityPhone.ViewModels
         {
             if (microphone.State == MicrophoneState.Started)
             {
-                // In RECORD mode, user clicked the 
+                // In RECORD mode, user clicked the
                 // stop button to end recording
                 microphone.Stop();
-
             }
             else if (soundInstance != null && soundInstance.State == SoundState.Playing)
             {
-                // In PLAY mode, user clicked the 
+                // In PLAY mode, user clicked the
                 // stop button to end playing back
                 soundInstance.Stop();
             }
@@ -366,10 +356,6 @@ namespace DiversityPhone.ViewModels
             AudioStatusImage = blankImage;
         }
 
-
-
-
-        #endregion
-
+        #endregion Methods for ReactiveCommands
     }
 }

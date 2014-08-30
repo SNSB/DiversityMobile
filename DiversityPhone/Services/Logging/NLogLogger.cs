@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using NLog;
+using System;
 using System.Reflection;
-using System.Text;
-using NLog;
 
 /**
- *  File Taken from the Source Code of 
+ *  File Taken from the Source Code of
  *  ReactiveUI v4.6.4
  **/
 
@@ -14,14 +11,14 @@ namespace ReactiveUI.NLog
 {
     public class NLogLogger : IRxUIFullLogger
     {
-        readonly Logger _inner;
+        private readonly Logger _inner;
 
         public NLogLogger(global::NLog.Logger inner)
         {
             _inner = inner;
         }
 
-        global::NLog.LogLevel rxUIToNLogLevel(LogLevel logLevel)
+        private global::NLog.LogLevel rxUIToNLogLevel(LogLevel logLevel)
         {
             if (logLevel == LogLevel.Debug) return global::NLog.LogLevel.Debug;
             if (logLevel == LogLevel.Info) return global::NLog.LogLevel.Info;
@@ -53,11 +50,13 @@ namespace ReactiveUI.NLog
             _inner.DebugException(message, exception);
         }
 
-        MethodInfo debugFp = null;
+        private MethodInfo debugFp = null;
+
         public void Debug(IFormatProvider formatProvider, string message, params object[] args)
         {
-            if (debugFp == null) {
-                debugFp = _inner.GetType().GetMethod("Debug", new[] {typeof (IFormatProvider), typeof (string), typeof (object[])});
+            if (debugFp == null)
+            {
+                debugFp = _inner.GetType().GetMethod("Debug", new[] { typeof(IFormatProvider), typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 2];
@@ -71,17 +70,19 @@ namespace ReactiveUI.NLog
             _inner.Debug(message);
         }
 
-        MethodInfo debugNoFp = null;
+        private MethodInfo debugNoFp = null;
+
         public void Debug(string message, params object[] args)
         {
-             if (debugNoFp == null) {
-                debugNoFp = _inner.GetType().GetMethod("Debug", new[] {typeof (string), typeof (object[])});
+            if (debugNoFp == null)
+            {
+                debugNoFp = _inner.GetType().GetMethod("Debug", new[] { typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 1];
             innerArgs[0] = message;
             Array.Copy(args, 0, innerArgs, 1, args.Length);
-            debugNoFp.Invoke(_inner, innerArgs);           
+            debugNoFp.Invoke(_inner, innerArgs);
         }
 
         public void Debug<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
@@ -117,8 +118,6 @@ namespace ReactiveUI.NLog
             _inner.Debug(message, argument1, argument2, argument3);
         }
 
-
-
         public void Info<T>(T value)
         {
             _inner.Info(value);
@@ -134,11 +133,13 @@ namespace ReactiveUI.NLog
             _inner.InfoException(message, exception);
         }
 
-        MethodInfo infoFp = null;
+        private MethodInfo infoFp = null;
+
         public void Info(IFormatProvider formatProvider, string message, params object[] args)
         {
-            if (infoFp == null) {
-                infoFp = _inner.GetType().GetMethod("Info", new[] {typeof (IFormatProvider), typeof (string), typeof (object[])});
+            if (infoFp == null)
+            {
+                infoFp = _inner.GetType().GetMethod("Info", new[] { typeof(IFormatProvider), typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 2];
@@ -152,17 +153,19 @@ namespace ReactiveUI.NLog
             _inner.Info(message);
         }
 
-        MethodInfo infoNoFp = null;
+        private MethodInfo infoNoFp = null;
+
         public void Info(string message, params object[] args)
         {
-             if (infoNoFp == null) {
-                infoNoFp = _inner.GetType().GetMethod("Info", new[] {typeof (string), typeof (object[])});
+            if (infoNoFp == null)
+            {
+                infoNoFp = _inner.GetType().GetMethod("Info", new[] { typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 1];
             innerArgs[0] = message;
             Array.Copy(args, 0, innerArgs, 1, args.Length);
-            infoNoFp.Invoke(_inner, innerArgs);           
+            infoNoFp.Invoke(_inner, innerArgs);
         }
 
         public void Info<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
@@ -198,8 +201,6 @@ namespace ReactiveUI.NLog
             _inner.Info(message, argument1, argument2, argument3);
         }
 
-
-
         public void Warn<T>(T value)
         {
             _inner.Warn(value);
@@ -215,15 +216,17 @@ namespace ReactiveUI.NLog
             _inner.WarnException(message, exception);
         }
 
-        MethodInfo warnFp = null;
+        private MethodInfo warnFp = null;
+
         public void Warn(IFormatProvider formatProvider, string message, params object[] args)
         {
-            if (warnFp == null) {
-                warnFp = _inner.GetType().GetMethod("Warn", new[] {typeof (IFormatProvider), typeof (string), typeof (object[])});
+            if (warnFp == null)
+            {
+                warnFp = _inner.GetType().GetMethod("Warn", new[] { typeof(IFormatProvider), typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 2];
-            innerArgs[0] = formatProvider; innerArgs[1] = message; 
+            innerArgs[0] = formatProvider; innerArgs[1] = message;
             Array.Copy(args, 0, innerArgs, 2, args.Length);
             warnFp.Invoke(_inner, innerArgs);
         }
@@ -233,17 +236,19 @@ namespace ReactiveUI.NLog
             _inner.Warn(message);
         }
 
-        MethodInfo warnNoFp = null;
+        private MethodInfo warnNoFp = null;
+
         public void Warn(string message, params object[] args)
         {
-             if (warnNoFp == null) {
-                warnNoFp = _inner.GetType().GetMethod("Warn", new[] {typeof (string), typeof (object[])});
+            if (warnNoFp == null)
+            {
+                warnNoFp = _inner.GetType().GetMethod("Warn", new[] { typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 1];
             innerArgs[0] = message;
             Array.Copy(args, 0, innerArgs, 1, args.Length);
-            warnNoFp.Invoke(_inner, innerArgs);           
+            warnNoFp.Invoke(_inner, innerArgs);
         }
 
         public void Warn<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
@@ -279,7 +284,6 @@ namespace ReactiveUI.NLog
             _inner.Warn(message, argument1, argument2, argument3);
         }
 
-
         public void Error<T>(T value)
         {
             _inner.Error(value);
@@ -295,11 +299,13 @@ namespace ReactiveUI.NLog
             _inner.ErrorException(message, exception);
         }
 
-        MethodInfo errorFp = null;
+        private MethodInfo errorFp = null;
+
         public void Error(IFormatProvider formatProvider, string message, params object[] args)
         {
-            if (errorFp == null) {
-                errorFp = _inner.GetType().GetMethod("Error", new[] {typeof (IFormatProvider), typeof (string), typeof (object[])});
+            if (errorFp == null)
+            {
+                errorFp = _inner.GetType().GetMethod("Error", new[] { typeof(IFormatProvider), typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 2];
@@ -313,17 +319,19 @@ namespace ReactiveUI.NLog
             _inner.Error(message);
         }
 
-        MethodInfo errorNoFp = null;
+        private MethodInfo errorNoFp = null;
+
         public void Error(string message, params object[] args)
         {
-             if (errorNoFp == null) {
-                errorNoFp = _inner.GetType().GetMethod("Error", new[] {typeof (string), typeof (object[])});
+            if (errorNoFp == null)
+            {
+                errorNoFp = _inner.GetType().GetMethod("Error", new[] { typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 1];
             innerArgs[0] = message;
             Array.Copy(args, 0, innerArgs, 1, args.Length);
-            errorNoFp.Invoke(_inner, innerArgs);           
+            errorNoFp.Invoke(_inner, innerArgs);
         }
 
         public void Error<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
@@ -359,8 +367,6 @@ namespace ReactiveUI.NLog
             _inner.Error(message, argument1, argument2, argument3);
         }
 
-
-
         public void Fatal<T>(T value)
         {
             _inner.Fatal(value);
@@ -376,11 +382,13 @@ namespace ReactiveUI.NLog
             _inner.FatalException(message, exception);
         }
 
-        MethodInfo fatalFp = null;
+        private MethodInfo fatalFp = null;
+
         public void Fatal(IFormatProvider formatProvider, string message, params object[] args)
         {
-            if (fatalFp == null) {
-                fatalFp = _inner.GetType().GetMethod("Fatal", new[] {typeof (IFormatProvider), typeof (string), typeof (object[])});
+            if (fatalFp == null)
+            {
+                fatalFp = _inner.GetType().GetMethod("Fatal", new[] { typeof(IFormatProvider), typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 2];
@@ -394,17 +402,19 @@ namespace ReactiveUI.NLog
             _inner.Fatal(message);
         }
 
-        MethodInfo fatalNoFp = null;
+        private MethodInfo fatalNoFp = null;
+
         public void Fatal(string message, params object[] args)
         {
-             if (fatalNoFp == null) {
-                fatalNoFp = _inner.GetType().GetMethod("Fatal", new[] {typeof (string), typeof (object[])});
+            if (fatalNoFp == null)
+            {
+                fatalNoFp = _inner.GetType().GetMethod("Fatal", new[] { typeof(string), typeof(object[]) });
             }
 
             var innerArgs = new object[args.Length + 1];
             innerArgs[0] = message;
             Array.Copy(args, 0, innerArgs, 1, args.Length);
-            fatalNoFp.Invoke(_inner, innerArgs);           
+            fatalNoFp.Invoke(_inner, innerArgs);
         }
 
         public void Fatal<TArgument>(IFormatProvider formatProvider, string message, TArgument argument)
@@ -439,6 +449,5 @@ namespace ReactiveUI.NLog
         {
             _inner.Fatal(message, argument1, argument2, argument3);
         }
-
     }
 }

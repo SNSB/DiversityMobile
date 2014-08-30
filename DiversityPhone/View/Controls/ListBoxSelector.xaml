@@ -10,39 +10,39 @@
     <UserControl.Resources>
         <DataTemplate x:Key="ValueItemTemplate">
             <StackPanel Orientation="Horizontal">
-                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" 
-                          Width="{Binding SelectionWidth, ElementName=selectorControl}"/>
-                <ContentControl Content="{Binding Value}" 
-                                ContentTemplate="{Binding ItemTemplate, ElementName=selectorControl}"/>
+                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}"
+                          Width="{Binding SelectionWidth, ElementName=selectorControl}" />
+                <ContentControl Content="{Binding Value}"
+                                ContentTemplate="{Binding ItemTemplate, ElementName=selectorControl}" />
             </StackPanel>
         </DataTemplate>
     </UserControl.Resources>
     <UserControl.FontFamily>
-        <StaticResource ResourceKey="PhoneFontFamilyNormal"/>
+        <StaticResource ResourceKey="PhoneFontFamilyNormal" />
     </UserControl.FontFamily>
     <UserControl.FontSize>
-        <StaticResource ResourceKey="PhoneFontSizeNormal"/>
+        <StaticResource ResourceKey="PhoneFontSizeNormal" />
     </UserControl.FontSize>
     <UserControl.Foreground>
-        <StaticResource ResourceKey="PhoneForegroundBrush"/>
+        <StaticResource ResourceKey="PhoneForegroundBrush" />
     </UserControl.Foreground>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="14*"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="14*" />
         </Grid.ColumnDefinitions>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="SelectionMode">
                 <VisualStateGroup.Transitions>
-                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal"/>
+                    <VisualTransition GeneratedDuration="0:0:0.1" To="Normal" />
                 </VisualStateGroup.Transitions>
-                <VisualState x:Name="Normal"/>
+                <VisualState x:Name="Normal" />
                 <VisualState x:Name="Selecting">
                     <Storyboard>
                         <DoubleAnimation To="68" Duration="0:0:0.1"
-                                         Storyboard.TargetProperty="(ListBoxSelector.SelectionWidth)" 
-                                         Storyboard.TargetName="selectorControl"/>
+                                         Storyboard.TargetProperty="(ListBoxSelector.SelectionWidth)"
+                                         Storyboard.TargetName="selectorControl" />
                     </Storyboard>
                 </VisualState>
             </VisualStateGroup>
@@ -50,13 +50,13 @@
 
         <ListBox x:Name="valueList" Grid.Column="1" Grid.ColumnSpan="2"
                       ItemsSource="{Binding ItemsSource, ElementName=selectorControl}"
-			          ItemTemplate="{StaticResource ValueItemTemplate}"/>
+			          ItemTemplate="{StaticResource ValueItemTemplate}" />
 
         <Rectangle Grid.Column="1" x:Name="touchableEdge" Width="80"
                    Margin="-12,0,0,0"
 			       HorizontalAlignment="Left"
 			       VerticalAlignment="Stretch"
 			       Fill="Transparent"
-                   Tap="EnterSelecting"/>
+                   Tap="EnterSelecting" />
     </Grid>
 </UserControl>

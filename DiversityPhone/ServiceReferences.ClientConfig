@@ -22,7 +22,7 @@
         <binding name="WSHttpBinding_IMediaService4" closeTimeout="00:10:00"
             openTimeout="00:03:00" receiveTimeout="00:10:00" sendTimeout="00:10:00">
           <textMessageEncoding messageVersion="Default" writeEncoding="utf-8" />
-          <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647"/>
+          <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
         </binding>
       </customBinding>
     </bindings>
@@ -53,8 +53,8 @@
 
       <endpoint address="http://dwbmobile.snsb.info:1111/DiversityService2/DiversityService.svc" binding="basicHttpBinding"
                     bindingConfiguration="BasicHttpBinding_IDiversityService"
-                    contract="DiversityService.IDiversityService" 
-                    name="BasicHttpBinding_IDiversityService" />    
+                    contract="DiversityService.IDiversityService"
+                    name="BasicHttpBinding_IDiversityService" />
       <!--<endpoint address="http://169.254.80.80/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->

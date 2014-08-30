@@ -1,12 +1,15 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Model;
     using ReactiveUI;
     using System;
     using System.Reactive.Disposables;
     using System.Reactive.Linq;
 
-    public static class ReactiveCollectionListenerMixin {
-        public static IDisposable ListenToChanges<T, VM>(this ReactiveCollection<VM> This, Func<T, bool> filter = null) where VM : class, IElementVM<T> {
+    public static class ReactiveCollectionListenerMixin
+    {
+        public static IDisposable ListenToChanges<T, VM>(this ReactiveCollection<VM> This, Func<T, bool> filter = null) where VM : class, IElementVM<T>
+        {
             if (This == null)
                 throw new ArgumentNullException("This");
             if (filter == null)

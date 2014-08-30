@@ -9,23 +9,21 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     d:DesignHeight="480" d:DesignWidth="480">
 
-    <Grid x:Name="LayoutRoot" Margin="{StaticResource PhoneMargin}">        
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0"
-                       Text="{Binding Resources.App_Name, Source={StaticResource LocalizedStrings}}" 
+    <Grid x:Name="LayoutRoot" Margin="{StaticResource PhoneMargin}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                       Text="{Binding Resources.App_Name, Source={StaticResource LocalizedStrings}}"
                        Style="{StaticResource PhoneTextNormalStyle}"
                        HorizontalAlignment="Left" />
-            <Image Grid.Row="0" Grid.RowSpan="2" 
-                   Source="/Images/AppIcons/Diversity_allein_tr.png" 
-                   Width="120"  
-                   Stretch="Uniform" 
+        <Image Grid.Row="0" Grid.RowSpan="2"
+                   Source="/Images/AppIcons/Diversity_allein_tr.png"
+                   Width="120"
+                   Stretch="Uniform"
                    HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBlock x:Name="txtHeader" Grid.Row="1" Text="{Binding Text}"
-                       Style="{StaticResource PhoneTextTitle1Style}"/>
-            
-        
+        <TextBlock x:Name="txtHeader" Grid.Row="1" Text="{Binding Text}"
+                       Style="{StaticResource PhoneTextTitle1Style}" />
     </Grid>
 </UserControl>

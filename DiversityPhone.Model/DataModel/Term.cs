@@ -1,10 +1,12 @@
-﻿using Microsoft.Phone.Data.Linq.Mapping;
-using System;
+﻿using System;
 using System.Data.Linq.Mapping;
+
+#if !TEST
+using Microsoft.Phone.Data.Linq.Mapping;
+#endif
 
 namespace DiversityPhone.Model
 {
-
     [Table]
 #if !TEST
     [Index(Columns = "LastUsed", IsUnique = false, Name = "term_lastusage")]

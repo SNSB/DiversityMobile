@@ -9,11 +9,14 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.ViewModels {
-    public class ViewIUVM : ViewPageVMBase<IdentificationUnit> {
+namespace DiversityPhone.ViewModels
+{
+    public class ViewIUVM : ViewPageVMBase<IdentificationUnit>
+    {
         private ReactiveAsyncCommand getAnalyses = new ReactiveAsyncCommand();
 
-        public enum Pivots {
+        public enum Pivots
+        {
             Subunits,
             Descriptions,
             Multimedia
@@ -23,45 +26,57 @@ namespace DiversityPhone.ViewModels {
         private readonly IFieldDataService Storage;
 
         #region Commands
+
         public ReactiveCommand Add { get; private set; }
+
         public ReactiveCommand Maps { get; private set; }
+
         public ReactiveCommand Back { get; private set; }
 
         public ReactiveCommand<IElementVM<IdentificationUnit>> EditCurrent { get; private set; }
+
         public ReactiveCommand<IElementVM<IdentificationUnit>> SelectUnit { get; private set; }
+
         public ReactiveCommand<IElementVM<IdentificationUnitAnalysis>> EditAnalysis { get; private set; }
-        #endregion
+
+        #endregion Commands
 
         #region Properties
 
-        Stack<IElementVM<IdentificationUnit>> unitBackStack = new Stack<IElementVM<IdentificationUnit>>();
+        private Stack<IElementVM<IdentificationUnit>> unitBackStack = new Stack<IElementVM<IdentificationUnit>>();
 
         private Pivots _SelectedPivot;
-        public Pivots SelectedPivot {
-            get {
+
+        public Pivots SelectedPivot
+        {
+            get
+            {
                 return _SelectedPivot;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(x => x.SelectedPivot, ref _SelectedPivot, value);
             }
         }
 
         private SerialDisposable _SubunitListener = new SerialDisposable();
         private ObservableAsPropertyHelper<ReactiveCollection<IdentificationUnitVM>> _Subunits;
+
         public ReactiveCollection<IdentificationUnitVM> Subunits { get { return _Subunits.Value; } }
 
         public ReactiveCollection<IdentificationUnitAnalysisVM> Analyses { get; private set; }
 
         public ElementMultimediaVM MultimediaList { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         public ViewIUVM(
             IVocabularyService Vocabulary,
             IFieldDataService Storage,
             ElementMultimediaVM MultimediaList,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             this.Vocabulary = Vocabulary;
             this.Storage = Storage;
 
@@ -77,7 +92,6 @@ namespace DiversityPhone.ViewModels {
             EditAnalysis = new ReactiveCommand<IElementVM<IdentificationUnitAnalysis>>();
             EditAnalysis
                 .ToMessage(Messenger, MessageContracts.EDIT);
-
 
             _Subunits = this.ObservableToProperty(
                 CurrentObservable
@@ -111,7 +125,8 @@ namespace DiversityPhone.ViewModels {
                     Observable.Start(() => Vocabulary.getPossibleAnalyses(current.TaxonomicGroup) as IList<Analysis>, ThreadPoolScheduler.Instance)
                     ))
                 .Switch()
-                .Select(list => {
+                .Select(list =>
+                {
                     var hasAnalyses = list.Any();
                     Messenger.SendMessage<IList<Analysis>>(list); //Broadcast Analyses to editVM
                     return hasAnalyses;
@@ -135,15 +150,15 @@ namespace DiversityPhone.ViewModels {
                 .Select(_ => Current.Model as ILocalizable)
                 .ToMessage(Messenger, MessageContracts.VIEW);
 
-
             Back = new ReactiveCommand();
             Back
                 .Subscribe(_ => goBack());
-
         }
 
-        private void goBack() {
-            if (unitBackStack.Any()) {
+        private void goBack()
+        {
+            if (unitBackStack.Any())
+            {
                 SelectedPivot = Pivots.Subunits;
                 Messenger.SendMessage(unitBackStack.Pop(), MessageContracts.VIEW);
             }

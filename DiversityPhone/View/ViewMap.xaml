@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<phone:PhoneApplicationPage
     x:Class="DiversityPhone.View.ViewMap"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,77 +6,73 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"    
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     xmlns:vw="clr-namespace:DiversityPhone.View"
     Loaded="PhoneApplicationPage_Loaded"
     Unloaded="PhoneApplicationPage_Unloaded"
-    FontFamily="{StaticResource PhoneFontFamilyNormal}" 
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
-    Foreground="{StaticResource PhoneForegroundBrush}" 
-    SupportedOrientations="Portrait" Orientation="Portrait" 
-    mc:Ignorable="d" 
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Source={StaticResource Locator}, Path=ViewMap}" d:DesignHeight="696" d:DesignWidth="480">
     <phone:PhoneApplicationPage.Resources>
-        <vw:StreamToImageConverter x:Key="StreamToImage"/>
-        <BitmapImage x:Key="GPSPointImage" UriSource="/Images/BlackPoint.png"/>
+        <vw:StreamToImageConverter x:Key="StreamToImage" />
+        <BitmapImage x:Key="GPSPointImage" UriSource="/Images/BlackPoint.png" />
     </phone:PhoneApplicationPage.Resources>
-    
+
     <Grid Background="Transparent">
         <Image Name="ImgZoom"
-                Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"                 
+                Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
-                Stretch="Uniform" 
-                Width = "480" Height = "696" RenderTransformOrigin="0,0"/>
+                Stretch="Uniform"
+                Width = "480" Height = "696" RenderTransformOrigin="0,0" />
 
-        <Grid  Background="Transparent" Tap="MapGrid_Tap" >
+        <Grid  Background="Transparent" Tap="MapGrid_Tap">
             <toolkit:GestureService.GestureListener>
-                <toolkit:GestureListener 
-                    PinchDelta="OnPinchDelta" 
-                    PinchStarted="OnPinchStarted" 
+                <toolkit:GestureListener
+                    PinchDelta="OnPinchDelta"
+                    PinchStarted="OnPinchStarted"
                     PinchCompleted="OnPinchCompleted"
                     DragDelta="OnDragDelta"
-                    DoubleTap="OnDoubleTap"/>
+                    DoubleTap="OnDoubleTap" />
             </toolkit:GestureService.GestureListener>
-            
+
             <Canvas Name="MainCanvas">
 
                 <Image Source="/Images/GpsPosition.png"
                             Height="32" Width="32"
                             Name="currentPosImg"
-                            CacheMode="BitmapCache"/>
+                            CacheMode="BitmapCache" />
 
                 <Image Source="/Images/ItemPoint.png"
                         Name="currentLocalizationImg"
                         Height="32" Width="32"
-                        CacheMode="BitmapCache"/>
+                        CacheMode="BitmapCache" />
             </Canvas>
         </Grid>
 
-        <StackPanel Background="{StaticResource PhoneBackgroundBrush}" 
+        <StackPanel Background="{StaticResource PhoneBackgroundBrush}"
               Height="Auto"
               VerticalAlignment="Top">
             <TextBlock Text="{Binding CurrentMap.Description}"
     		            Style="{StaticResource PhoneTextNormalStyle}"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Top" />
-            <vw:InfoLabel Text="Tap to set new location!" 
+            <vw:InfoLabel Text="Tap to set new location!"
                       Visibility="{Binding IsEditable, Converter={StaticResource BoolToVis}}"
                       Height="Auto"
-                      VerticalAlignment="Top"/>
+                      VerticalAlignment="Top" />
         </StackPanel>
-        
-        
     </Grid>
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="False" Mode="Minimized">
             <shell:ApplicationBar.Buttons>
-                <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="select map" Click="SelectMap_Click"/>                
+                <shell:ApplicationBarIconButton IconUri="/Images/appbar.globe.rest.png" Text="select map" Click="SelectMap_Click" />
             </shell:ApplicationBar.Buttons>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>
-
-

@@ -32,9 +32,13 @@
         }
 
         public string UserName { get; set; }
+
         public string Password { get; set; }
+
         public string AgentName { get; set; }
+
         public string AgentURI { get; set; }
+
         public bool UseGPS { get; set; }
 
         public bool SaveMultimediaExternally { get; set; }
@@ -42,15 +46,14 @@
         public string HomeDBName { get; set; }
 
         public int CurrentProject { get; set; }
+
         public string CurrentProjectName { get; set; }
+
         public int? CurrentSeriesID { get; set; }
 
         public Settings Clone()
         {
             return (Settings)this.MemberwiseClone();
         }
-
     }
-
-
 }

@@ -1,42 +1,41 @@
 ﻿<ResourceDictionary
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"     
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vw="clr-namespace:DiversityPhone.View"
     mc:Ignorable="d">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="Templates.xaml"/>
+        <ResourceDictionary Source="Templates.xaml" />
     </ResourceDictionary.MergedDictionaries>
-    
-    <vw:TermToImageConverter x:Key="TermToImage"/>
+
+    <vw:TermToImageConverter x:Key="TermToImage" />
 
     <ImageBrush x:Key="LayerArrow" Stretch="Fill" ImageSource="/DiversityPhone;component/Images/MetroIcons/whitenocircle/play.png" />
     <Style x:Key="LayerArrowStyle" TargetType="Rectangle">
         <Style.Setters>
-            <Setter Property="Fill" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="OpacityMask" Value="{StaticResource LayerArrow}"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="Margin" Value="{StaticResource PhoneMargin}"/>            
+            <Setter Property="Fill" Value="{StaticResource PhoneForegroundBrush}" />
+            <Setter Property="OpacityMask" Value="{StaticResource LayerArrow}" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Margin" Value="{StaticResource PhoneMargin}" />
         </Style.Setters>
     </Style>
 
-
     <DataTemplate x:Key="IdentificationItemTemplate">
-        <StackPanel Orientation="Horizontal" 
+        <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left">
-            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"  
-                   Height="40" Width="40"/>
-            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}" 
-                       Text="{Binding Description}" 
+            <Image Source="{Binding  Model.TaxonomicGroup, Converter={StaticResource TermToImage}}"
+                   Height="40" Width="40" />
+            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}"
+                       Text="{Binding Description}"
                        Style="{StaticResource PhoneTextTitle2Style}"
-                       VerticalAlignment="Center"/>
+                       VerticalAlignment="Center" />
         </StackPanel>
     </DataTemplate>
 
-    <DataTemplate x:Key="UnitItemTemplate">       
+    <DataTemplate x:Key="UnitItemTemplate">
         <Button Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding DataContext.SelectUnit, ElementName=currentPage}"
                 CommandParameter="{Binding}"
@@ -44,7 +43,7 @@
             <ContentControl Content="{Binding}"
                             ContentTemplate="{StaticResource IdentificationItemTemplate}"
                             HorizontalAlignment="Left"
-                            VerticalAlignment="Top"/>
+                            VerticalAlignment="Top" />
         </Button>
     </DataTemplate>
 
@@ -52,16 +51,15 @@
         <StackPanel Orientation="Vertical">
             <ContentControl Content="{Binding}"
                             ContentTemplate="{StaticResource UnitItemTemplate}"
-                            HorizontalAlignment="Left"/>
+                            HorizontalAlignment="Left" />
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left"
                         Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}">
-                <Rectangle Style="{StaticResource LayerArrowStyle}"/>
+                <Rectangle Style="{StaticResource LayerArrowStyle}" />
                 <ListBox ItemsSource="{Binding SubUnits}"
                          ItemTemplate="{StaticResource UnitItemTemplate}"
                          VerticalAlignment="Top"
-                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                         />
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </StackPanel>
         </StackPanel>
     </DataTemplate>
@@ -70,17 +68,16 @@
         <StackPanel Orientation="Vertical">
             <ContentControl Content="{Binding}"
                             ContentTemplate="{StaticResource UnitItemTemplate}"
-                            HorizontalAlignment="Left"/>
-            <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Left" />
+            <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Left"
                         Visibility="{Binding HasSubUnits, Converter={StaticResource BoolToVis}}">
-                <Rectangle Style="{StaticResource LayerArrowStyle}"/>
+                <Rectangle Style="{StaticResource LayerArrowStyle}" />
                 <ListBox ItemsSource="{Binding SubUnits}"
                          ItemTemplate="{StaticResource OneLevelUnitItemTemplate}"
                          VerticalAlignment="Top"
-                         ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                         ScrollViewer.VerticalScrollBarVisibility="Disabled" />
             </StackPanel>
         </StackPanel>
     </DataTemplate>
-
 </ResourceDictionary>

@@ -6,7 +6,7 @@
 
     public class TaxonListVM : ReactiveObject
     {
-        public string TaxonomicGroup 
+        public string TaxonomicGroup
         {
             get
             {
@@ -21,8 +21,8 @@
                 return _model.TableDisplayName;
             }
         }
-        
-        public bool IsSelected 
+
+        public bool IsSelected
         {
             get
             {
@@ -31,6 +31,7 @@
         }
 
         private bool _IsDownloading;
+
         public bool IsDownloading
         {
             get
@@ -41,10 +42,10 @@
             {
                 this.RaiseAndSetIfChanged(x => x.IsDownloading, ref _IsDownloading, value);
             }
-        }   
-        
+        }
 
-        TaxonList _model;
+        private TaxonList _model;
+
         public TaxonList Model { get { return _model; } }
 
         public TaxonListVM(TaxonList model)
@@ -53,6 +54,6 @@
 
             _model.ObservableForProperty(x => x.IsSelected)
                 .Subscribe(_ => this.RaisePropertyChanged(x => x.IsSelected));
-        }        
+        }
     }
 }

@@ -5,7 +5,6 @@ namespace DiversityPhone.Model
     [Table]
     public class Map
     {
-
         [Column(IsPrimaryKey = true)]
         public string ServerKey { get; set; }
 
@@ -32,17 +31,17 @@ namespace DiversityPhone.Model
 
         [Column]
         public double SWLong { get; set; }
-        
+
         [Column]
         public double NELat { get; set; }
 
         [Column]
         public double NELong { get; set; }
-       
-        [Column(CanBeNull = true)]
-        public int? Transparency{get;set;}
 
         [Column(CanBeNull = true)]
-        public int? ZoomLevel{ get; set; }
+        public int? Transparency { get; set; }
+
+        [Column(CanBeNull = true)]
+        public int? ZoomLevel { get; set; }
     }
 }

@@ -212,7 +212,7 @@ namespace Microsoft.Live
             return tcs.Task;
         }
 
-        #endregion
+        #endregion Public Methods
 
         #region Private Methods
 
@@ -341,7 +341,7 @@ namespace Microsoft.Live
             }
         }
 
-        #endregion
+        #endregion Private Methods
 
         #region Private Class
 
@@ -381,6 +381,6 @@ namespace Microsoft.Live
             public IProgress<LiveOperationProgress> Progress { get; set; }
         }
 
-        #endregion
+        #endregion Private Class
     }
 }

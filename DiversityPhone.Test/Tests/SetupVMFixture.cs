@@ -1,27 +1,29 @@
-﻿namespace DiversityPhone.Test.Tests {
+﻿namespace DiversityPhone.Test.Tests
+{
     using DiversityPhone.Model;
     using DiversityPhone.ViewModels;
     using Xunit;
 
     [Trait("ViewModels", "Setup")]
-    public class SetupVMFixture : DiversityTestBase<SetupVM> {
-        const string VALID_USER = "Valid";
-        const string VALID_PASS = "Pass";
-        const string VALID_DB = "DB";
+    public class SetupVMFixture : DiversityTestBase<SetupVM>
+    {
+        private const string VALID_USER = "Valid";
+        private const string VALID_PASS = "Pass";
+        private const string VALID_DB = "DB";
 
-        public SetupVMFixture() {
-
+        public SetupVMFixture()
+        {
         }
 
         [Fact]
-        public void CannotSaveInitially() {
+        public void CannotSaveInitially()
+        {
             Assert.False(T.Save.CanExecute(null));
         }
 
         [Fact]
-        public void CannotSaveWithoutSettings() {
-
-
+        public void CannotSaveWithoutSettings()
+        {
             GetT();
 
             Scheduler.AdvanceBy(100);
@@ -30,7 +32,8 @@
         }
 
         [Fact]
-        public void PushesValidCredentials() {
+        public void PushesValidCredentials()
+        {
             // Setup
             var validCredentials = new Settings()
             {

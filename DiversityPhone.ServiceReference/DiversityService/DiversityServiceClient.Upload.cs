@@ -1,5 +1,4 @@
-﻿
-using DiversityPhone.Interface;
+﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
 using System;
 using System.Collections.Generic;
@@ -20,7 +19,6 @@ namespace DiversityPhone.Services
                 .Select(p => p.Result)
                 .StoreMapping(ev, Mapping)
                 .ReplayOnlyFirst();
-                
 
             var svcProps = new ObservableCollection<Svc.EventProperty>(properties.Select(l => l.ToServiceObject()));
             _svc.InsertEventAsync(ev.ToServiceObject(Mapping), svcProps, this.GetCreds(), ev);
@@ -64,7 +62,6 @@ namespace DiversityPhone.Services
             _svc.InsertEventSeriesAsync(series.ToServiceObject(), svcLocs, this.GetCreds(), series);
             return res;
         }
-
 
         public IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo)
         {

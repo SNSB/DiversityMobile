@@ -12,7 +12,7 @@ namespace DiversityPhone.View.Appbar
         private IDisposable _subscription;
 
         public SaveDeleteButton(IApplicationBar appbar, IEditPageVM vm)
-            :base(appbar)
+            : base(appbar)
         {
             SAVE = new ButtonState()
             {

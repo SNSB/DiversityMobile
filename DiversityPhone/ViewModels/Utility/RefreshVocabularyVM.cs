@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using DiversityPhone.Services;
@@ -6,28 +7,30 @@
     using System;
     using System.Reactive.Linq;
 
-    public class RefreshVocabularyVM : PageVMBase {
+    public class RefreshVocabularyVM : PageVMBase
+    {
         public RefreshVocabularyVM(
             ICredentialsService Credentials,
             Func<IRefreshVocabularyTask> refreshVocabluaryTaskFactory,
             IMessageBus Messenger
-            ) {
+            )
+        {
             this.OnActivation()
-                .SelectMany(_ => 
+                .SelectMany(_ =>
                     Credentials.CurrentCredentials()
                     .Where(cred => cred != null)
                     .FirstAsync())
                 .TakeUntil(this.OnDeactivation())
-                .Subscribe(login => {
+                .Subscribe(login =>
+                {
                     var refreshTask = refreshVocabluaryTaskFactory();
                     refreshTask.Start(login)
-                        .Subscribe(_ => { }, () => {
+                        .Subscribe(_ => { }, () =>
+                        {
                             Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
                             Messenger.SendMessage<Page>(Page.Home);
                         });
                 });
-
         }
-
     }
 }

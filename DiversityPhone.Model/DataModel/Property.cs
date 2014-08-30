@@ -6,10 +6,10 @@ namespace DiversityPhone.Model
     public class Property
     {
         //Read-Only
-        [Column(IsPrimaryKey=true)]
+        [Column(IsPrimaryKey = true)]
         public int PropertyID { get; set; }
-       
+
         [Column]
-        public string DisplayText { get; set; }        
+        public string DisplayText { get; set; }
     }
 }

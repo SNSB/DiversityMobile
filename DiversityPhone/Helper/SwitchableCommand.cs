@@ -1,49 +1,63 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace DiversityPhone {
-    public class SwitchableCommand : ICommand {
+namespace DiversityPhone
+{
+    public class SwitchableCommand : ICommand
+    {
         private bool _IsExecutable;
 
-        public bool IsExecutable {
-            get { return _IsExecutable; }
-            set {
+        public bool IsExecutable
+        {
+            get
+            {
+                return _IsExecutable;
+            }
+            set
+            {
                 _IsExecutable = value;
                 RaiseCanExecuteChanged();
             }
         }
 
-        Action<object> executeAction;
+        private Action<object> executeAction;
 
         public SwitchableCommand(Action executableAction)
-            : this(o => executableAction()) {
-            if (executeAction == null) {
+            : this(o => executableAction())
+        {
+            if (executeAction == null)
+            {
                 throw new ArgumentNullException("executeAction");
             }
         }
 
-        public SwitchableCommand(Action<object> executeAction) {
-            if (executeAction == null) {
+        public SwitchableCommand(Action<object> executeAction)
+        {
+            if (executeAction == null)
+            {
                 throw new ArgumentNullException("executeAction");
             }
             this.executeAction = executeAction;
         }
 
-
-        public bool CanExecute(object parameter) {
+        public bool CanExecute(object parameter)
+        {
             return IsExecutable;
         }
 
         public event EventHandler CanExecuteChanged;
 
-        private void RaiseCanExecuteChanged() {
+        private void RaiseCanExecuteChanged()
+        {
             EventHandler handler = this.CanExecuteChanged;
-            if (handler != null) {
+            if (handler != null)
+            {
                 handler(this, EventArgs.Empty);
             }
         }
 
-        public void Execute(object parameter) {
+        public void Execute(object parameter)
+        {
             this.executeAction(parameter);
         }
     }

@@ -3,11 +3,12 @@ using System.Collections.Generic;
 
 namespace DiversityPhone.Interface
 {
-
     public interface IKeyMappingService
     {
         int? ResolveToServerKey(DBObjectType ownerType, int ownerID);
+
         int? ResolveToLocalKey(DBObjectType ownerType, int ownerID);
+
         void AddMapping(DBObjectType ownerType, int ownerID, int serverID);
     }
 
@@ -22,7 +23,7 @@ namespace DiversityPhone.Interface
         {
             var key = mapping.ResolveToServerKey(ownerType, ownerID);
             if (!key.HasValue)
-                throw new KeyNotFoundException(string.Format("no Mapping for type {0}, id {1} found", ownerType, ownerID) );
+                throw new KeyNotFoundException(string.Format("no Mapping for type {0}, id {1} found", ownerType, ownerID));
             else
                 return key.Value;
         }
@@ -31,7 +32,5 @@ namespace DiversityPhone.Interface
         {
             mapping.AddMapping(owner.EntityType, owner.EntityID, serverID);
         }
-
-
     }
 }

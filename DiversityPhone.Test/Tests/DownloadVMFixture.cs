@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.Test.Tests {
+﻿namespace DiversityPhone.Test.Tests
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using DiversityPhone.ViewModels;
@@ -11,24 +12,24 @@
     using Xunit;
 
     [Trait("ViewModels", "Download")]
-    public class DownloadVMFixture : DiversityTestBase<DownloadVM> {
-
-        IEnumerable<Event> SearchResult = new List<Event>()
+    public class DownloadVMFixture : DiversityTestBase<DownloadVM>
+    {
+        private IEnumerable<Event> SearchResult = new List<Event>()
         {
             new Event(),
             new Event(),
             new Event()
         };
 
-        const string TEST_QUERY = "TestEvent";
+        private const string TEST_QUERY = "TestEvent";
 
-        public DownloadVMFixture() {
-
+        public DownloadVMFixture()
+        {
         }
 
-
         [Fact]
-        public void CanOnlySearchWhenOnline() {
+        public void CanOnlySearchWhenOnline()
+        {
             // Setup
             var connectivityObs = Scheduler.CreateHotObservable(
                     OnNext(100, ConnectionStatus.None),
@@ -57,11 +58,11 @@
 
             T.SearchEvents.CanExecute(TEST_QUERY).Should().BeFalse();
             T.IsOnlineAvailable.Should().BeFalse();
-
         }
 
         [Fact]
-        public void SearchQueriesTheService() {
+        public void SearchQueriesTheService()
+        {
             // Setup
             Connectivity.Setup(c => c.Status()).Returns(ReturnAndNever(ConnectionStatus.Wifi));
             Service.Setup(s => s.GetEventsByLocality(It.IsAny<string>())).Returns(Observable.Empty<IEnumerable<Event>>());
@@ -76,10 +77,6 @@
             //Assert
 
             Service.Verify(x => x.GetEventsByLocality(TEST_QUERY));
-
         }
-
-
-
     }
 }

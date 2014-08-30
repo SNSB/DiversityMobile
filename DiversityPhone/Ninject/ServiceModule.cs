@@ -3,13 +3,13 @@
     using DiversityPhone.Interface;
     using DiversityPhone.Services;
     using Ninject;
+    using Ninject.Modules;
     using ReactiveUI;
     using System;
-    using System.Reactive.Linq;
     using System.Reactive.Concurrency;
-using Ninject.Modules;
+    using System.Reactive.Linq;
 
-    class BaseServiceModule : NinjectModule
+    internal class BaseServiceModule : NinjectModule
     {
         public override void Load()
         {
@@ -22,7 +22,7 @@ using Ninject.Modules;
         }
     }
 
-    class ServiceModule : Ninject.Modules.NinjectModule
+    internal class ServiceModule : Ninject.Modules.NinjectModule
     {
         private void BindAndActivateSingleton<T>()
         {
@@ -31,8 +31,8 @@ using Ninject.Modules;
         }
 
         public override void Load()
-        {   
-            Bind<INotificationService>().To<NotificationService>().InSingletonScope();           
+        {
+            Bind<INotificationService>().To<NotificationService>().InSingletonScope();
 
             Bind<SettingsService>().ToSelf().InSingletonScope();
             Bind<ISettingsService>().ToConstant(Kernel.Get<SettingsService>());

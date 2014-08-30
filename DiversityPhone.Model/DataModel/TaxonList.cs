@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace DiversityPhone.Model
 {
-    [Table]    
+    [Table]
     public class TaxonList : ReactiveObject, IEquatable<TaxonList>
     {
         public TaxonList()
@@ -30,13 +30,13 @@ namespace DiversityPhone.Model
         public bool IsPublicList { get; set; }
 
         private bool _IsSelected;
+
         [Column]
         public bool IsSelected
         {
             get { return _IsSelected; }
             set { this.RaiseAndSetIfChanged(x => x.IsSelected, ref _IsSelected, value); }
         }
-
 
         public static IEnumerable<int> ValidTableIDs
         {
@@ -55,11 +55,10 @@ namespace DiversityPhone.Model
             return this.TableName == other.TableName && this.TaxonomicGroup == other.TaxonomicGroup;
         }
 
-        
         public static bool operator ==(TaxonList one, TaxonList other)
         {
-            return (Object.ReferenceEquals(one,null)) 
-                ? Object.ReferenceEquals(other,null) 
+            return (Object.ReferenceEquals(one, null))
+                ? Object.ReferenceEquals(other, null)
                 : one.Equals(other);
         }
 

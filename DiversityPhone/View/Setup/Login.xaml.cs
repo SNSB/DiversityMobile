@@ -3,8 +3,10 @@ using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using System.Windows.Controls;
 
-namespace DiversityPhone.View.Setup {
-    public partial class Login : PhoneApplicationPage {
+namespace DiversityPhone.View.Setup
+{
+    public partial class Login : PhoneApplicationPage
+    {
         private SetupVM VM { get { return DataContext as SetupVM; } }
 
         private OKNextPageCommandButton _OK;
@@ -12,7 +14,8 @@ namespace DiversityPhone.View.Setup {
         private EventBindingTrigger<TextBox> _User;
         private EventBindingTrigger<PasswordBox> _Pass;
 
-        public Login() {
+        public Login()
+        {
             InitializeComponent();
 
             _User = EventBindingTrigger<TextBox>.Create(this.Username);

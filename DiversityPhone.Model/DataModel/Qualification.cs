@@ -5,8 +5,9 @@
     [Table]
     public class Qualification
     {
-        [Column(IsPrimaryKey=true)]
+        [Column(IsPrimaryKey = true)]
         public string Code { get; set; }
+
         [Column]
         public string DisplayText { get; set; }
     }

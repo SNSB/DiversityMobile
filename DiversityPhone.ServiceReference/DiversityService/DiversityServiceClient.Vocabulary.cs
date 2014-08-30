@@ -1,5 +1,4 @@
-﻿
-using DiversityPhone.DiversityService;
+﻿using DiversityPhone.DiversityService;
 using DiversityPhone.Interface;
 using System;
 using System.Collections.Generic;
@@ -23,7 +22,7 @@ namespace DiversityPhone.Services
         {
             var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => from repo in args.Result
-                                select repo.DisplayText);            
+                                select repo.DisplayText);
             _svc.GetRepositoriesAsync(login, login);
             return source;
         }
@@ -31,8 +30,8 @@ namespace DiversityPhone.Services
         public IObservable<IList<Client.Project>> GetProjectsForUser(Client.UserCredentials login)
         {
             var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login)
-                .Select(args => args.Result as IList<Client.Project>);            
-            _svc.GetProjectsForUserAsync(login,login);
+                .Select(args => args.Result as IList<Client.Project>);
+            _svc.GetProjectsForUserAsync(login, login);
             return source;
         }
 
@@ -47,21 +46,21 @@ namespace DiversityPhone.Services
                         IsPublicList = svcList.IsPublicList,
                         TableDisplayName = svcList.DisplayText,
                         TableName = svcList.Table,
-                        TaxonomicGroup =svcList.TaxonomicGroup
+                        TaxonomicGroup = svcList.TaxonomicGroup
                     }
-                    ));            
+                    ));
             _svc.GetTaxonListsForUserAsync(GetCreds(), requestToken);
             return source;
         }
 
         public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)
         {
-            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };            
+            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };
 
             return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
                 {
                     int chunk = 1; //First Chunk is 1, not 0!
-                    var subscription = DownloadTaxonList.MakeObservableServiceResult(list)                    
+                    var subscription = DownloadTaxonList.MakeObservableServiceResult(list)
                     .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
                     .Select(taxa => taxa.Select(
                         taxon => new Client.TaxonName()
@@ -73,8 +72,8 @@ namespace DiversityPhone.Services
                             TaxonNameCache = taxon.TaxonNameCache,
                             TaxonNameSinAuth = taxon.TaxonNameSinAuth,
                             URI = taxon.URI,
-                            AcceptedNameURI=taxon.AcceptedNameURI,
-                            AcceptedNameCache=taxon.AcceptedNameCache
+                            AcceptedNameURI = taxon.AcceptedNameURI,
+                            AcceptedNameCache = taxon.AcceptedNameCache
                         }))
                     .TakeWhile(taxonChunk =>
                         {
@@ -98,21 +97,20 @@ namespace DiversityPhone.Services
             var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login)
                 .Select(args => args.Result
                     .Select(p => new Client.Property()
-                    { 
-                        PropertyID = p.PropertyID,                        
+                    {
+                        PropertyID = p.PropertyID,
                         DisplayText = p.DisplayText
-                    }));            
-            _svc.GetPropertiesForUserAsync(login,login);
+                    }));
+            _svc.GetPropertiesForUserAsync(login, login);
             return source;
         }
 
-
         public IObservable<IEnumerable<Client.PropertyName>> DownloadPropertyValuesChunked(Client.Property p)
-        {            
+        {
             var localclient = new DiversityService.DiversityServiceClient(); //Avoid race conditions from chunked download
             var svcProperty = new Property()
             {
-                PropertyID = p.PropertyID,               
+                PropertyID = p.PropertyID,
                 DisplayText = p.DisplayText
             };
             int chunk = 1; //First Chunk is 1, not 0!
@@ -123,8 +121,8 @@ namespace DiversityPhone.Services
                         .Select(taxa => taxa.Select(
                             property => new Client.PropertyName
                             {
-                                PropertyUri=property.PropertyUri,
-                                PropertyID=property.PropertyID,                       
+                                PropertyUri = property.PropertyUri,
+                                PropertyID = property.PropertyID,
                                 DisplayText = property.DisplayText,
                             }))
                         .Publish();
@@ -132,14 +130,13 @@ namespace DiversityPhone.Services
                     return obs;
                 };
 
-
             var res = factory()
-                .Catch((Exception ex) => 
+                .Catch((Exception ex) =>
                     {
                         var obs = factory();
                         localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds()); // Re-Request last chunk
                         return obs;
-                    })                
+                    })
                 .TakeWhile(taxonChunk =>
                 {
                     if (taxonChunk.Any())
@@ -168,7 +165,7 @@ namespace DiversityPhone.Services
                        Description = term.Description,
                        DisplayText = term.DisplayText,
                        ParentCode = term.ParentCode,
-                       SourceID = (Client.TermList) term.Source,
+                       SourceID = (Client.TermList)term.Source,
                    }));
 
             _svc.GetStandardVocabularyAsync(GetCreds(), requestToken);
@@ -186,8 +183,8 @@ namespace DiversityPhone.Services
                        Description = an.Description,
                        DisplayText = an.DisplayText,
                        MeasurementUnit = an.MeasurementUnit
-                   }));                       
-            _svc.GetAnalysesForProjectAsync(projectID, login, login);            
+                   }));
+            _svc.GetAnalysesForProjectAsync(projectID, login, login);
             return source;
         }
 
@@ -203,7 +200,7 @@ namespace DiversityPhone.Services
                        DisplayText = ar.DisplayText,
                        Notes = ar.Notes,
                        Result = ar.Result
-                   }));            
+                   }));
             _svc.GetAnalysisResultsForProjectAsync(projectID, login, login);
             return source;
         }
@@ -218,12 +215,10 @@ namespace DiversityPhone.Services
                        AnalysisID = atg.AnalysisID,
                        TaxonomicGroup = atg.TaxonomicGroup
                    }));
-            
 
             _svc.GetAnalysisTaxonomicGroupsForProjectAsync(projectID, login, login);
             return source;
         }
-
 
         public IObservable<IEnumerable<Client.Qualification>> GetQualifications(Client.UserCredentials credentials)
         {

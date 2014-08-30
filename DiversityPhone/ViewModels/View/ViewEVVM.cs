@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -8,31 +9,43 @@
     using System.Linq;
     using System.Reactive.Linq;
 
-    public class ViewEVVM : ViewPageVMBase<Event> {
+    public class ViewEVVM : ViewPageVMBase<Event>
+    {
         private readonly IFieldDataService Storage;
 
-        public enum Pivots {
+        public enum Pivots
+        {
             Specimen,
             Descriptions,
             Multimedia
         }
 
         #region Commands
+
         public ReactiveCommand Add { get; private set; }
+
         public ReactiveCommand Maps { get; private set; }
 
         public ReactiveCommand<IElementVM<Event>> EditEvent { get; private set; }
+
         public ReactiveCommand<IElementVM<EventProperty>> SelectProperty { get; private set; }
+
         public ReactiveCommand<IElementVM<Specimen>> SelectSpecimen { get; private set; }
-        #endregion
+
+        #endregion Commands
 
         #region Properties
+
         private Pivots _SelectedPivot = Pivots.Specimen;
-        public Pivots SelectedPivot {
-            get {
+
+        public Pivots SelectedPivot
+        {
+            get
+            {
                 return _SelectedPivot;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(vm => vm.SelectedPivot, ref _SelectedPivot, value);
             }
         }
@@ -43,7 +56,7 @@
 
         public ElementMultimediaVM MultimediaList { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         private ReactiveAsyncCommand getSpecimen = new ReactiveAsyncCommand();
         private ReactiveAsyncCommand getProperties = new ReactiveAsyncCommand();
@@ -51,7 +64,8 @@
         public ViewEVVM(
             IFieldDataService Storage,
             ElementMultimediaVM MultimediaList
-            ) {
+            )
+        {
             this.Storage = Storage;
 
             //Current

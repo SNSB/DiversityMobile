@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace DiversityPhone.Services
 {
-    static class Queries
+    internal static class Queries
     {
         internal static IQueryable<MultimediaObject> Multimedia(IMultimediaOwner owner, DiversityDataContext ctx)
         {
@@ -61,5 +61,4 @@ namespace DiversityPhone.Services
                    select a;
         }
     }
-
 }

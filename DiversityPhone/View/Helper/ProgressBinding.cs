@@ -7,11 +7,11 @@ namespace DiversityPhone.View
 {
     public sealed class ProgressBinding<VMType> : IDisposable where VMType : ReactiveUI.ReactiveObject
     {
-        IDisposable _subscription;
+        private IDisposable _subscription;
 
-        static ProgressIndicator Progress { get { return SystemTray.ProgressIndicator; } }
+        private static ProgressIndicator Progress { get { return SystemTray.ProgressIndicator; } }
 
-        public ProgressBinding(VMType viewmodel, Expression<Func<VMType,bool>> isBusyProperty )
+        public ProgressBinding(VMType viewmodel, Expression<Func<VMType, bool>> isBusyProperty)
         {
             if (viewmodel == null)
                 throw new ArgumentNullException("viewmodel");
@@ -27,7 +27,7 @@ namespace DiversityPhone.View
                 var p = Progress;
                 if (p != null)
                     p.IsIndeterminate = p.IsVisible = isBusy;
-            });            
+            });
         }
 
         public ProgressBinding(VMType viewmodel, Expression<Func<VMType, int>> progressProperty)
@@ -52,6 +52,6 @@ namespace DiversityPhone.View
         public void Dispose()
         {
             _subscription.Dispose();
-        }        
+        }
     }
 }

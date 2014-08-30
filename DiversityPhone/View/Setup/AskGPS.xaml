@@ -19,23 +19,23 @@
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <vw:DiversityMobilePageHeader Grid.Row="0"
-                                      Text="{Binding Resources.Setup_GPS_PageHeader, Source={StaticResource LocalizedStrings}}"/>
-        
+                                      Text="{Binding Resources.Setup_GPS_PageHeader, Source={StaticResource LocalizedStrings}}" />
+
         <StackPanel Grid.Row="1">
             <TextBlock Text="{Binding Resources.Setup_GPS_Text, Source={StaticResource LocalizedStrings}}"
                        Margin="{StaticResource PhoneMargin}"
                        TextWrapping="Wrap"
-                       Style="{StaticResource PhoneTextSubtleStyle}"/>
-            <toolkit:ToggleSwitch IsChecked="{Binding UseGPS, Mode=TwoWay}" 
-                                  Content="{Binding Resources.Settings_Header_Localization, Source={StaticResource LocalizedStrings}}"/>
+                       Style="{StaticResource PhoneTextSubtleStyle}" />
+            <toolkit:ToggleSwitch IsChecked="{Binding UseGPS, Mode=TwoWay}"
+                                  Content="{Binding Resources.Settings_Header_Localization, Source={StaticResource LocalizedStrings}}" />
         </StackPanel>
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsMenuEnabled="False"/>
+        <shell:ApplicationBar IsMenuEnabled="False" />
     </phone:PhoneApplicationPage.ApplicationBar>
 </phone:PhoneApplicationPage>

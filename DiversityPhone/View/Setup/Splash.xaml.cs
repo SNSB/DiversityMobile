@@ -1,23 +1,28 @@
-﻿namespace DiversityPhone.View.Setup {
+﻿namespace DiversityPhone.View.Setup
+{
     using DiversityPhone.ViewModels;
     using Microsoft.Phone.Controls;
     using Ninject;
     using System.Windows;
 
-    public partial class Splash : PhoneApplicationPage {
+    public partial class Splash : PhoneApplicationPage
+    {
         private bool Initialized = false;
 
-        public Splash() {
+        public Splash()
+        {
             InitializeComponent();
         }
 
-        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e) {
+        private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
+        {
             InititializeIfNecessary();
-
         }
 
-        private void InititializeIfNecessary() {
-            if (!Initialized) {
+        private void InititializeIfNecessary()
+        {
+            if (!Initialized)
+            {
                 App.KernelInitialized += ActivateSetup;
                 Initialized = true;
 
@@ -25,7 +30,8 @@
             }
         }
 
-        private void ActivateSetup() {
+        private void ActivateSetup()
+        {
             var setup = App.Kernel.Get<SetupVM>();
 
             setup.Activate();

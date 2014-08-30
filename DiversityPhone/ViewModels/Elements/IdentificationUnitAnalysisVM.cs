@@ -24,7 +24,6 @@ namespace DiversityPhone.ViewModels
                 });
         }
 
-
         private string _Description;
 
         public override string Description
@@ -34,7 +33,6 @@ namespace DiversityPhone.ViewModels
                 return _Description;
             }
         }
-
 
         public override Icon Icon
         {

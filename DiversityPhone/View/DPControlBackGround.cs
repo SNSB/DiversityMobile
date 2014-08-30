@@ -10,6 +10,6 @@ namespace DiversityPhone.View
                 tb.Background = DPColors.INPUTMISSSING;
             else
                 tb.Background = DPColors.STANDARD;
-        } 
+        }
     }
 }

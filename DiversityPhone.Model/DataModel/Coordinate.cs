@@ -1,10 +1,8 @@
-﻿
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
     public class Coordinate : ILocalizable
     {
         public static readonly Coordinate Unknown = new Coordinate();
-
 
         public double? Altitude
         {

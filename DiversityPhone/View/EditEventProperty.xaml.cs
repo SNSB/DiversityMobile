@@ -12,7 +12,7 @@ namespace DiversityPhone.View
     {
         public EditPropertyVM VM { get { return DataContext as EditPropertyVM; } }
 
-        EditPageSaveEditButton _appb;
+        private EditPageSaveEditButton _appb;
         private EditPageDeleteButton _delete;
 
         private BindingExpression _filterBinding;
@@ -25,10 +25,8 @@ namespace DiversityPhone.View
 
             _filterBinding = tbFilterString.GetBindingExpression(TextBox.TextProperty);
 
-            Observable.FromEventPattern(tbFilterString, "TextChanged")   
+            Observable.FromEventPattern(tbFilterString, "TextChanged")
                 .Subscribe(_ => _filterBinding.UpdateSource());
         }
-
-        
     }
 }

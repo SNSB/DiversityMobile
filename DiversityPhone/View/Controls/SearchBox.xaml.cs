@@ -6,8 +6,6 @@ namespace DiversityPhone.View
 {
     public partial class SearchBox : UserControl
     {
-
-
         public string Text
         {
             get { return (string)GetValue(TextProperty); }
@@ -18,9 +16,6 @@ namespace DiversityPhone.View
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register("Text", typeof(string), typeof(SearchBox), new PropertyMetadata(string.Empty));
 
-
-
-
         public ICommand SearchCommand
         {
             get { return (ICommand)GetValue(SearchCommandProperty); }
@@ -30,9 +25,6 @@ namespace DiversityPhone.View
         // Using a DependencyProperty as the backing store for SearchCommand.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SearchCommandProperty =
             DependencyProperty.Register("SearchCommand", typeof(ICommand), typeof(SearchBox), new PropertyMetadata(null));
-
-
-
 
         public SearchBox()
         {

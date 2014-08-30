@@ -18,7 +18,6 @@ namespace DiversityPhone.Services
         private ICredentialsService CredentialsProvider;
         private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
 
-
         private IObservable<EventPattern<GetMapListFilterCompletedEventArgs>> GetMapsListCompletedObservable;
         private IObservable<EventPattern<GetMapUrlCompletedEventArgs>> GetMapUrlCompletedObservable;
         private IObservable<EventPattern<GetXmlUrlCompletedEventArgs>> GetXmlUrlCompletedObservable;
@@ -88,9 +87,6 @@ namespace DiversityPhone.Services
             return obs;
         }
 
-
-
-
         private Map parseXMLtoMap(WebResponse xmlResponse)
         {
             try
@@ -125,6 +121,5 @@ namespace DiversityPhone.Services
                 xmlResponse.Dispose();
             }
         }
-
     }
 }

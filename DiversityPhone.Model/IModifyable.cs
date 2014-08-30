@@ -1,5 +1,4 @@
-﻿
-namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model
 {
     public enum ModificationState
     {
@@ -7,6 +6,7 @@ namespace DiversityPhone.Model
         Unmodified, // Persisted Remotely & Locally
         Modified // Persisted Locally
     }
+
     public interface IModifyable
     {
         /// <summary>
@@ -21,14 +21,15 @@ namespace DiversityPhone.Model
         {
             return modObj.ModificationState == ModificationState.New;
         }
+
         public static bool IsModified(this IModifyable modObj)
         {
             return modObj.ModificationState == ModificationState.Modified;
         }
+
         public static bool IsUnmodified(this IModifyable modObj)
         {
             return modObj.ModificationState == ModificationState.Unmodified;
         }
-
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using DiversityPhone.View.Appbar;
+﻿using DiversityPhone.View.Appbar;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
@@ -10,7 +9,7 @@ namespace DiversityPhone.View
     {
         private CommandButtonAdapter _add, _maps;
 
-        NewMultimediaAppBarUpdater _mmo;
+        private NewMultimediaAppBarUpdater _mmo;
 
         private ViewIUVM VM { get { return DataContext as ViewIUVM; } }
 
@@ -22,7 +21,7 @@ namespace DiversityPhone.View
             _maps = new CommandButtonAdapter(ApplicationBar.Buttons[1] as ApplicationBarIconButton, VM.Maps);
             _mmo = new NewMultimediaAppBarUpdater(VM.Messenger, this, VM.MultimediaList);
         }
-       
+
         private void PhoneApplicationPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (VM != null)

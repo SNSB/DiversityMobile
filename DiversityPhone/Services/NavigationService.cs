@@ -6,17 +6,25 @@ using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 
-
-namespace DiversityPhone.Services {
-    public class NavigationService {
-        readonly IMessageBus Messenger;
-        readonly PhoneApplicationFrame _frame;
+namespace DiversityPhone.Services
+{
+    public class NavigationService
+    {
+        private readonly IMessageBus Messenger;
+        private readonly PhoneApplicationFrame _frame;
 
         private PageVMBase _CurrentVM;
-        public PageVMBase CurrentVM {
-            get { return _CurrentVM; }
-            set {
-                if (value != null && _CurrentVM != value) {
+
+        public PageVMBase CurrentVM
+        {
+            get
+            {
+                return _CurrentVM;
+            }
+            set
+            {
+                if (value != null && _CurrentVM != value)
+                {
                     if (_CurrentVM != null)
                         _CurrentVM.Deactivate();
                     _CurrentVM = value;
@@ -25,12 +33,12 @@ namespace DiversityPhone.Services {
             }
         }
 
-
         public NavigationService(
             IMessageBus messenger,
             PhoneApplicationFrame RootFrame,
             [Dispatcher] IScheduler Dispatcher
-            ) {
+            )
+        {
             Messenger = messenger;
             _frame = RootFrame;
 
@@ -65,101 +73,133 @@ namespace DiversityPhone.Services {
                .Subscribe(NavigateToPage);
         }
 
-        void NavigationFinished() {
+        private void NavigationFinished()
+        {
             var page = _frame.Content as PhoneApplicationPage;
             if (page != null)
                 CurrentVM = page.DataContext as PageVMBase;
         }
 
-        private void NavigateToPage(Page p) {
+        private void NavigateToPage(Page p)
+        {
             string destination = null;
-            switch (p) {
+            switch (p)
+            {
                 case Page.Current:
                     return;
+
                 case Page.Previous:
                     NavigateBack();
                     return;
+
                 case Page.Home:
                     destination = "/View/Home.xaml";
                     break;
+
                 case Page.Settings:
                     destination = "/View/Settings.xaml";
                     break;
+
                 case Page.EditES:
                     destination = "/View/EditES.xaml";
                     break;
+
                 case Page.ViewES:
                     destination = "/View/ViewES.xaml";
                     break;
+
                 case Page.EditEV:
                     destination = "/View/EditEV.xaml";
                     break;
+
                 case Page.ViewEV:
                     destination = "/View/ViewEV.xaml";
                     break;
+
                 case Page.EditIU:
                     destination = "/View/EditIU.xaml";
                     break;
+
                 case Page.ViewIU:
                     destination = "/View/ViewIU.xaml";
                     break;
+
                 case Page.EditCS:
                     destination = "/View/EditCS.xaml";
                     break;
+
                 case Page.ViewCS:
                     destination = "/View/ViewCS.xaml";
                     break;
+
                 case Page.MapManagement:
                     destination = "/View/MapManagement.xaml";
                     break;
+
                 case Page.ViewMap:
                     destination = "/View/ViewMap.xaml";
                     break;
+
                 case Page.ViewImage:
                     destination = "/View/ViewImage.xaml";
                     break;
+
                 case Page.NewAudio:
                     destination = "/View/Audio.xaml";
                     break;
+
                 case Page.NewVideo:
                     destination = "/View/Video.xaml";
                     break;
+
                 case Page.EditIUAN:
                     destination = "/View/EditAnalysis.xaml";
                     break;
+
                 case Page.TaxonManagement:
                     destination = "/View/TaxonManagement.xaml";
                     break;
+
                 case Page.Upload:
                     destination = "/View/Upload.xaml";
                     break;
+
                 case Page.Download:
                     destination = "/View/Download.xaml";
                     break;
+
                 case Page.EditEventProperty:
                     destination = "/View/EditEventProperty.xaml";
                     break;
+
                 case Page.SetupWelcome:
                     destination = "/View/Setup/Welcome.xaml";
                     break;
+
                 case Page.SetupLogin:
                     destination = "/View/Setup/Login.xaml";
                     break;
+
                 case Page.SetupDatabase:
                     destination = "/View/Setup/DatabaseServer.xaml";
                     break;
+
                 case Page.SetupProject:
                     destination = "/View/Setup/Project.xaml";
                     break;
+
                 case Page.SetupGPS:
                     destination = "/View/Setup/AskGPS.xaml";
                     break;
+
                 case Page.SetupVocabulary:
                     destination = "/View/Setup/Vocabulary.xaml";
                     break;
+
                 case Page.Info:
                     destination = "/View/Info.xaml";
                     break;
+
                 case Page.ImportExport:
                     destination = "/View/ImportExport.xaml";
                     break;
@@ -171,18 +211,20 @@ namespace DiversityPhone.Services {
 #endif
             }
 
-            if (destination != null && _frame != null) {
+            if (destination != null && _frame != null)
+            {
                 var destURI = new Uri(destination, UriKind.RelativeOrAbsolute);
-                if (destURI != _frame.CurrentSource) {
+                if (destURI != _frame.CurrentSource)
+                {
                     _frame.Dispatcher.BeginInvoke(() => _frame.Navigate(destURI));
                 }
             }
         }
 
-        public void NavigateBack() {
+        public void NavigateBack()
+        {
             if (_frame.CanGoBack)
                 _frame.GoBack();
         }
-
     }
 }

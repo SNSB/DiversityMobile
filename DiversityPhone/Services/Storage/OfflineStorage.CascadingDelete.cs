@@ -7,10 +7,9 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-
     public class CascadingDeleter
     {
-        readonly IStoreMultimedia MultimediaStore;
+        private readonly IStoreMultimedia MultimediaStore;
 
         public CascadingDeleter(IStoreMultimedia Multimedia)
         {
@@ -80,11 +79,9 @@ namespace DiversityPhone.Services
                         else
                             throw new ArgumentException("Unsupported Type T");
 
-
                         ctx.SubmitChanges();
                     }
                 });
-
         }
 
         private void deleteSeries(DiversityDataContext ctx, EventSeries es)
@@ -141,8 +138,6 @@ namespace DiversityPhone.Services
                     deleteUnit(ctx, siu, cascade);
 
             ctx.IdentificationUnits.DeleteOnSubmit(iu);
-
-
         }
 
         private void deleteAnalysis(DiversityDataContext ctx, IdentificationUnitAnalysis an)
@@ -156,10 +151,9 @@ namespace DiversityPhone.Services
         }
 
         private void deleteMMO(DiversityDataContext ctx, MultimediaObject mmo)
-        {            
+        {
             MultimediaStore.DeleteMultimedia(mmo.Uri);
             ctx.MultimediaObjects.DeleteOnSubmit(mmo);
         }
-
     }
 }

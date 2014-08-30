@@ -4,17 +4,15 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace DiversityPhone.View  
-{  
+namespace DiversityPhone.View
+{
     public class StreamToImageConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            
-
             var s = value as Stream;
 
-            if(s != null && targetType == typeof(ImageSource))
+            if (s != null && targetType == typeof(ImageSource))
             {
                 var img = new BitmapImage();
                 img.SetSource(s);

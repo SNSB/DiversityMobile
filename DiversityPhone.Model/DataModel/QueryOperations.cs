@@ -11,7 +11,7 @@ namespace DiversityPhone.Model
         private Func<IQueryable<T>, IQueryable<T>> orderbyKey;
         private Action<IQueryable<T>, T> setToFreeKey;
 
-        public QueryOperations( Func<IQueryable<T>, T, IQueryable<T>> keySmaller,
+        public QueryOperations(Func<IQueryable<T>, T, IQueryable<T>> keySmaller,
             Func<IQueryable<T>, T, IQueryable<T>> keyEquals,
             Func<IQueryable<T>, IQueryable<T>> orderbyKey,
             Action<IQueryable<T>, T> setToFreeKey)
@@ -21,7 +21,6 @@ namespace DiversityPhone.Model
             this.orderbyKey = orderbyKey;
             this.setToFreeKey = setToFreeKey;
         }
-        
 
         public System.Linq.IQueryable<T> WhereKeySmallerThan(System.Linq.IQueryable<T> query, T item)
         {
@@ -50,7 +49,7 @@ namespace DiversityPhone.Model
         public void SetFreeKeyOnItem(System.Linq.IQueryable<T> table, T item)
         {
             if (setToFreeKey != null)
-                setToFreeKey(table,item);           
+                setToFreeKey(table, item);
         }
 
         public static int FindFreeIntKey(IQueryable<T> table, Expression<Func<T, int>> keySelector)
@@ -68,9 +67,9 @@ namespace DiversityPhone.Model
             var largerThanMax = 1;
 
             if (table.Any())
-                largerThanMax= table.Select(keySelector).Max()+1;
+                largerThanMax = table.Select(keySelector).Max() + 1;
 
             return (largerThanMax > 1) ? largerThanMax : 1;
-        }   
+        }
     }
 }

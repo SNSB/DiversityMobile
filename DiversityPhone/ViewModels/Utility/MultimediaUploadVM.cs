@@ -12,16 +12,15 @@
     using System.Reactive.Linq;
     using System.Threading;
 
-
     public class MultimediaUploadVM : IUploadVM<MultimediaObjectVM>
     {
-        readonly IDiversityServiceClient Service;
-        readonly IFieldDataService Storage;
-        readonly INotificationService Notifications;
-        readonly IScheduler ThreadPool;
-        readonly IKeyMappingService Mapping;
-        readonly IStoreMultimedia Multimedia;
-        readonly Func<MultimediaObject, MultimediaObjectVM> MultimediaVMFactory;
+        private readonly IDiversityServiceClient Service;
+        private readonly IFieldDataService Storage;
+        private readonly INotificationService Notifications;
+        private readonly IScheduler ThreadPool;
+        private readonly IKeyMappingService Mapping;
+        private readonly IStoreMultimedia Multimedia;
+        private readonly Func<MultimediaObject, MultimediaObjectVM> MultimediaVMFactory;
 
         public MultipleSelectionHelper<MultimediaObjectVM> Items { get; private set; }
 

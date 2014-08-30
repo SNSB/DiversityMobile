@@ -1,7 +1,8 @@
 ﻿/*
  * Contains Model classes that will be sent to the client via WCF
- * 
+ *
  */
+
 namespace DiversityPhone.Model
 {
     public class Project

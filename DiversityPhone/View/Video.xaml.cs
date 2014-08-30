@@ -5,10 +5,14 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using System.Windows;
 
-namespace DiversityPhone.View {
-    public partial class NewVideo : PhoneApplicationPage {
-        private VideoVM VM {
-            get {
+namespace DiversityPhone.View
+{
+    public partial class NewVideo : PhoneApplicationPage
+    {
+        private VideoVM VM
+        {
+            get
+            {
                 return DataContext as VideoVM;
             }
         }
@@ -17,7 +21,8 @@ namespace DiversityPhone.View {
         private SaveDeleteButton _save;
         private VideoService _Svc;
 
-        public NewVideo() {
+        public NewVideo()
+        {
             InitializeComponent();
 
             _Svc = new VideoService(this.viewfinderRectangle, this.videoPlayer);
@@ -29,14 +34,13 @@ namespace DiversityPhone.View {
                 this.ApplicationBar,
                 VM);
 
-
             VM.VideoService = _Svc as IVideoService;
         }
 
-
-
-        private void PageUnloaded(object sender, RoutedEventArgs e) {
-            if (this._Svc != null) {
+        private void PageUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (this._Svc != null)
+            {
                 _Svc.Dispose();
                 _Svc = null;
             }

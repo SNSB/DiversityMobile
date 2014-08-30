@@ -8,7 +8,5 @@ namespace DiversityPhone.View
         {
             InitializeComponent();
         }
-
-        
     }
 }

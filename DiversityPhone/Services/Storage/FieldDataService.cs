@@ -10,57 +10,55 @@ using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Linq;
 
-namespace DiversityPhone.Services {
-
-
-    public partial class FieldDataService : IFieldDataService, IKeyMappingService {
-        readonly CascadingDeleter CascadingDelete;
+namespace DiversityPhone.Services
+{
+    public partial class FieldDataService : IFieldDataService, IKeyMappingService
+    {
+        private readonly CascadingDeleter CascadingDelete;
         private IList<IDisposable> _subscriptions;
-        readonly IMessageBus Messenger;
-        readonly INotificationService Notifications;
-
+        private readonly IMessageBus Messenger;
+        private readonly INotificationService Notifications;
 
         public FieldDataService(
             IMessageBus Messenger,
             INotificationService Notifications,
             CascadingDeleter CascadingDelete
-            ) {
+            )
+        {
             this.Messenger = Messenger;
             this.Notifications = Notifications;
             this.CascadingDelete = CascadingDelete;
 
-
-
             _subscriptions = new List<IDisposable>()
             {
-                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Model()                        
+                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.SAVE).Model()
                     .Subscribe(es => addOrUpdateEventSeries(es)),
-                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()  
+                Messenger.Listen<IElementVM<EventSeries>>(MessageContracts.DELETE).Model()
                     .Subscribe(es => deleteEventSeries(es)),
 
-                Messenger.Listen<IElementVM<Event>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<Event>>(MessageContracts.SAVE).Model()
                     .Subscribe(ev => addOrUpdateEvent(ev)),
-                Messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<Event>>(MessageContracts.DELETE).Model()
                     .Subscribe(ev=>deleteEvent(ev)),
 
-                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.SAVE).Model()
                     .Subscribe(cep=>addOrUpdateCollectionEventProperty(cep)),
-                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<EventProperty>>(MessageContracts.DELETE).Model()
                     .Subscribe(cep => deleteEventProperty(cep)),
 
-                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.SAVE).Model()
                     .Subscribe(spec => addOrUpdateSpecimen(spec)),
-                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<Specimen>>(MessageContracts.DELETE).Model()
                     .Subscribe(spec=>deleteSpecimen(spec)),
 
-                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.SAVE).Model()
                     .Subscribe(iu => addOrUpdateIUnit(iu)),
-                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.DELETE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnit>>(MessageContracts.DELETE).Model()
                     .Subscribe(iu=>deleteIU(iu)),
 
-                Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.SAVE).Model() 
+                Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.SAVE).Model()
                     .Subscribe(iua=>addOrUpdateIUA(iua)),
-                 Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model() 
+                 Messenger.Listen<IElementVM<IdentificationUnitAnalysis>>(MessageContracts.DELETE).Model()
                     .Subscribe(iua=>deleteIUA(iua)),
 
                 Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.SAVE).Model()
@@ -74,7 +72,7 @@ namespace DiversityPhone.Services {
                     .Subscribe(gp => deleteGeoPoint(gp)),
 
                 Messenger.Listen<ILocalizable>(MessageContracts.SAVE)
-                    .Subscribe(loc => 
+                    .Subscribe(loc =>
                         {
                             if (loc is Event)
                                 addOrUpdateEvent(loc as Event);
@@ -83,11 +81,11 @@ namespace DiversityPhone.Services {
                             else if (loc is GeoPointForSeries)
                                 addGeoPoint(loc as GeoPointForSeries);
                         })
-                   
             };
         }
 
-        public void deleteAndNotifyAsync<T>(T detachedRow) where T : class {
+        public void deleteAndNotifyAsync<T>(T detachedRow) where T : class
+        {
             Notifications.showProgress(
                 CascadingDelete.deleteCascadingAsync(detachedRow)
                 .StartWith(Unit.Default)
@@ -95,46 +93,43 @@ namespace DiversityPhone.Services {
                 );
         }
 
-
-
         #region EventSeries
 
-
-        public IList<EventSeries> getAllEventSeries() {
+        public IList<EventSeries> getAllEventSeries()
+        {
             return uncachedQuery(ctx => from es in ctx.EventSeries
                                         select es);
         }
 
-        public EventSeries getEventSeriesByID(int? id) {
+        public EventSeries getEventSeriesByID(int? id)
+        {
             if (!id.HasValue)
                 return NoEventSeriesMixin.NoEventSeries;
 
             return singletonQuery(ctx => from es in ctx.EventSeries
                                          where es.SeriesID == id.Value
                                          select es);
-
         }
 
-        public void addOrUpdateEventSeries(EventSeries newSeries) {
+        public void addOrUpdateEventSeries(EventSeries newSeries)
+        {
             if (newSeries.IsNoEventSeries())
                 return;
             addOrUpdateRow(EventSeries.Operations, ctx => ctx.EventSeries, newSeries);
             Messenger.SendMessage<EventSeries>(newSeries, MessageContracts.START);
         }
 
-        public void deleteEventSeries(EventSeries toDeleteEs) {
-
+        public void deleteEventSeries(EventSeries toDeleteEs)
+        {
             deleteAndNotifyAsync(toDeleteEs);
         }
 
-
-
-
-        #endregion
+        #endregion EventSeries
 
         #region GeoPointForSeries
 
-        public IList<GeoPointForSeries> getAllGeoPoints() {
+        public IList<GeoPointForSeries> getAllGeoPoints()
+        {
             return uncachedQuery(
             ctx =>
                 from gt in ctx.GeoTour
@@ -142,8 +137,10 @@ namespace DiversityPhone.Services {
                 );
         }
 
-        public IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID) {
-            using (var ctx = new DiversityDataContext()) {
+        public IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 var query = from gt in ctx.GeoTour
                             where gt.SeriesID == SeriesID
                             select gt;
@@ -153,29 +150,30 @@ namespace DiversityPhone.Services {
             }
         }
 
-        public void addGeoPoint(GeoPointForSeries gp) {
+        public void addGeoPoint(GeoPointForSeries gp)
+        {
             addOrUpdateRow(GeoPointForSeries.Operations,
                 ctx => ctx.GeoTour,
                 gp
             );
         }
 
-        public void deleteGeoPoint(GeoPointForSeries toDeleteGp) {
+        public void deleteGeoPoint(GeoPointForSeries toDeleteGp)
+        {
             deleteAndNotifyAsync(toDeleteGp);
         }
 
-
-
-        #endregion
+        #endregion GeoPointForSeries
 
         #region Event
 
-        public IEnumerable<Event> getAllEvents() {
+        public IEnumerable<Event> getAllEvents()
+        {
             return enumerateQuery(ctx => ctx.Events);
         }
 
-
-        public IEnumerable<Event> getEventsForSeries(EventSeries es) {
+        public IEnumerable<Event> getEventsForSeries(EventSeries es)
+        {
             //Workaround for the fact, that ev.SeriesID == es.SeriesID doesn't work for null values
             if (es.IsNoEventSeries())
                 return enumerateQuery(
@@ -189,16 +187,16 @@ namespace DiversityPhone.Services {
                        select ev);
         }
 
-
-        public Event getEventByID(int id) {
+        public Event getEventByID(int id)
+        {
             return singletonQuery(
                 ctx => from ev in ctx.Events
                        where ev.EventID == id
                        select ev);
         }
 
-
-        public void addOrUpdateEvent(Event ev) {
+        public void addOrUpdateEvent(Event ev)
+        {
             var wasNewEvent = ev.IsNew();
 
             addOrUpdateRow(Event.Operations,
@@ -206,25 +204,25 @@ namespace DiversityPhone.Services {
                   ev
               );
 
-            if (wasNewEvent) {
+            if (wasNewEvent)
+            {
                 Specimen observation = new Specimen().MakeObservation();
                 observation.EventID = ev.EventID;
                 addOrUpdateSpecimen(observation);
-
             }
         }
 
-        public void deleteEvent(Event toDeleteEv) {
+        public void deleteEvent(Event toDeleteEv)
+        {
             deleteAndNotifyAsync(toDeleteEv);
         }
 
-
-
-        #endregion
+        #endregion Event
 
         #region CollectionEventProperties
 
-        public IEnumerable<EventProperty> getPropertiesForEvent(int eventID) {
+        public IEnumerable<EventProperty> getPropertiesForEvent(int eventID)
+        {
             return enumerateQuery(ctx =>
                 from cep in ctx.EventProperties
                 where cep.EventID == eventID
@@ -232,35 +230,38 @@ namespace DiversityPhone.Services {
                 );
         }
 
-        public EventProperty getPropertyByID(int eventId, int propertyId) {
+        public EventProperty getPropertyByID(int eventId, int propertyId)
+        {
             return singletonQuery(ctx => from cep in ctx.EventProperties
                                          where cep.EventID == eventId &&
                                                 cep.PropertyID == propertyId
                                          select cep);
         }
 
-        public void addOrUpdateCollectionEventProperty(EventProperty cep) {
+        public void addOrUpdateCollectionEventProperty(EventProperty cep)
+        {
             addOrUpdateRow(EventProperty.Operations,
                   ctx => ctx.EventProperties,
                   cep
               );
         }
 
-        public void deleteEventProperty(EventProperty toDeleteCep) {
+        public void deleteEventProperty(EventProperty toDeleteCep)
+        {
             deleteAndNotifyAsync(toDeleteCep);
         }
 
-        #endregion
-
+        #endregion CollectionEventProperties
 
         #region Specimen
 
-        public IEnumerable<Specimen> getAllSpecimen() {
+        public IEnumerable<Specimen> getAllSpecimen()
+        {
             return enumerateQuery(ctx => ctx.Specimen);
         }
 
-
-        public IEnumerable<Specimen> getSpecimenForEvent(Event ev) {
+        public IEnumerable<Specimen> getSpecimenForEvent(Event ev)
+        {
             return enumerateQuery(ctx =>
                 from spec in ctx.Specimen
                 where spec.EventID == ev.EventID
@@ -268,15 +269,16 @@ namespace DiversityPhone.Services {
                 );
         }
 
-
-        public Specimen getSpecimenByID(int id) {
+        public Specimen getSpecimenByID(int id)
+        {
             return singletonQuery(
                 ctx => from spec in ctx.Specimen
                        where spec.SpecimenID == id
                        select spec);
         }
 
-        public IEnumerable<Specimen> getSpecimenWithoutEvent() {
+        public IEnumerable<Specimen> getSpecimenWithoutEvent()
+        {
             return enumerateQuery(ctx =>
                   from spec in ctx.Specimen
                   where spec.EventID == null
@@ -284,24 +286,25 @@ namespace DiversityPhone.Services {
                   );
         }
 
-        public void addOrUpdateSpecimen(Specimen spec) {
+        public void addOrUpdateSpecimen(Specimen spec)
+        {
             addOrUpdateRow(Specimen.Operations,
                 ctx => ctx.Specimen,
                 spec
             );
         }
 
-        public void deleteSpecimen(Specimen toDeleteSpec) {
+        public void deleteSpecimen(Specimen toDeleteSpec)
+        {
             deleteAndNotifyAsync(toDeleteSpec);
         }
 
-
-
-        #endregion
+        #endregion Specimen
 
         #region IdentificationUnit
 
-        public IList<IdentificationUnit> getIUForSpecimen(int specimenID) {
+        public IList<IdentificationUnit> getIUForSpecimen(int specimenID)
+        {
             return uncachedQuery(
                 ctx =>
                     from iu in ctx.IdentificationUnits
@@ -311,7 +314,8 @@ namespace DiversityPhone.Services {
                     );
         }
 
-        public IEnumerable<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID) {
+        public IEnumerable<IdentificationUnit> getTopLevelIUForSpecimen(int specimenID)
+        {
             return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
                 where iu.SpecimenID == specimenID && iu.RelatedUnitID == null
@@ -320,8 +324,8 @@ namespace DiversityPhone.Services {
                 );
         }
 
-
-        public IEnumerable<IdentificationUnit> getSubUnits(IdentificationUnit unit) {
+        public IEnumerable<IdentificationUnit> getSubUnits(IdentificationUnit unit)
+        {
             return enumerateQuery(ctx =>
                 from iu in ctx.IdentificationUnits
                 where iu.RelatedUnitID == unit.UnitID
@@ -330,9 +334,11 @@ namespace DiversityPhone.Services {
                 );
         }
 
-        public IdentificationUnit getIdentificationUnitByID(int id) {
+        public IdentificationUnit getIdentificationUnitByID(int id)
+        {
             IdentificationUnit result = null;
-            withDataContext((ctx) => {
+            withDataContext((ctx) =>
+            {
                 result = (from iu in ctx.IdentificationUnits
                           where iu.UnitID == id
                           select iu).FirstOrDefault();
@@ -340,20 +346,22 @@ namespace DiversityPhone.Services {
             return result;
         }
 
-        public void addOrUpdateIUnit(IdentificationUnit iu) {
+        public void addOrUpdateIUnit(IdentificationUnit iu)
+        {
             addOrUpdateRow(IdentificationUnit.Operations, ctx => ctx.IdentificationUnits, iu);
         }
 
-        public void deleteIU(IdentificationUnit toDeleteIU) {
+        public void deleteIU(IdentificationUnit toDeleteIU)
+        {
             deleteAndNotifyAsync(toDeleteIU);
         }
 
-
-        #endregion
+        #endregion IdentificationUnit
 
         #region Analysis
 
-        public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu) {
+        public IList<IdentificationUnitAnalysis> getIUANForIU(IdentificationUnit iu)
+        {
             return uncachedQuery(ctx =>
                 from iuan in ctx.IdentificationUnitAnalyses
                 where iuan.UnitID == iu.UnitID
@@ -361,43 +369,48 @@ namespace DiversityPhone.Services {
                 );
         }
 
-        public IdentificationUnitAnalysis getIUANByID(int iuanalysisID) {
+        public IdentificationUnitAnalysis getIUANByID(int iuanalysisID)
+        {
             return singletonQuery(ctx => from iuan in ctx.IdentificationUnitAnalyses
                                          where iuan.IdentificationUnitAnalysisID == iuanalysisID
                                          select iuan);
         }
 
-        public void addOrUpdateIUA(IdentificationUnitAnalysis iua) {
+        public void addOrUpdateIUA(IdentificationUnitAnalysis iua)
+        {
             addOrUpdateRow(IdentificationUnitAnalysis.Operations,
                 ctx => ctx.IdentificationUnitAnalyses,
                 iua
             );
         }
 
-        public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA) {
+        public void deleteIUA(IdentificationUnitAnalysis toDeleteIUA)
+        {
             deleteAndNotifyAsync(toDeleteIUA);
         }
 
-        #endregion
+        #endregion Analysis
 
         #region Multimedia
 
-        public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner) {
+        public IList<MultimediaObject> getMultimediaForObject(IMultimediaOwner owner)
+        {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                                                    where mm.OwnerType == owner.EntityType
                                                                            && mm.RelatedId == owner.EntityID
                                                                    select mm);
             return objects;
-
         }
 
-        public MultimediaObject getMultimediaByID(int id) {
+        public MultimediaObject getMultimediaByID(int id)
+        {
             return singletonQuery(ctx => from mm in ctx.MultimediaObjects
                                          where mm.MMOID == id
                                          select mm);
         }
 
-        public MultimediaObject getMultimediaByURI(string uri) {
+        public MultimediaObject getMultimediaByURI(string uri)
+        {
             IList<MultimediaObject> objects = uncachedQuery(ctx => from mm in ctx.MultimediaObjects
                                                                    where mm.Uri == uri
                                                                    select mm);
@@ -408,63 +421,70 @@ namespace DiversityPhone.Services {
             return objects[0];
         }
 
-
-        public void addMultimediaObject(MultimediaObject mmo) {
+        public void addMultimediaObject(MultimediaObject mmo)
+        {
             addOrUpdateRow(MultimediaObject.Operations,
             ctx => ctx.MultimediaObjects,
             mmo
             );
         }
 
-        public void deleteMMO(MultimediaObject toDeleteMMO) {
+        public void deleteMMO(MultimediaObject toDeleteMMO)
+        {
             deleteAndNotifyAsync(toDeleteMMO);
         }
 
-
-        #endregion
+        #endregion Multimedia
 
         #region Generische Implementierungen
-        private void addOrUpdateRow<T>(IQueryOperations<T> operations, Func<DiversityDataContext, Table<T>> tableProvider, T row) where T : class, IModifyable {
-            if (row == null) {
+
+        private void addOrUpdateRow<T>(IQueryOperations<T> operations, Func<DiversityDataContext, Table<T>> tableProvider, T row) where T : class, IModifyable
+        {
+            if (row == null)
+            {
                 throw new ArgumentNullException("row");
             }
 
-            withDataContext((ctx) => {
+            withDataContext((ctx) =>
+            {
                 var table = tableProvider(ctx);
                 var allRowsQuery = table as IQueryable<T>;
 
-
-
                 if (row.IsNew())      //New Object
-                    {
+                {
                     operations.SetFreeKeyOnItem(allRowsQuery, row);
                     row.ModificationState = ModificationState.Modified; //Mark for Upload
 
                     table.InsertOnSubmit(row);
-                    try {
+                    try
+                    {
                         ctx.SubmitChanges();
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
                         System.Diagnostics.Debugger.Break();
 
                         //Object not new
                         //TODO update?
-
                     }
                 }
-                else {
+                else
+                {
                     var existingRow = operations.WhereKeyEquals(allRowsQuery, row)
                                                 .FirstOrDefault();
-                    if (existingRow != default(T)) {
-
-                        //Second DataContext necessary 
+                    if (existingRow != default(T))
+                    {
+                        //Second DataContext necessary
                         //because the action of querying for an existing row prevents a new version of that row from being Attach()ed
-                        withDataContext((ctx2) => {
+                        withDataContext((ctx2) =>
+                        {
                             tableProvider(ctx2).Attach(row, existingRow);
-                            try {
+                            try
+                            {
                                 ctx2.SubmitChanges();
                             }
-                            catch (Exception) {
+                            catch (Exception)
+                            {
                                 System.Diagnostics.Debugger.Break();
                             }
                         });
@@ -473,9 +493,11 @@ namespace DiversityPhone.Services {
             });
         }
 
-        private T singletonQuery<T>(Func<DiversityDataContext, IQueryable<T>> queryProvider) {
+        private T singletonQuery<T>(Func<DiversityDataContext, IQueryable<T>> queryProvider)
+        {
             T result = default(T);
-            withDataContext(ctx => {
+            withDataContext(ctx =>
+            {
                 var query = queryProvider(ctx);
                 result = query
                     .FirstOrDefault();
@@ -483,69 +505,80 @@ namespace DiversityPhone.Services {
             return result;
         }
 
-
-        private void withDataContext(Action<DiversityDataContext> operation) {
-            using (var ctx = new DiversityDataContext()) {
-                if (!ctx.DatabaseExists()) {
+        private void withDataContext(Action<DiversityDataContext> operation)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                if (!ctx.DatabaseExists())
+                {
                     ctx.CreateDatabase();
                 }
                 operation(ctx);
             }
         }
 
-        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query) {
+        private IList<T> uncachedQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
+        {
             IList<T> result = null;
             withDataContext(ctx => result = query(ctx).ToList());
             return result;
         }
 
-
-        private IEnumerable<T> enumerateQuery<T>(Func<DiversityDataContext, IQueryable<T>> query) {
-            using (var ctx = new DiversityDataContext()) {
+        private IEnumerable<T> enumerateQuery<T>(Func<DiversityDataContext, IQueryable<T>> query)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 var q = query(ctx);
 
-                foreach (var res in q) {
+                foreach (var res in q)
+                {
                     yield return res;
                 }
             }
         }
 
-        #endregion
+        #endregion Generische Implementierungen
 
-        public void ClearDatabase() {
-            using (var context = new DiversityDataContext()) {
+        public void ClearDatabase()
+        {
+            using (var context = new DiversityDataContext())
+            {
                 context.DeleteDatabase();
                 context.CreateDatabase();
             }
         }
 
-
-
-
-        public int? ResolveToServerKey(DBObjectType ownerType, int localID) {
-            using (var ctx = new DiversityDataContext()) {
+        public int? ResolveToServerKey(DBObjectType ownerType, int localID)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 IEnumerable<int?> key;
-                switch (ownerType) {
+                switch (ownerType)
+                {
                     case DBObjectType.EventSeries:
                         key = from es in ctx.EventSeries
                               where es.SeriesID == localID
                               select es.CollectionSeriesID;
                         break;
+
                     case DBObjectType.Event:
                         key = from ev in ctx.Events
                               where ev.EventID == localID
                               select ev.CollectionEventID;
                         break;
+
                     case DBObjectType.Specimen:
                         key = from s in ctx.Specimen
                               where s.SpecimenID == localID
                               select s.CollectionSpecimenID;
                         break;
+
                     case DBObjectType.IdentificationUnit:
                         key = from iu in ctx.IdentificationUnits
                               where iu.UnitID == localID
                               select iu.CollectionUnitID;
                         break;
+
                     default:
                         throw new ArgumentException("ownerType");
                 }
@@ -554,30 +587,37 @@ namespace DiversityPhone.Services {
             }
         }
 
-        public int? ResolveToLocalKey(DBObjectType ownerType, int localID) {
-            using (var ctx = new DiversityDataContext()) {
+        public int? ResolveToLocalKey(DBObjectType ownerType, int localID)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 IEnumerable<int?> key;
-                switch (ownerType) {
+                switch (ownerType)
+                {
                     case DBObjectType.EventSeries:
                         key = from es in ctx.EventSeries
                               where es.CollectionSeriesID == localID
                               select es.SeriesID as int?;
                         break;
+
                     case DBObjectType.Event:
                         key = from ev in ctx.Events
                               where ev.CollectionEventID == localID
                               select ev.EventID as int?;
                         break;
+
                     case DBObjectType.Specimen:
                         key = from s in ctx.Specimen
                               where s.CollectionSpecimenID == localID
                               select s.SpecimenID as int?;
                         break;
+
                     case DBObjectType.IdentificationUnit:
                         key = from iu in ctx.IdentificationUnits
                               where iu.CollectionUnitID == localID
                               select iu.UnitID as int?;
                         break;
+
                     default:
                         throw new ArgumentException("ownerType");
                 }
@@ -586,9 +626,12 @@ namespace DiversityPhone.Services {
             }
         }
 
-        public void AddMapping(DBObjectType ownerType, int ownerID, int serverID) {
-            using (var ctx = new DiversityDataContext()) {
-                switch (ownerType) {
+        public void AddMapping(DBObjectType ownerType, int ownerID, int serverID)
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                switch (ownerType)
+                {
                     case DBObjectType.EventSeries:
                         var a =
                         (from es in ctx.EventSeries
@@ -597,6 +640,7 @@ namespace DiversityPhone.Services {
                         a.CollectionSeriesID = serverID;
                         a.ModificationState = ModificationState.Unmodified;
                         break;
+
                     case DBObjectType.Event:
                         var b =
                         (from ev in ctx.Events
@@ -605,6 +649,7 @@ namespace DiversityPhone.Services {
                         b.CollectionEventID = serverID;
                         b.ModificationState = ModificationState.Unmodified;
                         break;
+
                     case DBObjectType.Specimen:
                         var c =
                         (from s in ctx.Specimen
@@ -613,6 +658,7 @@ namespace DiversityPhone.Services {
                         c.CollectionSpecimenID = serverID;
                         c.ModificationState = ModificationState.Unmodified;
                         break;
+
                     case DBObjectType.IdentificationUnit:
                         var d =
                         (from iu in ctx.IdentificationUnits
@@ -621,6 +667,7 @@ namespace DiversityPhone.Services {
                         d.CollectionUnitID = serverID;
                         d.ModificationState = ModificationState.Unmodified;
                         break;
+
                     default:
                         throw new ArgumentException("ownerType");
                 }
@@ -629,20 +676,24 @@ namespace DiversityPhone.Services {
             }
         }
 
-
-        public IEnumerable<MultimediaObject> getModifiedMMOs() {
+        public IEnumerable<MultimediaObject> getModifiedMMOs()
+        {
             return enumerateQuery(ctx => from mmo in ctx.MultimediaObjects
                                          where mmo.ModificationState == ModificationState.Modified
                                          select mmo);
         }
 
-        public void add<T>(T element) where T : class, IModifyable {
+        public void add<T>(T element) where T : class, IModifyable
+        {
             addAll(Enumerable.Repeat(element, 1));
         }
 
-        public void addAll<T>(IEnumerable<T> elements) where T : class, IModifyable {
-            using (var ctx = new DiversityDataContext()) {
-                foreach (var e in elements) {
+        public void addAll<T>(IEnumerable<T> elements) where T : class, IModifyable
+        {
+            using (var ctx = new DiversityDataContext())
+            {
+                foreach (var e in elements)
+                {
                     if (e.ModificationState == ModificationState.New)
                         e.ModificationState = ModificationState.Modified;
                 }
@@ -651,16 +702,20 @@ namespace DiversityPhone.Services {
             }
         }
 
-        public void update<T>(T element, Action<T> updateValues) where T : class {
-            using (var ctx = new DiversityDataContext()) {
+        public void update<T>(T element, Action<T> updateValues) where T : class
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 ctx.GetTable<T>().Attach(element, false);
                 updateValues(element);
                 ctx.SubmitChanges();
             }
         }
 
-        public void delete<T>(T element) where T : class {
-            using (var ctx = new DiversityDataContext()) {
+        public void delete<T>(T element) where T : class
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 var table = ctx.GetTable<T>();
                 table.Attach(element, false);
                 table.DeleteOnSubmit(element);
@@ -668,14 +723,13 @@ namespace DiversityPhone.Services {
             }
         }
 
+        private static IDictionary<Type, Delegate> keyComparerFactories = new Dictionary<Type, Delegate>();
 
-
-        static IDictionary<Type, Delegate> keyComparerFactories = new Dictionary<Type, Delegate>();
-
-
-        Expression<Func<T, bool>> getKeyComparison<T, TKey>(TKey id) {
+        private Expression<Func<T, bool>> getKeyComparison<T, TKey>(TKey id)
+        {
             Delegate comparerFactory;
-            if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory)) {
+            if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory))
+            {
                 var keyprop = (from p in typeof(T).GetProperties()
                                where (p.GetCustomAttributes(typeof(EntityKeyAttribute), false)).Any()
                                select p).Single();
@@ -687,8 +741,8 @@ namespace DiversityPhone.Services {
                 ParameterExpression xParam = Expression.Parameter(typeof(T), "x");
                 MemberExpression leftExpr = MemberExpression.Property(xParam, keyprop);
 
-
-                Func<TKey, Expression<Func<T, bool>>> comparerFactoryLambda = (TKey i) => {
+                Func<TKey, Expression<Func<T, bool>>> comparerFactoryLambda = (TKey i) =>
+                {
                     Expression rightExpr = Expression.Constant(i, typeof(TKey));
                     BinaryExpression myExpr = MemberExpression.Equal(leftExpr, rightExpr);
 
@@ -700,9 +754,11 @@ namespace DiversityPhone.Services {
                 };
 
                 //factory for this type not initalized yet
-                lock (keyComparerFactories) {
+                lock (keyComparerFactories)
+                {
                     //Check again to avoid adding it twice
-                    if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory)) {
+                    if (!keyComparerFactories.TryGetValue(typeof(T), out comparerFactory))
+                    {
                         keyComparerFactories.Add(typeof(T), comparerFactoryLambda);
                         comparerFactory = comparerFactoryLambda;
                     }
@@ -712,8 +768,10 @@ namespace DiversityPhone.Services {
             return (Expression<Func<T, bool>>)comparerFactory.DynamicInvoke(id);
         }
 
-        private T get<T, TKey>(TKey id) where T : class, IEntity {
-            using (var ctx = new DiversityDataContext()) {
+        private T get<T, TKey>(TKey id) where T : class, IEntity
+        {
+            using (var ctx = new DiversityDataContext())
+            {
                 var table = ctx.GetTable<T>();
 
                 var q = table.Where(getKeyComparison<T, TKey>(id));
@@ -721,7 +779,8 @@ namespace DiversityPhone.Services {
             }
         }
 
-        public T get<T>(int? id) where T : class, IEntity {
+        public T get<T>(int? id) where T : class, IEntity
+        {
             if (typeof(T) == typeof(EventSeries))
                 return get<T, int?>(id);
             else

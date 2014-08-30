@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using ReactiveUI;
     using ReactiveUI.Xaml;
@@ -7,35 +8,39 @@
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
 
-    public partial class TaxonManagementVM : PageVMBase {
-        public enum Pivot {
+    public partial class TaxonManagementVM : PageVMBase
+    {
+        public enum Pivot
+        {
             Local,
             Personal,
             Public
         }
 
-        readonly IConnectivityService Connectivity;
-        readonly ITaxonService Taxa;
-        readonly IDiversityServiceClient Service;
-        readonly INotificationService Notification;
-
+        private readonly IConnectivityService Connectivity;
+        private readonly ITaxonService Taxa;
+        private readonly IDiversityServiceClient Service;
+        private readonly INotificationService Notification;
 
         #region Properties
 
         private Pivot _CurrentPivot = Pivot.Local;
-        public Pivot CurrentPivot {
-            get {
+
+        public Pivot CurrentPivot
+        {
+            get
+            {
                 return _CurrentPivot;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(x => x.CurrentPivot, ref _CurrentPivot, value);
             }
         }
 
-
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
-        private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
 
+        private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
 
         public ReactiveCollection<TaxonListVM> LocalLists { get; private set; }
 
@@ -44,19 +49,24 @@
         public ReactiveCollection<TaxonListVM> PublicLists { get; private set; }
 
         public ReactiveCommand<TaxonListVM> Select { get; private set; }
+
         public ReactiveCommand<TaxonListVM> Download { get; private set; }
+
         public ReactiveCommand<TaxonListVM> Delete { get; private set; }
+
         public ReactiveCommand<TaxonListVM> Refresh { get; private set; }
+
         public IReactiveCommand DownloadAll { get; private set; }
 
-        #endregion
+        #endregion Properties
 
         public TaxonManagementVM(
             IConnectivityService Connectivity,
             ITaxonService Taxa,
             IDiversityServiceClient Service,
             INotificationService Notification
-            ) {
+            )
+        {
             this.Connectivity = Connectivity;
             this.Service = Service;
             this.Taxa = Taxa;
@@ -76,15 +86,14 @@
                 .ObserveOnDispatcher()
                 .CreateCollection();
 
-
-
             var onlineLists =
             localLists
                 .IgnoreElements() //only download lists once the local ones are loaded
                 .Concat(Observable.Return(null as TaxonListVM))
                 .CombineLatest(this.OnActivation(), (_, _2) => _2)
                 .CheckConnectivity(Connectivity, Notification)
-                .SelectMany(_ => {
+                .SelectMany(_ =>
+                {
                     return Service.GetTaxonLists()
                         .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists)
                         .TakeUntil(this.OnDeactivation());
@@ -108,8 +117,10 @@
             localLists.Connect();
 
             Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected && !vm.IsDownloading);
-            Select.Subscribe(taxonlist => {
-                foreach (var list in LocalLists) {
+            Select.Subscribe(taxonlist =>
+            {
+                foreach (var list in LocalLists)
+                {
                     if (list.Model.TaxonomicGroup == taxonlist.Model.TaxonomicGroup)
                         list.Model.IsSelected = false;
                 }
@@ -120,8 +131,10 @@
             Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Download
                 .CheckConnectivity(Connectivity, Notification)
-                .Subscribe(taxonlist => {
-                    if (Taxa.getTaxonTableFreeCount() > 0) {
+                .Subscribe(taxonlist =>
+                {
+                    if (Taxa.getTaxonTableFreeCount() > 0)
+                    {
                         CurrentPivot = Pivot.Local;
                         taxonlist.IsDownloading = true;
 
@@ -131,8 +144,9 @@
                             .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingList)
                             .ObserveOnDispatcher()
                             .ShowServiceErrorNotifications(Notification)
-                            .Subscribe(_ => {
-                            	//Download Succeeded
+                            .Subscribe(_ =>
+                            {
+                                //Download Succeeded
                                 taxonlist.IsDownloading = false;
 
                                 if (Select.CanExecute(taxonlist))
@@ -143,22 +157,23 @@
                                     taxonlist.IsDownloading = false;
                                     removeLocalList(taxonlist);
                                 },
-                                () => 
+                                () =>
                                 {
-
                                 });
                     }
                 });
 
             Delete = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Delete
-                .Subscribe(taxonlist => {
+                .Subscribe(taxonlist =>
+                {
                     removeLocalList(taxonlist);
                 });
 
             Refresh = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
             Refresh
-                .Subscribe(taxonlist => {
+                .Subscribe(taxonlist =>
+                {
                     if (Delete.CanExecute(taxonlist)) //Deletes synchronously
                         Delete.Execute(taxonlist);
 
@@ -179,7 +194,8 @@
                 .Subscribe(Download.Execute);
         }
 
-        private IObservable<TaxonListVM> DownloadTaxonList(TaxonListVM vm) {
+        private IObservable<TaxonListVM> DownloadTaxonList(TaxonListVM vm)
+        {
             Taxa.addTaxonList(vm.Model);
             return
             Service.DownloadTaxonListChunked(vm.Model)
@@ -189,14 +205,17 @@
             .Concat(Observable.Return(vm));
         }
 
-        private void makeListLocal(TaxonListVM list) {
+        private void makeListLocal(TaxonListVM list)
+        {
             LocalLists.Add(list);
             if (list.Model.IsPublicList)
                 PublicLists.Remove(list);
             else
                 PersonalLists.Remove(list);
         }
-        private void removeLocalList(TaxonListVM list) {
+
+        private void removeLocalList(TaxonListVM list)
+        {
             Taxa.deleteTaxonListIfExists(list.Model);
             LocalLists.Remove(list);
             list.Model.IsSelected = false;
@@ -205,6 +224,5 @@
             else
                 PersonalLists.Add(list);
         }
-
     }
 }

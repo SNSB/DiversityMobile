@@ -156,7 +156,6 @@
                 RelationType = iu.RelationType,
                 TaxonomicGroup = iu.TaxonomicGroup,
             };
-
         }
 
         public static IdentificationUnit ToClientObject(this Svc.IdentificationUnit iu)
@@ -177,7 +176,6 @@
                 WorkingName = iu.LastIdentificationCache,
                 ModificationState = ModificationState.Unmodified,
             };
-                
         }
 
         public static Svc.IdentificationUnitAnalysis ToServiceObject(this IdentificationUnitAnalysis iua)
@@ -201,8 +199,6 @@
             };
         }
 
-
-
         public static Svc.MultimediaObject ToServiceObject(this MultimediaObject mmo, IKeyMappingService mapping)
         {
             var relID = mapping.EnsureKey(mmo.OwnerType, mmo.RelatedId);
@@ -214,7 +210,6 @@
                 RelatedCollectionID = relID,
                 Uri = mmo.CollectionURI
             };
-
         }
 
         private static Svc.MultimediaType ToServiceObject(this MediaType t)
@@ -223,10 +218,13 @@
             {
                 case MediaType.Image:
                     return Svc.MultimediaType.Image;
+
                 case MediaType.Audio:
                     return Svc.MultimediaType.Audio;
+
                 case MediaType.Video:
                     return Svc.MultimediaType.Video;
+
                 default:
                     throw new NotImplementedException();
             }
@@ -236,15 +234,18 @@
         {
             switch (t)
             {
-
                 case DBObjectType.EventSeries:
                     return Svc.MultimediaOwner.EventSeries;
+
                 case DBObjectType.Event:
                     return Svc.MultimediaOwner.Event;
+
                 case DBObjectType.Specimen:
                     return Svc.MultimediaOwner.Specimen;
+
                 case DBObjectType.IdentificationUnit:
                     return Svc.MultimediaOwner.IdentificationUnit;
+
                 default:
                     throw new ArgumentException();
             }

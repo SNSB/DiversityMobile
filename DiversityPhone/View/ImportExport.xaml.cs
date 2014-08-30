@@ -14,7 +14,6 @@ namespace DiversityPhone.View
     {
         private ImportExportVM VM { get { return DataContext as ImportExportVM; } }
 
-
         private ApplicationBarIconButton DownloadButton, UploadButton, RestoreButton, DeleteButton, TakeButton, RefreshButton;
         private CommandButtonAdapter _Take, _Delete, _Upload, _Download, _Restore, _Refresh;
 
@@ -38,7 +37,7 @@ namespace DiversityPhone.View
             TakeButton = new ApplicationBarIconButton()
             {
                 IconUri = new Uri("/Images/appbar.add.rest.png", UriKind.Relative),
-                Text=DiversityResources.ImportExport_Button_Take
+                Text = DiversityResources.ImportExport_Button_Take
             };
             _Take = new CommandButtonAdapter(TakeButton, VM.TakeSnapshot);
 
@@ -52,7 +51,7 @@ namespace DiversityPhone.View
             RestoreButton = new ApplicationBarIconButton()
             {
                 IconUri = new Uri("/Images/MetroIcons/white/rew.png", UriKind.Relative),
-                Text=DiversityResources.ImportExport_Button_Restore
+                Text = DiversityResources.ImportExport_Button_Restore
             };
             _Restore = new CommandButtonAdapter(RestoreButton, VM.RestoreSnapshot);
 
@@ -63,18 +62,16 @@ namespace DiversityPhone.View
             };
             _Refresh = new CommandButtonAdapter(RefreshButton, VM.RefreshRemote);
 
-            var isBusy = 
+            var isBusy =
                 VM.WhenAny(x => x.IsBusy, x => x.GetValue())
                     .DistinctUntilChanged()
                     .Publish().RefCount();
 
-            var progressPercent = 
+            var progressPercent =
                 VM.WhenAny(x => x.ProgressPercentage, x => x.GetValue());
 
             isBusy
                 .Subscribe(b => this.ApplicationBar.IsVisible = !b);
-
-            
 
             var Notifications = App.Kernel.Get<INotificationService>();
 
@@ -100,10 +97,12 @@ namespace DiversityPhone.View
                     this.ApplicationBar.Buttons.Add(DeleteButton);
                     this.ApplicationBar.Buttons.Add(UploadButton);
                     break;
+
                 case ImportExportVM.Pivot.remote:
                     this.ApplicationBar.Buttons.Add(RefreshButton);
                     this.ApplicationBar.Buttons.Add(DownloadButton);
                     break;
+
                 default:
                     break;
             }

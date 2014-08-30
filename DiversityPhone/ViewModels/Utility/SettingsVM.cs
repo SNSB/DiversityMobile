@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.ViewModels {
+﻿namespace DiversityPhone.ViewModels
+{
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using ReactiveUI;
@@ -8,24 +9,28 @@
     using System.Reactive.Linq;
     using System.Threading.Tasks;
 
-    public partial class SettingsVM : PageVMBase {
-        readonly ISettingsService Settings;
-        readonly ICleanupData Cleanup;
-        readonly IConnectivityService Connectivity;
+    public partial class SettingsVM : PageVMBase
+    {
+        private readonly ISettingsService Settings;
+        private readonly ICleanupData Cleanup;
+        private readonly IConnectivityService Connectivity;
 
         public ReactiveCommand RefreshVocabulary { get; private set; }
 
-
         private bool _UseGPS;
 
-        public bool UseGPS {
-            get {
+        public bool UseGPS
+        {
+            get
+            {
                 return _UseGPS;
             }
-            set {
+            set
+            {
                 this.RaiseAndSetIfChanged(x => x.UseGPS, ref _UseGPS, value);
             }
         }
+
         public ReactiveCommand Save { get; private set; }
 
         public ReactiveAsyncCommand Reset { get; private set; }
@@ -33,21 +38,23 @@
         public ReactiveCommand ManageTaxa { get; private set; }
 
         public ReactiveCommand UploadData { get; private set; }
+
         public ReactiveCommand DownloadData { get; private set; }
 
         public ReactiveCommand ImportExport { get; private set; }
 
         public ReactiveCommand Info { get; private set; }
 
-
-
         private Settings _Model;
 
-        public Settings Model {
-            get {
+        public Settings Model
+        {
+            get
+            {
                 return _Model;
             }
-            private set {
+            private set
+            {
                 this.RaiseAndSetIfChanged(x => x.Model, ref _Model, value);
             }
         }
@@ -56,7 +63,8 @@
             ISettingsService Settings,
             ICleanupData Cleanup,
             IConnectivityService Connectivity
-            ) {
+            )
+        {
             this.Cleanup = Cleanup;
             this.Settings = Settings;
             this.Connectivity = Connectivity;
@@ -83,13 +91,10 @@
 
             RefreshVocabulary = new ReactiveCommand(Connectivity.WifiAvailable());
             RefreshVocabulary
-                .Subscribe(_ => {
+                .Subscribe(_ =>
+                {
                     Messenger.SendMessage(Page.SetupVocabulary);
                 });
-
-
-
-
 
             ManageTaxa = new ReactiveCommand();
             Messenger.RegisterMessageSource(
@@ -126,17 +131,17 @@
                 .Subscribe(x => Model = x);
         }
 
-
-
-        private void saveModel() {
+        private void saveModel()
+        {
             Model.UseGPS = UseGPS;
             Settings.SaveSettings(Model);
         }
 
-
-        private async Task<Unit> OnReset(object _) {
+        private async Task<Unit> OnReset(object _)
+        {
             var confirmReset = await Notifications.showDecision(DiversityResources.Settings_ConfirmReset);
-            if (confirmReset) {
+            if (confirmReset)
+            {
                 await Cleanup.ClearLocalData();
                 Messenger.SendMessage(Page.SetupWelcome);
             }

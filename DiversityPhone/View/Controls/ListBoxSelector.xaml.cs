@@ -17,9 +17,6 @@ namespace DiversityPhone.View
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register("ItemTemplate", typeof(DataTemplate), typeof(ListBoxSelector), new PropertyMetadata(null, (sender, args) => { }));
 
-
-
-
         public int SelectionWidth
         {
             get { return (int)GetValue(SelectionWidthProperty); }
@@ -30,8 +27,6 @@ namespace DiversityPhone.View
         public static readonly DependencyProperty SelectionWidthProperty =
             DependencyProperty.Register("SelectionWidth", typeof(int), typeof(ListBoxSelector), new PropertyMetadata(0));
 
-
-
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
@@ -41,8 +36,6 @@ namespace DiversityPhone.View
         // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(ListBoxSelector), new PropertyMetadata(null, (sender, args) => { }));
-
-
 
         public bool IsSelecting
         {
@@ -60,8 +53,6 @@ namespace DiversityPhone.View
                 }
             }));
 
-
-
         public ListBoxSelector()
         {
             InitializeComponent();
@@ -77,7 +68,7 @@ namespace DiversityPhone.View
             {
                 Mode = BindingMode.OneWay,
                 Path = new PropertyPath("DataContext.SelectableItems"),
-                Source = this                
+                Source = this
             };
             this.SetBinding(ItemsSourceProperty, itemsSourceDefaultBinding);
 
@@ -88,9 +79,7 @@ namespace DiversityPhone.View
                 Source = this
             };
             this.SetBinding(IsSelectingProperty, isSelectingDefaultBinding);
-
-        }      
-        
+        }
 
         private void EnterSelecting(object sender, System.Windows.Input.GestureEventArgs e)
         {
@@ -101,6 +90,5 @@ namespace DiversityPhone.View
         {
             VisualStateManager.GoToState(this, (value) ? Selecting.Name : Normal.Name, true);
         }
-
     }
 }

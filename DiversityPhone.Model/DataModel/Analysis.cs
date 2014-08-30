@@ -1,9 +1,11 @@
-﻿using Microsoft.Phone.Data.Linq.Mapping;
-using System;
+﻿using System;
 using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Text;
 
+#if !TEST
+using Microsoft.Phone.Data.Linq.Mapping;
+#endif
 
 namespace DiversityPhone.Model
 {
@@ -34,7 +36,6 @@ namespace DiversityPhone.Model
         [Column]
         public string MeasurementUnit { get; set; }
 
-
         [Column]
         public DateTime LastUsed { get; set; }
 
@@ -50,7 +51,6 @@ namespace DiversityPhone.Model
                 return sb.ToString();
             }
         }
-
 
         public static IQueryOperations<Analysis> Operations
         {

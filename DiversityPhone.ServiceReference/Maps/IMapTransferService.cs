@@ -8,7 +8,7 @@ namespace DiversityPhone.Services
     {
         /// <summary>
         /// Downloads a Map and saves it to isolated storage, and registeres it in the Map Database
-        /// </summary>        
+        /// </summary>
         /// <param name="MapName">serverKey: string which is used to identify the map in the mapServer</param>
         IObservable<Map> downloadMap(string serverKey);
 

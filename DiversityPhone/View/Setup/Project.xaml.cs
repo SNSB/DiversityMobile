@@ -2,13 +2,16 @@
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 
-namespace DiversityPhone.View.Setup {
-    public partial class Project : PhoneApplicationPage {
+namespace DiversityPhone.View.Setup
+{
+    public partial class Project : PhoneApplicationPage
+    {
         private SetupVM VM { get { return DataContext as SetupVM; } }
 
         private OKNextPageCommandButton _OK;
 
-        public Project() {
+        public Project()
+        {
             InitializeComponent();
 
             _OK = new OKNextPageCommandButton(VM.GetProfile);
@@ -16,7 +19,6 @@ namespace DiversityPhone.View.Setup {
             this.ApplicationBar.Buttons.Add(
                 _OK.Button
                 );
-
         }
     }
 }

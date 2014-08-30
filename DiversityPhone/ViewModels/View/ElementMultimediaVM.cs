@@ -7,24 +7,32 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace DiversityPhone.ViewModels {
-    public class ElementMultimediaVM : ReactiveCollection<MultimediaObjectVM>, IObserver<IMultimediaOwner> {
-        readonly IFieldDataService Storage;
+namespace DiversityPhone.ViewModels
+{
+    public class ElementMultimediaVM : ReactiveCollection<MultimediaObjectVM>, IObserver<IMultimediaOwner>
+    {
+        private readonly IFieldDataService Storage;
 
         private ISubject<IMultimediaOwner> ownerSubject = new ReplaySubject<IMultimediaOwner>(1);
         private ObservableAsPropertyHelper<IMultimediaOwner> _Owner;
+
         private IMultimediaOwner Owner { get { return _Owner.Value; } }
+
         private ReactiveAsyncCommand getMultimedia;
 
         public ReactiveCommand<IElementVM<MultimediaObject>> SelectMultimedia { get; private set; }
+
         public ReactiveCommand AddMultimedia { get; private set; }
+
         public IObservable<IMultimediaOwner> NewMultimediaObservable { get; private set; }
 
-        public ElementMultimediaVM(IFieldDataService storage, IMessageBus Messenger) {
+        public ElementMultimediaVM(IFieldDataService storage, IMessageBus Messenger)
+        {
             this.Storage = storage;
 
             getMultimedia = new ReactiveAsyncCommand();
-            getMultimedia.RegisterAsyncFunction(own => {
+            getMultimedia.RegisterAsyncFunction(own =>
+            {
                 var owner = own as IMultimediaOwner;
                 if (owner == null)
                     return Enumerable.Empty<MultimediaObjectVM>();
@@ -58,18 +66,20 @@ namespace DiversityPhone.ViewModels {
                 .Publish();
             NewMultimediaObservable = newmmo;
             newmmo.Connect();
-
         }
 
-        public void OnCompleted() {
+        public void OnCompleted()
+        {
             ownerSubject.OnCompleted();
         }
 
-        public void OnError(Exception exception) {
+        public void OnError(Exception exception)
+        {
             ownerSubject.OnError(exception);
         }
 
-        public void OnNext(IMultimediaOwner value) {
+        public void OnNext(IMultimediaOwner value)
+        {
             ownerSubject.OnNext(value);
         }
     }

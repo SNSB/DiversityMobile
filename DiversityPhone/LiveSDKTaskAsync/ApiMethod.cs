@@ -5,7 +5,6 @@
 //-------------------------------------------------------------------------------------------------
 namespace Microsoft.Live
 {
-
     /// <summary>
     ///     Defines the operations supported by the library for calling the Live Connect REST API.
     /// </summary>

@@ -1,6 +1,7 @@
-﻿namespace DiversityPhone.Model {
-
-    public static class MessageContracts {
+﻿namespace DiversityPhone.Model
+{
+    public static class MessageContracts
+    {
         public const string SAVE = "Save";
         public const string DELETE = "Delete";
         public const string USE = "Use";
@@ -19,12 +20,12 @@
         public const string INIT = "Init";
     }
 
-    public class EventMessage {
+    public class EventMessage
+    {
         public static EventMessage Default = new EventMessage();
 
-        private EventMessage() {
-
+        private EventMessage()
+        {
         }
-
     }
 }

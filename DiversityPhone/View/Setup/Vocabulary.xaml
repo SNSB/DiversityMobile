@@ -17,9 +17,8 @@
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <Image x:Name="SplashImage" Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"                 
-               HorizontalAlignment="Stretch" 
+        <Image x:Name="SplashImage" Source="/Images/AppIcons/DivMob_QuadratEnd_s_Splash.png"
+               HorizontalAlignment="Stretch"
                VerticalAlignment="Center" />
     </Grid>
-
 </phone:PhoneApplicationPage>

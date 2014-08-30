@@ -20,7 +20,7 @@ namespace Microsoft.Live
     public static class LiveAuthClientTaskAsync
     {
         /// <summary>
-        ///     Initializes the auth client and detects if a user is already signed in. 
+        ///     Initializes the auth client and detects if a user is already signed in.
         ///     If a user is already signed in, this method creates a valid Session.
         ///     This call is UI-less.
         /// </summary>
@@ -31,7 +31,7 @@ namespace Microsoft.Live
         }
 
         /// <summary>
-        ///     Initializes the auth client and detects if a user is already signed in. 
+        ///     Initializes the auth client and detects if a user is already signed in.
         ///     If a user is already signed in, this method creates a valid Session.
         ///     This call is UI-less.
         /// </summary>
@@ -96,7 +96,7 @@ namespace Microsoft.Live
             OperationState state = e.UserState as OperationState;
             if (state != null)
             {
-                state.AuthClient.LoginCompleted -= OnLoginCompleted;               
+                state.AuthClient.LoginCompleted -= OnLoginCompleted;
 
                 var tcs = state.Tcs;
                 if (e.Error != null)
@@ -137,6 +137,6 @@ namespace Microsoft.Live
             public LiveAuthClient AuthClient { get; private set; }
         }
 
-        #endregion
+        #endregion Private Class
     }
 }

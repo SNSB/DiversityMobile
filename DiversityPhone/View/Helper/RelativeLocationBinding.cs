@@ -9,9 +9,13 @@ namespace DiversityPhone.View
     public sealed class RelativeLocationBinding : IDisposable
     {
         private Point? _RelativeLocation = null;
-        public Point? RelativeLocation 
+
+        public Point? RelativeLocation
         {
-            get { return _RelativeLocation; }
+            get
+            {
+                return _RelativeLocation;
+            }
             set
             {
                 if (_RelativeLocation != value)
@@ -21,32 +25,34 @@ namespace DiversityPhone.View
                     _RelativeLocation = value;
                     updateLocation();
                 }
-            }                
+            }
         }
 
         private Transform _Transform;
 
         public Transform Transform
         {
-            get { return _Transform; }
-            set 
-            { 
+            get
+            {
+                return _Transform;
+            }
+            set
+            {
                 _Transform = value;
                 updateLocation();
             }
         }
 
+        private FrameworkElement item;
 
-        FrameworkElement item;
-        
-        CompositeDisposable subscription = new CompositeDisposable();
+        private CompositeDisposable subscription = new CompositeDisposable();
 
         public RelativeLocationBinding(FrameworkElement item, IObservable<Transform> transforms, IObservable<Point?> locations = null)
-        {  
-            if(item == null)
+        {
+            if (item == null)
                 throw new ArgumentNullException("item");
             if (transforms == null)
-                throw new ArgumentNullException("transforms");   
+                throw new ArgumentNullException("transforms");
 
             this.item = item;
             item.Visibility = Visibility.Collapsed;
@@ -55,10 +61,9 @@ namespace DiversityPhone.View
 
             if (locations != null)
                 this.subscription.Add(locations.Subscribe(loc => RelativeLocation = loc));
-            
         }
 
-        void item_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void item_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             updateLocation();
         }
@@ -83,6 +88,6 @@ namespace DiversityPhone.View
         {
             subscription.Dispose();
             item = null;
-        }        
+        }
     }
 }

@@ -5,32 +5,42 @@ using System;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
+using System.Threading.Tasks;
 
-namespace DiversityPhone.ViewModels {
-    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable, IReactiveNotifyPropertyChanged {
+namespace DiversityPhone.ViewModels
+{
+    public abstract class EditPageVMBase<T> : ElementPageVMBase<T>, IEditPageVM where T : IModifyable, IReactiveNotifyPropertyChanged
+    {
         public IReactiveCommand Save { get; private set; }
+
         public IReactiveCommand ToggleEditable { get; private set; }
+
         public IReactiveCommand Delete { get; private set; }
 
-
         private ObservableAsPropertyHelper<bool> _IsEditable;
+
         /// <summary>
         /// Shows, whether the current Object can be Edited
         /// </summary>
-        public bool IsEditable {
-            get {
+        public bool IsEditable
+        {
+            get
+            {
                 return _IsEditable.Value;
             }
         }
 
         protected ISubject<bool> CanSaveSubject { get; private set; }
+
         private ISubject<Unit> DeleteSubject = new Subject<Unit>();
 
-        public EditPageVMBase(Predicate<T> filter = null) {
+        public EditPageVMBase(Predicate<T> filter = null)
+        {
             CanSaveSubject = new Subject<bool>();
             Save = new ReactiveCommand(CanSaveSubject);
             Save
-                .Do(_ => UpdateModel())
+                .SelectMany(_ => UpdateModel().ToObservable())
                 .Select(_ => Current)
                 .Do(_ => Messenger.SendMessage(Page.Previous))
                 .ToMessage(Messenger, MessageContracts.SAVE);
@@ -54,13 +64,14 @@ namespace DiversityPhone.ViewModels {
                 )
                 .ToMessage(Messenger, MessageContracts.DELETE);
 
-
             Messenger.Listen<IElementVM<T>>(MessageContracts.EDIT)
                 .Where(vm => vm != null)
                 .Where(vm => filter == null || filter(vm.Model))
                 .Subscribe(x => Current = x);
         }
 
-        protected virtual void UpdateModel() { }
+        protected virtual async Task UpdateModel()
+        {
+        }
     }
 }

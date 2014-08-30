@@ -5,7 +5,6 @@
     using System.Reactive.Linq;
     using System.Threading.Tasks;
 
-
     public class CleanupService : ICleanupData
     {
         public async Task ClearLocalData()

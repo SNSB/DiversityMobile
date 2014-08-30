@@ -1,4 +1,5 @@
-﻿namespace DiversityPhone.View {
+﻿namespace DiversityPhone.View
+{
     using DiversityPhone.View.Appbar;
     using DiversityPhone.ViewModels;
     using Microsoft.Phone.Controls;
@@ -6,7 +7,8 @@
     using System.Threading;
     using System.Windows.Controls;
 
-    public partial class EditES : PhoneApplicationPage {
+    public partial class EditES : PhoneApplicationPage
+    {
         private EditESVM VM { get { return this.DataContext as EditESVM; } }
 
         private EditPageSaveEditButton _appbarupd;
@@ -14,7 +16,8 @@
 
         private EventBindingTrigger<TextBox> _DescriptionBinding, _CodeBinding;
 
-        public EditES() {
+        public EditES()
+        {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("de-De");//Zum setzen eines Default gut genug. Über UserProfile Customizable machen.
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("de-De");
             InitializeComponent();
@@ -29,10 +32,9 @@
             DPControlBackGround.setTBBackgroundColor(DescTB);
         }
 
-        private void DescTB_TextChanged(object sender, TextChangedEventArgs e) {
+        private void DescTB_TextChanged(object sender, TextChangedEventArgs e)
+        {
             DPControlBackGround.setTBBackgroundColor(DescTB);
         }
-
-
     }
 }

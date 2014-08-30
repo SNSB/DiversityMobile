@@ -1,14 +1,10 @@
-﻿using DiversityPhone.Interface;
+﻿using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
-using System;
-using System.Collections.Generic;
-using Xunit;
-using System.Reactive.Linq;
-using DiversityPhone.Model;
 using Moq;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
-using System.Threading;
+using Xunit;
 
 namespace DiversityPhone.Test
 {
@@ -29,8 +25,6 @@ namespace DiversityPhone.Test
 
         public EditIUVMFixture()
         {
-
-
             Vocabulary.Setup(x => x.getQualifications())
                 .Returns(() => new List<Qualification>() { new Qualification() } as IEnumerable<Qualification>);
             Vocabulary.Setup(x => x.getTerms(TermList.TaxonomicGroups))
@@ -77,6 +71,5 @@ namespace DiversityPhone.Test
 
             Assert.True(T.Save.CanExecute(null));
         }
-
     }
 }

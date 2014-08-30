@@ -12,5 +12,4 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     Loaded="MainPage_OnLoaded">
-    
 </phone:PhoneApplicationPage>

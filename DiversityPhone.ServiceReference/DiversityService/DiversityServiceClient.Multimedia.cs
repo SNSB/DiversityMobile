@@ -19,12 +19,15 @@ namespace DiversityPhone.Services
                 case MediaType.Image:
                     extension = "jpg";
                     break;
+
                 case MediaType.Audio:
                     extension = "wav";
                     break;
+
                 case MediaType.Video:
                     extension = "mp4";
                     break;
+
                 default:
                     throw new ArgumentException("Unknown Media Type");
             }
@@ -35,12 +38,15 @@ namespace DiversityPhone.Services
                 case DBObjectType.Event:
                     ownerCode = "EV";
                     break;
+
                 case DBObjectType.Specimen:
                     ownerCode = "SP";
                     break;
+
                 case DBObjectType.IdentificationUnit:
                     ownerCode = "IU";
                     break;
+
                 default:
                     throw new ArgumentException("Unsupported Media Owner");
             }
@@ -110,7 +116,7 @@ namespace DiversityPhone.Services
                                 readPackage();
                                 if (packageBuffer.Length > 0)
                                 {
-                                    // Send next package                                    
+                                    // Send next package
                                     _multimedia.EncodeFileAsync(packageBuffer, mmo);
                                 }
                                 else
@@ -172,8 +178,8 @@ namespace DiversityPhone.Services
             else
             {
                 // Start Chunked upload
-                _multimedia.BeginTransactionAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, mmo);                
-            }            
+                _multimedia.BeginTransactionAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, mmo);
+            }
 
             return res;
         }

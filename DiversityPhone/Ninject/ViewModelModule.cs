@@ -5,7 +5,7 @@
     using Ninject;
     using ReactiveUI;
 
-    class ViewModelModule : Ninject.Modules.NinjectModule
+    internal class ViewModelModule : Ninject.Modules.NinjectModule
     {
         private void BindAndActivateSingleton<T>()
         {
@@ -50,6 +50,5 @@
 
             BindAndActivateSingleton<ImportExportVM>();
         }
-
     }
 }

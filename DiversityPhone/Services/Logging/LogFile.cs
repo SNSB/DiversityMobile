@@ -1,33 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
-using System.Text;
 
 namespace DiversityPhone.Services
 {
     public static class LogFile
     {
-        const string LOGFOLDER = "Log";        
-        const string LOGFILE_TEMPLATE = "DiversityPhone-{0}.log";
-        const int MAX_FILE_COUNT = 31;
+        private const string LOGFOLDER = "Log";
+        private const string LOGFILE_TEMPLATE = "DiversityPhone-{0}.log";
+        private const int MAX_FILE_COUNT = 31;
 
         public static ICurrentProfile Profile;
 
         public static void LogLine(string line)
         {
-            using(var store = IsolatedStorageFile.GetUserStoreForApplication())
-            using(var fileStream = OpenLogFile(store))
+            using (var store = IsolatedStorageFile.GetUserStoreForApplication())
+            using (var fileStream = OpenLogFile(store))
             {
-                if(fileStream != Stream.Null)
+                if (fileStream != Stream.Null)
                 {
                     using (var writer = new StreamWriter(fileStream))
                     {
                         writer.WriteLine(line);
                         writer.Close();
-                    }                    
+                    }
                 }
             }
         }
@@ -87,7 +85,7 @@ namespace DiversityPhone.Services
                 {
                     var filePath = Path.Combine(logFolder, file);
                     store.DeleteFile(filePath);
-                }                                 
+                }
             }
         }
     }

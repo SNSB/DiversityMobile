@@ -1,21 +1,15 @@
-﻿using DiversityPhone.Services;
-using Microsoft.Phone.Data.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Text;
-using Ninject;
-using DiversityPhone.Model;
-using System.IO;
-using System.Threading.Tasks;
-using Microsoft;
-
-namespace DiversityPhone.Helper
+﻿namespace DiversityPhone.Helper
 {
+    using DiversityPhone.Model;
+    using DiversityPhone.Services;
+    using Microsoft.Phone.Data.Linq;
+    using System;
+    using System.Linq;
+    using System.Threading.Tasks;
+
     public static partial class VersionMigration
-    {  
-        public static readonly Version CURRENT_VERSION = new Version(0,9,9,1);
+    {
+        public static readonly Version CURRENT_VERSION = new Version(0, 9, 9, 1);
         public const int CURRENT_SCHEMA_VERSION = 1; // As of Version 0.9.9.1
 
         public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
@@ -59,7 +53,7 @@ namespace DiversityPhone.Helper
                 {
                     schema.DatabaseSchemaVersion = 1;
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -68,7 +62,8 @@ namespace DiversityPhone.Helper
         /// Version 0.9.8
         /// </summary>
         /// <param name="schema"></param>
-        private static void AddMultimediaTimeStamp(DatabaseSchemaUpdater schema) {
+        private static void AddMultimediaTimeStamp(DatabaseSchemaUpdater schema)
+        {
             try
             {
                 var q = from mmo in schema.Context.GetTable<MultimediaObject>()

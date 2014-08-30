@@ -1,27 +1,24 @@
-﻿using DiversityPhone.ViewModels;
+﻿using DiversityPhone.Model;
+using DiversityPhone.ViewModels;
+using Microsoft.Reactive.Testing;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Moq;
-using DiversityPhone.Model;
-using Microsoft.Reactive.Testing;
-using FluentAssertions;
 using System.Reactive.Linq;
+using Xunit;
 
 namespace DiversityPhone.Test.Tests
 {
-    [Trait("Component","EventHierarchyLoader")]
+    [Trait("Component", "EventHierarchyLoader")]
     public class EventHierarchyLoaderFixture : DiversityTestBase<EventHierarchyLoader>
     {
-        const int EVENT_KEY = 1000;
-        const int SERIES_ID = 1000;
-        readonly int? NOSERIES_ID = null;
-        const int LOCAL_SERIES_ID = 1001;
+        private const int EVENT_KEY = 1000;
+        private const int SERIES_ID = 1000;
+        private readonly int? NOSERIES_ID = null;
+        private const int LOCAL_SERIES_ID = 1001;
 
-        readonly TestResources Resources;
+        private readonly TestResources Resources;
 
         public EventHierarchyLoaderFixture()
         {
@@ -56,7 +53,7 @@ namespace DiversityPhone.Test.Tests
             T.getOrDownloadSeries(SERIES_ID);
 
             // Assert
-            Storage.Verify(s => s.get<EventSeries>(SERIES_ID), Times.Never(), "Loading Series when it doesn't exist.");            
+            Storage.Verify(s => s.get<EventSeries>(SERIES_ID), Times.Never(), "Loading Series when it doesn't exist.");
         }
 
         [Fact]
@@ -64,7 +61,6 @@ namespace DiversityPhone.Test.Tests
         {
             // Setup
             Mappings.Setup(m => m.ResolveToLocalKey(DBObjectType.EventSeries, SERIES_ID)).Returns(LOCAL_SERIES_ID);
-            
 
             // Execute
             GetT();
@@ -111,7 +107,7 @@ namespace DiversityPhone.Test.Tests
                     );
             Service.Setup(s => s.GetSpecimenForEvent(Resources.Event.CollectionEventID.Value)).Returns(specimenObs);
 
-            //Execute            
+            //Execute
             var subscription = T.downloadAndStoreDependencies(Resources.Event).Subscribe();
 
             subscription.Dispose();
@@ -146,7 +142,7 @@ namespace DiversityPhone.Test.Tests
             T.downloadAndStoreDependencies(Resources.Event).Subscribe();
 
             Scheduler.Start();
-            
+
             Storage.Verify(x => x.add<Event>(It.Is<Event>(ev => !object.ReferenceEquals(ev, Resources.Event) && ev.CollectionEventID == Resources.Event.CollectionEventID)), Times.Once());
         }
 
@@ -158,7 +154,7 @@ namespace DiversityPhone.Test.Tests
             T.downloadAndStoreDependencies(Resources.Event).Subscribe();
 
             Scheduler.Start();
-            
+
             Storage.Verify(x => x.add<Event>(It.Is<Event>(ev => ev.SeriesID == Resources.EventSeries.SeriesID)));
             Storage.Verify(x => x.add<Specimen>(It.Is<Specimen>(s => s.EventID == Resources.Event.EventID)));
             Storage.Verify(x => x.add<IdentificationUnit>(It.Is<IdentificationUnit>(iu => iu.SpecimenID == Resources.Specimen.SpecimenID)));
@@ -178,6 +174,5 @@ namespace DiversityPhone.Test.Tests
 
             Storage.Verify(x => x.add<IdentificationUnit>(It.Is<IdentificationUnit>(iu => iu.SpecimenID == Resources.Specimen.SpecimenID)));
         }
-
     }
 }

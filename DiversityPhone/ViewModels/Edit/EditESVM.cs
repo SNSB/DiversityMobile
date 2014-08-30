@@ -5,14 +5,16 @@
     using ReactiveUI.Xaml;
     using System;
     using System.Reactive.Linq;
-
+    using System.Threading.Tasks;
 
     public class EditESVM : EditPageVMBase<EventSeries>
     {
         public ReactiveCommand FinishSeries { get; private set; }
 
         #region Properties
+
         private string _Description;
+
         public string Description
         {
             get { return _Description; }
@@ -20,6 +22,7 @@
         }
 
         private string _SeriesCode;
+
         public string SeriesCode
         {
             get { return _SeriesCode; }
@@ -27,15 +30,17 @@
         }
 
         public ObservableAsPropertyHelper<string> _SeriesStart;
+
         public string SeriesStart
         {
             get
             {
-                return _SeriesStart.Value;                
+                return _SeriesStart.Value;
             }
         }
 
         private DateTime? _SeriesEnd;
+
         public DateTime? SeriesEnd
         {
             get
@@ -43,16 +48,15 @@
                 return _SeriesEnd;
             }
             set
-            {                
-                this.RaiseAndSetIfChanged(x => x.SeriesEnd,ref _SeriesEnd, value);
+            {
+                this.RaiseAndSetIfChanged(x => x.SeriesEnd, ref _SeriesEnd, value);
             }
         }
-        #endregion
 
+        #endregion Properties
 
         public EditESVM()
         {
-
             ModelByVisitObservable
                 .Select(es => es.Description ?? string.Empty)
                 .Subscribe(x => Description = x);
@@ -71,21 +75,19 @@
                 .Select(start => string.Format("{0} {1}", start.ToShortDateString(), start.ToShortTimeString())),
                 x => x.SeriesStart);
 
-            (FinishSeries = new ReactiveCommand(CurrentModelObservable.Select(es => es.SeriesEnd == null)))            
+            (FinishSeries = new ReactiveCommand(CurrentModelObservable.Select(es => es.SeriesEnd == null)))
                 .Select(_ => DateTime.Now as DateTime?)
                 .Subscribe(x => SeriesEnd = x);
 
             Save
                 .Where(_ => _SeriesEnd != null)
                 .Subscribe(_ => Messenger.SendMessage<EventSeries>(null, MessageContracts.STOP));
+        }
 
-                 
-        }        
-
-        //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden        
+        //Auf diese Weise muss bei dem Hinzufügen eines Feldes in der Datenbank hier der Code angepasst werden
         private IObservable<bool> CanSave()
-        {            
-            var descriptionNonEmpty = 
+        {
+            var descriptionNonEmpty =
                 this.WhenAny(x => x.Description, x => x.Value)
                 .Select(desc => !string.IsNullOrWhiteSpace(desc))
                 .StartWith(false);
@@ -95,17 +97,15 @@
                 .CombineLatest(CurrentModelObservable, (end, model) => new { SeriesEnd = end, Model = model })
                 .Select(pair => (pair.SeriesEnd == null) ? true : pair.SeriesEnd.Value > pair.Model.SeriesStart)
                 .StartWith(true);
-            
+
             return descriptionNonEmpty.BooleanAnd(endsAfterItBegins);
         }
 
-        protected override void UpdateModel()
+        protected override async Task UpdateModel()
         {
             Current.Model.Description = Description;
             Current.Model.SeriesCode = SeriesCode;
             Current.Model.SeriesEnd = SeriesEnd ?? Current.Model.SeriesEnd;
         }
-
-             
     }
 }

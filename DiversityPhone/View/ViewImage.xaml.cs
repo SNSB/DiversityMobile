@@ -5,7 +5,7 @@ using Microsoft.Phone.Controls;
 namespace DiversityPhone.View
 {
     public partial class ImagePage : PhoneApplicationPage
-    {        
+    {
         private ViewImageVM VM
         {
             get
@@ -14,17 +14,11 @@ namespace DiversityPhone.View
             }
         }
 
-        
-
         public ImagePage()
         {
             this.InitializeComponent();
 
             new EditPageDeleteButton(this.ApplicationBar, VM);
-                
-                
         }
-
-
     }
 }
