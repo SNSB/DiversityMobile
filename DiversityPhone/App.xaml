@@ -1,25 +1,42 @@
-﻿<Application x:Class="DiversityPhone.App" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:sys="clr-namespace:System;assembly=mscorlib" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone" xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:res="clr-namespace:DiversityPhone;assembly=DiversityPhone.Resource" xmlns:vw="clr-namespace:DiversityPhone.View" xmlns:vm="clr-namespace:DiversityPhone.ViewModels">
+﻿<Application 
+    x:Class="DiversityPhone.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"   
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:res="clr-namespace:DiversityPhone;assembly=DiversityPhone.Resource"
+    xmlns:vw="clr-namespace:DiversityPhone.View"
+    xmlns:vm="clr-namespace:DiversityPhone.ViewModels"
+    >
+
     <!--Application Resources-->
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="View/Resources/Styles.xaml" />
-                <ResourceDictionary Source="View/Resources/Templates.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <shell:ProgressIndicator x:Key="Progress" />
-            <vm:ViewModelLocator x:Key="Locator" />
-            <res:LocalizedStrings x:Key="LocalizedStrings" />
-            <vw:BooleanToVisibilityConverter x:Key="BoolToVis" />
-            <vw:InvertBooleanConverter x:Key="InvertBoolean" />
-            <vw:IconToImageConverter x:Key="IconPathConverter" />
-            <vw:IconPathToImageConverter x:Key="IconUrlConverter" />
-            <vw:SynonymyToFontStyleConverter x:Key="SynonymyToFontStyle" />
-            <vw:PointToVisibilityConverter x:Key="PointToVis" />
-            <vw:ThumbNailConverter x:Key="ThumbNail" />
-        </ResourceDictionary>
+    	<ResourceDictionary>
+    		<ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="View/Resources/Styles.xaml"/>
+                <ResourceDictionary Source="View/Resources/Templates.xaml"/>                
+    		</ResourceDictionary.MergedDictionaries>
+            <shell:ProgressIndicator x:Key="Progress"/>
+    		<vm:ViewModelLocator x:Key="Locator" />
+            <res:LocalizedStrings x:Key="LocalizedStrings"/>
+    		<vw:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+            <vw:InvertBooleanConverter x:Key="InvertBoolean"/>
+            <vw:IconToImageConverter x:Key="IconPathConverter"/>
+            <vw:IconPathToImageConverter x:Key="IconUrlConverter"/>
+			<vw:SynonymyToFontStyleConverter x:Key="SynonymyToFontStyle"/>
+            <vw:PointToVisibilityConverter x:Key="PointToVis"/>
+            <vw:ThumbNailConverter x:Key="ThumbNail"/>
+            
+            
+        </ResourceDictionary>        
     </Application.Resources>
+
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->
-        <shell:PhoneApplicationService Launching="Application_Launching" Closing="Application_Closing" Activated="Application_Activated" Deactivated="Application_Deactivated" />
+        <shell:PhoneApplicationService 
+            Launching="Application_Launching" Closing="Application_Closing" 
+            Activated="Application_Activated" Deactivated="Application_Deactivated"/>
     </Application.ApplicationLifetimeObjects>
+
 </Application>
