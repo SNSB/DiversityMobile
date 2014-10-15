@@ -1,13 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5FEEE018-79D9-4A44-A235-FDC0D75ECD6B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.UnitTest", "DiversityPhone.UnitTest\DiversityPhone.UnitTest.csproj", "{D276EB03-BEC0-4919-837E-7A41C6ECFAC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiversityPhone.ServiceReference", "DiversityPhone.ServiceReference\DiversityPhone.ServiceReference.csproj", "{5F67B82B-6BE3-4B02-9056-B56F84BDED51}"
