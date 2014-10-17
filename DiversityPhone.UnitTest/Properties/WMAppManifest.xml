@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
   <App xmlns="" ProductID="{7226c580-e1c1-481b-8221-3449ff49877d}" Title="WindowsPhoneEssentials.Tests" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="wp7essentials.tests author" Description="Sample description" Publisher="wp7essentials.tests">
-    <IconPath IsRelative="true" IsResource="false">ApplicationIcon.jpg</IconPath>
+    <IconPath IsRelative="true" IsResource="false">DivMob_QuadratEnd_s_MarketTile.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
@@ -21,7 +21,8 @@
     <Tokens>
       <PrimaryToken TokenID="wp7essentials.testsToken" TaskName="_default">
         <TemplateType5>
-          <BackgroundImageURI IsRelative="true" IsResource="false">Background.jpg</BackgroundImageURI>
+          <BackgroundImageURI IsRelative="true" IsResource="false">
+          </BackgroundImageURI>
           <Count>0</Count>
           <Title>WindowsPhoneEssentials.Tests</Title>
         </TemplateType5>
