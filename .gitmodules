@@ -1,0 +1,3 @@
+[submodule "External/SharpZipLib.Silverlight"]
+	path = External/SharpZipLib.Silverlight
+	url = git@github.com:rollingthunder/slsharpziplib.git
