@@ -83,6 +83,7 @@
 
             return _LatestLocation
                 .DistinctUntilChanged(comparer)
+                .Where(x => x != null)
                 .ToCoordinates()
                 .AsObservable();
         }
@@ -113,7 +114,11 @@
 
             public bool Equals(GeoCoordinate x, GeoCoordinate y)
             {
-                return x.GetDistanceTo(y) < distance_threshold;
+                if(x == null) 
+                {
+                    return y == null;
+                }
+                return (x.GetDistanceTo(y) < distance_threshold);
             }
 
             public int GetHashCode(GeoCoordinate obj)
@@ -127,12 +132,13 @@
     {
         public static IObservable<Coordinate> ToCoordinates(this IObservable<GeoCoordinate> This)
         {
-            return This.Select(g => new Coordinate()
-            {
-                Altitude = g.Altitude,
-                Latitude = g.Latitude,
-                Longitude = g.Longitude
-            });
+            return This.Select(g =>
+                new Coordinate()
+                    {
+                        Altitude = g.Altitude,
+                        Latitude = g.Latitude,
+                        Longitude = g.Longitude
+                    });
         }
     }
 }
