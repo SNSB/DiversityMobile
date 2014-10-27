@@ -379,10 +379,10 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>Upload Failed.</value>
   </data>
   <data name="ImportExport_Info_QueryingRemote" xml:space="preserve">
-    <value>Querying SkyDrive ...</value>
+    <value>Querying OneDrive ...</value>
   </data>
   <data name="ImportExport_Info_SkyDriveUnavailable" xml:space="preserve">
-    <value>No Connection to SkyDrive</value>
+    <value>No Connection to OneDrive</value>
   </data>
   <data name="ImportExport_PageHeader" xml:space="preserve">
     <value>im/export</value>

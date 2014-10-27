@@ -823,7 +823,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Querying SkyDrive ....
+        ///   Looks up a localized string similar to Querying OneDrive ....
         /// </summary>
         public static string ImportExport_Info_QueryingRemote {
             get {
@@ -832,7 +832,7 @@ namespace DiversityPhone {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No Connection to SkyDrive.
+        ///   Looks up a localized string similar to No Connection to OneDrive.
         /// </summary>
         public static string ImportExport_Info_SkyDriveUnavailable {
             get {
