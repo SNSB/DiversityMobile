@@ -48,15 +48,15 @@
             relativeSubFiles = relativeFiles;
         }
 
-        public static Task CopyDirectoryAsync(this IsolatedStorageFile Iso, string SourceDirectory, string TargetDirectory, IProgress<int> Progress, bool OverWrite = false)
+        public static Task CopyDirectoryAsync(this IsolatedStorageFile Iso, string SourceDirectory, string TargetDirectory, IProgress<double> FractionProgress, bool OverWrite = false)
         {
             Contract.Requires(Iso != null);
-            Contract.Requires(Progress != null);
+            Contract.Requires(FractionProgress != null);
             Contract.Requires(Iso.DirectoryExists(SourceDirectory), "Source Directory does not exist");
 
             return Task.Factory.StartNew(() =>
             {
-                Progress.Report(0);
+                FractionProgress.Report(0.0);
 
                 IList<string> relativeFilePaths;
                 IList<string> relativeDirPaths;
@@ -67,7 +67,7 @@
                     1 + //TargetDir
                     relativeFilePaths.Count; // Files
 
-                var reporter = new PercentageReporter<int>(Progress, p => p, totalElementCount);
+                var reporter = new PercentageReporter<double>(FractionProgress, p => p / 100.0, totalElementCount);
 
                 var absoluteDirs = from relativeDir in relativeDirPaths
                                    select Path.Combine(TargetDirectory, relativeDir);

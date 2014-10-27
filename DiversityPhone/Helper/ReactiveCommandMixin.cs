@@ -14,7 +14,7 @@
             Contract.Requires(Notifications != null);
 
             This.AsyncStartedNotification
-                .Select(_ => new ProgressState() { ProgressMessage = Notification, ProgressPercentage = null })
+                .Select(_ => new ProgressState() { ProgressMessage = Notification, ProgressFraction = null })
                 .Select(n => ObservableMixin.ReturnAndNever(n)
                     .TakeUntil(This.AsyncCompletedNotification))
                 .Subscribe(Notifications.showProgress);

@@ -35,8 +35,8 @@ namespace DiversityPhone.Services
         /// Creates a new Snapshot Directory from the current Application Data set
         /// </summary>
         /// <param name="Progress">Progress reports include the currently executing stage of the operation
-        /// as well as a Percentage of completion if supported</param>
-        Task TakeSnapshot(IProgress<Tuple<BackupStage, int>> Progress);
+        /// as well as a fraction of completion if supported</param>
+        Task TakeSnapshot(IProgress<Tuple<BackupStage, double>> FractionProgress);
 
         /// <summary>
         /// Lists all the Directories in the Snapshot Directory in Isolated Storage.
@@ -49,8 +49,8 @@ namespace DiversityPhone.Services
         /// Restores the Application Data contained in the given Snapshot Folder.
         /// </summary>
         /// <param name="SnapshotFolderPath">Absolute Path to the Snapshot Directory in Isolated Storage</param>
-        /// <param name="Progress">Progress in Percentage of completion</param>
-        Task RestoreSnapshot(string SnapshotFolder, IProgress<int> Progress);
+        /// <param name="Progress">Progress as a fraction (0.0 - 1.0)</param>
+        Task RestoreSnapshot(string SnapshotFolder, IProgress<double> FractionProgress);
 
         /// <summary>
         /// Deletes the given Snapshot Directory
@@ -84,18 +84,18 @@ namespace DiversityPhone.Services
             }
         }
 
-        public async Task TakeSnapshot(IProgress<Tuple<BackupStage, int>> Progress)
+        public async Task TakeSnapshot(IProgress<Tuple<BackupStage, double>> Progress)
         {
             Contract.Requires(Progress != null);
 
-            Progress.Report(Tuple.Create(BackupStage.AppData, 0));
+            Progress.Report(Tuple.Create(BackupStage.AppData, 0.0));
 
             var currentSettings = Settings.CurrentSettings;
 
             var currentProfile = Profile.CurrentProfilePath();
             var snapshotDir = GetSnapshotPath(currentSettings);
 
-            var appDataProgress = new Progress<int>(p => Progress.Report(Tuple.Create(BackupStage.AppData, p)));
+            var appDataProgress = new Progress<double>(p => Progress.Report(Tuple.Create(BackupStage.AppData, p)));
 
             try
             {
@@ -150,9 +150,9 @@ namespace DiversityPhone.Services
             return null;
         }
 
-        private async Task SaveMultimedia(IsolatedStorageFile isoStore, string snapshotDir, IProgress<Tuple<BackupStage, int>> Progress)
+        private async Task SaveMultimedia(IsolatedStorageFile isoStore, string snapshotDir, IProgress<Tuple<BackupStage, double>> Progress)
         {
-            Progress.Report(Tuple.Create(BackupStage.ExternalData, 0));
+            Progress.Report(Tuple.Create(BackupStage.ExternalData, 0.0));
 
             var snapshotMultimediaDir = Path.Combine(snapshotDir, MultimediaStorageService.MEDIA_FOLDER);
             var snapshotDBPath = Path.Combine(snapshotDir, DiversityDataContext.DB_FILENAME);
@@ -163,9 +163,9 @@ namespace DiversityPhone.Services
 
                 if (totalCount > 0)
                 {
-                    var reporter = new PercentageReporter<Tuple<BackupStage, int>>(
+                    var reporter = new PercentageReporter<Tuple<BackupStage, double>>(
                         Progress,
-                        p => Tuple.Create(BackupStage.ExternalData, p),
+                        p => Tuple.Create(BackupStage.ExternalData, p / 100.0),
                         totalCount);
 
                     foreach (var mm in db.MultimediaObjects)
@@ -245,11 +245,11 @@ namespace DiversityPhone.Services
             return null;
         }
 
-        public async Task RestoreSnapshot(string SnapshotPath, IProgress<int> Progress)
+        public async Task RestoreSnapshot(string SnapshotPath, IProgress<double> FractionProgress)
         {
             Contract.Requires(!string.IsNullOrWhiteSpace(SnapshotPath), "Snapshot Folder Path may not be empty");
 
-            Progress.Report(0);
+            FractionProgress.Report(0.0);
             try
             {
                 using (var isoStore = IsolatedStorageFile.GetUserStoreForApplication())
@@ -259,7 +259,7 @@ namespace DiversityPhone.Services
                     var restoredProfileID = Profile.CreateProfileID();
                     var restoredProfilePath = Profile.ProfilePathForID(restoredProfileID);
 
-                    await isoStore.CopyDirectoryAsync(SnapshotPath, restoredProfilePath, Progress);
+                    await isoStore.CopyDirectoryAsync(SnapshotPath, restoredProfilePath, FractionProgress);
 
                     RemoveRestoredCompletedMarker(isoStore, restoredProfilePath);
 

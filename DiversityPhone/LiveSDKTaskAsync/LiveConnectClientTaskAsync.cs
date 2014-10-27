@@ -168,6 +168,7 @@ namespace Microsoft.Live
         public static Task<LiveOperationResult> Upload(this LiveConnectClient client, string path, string fileName, Stream inputStream, OverwriteOption overwriteOption, IProgress<LiveOperationProgress> progress)
         {
             client.UploadCompleted += OnOperationCompleted;
+            client.UploadProgressChanged += OnUploadProgressChanged;
             var tcs = new TaskCompletionSource<LiveOperationResult>();
 
             client.UploadAsync(

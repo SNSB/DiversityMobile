@@ -68,7 +68,7 @@ namespace DiversityPhone.View
                     .Publish().RefCount();
 
             var progressPercent =
-                VM.WhenAny(x => x.ProgressPercentage, x => x.GetValue());
+                VM.WhenAny(x => x.ProgressFraction, x => x.GetValue());
 
             isBusy
                 .Subscribe(b => this.ApplicationBar.IsVisible = !b);

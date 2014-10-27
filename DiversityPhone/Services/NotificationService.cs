@@ -16,7 +16,7 @@
     /// </summary>
     public class NotificationService : INotificationService
     {
-        private static readonly ProgressState IDLE_STATE = new ProgressState(0, string.Empty);
+        private static readonly ProgressState IDLE_STATE = new ProgressState(0.0, string.Empty);
 
         private ProgressIndicator _Progress = new ProgressIndicator() { IsVisible = true };
 
@@ -49,8 +49,8 @@
             NotificationScheduler.Schedule(() =>
             {
                 _Progress.Text = state.ProgressMessage;
-                _Progress.Value = state.ProgressPercentage ?? 0;
-                _Progress.IsIndeterminate = !state.ProgressPercentage.HasValue;
+                _Progress.Value = state.ProgressFraction ?? 0.0;
+                _Progress.IsIndeterminate = !state.ProgressFraction.HasValue;
                 _Progress.IsVisible = true;
             });
         }

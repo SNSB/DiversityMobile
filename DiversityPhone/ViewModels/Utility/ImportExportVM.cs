@@ -57,12 +57,12 @@
             set { this.RaiseAndSetIfChanged(x => x.CurrentStatus, ref _CurrentStatus, value); }
         }
 
-        private int? _ProgressPercentage;
+        private double? _ProgressFraction;
 
-        public int? ProgressPercentage
+        public double? ProgressFraction
         {
-            get { return _ProgressPercentage; }
-            set { this.RaiseAndSetIfChanged(x => x.ProgressPercentage, ref _ProgressPercentage, value); }
+            get { return _ProgressFraction; }
+            set { this.RaiseAndSetIfChanged(x => x.ProgressFraction, ref _ProgressFraction, value); }
         }
 
         private Pivot _CurrentPivot;
@@ -80,8 +80,8 @@
         private ReactiveCommand _TakeSnapshot, _DeleteSnapshot, _RestoreSnapshot, _UploadSnapshot, _DownloadSnapshot, _RefreshRemote;
         private ReactiveAsyncCommand _RefreshRemoteSnapshots, _RefreshSnapshots;
         private bool _IsBusy = false;
-        private IProgress<int> _PercentageProgress;
-        private IProgress<Tuple<BackupStage, int>> _BackupProgress;
+        private IProgress<double> _FractionProgress;
+        private IProgress<Tuple<BackupStage, double>> _BackupProgress;
 
         private void RaiseIsBusyChanged()
         {
@@ -193,11 +193,11 @@
             _RefreshSnapshots = new ReactiveAsyncCommand();
             _RefreshRemoteSnapshots = new ReactiveAsyncCommand();
 
-            _PercentageProgress = new Progress<int>(p => ProgressPercentage = p);
-            _BackupProgress = new Progress<Tuple<BackupStage, int>>(t =>
+            _FractionProgress = new Progress<double>(p => ProgressFraction = p);
+            _BackupProgress = new Progress<Tuple<BackupStage, double>>(t =>
             {
                 CurrentStatus = BackupStageToStatus(t.Item1);
-                _PercentageProgress.Report(t.Item2);
+                _FractionProgress.Report(t.Item2);
             });
 
             var snapshotSelected = Snapshots
@@ -317,26 +317,26 @@
         private IObservable<Unit> StartDownload(ICloudStorageService Cloud, string snap)
         {
             CurrentStatus = Status.Download;
-            return Cloud.DownloadFolderAsync(snap, BackupService.SNAPSHOTS_DIRECTORY, _PercentageProgress).ToObservable();
+            return Cloud.DownloadFolderAsync(snap, BackupService.SNAPSHOTS_DIRECTORY, _FractionProgress).ToObservable();
         }
 
         private IObservable<Unit> StartUpload(ICloudStorageService Cloud, Snapshot snap)
         {
             CurrentStatus = Status.Upload;
-            return Cloud.UploadFolderAsync(snap.FolderPath, _PercentageProgress).ToObservable();
+            return Cloud.UploadFolderAsync(snap.FolderPath, _FractionProgress).ToObservable();
         }
 
         private IObservable<Unit> StartRestore(IBackupService Backup, Snapshot snap)
         {
             CurrentStatus = Status.Restore;
-            ProgressPercentage = null;
-            return Backup.RestoreSnapshot(snap.FolderPath, _PercentageProgress).ToObservable();
+            ProgressFraction = null;
+            return Backup.RestoreSnapshot(snap.FolderPath, _FractionProgress).ToObservable();
         }
 
         private IObservable<Unit> StartDelete(IBackupService Backup, Snapshot snap)
         {
             CurrentStatus = Status.Delete;
-            ProgressPercentage = null;
+            ProgressFraction = null;
             return Backup.DeleteSnapshot(snap.FolderPath).ToObservable();
         }
     }

@@ -38,9 +38,9 @@
 
         Task<IEnumerable<string>> GetRemoteFolders();
 
-        Task UploadFolderAsync(string LocalFolderPath, IProgress<int> PercentageProgress);
+        Task UploadFolderAsync(string LocalFolderPath, IProgress<double> FractionProgress);
 
-        Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<int> PercentageProgress);
+        Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<double> FractionProgress);
     }
 
     public class CloudStorageService : ICloudStorageService
@@ -178,13 +178,13 @@
             return diversityFolder;
         }
 
-        private static IsolatedFastZip GetZipper(IProgress<int> Progress)
+        private static IsolatedFastZip GetZipper(IProgress<double> FractionProgress)
         {
             var events = new FastZipEvents();
             events.ProgressInterval = TimeSpan.FromSeconds(1);
             events.Progress = (s, args) =>
             {
-                Progress.Report((int)args.PercentComplete);
+                FractionProgress.Report(args.PercentComplete / 100.0);
             };
             IsolatedFastZip zipper = new IsolatedFastZip(events)
             {
@@ -195,20 +195,20 @@
             return zipper;
         }
 
-        private Task CompressDirectoryAsync(string LocalFolderPath, string zipFile, IProgress<int> PercentageProgress)
+        private Task CompressDirectoryAsync(string LocalFolderPath, string zipFile, IProgress<double> FractionProgress)
         {
             return Task.Factory.StartNew(() =>
             {
-                var zipper = GetZipper(PercentageProgress);
+                var zipper = GetZipper(FractionProgress);
                 zipper.CreateZip(zipFile, LocalFolderPath, true, string.Empty, string.Empty);
             });
         }
 
-        private Task DeCompressDirectoryAsync(Stream zipFile, string LocalFolderPath, IProgress<int> PercentageProgress)
+        private Task DeCompressDirectoryAsync(Stream zipFile, string LocalFolderPath, IProgress<double> FractionProgress)
         {
             return Task.Factory.StartNew(() =>
             {
-                var zipper = GetZipper(PercentageProgress);
+                var zipper = GetZipper(FractionProgress);
                 zipper.ExtractZip(zipFile, LocalFolderPath, IsolatedFastZip.Overwrite.Always, null, string.Empty, string.Empty, true, true);
             });
         }
@@ -238,8 +238,10 @@
             return Enumerable.Empty<string>();
         }
 
-        public async Task UploadFolderAsync(string LocalFolderPath, IProgress<int> PercentageProgress)
+        public async Task UploadFolderAsync(string LocalFolderPath, IProgress<double> FractionProgress)
         {
+            const double PACK_FRACTION = 0.2, UPLOAD_FRACTION = 1.0 - PACK_FRACTION;
+
             using (var Iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 Contract.Requires(Iso.DirectoryExists(LocalFolderPath));
@@ -250,9 +252,8 @@
                     throw new InvalidOperationException("CloudService not connected");
                 }
 
-                var firstHalfProgress = new Progress<int>(p => PercentageProgress.Report(p / 2));
-
-                var zipT = CompressDirectoryAsync(LocalFolderPath, ZIP_TEMP_FILE, firstHalfProgress);
+                var packProgress = new Progress<double>(p => FractionProgress.Report(p * PACK_FRACTION));
+                var zipT = CompressDirectoryAsync(LocalFolderPath, ZIP_TEMP_FILE, packProgress);
                 var folderT = GetOrCreateDiversityMobileFolder(client);
                 var zipFileName = string.Format("{0}.zip", Path.GetFileName(LocalFolderPath));
 
@@ -261,14 +262,16 @@
 
                 using (var zipFile = Iso.OpenFile(ZIP_TEMP_FILE, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    var secondHalfProgress = new Progress<LiveOperationProgress>(p => PercentageProgress.Report(50 + (int)(p.ProgressPercentage / 2.0)));
-                    await client.Upload(diversityFolder.id, zipFileName, zipFile, OverwriteOption.Rename, secondHalfProgress);
+                    var uploadProgress = new Progress<LiveOperationProgress>(p => FractionProgress.Report(PACK_FRACTION + (p.ProgressPercentage / 100.0) * UPLOAD_FRACTION));
+                    await client.Upload(diversityFolder.id, zipFileName, zipFile, OverwriteOption.Rename, uploadProgress);
                 }
             }
         }
 
-        public async Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<int> PercentageProgress)
+        public async Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<double> FractionProgress)
         {
+            const double DOWNLOAD_FRACTION = 0.8, UNPACK_FRACTION = 1.0 - DOWNLOAD_FRACTION;
+
             using (var Iso = IsolatedStorageFile.GetUserStoreForApplication())
             {
                 Contract.Requires(Iso.DirectoryExists(LocalTargetFolder));
@@ -296,14 +299,14 @@
                 await Iso.DeleteDirectoryRecursiveAsync(TEMP_FOLDER);
                 Iso.CreateDirectory(TEMP_FOLDER);
 
-                // Download Zip File
-                var firstHalfProgress = new Progress<LiveOperationProgress>(p => PercentageProgress.Report((int)(p.ProgressPercentage / 2.0)));
+                // Download Zip File                
                 var fileDataUrl = string.Format("{0}/content", requestedFile.id);
-                var downloadedStream = await client.Download(fileDataUrl, firstHalfProgress);
+                var downloadProgress = new Progress<LiveOperationProgress>(p => FractionProgress.Report((p.ProgressPercentage / 100.0) * DOWNLOAD_FRACTION));
+                var downloadedStream = await client.Download(fileDataUrl, downloadProgress);
 
-                // Decompress into Temp Folder
-                var secondHalfProgress = new Progress<int>(p => PercentageProgress.Report(50 + (p / 2)));
-                await DeCompressDirectoryAsync(downloadedStream, TEMP_FOLDER, secondHalfProgress);
+                // Decompress into Temp Folder                
+                var unpackProgress = new Progress<double>(p => FractionProgress.Report(DOWNLOAD_FRACTION + p * UNPACK_FRACTION));
+                await DeCompressDirectoryAsync(downloadedStream, TEMP_FOLDER, unpackProgress);
 
                 // Finally... Move
                 Iso.MoveDirectory(TEMP_FOLDER, finalFolderName);

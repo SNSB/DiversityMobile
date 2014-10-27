@@ -47,19 +47,41 @@ namespace DiversityPhone.Interface
                 .Concat(Observable.Never(text))
                 .Timeout(duration, Observable.Empty(text), This.NotificationScheduler);
 
-            This.showProgress(progressObs.Select(t => new ProgressState(0, t)));
+            This.showProgress(progressObs.Select(t => new ProgressState(0.0, t)));
         }
     }
 
     public struct ProgressState
     {
-        public ProgressState(int? percent, string message)
+        private static double? PercentToFraction(int? percentage)
         {
-            ProgressPercentage = percent;
+            if(!percentage.HasValue)
+            {
+                return null;
+            }
+            if(percentage < 0)
+            {
+                return 0.0;
+            }
+            if(percentage > 100)
+            {
+                return 1.0;
+            }
+            return ((double)percentage) / 100.0;
+        }
+
+        public ProgressState(int? percentage, string message)
+            : this(PercentToFraction(percentage), message)
+        {
+        }
+
+        public ProgressState(double? fraction, string message)
+        {
+            ProgressFraction = fraction;
             ProgressMessage = message;
         }
 
-        public int? ProgressPercentage;
+        public double? ProgressFraction;
         public string ProgressMessage;
     }
 
