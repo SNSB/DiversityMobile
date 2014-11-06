@@ -172,7 +172,7 @@ namespace DiversityPhone.Services
 
         public IObservable<UserCredentials> CurrentCredentials()
         {
-            return _SettingsDispatcher
+            return CurrentSettings()
                 .Select(s => s.ToCreds());
         }
 
