@@ -1,11 +1,13 @@
 ﻿using DiversityPhone.DiversityService;
 using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using DiversityPhone.MultimediaService;
 using ReactiveUI;
 using System;
 using System.ComponentModel;
 using System.Reactive;
 using System.Reactive.Linq;
+
 using Client = DiversityPhone.Model;
 
 namespace DiversityPhone.Services
@@ -63,19 +65,10 @@ namespace DiversityPhone.Services
         private readonly IKeyMappingService Mapping;
         private readonly ICredentialsService Credentials;
 
-        private Client.UserCredentials _CurrentCredentials;
-
-        private Client.UserCredentials GetCreds()
-        {
-            return _CurrentCredentials;
-        }
-
         public DiversityServiceClient(ICredentialsService Credentials, IKeyMappingService Mapping)
         {
             this.Mapping = Mapping;
             this.Credentials = Credentials;
-
-            Credentials.CurrentCredentials().Where(c => c != null).Subscribe(c => _CurrentCredentials = c);
 
             GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h);
             LogErrors<GetUserInfoCompletedEventArgs>(GetUserInfoCompleted);
@@ -138,6 +131,14 @@ namespace DiversityPhone.Services
             LogErrors<SubUnitsForIUCompletedEventArgs>(SubUnitsForIUCompleted);
             AnalysesForIUCompleted = Observable.FromEventPattern<AnalysesForIUCompletedEventArgs>(h => _svc.AnalysesForIUCompleted += h, h => _svc.AnalysesForIUCompleted -= h);
             LogErrors<AnalysesForIUCompletedEventArgs>(AnalysesForIUCompleted);
+        }
+
+        private void WithCredentials(Action<UserCredentials> action)
+        {
+            Credentials.CurrentCredentials()
+                .Where(c => c != null)
+                .FirstAsync()
+                .Subscribe(action);
         }
 
         private void LogErrors<T>(IObservable<EventPattern<T>> EventStream) where T : AsyncCompletedEventArgs

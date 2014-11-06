@@ -49,7 +49,7 @@ namespace DiversityPhone.Services
                         TaxonomicGroup = svcList.TaxonomicGroup
                     }
                     ));
-            _svc.GetTaxonListsForUserAsync(GetCreds(), requestToken);
+            WithCredentials(c => _svc.GetTaxonListsForUserAsync(c, requestToken));
             return source;
         }
 
@@ -80,14 +80,14 @@ namespace DiversityPhone.Services
                             if (taxonChunk.Any())
                             {
                                 //There might still be more Taxa -> request next chunk
-                                _svc.DownloadTaxonListAsync(serviceList, ++chunk, GetCreds(), list);
+                                WithCredentials(c => _svc.DownloadTaxonListAsync(serviceList, ++chunk, c, list));
                                 return true;
                             }
                             else //Transfer finished
                                 return false;
                         }).Subscribe(observer);
                     //Request first chunk
-                    _svc.DownloadTaxonListAsync(serviceList, chunk, GetCreds(), list);
+                    WithCredentials(c => _svc.DownloadTaxonListAsync(serviceList, chunk, c, list));
                     return subscription;
                 });
         }
@@ -101,7 +101,7 @@ namespace DiversityPhone.Services
                         PropertyID = p.PropertyID,
                         DisplayText = p.DisplayText
                     }));
-            _svc.GetPropertiesForUserAsync(login, login);
+            WithCredentials(c => _svc.GetPropertiesForUserAsync(login, login));
             return source;
         }
 
@@ -134,7 +134,7 @@ namespace DiversityPhone.Services
                 .Catch((Exception ex) =>
                     {
                         var obs = factory();
-                        localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds()); // Re-Request last chunk
+                        WithCredentials(c => localclient.DownloadPropertyNamesAsync(svcProperty, chunk, c)); // Re-Request last chunk
                         return obs;
                     })
                 .TakeWhile(taxonChunk =>
@@ -142,14 +142,14 @@ namespace DiversityPhone.Services
                     if (taxonChunk.Any())
                     {
                         //There might still be more Taxa -> request next chunk
-                        localclient.DownloadPropertyNamesAsync(svcProperty, ++chunk, GetCreds());
+                        WithCredentials(c => localclient.DownloadPropertyNamesAsync(svcProperty, ++chunk, c));
                         return true;
                     }
                     else //Transfer finished
                         return false;
                 });
             //Request first chunk
-            localclient.DownloadPropertyNamesAsync(svcProperty, chunk, GetCreds());
+            WithCredentials(c => localclient.DownloadPropertyNamesAsync(svcProperty, chunk, c));
             return res;
         }
 
@@ -168,7 +168,7 @@ namespace DiversityPhone.Services
                        SourceID = (Client.TermList)term.Source,
                    }));
 
-            _svc.GetStandardVocabularyAsync(GetCreds(), requestToken);
+            WithCredentials(c => _svc.GetStandardVocabularyAsync(c, requestToken));
             return source;
         }
 

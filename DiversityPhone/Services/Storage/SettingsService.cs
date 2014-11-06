@@ -30,7 +30,7 @@ namespace DiversityPhone.Services
 
         private BehaviorSubject<Settings> _SettingsMostRecent = new BehaviorSubject<Settings>(null);
 
-        private volatile int _LoadsInFlight = 0;
+        private volatile int _OpsInFlight = 0;
 
         public SettingsService(
             ICurrentProfile Profile,
@@ -56,18 +56,20 @@ namespace DiversityPhone.Services
             _SettingsIn = new Subject<Settings>();
 
             _SettingsIn
+                .Do(EnterOperation)
                 .ObserveOn(ThreadPool)
                 .Select(PersistSettings)
+                .Do(ExitOperation)
                 .Subscribe(_SettingsOut);
 
             Profile
                 .CurrentProfilePathObservable()
                 .Merge(_ReloadSettings.Select(_ => Profile.CurrentProfilePath()))
-                .Do(EnterLoad)
+                .Do(EnterOperation)
                 .Select(ProfileToSettingsPath)
                 .ObserveOn(ThreadPool)
                 .Select(LoadSettingsFromFile)
-                .Do(ExitLoad)
+                .Do(ExitOperation)
                 .Subscribe(_SettingsOut);
         }
 
@@ -128,24 +130,24 @@ namespace DiversityPhone.Services
             return s;
         }
 
-        private void EnterLoad(object _)
+        private void EnterOperation(object _)
         {
             lock (this)
             {
-                _LoadsInFlight++;
+                _OpsInFlight++;
             }
         }
 
-        private void ExitLoad(object _)
+        private void ExitOperation(object _)
         {
             lock (this)
             {
-                if (_LoadsInFlight <= 0)
+                if (_OpsInFlight <= 0)
                 {
                     throw new InvalidOperationException("ExitLoad called more often than EnterLoad");
                 }
 
-                _LoadsInFlight--;
+                _OpsInFlight--;
             }
         }
 
@@ -185,7 +187,7 @@ namespace DiversityPhone.Services
         {
             // Block until all Loads have finished, then return most recent Settings
             return _SettingsMostRecent
-                .SkipWhile(_ => _LoadsInFlight != 0)
+                .SkipWhile(_ => _OpsInFlight != 0)
                 .FirstAsync()
                 .ObserveOn(Dispatcher);
         }

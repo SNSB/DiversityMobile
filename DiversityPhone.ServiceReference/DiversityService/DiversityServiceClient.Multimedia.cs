@@ -67,7 +67,6 @@ namespace DiversityPhone.Services
             var packageBuffer = new byte[maxPackageSize];
             var rolledBack = false;
 
-            var login = this.GetCreds();
             Action readPackage = () =>
             {
                 var packageSize = data.Read(packageBuffer, 0, packageBuffer.Length);
@@ -170,16 +169,20 @@ namespace DiversityPhone.Services
             res.Connect();
 
             readPackage();
-            if (packageBuffer.Length < maxPackageSize)
+
+            WithCredentials(login =>
             {
-                // Stream only contained enough for one package -> Submit with one service call
-                _multimedia.SubmitAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, packageBuffer, mmo);
-            }
-            else
-            {
-                // Start Chunked upload
-                _multimedia.BeginTransactionAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, mmo);
-            }
+                if (packageBuffer.Length < maxPackageSize)
+                {
+                    // Stream only contained enough for one package -> Submit with one service call
+                    _multimedia.SubmitAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, packageBuffer, mmo);
+                }
+                else
+                {
+                    // Start Chunked upload
+                    _multimedia.BeginTransactionAsync(Guid.NewGuid().ToString(), filename, mmo.MediaType.ToString(), 0, 0, 0, login.LoginName, mmo.TimeCreated.ToString(CultureInfo.InvariantCulture), login.ProjectID, mmo);
+                }
+            });
 
             return res;
         }

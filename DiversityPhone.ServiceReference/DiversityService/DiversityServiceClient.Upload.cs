@@ -21,7 +21,7 @@ namespace DiversityPhone.Services
                 .ReplayOnlyFirst();
 
             var svcProps = new ObservableCollection<Svc.EventProperty>(properties.Select(l => l.ToServiceObject()));
-            _svc.InsertEventAsync(ev.ToServiceObject(Mapping), svcProps, this.GetCreds(), ev);
+            WithCredentials(c => _svc.InsertEventAsync(ev.ToServiceObject(Mapping), svcProps, c, ev));
             return res;
         }
 
@@ -33,7 +33,7 @@ namespace DiversityPhone.Services
                 .StoreMapping(spec, Mapping)
                 .ReplayOnlyFirst();
 
-            _svc.InsertSpecimenAsync(spec.ToServiceObject(Mapping), this.GetCreds(), spec);
+            WithCredentials(c => _svc.InsertSpecimenAsync(spec.ToServiceObject(Mapping), c, spec));
             return res;
         }
 
@@ -46,7 +46,7 @@ namespace DiversityPhone.Services
                 .ReplayOnlyFirst();
 
             var svcLocs = new ObservableCollection<Svc.IdentificationUnitAnalysis>(analyses.Select(l => l.ToServiceObject()));
-            _svc.InsertIdentificationUnitAsync(iu.ToServiceObject(Mapping), svcLocs, this.GetCreds(), iu);
+            WithCredentials(c => _svc.InsertIdentificationUnitAsync(iu.ToServiceObject(Mapping), svcLocs, c, iu));
             return res;
         }
 
@@ -59,7 +59,7 @@ namespace DiversityPhone.Services
                 .ReplayOnlyFirst();
 
             var svcLocs = new ObservableCollection<Svc.Localization>(localizations.Select(l => l.ToServiceObject()));
-            _svc.InsertEventSeriesAsync(series.ToServiceObject(), svcLocs, this.GetCreds(), series);
+            WithCredentials(c => _svc.InsertEventSeriesAsync(series.ToServiceObject(), svcLocs, c, series));
             return res;
         }
 
@@ -69,7 +69,7 @@ namespace DiversityPhone.Services
                 .Select(_ => Unit.Default);
 
             var repoMmo = mmo.ToServiceObject(Mapping);
-            _svc.InsertMMOAsync(repoMmo, this.GetCreds(), mmo);
+            WithCredentials(c => _svc.InsertMMOAsync(repoMmo, c, mmo));
             return res;
         }
     }
