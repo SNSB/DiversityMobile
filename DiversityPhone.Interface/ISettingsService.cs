@@ -7,7 +7,7 @@ namespace DiversityPhone.Interface
     {
         IObservable<Settings> SettingsObservable();
 
-        Settings CurrentSettings { get; }
+        IObservable<Settings> CurrentSettings();
 
         void SaveSettings(Settings settings);
 

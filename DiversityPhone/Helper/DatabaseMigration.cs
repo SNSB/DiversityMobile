@@ -9,7 +9,7 @@
 
     public static partial class VersionMigration
     {
-        public static readonly Version CURRENT_VERSION = new Version(0, 9, 9, 1);
+        public static readonly Version CURRENT_VERSION = new Version(0, 9, 10, 0);
         public const int CURRENT_SCHEMA_VERSION = 1; // As of Version 0.9.9.1
 
         public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
@@ -31,7 +31,7 @@
                         var schema = ctx.CreateDatabaseSchemaUpdater();
                         if (schema.DatabaseSchemaVersion != CURRENT_SCHEMA_VERSION)
                         {
-                            ApplyMigrations(schema, targetVersion);
+                            ApplyMigrations(schema, targetVersion ?? CURRENT_VERSION);
                             schema.Execute();
                         }
                     }
@@ -51,6 +51,7 @@
                 }
                 if (targetVersion >= new Version(0, 9, 9, 1))
                 {
+                    schema.AddTable<GeoPointForSeries>();
                     schema.DatabaseSchemaVersion = 1;
                 }
             }

@@ -1,20 +1,21 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using Microsoft;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using Microsoft;
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Globalization;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Linq;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Threading.Tasks;
+    using System.Threading.Tasks;
+    using System.Xml.Serialization;
+
     public class Snapshot
     {
         public string UserName { get; set; }
@@ -90,7 +91,9 @@ namespace DiversityPhone.Services
 
             Progress.Report(Tuple.Create(BackupStage.AppData, 0.0));
 
-            var currentSettings = Settings.CurrentSettings;
+            // Blocks, but without await support for Observables it's the best we can do
+            // Not too evil, because we are on a background thread
+            var currentSettings = Settings.CurrentSettings().First();
 
             var currentProfile = Profile.CurrentProfilePath();
             var snapshotDir = GetSnapshotPath(currentSettings);

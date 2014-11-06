@@ -15,6 +15,8 @@ namespace DiversityPhone.Helper
     using System.Linq.Expressions;
     using System.Reflection;
     using System.Threading.Tasks;
+    using System.Xml;
+    using System.Xml.Serialization;
 
     public static partial class VersionMigration
     {
@@ -44,10 +46,12 @@ namespace DiversityPhone.Helper
                     await MoveDatabaseToProfile(currentProfile);
                     MoveVocabularyToProfile(currentProfile);
                     MoveMultimediaToProfile(currentProfile);
+
+                    lastVersion = new Version(0, 9, 9, 1);
                 }
-                else if (lastVersion < currentVersion)
+                if (lastVersion < currentVersion)
                 {
-                    // Nothing so far :)
+                    await CreateOrUpgradeSchema();
                 }
 
                 if (IsolatedStorageSettings.ApplicationSettings.Contains(LAST_VERSION))
@@ -383,30 +387,64 @@ namespace DiversityPhone.Helper
 
         private static void MigrateSettingsFromApplicationSettings()
         {
-#pragma warning disable 0436
-            // AppSettings in DiversityPhone Assembly (before 0.9.8)
-            try
+            var svc = App.Kernel.Get<ISettingsService>() as SettingsService;
+            var isoSettings = IsolatedStorageSettings.ApplicationSettings;
+
+            if (isoSettings.Contains("Settings"))
             {
-                AppSettings settings;
-                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<AppSettings>("Settings", out settings))
+#pragma warning disable 0436
+                // AppSettings in DiversityPhone Assembly (before 0.9.8)
+                try
                 {
-                    var svc = App.Kernel.Get<ISettingsService>();
-                    svc.SaveSettings(AppSettingsMixin.ToSettings(settings));
+                    AppSettings settings;
+                    if (isoSettings.TryGetValue<AppSettings>("Settings", out settings))
+                    {
+                        svc.SaveSettings(AppSettingsMixin.ToSettings(settings));
+                        IsolatedStorageSettings.ApplicationSettings.Remove("Settings");
+                        IsolatedStorageSettings.ApplicationSettings.Save();
+                    }
+                }
+                catch (InvalidCastException) { }
+#pragma warning restore 0436
+
+                // Appsettings in Model Assembly (in 0.9.8)
+                Model::DiversityPhone.Model.AppSettings settings2;
+                if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<Model::DiversityPhone.Model.AppSettings>("Settings", out settings2))
+                {
+                    svc.SaveSettings(Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2));
                     IsolatedStorageSettings.ApplicationSettings.Remove("Settings");
                     IsolatedStorageSettings.ApplicationSettings.Save();
                 }
             }
-            catch (InvalidCastException) { }
-#pragma warning restore 0436
-
-            // Appsettings in Model Assembly (in 0.9.8)
-            Model::DiversityPhone.Model.AppSettings settings2;
-            if (IsolatedStorageSettings.ApplicationSettings.TryGetValue<Model::DiversityPhone.Model.AppSettings>("Settings", out settings2))
+            else
             {
-                var svc = App.Kernel.Get<ISettingsService>();
-                svc.SaveSettings(Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2));
-                IsolatedStorageSettings.ApplicationSettings.Remove("Settings");
-                IsolatedStorageSettings.ApplicationSettings.Save();
+                // Appsettings in Model Assembly (in 0.9.8)
+                // Stored in the Profile Folder
+                var settingsPath = svc.GetSettingsPath();
+
+                try
+                {
+                    using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+                    {
+                        if (iso.FileExists(settingsPath))
+                        {
+                            using (var settingsFile = iso.OpenFile(settingsPath, FileMode.Open, FileAccess.Read))
+                            {
+                                Model::DiversityPhone.Model.AppSettings settings2;
+                                var SettingsSerializer = new XmlSerializer(typeof(Model::DiversityPhone.Model.AppSettings));
+
+                                var settingsXml = XmlReader.Create(settingsFile);
+                                if (SettingsSerializer.CanDeserialize(settingsXml))
+                                {
+                                    settings2 = (Model::DiversityPhone.Model.AppSettings)SettingsSerializer.Deserialize(settingsXml);
+
+                                    svc.SaveSettings(Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2));
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception) { /*Ah well*/ }
             }
         }
     }

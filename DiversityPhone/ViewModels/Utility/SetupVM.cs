@@ -168,15 +168,14 @@
             // If There already is a configuration (Settings)
             // Go To Home Page
             this.FirstActivation()
-                .Zip(Settings.SettingsObservable(), (_, s) => s != null)
-                .Select(x => (x) ? Page.Home : Page.SetupWelcome)
+                .SelectMany(_ => Settings.CurrentSettings())
+                .Select(x => (x != null) ? Page.Home : Page.SetupWelcome)
                 .ToMessage(Messenger);
 
             _IsOnlineAvailable = this.ObservableToProperty(Connectivity.WifiAvailable(), x => x.IsOnlineAvailable, false, Dispatcher);
 
             // Show current login data in case of Reset
             Settings.SettingsObservable()
-                .ObserveOn(Dispatcher)
                 .Subscribe(SetLogin);
 
             // Command To begin Setup

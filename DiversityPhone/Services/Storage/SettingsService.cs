@@ -8,6 +8,7 @@ using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -17,6 +18,7 @@ namespace DiversityPhone.Services
     {
         public const string SETTINGS_FILE = "AppSettings.xml";
 
+        private readonly IScheduler Dispatcher;
         private readonly ICurrentProfile Profile;
         private readonly XmlSerializer SettingsSerializer;
 
@@ -24,7 +26,11 @@ namespace DiversityPhone.Services
 
         private ISubject<Settings> _SettingsIn;
         private ISubject<Settings> _SettingsOut = new Subject<Settings>();
-        private IObservable<Settings> _SettingsReplay;
+        private IObservable<Settings> _SettingsDispatcher;
+
+        private BehaviorSubject<Settings> _SettingsMostRecent = new BehaviorSubject<Settings>(null);
+
+        private volatile int _LoadsInFlight = 0;
 
         public SettingsService(
             ICurrentProfile Profile,
@@ -36,33 +42,32 @@ namespace DiversityPhone.Services
             Contract.Requires(Dispatcher != null);
             Contract.Requires(ThreadPool != null);
 
+            this.Dispatcher = Dispatcher;
             this.Profile = Profile;
             this.SettingsSerializer = new XmlSerializer(typeof(Settings));
 
-            _SettingsReplay = _SettingsOut
-                .Merge(
-                    _ReloadSettings
-                    .Select(x => null as Settings)
-                )
-                .ObserveOn(Dispatcher)
-                .Replay(1)
-                .PermaRef();
+            _SettingsDispatcher =
+                _SettingsOut
+                .ObserveOn(Dispatcher);
+
+            _SettingsOut
+                .Subscribe(_SettingsMostRecent);
 
             _SettingsIn = new Subject<Settings>();
 
             _SettingsIn
                 .ObserveOn(ThreadPool)
                 .Select(PersistSettings)
-                .ObserveOn(Dispatcher)
                 .Subscribe(_SettingsOut);
 
             Profile
                 .CurrentProfilePathObservable()
                 .Merge(_ReloadSettings.Select(_ => Profile.CurrentProfilePath()))
+                .Do(EnterLoad)
                 .Select(ProfileToSettingsPath)
                 .ObserveOn(ThreadPool)
                 .Select(LoadSettingsFromFile)
-                .ObserveOn(Dispatcher)
+                .Do(ExitLoad)
                 .Subscribe(_SettingsOut);
         }
 
@@ -123,7 +128,28 @@ namespace DiversityPhone.Services
             return s;
         }
 
-        private string GetSettingsPath()
+        private void EnterLoad(object _)
+        {
+            lock (this)
+            {
+                _LoadsInFlight++;
+            }
+        }
+
+        private void ExitLoad(object _)
+        {
+            lock (this)
+            {
+                if (_LoadsInFlight <= 0)
+                {
+                    throw new InvalidOperationException("ExitLoad called more often than EnterLoad");
+                }
+
+                _LoadsInFlight--;
+            }
+        }
+
+        public string GetSettingsPath()
         {
             var currentProfile = Profile.CurrentProfilePath();
             return ProfileToSettingsPath(currentProfile);
@@ -146,15 +172,22 @@ namespace DiversityPhone.Services
 
         public IObservable<UserCredentials> CurrentCredentials()
         {
-            return _SettingsReplay
+            return _SettingsDispatcher
                 .Select(s => s.ToCreds());
         }
 
         public IObservable<Settings> SettingsObservable()
         {
-            return _SettingsReplay;
+            return _SettingsDispatcher;
         }
 
-        public Settings CurrentSettings { get { return _SettingsReplay.FirstOrDefault(); } }
+        public IObservable<Settings> CurrentSettings()
+        {
+            // Block until all Loads have finished, then return most recent Settings
+            return _SettingsMostRecent
+                .SkipWhile(_ => _LoadsInFlight != 0)
+                .FirstAsync()
+                .ObserveOn(Dispatcher);
+        }
     }
 }
