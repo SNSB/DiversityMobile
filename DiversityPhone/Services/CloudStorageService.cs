@@ -4,9 +4,11 @@
     using Microsoft;
     using Microsoft.Live;
     using Newtonsoft.Json;
+    using ReactiveUI;
     using Salient.SharpZipLib.Zip;
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.IO;
     using System.IO.IsolatedStorage;
@@ -43,7 +45,7 @@
         Task DownloadFolderAsync(string FolderName, string LocalTargetFolder, IProgress<double> FractionProgress);
     }
 
-    public class CloudStorageService : ICloudStorageService
+    public class CloudStorageService : ICloudStorageService, IEnableLogger
     {
         private const string CLIENT_ID = "00000000480F4F1E";
         private const string ZIP_TEMP_FILE = "FolderUpload.zip";
@@ -234,7 +236,10 @@
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                this.Log().ErrorException("GetRemoteFolders", ex);
+            }
             return Enumerable.Empty<string>();
         }
 
@@ -299,12 +304,12 @@
                 await Iso.DeleteDirectoryRecursiveAsync(TEMP_FOLDER);
                 Iso.CreateDirectory(TEMP_FOLDER);
 
-                // Download Zip File                
+                // Download Zip File
                 var fileDataUrl = string.Format("{0}/content", requestedFile.id);
                 var downloadProgress = new Progress<LiveOperationProgress>(p => FractionProgress.Report((p.ProgressPercentage / 100.0) * DOWNLOAD_FRACTION));
                 var downloadedStream = await client.Download(fileDataUrl, downloadProgress);
 
-                // Decompress into Temp Folder                
+                // Decompress into Temp Folder
                 var unpackProgress = new Progress<double>(p => FractionProgress.Report(DOWNLOAD_FRACTION + p * UNPACK_FRACTION));
                 await DeCompressDirectoryAsync(downloadedStream, TEMP_FOLDER, unpackProgress);
 
