@@ -5,6 +5,8 @@
     using System.Collections.Generic;
     using System.Diagnostics.Contracts;
     using System.Reactive.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public class DispatcherAttribute : Attribute { }
 
@@ -111,6 +113,30 @@
             {
                 return default(T);
             }
+        }
+
+        public static Task<T> ToTask<T>(this IObservable<T> This)
+        {
+            return ToTask(This, CancellationToken.None);
+        }
+
+        public static Task<T> ToTask<T>(this IObservable<T> This, CancellationToken cancellationToken)
+        {
+            Contract.Requires(This != null);
+
+            var completion = new TaskCompletionSource<T>();
+
+            var subscription = This
+                .LastAsync()
+                .Subscribe(
+                    (x) => completion.TrySetResult(x),
+                    (err) => completion.TrySetException(err),
+                    () => { }
+                );
+
+            cancellationToken.Register(subscription.Dispose, useSynchronizationContext: false);
+
+            return completion.Task;
         }
     }
 }

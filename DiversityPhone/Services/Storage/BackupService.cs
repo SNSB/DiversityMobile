@@ -91,9 +91,7 @@
 
             Progress.Report(Tuple.Create(BackupStage.AppData, 0.0));
 
-            // Blocks, but without await support for Observables it's the best we can do
-            // Not too evil, because we are on a background thread
-            var currentSettings = Settings.CurrentSettings().First();
+            var currentSettings = await Settings.CurrentSettings().ToTask();
 
             var currentProfile = Profile.CurrentProfilePath();
             var snapshotDir = GetSnapshotPath(currentSettings);
