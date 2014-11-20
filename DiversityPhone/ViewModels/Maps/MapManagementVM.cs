@@ -165,6 +165,7 @@ namespace DiversityPhone.ViewModels
 
                             return Observable.Empty<Map>();
                         })
+                        .DefaultIfEmpty(null)
                         .Select(map => System.Tuple.Create(vm_t, map));
             })
             .ObserveOn(Dispatcher)

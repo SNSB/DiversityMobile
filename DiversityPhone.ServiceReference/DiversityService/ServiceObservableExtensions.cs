@@ -106,7 +106,8 @@ namespace DiversityPhone.Services
                         string httpCredentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
                         request.Headers["Authorization"] = "Basic " + httpCredentials;
 
-                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
+                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)()
+                            .FirstAsync();
                     }
                     else
                     {
