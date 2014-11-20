@@ -12,7 +12,7 @@ using System.Reactive.Linq;
 
 namespace DiversityPhone.Services
 {
-    public partial class FieldDataService : IFieldDataService, IKeyMappingService
+    public partial class FieldDataService : IFieldDataService, IKeyMappingService, IEnableLogger
     {
         private readonly CascadingDeleter CascadingDelete;
         private IList<IDisposable> _subscriptions;
@@ -460,12 +460,13 @@ namespace DiversityPhone.Services
                     {
                         ctx.SubmitChanges();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         System.Diagnostics.Debugger.Break();
 
                         //Object not new
                         //TODO update?
+                        this.Log().ErrorException("Insertion Failed", ex);
                     }
                 }
                 else

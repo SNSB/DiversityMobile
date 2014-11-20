@@ -51,9 +51,9 @@
                 }
                 if (targetVersion >= new Version(0, 9, 9, 1))
                 {
-                    schema.AddTable<GeoPointForSeries>();
-                    schema.DatabaseSchemaVersion = 1;
+                    
                 }
+                schema.DatabaseSchemaVersion = 1;
             }
         }
 

@@ -1,20 +1,21 @@
-﻿using DiversityPhone.Interface;
-using DiversityPhone.Model;
-using System;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.IO.IsolatedStorage;
-using System.Reactive;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading;
-using System.Xml;
-using System.Xml.Serialization;
-
-namespace DiversityPhone.Services
+﻿namespace DiversityPhone.Services
 {
-    public class SettingsService : ISettingsService, ICredentialsService
+    using DiversityPhone.Interface;
+    using DiversityPhone.Model;
+    using ReactiveUI;
+    using System;
+    using System.Diagnostics.Contracts;
+    using System.IO;
+    using System.IO.IsolatedStorage;
+    using System.Reactive;
+    using System.Reactive.Concurrency;
+    using System.Reactive.Linq;
+    using System.Reactive.Subjects;
+    using System.Threading;
+    using System.Xml;
+    using System.Xml.Serialization;
+
+    public class SettingsService : ISettingsService, ICredentialsService, IEnableLogger
     {
         public const string SETTINGS_FILE = "AppSettings.xml";
 
@@ -98,8 +99,18 @@ namespace DiversityPhone.Services
                         }
                     }
                 }
-                catch (IsolatedStorageException) { /*TODO Log*/ }
-                catch (XmlException) { /*TODO Log*/ }
+                catch (IsolatedStorageException ex)
+                {
+                    this.Log().ErrorException("Error Saving Settings", ex);
+                }
+                catch (XmlException ex)
+                {
+                    this.Log().ErrorException("Error Saving Settings", ex);
+                }
+                catch (Exception ex)
+                {
+                    this.Log().ErrorException("Error Saving Settings", ex);
+                }
 
                 return null;
             }
