@@ -31,6 +31,29 @@ namespace DiversityPhone.Model
 <# Row("double?", "Longitude", RowKind.Nullable | RowKind.NoUpdateCheck); #>   
   
 <# Row("ModificationState", "ModificationState"); #>
+
+		public static IQueryOperations<Localization> Operations
+        {
+            get;
+            private set;
+        }
+
+		static Localization()
+        {
+            Operations = new QueryOperations<Localization>(
+                //Smallerthan
+                          (q, gt) => q.Where(row => row.LocalizationID < gt.LocalizationID),
+                //Equals
+                          (q, gt) => q.Where(row => row.LocalizationID == gt.LocalizationID),
+                //Orderby
+                          (q) => q.OrderBy(gt => gt.LocalizationID),
+                //FreeKey
+                          (q, gt) =>
+                          {
+							  //As there is no corredponding table in DiversityCollection we choose to count up to model a sequence
+                              gt.LocalizationID = QueryOperations<Localization>.FindFreeIntKeyUp(q, row => row.LocalizationID);
+                          });
+        }
 	}
 }
  

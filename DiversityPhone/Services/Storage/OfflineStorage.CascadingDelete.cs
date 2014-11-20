@@ -34,9 +34,9 @@ namespace DiversityPhone.Services
                             if (attachedRow != null)
                                 deleteSeries(ctx, attachedRow);
                         }
-                        else if (typeof(T) == typeof(GeoPointForSeries))
+                        else if (typeof(T) == typeof(Localization))
                         {
-                            var attachedRow = attachedRowFrom(ctx, GeoPointForSeries.Operations, detachedRow as GeoPointForSeries);
+                            var attachedRow = attachedRowFrom(ctx, Localization.Operations, detachedRow as Localization);
                             if (attachedRow != null)
                                 deleteGeoPoint(ctx, attachedRow);
                         }
@@ -95,7 +95,7 @@ namespace DiversityPhone.Services
             ctx.EventSeries.DeleteOnSubmit(es);
         }
 
-        private void deleteGeoPoint(DiversityDataContext ctx, GeoPointForSeries p)
+        private void deleteGeoPoint(DiversityDataContext ctx, Localization p)
         {
             ctx.GeoTour.DeleteOnSubmit(p);
         }

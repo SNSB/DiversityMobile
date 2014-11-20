@@ -1,4 +1,4 @@
-﻿namespace DiversityPhone.Model
+﻿namespace DiversityPhone.Model.Legacy
 {
     using System.Data.Linq.Mapping;
     using System.Linq;
@@ -11,7 +11,7 @@
         [Column]
         public int SeriesID { get; set; }
 
-        [Column(IsPrimaryKey = true, IsDbGenerated = true)]
+        [Column(IsPrimaryKey = true)]
         public int PointID { get; set; }
 
         [Column(CanBeNull = true, UpdateCheck = UpdateCheck.Never)]

@@ -4,8 +4,10 @@ namespace DiversityPhone.Helper
 {
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
+    using DiversityPhone.Model.Legacy;
     using DiversityPhone.Services;
     using Ninject;
+    using ReactiveUI;
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
@@ -52,6 +54,11 @@ namespace DiversityPhone.Helper
                 if (lastVersion < currentVersion)
                 {
                     await CreateOrUpgradeSchema();
+
+                    if (lastVersion < new Version(0, 9, 10, 0))
+                    {
+                        MoveGeoPointsToLocalizations(currentProfile);
+                    }
                 }
 
                 if (IsolatedStorageSettings.ApplicationSettings.Contains(LAST_VERSION))
@@ -61,6 +68,43 @@ namespace DiversityPhone.Helper
                 IsolatedStorageSettings.ApplicationSettings.Add(LAST_VERSION, currentVersion);
                 IsolatedStorageSettings.ApplicationSettings.Save();
             }).Unwrap();
+        }
+
+        private static void MoveGeoPointsToLocalizations(string currentProfile)
+        {
+            var dbLocation = Path.Combine(currentProfile, DiversityDataContext.DB_FILENAME);
+
+            try
+            {
+                using (var ctx = new DiversityDataContext(dbLocation))
+                {
+                    var pointsTable = ctx.GetTable<GeoPointForSeries>();
+
+                    if (pointsTable.Any())
+                    {
+                        var locTable = ctx.GetTable<Localization>();
+
+                        var locs = from point in pointsTable.AsEnumerable()
+                                   select new Localization()
+                                   {
+                                       RelatedID = point.SeriesID,
+                                       Altitude = point.Altitude,
+                                       Longitude = point.Longitude,
+                                       Latitude = point.Latitude,
+                                       ModificationState = point.ModificationState
+                                   };
+
+                        locTable.InsertAllOnSubmit(locs);
+                        pointsTable.DeleteAllOnSubmit(pointsTable);
+
+                        ctx.SubmitChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                LogManager.GetLogger(typeof(VersionMigration)).ErrorException("Migrating GeoPoints", ex);
+            }
         }
 
         private static void MoveVocabularyToProfile(string currentProfile)

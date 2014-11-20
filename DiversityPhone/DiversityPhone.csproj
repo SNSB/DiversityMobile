@@ -208,6 +208,7 @@
     <Compile Include="Helper\PercentageReporter.cs" />
     <Compile Include="Helper\ReactiveCommandMixin.cs" />
     <Compile Include="Legacy\AppSettings.cs" />
+    <Compile Include="Legacy\GeoPointForSeries.cs" />
     <Compile Include="LiveSDKTaskAsync\ApiMethod.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveAuthClientTaskAsync.cs" />
     <Compile Include="LiveSDKTaskAsync\LiveConnectClientTaskAsync.cs" />

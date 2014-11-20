@@ -66,9 +66,9 @@ namespace DiversityPhone.Services
                 Messenger.Listen<IElementVM<MultimediaObject>>(MessageContracts.DELETE).Model()
                     .Subscribe(mmo=>deleteMMO(mmo)),
 
-                Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE)
+                Messenger.Listen<Localization>(MessageContracts.SAVE)
                     .Subscribe(gp => addGeoPoint(gp)),
-                Messenger.Listen<GeoPointForSeries>(MessageContracts.DELETE)
+                Messenger.Listen<Localization>(MessageContracts.DELETE)
                     .Subscribe(gp => deleteGeoPoint(gp)),
 
                 Messenger.Listen<ILocalizable>(MessageContracts.SAVE)
@@ -78,8 +78,8 @@ namespace DiversityPhone.Services
                                 addOrUpdateEvent(loc as Event);
                             else if (loc is IdentificationUnit)
                                 addOrUpdateIUnit(loc as IdentificationUnit);
-                            else if (loc is GeoPointForSeries)
-                                addGeoPoint(loc as GeoPointForSeries);
+                            else if (loc is Localization)
+                                addGeoPoint(loc as Localization);
                         })
             };
         }
@@ -128,7 +128,7 @@ namespace DiversityPhone.Services
 
         #region GeoPointForSeries
 
-        public IList<GeoPointForSeries> getAllGeoPoints()
+        public IList<Localization> getAllGeoPoints()
         {
             return uncachedQuery(
             ctx =>
@@ -137,12 +137,12 @@ namespace DiversityPhone.Services
                 );
         }
 
-        public IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID)
+        public IEnumerable<Localization> getGeoPointsForSeries(int SeriesID)
         {
             using (var ctx = new DiversityDataContext())
             {
                 var query = from gt in ctx.GeoTour
-                            where gt.SeriesID == SeriesID
+                            where gt.RelatedID == SeriesID
                             select gt;
 
                 foreach (var gp in query)
@@ -150,15 +150,15 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void addGeoPoint(GeoPointForSeries gp)
+        public void addGeoPoint(Localization gp)
         {
-            addOrUpdateRow(GeoPointForSeries.Operations,
+            addOrUpdateRow(Localization.Operations,
                 ctx => ctx.GeoTour,
                 gp
             );
         }
 
-        public void deleteGeoPoint(GeoPointForSeries toDeleteGp)
+        public void deleteGeoPoint(Localization toDeleteGp)
         {
             deleteAndNotifyAsync(toDeleteGp);
         }

@@ -180,9 +180,6 @@
     <Compile Include="..\DiversityPhone.Model\DataModel\EventSeries.cs">
       <Link>Implementation\Model\EventSeries.cs</Link>
     </Compile>
-    <Compile Include="..\DiversityPhone.Model\DataModel\GeoPointForSeries.cs">
-      <Link>Implementation\Model\GeoPointForSeries.cs</Link>
-    </Compile>
     <Compile Include="..\DiversityPhone.Model\DataModel\IdentificationUnit.cs">
       <Link>Implementation\Model\IdentificationUnit.cs</Link>
     </Compile>

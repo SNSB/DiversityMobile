@@ -3,7 +3,9 @@
     using DiversityPhone.Model;
     using DiversityPhone.Services;
     using Microsoft.Phone.Data.Linq;
+    using ReactiveUI;
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -51,7 +53,7 @@
                 }
                 if (targetVersion >= new Version(0, 9, 9, 1))
                 {
-                    
+                    AddLocalization(schema);
                 }
                 schema.DatabaseSchemaVersion = 1;
             }
@@ -78,6 +80,29 @@
             catch (Exception)
             {
                 schema.AddColumn<MultimediaObject>("TimeStamp");
+            }
+        }
+
+        /// <summary>
+        /// This Method adds the Localization Table, if it doesn't exist
+        /// Version 0.9.10.0
+        /// </summary>
+        /// <param name="schema"></param>
+        private static void AddLocalization(DatabaseSchemaUpdater schema)
+        {
+            var ctx = schema.Context;
+
+            try
+            {
+                var locTable = ctx.GetTable<Localization>();
+                if (locTable.Any())
+                {
+                    LogManager.GetLogger(typeof(VersionMigration)).Info("Localization Table already exists");
+                }
+            }
+            catch (Exception ex)
+            {
+                schema.AddTable<Localization>();
             }
         }
     }

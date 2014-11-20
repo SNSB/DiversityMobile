@@ -159,7 +159,7 @@ namespace DiversityPhone.ViewModels
                     if (pair.Series != null)
                     {
                         var stream = Storage.getGeoPointsForSeries(pair.Series.EntityID).ToObservable(ThreadPoolScheduler.Instance) //Fetch geopoints asynchronously on Threadpool thread
-                                .Merge(Messenger.Listen<GeoPointForSeries>(MessageContracts.SAVE).Where(gp => gp.SeriesID == pair.Series.EntityID)) //Listen to new Geopoints that are added to the current tour
+                                .Merge(Messenger.Listen<Localization>(MessageContracts.SAVE).Where(gp => gp.RelatedID == pair.Series.EntityID)) //Listen to new Geopoints that are added to the current tour
                                 .Select(gp => pair.Map.PercentilePositionOnMap(gp))
                                 .TakeUntil(series_and_map)
                                 .Replay();

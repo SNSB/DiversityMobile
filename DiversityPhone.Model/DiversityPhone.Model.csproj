@@ -129,7 +129,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="DataModel\GeoPointForSeries.cs" />
     <Compile Include="IChildEntity.cs" />
     <Compile Include="DataModel\IdentificationUnit.cs">
       <DependentUpon>IdentificationUnit.tt</DependentUpon>

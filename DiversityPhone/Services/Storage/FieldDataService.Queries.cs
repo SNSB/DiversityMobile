@@ -19,10 +19,10 @@ namespace DiversityPhone.Services
                    select ev;
         }
 
-        internal static IQueryable<GeoPointForSeries> GeoPoints(EventSeries es, DiversityDataContext ctx)
+        internal static IQueryable<Localization> GeoPoints(EventSeries es, DiversityDataContext ctx)
         {
             return from gp in ctx.GeoTour
-                   where gp.SeriesID == es.SeriesID
+                   where gp.RelatedID == es.SeriesID
                    select gp;
         }
 

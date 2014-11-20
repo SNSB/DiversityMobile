@@ -17,11 +17,11 @@
 
         void deleteEventSeries(EventSeries es);
 
-        IEnumerable<GeoPointForSeries> getGeoPointsForSeries(int SeriesID);
+        IEnumerable<Localization> getGeoPointsForSeries(int SeriesID);
 
-        void addGeoPoint(GeoPointForSeries gp);
+        void addGeoPoint(Localization gp);
 
-        void deleteGeoPoint(GeoPointForSeries gp);
+        void deleteGeoPoint(Localization gp);
 
         IEnumerable<Event> getAllEvents();
 

@@ -26,7 +26,7 @@ namespace DiversityPhone.Services
         }
 
         public Table<EventSeries> EventSeries;
-        public Table<GeoPointForSeries> GeoTour;
+        public Table<Localization> GeoTour;
 
         public Table<Event> Events;
         public Table<EventProperty> EventProperties;

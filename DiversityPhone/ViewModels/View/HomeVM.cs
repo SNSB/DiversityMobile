@@ -86,11 +86,11 @@
                     Location.LocationByDistanceThreshold(20)
                     .Select(c =>
                     {
-                        var gp = new GeoPointForSeries() { SeriesID = series.Model.SeriesID };
+                        var gp = new Localization() { RelatedID = series.Model.SeriesID };
                         gp.SetCoordinates(c);
                         return gp;
                     })
-                    .TakeUntil(openSeries) : Observable.Empty<GeoPointForSeries>())
+                    .TakeUntil(openSeries) : Observable.Empty<Localization>())
                 .ObserveOn(Dispatcher)
                 .ToMessage(Messenger, MessageContracts.SAVE);
 
