@@ -96,25 +96,24 @@ namespace DiversityPhone.Services
 
         public static IObservable<WebResponse> DownloadWithCredentials(this IObservable<string> uriObservable, ICredentialsService CredentialsProvider)
         {
-            var mostRecentUserCreds = CredentialsProvider.CurrentCredentials().MostRecent(null);
-
             return uriObservable
-                .SelectMany(uri =>
+                .Zip(CredentialsProvider.CurrentCredentials(),
+                (uri, creds) =>
+                {
+                    if (creds != null)
                     {
-                        var creds = mostRecentUserCreds.First();
-                        if (creds != null)
-                        {
-                            var request = WebRequest.CreateHttp(uri);
-                            string httpCredentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
-                            request.Headers["Authorization"] = "Basic " + httpCredentials;
+                        var request = WebRequest.CreateHttp(uri);
+                        string httpCredentials = Convert.ToBase64String(System.Text.UTF8Encoding.UTF8.GetBytes(creds.LoginName + ":" + creds.Password));
+                        request.Headers["Authorization"] = "Basic " + httpCredentials;
 
-                            return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
-                        }
-                        else
-                        {
-                            return Observable.Empty<WebResponse>();
-                        }
-                    });
+                        return Observable.FromAsyncPattern<WebResponse>(request.BeginGetResponse, request.EndGetResponse)();
+                    }
+                    else
+                    {
+                        return Observable.Empty<WebResponse>();
+                    }
+                })
+                .SelectMany(x => x);
         }
     }
 }
