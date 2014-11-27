@@ -12,7 +12,7 @@
     public static partial class VersionMigration
     {
         public static readonly Version CURRENT_VERSION = new Version(0, 9, 10, 0);
-        public const int CURRENT_SCHEMA_VERSION = 1; // As of Version 0.9.9.1
+        public const int CURRENT_SCHEMA_VERSION = 2; // As of Version 0.9.10.0
 
         public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
         {
@@ -51,11 +51,15 @@
                 {
                     AddMultimediaTimeStamp(schema);
                 }
+                schema.DatabaseSchemaVersion = 1;
+            }
+            if (schema.DatabaseSchemaVersion == 1)
+            {
                 if (targetVersion >= new Version(0, 9, 9, 1))
                 {
                     AddLocalization(schema);
                 }
-                schema.DatabaseSchemaVersion = 1;
+                schema.DatabaseSchemaVersion = 2;
             }
         }
 

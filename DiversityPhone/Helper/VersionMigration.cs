@@ -49,6 +49,8 @@ namespace DiversityPhone.Helper
                     MoveVocabularyToProfile(currentProfile);
                     MoveMultimediaToProfile(currentProfile);
 
+                    await CreateOrUpgradeSchema();
+
                     lastVersion = new Version(0, 9, 10, 0);
                 }
                 if (lastVersion < currentVersion)
