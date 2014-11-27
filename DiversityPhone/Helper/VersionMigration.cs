@@ -49,7 +49,7 @@ namespace DiversityPhone.Helper
                     MoveVocabularyToProfile(currentProfile);
                     MoveMultimediaToProfile(currentProfile);
 
-                    lastVersion = new Version(0, 9, 9, 1);
+                    lastVersion = new Version(0, 9, 10, 0);
                 }
                 if (lastVersion < currentVersion)
                 {
@@ -57,7 +57,8 @@ namespace DiversityPhone.Helper
 
                     if (lastVersion < new Version(0, 9, 10, 0))
                     {
-                        MoveGeoPointsToLocalizations(currentProfile);
+                        var dbLocation = Path.Combine(currentProfile, DiversityDataContext.DB_FILENAME);
+                        MoveGeoPointsToLocalizations(new DiversityDataContext(dbLocation));
                     }
                 }
 
@@ -70,35 +71,44 @@ namespace DiversityPhone.Helper
             }).Unwrap();
         }
 
-        private static void MoveGeoPointsToLocalizations(string currentProfile)
+        private static void MoveGeoPointsToLocalizations(DiversityDataContext src, DiversityDataContext dst = null, IEnumerable<Action<GeoPointForSeries>> mappings = null)
         {
-            var dbLocation = Path.Combine(currentProfile, DiversityDataContext.DB_FILENAME);
+            dst = dst ?? src;
+            mappings = mappings ?? Enumerable.Empty<Action<GeoPointForSeries>>();
 
             try
             {
-                using (var ctx = new DiversityDataContext(dbLocation))
+                var pointsTable = src.GetTable<GeoPointForSeries>();
+
+                if (pointsTable.Any())
                 {
-                    var pointsTable = ctx.GetTable<GeoPointForSeries>();
+                    var locTable = dst.GetTable<Localization>();
 
-                    if (pointsTable.Any())
-                    {
-                        var locTable = ctx.GetTable<Localization>();
+                    var locs = pointsTable
+                        .AsEnumerable()
+                        // Apply mappings
+                        .Select(p =>
+                        {
+                            foreach (var f in mappings)
+                            {
+                                f(p);
+                            }
+                            return p;
+                        })
+                        .Select(point =>
+                        new Localization()
+                        {
+                            RelatedID = point.SeriesID,
+                            Altitude = point.Altitude,
+                            Longitude = point.Longitude,
+                            Latitude = point.Latitude,
+                            ModificationState = point.ModificationState
+                        });
 
-                        var locs = from point in pointsTable.AsEnumerable()
-                                   select new Localization()
-                                   {
-                                       RelatedID = point.SeriesID,
-                                       Altitude = point.Altitude,
-                                       Longitude = point.Longitude,
-                                       Latitude = point.Latitude,
-                                       ModificationState = point.ModificationState
-                                   };
+                    locTable.InsertAllOnSubmit(locs);
+                    pointsTable.DeleteAllOnSubmit(pointsTable);
 
-                        locTable.InsertAllOnSubmit(locs);
-                        pointsTable.DeleteAllOnSubmit(pointsTable);
-
-                        ctx.SubmitChanges();
-                    }
+                    dst.SubmitChanges();
                 }
             }
             catch (Exception ex)
@@ -211,7 +221,7 @@ namespace DiversityPhone.Helper
 
             // GeoPoints
             var geopointMappings = new Action<GeoPointForSeries>[] { (g) => { g.SeriesID = esMap[g.SeriesID]; } };
-            CopyTableWithMappings<GeoPointForSeries>(sourceCtx, targetCtx, geopointMappings);
+            MoveGeoPointsToLocalizations(sourceCtx, targetCtx, geopointMappings);
 
             //Events
             var evMappings = new Action<Event>[] { (g) => {
