@@ -782,10 +782,7 @@ namespace DiversityPhone.Services
 
         public T get<T>(int? id) where T : class, IEntity
         {
-            if (typeof(T) == typeof(EventSeries))
-                return get<T, int?>(id);
-            else
-                return get<T, int>(id.Value);
+            return get<T, int>(id.Value);
         }
     }
 }

@@ -60,7 +60,7 @@
             var localKey = (collectionSeriesID.HasValue) ? Mappings.ResolveToLocalKey(DBObjectType.EventSeries, collectionSeriesID.Value) : null;
             if (localKey.HasValue)
             {
-                return Observable.Return(Storage.get<EventSeries>(localKey));
+                return Observable.Return(Storage.get<EventSeries>(localKey.Value));
             }
             else if (!collectionSeriesID.HasValue)
             {
