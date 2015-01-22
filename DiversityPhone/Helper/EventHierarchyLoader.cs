@@ -96,7 +96,7 @@
                 series_future
                 .Select(es =>
                 {
-                    ev.SeriesID = es.SeriesID;
+                    ev.SeriesID = NoEventSeriesMixin.IsNoEventSeries(es) ? null as int? : es.SeriesID;
                     Storage.add(ev);
                     return ev;
                 }).Replay()
