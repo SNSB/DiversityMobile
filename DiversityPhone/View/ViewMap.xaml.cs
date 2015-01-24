@@ -4,6 +4,9 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -253,6 +256,14 @@ namespace DiversityPhone.View
                 return null;
         }
 
+        private static IEnumerable<T> RepeatInfinite<T>(T val)
+        {
+            while (true)
+            {
+                yield return val;
+            }
+        }
+
         private void PhoneApplicationPage_Loaded(object sender, RoutedEventArgs e)
         {
             additionallocalization_images = new CompositeDisposable(clear_additional_locs());
@@ -264,10 +275,27 @@ namespace DiversityPhone.View
 
             s.Add(image_obs.Subscribe(img => { ImgZoom.Source = img; }));
 
-            _currentPos = new RelativeLocationBinding(currentPosImg, update_transform, VM.ObservableForProperty(x => x.CurrentLocation).Value().StartWith(VM.CurrentLocation).Select(ScaleToImage));
+            var image_actualsizechanged =
+                Observable.FromEventPattern<EventArgs>(ImgZoom, "LayoutUpdated")
+                .Select(_ => Unit.Default)
+                .StartWith(Unit.Default);
+
+            _currentPos = new RelativeLocationBinding(
+                currentPosImg,
+                update_transform,
+                image_actualsizechanged
+                .Select(_ => VM.CurrentLocation)
+                .Merge(VM.WhenAny(x => x.CurrentLocation, x => x.GetValue()))
+                .Select(ScaleToImage));
             s.Add(_currentPos);
 
-            _currentLoc = new RelativeLocationBinding(currentLocalizationImg, update_transform, VM.ObservableForProperty(x => x.PrimaryLocalization).Value().StartWith(VM.PrimaryLocalization).Select(ScaleToImage));
+            _currentLoc = new RelativeLocationBinding(
+                currentLocalizationImg,
+                update_transform,
+                 image_actualsizechanged
+                .Select(_ => VM.PrimaryLocalization)
+                .Merge(VM.WhenAny(x => x.PrimaryLocalization, x => x.GetValue()))
+                .Select(ScaleToImage));
             s.Add(_currentLoc);
 
             s.Add(
@@ -276,14 +304,19 @@ namespace DiversityPhone.View
                 .Do(_ => additionallocalization_images.Dispose())
                 .SelectMany(p => p)
                 .ObserveOnDispatcher()
+                .Where(p => p != null)
                 .Subscribe(p =>
                     {
-                        var it = ScaleToImage(p);
+                        var positions =
+                            image_actualsizechanged
+                            .Select(_ => p)
+                            .Select(ScaleToImage);
+
                         var source = this.Resources["GPSPointImage"] as BitmapImage;
                         if (source != null)
                         {
                             var img = new Image() { Source = source, Height = source.PixelHeight, Width = source.PixelWidth };
-                            var binding = new RelativeLocationBinding(img, update_transform) { RelativeLocation = it };
+                            var binding = new RelativeLocationBinding(img, update_transform, positions);
                             additionallocalization_images.Add(binding);
                             MainCanvas.Children.Add(img);
                         }
