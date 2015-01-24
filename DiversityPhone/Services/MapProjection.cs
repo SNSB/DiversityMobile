@@ -53,16 +53,16 @@ namespace DiversityPhone.Services
                     // 1. a + lamba*b=c+mu*d
                     // 2. e + lambda*f=g+mu*h
                     //
-                    if (b == 0)
+                    if (AboutZero(b))
                     {
-                        if (d == 0)
+                        if (AboutZero(d))
                             throw new ArithmeticException();//Lines do not cross (identity or parallel);
                         else
                         {
                             mu = a - c / d;
                         }
                     }
-                    else if (h - d * f / b == 0)
+                    else if (AboutZero(h - d * f / b))
                     {
                         //Calculation of a unique mu is not possible
                         throw new ArithmeticException();
@@ -101,13 +101,13 @@ namespace DiversityPhone.Services
             public static bool isParallel(Vector v1, Vector v2)
             {
                 double lambda = 0;
-                if (v2.X != 0)
+                if (!AboutZero(v2.X))
                     lambda = v1.X / v2.X;
-                else if (v1.X != 0)
+                else if (!AboutZero(v1.X))
                     lambda = 0;
                 else
                     return true;
-                if (v1.Y * lambda == v2.Y)
+                if (About(v1.Y * lambda, v2.Y))
                     return true;
                 else return false;
             }
@@ -145,16 +145,16 @@ namespace DiversityPhone.Services
             g = -This.NWLat + This.SWLat;
             h = This.NWLat - This.NELat + This.SELat - This.SWLat;
 
-            if (b == 0 || g == 0)
+            if (AboutZero(b) || AboutZero(g))
             {
                 //This coordinates are corrupted
                 return null;
             }
 
             //Check d==0
-            if (d != 0)
+            if (!AboutZero(d))
             {
-                if (a - c * b / d == 0)
+                if (AboutZero(a - c * b / d))
                     specialCase = true;
                 else
                     specialCase = false;
@@ -169,7 +169,7 @@ namespace DiversityPhone.Services
                 alpha = g * d - h * c;
                 beta = e * d - c * f + g * b - a * h;
                 gamma = -a * f + e * b;
-                if (alpha != 0)
+                if (!AboutZero(alpha))
                 {
                     discrim = beta * beta - 4 * alpha * gamma;
                     if (discrim < 0) //Equation unsovable
@@ -189,7 +189,7 @@ namespace DiversityPhone.Services
                 }
                 else
                 {
-                    if (beta != 0)
+                    if (!AboutZero(beta))
                     {
                         mu1 = -gamma / beta;
                         lambda1 = -(a + c * mu1) / (b + d * mu1);
@@ -210,7 +210,7 @@ namespace DiversityPhone.Services
             {
                 double lambda, mu;
                 mu = -b / d;
-                if (b * h - f * c != 0)
+                if (!AboutZero(b * h - f * c))
                 {
                     lambda = -(e * d - b * g) / (b * h - f * c);//Div by Zero
                     Point p = new Point(lambda, mu);
@@ -260,6 +260,16 @@ namespace DiversityPhone.Services
             {
                 throw new ArithmeticException("Lines do not cross. Mapdata are corrupted");
             }
+        }
+
+        private static bool AboutZero(double d)
+        {
+            return About(d, 0);
+        }
+
+        private static bool About(double x, double target)
+        {
+            return Math.Abs(target - x) < 2 * double.Epsilon;
         }
     }
 }
