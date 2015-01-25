@@ -186,7 +186,9 @@ namespace DiversityPhone.ViewModels
                 })
                 .Subscribe(c => PrimaryLocalization = c);
 
-            ToggleEditable = new ReactiveCommand(current_localizable_if_not_series.Select(l => l != null));
+            ToggleEditable = new ReactiveCommand(
+                current_localizable_if_not_series
+                .Select(l => l is IModifyable && !(l as IModifyable).IsUnmodified()));
 
             _IsEditable = this.ObservableToProperty(
                                 current_localizable_if_not_series.Select(_ => false)
