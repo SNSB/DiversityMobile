@@ -12,6 +12,7 @@
     using System.Reactive;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+    using System.Reactive.Subjects;
     using System.Reactive.Threading.Tasks;
     using System.Windows.Input;
 
@@ -78,6 +79,7 @@
         private readonly IScheduler Dispatcher;
 
         private ReactiveCommand _TakeSnapshot, _DeleteSnapshot, _RestoreSnapshot, _UploadSnapshot, _DownloadSnapshot, _RefreshRemote;
+        private ISubject<Unit> _DoRestoreSnapshot = new Subject<Unit>();
         private ReactiveAsyncCommand _RefreshRemoteSnapshots, _RefreshSnapshots;
         private bool _IsBusy = false;
         private IProgress<double> _FractionProgress;
@@ -231,9 +233,15 @@
                 .SubscribeCommand(_RefreshSnapshots);
 
             _RestoreSnapshot = new ReactiveCommand(snapshotSelected);
+            _RestoreSnapshot
+                .Select(_ => Notifications.showDecision(DiversityResources.ImportExport_Warn_Restore))
+                .Switch()
+                .Where(x => x)
+                .Select(_ => Unit.Default)
+                .Subscribe(_DoRestoreSnapshot);
             AddStartErrorHandlingAndCompletion(
             Snapshots.SelectedItemObservable
-                .SampleMostRecent(_RestoreSnapshot),
+                .SampleMostRecent(_DoRestoreSnapshot),
                 snap => StartRestore(Backup, snap)
                 )
                 .Subscribe();

@@ -904,6 +904,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restoring a snapshot will delete all current data and replace them with the data from the snapshot. Do you really want to do this?.
+        /// </summary>
+        public static string ImportExport_Warn_Restore {
+            get {
+                return ResourceManager.GetString("ImportExport_Warn_Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to This item can not be changed, it has already been uploaded..
         /// </summary>
         public static string Info_CantEditItem {

@@ -405,6 +405,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="ImportExport_Status_Upload" xml:space="preserve">
     <value>Uploading Snapshot...</value>
   </data>
+  <data name="ImportExport_Warn_Restore" xml:space="preserve">
+    <value>Restoring a snapshot will delete all current data and replace them with the data from the snapshot. Do you really want to do this?</value>
+  </data>
   <data name="Info_CantEditItem" xml:space="preserve">
     <value>This item can not be changed, it has already been uploaded.</value>
   </data>
