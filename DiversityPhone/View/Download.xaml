@@ -20,10 +20,10 @@
         <ResourceDictionary>
             <DataTemplate x:Key="ServiceEventItemTemplate">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="/Images/SNSBIcons/Event_40.png" Height="40" Width="40" />
+                    <Image Source="/Images/SNSBIcons/Event_80.png" Height="40" Width="40" />
                     <TextBlock Margin="{StaticResource PhoneHorizontalMargin}"
                                Text="{Binding LocalityDescription}"
-                               Style="{StaticResource PhoneTextNormalStyle}" />
+                               Style="{StaticResource PhoneTextLargeStyle}" />
                 </StackPanel>
             </DataTemplate>
         </ResourceDictionary>
@@ -54,10 +54,10 @@
                 <vw:SearchBox SearchCommand="{Binding SearchEvents}" />
                 <TextBlock Text="{Binding Resources.Download_HintLongPress, Source={StaticResource LocalizedStrings}}"  Style="{StaticResource InfoLabelTextStyle}" />
             </StackPanel>
-            <ItemsControl Grid.Row="1"
+            <ListBox Grid.Row="1"
                           Margin="{StaticResource PhoneMargin}"
                           ItemsSource="{Binding QueryResult}">
-                <ItemsControl.ItemTemplate>
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <ContentControl ContentTemplate="{StaticResource ServiceEventItemTemplate}"
                                         Content="{Binding}"
@@ -72,8 +72,8 @@
                             </toolkit:ContextMenuService.ContextMenu>
                         </ContentControl>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
         <Grid Grid.Row="1"
               Visibility="{Binding IsDownloading, Converter={StaticResource BoolToVis}}"
