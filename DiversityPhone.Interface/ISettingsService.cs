@@ -14,5 +14,7 @@ namespace DiversityPhone.Interface
         void ClearSettings();
 
         Settings LoadSettingsFromFile(string FilePath);
+
+        void SaveSettingsToFile(string filePath, Settings s);
     }
 }

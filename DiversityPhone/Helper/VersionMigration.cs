@@ -474,8 +474,9 @@ namespace DiversityPhone.Helper
             }
             else
             {
-                // Appsettings in Model Assembly (in 0.9.8)
+                // Appsettings in Model Assembly
                 // Stored in the Profile Folder
+                // (in 0.9.9)
                 var settingsPath = svc.GetSettingsPath();
 
                 try
@@ -486,22 +487,28 @@ namespace DiversityPhone.Helper
                         {
                             using (var settingsFile = iso.OpenFile(settingsPath, FileMode.Open, FileAccess.Read))
                             {
-                                Model::DiversityPhone.Model.AppSettings settings2;
-                                var SettingsSerializer = new XmlSerializer(typeof(Model::DiversityPhone.Model.AppSettings));
-
-                                var settingsXml = XmlReader.Create(settingsFile);
-                                if (SettingsSerializer.CanDeserialize(settingsXml))
-                                {
-                                    settings2 = (Model::DiversityPhone.Model.AppSettings)SettingsSerializer.Deserialize(settingsXml);
-
-                                    svc.SaveSettings(Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2));
-                                }
+                                svc.SaveSettings(LoadLegacySettings(settingsFile));
                             }
                         }
                     }
                 }
                 catch (Exception) { /*Ah well*/ }
             }
+        }
+
+        public static Settings LoadLegacySettings(IsolatedStorageFileStream settingsFile)
+        {
+            Model::DiversityPhone.Model.AppSettings settings2;
+            var SettingsSerializer = new XmlSerializer(typeof(Model::DiversityPhone.Model.AppSettings));
+
+            var settingsXml = XmlReader.Create(settingsFile);
+            if (SettingsSerializer.CanDeserialize(settingsXml))
+            {
+                settings2 = (Model::DiversityPhone.Model.AppSettings)SettingsSerializer.Deserialize(settingsXml);
+
+                return Model::DiversityPhone.Model.AppSettingsMixin.ToSettings(settings2);
+            }
+            return null;
         }
     }
 }

@@ -120,23 +120,7 @@
         {
             var settingsPath = GetSettingsPath();
 
-            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (s == null)
-                {
-                    if (iso.FileExists(settingsPath))
-                    {
-                        iso.DeleteFile(settingsPath);
-                    }
-                }
-                else
-                {
-                    using (var settingsFile = iso.OpenFile(settingsPath, FileMode.Create))
-                    {
-                        SettingsSerializer.Serialize(settingsFile, s);
-                    }
-                }
-            }
+            SaveSettingsToFile(settingsPath, s);
 
             return s;
         }
@@ -201,6 +185,27 @@
                 .SkipWhile(_ => _OpsInFlight != 0)
                 .FirstAsync()
                 .ObserveOn(Dispatcher);
+        }
+
+        public void SaveSettingsToFile(string filePath, Settings s)
+        {
+            using (var iso = IsolatedStorageFile.GetUserStoreForApplication())
+            {
+                if (s == null)
+                {
+                    if (iso.FileExists(filePath))
+                    {
+                        iso.DeleteFile(filePath);
+                    }
+                }
+                else
+                {
+                    using (var settingsFile = iso.OpenFile(filePath, FileMode.Create))
+                    {
+                        SettingsSerializer.Serialize(settingsFile, s);
+                    }
+                }
+            }
         }
     }
 }

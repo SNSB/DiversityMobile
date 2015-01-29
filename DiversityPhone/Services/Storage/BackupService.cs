@@ -1,5 +1,6 @@
 ﻿namespace DiversityPhone.Services
 {
+    using DiversityPhone.Helper;
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using Microsoft;
@@ -234,6 +235,20 @@
 
                 var settingsPath = Path.Combine(SnapshotDir, SettingsService.SETTINGS_FILE);
                 var settings = Settings.LoadSettingsFromFile(settingsPath);
+
+                // Snapshots made by version 0.9.9 store their Settings differently
+                if (settings == null && Iso.FileExists(settingsPath))
+                {
+                    using (var settingsFile = Iso.OpenFile(settingsPath, FileMode.Open, FileAccess.Read))
+                    {
+                        settings = VersionMigration.LoadLegacySettings(settingsFile);
+                    }
+
+                    if (settings != null)
+                    {
+                        Settings.SaveSettingsToFile(settingsPath, settings);
+                    }
+                }
 
                 var hasDB = Iso.FileExists(Path.Combine(SnapshotDir, DiversityDataContext.DB_FILENAME));
 
