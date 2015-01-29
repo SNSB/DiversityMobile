@@ -28,6 +28,7 @@ namespace DiversityPhone.ViewModels
                 .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
 
             SubUnits = new ReactiveCollection<IdentificationUnitVM>();
+            SubUnits.ListenToChanges<IdentificationUnit, IdentificationUnitVM>(x => x.RelatedUnitID == model.UnitID);
             SubUnits
                 .CollectionCountChanged
                 .Select(c => c > 0)
