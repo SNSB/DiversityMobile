@@ -121,7 +121,7 @@
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\portable-net40+sl4+wp7+win8\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\sl4-windowsphone71\Ninject.dll</HintPath>
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\sl4-windowsphone71\Ninject.dll</HintPath>
     </Reference>
     <Reference Include="Ninject.Extensions.Factory">
       <HintPath>..\Lib\Ninject.Extensions.Factory\sl-wp71\Ninject.Extensions.Factory.dll</HintPath>
