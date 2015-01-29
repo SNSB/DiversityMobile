@@ -53,6 +53,9 @@
                        Style="{StaticResource PhoneTextSubtleStyle}" />
                 <vw:SearchBox SearchCommand="{Binding SearchEvents}" />
                 <TextBlock Text="{Binding Resources.Download_HintLongPress, Source={StaticResource LocalizedStrings}}"  Style="{StaticResource InfoLabelTextStyle}" />
+                <vw:ConditionalLabel Text="{Binding Resources.Download_HintMaxResults, Source={StaticResource LocalizedStrings}}"
+                                     IsVisible="{Binding HaveMaxResults}"
+                                     Margin="0,12" />
             </StackPanel>
             <ListBox Grid.Row="1"
                           Margin="{StaticResource PhoneMargin}"

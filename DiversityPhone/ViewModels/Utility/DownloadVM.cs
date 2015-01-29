@@ -11,6 +11,8 @@
 
     public class DownloadVM : PageVMBase
     {
+        private const int MAX_RESULTS = 50;
+
         private readonly IDiversityServiceClient Service;
         private readonly IConnectivityService Connectivity;
         private readonly IFieldDataService Storage;
@@ -22,6 +24,10 @@
         private ObservableAsPropertyHelper<bool> _IsDownloading;
 
         public bool IsOnlineAvailable { get { return _IsOnlineAvailable.Value; } }
+
+        private ObservableAsPropertyHelper<bool> _HaveMaxResults;
+
+        public bool HaveMaxResults { get { return _HaveMaxResults.Value; } }
 
         private ObservableAsPropertyHelper<bool> _IsOnlineAvailable;
 
@@ -57,6 +63,10 @@
 
             _IsOnlineAvailable = Connectivity.Status().Select(s => s == ConnectionStatus.Wifi).Do(_ => { this.GetType(); }, ex => { }, () => { })
                 .ToProperty(this, x => x.IsOnlineAvailable);
+
+            _HaveMaxResults = QueryResult.CollectionCountChanged
+                .Select(c => c >= MAX_RESULTS)
+                .ToProperty(this, x => x.HaveMaxResults, false);
 
             SearchEvents = new ReactiveAsyncCommand(this.WhenAny(x => x.IsOnlineAvailable, x => x.Value));
             SearchEvents.ShowInFlightNotification(Notifications, DiversityResources.Download_SearchingEvents);

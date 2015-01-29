@@ -213,6 +213,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Download_HintLongPress" xml:space="preserve">
     <value>press and hold to download an item</value>
   </data>
+  <data name="Download_HintMaxResults" xml:space="preserve">
+    <value>Showing 50 results, if there are more matches the list has been truncated. In that case, please refine your query and try again.</value>
+  </data>
   <data name="Download_ItemsDone" xml:space="preserve">
     <value>items done</value>
   </data>
