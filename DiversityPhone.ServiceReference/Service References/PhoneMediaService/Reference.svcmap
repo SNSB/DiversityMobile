@@ -20,14 +20,14 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PhoneMediaService.xsd" MetadataType="Schema" ID="7bd13a9a-9c94-45f3-924a-2669c24cfc60" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd2" />
-    <MetadataFile FileName="PhoneMediaService1.xsd" MetadataType="Schema" ID="58205f3e-f6c8-4dcc-847d-348a0c880c36" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd0" />
-    <MetadataFile FileName="PhoneMediaService2.xsd" MetadataType="Schema" ID="a95b5063-d79b-4e7b-8e04-73999c13f285" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?xsd=xsd1" />
-    <MetadataFile FileName="PhoneMediaService.disco" MetadataType="Disco" ID="b7e2355e-cb52-456d-9c63-410806f8dda9" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?disco" />
-    <MetadataFile FileName="PhoneMediaService.wsdl" MetadataType="Wsdl" ID="c155f7d1-65e1-480f-8821-2014e452f0a1" SourceId="1" SourceUrl="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc?wsdl" />
+    <MetadataFile FileName="PhoneMediaService3.xsd" MetadataType="Schema" ID="bf4412fc-94b1-4870-a2e1-49b40e33655c" SourceId="1" SourceUrl="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PhoneMediaService1.disco" MetadataType="Disco" ID="2459bb04-8673-4691-ba84-07bb29c732c6" SourceId="1" SourceUrl="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc?disco" />
+    <MetadataFile FileName="PhoneMediaService31.xsd" MetadataType="Schema" ID="4aab90fc-09f4-45ad-b8ba-3717bf1cfe30" SourceId="1" SourceUrl="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PhoneMediaService1.wsdl" MetadataType="Wsdl" ID="8157317b-075f-4edc-a2d1-09cb1f885ac8" SourceId="1" SourceUrl="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc?wsdl" />
+    <MetadataFile FileName="PhoneMediaService32.xsd" MetadataType="Schema" ID="825bc849-f7c4-459e-9b54-0c88c6fab8e9" SourceId="1" SourceUrl="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

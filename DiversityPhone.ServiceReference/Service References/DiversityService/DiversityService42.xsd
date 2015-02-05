@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/DiversityService.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DiversityService.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:7091/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" />
+  <xs:import schemaLocation="http://dmservice.snsb.info:1111/DiversityService2/DiversityService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/DiversityPhone.Model" />
   <xs:complexType name="ArrayOfTerm">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Term" nillable="true" type="tns:Term" />

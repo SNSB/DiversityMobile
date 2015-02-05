@@ -95,22 +95,22 @@ namespace DiversityPhone.Services
                     {
                         if (p.Error == null)
                         {
-                            if (p is MultimediaService.BeginTransactionCompletedEventArgs)
+                            if (p is PhoneMediaService.BeginTransactionCompletedEventArgs)
                             {
                                 // Result is a fake URI -> ignore and start first package upload
                                 // Package Data is still in the buffer
                                 _multimedia.EncodeFileAsync(packageBuffer, mmo);
                                 return null;
                             }
-                            else if (p is MultimediaService.CommitCompletedEventArgs)
+                            else if (p is PhoneMediaService.CommitCompletedEventArgs)
                             {
-                                uri = (p as MultimediaService.CommitCompletedEventArgs).Result;
+                                uri = (p as PhoneMediaService.CommitCompletedEventArgs).Result;
                             }
-                            else if (p is MultimediaService.SubmitCompletedEventArgs)
+                            else if (p is PhoneMediaService.SubmitCompletedEventArgs)
                             {
-                                uri = (p as MultimediaService.SubmitCompletedEventArgs).Result;
+                                uri = (p as PhoneMediaService.SubmitCompletedEventArgs).Result;
                             }
-                            else if (p is MultimediaService.EncodeFileCompletedEventArgs)
+                            else if (p is PhoneMediaService.EncodeFileCompletedEventArgs)
                             {
                                 readPackage();
                                 if (packageBuffer.Length > 0)

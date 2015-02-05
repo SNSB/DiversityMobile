@@ -1,5 +1,5 @@
-﻿using DiversityPhone.MapService;
-using DiversityPhone.Model;
+﻿using DiversityPhone.Model;
+using DiversityPhone.PhoneMediaService;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;

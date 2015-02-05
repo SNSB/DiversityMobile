@@ -1,7 +1,7 @@
 ﻿using DiversityPhone.DiversityService;
 using DiversityPhone.Interface;
 using DiversityPhone.Model;
-using DiversityPhone.MultimediaService;
+using DiversityPhone.PhoneMediaService;
 using ReactiveUI;
 using System;
 using System.ComponentModel;
@@ -15,8 +15,7 @@ namespace DiversityPhone.Services
     public partial class DiversityServiceClient : IDiversityServiceClient, IEnableLogger
     {
         private DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
-        private MapService.PhoneMediaServiceClient _maps = new MapService.PhoneMediaServiceClient();
-        private MultimediaService.MediaService4Client _multimedia = new MultimediaService.MediaService4Client();
+        private PhoneMediaService.PhoneMediaServiceClient _multimedia = new PhoneMediaService.PhoneMediaServiceClient();
 
         //MISC
         private IObservable<EventPattern<GetUserInfoCompletedEventArgs>> GetUserInfoCompleted;
@@ -55,11 +54,11 @@ namespace DiversityPhone.Services
         private IObservable<EventPattern<AnalysesForIUCompletedEventArgs>> AnalysesForIUCompleted;
 
         //MULTIMEDIA
-        private IObservable<EventPattern<MultimediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
+        private IObservable<EventPattern<PhoneMediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
 
-        private IObservable<EventPattern<MultimediaService.BeginTransactionCompletedEventArgs>> BeginTransactionCompleted;
-        private IObservable<EventPattern<MultimediaService.EncodeFileCompletedEventArgs>> EncodeFileCompleted;
-        private IObservable<EventPattern<MultimediaService.CommitCompletedEventArgs>> CommitCompleted;
+        private IObservable<EventPattern<PhoneMediaService.BeginTransactionCompletedEventArgs>> BeginTransactionCompleted;
+        private IObservable<EventPattern<PhoneMediaService.EncodeFileCompletedEventArgs>> EncodeFileCompleted;
+        private IObservable<EventPattern<PhoneMediaService.CommitCompletedEventArgs>> CommitCompleted;
         private IObservable<EventPattern<AsyncCompletedEventArgs>> RollbackCompleted;
 
         private readonly IKeyMappingService Mapping;

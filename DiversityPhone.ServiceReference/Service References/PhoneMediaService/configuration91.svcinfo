@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="IUg1pjKpBl1fzE/fn9o37/wyS+A=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="9kuowfgh8f57Y2t+ZvTLREllZvk=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IPhoneMediaService1">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IPhoneMediaService1" contract="MapService.IPhoneMediaService" bindingType="basicHttpBinding" address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1">
+    <endpoint name="BasicHttpBinding_IPhoneMediaService1" contract="PhoneMediaService.IPhoneMediaService" bindingType="basicHttpBinding" address="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc</serializedValue>
+          <serializedValue>http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -127,7 +127,7 @@
           <serializedValue>BasicHttpBinding_IPhoneMediaService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>MapService.IPhoneMediaService</serializedValue>
+          <serializedValue>PhoneMediaService.IPhoneMediaService</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>

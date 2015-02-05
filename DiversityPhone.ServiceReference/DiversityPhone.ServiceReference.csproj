@@ -136,12 +136,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\MapService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\MultimediaService\Reference.cs">
+    <Compile Include="Service References\PhoneMediaService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -205,60 +200,46 @@
     <None Include="Service References\DiversityService\DiversityPhone.DiversityService.Term.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\DiversityService\DiversityService.disco" />
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
+    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
+    <None Include="Service References\DiversityService\DiversityService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\DiversityService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\DiversityService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DiversityService\DiversityService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\DiversityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\MapService\PhoneMediaService.disco" />
-    <None Include="Service References\MapService\configuration91.svcinfo" />
-    <None Include="Service References\MapService\configuration.svcinfo" />
-    <None Include="Service References\MapService\Reference.svcmap">
+    <None Include="Service References\PhoneMediaService\configuration91.svcinfo" />
+    <None Include="Service References\PhoneMediaService\configuration.svcinfo" />
+    <None Include="Service References\PhoneMediaService\PhoneMediaService1.wsdl" />
+    <None Include="Service References\PhoneMediaService\PhoneMediaService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhoneMediaService\PhoneMediaService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhoneMediaService\PhoneMediaService32.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PhoneMediaService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\MultimediaService\configuration91.svcinfo" />
-    <None Include="Service References\MultimediaService\configuration.svcinfo" />
-    <None Include="Service References\MultimediaService\MediaService41.wsdl" />
-    <None Include="Service References\MultimediaService\MediaService42.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MultimediaService\MediaService421.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MultimediaService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\MultimediaService\MediaService41.disco" />
+    <None Include="Service References\PhoneMediaService\PhoneMediaService1.disco" />
+    <None Include="Service References\DiversityService\DiversityService1.disco" />
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Service References\DiversityService\DiversityService.wsdl" />
-    <None Include="Service References\DiversityService\DiversityService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\DiversityService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\DiversityService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\DiversityService\DiversityService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapService\PhoneMediaService.wsdl" />
-    <None Include="Service References\MapService\PhoneMediaService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapService\PhoneMediaService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\MapService\PhoneMediaService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -275,8 +256,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\DiversityService\" />
-    <WCFMetadataStorage Include="Service References\MapService\" />
-    <WCFMetadataStorage Include="Service References\MultimediaService\" />
+    <WCFMetadataStorage Include="Service References\PhoneMediaService\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
@@ -288,7 +268,6 @@
     <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
- 
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

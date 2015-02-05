@@ -15,26 +15,17 @@
                     <security mode="None" />
                 </binding>
             </basicHttpBinding>
-            <customBinding>
-                <binding name="WSHttpBinding_IMediaService4">
-                    <textMessageEncoding messageVersion="Default" writeEncoding="utf-8" />
-                    <httpTransport maxReceivedMessageSize="2147483647" maxBufferSize="2147483647" />
-                </binding>
-            </customBinding>
         </bindings>
         <client>
-            <endpoint address="http://localhost:7091/DiversityService.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
             <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
                 contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
-            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+            <endpoint address="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc"
                 binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
-                contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
-            <endpoint address="http://btn4nv38.inf.uni-bayreuth.de:7092/MediaService4.svc"
-                binding="customBinding" bindingConfiguration="WSHttpBinding_IMediaService4"
-                contract="MultimediaService.IMediaService4" name="WSHttpBinding_IMediaService4" />
+                contract="PhoneMediaService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
+            <endpoint address="http://dmservice.snsb.info:1111/DiversityService2/DiversityService.svc"
+                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
         </client>
     </system.serviceModel>
 </configuration>
