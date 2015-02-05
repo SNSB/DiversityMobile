@@ -31,7 +31,7 @@
                             SelectedIndex="{Binding Project.SelectedIndex, Mode=TwoWay}"
                             ItemTemplate="{StaticResource DisplayTextItemTemplate}"
                             FullModeHeader="{Binding Resources.Setup_Header_Project, Source={StaticResource LocalizedStrings}}"
-                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplate}" />
+                            FullModeItemTemplate="{StaticResource DisplayTextItemTemplateLarge}" />
     </Grid>
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsMenuEnabled="False" />
