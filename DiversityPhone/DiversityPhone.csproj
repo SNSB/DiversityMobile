@@ -458,7 +458,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>

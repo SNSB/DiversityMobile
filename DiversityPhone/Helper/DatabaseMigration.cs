@@ -11,8 +11,7 @@
 
     public static partial class VersionMigration
     {
-        public static readonly Version CURRENT_VERSION = new Version(0, 9, 10, 0);
-        public const int CURRENT_SCHEMA_VERSION = 2; // As of Version 0.9.10.0
+        public const int CURRENT_SCHEMA_VERSION = 2; // As of Version 0.9.10.0/1.0
 
         public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
         {
@@ -33,7 +32,7 @@
                         var schema = ctx.CreateDatabaseSchemaUpdater();
                         if (schema.DatabaseSchemaVersion != CURRENT_SCHEMA_VERSION)
                         {
-                            ApplyMigrations(schema, targetVersion ?? CURRENT_VERSION);
+                            ApplyMigrations(schema, targetVersion ?? GetCurrentVersionNumber());
                             schema.Execute();
                         }
                     }
@@ -89,7 +88,7 @@
 
         /// <summary>
         /// This Method adds the Localization Table, if it doesn't exist
-        /// Version 0.9.10.0
+        /// Version 0.9.10.0/1.0
         /// </summary>
         /// <param name="schema"></param>
         private static void AddLocalization(DatabaseSchemaUpdater schema)

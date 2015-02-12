@@ -24,7 +24,7 @@ namespace DiversityPhone.Helper
     {
         private const string LAST_VERSION = "LastVersion";
 
-        private static Version GetVersionNumber()
+        private static Version GetCurrentVersionNumber()
         {
             var asm = Assembly.GetExecutingAssembly();
             var parts = asm.FullName.Split(',');
@@ -37,7 +37,7 @@ namespace DiversityPhone.Helper
             {
                 var currentProfile = App.Kernel.Get<ICurrentProfile>().CurrentProfilePath();
 
-                Version currentVersion = GetVersionNumber();
+                Version currentVersion = GetCurrentVersionNumber();
                 Version lastVersion;
                 if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(LAST_VERSION, out lastVersion))
                 {

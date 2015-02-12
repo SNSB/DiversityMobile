@@ -38,9 +38,12 @@
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService"
                 name="BasicHttpBinding_IDiversityService" />
-      <!--<endpoint address="http://169.254.80.80/DiversityService/DiversityService.svc" binding="basicHttpBinding"
+      <!--<endpoint address="http://192.168.1.100:7091/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
+      <!--<endpoint address="http://192.168.1.100:1111/DiversityService.svc" binding="basicHttpBinding"
+                bindingConfiguration="BasicHttpBinding_IDiversityService"
+                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />-->
       <!--<endpoint address="http://10.0.0.3/DiversityService/DiversityService.svc" binding="basicHttpBinding"
                 bindingConfiguration="BasicHttpBinding_IDiversityService"
                 contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" ></endpoint>-->

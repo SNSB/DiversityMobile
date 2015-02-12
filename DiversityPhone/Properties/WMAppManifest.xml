@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{91f2ec9d-1ead-48ee-b95c-e3f58d86572c}" Title="DiversityMobile" RuntimeType="Silverlight" Version="0.9.10.0" Genre="apps.normal" Author="SNSB" Description="Sample description" Publisher="SNSB" BitsPerPixel="16">
+  <App xmlns="" ProductID="{91f2ec9d-1ead-48ee-b95c-e3f58d86572c}" Title="DiversityMobile" RuntimeType="Silverlight" Version="1.0" Genre="apps.normal" Author="SNSB" Description="Sample description" Publisher="SNSB" BitsPerPixel="16">
     <IconPath IsRelative="true" IsResource="false">Images\AppIcons\DivMob_QuadratEnd_s_AppTileTiny.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_IDENTITY_DEVICE" />
