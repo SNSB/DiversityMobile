@@ -2,7 +2,7 @@
   <SmallAppTile>DivMob_QuadratEnd_s_MarketTile.png</SmallAppTile>
   <LargeAppTile>DivMob_QuadratEnd_s_AppTileLarge.png</LargeAppTile>
   <PCAppTile>DivMob_QuadratEnd_s_MarketTile.png</PCAppTile>
-  <ScreenShots>Splash.png;;;;;;;;</ScreenShots>
-  <ScreenShotsWXGA>;;;;;;;;</ScreenShotsWXGA>
-  <ScreenShots720P>;;;;;;;;</ScreenShots720P>
+  <ScreenShots>WVGA-Splash.png;WVGA-Intro.png;WVGA-Login.png;WVGA-Home.png;WVGA-Settings.png;WVGA-Event.png;WVGA-Unit.png;;</ScreenShots>
+  <ScreenShotsWXGA>WXGA-Splash.png;WXGA-Intro.png;WXGA-Login.png;WXGA-Home.png;WXGA-Settings.png;WXGA-Event.png;WXGA-Unit.png;;</ScreenShotsWXGA>
+  <ScreenShots720P>720P-Splash.png;720P-Intro.png;720P-Login.png;720P-Home.png;720P-Settings.png;720P-Event.png;720P-Unit.png;;</ScreenShots720P>
 </MarketplaceDetails>

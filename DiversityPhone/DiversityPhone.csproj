@@ -592,7 +592,6 @@
     <Content Include="Images\MetroIcons\white\share.png" />
     <Content Include="Images\MetroIcons\white\upload.png" />
     <Content Include="Images\MetroIcons\white\video.png" />
-    <Content Include="Images\Screenshots\Splash.png" />
     <Content Include="Images\SNSBIcons\Analysis.png" />
     <Content Include="Images\SNSBIcons\Analysis_80.png" />
     <Content Include="Images\SNSBIcons\ApplicationIcon.png" />
