@@ -31,15 +31,66 @@ namespace DiversityPhone.Helper
             return new Version(parts[1].Split('=')[1]);
         }
 
+        private static Version LastVersion
+        {
+            get
+            {
+                string result = "";
+
+                try
+                {
+                    if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(LAST_VERSION, out result))
+                    {
+                        return null;
+                    }
+                }
+                catch (InvalidCastException ex)
+                {
+                    // If there is an old Version stored in the settings, getting it as a string will fail
+                    // Since this Version object will be empty
+                    // we just return an empty version.
+                    // See Issue #82
+                    LogManager.GetLogger(typeof(VersionMigration)).InfoException("Loading LastVersion", ex);
+
+                    return new Version(0, 0);
+                }
+
+                Version parsed;
+                if (!Version.TryParse(result, out parsed))
+                {
+                    return null;
+                }
+
+                return parsed;
+            }
+
+            set
+            {
+                var settings = IsolatedStorageSettings.ApplicationSettings;
+
+                if (settings.Contains(LAST_VERSION))
+                {
+                    settings.Remove(LAST_VERSION);
+                }
+
+                if (value != null)
+                {
+                    settings.Add(LAST_VERSION, value.ToString());
+                }
+
+                settings.Save();
+            }
+        }
+
         public static Task ApplyMigrationIfNecessary()
         {
             return Task.Factory.StartNew(async () =>
             {
                 var currentProfile = App.Kernel.Get<ICurrentProfile>().CurrentProfilePath();
 
-                Version currentVersion = GetCurrentVersionNumber();
-                Version lastVersion;
-                if (!IsolatedStorageSettings.ApplicationSettings.TryGetValue(LAST_VERSION, out lastVersion))
+                var currentVersion = GetCurrentVersionNumber();
+                var lastVersion = LastVersion;
+                if (lastVersion == null)
                 {
                     // Version before we had LAST_VERSION
                     // Versions up to and including 0.9.9
@@ -78,12 +129,7 @@ namespace DiversityPhone.Helper
                     }
                 }
 
-                if (IsolatedStorageSettings.ApplicationSettings.Contains(LAST_VERSION))
-                {
-                    IsolatedStorageSettings.ApplicationSettings.Remove(LAST_VERSION);
-                }
-                IsolatedStorageSettings.ApplicationSettings.Add(LAST_VERSION, currentVersion);
-                IsolatedStorageSettings.ApplicationSettings.Save();
+                LastVersion = currentVersion;
             }).Unwrap();
         }
 
