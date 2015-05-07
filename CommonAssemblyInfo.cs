@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyCompany("AI4 Uni Bayreuth")]
 [assembly: AssemblyProduct("DiversityPhone")]
-[assembly: AssemblyCopyright("Copyright SNSB 2013 All Rights Reserved")]
+[assembly: AssemblyCopyright("Copyright SNSB 2015 All Rights Reserved")]
 [assembly: AssemblyTrademark("Ai4 Uni Bayreuth")]
 [assembly: AssemblyCulture("")]
 
@@ -21,6 +21,6 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Revision and Build Numbers
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.1.0")]
 [assembly: NeutralResourcesLanguageAttribute("en")]
