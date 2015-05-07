@@ -613,6 +613,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Sync_Info_UploadingMultimedia" xml:space="preserve">
     <value>Uploading Multimedia</value>
   </data>
+  <data name="TaxonManagement_Menu_ToggleSelection" xml:space="preserve">
+    <value>toggle selection</value>
+  </data>
   <data name="TaxonManagement_Message_CantDownload" xml:space="preserve">
     <value>Can't download another taxon list.</value>
   </data>

@@ -26,16 +26,16 @@ namespace DiversityPhone.Interface
         int getTaxonTableFreeCount();
 
         /// <summary>
-        /// Updates a Taxon Selection
+        /// Updates a Taxon List
         /// </summary>
         /// <param name="sel"></param>
-        void selectTaxonList(TaxonList list);
+        void updateTaxonList(TaxonList list);
 
         /// <summary>
         /// Gets all defined Taxon Selections
         /// </summary>
         /// <returns></returns>
-        IEnumerable<TaxonList> getTaxonSelections();
+        IEnumerable<TaxonList> getTaxonLists();
 
         /// <summary>
         /// Removes a Taxon Selection and empties its Taxon Table
@@ -54,6 +54,6 @@ namespace DiversityPhone.Interface
         /// <summary>
         /// Deletes all Taxon list selections and Databases.
         /// </summary>
-        void ClearTaxonLists();
+        void clearTaxonLists();
     }
 }

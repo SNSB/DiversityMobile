@@ -71,7 +71,7 @@
                                                               Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded}" />
-                                            <toolkit:MenuItem Header="select"
+                                            <toolkit:MenuItem Header="{Binding Resources.TaxonManagement_Menu_ToggleSelection, Source={StaticResource LocalizedStrings}}"
                                                               Command="{Binding ElementName=taxonPage, Path=DataContext.Select}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsSelected, Converter={StaticResource InvertBoolean}}" />

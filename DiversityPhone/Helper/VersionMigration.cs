@@ -62,6 +62,20 @@ namespace DiversityPhone.Helper
                         var dbLocation = Path.Combine(currentProfile, DiversityDataContext.DB_FILENAME);
                         MoveGeoPointsToLocalizations(new DiversityDataContext(dbLocation));
                     }
+                    if (lastVersion < new Version(1, 0, 1, 0))
+                    {
+                        // Select all downloaded taxon lists
+                        var taxonService = App.Kernel.Get<ITaxonService>();
+                        var unselected = from list in taxonService.getTaxonLists()
+                                         where !list.IsSelected
+                                         select list;
+
+                        foreach (var list in unselected)
+                        {
+                            list.IsSelected = true;
+                            taxonService.updateTaxonList(list);
+                        }
+                    }
                 }
 
                 if (IsolatedStorageSettings.ApplicationSettings.Contains(LAST_VERSION))

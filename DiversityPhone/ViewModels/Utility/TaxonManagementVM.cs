@@ -77,7 +77,7 @@
             var localLists =
             this.FirstActivation()
                 .SelectMany(_ =>
-                    Taxa.getTaxonSelections()
+                    Taxa.getTaxonLists()
                     .ToObservable(ThreadPoolScheduler.Instance)
                     .Select(list => new TaxonListVM(list)))
                     .Publish();
@@ -116,16 +116,14 @@
             onlineLists.Connect();
             localLists.Connect();
 
-            Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsSelected && !vm.IsDownloading);
-            Select.Subscribe(taxonlist =>
+            Select = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);
+            Select.Subscribe(vm =>
             {
-                foreach (var list in LocalLists)
-                {
-                    if (list.Model.TaxonomicGroup == taxonlist.Model.TaxonomicGroup)
-                        list.Model.IsSelected = false;
-                }
+                var model = vm.Model;
 
-                Taxa.selectTaxonList(taxonlist.Model);
+                model.IsSelected = !model.IsSelected;
+
+                Taxa.updateTaxonList(model);
             });
 
             Download = new ReactiveCommand<TaxonListVM>(vm => !vm.IsDownloading);

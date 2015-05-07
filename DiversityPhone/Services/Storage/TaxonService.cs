@@ -1,5 +1,6 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
@@ -9,7 +10,7 @@ using System.Threading;
 
 namespace DiversityPhone.Services
 {
-    public class TaxonService : ITaxonService
+    public class TaxonService : ITaxonService, IEnableLogger
     {
         private const string WILDCARD = "%";
 
@@ -27,7 +28,7 @@ namespace DiversityPhone.Services
                     var unusedIDs = getUnusedTaxonTableIDs(ctx);
                     if (unusedIDs.Count() > 0)
                     {
-                        list.IsSelected = false;
+                        list.IsSelected = true;
                         list.TableID = unusedIDs.First();
                         ctx.TaxonLists.InsertOnSubmit(list);
                         ctx.SubmitChanges();
@@ -58,7 +59,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        public IEnumerable<TaxonList> getTaxonSelections()
+        public IEnumerable<TaxonList> getTaxonLists()
         {
             using (var ctx = new TaxonSelectionDataContext())
             {
@@ -67,7 +68,7 @@ namespace DiversityPhone.Services
             }
         }
 
-        public void selectTaxonList(TaxonList list)
+        public void updateTaxonList(TaxonList list)
         {
             if (list == null || !TaxonList.ValidTableIDs.Contains(list.TableID))
             {
@@ -75,24 +76,29 @@ namespace DiversityPhone.Services
                 return;
             }
 
-            if (list.IsSelected)
-                return;
-
             withSelections(ctx =>
             {
-                var tables = from s in ctx.TaxonLists
-                             where s.TaxonomicGroup == list.TaxonomicGroup
-                             select s;
-                var oldSelection = tables.FirstOrDefault(s => s.IsSelected);
-                if (oldSelection != null)
+                try
                 {
-                    oldSelection.IsSelected = false;
-                }
+                    var original = (from l in ctx.TaxonLists
+                                    where l.TableID == list.TableID
+                                    select l).FirstOrDefault();
 
-                list.IsSelected = false;
-                ctx.TaxonLists.Attach(list);
-                list.IsSelected = true;
-                ctx.SubmitChanges();
+                    if (original == null)
+                    {
+                        this.Log().Error("Tried to update nonexistent list");
+                        return;
+                    }
+
+                    // The only Properties that can be updated are the following
+                    original.IsSelected = list.IsSelected;
+
+                    ctx.SubmitChanges();
+                }
+                catch (Exception ex)
+                {
+                    this.Log().ErrorException("updateTaxonList", ex);
+                }
             }
             );
         }
@@ -132,19 +138,18 @@ namespace DiversityPhone.Services
 
         public IEnumerable<TaxonName> getTaxonNames(Term taxonGroup, string query)
         {
-            int tableID;
-            if (taxonGroup == null
-                || (tableID = getTaxonTableIDForGroup(taxonGroup.Code)) == TaxonList.InvalidTableID)
+            IEnumerable<TaxonList> tables;
+            if (taxonGroup == null ||
+                string.IsNullOrWhiteSpace(query) ||
+                !(tables = getSelectedTaxonTablesForGroup(taxonGroup.Code)).Any())
             {
-                //System.Diagnostics.Debugger.Break();
-                //TODO Logging
                 return new List<TaxonName>();
             }
 
-            return getTaxonNames(tableID, query);
+            return getTaxonNames(tables, query);
         }
 
-        public void ClearTaxonLists()
+        public void clearTaxonLists()
         {
             withSelections(sel =>
             {
@@ -164,77 +169,85 @@ namespace DiversityPhone.Services
             return TaxonList.ValidTableIDs.Except(usedTableIDs);
         }
 
-        private IEnumerable<TaxonName> getTaxonNames(int tableID, string query)
+        private IEnumerable<TaxonName> getTaxonNames(IEnumerable<TaxonList> tablesToSearch, string query)
         {
             var queryWords = (from word in query.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)
                               select word).ToArray();
 
-            using (var ctx = new TaxonDataContext(tableID))
+            foreach (var table in tablesToSearch)
             {
-                var q = ctx.TaxonNames as IQueryable<TaxonName>;
-
-                //Match Genus
-                if (queryWords.Length > 0 && queryWords[0] != WILDCARD)
+                using (var ctx = new TaxonDataContext(table.TableID))
                 {
-                    q = from tn in q
-                        where tn.GenusOrSupragenic.StartsWith(queryWords[0])
-                        select tn;
-                }
+                    var q = ctx.TaxonNames as IQueryable<TaxonName>;
 
-                //Match SpeciesEpithet
-                if (queryWords.Length > 1 && queryWords[1] != WILDCARD)
-                {
-                    q = from tn in q
-                        where tn.SpeciesEpithet.StartsWith(queryWords[1])
-                        select tn;
-                }
+                    //Match Genus
+                    if (queryWords.Length > 0 && queryWords[0] != WILDCARD)
+                    {
+                        q = from tn in q
+                            where tn.GenusOrSupragenic.StartsWith(queryWords[0])
+                            select tn;
+                    }
 
-                //Match Infra
-                if (queryWords.Length > 2 && queryWords[2] != WILDCARD)
-                {
-                    q = from tn in q
-                        where tn.InfraspecificEpithet.StartsWith(queryWords[2])
-                        select tn;
-                }
+                    //Match SpeciesEpithet
+                    if (queryWords.Length > 1 && queryWords[1] != WILDCARD)
+                    {
+                        q = from tn in q
+                            where tn.SpeciesEpithet.StartsWith(queryWords[1])
+                            select tn;
+                    }
 
-                //Order
-                q = from inf in q
-                    orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
-                    select inf;
+                    //Match Infra
+                    if (queryWords.Length > 2 && queryWords[2] != WILDCARD)
+                    {
+                        q = from tn in q
+                            where tn.InfraspecificEpithet.StartsWith(queryWords[2])
+                            select tn;
+                    }
 
-                // Treating the query as an enumerable prevents the following operators
-                // from being applied on the DB
-                // which is necessary, because "Contains" is not supported in SQL CE
-                // instead, it is evaluated in application code
-                var e = q.AsEnumerable();
-
-                if (queryWords.Length > 3)
-                {
-                    e = from inf in e
-                        where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))
+                    //Order
+                    q = from inf in q
+                        orderby inf.GenusOrSupragenic, inf.SpeciesEpithet, inf.InfraspecificEpithet
                         select inf;
-                }
 
-                foreach (var item in e)
-                {
-                    yield return item;
+                    // Treating the query as an enumerable prevents the following operators
+                    // from being applied on the DB
+                    // which is necessary, because "Contains" is not supported in SQL CE
+                    // instead, it is evaluated in application code
+                    var e = q.AsEnumerable();
+
+                    if (queryWords.Length > 3)
+                    {
+                        e = from inf in e
+                            where queryWords.Skip(3).Where(w => w != WILDCARD).All(word => inf.TaxonNameCache.Contains(word))
+                            select inf;
+                    }
+
+                    foreach (var item in e)
+                    {
+                        yield return item;
+                    }
                 }
             }
         }
 
-        private int getTaxonTableIDForGroup(string taxonGroup)
+        private IEnumerable<TaxonList> getSelectedTaxonTablesForGroup(string taxonGroup)
         {
-            int id = TaxonList.InvalidTableID;
-            if (taxonGroup != null)
-                withSelections(ctx =>
-                {
-                    var assignment = from a in ctx.TaxonLists
-                                     where a.TaxonomicGroup == taxonGroup && a.IsSelected
-                                     select a.TableID;
-                    if (assignment.Any())
-                        id = assignment.First();
-                });
-            return id;
+            if (string.IsNullOrWhiteSpace(taxonGroup))
+            {
+                return Enumerable.Empty<TaxonList>();
+            }
+
+            IEnumerable<TaxonList> result = Enumerable.Empty<TaxonList>();
+
+            withSelections(ctx =>
+            {
+                var assignment = from a in ctx.TaxonLists
+                                 where a.TaxonomicGroup == taxonGroup && a.IsSelected
+                                 select a;
+                result = assignment.ToList();
+            });
+
+            return result;
         }
 
         private void withSelections(Action<TaxonSelectionDataContext> operation)
