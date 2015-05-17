@@ -146,9 +146,6 @@
                             {
                                 //Download Succeeded
                                 taxonlist.IsDownloading = false;
-
-                                if (Select.CanExecute(taxonlist))
-                                    Select.Execute(taxonlist);
                             },
                                 _ => //Download Failed
                                 {
