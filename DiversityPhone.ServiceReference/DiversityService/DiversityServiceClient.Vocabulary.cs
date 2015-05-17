@@ -69,7 +69,7 @@ namespace DiversityPhone.Services
                             GenusOrSupragenic = taxon.GenusOrSupragenic,
                             InfraspecificEpithet = taxon.InfraspecificEpithet,
                             SpeciesEpithet = taxon.SpeciesEpithet,
-                            Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy), taxon.Synonymy, true),
+                            Synonymy = (Client.Synonymy)Enum.Parse(typeof(Client.Synonymy), taxon.Synonymy ?? Client.Synonymy.WorkingName.ToString(), true),
                             TaxonNameCache = taxon.TaxonNameCache,
                             TaxonNameSinAuth = taxon.TaxonNameSinAuth,
                             URI = taxon.URI,
