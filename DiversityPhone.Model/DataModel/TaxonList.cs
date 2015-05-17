@@ -18,6 +18,9 @@ namespace DiversityPhone.Model
         public int TableID { get; set; }
 
         [Column]
+        public int? ListID { get; set; }
+
+        [Column]
         public string TableName { get; set; }
 
         [Column]

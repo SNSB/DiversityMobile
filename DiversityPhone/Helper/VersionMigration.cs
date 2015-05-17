@@ -100,13 +100,17 @@ namespace DiversityPhone.Helper
                     MoveVocabularyToProfile(currentProfile);
                     MoveMultimediaToProfile(currentProfile);
 
-                    await CreateOrUpgradeSchema();
+                    await CreateOrUpgradeFieldData();
 
                     lastVersion = new Version(0, 9, 10, 0);
                 }
                 if (lastVersion < currentVersion)
                 {
-                    await CreateOrUpgradeSchema();
+                    await CreateOrUpgradeFieldData();
+
+                    var taxonService = (TaxonService)App.Kernel.Get<ITaxonService>();
+
+                    await taxonService.UpgradeDatabase();
 
                     if (lastVersion < new Version(0, 9, 10, 0))
                     {
@@ -116,7 +120,6 @@ namespace DiversityPhone.Helper
                     if (lastVersion < new Version(1, 0, 1, 0))
                     {
                         // Select all downloaded taxon lists
-                        var taxonService = App.Kernel.Get<ITaxonService>();
                         var unselected = from list in taxonService.getTaxonLists()
                                          where !list.IsSelected
                                          select list;
@@ -255,10 +258,10 @@ namespace DiversityPhone.Helper
                         // Don't use the source db for that but a throwaway copy
                         var tmpSourceLocation = Path.ChangeExtension(targetLocation, ".old.sdf");
                         iso.CopyFile(sourceLocation, tmpSourceLocation);
-                        await CreateOrUpgradeSchema(tmpSourceLocation, new Version(0, 9, 8));
+                        await CreateOrUpgradeFieldData(tmpSourceLocation, new Version(0, 9, 8));
 
                         // Create target DB using the most recent schema
-                        await CreateOrUpgradeSchema(targetLocation);
+                        await CreateOrUpgradeFieldData(targetLocation);
 
                         using (var sourceCtx = new DiversityDataContext(tmpSourceLocation))
                         using (var targetCtx = new DiversityDataContext(targetLocation))

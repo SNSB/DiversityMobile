@@ -43,6 +43,7 @@ namespace DiversityPhone.Services
                 .Select(res => res
                     .Select(svcList => new Client.TaxonList()
                     {
+                        ListID = svcList.Id,
                         IsPublicList = svcList.IsPublicList,
                         TableDisplayName = svcList.DisplayText,
                         TableName = svcList.Table,
@@ -55,7 +56,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.TaxonName>> DownloadTaxonListChunked(Client.TaxonList list)
         {
-            var serviceList = new TaxonList() { DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };
+            var serviceList = new TaxonList() { Id = list.ListID ?? 0, DisplayText = list.TableDisplayName, IsPublicList = list.IsPublicList, Table = list.TableName, TaxonomicGroup = list.TaxonomicGroup };
 
             return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
                 {

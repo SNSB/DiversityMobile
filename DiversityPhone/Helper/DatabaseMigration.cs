@@ -11,9 +11,9 @@
 
     public static partial class VersionMigration
     {
-        public const int CURRENT_SCHEMA_VERSION = 2; // As of Version 0.9.10.0/1.0
+        public const int CURRENT_FIELD_DATA_SCHEMA_VERSION = 2; // As of Version 0.9.10.0/1.0
 
-        public static Task CreateOrUpgradeSchema(string dbPath = null, Version targetVersion = null)
+        public static Task CreateOrUpgradeFieldData(string dbPath = null, Version targetVersion = null)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -24,13 +24,13 @@
                     {
                         ctx.CreateDatabase();
                         var schema = ctx.CreateDatabaseSchemaUpdater();
-                        schema.DatabaseSchemaVersion = CURRENT_SCHEMA_VERSION;
+                        schema.DatabaseSchemaVersion = CURRENT_FIELD_DATA_SCHEMA_VERSION;
                         schema.Execute();
                     }
                     else
                     {
                         var schema = ctx.CreateDatabaseSchemaUpdater();
-                        if (schema.DatabaseSchemaVersion != CURRENT_SCHEMA_VERSION)
+                        if (schema.DatabaseSchemaVersion != CURRENT_FIELD_DATA_SCHEMA_VERSION)
                         {
                             ApplyMigrations(schema, targetVersion ?? GetCurrentVersionNumber());
                             schema.Execute();

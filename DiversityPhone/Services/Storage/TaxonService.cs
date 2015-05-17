@@ -1,5 +1,6 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using Microsoft.Phone.Data.Linq;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Data.Linq;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DiversityPhone.Services
 {
@@ -267,6 +269,35 @@ namespace DiversityPhone.Services
         }
 
         #endregion TaxonNames
+
+        private const int CURRENT_TAXA_SCHEMA_VERSION = 1; // As of Version 1.0.1
+
+        public Task UpgradeDatabase()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    withSelections(ctx =>
+                    {
+                        var schema = ctx.CreateDatabaseSchemaUpdater();
+
+                        // Version 1.0.1
+                        if (schema.DatabaseSchemaVersion < 1)
+                        {
+                            schema.AddColumn<TaxonList>("ListID");
+                            schema.DatabaseSchemaVersion = 1;
+                        }
+
+                        schema.Execute();
+                    });
+                }
+                catch (Exception ex)
+                {
+                    this.Log().ErrorException("UpgradeTaxonDatabase", ex);
+                }
+            });
+        }
 
         private class TaxonSelectionDataContext : DataContext
         {

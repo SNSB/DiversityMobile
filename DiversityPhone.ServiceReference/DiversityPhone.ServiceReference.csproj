@@ -202,17 +202,17 @@
     </None>
     <None Include="Service References\DiversityService\configuration91.svcinfo" />
     <None Include="Service References\DiversityService\configuration.svcinfo" />
-    <None Include="Service References\DiversityService\DiversityService1.wsdl" />
-    <None Include="Service References\DiversityService\DiversityService4.xsd">
+    <None Include="Service References\DiversityService\DiversityService.wsdl" />
+    <None Include="Service References\DiversityService\DiversityService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService41.xsd">
+    <None Include="Service References\DiversityService\DiversityService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService42.xsd">
+    <None Include="Service References\DiversityService\DiversityService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\DiversityService\DiversityService43.xsd">
+    <None Include="Service References\DiversityService\DiversityService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\DiversityService\Reference.svcmap">
@@ -236,7 +236,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Service References\PhoneMediaService\PhoneMediaService1.disco" />
-    <None Include="Service References\DiversityService\DiversityService1.disco" />
+    <None Include="Service References\DiversityService\DiversityService.disco" />
     <Content Include="ServiceReferences.ClientConfig">
       <SubType>Designer</SubType>
     </Content>

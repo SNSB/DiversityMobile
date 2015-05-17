@@ -1,31 +1,31 @@
 ﻿<configuration>
-    <system.serviceModel>
-        <bindings>
-            <basicHttpBinding>
-                <binding name="BasicHttpBinding_IPhoneMediaService" maxBufferSize="2147483647"
-                    maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
-                </binding>
-                <binding name="BasicHttpBinding_IDiversityService" maxBufferSize="2147483647"
-                    maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
-                </binding>
-                <binding name="BasicHttpBinding_IPhoneMediaService1" maxBufferSize="2147483647"
-                    maxReceivedMessageSize="2147483647">
-                    <security mode="None" />
-                </binding>
-            </basicHttpBinding>
-        </bindings>
-        <client>
-            <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
-                contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
-            <endpoint address="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
-                contract="PhoneMediaService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
-            <endpoint address="http://dmservice.snsb.info:1111/DiversityService2/DiversityService.svc"
-                binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
-                contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
-        </client>
-    </system.serviceModel>
+  <system.serviceModel>
+    <bindings>
+      <basicHttpBinding>
+        <binding name="BasicHttpBinding_IPhoneMediaService" maxBufferSize="2147483647"
+            maxReceivedMessageSize="2147483647">
+          <security mode="None" />
+        </binding>
+        <binding name="BasicHttpBinding_IDiversityService" maxBufferSize="2147483647"
+            maxReceivedMessageSize="2147483647">
+          <security mode="None" />
+        </binding>
+        <binding name="BasicHttpBinding_IPhoneMediaService1" maxBufferSize="2147483647"
+            maxReceivedMessageSize="2147483647">
+          <security mode="None" />
+        </binding>
+      </basicHttpBinding>
+    </bindings>
+    <client>
+      <endpoint address="http://dwbmobile.snsb.info:1111/PhoneMediaService/PhoneMediaService.svc"
+          binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService"
+          contract="MapService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService" />
+      <endpoint address="http://mediaservice.snsb.info:1111/PhoneMediaService2/PhoneMediaService.svc"
+          binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IPhoneMediaService1"
+          contract="PhoneMediaService.IPhoneMediaService" name="BasicHttpBinding_IPhoneMediaService1" />
+      <endpoint address="http://192.168.2.100:7091/DiversityService.svc"
+          binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IDiversityService"
+          contract="DiversityService.IDiversityService" name="BasicHttpBinding_IDiversityService" />
+    </client>
+  </system.serviceModel>
 </configuration>
