@@ -96,6 +96,7 @@
                 {
                     return Service.GetTaxonLists()
                         .DisplayProgress(Notification, DiversityResources.TaxonManagement_State_DownloadingLists)
+                        .CatchEmpty()
                         .TakeUntil(this.OnDeactivation());
                 })
                 .ObserveOnDispatcher()
