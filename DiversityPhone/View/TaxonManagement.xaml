@@ -61,8 +61,8 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Text="{Binding Resources.Info_ContextMenu, Source={StaticResource LocalizedStrings}}" Style="{StaticResource PhoneTextSmallStyle}" />
-                    <ItemsControl Grid.Row="1" ItemsSource="{Binding LocalLists}">
-                        <ItemsControl.ItemTemplate>
+                    <ListBox Grid.Row="1" ItemsSource="{Binding LocalLists}">
+                        <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <ContentControl ContentTemplate="{StaticResource TaxonListItemTemplate}" Content="{Binding}" HorizontalAlignment="Left">
                                     <toolkit:ContextMenuService.ContextMenu>
@@ -83,8 +83,8 @@
                                     </toolkit:ContextMenuService.ContextMenu>
                                 </ContentControl>
                             </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </Grid>
             </controls:PivotItem>
 
