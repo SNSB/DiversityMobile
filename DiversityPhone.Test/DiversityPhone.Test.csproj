@@ -153,6 +153,9 @@
     <Compile Include="..\DiversityPhone.Interface\IVocabularyService.cs">
       <Link>Implementation\Interface\IVocabularyService.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone.Interface\SchedulerAttributes.cs">
+      <Link>Implementation\Interface\SchedulerAttributes.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone.Model\AppSettings.cs">
       <Link>Implementation\Model\AppSettings.cs</Link>
     </Compile>

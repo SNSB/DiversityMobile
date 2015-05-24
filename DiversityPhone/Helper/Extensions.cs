@@ -8,10 +8,6 @@
     using System.Threading;
     using System.Threading.Tasks;
 
-    public class DispatcherAttribute : Attribute { }
-
-    public class ThreadPoolAttribute : Attribute { }
-
     internal static class Extensions
     {
         private static readonly TimeSpan NOTIFICATION_DURATION = TimeSpan.FromSeconds(3);

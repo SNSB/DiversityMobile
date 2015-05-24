@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.ServiceModel;
 
@@ -24,15 +25,17 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public static IObservable<TEventArgs> MakeObservableServiceResult<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
+        public static IObservable<TEventArgs> MakeObservableServiceResult<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState, IScheduler scheduler) where TEventArgs : AsyncCompletedEventArgs
         {
-            return This.FilterByUserState(userState)
+            return This
+                .ObserveOn(scheduler)
+                .FilterByUserState(userState)
                 .PipeErrors();
         }
 
-        public static IObservable<TEventArgs> MakeObservableServiceResultSingle<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
+        public static IObservable<TEventArgs> MakeObservableServiceResultSingle<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState, IScheduler scheduler) where TEventArgs : AsyncCompletedEventArgs
         {
-            return MakeObservableServiceResult(This, userState)
+            return MakeObservableServiceResult(This, userState, scheduler)
                 .ReplayOnlyFirst();
         }
 

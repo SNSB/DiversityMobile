@@ -1,5 +1,6 @@
 ﻿namespace DiversityPhone.ViewModels
 {
+    using DiversityPhone.Interface;
     using ReactiveUI;
     using System;
     using System.Collections.Generic;

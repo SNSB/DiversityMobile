@@ -53,10 +53,9 @@ namespace DiversityPhone.Services
                 {
                     taxctx.SubmitChanges();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    System.Diagnostics.Debugger.Break();
-                    //TODO Log
+                    this.Log().ErrorException("Adding Taxon Names", ex);
                 }
             }
         }

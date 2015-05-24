@@ -1,4 +1,5 @@
-﻿using DiversityPhone.Model;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using DiversityPhone.PhoneMediaService;
 using ReactiveUI;
 using System;
@@ -7,6 +8,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
 using System.Reactive;
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Xml.Linq;
 
@@ -14,18 +16,20 @@ namespace DiversityPhone.Services
 {
     public partial class MapTransferService : IMapTransferService, IEnableLogger
     {
-        private IMapStorageService MapStorage;
-        private ICredentialsService CredentialsProvider;
+        private readonly IMapStorageService MapStorage;
+        private readonly ICredentialsService CredentialsProvider;
+        private readonly IScheduler ThreadPool;
         private PhoneMediaServiceClient MapService = new PhoneMediaServiceClient();
 
         private IObservable<EventPattern<GetMapListFilterCompletedEventArgs>> GetMapsListCompletedObservable;
         private IObservable<EventPattern<GetMapUrlCompletedEventArgs>> GetMapUrlCompletedObservable;
         private IObservable<EventPattern<GetXmlUrlCompletedEventArgs>> GetXmlUrlCompletedObservable;
 
-        public MapTransferService(IMapStorageService storage, ICredentialsService creds)
+        public MapTransferService(IMapStorageService storage, ICredentialsService creds, [ThreadPool] IScheduler threadPool)
         {
             MapStorage = storage;
             CredentialsProvider = creds;
+            ThreadPool = threadPool;
 
             using (IsolatedStorageFile isoStore = IsolatedStorageFile.GetUserStoreForApplication())
             {
@@ -44,7 +48,7 @@ namespace DiversityPhone.Services
         {
             object request = new object();
             var res = GetMapsListCompletedObservable
-                .MakeObservableServiceResultSingle(request)
+                .MakeObservableServiceResultSingle(request, ThreadPool)
                 .Select(args => args.Result as IEnumerable<string>);
             MapService.GetMapListFilterAsync(searchString, request);
             return res;

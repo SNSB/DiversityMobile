@@ -1,4 +1,5 @@
-﻿using DiversityPhone.Model;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using ReactiveUI;
 using System;
 using System.Diagnostics.Contracts;

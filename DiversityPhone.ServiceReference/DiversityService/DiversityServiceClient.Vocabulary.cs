@@ -12,7 +12,7 @@ namespace DiversityPhone.Services
     {
         public IObservable<Client.UserProfile> GetUserInfo(Client.UserCredentials login)
         {
-            var source = GetUserInfoCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetUserInfoCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                 .Select(args => args.Result);
             _svc.GetUserInfoAsync(login, login);
             return source;
@@ -20,7 +20,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<string>> GetRepositories(Client.UserCredentials login)
         {
-            var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetRepositoriesCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                 .Select(args => from repo in args.Result
                                 select repo.DisplayText);
             _svc.GetRepositoriesAsync(login, login);
@@ -29,7 +29,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IList<Client.Project>> GetProjectsForUser(Client.UserCredentials login)
         {
-            var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetProjectsForUserCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                 .Select(args => args.Result as IList<Client.Project>);
             _svc.GetProjectsForUserAsync(login, login);
             return source;
@@ -38,7 +38,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.TaxonList>> GetTaxonLists()
         {
             var requestToken = new object();
-            var source = GetTaxonListsForUser.MakeObservableServiceResultSingle(requestToken)
+            var source = GetTaxonListsForUser.MakeObservableServiceResultSingle(requestToken, ThreadPool)
             .Select(args => args.Result ?? Enumerable.Empty<TaxonList>())
                 .Select(res => res
                     .Select(svcList => new Client.TaxonList()
@@ -61,7 +61,7 @@ namespace DiversityPhone.Services
             return Observable.Create((IObserver<IEnumerable<Client.TaxonName>> observer) =>
                 {
                     int chunk = 1; //First Chunk is 1, not 0!
-                    var subscription = DownloadTaxonList.MakeObservableServiceResult(list)
+                    var subscription = DownloadTaxonList.MakeObservableServiceResult(list, ThreadPool)
                     .Select(args => args.Result ?? Enumerable.Empty<TaxonName>())
                     .Select(taxa => taxa.Select(
                         taxon => new Client.TaxonName()
@@ -95,7 +95,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Property>> GetPropertiesForUser(Client.UserCredentials login)
         {
-            var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetPropertiesForUserCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                 .Select(args => args.Result
                     .Select(p => new Client.Property()
                     {
@@ -157,7 +157,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Term>> GetStandardVocabulary()
         {
             object requestToken = new object();
-            var source = GetStandardVocabularyCompleted.MakeObservableServiceResultSingle(requestToken)
+            var source = GetStandardVocabularyCompleted.MakeObservableServiceResultSingle(requestToken, ThreadPool)
                .Select(args => args.Result)
                .Select(terms => terms
                    .Select(term => new Client.Term()
@@ -175,7 +175,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.Analysis>> GetAnalysesForProject(int projectID, Client.UserCredentials login)
         {
-            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetAnalysesForProjectCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                .Select(args => args.Result)
                .Select(analyses => analyses
                    .Select(an => new Client.Analysis()
@@ -191,7 +191,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisResult>> GetAnalysisResultsForProject(int projectID, Client.UserCredentials login)
         {
-            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetAnalysisResultsForProjectCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                .Select(args => args.Result)
                .Select(ars => ars
                    .Select(ar => new Client.AnalysisResult()
@@ -208,7 +208,7 @@ namespace DiversityPhone.Services
 
         public IObservable<IEnumerable<Client.AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, Client.UserCredentials login)
         {
-            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResultSingle(login)
+            var source = GetAnalysisTaxonomicGroupsForProjectCompleted.MakeObservableServiceResultSingle(login, ThreadPool)
                .Select(args => args.Result)
                .Select(atgs => atgs
                    .Select(atg => new Client.AnalysisTaxonomicGroup()
@@ -224,7 +224,7 @@ namespace DiversityPhone.Services
         public IObservable<IEnumerable<Client.Qualification>> GetQualifications(Client.UserCredentials credentials)
         {
             var request = new object();
-            var res = GetQualificationsCompleted.MakeObservableServiceResultSingle(request)
+            var res = GetQualificationsCompleted.MakeObservableServiceResultSingle(request, ThreadPool)
                 .Select(args => args.Result.Select(q => new Client.Qualification()
                     {
                         Code = q.Code,

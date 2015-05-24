@@ -65,7 +65,7 @@ namespace DiversityPhone.Services
 
         public IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo)
         {
-            var res = InsertMMOCompleted.MakeObservableServiceResultSingle(mmo)
+            var res = InsertMMOCompleted.MakeObservableServiceResultSingle(mmo, ThreadPool)
                 .Select(_ => Unit.Default);
 
             var repoMmo = mmo.ToServiceObject(Mapping);

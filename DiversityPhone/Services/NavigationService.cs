@@ -1,4 +1,5 @@
-﻿using DiversityPhone.Model;
+﻿using DiversityPhone.Interface;
+using DiversityPhone.Model;
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using ReactiveUI;

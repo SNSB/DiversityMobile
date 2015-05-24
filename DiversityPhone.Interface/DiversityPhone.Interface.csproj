@@ -143,6 +143,7 @@
     <Compile Include="ITaxonService.cs" />
     <Compile Include="IVocabularyService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchedulerAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
