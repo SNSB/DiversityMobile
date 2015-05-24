@@ -2,6 +2,7 @@
 using DiversityPhone.ViewModels;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using System.Linq;
 
 namespace DiversityPhone.View
 {
@@ -25,6 +26,25 @@ namespace DiversityPhone.View
                     hideMode: CommandButtonAdapter.Mode.HideButton,
                     command: VM.DownloadAll);
             }
+        }
+
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (VM != null)
+            {
+                var inProgress = from list in VM.LocalLists
+                                 where list.IsDownloading
+                                 select list;
+
+                if (inProgress.Any())
+                {
+                    e.Cancel = true;
+
+                    VM.Notifications.showPopup(DiversityResources.TaxonManagement_Info_DownloadInProgress);
+                }
+            }
+
+            base.OnBackKeyPress(e);
         }
     }
 }

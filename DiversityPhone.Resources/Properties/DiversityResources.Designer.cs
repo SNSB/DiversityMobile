@@ -1526,6 +1526,15 @@ namespace DiversityPhone {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Taxon list download in progress, please stay on this page until this is finished..
+        /// </summary>
+        public static string TaxonManagement_Info_DownloadInProgress {
+            get {
+                return ResourceManager.GetString("TaxonManagement_Info_DownloadInProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to toggle selection.
         /// </summary>
         public static string TaxonManagement_Menu_ToggleSelection {
