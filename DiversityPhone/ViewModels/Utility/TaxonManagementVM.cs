@@ -79,7 +79,7 @@
                 .SelectMany(_ =>
                     Taxa.getTaxonLists()
                     .ToObservable(ThreadPoolScheduler.Instance)
-                    .Select(list => new TaxonListVM(list)))
+                    .Select(list => new TaxonListVM(list, this)))
                     .Publish();
             LocalLists =
                 localLists
@@ -102,7 +102,7 @@
                 .ObserveOnDispatcher()
                 .SelectMany(lists =>
                     lists.Where(list => !LocalLists.Any(loc => loc.Model == list)) // Filter lists already present locally
-                        .Select(list => new TaxonListVM(list))
+                        .Select(list => new TaxonListVM(list, this))
                     )
                 .Publish();
 

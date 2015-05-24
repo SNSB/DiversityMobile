@@ -68,15 +68,15 @@
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="delete"
-                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Delete}"
+                                                              Command="{Binding Path=Delete}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded}" />
                                             <toolkit:MenuItem Header="{Binding Resources.TaxonManagement_Menu_ToggleSelection, Source={StaticResource LocalizedStrings}}"
-                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Select}"
+                                                              Command="{Binding Path=Select}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsSelected, Converter={StaticResource InvertBoolean}}" />
                                             <toolkit:MenuItem Header="refresh"
-                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Refresh}"
+                                                              Command="{Binding Path=Refresh}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded}" />
                                         </toolkit:ContextMenu>
@@ -107,7 +107,7 @@
                                     <toolkit:ContextMenuService.ContextMenu>
                                         <toolkit:ContextMenu>
                                             <toolkit:MenuItem Header="download"
-                                                              Command="{Binding ElementName=taxonPage, Path=DataContext.Download}"
+                                                              Command="{Binding Path=Download}"
                                                               CommandParameter="{Binding}"
                                                               IsEnabled="{Binding IsDownloaded, Converter={StaticResource InvertBoolean}}" />
                                         </toolkit:ContextMenu>

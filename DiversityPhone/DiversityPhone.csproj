@@ -202,6 +202,7 @@
     </Compile>
     <Compile Include="Helper\DatabaseMigration.cs" />
     <Compile Include="Helper\Maintenance.cs" />
+    <Compile Include="Helper\RelayCommand.cs" />
     <Compile Include="Helper\SwitchableCommand.cs" />
     <Compile Include="Helper\FileTimeStampMixin.cs" />
     <Compile Include="Helper\IsolatedStorageExtensions.cs" />

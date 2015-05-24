@@ -279,6 +279,9 @@
     <Compile Include="..\DiversityPhone\Helper\ReactiveCommandMixin.cs">
       <Link>Implementation\Helper\ReactiveCommandMixin.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\Helper\RelayCommand.cs">
+      <Link>Implementation\Helper\RelayCommand.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Services\BackgroundTasks\IRefreshVocabularyTask.cs">
       <Link>Implementation\Interface\IRefreshVocabularyTask.cs</Link>
     </Compile>

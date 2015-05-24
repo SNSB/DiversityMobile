@@ -3,6 +3,9 @@
     using DiversityPhone.Model;
     using ReactiveUI;
     using System;
+    using System.Reactive;
+    using System.Reactive.Linq;
+    using System.Windows.Input;
 
     public class TaxonListVM : ReactiveObject
     {
@@ -48,12 +51,39 @@
 
         public TaxonList Model { get { return _model; } }
 
-        public TaxonListVM(TaxonList model)
+        public ICommand Download { get; private set; }
+
+        public ICommand Select { get; private set; }
+
+        public ICommand Delete { get; private set; }
+
+        public ICommand Refresh { get; private set; }
+
+        public TaxonListVM(TaxonList model, TaxonManagementVM parent)
         {
             _model = model;
 
             _model.ObservableForProperty(x => x.IsSelected)
                 .Subscribe(_ => this.RaisePropertyChanged(x => x.IsSelected));
+            Predicate<TaxonListVM> notDownloading = x => !x.IsDownloading;
+            IObservable<Unit> downloadingChanged = this.ObservableForProperty(x => x.IsDownloading).Value().Select(_ => Unit.Default);
+
+            Download = parent.Download.Relay<TaxonListVM>(
+                canExecute: notDownloading,
+                mapParameter: _ => this,
+                canExecuteChanged: downloadingChanged);
+            Select = parent.Select.Relay<TaxonListVM>(
+                canExecute: notDownloading,
+                mapParameter: _ => this,
+                canExecuteChanged: downloadingChanged);
+            Delete = parent.Delete.Relay<TaxonListVM>(
+                canExecute: notDownloading,
+                mapParameter: _ => this,
+                canExecuteChanged: downloadingChanged);
+            Refresh = parent.Refresh.Relay<TaxonListVM>(
+                canExecute: notDownloading,
+                mapParameter: _ => this,
+                canExecuteChanged: downloadingChanged);
         }
     }
 }
