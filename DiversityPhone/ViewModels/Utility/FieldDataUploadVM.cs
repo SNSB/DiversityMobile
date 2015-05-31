@@ -92,9 +92,19 @@
 
         private IObservable<Unit> uploadSpecimen(Specimen s)
         {
-            return Observable.Start(() => Storage.getTopLevelIUForSpecimen(s.SpecimenID))
-                // Only Upload Specimen with at least one IU
-                .Where(ius => ius != null && ius.Any())
+            return Observable.Start(() =>
+                {
+                    var ius = Storage.getTopLevelIUForSpecimen(s.SpecimenID);
+                    var mmos = Storage.getMultimediaForObject(s);
+
+                    // Only Insert Specimen with at least one IU or MMO
+                    if (ius.Any() || mmos.Any())
+                    {
+                        return ius;
+                    }
+                    return null;
+                })
+                .Where(x => x != null)
                 .SelectMany(ius =>
                     Service.InsertSpecimen(s)
                            .SelectMany(_ => ius)
@@ -154,7 +164,11 @@
                                    let hasUnits = (from iu in ctx.IdentificationUnits
                                                    where iu.SpecimenID == s.SpecimenID
                                                    select Unit.Default).Any()
-                                   where s.CollectionSpecimenID == null && hasUnits
+                                   let hasMMO = (from mmo in ctx.MultimediaObjects
+                                                 where mmo.OwnerType == DBObjectType.Specimen &&
+                                                       mmo.RelatedId == s.SpecimenID
+                                                 select Unit.Default).Any()
+                                   where s.CollectionSpecimenID == null && (hasUnits || hasMMO)
                                    select new SpecimenVM(s) as IElementVM))
                 {
                     yield return i;
