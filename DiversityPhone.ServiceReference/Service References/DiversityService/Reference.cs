@@ -1711,6 +1711,11 @@ namespace DiversityPhone.DiversityService {
         
         System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> EndLocalizationsForSeries(System.IAsyncResult result);
         
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/EventsForSeries", ReplyAction="http://tempuri.org/IDiversityService/EventsForSeriesResponse")]
+        System.IAsyncResult BeginEventsForSeries(int collectionSeriesID, DiversityPhone.Model.UserCredentials login, System.AsyncCallback callback, object asyncState);
+        
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> EndEventsForSeries(System.IAsyncResult result);
+        
         [System.ServiceModel.OperationContractAttribute(AsyncPattern=true, Action="http://tempuri.org/IDiversityService/EventsByLocality", ReplyAction="http://tempuri.org/IDiversityService/EventsByLocalityResponse")]
         System.IAsyncResult BeginEventsByLocality(string locality, DiversityPhone.Model.UserCredentials login, System.AsyncCallback callback, object asyncState);
         
@@ -2072,6 +2077,25 @@ namespace DiversityPhone.DiversityService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public partial class EventsForSeriesCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        public EventsForSeriesCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> Result {
+            get {
+                base.RaiseExceptionIfNecessary();
+                return ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event>)(this.results[0]));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public partial class EventsByLocalityCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
@@ -2366,6 +2390,12 @@ namespace DiversityPhone.DiversityService {
         
         private System.Threading.SendOrPostCallback onLocalizationsForSeriesCompletedDelegate;
         
+        private BeginOperationDelegate onBeginEventsForSeriesDelegate;
+        
+        private EndOperationDelegate onEndEventsForSeriesDelegate;
+        
+        private System.Threading.SendOrPostCallback onEventsForSeriesCompletedDelegate;
+        
         private BeginOperationDelegate onBeginEventsByLocalityDelegate;
         
         private EndOperationDelegate onEndEventsByLocalityDelegate;
@@ -2512,6 +2542,8 @@ namespace DiversityPhone.DiversityService {
         public event System.EventHandler<EventSeriesByIDCompletedEventArgs> EventSeriesByIDCompleted;
         
         public event System.EventHandler<LocalizationsForSeriesCompletedEventArgs> LocalizationsForSeriesCompleted;
+        
+        public event System.EventHandler<EventsForSeriesCompletedEventArgs> EventsForSeriesCompleted;
         
         public event System.EventHandler<EventsByLocalityCompletedEventArgs> EventsByLocalityCompleted;
         
@@ -3347,6 +3379,54 @@ namespace DiversityPhone.DiversityService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginEventsForSeries(int collectionSeriesID, DiversityPhone.Model.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+            return base.Channel.BeginEventsForSeries(collectionSeriesID, login, callback, asyncState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> DiversityPhone.DiversityService.IDiversityService.EndEventsForSeries(System.IAsyncResult result) {
+            return base.Channel.EndEventsForSeries(result);
+        }
+        
+        private System.IAsyncResult OnBeginEventsForSeries(object[] inValues, System.AsyncCallback callback, object asyncState) {
+            int collectionSeriesID = ((int)(inValues[0]));
+            DiversityPhone.Model.UserCredentials login = ((DiversityPhone.Model.UserCredentials)(inValues[1]));
+            return ((DiversityPhone.DiversityService.IDiversityService)(this)).BeginEventsForSeries(collectionSeriesID, login, callback, asyncState);
+        }
+        
+        private object[] OnEndEventsForSeries(System.IAsyncResult result) {
+            System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> retVal = ((DiversityPhone.DiversityService.IDiversityService)(this)).EndEventsForSeries(result);
+            return new object[] {
+                    retVal};
+        }
+        
+        private void OnEventsForSeriesCompleted(object state) {
+            if ((this.EventsForSeriesCompleted != null)) {
+                InvokeAsyncCompletedEventArgs e = ((InvokeAsyncCompletedEventArgs)(state));
+                this.EventsForSeriesCompleted(this, new EventsForSeriesCompletedEventArgs(e.Results, e.Error, e.Cancelled, e.UserState));
+            }
+        }
+        
+        public void EventsForSeriesAsync(int collectionSeriesID, DiversityPhone.Model.UserCredentials login) {
+            this.EventsForSeriesAsync(collectionSeriesID, login, null);
+        }
+        
+        public void EventsForSeriesAsync(int collectionSeriesID, DiversityPhone.Model.UserCredentials login, object userState) {
+            if ((this.onBeginEventsForSeriesDelegate == null)) {
+                this.onBeginEventsForSeriesDelegate = new BeginOperationDelegate(this.OnBeginEventsForSeries);
+            }
+            if ((this.onEndEventsForSeriesDelegate == null)) {
+                this.onEndEventsForSeriesDelegate = new EndOperationDelegate(this.OnEndEventsForSeries);
+            }
+            if ((this.onEventsForSeriesCompletedDelegate == null)) {
+                this.onEventsForSeriesCompletedDelegate = new System.Threading.SendOrPostCallback(this.OnEventsForSeriesCompleted);
+            }
+            base.InvokeAsync(this.onBeginEventsForSeriesDelegate, new object[] {
+                        collectionSeriesID,
+                        login}, this.onEndEventsForSeriesDelegate, this.onEventsForSeriesCompletedDelegate, userState);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         System.IAsyncResult DiversityPhone.DiversityService.IDiversityService.BeginEventsByLocality(string locality, DiversityPhone.Model.UserCredentials login, System.AsyncCallback callback, object asyncState) {
             return base.Channel.BeginEventsByLocality(locality, login, callback, asyncState);
         }
@@ -4133,6 +4213,20 @@ namespace DiversityPhone.DiversityService {
             public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> EndLocalizationsForSeries(System.IAsyncResult result) {
                 object[] _args = new object[0];
                 System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Localization>)(base.EndInvoke("LocalizationsForSeries", _args, result)));
+                return _result;
+            }
+            
+            public System.IAsyncResult BeginEventsForSeries(int collectionSeriesID, DiversityPhone.Model.UserCredentials login, System.AsyncCallback callback, object asyncState) {
+                object[] _args = new object[2];
+                _args[0] = collectionSeriesID;
+                _args[1] = login;
+                System.IAsyncResult _result = base.BeginInvoke("EventsForSeries", _args, callback, asyncState);
+                return _result;
+            }
+            
+            public System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> EndEventsForSeries(System.IAsyncResult result) {
+                object[] _args = new object[0];
+                System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event> _result = ((System.Collections.ObjectModel.ObservableCollection<DiversityPhone.DiversityService.Event>)(base.EndInvoke("EventsForSeries", _args, result)));
                 return _result;
             }
             

@@ -48,6 +48,7 @@ namespace DiversityPhone.Services
 
         private IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
 
+        private IObservable<EventPattern<EventsForSeriesCompletedEventArgs>> EventsForSeriesCompleted;
         private IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
         private IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
         private IObservable<EventPattern<PropertiesForEventCompletedEventArgs>> PropertiesForEventCompleted;
@@ -123,6 +124,8 @@ namespace DiversityPhone.Services
             LogErrors<EventSeriesByQueryCompletedEventArgs>(EventSeriesByQueryCompleted);
             EventSeriesByIDCompleted = Observable.FromEventPattern<EventSeriesByIDCompletedEventArgs>(h => _svc.EventSeriesByIDCompleted += h, h => _svc.EventSeriesByIDCompleted -= h, ThreadPool);
             LogErrors<EventSeriesByIDCompletedEventArgs>(EventSeriesByIDCompleted);
+            EventsForSeriesCompleted = Observable.FromEventPattern<EventsForSeriesCompletedEventArgs>(h => _svc.EventsForSeriesCompleted += h, h => _svc.EventsForSeriesCompleted -= h, ThreadPool);
+            LogErrors<EventsForSeriesCompletedEventArgs>(EventsForSeriesCompleted);
             LocalizationsForSeriesCompleted = Observable.FromEventPattern<LocalizationsForSeriesCompletedEventArgs>(h => _svc.LocalizationsForSeriesCompleted += h, h => _svc.LocalizationsForSeriesCompleted -= h, ThreadPool);
             LogErrors<LocalizationsForSeriesCompletedEventArgs>(LocalizationsForSeriesCompleted);
             EventsByLocalityCompleted = Observable.FromEventPattern<EventsByLocalityCompletedEventArgs>(h => _svc.EventsByLocalityCompleted += h, h => _svc.EventsByLocalityCompleted -= h, ThreadPool);
