@@ -44,6 +44,8 @@ namespace DiversityPhone.Services
         private IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
 
         //DOWNLOAD
+        private IObservable<EventPattern<EventSeriesByQueryCompletedEventArgs>> EventSeriesByQueryCompleted;
+
         private IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
 
         private IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
@@ -117,6 +119,8 @@ namespace DiversityPhone.Services
             LogErrors<CommitCompletedEventArgs>(CommitCompleted);
             RollbackCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _multimedia.RollbackCompleted += h, h => _multimedia.RollbackCompleted -= h, ThreadPool);
 
+            EventSeriesByQueryCompleted = Observable.FromEventPattern<EventSeriesByQueryCompletedEventArgs>(h => _svc.EventSeriesByQueryCompleted += h, h => _svc.EventSeriesByQueryCompleted -= h, ThreadPool);
+            LogErrors<EventSeriesByQueryCompletedEventArgs>(EventSeriesByQueryCompleted);
             EventSeriesByIDCompleted = Observable.FromEventPattern<EventSeriesByIDCompletedEventArgs>(h => _svc.EventSeriesByIDCompleted += h, h => _svc.EventSeriesByIDCompleted -= h, ThreadPool);
             LogErrors<EventSeriesByIDCompletedEventArgs>(EventSeriesByIDCompleted);
             LocalizationsForSeriesCompleted = Observable.FromEventPattern<LocalizationsForSeriesCompletedEventArgs>(h => _svc.LocalizationsForSeriesCompleted += h, h => _svc.LocalizationsForSeriesCompleted -= h, ThreadPool);

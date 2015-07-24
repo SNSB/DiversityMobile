@@ -72,6 +72,8 @@ namespace DiversityPhone.Interface
 
         #region Download
 
+        IObservable<IEnumerable<EventSeries>> GetEventSeriesByQuery(string query);
+
         IObservable<EventSeries> GetEventSeriesByID(int collectionSeriesID);
 
         IObservable<IEnumerable<Localization>> GetEventSeriesLocalizations(int collectionSeriesID);

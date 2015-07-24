@@ -9,6 +9,16 @@ namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient
     {
+        public IObservable<IEnumerable<EventSeries>> GetEventSeriesByQuery(string query)
+        {
+            object request = new object();
+            var res = from result in EventSeriesByQueryCompleted.MakeObservableServiceResultSingle(request, ThreadPool)
+                      select from series in result.Result
+                             select series.ToClientObject();
+            WithCredentials(c => _svc.EventSeriesByQueryAsync(query, c, request));
+            return res;
+        }
+
         public IObservable<EventSeries> GetEventSeriesByID(int seriesID)
         {
             object request = new object();
