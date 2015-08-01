@@ -33,13 +33,33 @@
     </DataTemplate>
 
     <DataTemplate x:Key="ElementItemTemplate">
-        <StackPanel Orientation="Horizontal">
-            <Image Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40" />
-            <TextBlock Margin="{StaticResource PhoneHorizontalMargin}"
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="1"
+                   HorizontalAlignment="Left" VerticalAlignment="Top"                   
+                   Source="{Binding Icon, Converter={StaticResource IconPathConverter}}" Height="40" Width="40" />
+            <TextBlock Grid.Column="1" Grid.Row="0"
+                       Margin="{StaticResource PhoneHorizontalMargin}"
                        Text="{Binding Description}"
-                       Style="{StaticResource PhoneTextTitle2Style}"
-                       VerticalAlignment="Center" />
-        </StackPanel>
+                       Style="{StaticResource PhoneTextTitle3Style}"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       TextWrapping="Wrap"/>
+            <TextBlock Grid.Column="1" Grid.Row="1"
+                       Visibility="{Binding HasSubtitle, Converter={StaticResource BoolToVis}}"
+                       Margin="{StaticResource PhoneHorizontalMargin}"
+                       Text="{Binding Subtitle}"
+                       Style="{StaticResource PhoneTextSubtleStyle}"
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left"/>
+        </Grid>
     </DataTemplate>
 
     <DataTemplate x:Key="DisplayTextItemTemplate">

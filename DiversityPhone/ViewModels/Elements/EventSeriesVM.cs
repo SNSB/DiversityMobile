@@ -8,6 +8,8 @@
     {
         public override string Description { get { return Model.Description; } }
 
+        public override string Subtitle { get { return Model.SeriesCode; } }
+
         private Icon _esIcon;
 
         public override Icon Icon
@@ -30,6 +32,8 @@
 
             Model.ObservableForProperty(x => x.Description)
                 .Subscribe(_ => this.RaisePropertyChanged(x => x.Description));
+            Model.ObservableForProperty(x => x.SeriesCode)
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.Subtitle));
         }
     }
 }

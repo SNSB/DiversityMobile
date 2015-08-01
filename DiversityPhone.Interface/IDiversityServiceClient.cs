@@ -78,6 +78,8 @@ namespace DiversityPhone.Interface
 
         IObservable<IEnumerable<Localization>> GetEventSeriesLocalizations(int collectionSeriesID);
 
+        IObservable<IEnumerable<Event>> GetEventSeriesEvents(int collectionSeriesID);
+
         IObservable<IEnumerable<Event>> GetEventsByLocality(string localityQuery);
 
         IObservable<IEnumerable<EventProperty>> GetEventProperties(int collectionEventID);

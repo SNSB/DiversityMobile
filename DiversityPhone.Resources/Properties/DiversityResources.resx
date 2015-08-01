@@ -198,6 +198,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   <data name="Button_Stop" xml:space="preserve">
     <value>stop</value>
   </data>
+  <data name="Download_CannotDownloadNoES" xml:space="preserve">
+    <value>Cannot download all events with no event series</value>
+  </data>
   <data name="Download_Downloading" xml:space="preserve">
     <value>Downloading: </value>
   </data>
@@ -214,7 +217,7 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
     <value>press and hold to download an item</value>
   </data>
   <data name="Download_HintMaxResults" xml:space="preserve">
-    <value>Showing 50 results, if there are more matches the list has been truncated. In that case, please refine your query and try again.</value>
+    <value>Showing the maximum number of results, if there are more matches the list has been truncated. In that case, please refine your query and try again.</value>
   </data>
   <data name="Download_ItemsDone" xml:space="preserve">
     <value>items done</value>
@@ -227,6 +230,9 @@ IPR and licenses with relation to DiversityMobile: http://www.diversitymobile.ne
   </data>
   <data name="EventProperty_Header_Value" xml:space="preserve">
     <value>value</value>
+  </data>
+  <data name="EventSeries_NoES_Code" xml:space="preserve">
+    <value>with no series</value>
   </data>
   <data name="EventSeries_NoES_Header" xml:space="preserve">
     <value>events</value>

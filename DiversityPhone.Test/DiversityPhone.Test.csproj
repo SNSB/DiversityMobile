@@ -291,6 +291,9 @@
     <Compile Include="..\DiversityPhone\ViewModels\Base\ElementPageVMBase.cs">
       <Link>Implementation\ViewModels\ElementPageVMBase.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Base\ElementVMBase.cs">
+      <Link>Implementation\ViewModels\ElementVMBase.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Base\Icon.cs">
       <Link>Implementation\ViewModels\Icon.cs</Link>
     </Compile>
@@ -299,6 +302,27 @@
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Edit\EditIUVM.cs">
       <Link>Implementation\ViewModels\EditIUVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\EventSeriesVM.cs">
+      <Link>Implementation\ViewModels\EventSeriesVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\EventVM.cs">
+      <Link>Implementation\ViewModels\EventVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\IdentificationUnitAnalysisVM.cs">
+      <Link>Implementation\ViewModels\IdentificationUnitAnalysisVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\IdentificationUnitVM.cs">
+      <Link>Implementation\ViewModels\IdentificationUnitVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\MultimediaObjectVM.cs">
+      <Link>Implementation\ViewModels\MultimediaObjectVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\PropertyVM.cs">
+      <Link>Implementation\ViewModels\PropertyVM.cs</Link>
+    </Compile>
+    <Compile Include="..\DiversityPhone\ViewModels\Elements\SpecimenVM.cs">
+      <Link>Implementation\ViewModels\SpecimenVM.cs</Link>
     </Compile>
     <Compile Include="..\DiversityPhone\ViewModels\Interface\IAudioVideoPageVM.cs">
       <Link>Implementation\ViewModels\IAudioVideoPageVM.cs</Link>

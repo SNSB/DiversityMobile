@@ -52,6 +52,8 @@ namespace DiversityPhone.Model
             private set;
         }
 
+ <# EnableMemberwiseClone("EventSeries"); #>
+
         static EventSeries()
         {
             Operations = new QueryOperations<EventSeries>(

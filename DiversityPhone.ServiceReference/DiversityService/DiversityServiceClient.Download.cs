@@ -28,12 +28,12 @@ namespace DiversityPhone.Services
             return res;
         }
 
-        public IObservable<IEnumerable<Event>> GetEventsForSeries(int seriesID)
+        public IObservable<IEnumerable<Event>> GetEventSeriesEvents(int seriesID)
         {
             object request = new object();
             var res = from result in EventsForSeriesCompleted.MakeObservableServiceResultSingle(request, ThreadPool)
                       select from ev in result.Result
-                             select ev.ToClientObject(null);
+                             select ev.ToClientObject(seriesID);
             WithCredentials(c => _svc.EventsForSeriesAsync(seriesID, c, request));
             return res;
         }

@@ -5,12 +5,36 @@
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.Reactive;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
 
     public class DownloadVM : PageVMBase
     {
+        public class SearchResult
+        {
+            public SearchResult(EventSeries series)
+            {
+                Series = new EventSeriesVM(series);
+                Events = new ObservableCollection<EventVM>();
+            }
+
+            public EventSeriesVM Series { get; private set; }
+
+            public ObservableCollection<EventVM> Events { get; private set; }
+
+            public void Add(Event ev)
+            {
+                Events.
+                    Add(new EventVM(ev));
+            }
+        }
+
         private const int MAX_RESULTS = 50;
 
         private readonly IDiversityServiceClient Service;
@@ -38,7 +62,8 @@
 
         public ReactiveAsyncCommand SearchEvents { get; private set; }
 
-        public ReactiveCollection<Event> QueryResult { get; private set; }
+        public ReactiveCollection<SearchResult> QueryResult { get; private set; }
+        private ISubject<int> ResultCount = new Subject<int>();
 
         public ReactiveAsyncCommand DownloadElement { get; private set; }
 
@@ -59,12 +84,12 @@
             this.Mappings = Mappings;
             this.HierarchyLoader = HierarchyLoader;
 
-            QueryResult = new ReactiveCollection<Event>();
+            QueryResult = new ReactiveCollection<SearchResult>();
 
             _IsOnlineAvailable = Connectivity.Status().Select(s => s == ConnectionStatus.Wifi).Do(_ => { this.GetType(); }, ex => { }, () => { })
                 .ToProperty(this, x => x.IsOnlineAvailable);
 
-            _HaveMaxResults = QueryResult.CollectionCountChanged
+            _HaveMaxResults = ResultCount
                 .Select(c => c >= MAX_RESULTS)
                 .ToProperty(this, x => x.HaveMaxResults, false);
 
@@ -75,12 +100,9 @@
                     .ShowErrorNotifications(Notifications)
                     .Subscribe();
             SearchEvents
-                .RegisterAsyncObservable(query =>
-                    Service.GetEventsByLocality(query as string ?? string.Empty)
-                    .TakeUntil(this.OnDeactivation())
-                )
-                .Do(_ => QueryResult.Clear())
-                .Subscribe(QueryResult.AddRange);
+                .RegisterAsyncObservable(StartSearch)
+                .TakeUntil(this.OnDeactivation())
+                .Subscribe(QueryResult.Add);
 
             CancelDownload = new ReactiveCommand();
 
@@ -90,12 +112,11 @@
                 .ShowErrorNotifications(Notifications)
                 .Subscribe();
             DownloadElement
-                .RegisterAsyncObservable(ev => IfNotDownloadedYet(ev as Event)
-                    .Select(HierarchyLoader.downloadAndStoreDependencies)
-                    .SelectMany(dl => dl.TakeUntil(CancelDownload))
+                .RegisterAsyncObservable(x => StartDownload(x)
+                    .TakeUntil(CancelDownload)
                     .Scan(0, (acc, _) => ++acc)
                     .Do(_ElementsDownloadedSubject.OnNext)
-                    );
+                );
 
             _IsDownloading = DownloadElement.ItemsInflight
                 .Select(x => x > 0)
@@ -106,6 +127,110 @@
 
             _ElementsDownloadedSubject = new Subject<int>();
             _ElementsDownloaded = _ElementsDownloadedSubject.ToProperty(this, x => x.ElementsDownloaded, 0, Dispatcher);
+        }
+
+        private IObservable<SearchResult> StartSearch(object query)
+        {
+            QueryResult.Clear();
+
+            var queryString = query as string ?? string.Empty;
+
+            var seriesObs = Service.GetEventSeriesByQuery(queryString);
+            var seriesResults = seriesObs
+                .SelectMany(x => x) // Flatten
+                .Select(es => new SearchResult(es))
+                .Replay()
+                .PermaRef();
+
+            var eventsObs = Service.GetEventsByLocality(queryString);
+            var eventResults = eventsObs
+                .Zip(seriesResults.ToDictionary(r => r.Series.Model.CollectionSeriesID), (evs, dict) => new { Events = evs, Map = dict })
+                .SelectMany(x => 
+                    from ev in x.Events
+                    // SeriesID at this point contains the CollectionSeriesID
+                    where ev.SeriesID.HasValue && x.Map.ContainsKey(ev.SeriesID)
+                    select ev.SeriesID.Value)
+                .Distinct()
+                .SelectMany(id => Service.GetEventSeriesByID(id))
+                .Select(es => new SearchResult(es));
+
+            // Forward the maximum result count to show the result truncation hint if necessary
+            Observable.Zip(
+                seriesObs.Select(x => x.Count()),
+                eventsObs.Select(x => x.Count()),
+                (s, e) => Math.Max(s, e)
+                    ).Subscribe(ResultCount);
+
+            var noSeriesResult = new SearchResult(NoEventSeriesMixin.NoEventSeries);
+
+            var results =
+                Observable.Concat(
+                seriesResults,
+                eventResults);
+
+            eventsObs
+                .Zip(results.ToDictionary(x => x.Series.Model.CollectionSeriesID), (evs, dict) => new { Events = evs, Map = dict })
+                .Subscribe(x =>
+                {
+                    var dict = x.Map;
+                    foreach (var ev in x.Events)
+                    {
+                        // Dictionary cannot hold an item with a null key
+                        if (!ev.SeriesID.HasValue)
+                        {
+                            noSeriesResult.Add(ev);
+                        }
+                        else if (dict.ContainsKey(ev.SeriesID))
+                        {
+                            var res = dict[ev.SeriesID];
+                            res.Add(ev);
+                        }
+                        else
+                        {
+                            Debugger.Break();
+                        }
+                    }
+                }); // ... for the side effects
+
+            return Observable.Concat(
+                results,
+                eventsObs
+                // If we have an event from the NoEventSeries...
+                .Where(evs => evs.Any(x => !x.SeriesID.HasValue))
+                // ... add the result for it
+                .Select(_ => noSeriesResult)
+                );
+        }
+
+        private IObservable<Unit> StartDownload(object root)
+        {
+            var resultObs = Observable.Empty<Unit>();
+            if (root is EventSeriesVM) {
+                var esvm = root as EventSeriesVM;
+                var es = esvm.Model;
+
+                if (NoEventSeriesMixin.IsNoEventSeries(es))
+                {
+                    Notifications.showNotification(DiversityResources.Download_CannotDownloadNoES);
+                }
+                else
+                {
+                    resultObs = HierarchyLoader.downloadAndStoreDependencies(es);
+                }
+            }
+            else if(root is EventVM)
+            {
+                var vm = root as EventVM;
+
+                resultObs = IfNotDownloadedYet(vm.Model)
+                    .SelectMany(HierarchyLoader.downloadAndStoreDependencies);
+            }
+            else
+            {
+                throw new ArgumentException("unexpected type, cannot download");
+            }
+
+            return resultObs;
         }
 
         private IObservable<Event> IfNotDownloadedYet(Event ev)

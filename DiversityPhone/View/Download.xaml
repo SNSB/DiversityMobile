@@ -16,19 +16,6 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     DataContext="{Binding Download, Source={StaticResource Locator}}"
     x:Name="downloadPage">
-    <phone:PhoneApplicationPage.Resources>
-        <ResourceDictionary>
-            <DataTemplate x:Key="ServiceEventItemTemplate">
-                <StackPanel Orientation="Horizontal">
-                    <Image Source="/Images/SNSBIcons/Event_80.png" Height="40" Width="40" />
-                    <TextBlock Margin="{StaticResource PhoneHorizontalMargin}"
-                               Text="{Binding LocalityDescription}"
-                               Style="{StaticResource PhoneTextLargeStyle}" />
-                </StackPanel>
-            </DataTemplate>
-        </ResourceDictionary>
-    </phone:PhoneApplicationPage.Resources>
-
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -62,18 +49,47 @@
                           ItemsSource="{Binding QueryResult}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <ContentControl ContentTemplate="{StaticResource ServiceEventItemTemplate}"
-                                        Content="{Binding}"
-                                        HorizontalAlignment="Left"
-                                        HorizontalContentAlignment="Left">
-                            <toolkit:ContextMenuService.ContextMenu>
-                                <toolkit:ContextMenu>
-                                    <toolkit:MenuItem Header="download"
-                                                Command="{Binding ElementName=downloadPage, Path=DataContext.DownloadElement}"
-                                                CommandParameter="{Binding}" />
-                                </toolkit:ContextMenu>
-                            </toolkit:ContextMenuService.ContextMenu>
-                        </ContentControl>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"/>
+                                <RowDefinition Height="auto"/>
+                            </Grid.RowDefinitions>
+                            <!-- Parent Series -->
+                            <ContentControl Grid.Row="0"
+                                ContentTemplate="{StaticResource ElementItemTemplate}"
+                                Content="{Binding Series}"
+                                HorizontalAlignment="Left"
+                                HorizontalContentAlignment="Left">
+                                <toolkit:ContextMenuService.ContextMenu>
+                                    <toolkit:ContextMenu>
+                                        <toolkit:MenuItem Header="download"
+                                                            Command="{Binding ElementName=downloadPage, Path=DataContext.DownloadElement}"
+                                                            CommandParameter="{Binding Series}" />
+                                    </toolkit:ContextMenu>
+                                </toolkit:ContextMenuService.ContextMenu>
+                            </ContentControl>
+                            <!-- Child Events -->
+                            <ListBox Grid.Row="1" Margin="40,0,0,0"
+                                 ItemsSource="{Binding Events}"
+                                     ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
+                                                                Content="{Binding}"
+                                                                HorizontalAlignment="Left"
+                                                                HorizontalContentAlignment="Left">
+                                            <toolkit:ContextMenuService.ContextMenu>
+                                                <toolkit:ContextMenu>
+                                                    <toolkit:MenuItem Header="download"
+                                                                        Command="{Binding ElementName=downloadPage, Path=DataContext.DownloadElement}"
+                                                                        CommandParameter="{Binding}" />
+                                                </toolkit:ContextMenu>
+                                            </toolkit:ContextMenuService.ContextMenu>
+                                        </ContentControl>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

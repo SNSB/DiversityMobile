@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using System;
 
 namespace DiversityPhone.ViewModels
 {
@@ -19,6 +20,16 @@ namespace DiversityPhone.ViewModels
         public abstract string Description { get; }
 
         /// <summary>
+        /// optional additional string to Display for this Object
+        /// </summary>
+        public virtual string Subtitle { get { return null; } }
+
+        /// <summary>
+        /// En-/Disables the display for a subtitle
+        /// </summary>
+        public bool HasSubtitle { get { return !string.IsNullOrWhiteSpace(Subtitle); } }
+
+        /// <summary>
         /// Icon to display for this Object
         /// </summary>
         public abstract Icon Icon { get; }
@@ -26,6 +37,9 @@ namespace DiversityPhone.ViewModels
         public ElementVMBase(T model)
         {
             this.Model = model;
+
+            this.WhenAny(x => x.Subtitle, x => x.GetValue())
+                .Subscribe(_ => this.RaisePropertyChanged(x => x.HasSubtitle));
         }
 
         object IElementVM.Model

@@ -22,7 +22,7 @@
                 CollectionSeriesID = null,
                 Description = DiversityResources.EventSeries_NoES_Header,
                 ModificationState = ModificationState.Unmodified,
-                SeriesCode = string.Empty,
+                SeriesCode = DiversityResources.EventSeries_NoES_Code,
                 SeriesStart = DateTime.MinValue,
                 SeriesEnd = DateTime.MinValue
             };

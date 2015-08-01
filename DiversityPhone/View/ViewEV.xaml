@@ -35,10 +35,9 @@
         <Button Grid.Row="0"
                 Style="{StaticResource ItemButtonStyle}"
                 Command="{Binding EditEvent}"
-                CommandParameter="{Binding Current}">
-            <ContentControl ContentTemplate="{StaticResource ElementItemTemplate}"
-                            Content="{Binding Current}" />
-        </Button>
+                CommandParameter="{Binding Current}" 
+                ContentTemplate="{StaticResource ElementItemTemplate}"
+                Content="{Binding Current}" />
 
         <controls:Pivot Grid.Row="1"
                         Margin="0"

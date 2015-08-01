@@ -29,6 +29,22 @@
             this.ThreadPool = ThreadPool;
         }
 
+        public IObservable<Unit> downloadAndStoreDependencies(EventSeries es)
+        {
+            if (es == null)
+                throw new ArgumentNullException("es");
+
+            if (NoEventSeriesMixin.IsNoEventSeries(es))
+                throw new ArgumentException("Cannot download NoEventSeries");
+
+            var series_future = getOrDownloadSeries(es.CollectionSeriesID);
+
+            return Service.GetEventSeriesEvents(es.CollectionSeriesID.Value)
+                .Zip(series_future, (evs, _) => evs) // Wait for the Series to be downloaded
+                .SelectMany(x => x)
+                .SelectMany(ev => downloadAndStoreDependencies(ev));
+        }
+
         public IObservable<Unit> downloadAndStoreDependencies(Event ev)
         {
             if (ev == null)
