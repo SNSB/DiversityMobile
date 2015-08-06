@@ -30,7 +30,7 @@
                    Height="40" Width="40" />
             <TextBlock Margin="{StaticResource PhoneHorizontalMargin}"
                        Text="{Binding Description}"
-                       Style="{StaticResource PhoneTextTitle2Style}"
+                       Style="{StaticResource PhoneTextTitle3Style}"
                        VerticalAlignment="Center" />
         </StackPanel>
     </DataTemplate>
