@@ -52,19 +52,19 @@ namespace DiversityPhone.Interface
 
         IObservable<IEnumerable<Term>> GetStandardVocabulary();
 
-        IObservable<IEnumerable<Analysis>> GetAnalysesForProject(int projectID, UserCredentials login);
+        IObservable<IEnumerable<Analysis>> GetAnalysesForProject(int projectID);
 
-        IObservable<IEnumerable<AnalysisResult>> GetAnalysisResultsForProject(int projectID, UserCredentials login);
+        IObservable<IEnumerable<AnalysisResult>> GetAnalysisResultsForProject(int projectID);
 
-        IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID, UserCredentials login);
+        IObservable<IEnumerable<AnalysisTaxonomicGroup>> GetAnalysisTaxonomicGroupsForProject(int projectID);
 
-        IObservable<IEnumerable<Qualification>> GetQualifications(UserCredentials credentials);
+        IObservable<IEnumerable<Qualification>> GetQualifications();
 
         IObservable<IEnumerable<TaxonList>> GetTaxonLists();
 
         IObservable<IEnumerable<TaxonName>> DownloadTaxonListChunked(TaxonList list);
 
-        IObservable<IEnumerable<Property>> GetPropertiesForUser(UserCredentials login);
+        IObservable<IEnumerable<Property>> GetPropertiesForUser();
 
         IObservable<IEnumerable<PropertyName>> DownloadPropertyValuesChunked(Property p);
 

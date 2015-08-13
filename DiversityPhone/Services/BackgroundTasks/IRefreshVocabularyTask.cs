@@ -6,6 +6,6 @@
 
     public interface IRefreshVocabularyTask
     {
-        IObservable<Unit> Start(UserCredentials login);
+        IObservable<Unit> Start();
     }
 }

@@ -11,7 +11,7 @@
     public static class ObservableMixin
     {
         /// <summary>
-        /// Specialization of the <see cref="Observable.Catch<T>()"/> Operator that returns an empty observable on error.
+        /// Specialization of the <see cref="Observable.Catch(T)"/> Operator that returns an empty observable on error.
         /// </summary>
         public static IObservable<T> CatchEmpty<T>(this IObservable<T> This)
         {

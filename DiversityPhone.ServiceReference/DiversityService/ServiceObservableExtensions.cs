@@ -1,5 +1,6 @@
 ﻿using DiversityPhone.Interface;
 using DiversityPhone.Model;
+using ReactiveUI;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -13,6 +14,19 @@ namespace DiversityPhone.Services
 {
     internal static class ServiceObservableExtensions
     {
+        /// <summary>
+        /// Specialization of the <see cref="Observable.Catch(T)"/> Operator that returns an empty observable on error.
+        /// </summary>
+        public static IObservable<T> CatchEmpty<T>(this IObservable<T> This)
+        {
+            if (This == null)
+            {
+                throw new ArgumentNullException("This");
+            }
+
+            return This.Catch(Observable.Empty<T>());
+        }
+
         public static IObservable<TEventArgs> FilterByUserState<TEventArgs>(this IObservable<EventPattern<TEventArgs>> This, object userState) where TEventArgs : AsyncCompletedEventArgs
         {
             return This.Where(p => p.EventArgs.UserState == userState).Select(p => p.EventArgs);
@@ -49,7 +63,7 @@ namespace DiversityPhone.Services
                        return Observable.Throw<T>(new ServiceOperationException(ex.Message, ex));
                    }
 
-                   if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException)
+                   if (ex is ServerTooBusyException || ex is EndpointNotFoundException || ex is CommunicationException || ex is TimeoutException)
                    {
                        return Observable.Throw<T>(new ServiceNotAvailableException(ex.Message, ex));
                    }
@@ -118,6 +132,23 @@ namespace DiversityPhone.Services
                     }
                 })
                 .SelectMany(x => x);
+        } 
+        public static IObservable<EventPattern<T>> LogErrors<T>(this IObservable<EventPattern<T>> EventStream, IEnableLogger LogOwner) where T : AsyncCompletedEventArgs
+        {
+            var logger = LogOwner.Log();
+
+            EventStream
+                .Subscribe(args =>
+                {
+                    var error = args.EventArgs.Error;
+
+                    if (error != null)
+                    {
+                        logger.ErrorException("DiversityService Call Failed", error);
+                    }
+                });
+
+            return EventStream;
         }
     }
 }

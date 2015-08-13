@@ -10,27 +10,24 @@
     public class RefreshVocabularyVM : PageVMBase
     {
         public RefreshVocabularyVM(
-            ICredentialsService Credentials,
-            Func<IRefreshVocabularyTask> refreshVocabluaryTaskFactory,
-            IMessageBus Messenger
+            Func<IRefreshVocabularyTask> refreshVocabularyTaskFactory,
+            IMessageBus Messenger,
+            INotificationService Notifications
             )
         {
+            Action navigateHome = () =>
+            {
+                Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
+                Messenger.SendMessage<Page>(Page.Home);
+            };
             this.OnActivation()
-                .SelectMany(_ =>
-                    Credentials.CurrentCredentials()
-                    .Where(cred => cred != null)
-                    .FirstAsync())
-                .TakeUntil(this.OnDeactivation())
-                .Subscribe(login =>
-                {
-                    var refreshTask = refreshVocabluaryTaskFactory();
-                    refreshTask.Start(login)
-                        .Subscribe(_ => { }, () =>
-                        {
-                            Messenger.SendMessage<EventMessage>(EventMessage.Default, MessageContracts.INIT);
-                            Messenger.SendMessage<Page>(Page.Home);
-                        });
-                });
+                .Select(_ => refreshVocabularyTaskFactory())
+                .Select(task =>
+                    task.Start()
+                    .ShowServiceErrorNotifications(Notifications)
+                    .Subscribe(_ => { }, _ => navigateHome(), navigateHome)
+                ).Subscribe();
         }
+
     }
 }

@@ -20,6 +20,8 @@
 
         public MultipleSelectionHelper<IElementVM> Items { get; private set; }
 
+        
+
         public IObservable<Unit> Refresh()
         {
             return Observable.Create<Unit>(obs =>
@@ -36,28 +38,24 @@
                 });
         }
 
-        public IObservable<Tuple<int, int>> Upload()
+        public IObservable<IItemsProgress> Upload()
         {
             return Observable.Defer(() => Items.SelectedItems)
-                       .SelectMany(elements => ObservableMixin.StartWithCancellation<Tuple<int, int>>((cancel, obs) =>
+                       .SelectMany(elements => ObservableMixin.StartWithCancellation<IItemsProgress>((cancel, obs) =>
                        {
-                           var totalCount = elements.Count();
-                           int idx = 0;
-                           obs.OnNext(Tuple.Create(idx, totalCount));
+                           var progress = new ItemProgress();
+                           progress.ItemsTotal = elements.Count();
+                           progress.ItemsDone = 0;
+                           
                            foreach (var e in elements)
                            {
-                               uploadTree(e)
-                                   .TakeWhile(_ => cancel.IsCancellationRequested)
-                                   .Do(_ =>
-                                   {
-                                       ++totalCount;
-                                       ++idx;
-                                       obs.OnNext(Tuple.Create(++idx, totalCount));
-                                   }).LastOrDefault();
+                               uploadTree(e, progress)
+                                   .TakeWhile(_ => !cancel.IsCancellationRequested)
+                                   .Do(progress.IncrementDone)
+                                   .Select(_ => progress as IItemsProgress)
+                                   .Subscribe(obs);
                                Items.Remove(e);
                                if (cancel.IsCancellationRequested) return;
-
-                               obs.OnNext(Tuple.Create(++idx, totalCount));
                            }
                        })).Publish().RefCount();
         }
@@ -76,21 +74,25 @@
             Items = new MultipleSelectionHelper<IElementVM>();
         }
 
-        private IObservable<Unit> uploadES(EventSeries es)
+        private IObservable<Unit> uploadES(EventSeries es, ItemProgress progress)
         {
             return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID).Select(gp => gp as ILocalizable))
-                    .SelectMany(_ => Storage.getEventsForSeries(es).Select(ev => uploadEV(ev)))
+                    .Select(_ => Storage.getEventsForSeries(es))
+                    .Do(progress.IncrementTotal)
+                    .SelectMany(events => events.Select(ev => uploadEV(ev, progress)))
                     .SelectMany(obs => obs);
         }
 
-        private IObservable<Unit> uploadEV(Event ev)
+        private IObservable<Unit> uploadEV(Event ev, ItemProgress progress)
         {
             return Service.InsertEvent(ev, Storage.getPropertiesForEvent(ev.EventID))
-                    .SelectMany(_ => Storage.getSpecimenForEvent(ev).Select(s => uploadSpecimen(s)))
+                    .Select(_ => Storage.getSpecimenForEvent(ev))
+                    .Do(progress.IncrementTotal)
+                    .SelectMany(series => series.Select(s => uploadSpecimen(s, progress)))
                     .SelectMany(x => x);
         }
 
-        private IObservable<Unit> uploadSpecimen(Specimen s)
+        private IObservable<Unit> uploadSpecimen(Specimen s, ItemProgress progress)
         {
             return Observable.Start(() =>
                 {
@@ -105,33 +107,34 @@
                     return null;
                 })
                 .Where(x => x != null)
+                .Do(progress.IncrementTotal)
                 .SelectMany(ius =>
                     Service.InsertSpecimen(s)
                            .SelectMany(_ => ius)
                 )
-                .SelectMany(iu => uploadIU(iu));
+                .SelectMany(iu => uploadIU(iu, progress));
         }
 
-        private IObservable<Unit> uploadIU(IdentificationUnit iu)
+        private IObservable<Unit> uploadIU(IdentificationUnit iu, ItemProgress progress)
         {
             return Service.InsertIdentificationUnit(iu, Storage.getIUANForIU(iu))
-                .SelectMany(_ => Storage.getSubUnits(iu).Select(sub => uploadIU(sub)))
+                .SelectMany(_ => Storage.getSubUnits(iu).Select(sub => uploadIU(sub, progress)))
                 .SelectMany(x => x);
         }
 
-        private IObservable<Unit> uploadTree(IElementVM vm)
+        private IObservable<Unit> uploadTree(IElementVM vm, ItemProgress progress)
         {
             var model = vm.Model;
             IObservable<Unit> res = Observable.Empty<Unit>();
 
             if (model is EventSeries)
-                res = uploadES(model as EventSeries);
+                res = uploadES(model as EventSeries, progress);
             if (model is Event)
-                res = uploadEV(model as Event);
+                res = uploadEV(model as Event, progress);
             if (model is Specimen)
-                res = uploadSpecimen(model as Specimen);
+                res = uploadSpecimen(model as Specimen, progress);
             if (model is IdentificationUnit)
-                res = uploadIU(model as IdentificationUnit);
+                res = uploadIU(model as IdentificationUnit, progress);
 
             return res;
         }

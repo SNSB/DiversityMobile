@@ -4,144 +4,150 @@
     using DiversityPhone.Interface;
     using DiversityPhone.Model;
     using System;
+    using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
     using System.Reactive.Subjects;
 
     public class RefreshVocabularyTask : IRefreshVocabularyTask
     {
+        private readonly ISettingsService Settings;
         private readonly IVocabularyService Vocabulary;
         private readonly IDiversityServiceClient Repository;
         private readonly INotificationService Notification;
 
-        private const int RETRY_COUNT = 3;
+        private const int RETRY_COUNT = 
+#if DEBUG
+            1;
+#else
+            3;
+#endif
 
         private bool _HasStarted = false;
-        private ISubject<string> _Progress = new Subject<string>();
-        private UserCredentials _Credentials;
-        public IObservable<Unit> _Execute;
+        private IObservable<string> _Progress;
 
         public RefreshVocabularyTask(
+            ISettingsService Settings,
             IVocabularyService Vocabulary,
             IDiversityServiceClient Repository,
             INotificationService Notification
             )
         {
+            this.Settings = Settings;
             this.Vocabulary = Vocabulary;
             this.Repository = Repository;
             this.Notification = Notification;
         }
 
-        public IObservable<Unit> Start(
-            UserCredentials login
-            )
+        public IObservable<Unit> Start()
         {
             lock (this)
             {
                 if (!_HasStarted)
                 {
-                    _Credentials = login;
-
-                    if (_Credentials != null)
-                    {
-                        Notification.showProgress(_Progress);
-                        var execution =
-                        Observable.Concat(
+                    var status = Settings.CurrentSettings()
+                        .Take(1)
+                        .Where(x => x != null)
+                        .Select(s => s.ToCreds())
+                        .SelectMany(creds =>
+                            Observable.Concat(
                             clearVocabulary(),
                             loadVocabulary(),
-                            loadAnalyses(),
-                            loadResults(),
+                            loadAnalyses(creds),
+                            loadResults(creds),
                             loadQualifications(),
                             loadProperties())
-                            .Finally(() => { if (_Progress != null) _Progress.OnCompleted(); })
-                            .Replay();
+                            )
+                        .Replay();
 
-                        _Execute = execution;
+                    Notification.showProgress(status);
 
-                        execution.Connect();
-                    }
-                    else
-                        throw new ArgumentException("login");
+                    _Progress = status;
+
+                    status.Connect();
                 }
 
                 _HasStarted = true;
 
-                return _Execute;
+                return _Progress
+                    .Select(_ => Unit.Default);
             }
         }
 
-        private IObservable<Unit> clearVocabulary()
+        private IObservable<string> clearVocabulary()
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_Cleaning);
-                    Vocabulary.clearVocabulary();
-                });
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_Cleaning,
+                Observable.Defer(() => Observable.Start(Vocabulary.clearVocabulary)));
         }
 
-        private IObservable<Unit> loadVocabulary()
+        private IObservable<string> loadVocabulary()
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingVocabulary);
-                    var voc = Repository.GetStandardVocabulary().Retry(RETRY_COUNT).First();
-
-                    Vocabulary.addTerms(voc);
-                });
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_LoadingVocabulary, 
+                    Repository.GetStandardVocabulary()
+                    .Retry(RETRY_COUNT)
+                    .Do(voc => Vocabulary.addTerms(voc))
+                );
         }
 
-        private IObservable<Unit> loadAnalyses()
+        private IObservable<string> loadAnalyses(UserCredentials creds)
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingAnalyses);
-                    var analyses = Repository.GetAnalysesForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
-                    Vocabulary.addAnalyses(analyses);
-                });
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_LoadingAnalyses,
+                    Repository.GetAnalysesForProject(creds.ProjectID)
+                    .Retry(RETRY_COUNT)
+                    .Do(analyses => Vocabulary.addAnalyses(analyses))
+                );
         }
 
-        private IObservable<Unit> loadResults()
+        private IObservable<string> loadResults(UserCredentials creds)
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingResults);
-                    var results = Repository.GetAnalysisResultsForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
-                    Vocabulary.addAnalysisResults(results);
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_LoadingResults,
+                Observable.Concat(
+                     Repository.GetAnalysisResultsForProject(creds.ProjectID)
+                     .Retry(RETRY_COUNT)
+                     .Do(results => Vocabulary.addAnalysisResults(results))
+                     .Select(_ => Unit.Default),
 
-                    var atgs = Repository.GetAnalysisTaxonomicGroupsForProject(_Credentials.ProjectID, _Credentials).Retry(RETRY_COUNT).First();
-                    Vocabulary.addAnalysisTaxonomicGroups(atgs);
-                });
+                     Repository.GetAnalysisTaxonomicGroupsForProject(creds.ProjectID)
+                     .Retry(RETRY_COUNT)
+                     .Do(atgs => Vocabulary.addAnalysisTaxonomicGroups(atgs))
+                     .Select(_ => Unit.Default)
+                     )
+                );
         }
 
-        private IObservable<Unit> loadQualifications()
+        private IObservable<string> loadQualifications()
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingQualifications);
-                    var qualifications = Repository.GetQualifications(_Credentials).Retry(RETRY_COUNT).First();
-                    Vocabulary.addQualifications(qualifications);
-                });
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_LoadingQualifications,
+                    Repository.GetQualifications()
+                    .Retry(RETRY_COUNT)
+                    .Do(qualifications => Vocabulary.addQualifications(qualifications))
+                );
         }
 
-        private IObservable<Unit> loadProperties()
+        private IObservable<string> loadProperties()
         {
-            return DeferStart(() =>
-                {
-                    _Progress.OnNext(DiversityResources.RefreshVocabularyTask_State_LoadingProperties);
-                    var properties = Repository.GetPropertiesForUser(_Credentials).Retry(RETRY_COUNT).First();
-                    Vocabulary.addProperties(properties);
-
-                    foreach (var p in properties)
-                    {
-                        Repository.DownloadPropertyValuesChunked(p)
-                            .ForEach(chunk => Vocabulary.addPropertyNames(chunk));
-                    }
-                });
+            return WithStatus(DiversityResources.RefreshVocabularyTask_State_LoadingProperties,
+                Repository.GetPropertiesForUser()
+                .Retry(RETRY_COUNT)
+                .FirstAsync()
+                .Do(properties => Vocabulary.addProperties(properties))
+                .SelectMany(properties => Observable.Concat(
+                    from p in properties
+                    select Repository.DownloadPropertyValuesChunked(p)
+                            .Retry(RETRY_COUNT)
+                            )
+                )
+                .Do(values => Vocabulary.addPropertyNames(values))
+                );
         }
 
-        private static IObservable<Unit> DeferStart(Action a)
+        private IObservable<string> WithStatus<T>(string status, IObservable<T> obs)
         {
-            return Observable.Defer(() => Observable.Start(a));
+            return obs
+                .IgnoreElements()
+                .Select(_ => string.Empty)
+                .StartWith(status);
         }
+
     }
 }

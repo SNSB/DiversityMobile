@@ -94,7 +94,10 @@
         {
             NotificationScheduler.Schedule(() =>
             {
+                progress = progress.CatchEmpty();
+
                 var replays = progress.Replay(1);
+
                 progress
                     .Finally(() => removeNotification(replays))
                     .Subscribe();

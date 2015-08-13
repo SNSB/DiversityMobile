@@ -138,17 +138,17 @@
             var seriesObs = Service.GetEventSeriesByQuery(queryString);
             var seriesResults = seriesObs
                 .SelectMany(x => x) // Flatten
-                .Select(es => new SearchResult(es))
-                .Replay()
-                .PermaRef();
+                .Select(es => new SearchResult(es));
 
             var eventsObs = Service.GetEventsByLocality(queryString);
             var eventResults = eventsObs
-                .Zip(seriesResults.ToDictionary(r => r.Series.Model.CollectionSeriesID), (evs, dict) => new { Events = evs, Map = dict })
+                // Create a dictionary from the series that were returned from the query above
+                .Zip(seriesObs.Select(s => s.ToDictionary(x => x.SeriesID)), (evs, dict) => new { Events = evs, Map = dict })
                 .SelectMany(x => 
                     from ev in x.Events
                     // SeriesID at this point contains the CollectionSeriesID
-                    where ev.SeriesID.HasValue && x.Map.ContainsKey(ev.SeriesID)
+                    // Only Download Series that we don't have already
+                    where ev.SeriesID.HasValue && !x.Map.ContainsKey(ev.SeriesID.Value)
                     select ev.SeriesID.Value)
                 .Distinct()
                 .SelectMany(id => Service.GetEventSeriesByID(id))
@@ -159,7 +159,9 @@
                 seriesObs.Select(x => x.Count()),
                 eventsObs.Select(x => x.Count()),
                 (s, e) => Math.Max(s, e)
-                    ).Subscribe(ResultCount);
+                    )
+                    .CatchEmpty()
+                    .Subscribe(ResultCount);
 
             var noSeriesResult = new SearchResult(NoEventSeriesMixin.NoEventSeries);
 
@@ -169,6 +171,7 @@
                 eventResults);
 
             eventsObs
+                .CatchEmpty()
                 .Zip(results.ToDictionary(x => x.Series.Model.CollectionSeriesID), (evs, dict) => new { Events = evs, Map = dict })
                 .Subscribe(x =>
                 {

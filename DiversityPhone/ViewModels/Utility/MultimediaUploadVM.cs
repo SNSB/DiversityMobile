@@ -43,18 +43,20 @@
             });
         }
 
-        public IObservable<Tuple<int, int>> Upload()
+        public IObservable<IItemsProgress> Upload()
         {
             return Observable.Defer(() => Items.SelectedItems)
-                        .SelectMany(mmos => Observable.Create<Tuple<int, int>>(obs =>
+                        .SelectMany(mmos => Observable.Create<IItemsProgress>(obs =>
                             {
-                                var totalCount = mmos.Count();
                                 var cancelSource = new CancellationTokenSource();
                                 Observable.Start(() =>
                                 {
+                                    var progress = new ItemProgress();
+                                    progress.IncrementTotal(mmos);
+
+                                    obs.OnNext(progress);
+
                                     var cancel = cancelSource.Token;
-                                    int idx = 0;
-                                    obs.OnNext(Tuple.Create(idx, totalCount));
                                     foreach (var mmo in mmos)
                                     {
                                         try
@@ -83,7 +85,9 @@
 
                                         if (cancel.IsCancellationRequested) return;
 
-                                        obs.OnNext(Tuple.Create(++idx, totalCount));
+                                        progress.IncrementDone(mmo);
+
+                                        obs.OnNext(progress);
                                     }
                                 }).Subscribe(_2 => { }, obs.OnError, obs.OnCompleted);
                                 return Disposable.Create(cancelSource.Cancel);

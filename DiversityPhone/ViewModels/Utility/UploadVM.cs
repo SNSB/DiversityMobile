@@ -5,9 +5,17 @@
     using ReactiveUI;
     using ReactiveUI.Xaml;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Reactive;
     using System.Reactive.Concurrency;
     using System.Reactive.Linq;
+
+    public interface IItemsProgress
+    {
+        int ItemsTotal { get; }
+        int ItemsDone { get; }
+    }
 
     public interface IUploadVM<T>
     {
@@ -15,7 +23,16 @@
 
         IObservable<Unit> Refresh();
 
-        IObservable<Tuple<int, int>> Upload();
+        IObservable<IItemsProgress> Upload();
+    }
+
+    public class ItemProgress : IItemsProgress
+    {
+        public int ItemsTotal { get; set; }
+        public int ItemsDone { get; set; }
+
+        public void IncrementDone<T>(T _) { ItemsDone++; }
+        public void IncrementTotal<T>(IEnumerable<T> items) { ItemsTotal += items.Count(); }
     }
 
     public class UploadVM : PageVMBase
@@ -129,9 +146,9 @@
                 {
                     IObservable<string> notificationStream;
                     if (CurrentPivot == Pivots.data)
-                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingElement, progress.Item1, progress.Item2));
+                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingElement, progress.ItemsDone, progress.ItemsTotal));
                     else
-                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingMultimedia, progress.Item1, progress.Item2));
+                        notificationStream = upload.Select(progress => string.Format("{0} ({1}/{2})", DiversityResources.Sync_Info_UploadingMultimedia, progress.ItemsDone, progress.ItemsTotal));
 
                     Notifications.showProgress(notificationStream);
                 })

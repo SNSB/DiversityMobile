@@ -4,58 +4,72 @@ using DiversityPhone.Model;
 using DiversityPhone.PhoneMediaService;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-
 using Client = DiversityPhone.Model;
 
 namespace DiversityPhone.Services
 {
     public partial class DiversityServiceClient : IDiversityServiceClient, IEnableLogger
     {
-        private DiversityService.DiversityServiceClient _svc = new DiversityService.DiversityServiceClient();
+        private readonly TimeSpan SERVICE_CALL_TIMEOUT = TimeSpan.FromMinutes(1);
+
+        List<object> CallsInFlight = new List<object>();
+        private void PushCall(object svc)
+        {
+            lock (CallsInFlight)
+            {
+                CallsInFlight.Add(svc);
+            }
+        }
+
+        private void PopCall(object svc)
+        {
+            lock(CallsInFlight)
+            {
+                CallsInFlight.Remove(svc);
+            }
+        }
+        private IObservable<TResult> DiversityServiceCall<TArgs, TResult>(Func<TArgs, TResult> map, Action<DiversityService.DiversityServiceClient> inner) where TArgs : AsyncCompletedEventArgs
+        {
+            return DiversityServiceCallObservable<TArgs, TResult>(obs =>
+                obs.Select(map),
+                inner);
+        }
+        private IObservable<TResult> DiversityServiceCallObservable<TArgs, TResult>(Func<IObservable<TArgs>, IObservable<TResult>> map, Action<DiversityService.DiversityServiceClient> inner) where TArgs : AsyncCompletedEventArgs
+        {
+            var eventName = typeof(TArgs).Name.Replace("EventArgs", "");
+
+            // Allows retrying a service call by resubscribing
+            return Observable.Create<TResult>(observer =>
+            {
+                var svc = new DiversityService.DiversityServiceClient();
+
+                PushCall(svc);
+
+                var res1 = Observable.FromEventPattern<TArgs>(svc, eventName, ThreadPool)
+                    .Take(1)
+                    .Timeout(SERVICE_CALL_TIMEOUT)
+                    .Finally(() => PopCall(svc))
+                    .LogErrors(this)
+                    .Select(p => p.EventArgs)
+                    .PipeErrors();
+
+                var res2 = map(res1);
+
+                var sub = res2.Subscribe(observer);
+
+                inner(svc);
+
+                return sub;
+            });
+        }
+
         private PhoneMediaService.PhoneMediaServiceClient _multimedia = new PhoneMediaService.PhoneMediaServiceClient();
-
-        //MISC
-        private IObservable<EventPattern<GetUserInfoCompletedEventArgs>> GetUserInfoCompleted;
-
-        private IObservable<EventPattern<GetRepositoriesCompletedEventArgs>> GetRepositoriesCompleted;
-        private IObservable<EventPattern<GetPropertiesForUserCompletedEventArgs>> GetPropertiesForUserCompleted;
-        private IObservable<EventPattern<GetProjectsForUserCompletedEventArgs>> GetProjectsForUserCompleted;
-
-        //VOCABULARY
-        private IObservable<EventPattern<GetStandardVocabularyCompletedEventArgs>> GetStandardVocabularyCompleted;
-
-        private IObservable<EventPattern<GetTaxonListsForUserCompletedEventArgs>> GetTaxonListsForUser;
-        private IObservable<EventPattern<DownloadTaxonListCompletedEventArgs>> DownloadTaxonList;
-        private IObservable<EventPattern<GetQualificationsCompletedEventArgs>> GetQualificationsCompleted;
-        private IObservable<EventPattern<GetAnalysesForProjectCompletedEventArgs>> GetAnalysesForProjectCompleted;
-        private IObservable<EventPattern<GetAnalysisResultsForProjectCompletedEventArgs>> GetAnalysisResultsForProjectCompleted;
-        private IObservable<EventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>> GetAnalysisTaxonomicGroupsForProjectCompleted;
-
-        // UPLOAD
-        private IObservable<EventPattern<AsyncCompletedEventArgs>> InsertMMOCompleted;
-
-        private IObservable<EventPattern<InsertEventSeriesCompletedEventArgs>> InsertESCompleted;
-        private IObservable<EventPattern<InsertEventCompletedEventArgs>> InsertEVCompleted;
-        private IObservable<EventPattern<InsertSpecimenCompletedEventArgs>> InsertSPCompleted;
-        private IObservable<EventPattern<InsertIdentificationUnitCompletedEventArgs>> InsertIUCompleted;
-
-        //DOWNLOAD
-        private IObservable<EventPattern<EventSeriesByQueryCompletedEventArgs>> EventSeriesByQueryCompleted;
-
-        private IObservable<EventPattern<EventSeriesByIDCompletedEventArgs>> EventSeriesByIDCompleted;
-
-        private IObservable<EventPattern<EventsForSeriesCompletedEventArgs>> EventsForSeriesCompleted;
-        private IObservable<EventPattern<LocalizationsForSeriesCompletedEventArgs>> LocalizationsForSeriesCompleted;
-        private IObservable<EventPattern<EventsByLocalityCompletedEventArgs>> EventsByLocalityCompleted;
-        private IObservable<EventPattern<PropertiesForEventCompletedEventArgs>> PropertiesForEventCompleted;
-        private IObservable<EventPattern<SpecimenForEventCompletedEventArgs>> SpecimenForEventCompleted;
-        private IObservable<EventPattern<UnitsForSpecimenCompletedEventArgs>> UnitsForSpecimenCompleted;
-        private IObservable<EventPattern<SubUnitsForIUCompletedEventArgs>> SubUnitsForIUCompleted;
-        private IObservable<EventPattern<AnalysesForIUCompletedEventArgs>> AnalysesForIUCompleted;
 
         //MULTIMEDIA
         private IObservable<EventPattern<PhoneMediaService.SubmitCompletedEventArgs>> UploadMultimediaCompleted;
@@ -75,41 +89,6 @@ namespace DiversityPhone.Services
             this.Credentials = Credentials;
             this.ThreadPool = ThreadPool;
 
-            GetUserInfoCompleted = Observable.FromEventPattern<GetUserInfoCompletedEventArgs>(h => _svc.GetUserInfoCompleted += h, h => _svc.GetUserInfoCompleted -= h, ThreadPool);
-            LogErrors<GetUserInfoCompletedEventArgs>(GetUserInfoCompleted);
-            GetRepositoriesCompleted = Observable.FromEventPattern<GetRepositoriesCompletedEventArgs>(h => _svc.GetRepositoriesCompleted += h, h => _svc.GetRepositoriesCompleted -= h, ThreadPool);
-            LogErrors<GetRepositoriesCompletedEventArgs>(GetRepositoriesCompleted);
-            GetPropertiesForUserCompleted = Observable.FromEventPattern<GetPropertiesForUserCompletedEventArgs>(h => _svc.GetPropertiesForUserCompleted += h, h => _svc.GetPropertiesForUserCompleted -= h, ThreadPool);
-            LogErrors<GetPropertiesForUserCompletedEventArgs>(GetPropertiesForUserCompleted);
-            GetProjectsForUserCompleted = Observable.FromEventPattern<GetProjectsForUserCompletedEventArgs>(h => _svc.GetProjectsForUserCompleted += h, h => _svc.GetProjectsForUserCompleted -= h, ThreadPool);
-            LogErrors<GetProjectsForUserCompletedEventArgs>(GetProjectsForUserCompleted);
-            GetStandardVocabularyCompleted = Observable.FromEventPattern<GetStandardVocabularyCompletedEventArgs>(d => _svc.GetStandardVocabularyCompleted += d, d => _svc.GetStandardVocabularyCompleted -= d, ThreadPool);
-            LogErrors<GetStandardVocabularyCompletedEventArgs>(GetStandardVocabularyCompleted);
-            GetAnalysesForProjectCompleted = Observable.FromEventPattern<GetAnalysesForProjectCompletedEventArgs>(d => _svc.GetAnalysesForProjectCompleted += d, d => _svc.GetAnalysesForProjectCompleted -= d, ThreadPool);
-            LogErrors<GetAnalysesForProjectCompletedEventArgs>(GetAnalysesForProjectCompleted);
-            GetAnalysisResultsForProjectCompleted = Observable.FromEventPattern<GetAnalysisResultsForProjectCompletedEventArgs>(d => _svc.GetAnalysisResultsForProjectCompleted += d, d => _svc.GetAnalysisResultsForProjectCompleted -= d, ThreadPool);
-            LogErrors<GetAnalysisResultsForProjectCompletedEventArgs>(GetAnalysisResultsForProjectCompleted);
-            GetAnalysisTaxonomicGroupsForProjectCompleted = Observable.FromEventPattern<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>(d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted += d, d => _svc.GetAnalysisTaxonomicGroupsForProjectCompleted -= d, ThreadPool);
-            LogErrors<GetAnalysisTaxonomicGroupsForProjectCompletedEventArgs>(GetAnalysisTaxonomicGroupsForProjectCompleted);
-
-            GetTaxonListsForUser = Observable.FromEventPattern<GetTaxonListsForUserCompletedEventArgs>(d => _svc.GetTaxonListsForUserCompleted += d, d => _svc.GetTaxonListsForUserCompleted -= d, ThreadPool);
-            LogErrors<GetTaxonListsForUserCompletedEventArgs>(GetTaxonListsForUser);
-            DownloadTaxonList = Observable.FromEventPattern<DownloadTaxonListCompletedEventArgs>(d => _svc.DownloadTaxonListCompleted += d, d => _svc.DownloadTaxonListCompleted -= d, ThreadPool);
-            LogErrors<DownloadTaxonListCompletedEventArgs>(DownloadTaxonList);
-            GetQualificationsCompleted = Observable.FromEventPattern<GetQualificationsCompletedEventArgs>(d => _svc.GetQualificationsCompleted += d, d => _svc.GetQualificationsCompleted -= d, ThreadPool);
-            LogErrors<GetQualificationsCompletedEventArgs>(GetQualificationsCompleted);
-
-            InsertMMOCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _svc.InsertMMOCompleted += h, h => _svc.InsertMMOCompleted -= h, ThreadPool);
-            LogErrors<AsyncCompletedEventArgs>(InsertMMOCompleted);
-            InsertESCompleted = Observable.FromEventPattern<InsertEventSeriesCompletedEventArgs>(h => _svc.InsertEventSeriesCompleted += h, h => _svc.InsertEventSeriesCompleted -= h, ThreadPool);
-            LogErrors<InsertEventSeriesCompletedEventArgs>(InsertESCompleted);
-            InsertEVCompleted = Observable.FromEventPattern<InsertEventCompletedEventArgs>(h => _svc.InsertEventCompleted += h, h => _svc.InsertEventCompleted -= h, ThreadPool);
-            LogErrors<InsertEventCompletedEventArgs>(InsertEVCompleted);
-            InsertSPCompleted = Observable.FromEventPattern<InsertSpecimenCompletedEventArgs>(h => _svc.InsertSpecimenCompleted += h, h => _svc.InsertSpecimenCompleted -= h, ThreadPool);
-            LogErrors<InsertSpecimenCompletedEventArgs>(InsertSPCompleted);
-            InsertIUCompleted = Observable.FromEventPattern<InsertIdentificationUnitCompletedEventArgs>(h => _svc.InsertIdentificationUnitCompleted += h, h => _svc.InsertIdentificationUnitCompleted -= h, ThreadPool);
-            LogErrors<InsertIdentificationUnitCompletedEventArgs>(InsertIUCompleted);
-
             UploadMultimediaCompleted = Observable.FromEventPattern<SubmitCompletedEventArgs>(h => _multimedia.SubmitCompleted += h, h => _multimedia.SubmitCompleted -= h, ThreadPool);
             LogErrors<SubmitCompletedEventArgs>(UploadMultimediaCompleted);
             BeginTransactionCompleted = Observable.FromEventPattern<BeginTransactionCompletedEventArgs>(h => _multimedia.BeginTransactionCompleted += h, h => _multimedia.BeginTransactionCompleted -= h, ThreadPool);
@@ -119,27 +98,6 @@ namespace DiversityPhone.Services
             CommitCompleted = Observable.FromEventPattern<CommitCompletedEventArgs>(h => _multimedia.CommitCompleted += h, h => _multimedia.CommitCompleted -= h, ThreadPool);
             LogErrors<CommitCompletedEventArgs>(CommitCompleted);
             RollbackCompleted = Observable.FromEventPattern<AsyncCompletedEventArgs>(h => _multimedia.RollbackCompleted += h, h => _multimedia.RollbackCompleted -= h, ThreadPool);
-
-            EventSeriesByQueryCompleted = Observable.FromEventPattern<EventSeriesByQueryCompletedEventArgs>(h => _svc.EventSeriesByQueryCompleted += h, h => _svc.EventSeriesByQueryCompleted -= h, ThreadPool);
-            LogErrors<EventSeriesByQueryCompletedEventArgs>(EventSeriesByQueryCompleted);
-            EventSeriesByIDCompleted = Observable.FromEventPattern<EventSeriesByIDCompletedEventArgs>(h => _svc.EventSeriesByIDCompleted += h, h => _svc.EventSeriesByIDCompleted -= h, ThreadPool);
-            LogErrors<EventSeriesByIDCompletedEventArgs>(EventSeriesByIDCompleted);
-            EventsForSeriesCompleted = Observable.FromEventPattern<EventsForSeriesCompletedEventArgs>(h => _svc.EventsForSeriesCompleted += h, h => _svc.EventsForSeriesCompleted -= h, ThreadPool);
-            LogErrors<EventsForSeriesCompletedEventArgs>(EventsForSeriesCompleted);
-            LocalizationsForSeriesCompleted = Observable.FromEventPattern<LocalizationsForSeriesCompletedEventArgs>(h => _svc.LocalizationsForSeriesCompleted += h, h => _svc.LocalizationsForSeriesCompleted -= h, ThreadPool);
-            LogErrors<LocalizationsForSeriesCompletedEventArgs>(LocalizationsForSeriesCompleted);
-            EventsByLocalityCompleted = Observable.FromEventPattern<EventsByLocalityCompletedEventArgs>(h => _svc.EventsByLocalityCompleted += h, h => _svc.EventsByLocalityCompleted -= h, ThreadPool);
-            LogErrors<EventsByLocalityCompletedEventArgs>(EventsByLocalityCompleted);
-            PropertiesForEventCompleted = Observable.FromEventPattern<PropertiesForEventCompletedEventArgs>(h => _svc.PropertiesForEventCompleted += h, h => _svc.PropertiesForEventCompleted -= h, ThreadPool);
-            LogErrors<PropertiesForEventCompletedEventArgs>(PropertiesForEventCompleted);
-            SpecimenForEventCompleted = Observable.FromEventPattern<SpecimenForEventCompletedEventArgs>(h => _svc.SpecimenForEventCompleted += h, h => _svc.SpecimenForEventCompleted -= h, ThreadPool);
-            LogErrors<SpecimenForEventCompletedEventArgs>(SpecimenForEventCompleted);
-            UnitsForSpecimenCompleted = Observable.FromEventPattern<UnitsForSpecimenCompletedEventArgs>(h => _svc.UnitsForSpecimenCompleted += h, h => _svc.UnitsForSpecimenCompleted -= h, ThreadPool);
-            LogErrors<UnitsForSpecimenCompletedEventArgs>(UnitsForSpecimenCompleted);
-            SubUnitsForIUCompleted = Observable.FromEventPattern<SubUnitsForIUCompletedEventArgs>(h => _svc.SubUnitsForIUCompleted += h, h => _svc.SubUnitsForIUCompleted -= h, ThreadPool);
-            LogErrors<SubUnitsForIUCompletedEventArgs>(SubUnitsForIUCompleted);
-            AnalysesForIUCompleted = Observable.FromEventPattern<AnalysesForIUCompletedEventArgs>(h => _svc.AnalysesForIUCompleted += h, h => _svc.AnalysesForIUCompleted -= h, ThreadPool);
-            LogErrors<AnalysesForIUCompletedEventArgs>(AnalysesForIUCompleted);
         }
 
         private void WithCredentials(Action<UserCredentials> action)
