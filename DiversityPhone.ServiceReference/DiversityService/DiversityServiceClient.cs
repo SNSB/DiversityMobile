@@ -10,6 +10,7 @@ using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using Client = DiversityPhone.Model;
 
 namespace DiversityPhone.Services
@@ -67,6 +68,10 @@ namespace DiversityPhone.Services
 
                 return sub;
             });
+        }
+        private IConnectableObservable<TResult> DiversityConnectableServiceCall<TArgs, TResult>(Func<IObservable<TArgs>, IObservable<TResult>> map, Action<DiversityService.DiversityServiceClient> inner) where TArgs : AsyncCompletedEventArgs
+        {
+            return DiversityServiceCallObservable<TArgs, TResult>(map, inner).Replay();
         }
 
         private PhoneMediaService.PhoneMediaServiceClient _multimedia = new PhoneMediaService.PhoneMediaServiceClient();

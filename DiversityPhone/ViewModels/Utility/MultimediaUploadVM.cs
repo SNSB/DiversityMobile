@@ -155,7 +155,10 @@
                     }
                 })
                 .SelectMany(obs =>
-                    obs.SelectMany(mmo => Service.InsertMultimediaObject(mmo).Select(_ => mmo))
+                    obs.SelectMany(mmo => 
+                        Service.InsertMultimediaObject(mmo)
+                        .RefCount()
+                        .Select(_ => mmo))
                         .Do(mmo => Storage.MarkUploaded(mmo))
                         .Select(_ => Unit.Default)
                         .Publish()

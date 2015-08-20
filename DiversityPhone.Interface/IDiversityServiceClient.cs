@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reactive;
+using System.Reactive.Subjects;
 
 namespace DiversityPhone.Interface
 {
@@ -96,15 +97,15 @@ namespace DiversityPhone.Interface
 
         #region Upload
 
-        IObservable<Unit> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations);
+        IConnectableObservable<Unit> InsertEventSeries(EventSeries series, IEnumerable<ILocalizable> localizations);
 
-        IObservable<Unit> InsertEvent(Event ev, IEnumerable<EventProperty> properties);
+        IConnectableObservable<Unit> InsertEvent(Event ev, IEnumerable<EventProperty> properties);
 
-        IObservable<Unit> InsertSpecimen(Specimen spec);
+        IConnectableObservable<Unit> InsertSpecimen(Specimen spec);
 
-        IObservable<Unit> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses);
+        IConnectableObservable<Unit> InsertIdentificationUnit(IdentificationUnit iu, IEnumerable<IdentificationUnitAnalysis> analyses);
 
-        IObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);
+        IConnectableObservable<Unit> InsertMultimediaObject(MultimediaObject mmo);
 
         IObservable<Uri> UploadMultimedia(MultimediaObject Owner, Stream data);
 

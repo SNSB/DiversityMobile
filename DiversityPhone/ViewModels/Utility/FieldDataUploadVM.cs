@@ -77,6 +77,7 @@
         private IObservable<Unit> uploadES(EventSeries es, ItemProgress progress)
         {
             return Service.InsertEventSeries(es, Storage.getGeoPointsForSeries(es.SeriesID).Select(gp => gp as ILocalizable))
+                    .RefCount()
                     .Select(_ => Storage.getEventsForSeries(es))
                     .Do(progress.IncrementTotal)
                     .SelectMany(events => events.Select(ev => uploadEV(ev, progress)))
@@ -86,6 +87,7 @@
         private IObservable<Unit> uploadEV(Event ev, ItemProgress progress)
         {
             return Service.InsertEvent(ev, Storage.getPropertiesForEvent(ev.EventID))
+                    .RefCount()
                     .Select(_ => Storage.getSpecimenForEvent(ev))
                     .Do(progress.IncrementTotal)
                     .SelectMany(series => series.Select(s => uploadSpecimen(s, progress)))
@@ -110,6 +112,7 @@
                 .Do(progress.IncrementTotal)
                 .SelectMany(ius =>
                     Service.InsertSpecimen(s)
+                           .RefCount()
                            .SelectMany(_ => ius)
                 )
                 .SelectMany(iu => uploadIU(iu, progress));
@@ -118,6 +121,7 @@
         private IObservable<Unit> uploadIU(IdentificationUnit iu, ItemProgress progress)
         {
             return Service.InsertIdentificationUnit(iu, Storage.getIUANForIU(iu))
+                .RefCount()
                 .SelectMany(_ => Storage.getSubUnits(iu).Select(sub => uploadIU(sub, progress)))
                 .SelectMany(x => x);
         }
