@@ -135,12 +135,13 @@
 
             var queryString = query as string ?? string.Empty;
 
-            var seriesObs = Service.GetEventSeriesByQuery(queryString);
+            var seriesObs = Service.GetEventSeriesByQuery(queryString).Publish();
             var seriesResults = seriesObs
                 .SelectMany(x => x) // Flatten
-                .Select(es => new SearchResult(es));
+                .Select(es => new SearchResult(es))
+                .Publish();
 
-            var eventsObs = Service.GetEventsByLocality(queryString);
+            var eventsObs = Service.GetEventsByLocality(queryString).Publish();
             var eventResults = eventsObs
                 // Create a dictionary from the series that were returned from the query above
                 .Zip(seriesObs.Select(s => s.ToDictionary(x => x.SeriesID)), (evs, dict) => new { Events = evs, Map = dict })
@@ -152,7 +153,8 @@
                     select ev.SeriesID.Value)
                 .Distinct()
                 .SelectMany(id => Service.GetEventSeriesByID(id))
-                .Select(es => new SearchResult(es));
+                .Select(es => new SearchResult(es))
+                .Publish();
 
             // Forward the maximum result count to show the result truncation hint if necessary
             Observable.Zip(
@@ -171,8 +173,8 @@
                 eventResults);
 
             eventsObs
-                .CatchEmpty()
                 .Zip(results.ToDictionary(x => x.Series.Model.CollectionSeriesID), (evs, dict) => new { Events = evs, Map = dict })
+                .CatchEmpty()
                 .Subscribe(x =>
                 {
                     var dict = x.Map;
@@ -195,14 +197,22 @@
                     }
                 }); // ... for the side effects
 
-            return Observable.Concat(
+            var searchResults = Observable.Merge(
                 results,
                 eventsObs
                 // If we have an event from the NoEventSeries...
                 .Where(evs => evs.Any(x => !x.SeriesID.HasValue))
                 // ... add the result for it
                 .Select(_ => noSeriesResult)
-                );
+                ).Replay();
+
+            searchResults.Connect();
+            eventResults.Connect();
+            seriesResults.Connect();
+            eventsObs.Connect();
+            seriesObs.Connect();
+
+            return searchResults;
         }
 
         private IObservable<Unit> StartDownload(object root)
