@@ -144,7 +144,7 @@
             var eventsObs = Service.GetEventsByLocality(queryString).Publish();
             var eventResults = eventsObs
                 // Create a dictionary from the series that were returned from the query above
-                .Zip(seriesObs.Select(s => s.ToDictionary(x => x.SeriesID)), (evs, dict) => new { Events = evs, Map = dict })
+                .Zip(seriesObs.Select(s => s.ToDictionary(x => x.CollectionSeriesID)), (evs, dict) => new { Events = evs, Map = dict })
                 .SelectMany(x => 
                     from ev in x.Events
                     // SeriesID at this point contains the CollectionSeriesID
