@@ -121,7 +121,7 @@ namespace DiversityPhone {
         /// <summary>
         ///   Looks up a localized string similar to DiversityMobile – recording biological research data in nature
         ///
-        ///DiversityMobile is an application for professional biologists and ecologists as well as citizen scientists, being experienced in recording observation data in nature. Information may be directly entered into the smartphone database. DiversityMobile is designed following Diversity Workbench (=DWB) concepts. Mechanisms of automated recording and storage of GPS data and the manual recording of multimedia data are included. During that process th [rest of string was truncated]&quot;;.
+        ///DiversityMobile is an application for professional biologists and ecologists as well as citizen scientists experienced in recording observation data in nature. Information may be directly entered into the smartphone database. DiversityMobile is designed following Diversity Workbench (=DWB) concepts. Mechanisms of automated recording and storage of GPS data and the manual recording of multimedia data are included. During that process there is  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string App_Info {
             get {
