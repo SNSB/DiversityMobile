@@ -273,6 +273,9 @@
     <Compile Include="..\DiversityPhone\Helper\ObservableMixin.cs">
       <Link>Implementation\Helper\ObservableMixin.cs</Link>
     </Compile>
+    <Compile Include="..\DiversityPhone\Helper\ReactiveCollectionListener.cs">
+      <Link>Implementation\Helper\ReactiveCollectionListener.cs</Link>
+    </Compile>
     <Compile Include="..\DiversityPhone\Helper\ReactiveCommand.cs">
       <Link>Implementation\Helper\ReactiveCommand.cs</Link>
     </Compile>
