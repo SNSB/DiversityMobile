@@ -51,7 +51,7 @@ namespace DiversityPhone.Services
                     throw new ArgumentException("Unsupported Media Owner");
             }
 
-            return string.Format("DM-{0}-{1}-{2}-{3}.{4}",
+            return string.Format("DM-{0}-{1}_{2}_{3}.{4}",
                 ownerCode,
                 CollectionOwnerID,
                 mmo.TimeCreated.ToString("yyyyMMdd", CultureInfo.InvariantCulture),
